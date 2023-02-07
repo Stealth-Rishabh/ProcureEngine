@@ -460,8 +460,21 @@ function fetchrfqcomprative() {
                     }
 
                 }
-
-                str += "<tr><td colspan=8 style='text-align:center;'><b>Total</b></td>";
+                // for calculating total target price
+                let totaltargetprice = 0;
+                let ttpArray = [];
+                for (var t = 0; t < data[0].quotesDetails.length; t++) {
+                    
+                    let isPresent = ttpArray.includes(data[0].quotesDetails[t].rfqParameterId)
+                    if (!isPresent) {
+                        ttpArray.push(data[0].quotesDetails[t].rfqParameterId);
+                        totaltargetprice = totaltargetprice + data[0].quotesDetails[t].targetPrice;
+                    }
+                    else {
+                        break;
+                    }
+                }
+                str += "<tr><td colspan=7 style='text-align:center;'><b>Total</b></td><td colspan=1 style='text-align:center;'><b>" + thousands_separators(totaltargetprice) + "</b></td>";
                 strExcel += "<tr><td colspan=7><b>Total</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
                     if (data[0].vendorNames[k].seqNo != 0) {

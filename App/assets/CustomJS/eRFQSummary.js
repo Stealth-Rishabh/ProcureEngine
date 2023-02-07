@@ -83,7 +83,7 @@ function fetchregisterusers() {
             }
             if (data[0].role.toLowerCase() == "user" && data[0].roleName.toLowerCase() != "reports") {
                 jQuery("#ddlconfiguredby").select2('val', data[0].userID);
-                //  jQuery("#ddlconfiguredby").prop('disabled', true)
+               // jQuery("#ddlconfiguredby").prop('disabled', true)
             }
         },
         error: function (xhr, status, error) {
@@ -187,8 +187,7 @@ function fetchRFQVendorSummary() {
     var dtfrom = '', dtto = '', subject = 'X-X';
     result = '';
     if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
-        //dtfrom = new Date(2000, 01, 01);
-        dtfrom = null;
+        dtfrom = new Date(2000, 01, 01);
 
     }
     else {
@@ -240,18 +239,18 @@ function fetchRFQVendorSummary() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-
-
+            
+          
 
             jQuery("#tblVendorSummary").empty();
             //jQuery('#tblVendorSummary').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold hide'>RFQ StartDate</th><th class='bold'>RFQ EndDate</th><th class='bold'>Currency</th><th class='bold'>RFQ Status</th></tr></thead>");
             //Sid RFQ Stages
             jQuery('#tblVendorSummary').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>RFQ Config Date</th><th class='bold'>RFQ StartDate</th><th class='bold'>RFQ EndDate</th><th class='bold'>Currency</th><th class='bold'>RFQ Status</th></tr></thead>");
             if (BidData.length > 0) {
-
+               
                 let _subject = "";
                 for (var i = 0; i < BidData.length; i++) {
-
+                   
                     _subject = StringDecodingMechanism(BidData[i].rfqSubject)
                     var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(_subject) + "'\) href='javascript:;'>" + BidData[i].rfqid + "</a></td>";
                     str += "<td>" + BidData[i].rfqSubject + "</td>";
@@ -270,7 +269,7 @@ function fetchRFQVendorSummary() {
                     str += "</tr>";
                     jQuery('#tblVendorSummary').append(str);
                 }
-
+               
                 var table = $('#tblVendorSummary');
                 table.removeAttr('width').dataTable({
                     "bDestroy": true,
@@ -288,7 +287,7 @@ function fetchRFQVendorSummary() {
                     dom: 'Bfrtip',
                     buttons: [
                         'pageLength',
-
+                       
                         {
                             extend: 'excelHtml5',
                             text: '<i class="fa fa-file-excel-o"></i> Excel',
@@ -296,7 +295,8 @@ function fetchRFQVendorSummary() {
                                 columns: ':visible',
                                 format: {
                                     body: function (data, column, node) {
-                                        if (column === 0) {
+                                    
+                                         if (column === 0) {
                                             let text = data.match(/>([^<]+)</)[1];
                                             return parseFloat(text);
                                         }
@@ -367,7 +367,7 @@ function fetchRFQVendorSummary() {
         }
     });
 }
-function getSummary(RFQID, subject) {
+function getSummary(RFQID,subject) {    
     let _subject = StringDecodingMechanism(subject)
     var encrypdata = fnencrypt("RFQID=" + RFQID + "&RFQSubject=" + _subject)
     if (sessionStorage.getItem("CustomerID") != 32) {
@@ -381,11 +381,11 @@ function getSummary(RFQID, subject) {
 
 }
 function fetchBidVendorSummaryDetail() {
+
     var dtfrom = '', dtto = '', subject = 'X-X';
     result = '';
     if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
-        //dtfrom = new Date(2000, 01, 01);
-        dtfrom = null;
+        dtfrom = new Date(2000, 01, 01);
 
     }
     else {
@@ -442,7 +442,7 @@ function fetchBidVendorSummaryDetail() {
             if (BidData.length > 0) {
                 var bID = 0;
                 let _subject = "";
-
+              
                 for (var i = 0; i < BidData.length; i++) {
                     _subject = StringDecodingMechanism(BidData[i].rfqSubject)
                     var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(_subject) + "'\) href='javascript:;' >" + BidData[i].rfqid + "</a></td>";
@@ -529,7 +529,7 @@ function fetchBidVendorSummaryDetail() {
                     dom: 'Bfrtip',
                     buttons: [
                         'pageLength',
-
+                    
                         {
                             extend: 'excelHtml5',
                             exportOptions: {
@@ -689,11 +689,11 @@ $('#editLastInvoiceprice').on("hidden.bs.modal", function () {
 
 
 function fetchBidVendorSummarySummarization() {
+
     var dtfrom = '', dtto = '', subject = 'X-X';
     result = '';
     if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
-        //dtfrom = new Date(2000, 01, 01);
-        dtfrom = null;
+        dtfrom = new Date(2000, 01, 01);
 
     }
     else {
@@ -793,7 +793,7 @@ function fetchBidVendorSummarySummarization() {
 
                     jQuery('#tblVendorSummarySUmzation').append(str);
                 }
-
+        
                 var table = $('#tblVendorSummarySUmzation');
                 table.removeAttr('width').dataTable({
                     "bDestroy": true,
@@ -808,11 +808,31 @@ function fetchBidVendorSummarySummarization() {
                     dom: 'Bfrtip',
                     buttons: [
                         'pageLength',
-
+                      
                         {
                             extend: 'excelHtml5',
                             text: '<i class="fa fa-file-excel-o"></i> Excel',
+                            exportOptions: {
+                                columns: ':visible',
+                                format: {
+                                    body: function (data, column, node) {
 
+                                        if (column === 0) {
+                                            let text = data.match(/>([^<]+)</)[1];
+                                            return parseFloat(text);
+                                        }
+                                        else if (column >= 7 && column <= 11) {
+                                            let text = removeThousandSeperator(data);
+                                            return parseFloat(text);
+                                        }
+                                        else {
+                                            return data;
+                                        }
+
+                                    }
+
+                                }
+                            },
                         },
                         {
                             extend: 'pdfHtml5',
