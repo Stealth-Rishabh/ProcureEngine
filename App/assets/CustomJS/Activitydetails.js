@@ -253,6 +253,7 @@ function fnArchive(RFQID) {
 
 
 function fetchDashboardData() {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var custId = parseInt(sessionStorage.getItem('CustomerID'));
     jQuery.ajax({
@@ -493,7 +494,7 @@ function fetchDashboardData() {
     });
 }
 function fetchBidDataDashboard(requesttype) {
-
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (requesttype == 'Today') {
         jQuery('#spanPanelCaption').html("Open Bids");

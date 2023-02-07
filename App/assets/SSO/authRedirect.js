@@ -127,7 +127,7 @@ function passTokenToApi() {
           
            sessionStorage.setItem("Token", response.accessToken)
           
-            fnGetUserBasicDetails()
+            //fnGetUserBasicDetails()
         }).catch(error => {
             console.error(error);
         });
