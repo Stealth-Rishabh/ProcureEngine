@@ -1,5 +1,6 @@
 var Changepassworderror = $('#errordivChangePassword');
 var Changepasswordsuccess = $('#successdivChangePassword');
+let isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted')
 Changepassworderror.hide();
 Changepasswordsuccess.hide();
 jQuery(document).ready(function () {   
@@ -32,8 +33,10 @@ jQuery(document).ready(function () {
      if (sessionStorage.getItem('UserType') == 'E') {
          fetchMenuItemsFromSession(0, 0);
  
-     }
-
+    }
+    if (isWhatsappOpted == "false") {
+        whatsappAlert()
+    }     
     fetchDashboardData();
     handleChangePasword();
 });
@@ -104,7 +107,6 @@ function handleChangePasword() {
 function ChangePassword() {
     var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    debugger;
     var isSubmit = true;
     var successMsg = "";
     if ($("#nPassword").val() != $("#reEnterPass").val()) {
@@ -704,3 +706,27 @@ jQuery("#searchPendingBids").keyup(function () {
 
     });
 });
+
+function whatsappAlert() {
+
+    bootbox.dialog({
+        title: "Now get alerts on WhatsApp!",
+        message: "We'll send you important updates and notifications on Whatsapp",
+        buttons: {
+            ok: {
+                label: "Yes, opt in",
+                className: "btn-success",
+                callback: function () {
+
+                }
+            },
+            cancel: {
+                label: "Ignore",
+                className: "btn-danger",
+                callback: function () {
+
+                }
+            }
+        }
+    });
+}
