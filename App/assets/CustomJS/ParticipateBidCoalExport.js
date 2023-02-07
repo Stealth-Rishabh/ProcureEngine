@@ -112,10 +112,12 @@ connection.on("refreshColumnStatusCoal", function (data) {
             crossDomain: true,
             dataType: "json",
             success: function (data, status, jqXHR) {
-
+                
                 if (data.length > 0) {
                     for (var i = 0; i < data.length; i++) {
-
+                        let TotalBidValue = '';
+                        TotalBidValue = removeThousandSeperator(parseFloat(removeThousandSeperator(data[i].quantity))) * parseFloat(removeThousandSeperator(data[i].l1Quote));
+             
                         if (data[i].noOfExtension >= 1) {
 
                             jQuery('#lblTimeLeft').css('color', 'red');
@@ -135,6 +137,9 @@ connection.on("refreshColumnStatusCoal", function (data) {
                         $("#initialquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(data[i].iqQuotedPrice))
                         $("#iqquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(data[i].iqQuotedPrice))
                         $("#lastQuote" + i).html(data[i].lqQuotedPrice == '0' ? '' : thousands_separators(data[i].lqQuotedPrice))
+                      
+                        $("#totalbidvalue" + i).html(TotalBidValue % 1 != 0 ? thousands_separators(TotalBidValue) : thousands_separators(TotalBidValue))
+
                         $("#lblstatus" + i).html(data[i].loQuotedPrice)
                         $("#L1Price" + i).html(thousands_separators(data[i].l1Quote))
 
@@ -388,10 +393,9 @@ function fetchBidSummaryVendorproduct() {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (data, status, jqXHR) {
-
-
+        success: function (data, status, jqXHR) {     
             if (data.length > 0) {
+                let TotalBidValue = '';
                 if (_isBidStarted == false) {
                     $('#tblParticipantsService').hide();
                     $('#tblParticipantsServiceBeforeStartBid').show();
@@ -411,15 +415,16 @@ function fetchBidSummaryVendorproduct() {
                     if (data[0].bidClosingType == 'A') {
 
                         for (var i = 0; i < data.length; i++) {
-
+                       
                             var IQuote = data[i].iqQuotedPrice == '0' ? '' : data[i].iqQuotedPrice;
                             var LqQuote = data[i].lqQuotedPrice == '0' ? '' : data[i].lqQuotedPrice;
                             var decreamentOn = data[i].decreamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
-
+                            TotalBidValue = parseFloat(data[i].quantity) * parseFloat(data[i].l1Quote);
+                            
 
                             jQuery("#Coalitems").append('<table class="table table-bordered" id=tblParticipantsService' + i + ' ></table><div id=collapse class="panel-collapse"><div class="panel-body" style="margin-top:-10px!important;" ><div class="col-md-12"><table class="table" id=itemquotes' + i + '></table></div>');
-                            jQuery("#tblParticipantsService" + i).append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th>GST %</th><th id='bidStartPrice'>Start Unit Price</th><th>Target Price</th><th>Minimum Decrement</th><th>Initial Quote</th><th>Current Quote</th><th>L1 Quote</th><th> Status </th></thead>");
-                            jQuery("#tblParticipantsService" + i).append("<tr><td> " + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=coalid" + i + ">" + data[i].coalID + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td>" + data[i].gst + "</td><td id=ceilingprice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " </td><td id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + "</td><td>" + thousands_separators(data[i].minimumDecreament) + " </td><td id=initialquote" + i + "></td><td id=lastQuote" + i + " class='bold' style='color:Blue;'></td><td  id=L1Price" + i + ">" + thousands_separators(data[i].l1Quote) + "</td><td id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td class=hide id=chkMaskL1Price" + i + ">" + data[i].maskL1Price + "</td></tr>");
+                            jQuery("#tblParticipantsService" + i).append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th>GST %</th><th id='bidStartPrice'>Start Unit Price</th><th>Target Price</th><th>Minimum Decrement</th><th>Initial Quote</th><th>Current Quote</th><th>L1 Quote</th><th> Status </th><th>Bid Value</th></thead>");
+                            jQuery("#tblParticipantsService" + i).append("<tr><td> " + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=coalid" + i + ">" + data[i].coalID + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td>" + data[i].gst + "</td><td id=ceilingprice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " </td><td id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + "</td><td>" + thousands_separators(data[i].minimumDecreament) + " </td><td id=initialquote" + i + "></td><td id=lastQuote" + i + " class='bold' style='color:Blue;'></td><td  id=L1Price" + i + ">" + thousands_separators(data[i].l1Quote) + "</td><td id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td class=hide id=chkMaskL1Price" + i + ">" + data[i].maskL1Price + "</td><td id=totalbidvalue" + i + ">" + thousands_separators(TotalBidValue) + "</td></tr>");
 
                             $('#itemquotes' + i).append('<tr id=trquotes' + i + '><td><label class="control-label text-left" style="width:120px!important;">Offered Quantity</label></td><td> <input type="number" onkeyup="CheckQCondition(this,' + data[i].quantity + ',' + i + ')" class="form-control" id=delquan' + i + ' name=delquan' + i + ' placeholder="Offered Quantity" autocomplete="off" maxlength="8" value=' + data[i].offeredQuan + ' /><span id=spanmszQ' + i + ' style=color:#a94442></span></td>');
                             $('#trquotes' + i).append('<td><label class="control-label text-left">Cess</label></td><td> <input type="number" class="form-control threedecimal" onkeyup=onkeyCess(' + i + ') id=cess' + i + ' name=cess' + i + ' value=' + data[i].cess + ' placeholder="Cess per MT" autocomplete="off"  /><span id=spanmszC' + i + ' style=color:#a94442></span></td>');
@@ -429,7 +434,7 @@ function fetchBidSummaryVendorproduct() {
 
                             $("#lastQuote" + i).html(data[i].lqQuotedPrice == '0' ? '' : thousands_separators(data[i].lqQuotedPrice))
                             $("#initialquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(data[i].iqQuotedPrice))
-
+                            $("#totalbidvalue" + i).html(TotalBidValue % 1 != 0 ? thousands_separators(TotalBidValue) : thousands_separators(TotalBidValue))
                             $('#spanamount' + i).addClass('hide spanclass');
                             $('#spanmszA' + i).addClass('hide spanclass');
 
@@ -476,13 +481,9 @@ function fetchBidSummaryVendorproduct() {
                                 });
                             }
                             count = count + 1;
-
                         }
-
                     }
-
                 }
-
             }
             else {
                 jQuery("#tblParticipantsService").append("<tr><td>Nothing Participation</td></tr>")
@@ -783,7 +784,7 @@ function InsUpdQuoteSeaExport(index) {
         //alert(JSON.stringify(QuoteProduct))
         // console.log(JSON.stringify(QuoteProduct))
         $('#hdnselectedindex').val(index);
-        connection.invoke("RefreshBidParticipationCoal", JSON.stringify(QuoteProduct), parseInt(sessionStorage.getItem("BidID"))).catch(function (err) {
+        connection.invoke("RefreshBidParticipationCoal", JSON.stringify(QuoteProduct)).catch(function (err) {
             return console.error(err.toString());
         });
 

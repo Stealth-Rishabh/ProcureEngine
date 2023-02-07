@@ -669,8 +669,8 @@ jQuery.validator.addMethod(
     "This field is required."
 );
 jQuery.validator.addMethod("dollarsscents", function (value, element) {
-    return this.optional(element) || /^\d{0,4}(\.\d{0,3})?$/i.test(value);
-}, "You must include three decimal places");
+    return this.optional(element) || /^\d{0,4}(\.\d{0,2})?$/i.test(value);
+}, "You must include two decimal places");
 
 var FormWizard = function () {
 

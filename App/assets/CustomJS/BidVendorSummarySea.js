@@ -369,7 +369,7 @@ function MapBidapprover() {
                         label: "OK",
                         className: "btn-success",
                         callback: function () {
-                            $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
+                            $('.modal-footer .btn-success').prop('disabled', true); 
                             setTimeout(function () {
                                 fetchApproverStatus();
                                 $('#addapprovers').modal('hide')
@@ -686,7 +686,6 @@ function fnTimeUpdate() {
 
 
 function fetchBidSummaryDetails(BidID, BidForID) {
-
     var BidTypeID = sessionStorage.getItem('hdnbidtypeid')
     jQuery.ajax({
         type: "GET",
@@ -705,7 +704,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
             _bidarray = [];
             var wtavg = 0;
             if (data.length > 0) {
-
+               
                 if (parseInt(BidTypeID) == 6) {
 
                     $('#lnktotvalue').html('Detailed Report')
@@ -823,7 +822,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                             str += "<td>" + data[i].srNo + "</td><td>" + data[i].vendorName + "</td><td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
                             str += "<td class=text-right>" + (data[i].vQuote == '0' ? '' : thousands_separators(data[i].lQuote)) + "</td>";
                             str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
-                            //abheedev removequote    
+                             
                             if (data[i].srNo != 'N/A' && data[i].srNo.toLowerCase() != 'not participated' && data[i].srNo.toLowerCase() != 'not quoted') {
                                 strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo + '<a href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a></td>';
                             }
@@ -1352,9 +1351,8 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                     var c = 1;
 
                     for (var i = 0; i < data.length; i++) {
-
                         TotalBidValue = parseFloat(data[i].quantity) * parseFloat(data[i].lQuote);
-                        TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
+                        TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue:TotalBidValue;
                         minimumdec = thousands_separators(data[i].minimumDecreament)// + ' ' + data[i].selectedCurrency
                         var desitinationport = data[i].destinationPort.replace(/<br\s*\/?>/gi, ' ');
 
@@ -1392,7 +1390,20 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                         str += "<td class='text-right' class='text-right' >" + (data[i].lQuote == '0' ? '' : thousands_separators(data[i].lQuote)) + "</td>";
                         str += "<td class='text-right hide'>" + thousands_separators(TotalBidValue) + "</td><td>" + (data[i].offeredQuan == '0' ? '' : thousands_separators(data[i].offeredQuan)) + "</td>";
 
-                        strsumm += "<td id=vname" + i + "  class=showvendor >" + data[i].vendorName + "</td><td class=text-right>" + (data[i].landedPrice == '0' ? '' : thousands_separators(data[i].landedPrice)) + "</td><td class=text-right>" + (data[i].cess == '0' ? '' : thousands_separators(data[i].cess)) + "</td><td class=text-right>" + data[i].gst + "</td><td class=text-right>" + (data[i].ncv == '0' ? '' : thousands_separators(data[i].ncv)) + "</td><td id=level" + i + " id=level" + i + " >" + data[i].srNo + "</td><td class='text-right' id=initialQuote" + i + ">" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
+                        strsumm += "<td id=vname" + i + "  class=showvendor >" + data[i].vendorName + "</td><td class=text-right>" + (data[i].landedPrice == '0' ? '' : thousands_separators(data[i].landedPrice)) + "</td><td class=text-right>" + (data[i].cess == '0' ? '' : thousands_separators(data[i].cess)) + "</td><td class=text-right>" + data[i].gst + "</td><td class=text-right>" + (data[i].ncv == '0' ? '' : thousands_separators(data[i].ncv)) + "</td>"
+                        //abheedev coal remove quote
+                   
+                        if (data[i].srNo != 'N/A' && data[i].srNo.toLowerCase() != 'not participated' && data[i].srNo.toLowerCase() != 'not quoted') {
+                            strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo + '<a href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a></td>';
+                        }
+                        else {
+                            strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo + '</td>';
+
+                        }
+
+
+                        strsumm += "<td class='text-right' id = initialQuote" + i + " > " + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td> ";
+
                         strsumm += "<td class='text-right' id=lowestquote" + i + " >" + (data[i].lQuote == '0' ? '' : thousands_separators(data[i].lQuote)) + "</td><td id=bidvalue" + i + " class=hide>" + thousands_separators(TotalBidValue) + "</td><td>" + (data[i].offeredQuan == '0' ? '' : thousands_separators(data[i].offeredQuan)) + "</td>";
 
 
@@ -1601,7 +1612,7 @@ function fnrefreshStaggerTimerdataonItemClose() {
                         if ($('#seid' + j).html() == data[i].seId) {
 
                             TotalBidValue = parseFloat(removeThousandSeperator($('#quantity' + j).text())) * parseFloat(data[i].lQuote);
-                            TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
+                            TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue:TotalBidValue;
                             if (TotalBidValue != 0) {
                                 if ($('#TP' + j).html() != 0) {
                                     Percentreduction = parseFloat(100 - parseFloat(data[i].lQuote / $('#TP' + j).html()) * 100).toFixed(2) + ' %'
@@ -3587,6 +3598,7 @@ formvalidateremovequote();
 var errorremovequote = $('#errormapdiv');
 var successremovequot = $('#successmapdiv');
 function removeQuotationPS(rowid) {
+ 
     errorremovequote.hide();
     successremovequot.hide();
     $('#deletepopup').modal('show');
@@ -3709,7 +3721,7 @@ function deleteRAquote() {
 
 
 function deleteCoalquote() {
-
+   
     var _cleanString3 = StringEncodingMechanism($('#txtremarks').val());
 
 
