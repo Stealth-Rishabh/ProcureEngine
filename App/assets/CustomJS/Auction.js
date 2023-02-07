@@ -364,13 +364,14 @@ function thousands_Sep_Text(num) {
     return res;
 }*/
 function thousands_separators(num) {
-    
     let str = "";
+    let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
     if (num != null && num != undefined) {
-        str = num.toLocaleString(sessionStorage.getItem("culturecode"));
+        str = num.toLocaleString(culturecode);
     }
     return str;
 }
+
 
 function thousands_separators_NonMadCol(ele) {
     var num = ele.value;
@@ -393,13 +394,14 @@ function thousands_separators_NonMadCol(ele) {
 function thousands_separators_input(ele) {
   
     var valArr, val = ele.value;
+    let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
     val = val.replaceAll(/[^0-9\.]/g, '');
     val = val.replace(/[,]/g, '');
 
     
     if (val != "") {
         valArr = val.split('.');
-        valArr[0] = (parseInt(valArr[0], 10)).toLocaleString(sessionStorage.getItem("culturecode"));
+        valArr[0] = (parseInt(valArr[0], 10)).toLocaleString(culturecode);
         val = valArr.join('.');
     }
     ele.value = val;
@@ -974,7 +976,7 @@ function fnGetCurrentPrefferedProfileDTTime() {
 }
 
 /*function fnConverToLocalTime(dttime) {
-    debugger
+
     
     if (dttime != null) {
         var theStDate = new Date(dttime)
@@ -2054,13 +2056,14 @@ function localecommaseperator(ele) {
 }
 
 function localeseperator(ele) {
-    str = ele.toLocaleString(sessionStorage.getItem("culturecode"));
+    let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
+    str = ele.toLocaleString(culturecode);
     return str;
 }
 
 //abheedev changes to date-time formating on 06/02/2023
 function fnConverToLocalTime(dttime) {
-    debugger
+    let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
     if (dttime != null) {
         var theStDate = new Date(dttime);
         theStDate = new Date(theStDate + ' UTC');
@@ -2077,8 +2080,8 @@ function fnConverToLocalTime(dttime) {
             options.timeZone = sessionStorage.getItem('preferredtimezone');
         }
 
-        theStDate = theStDate.toLocaleDateString(sessionStorage.getItem('culturecode'), options);
-        //theStDate = theStDate.toLocaleDateString("en-US", options);
+        theStDate = theStDate.toLocaleDateString(culturecode, options);
+      //  theStDate = theStDate.toLocaleDateString("en-US", options);
         return theStDate;
     } else {
         return '..';
@@ -2087,6 +2090,7 @@ function fnConverToLocalTime(dttime) {
 
 //date format change by abheedev on 06/02/2023
 function fnConverToShortDT(dttime) {
+    let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
     if (dttime != null) {
         var theStDate = new Date(dttime);
 
@@ -2102,7 +2106,7 @@ function fnConverToShortDT(dttime) {
 
 
         //  theStDate = theStDate.toLocaleDateString("en-US", options);
-        theStDate = theStDate.toLocaleDateString(sessionStorage.getItem('culturecode'), options);
+        theStDate = theStDate.toLocaleDateString(culturecode, options);
         return theStDate;
     } else {
         return '..';
