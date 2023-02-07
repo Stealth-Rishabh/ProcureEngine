@@ -1,6 +1,6 @@
 jQuery(document).ready(function () {
-  
     Pageloaded()
+    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
@@ -83,7 +83,7 @@ function fetchregisterusers() {
             }
             if (data[0].role.toLowerCase() == "user" && data[0].roleName.toLowerCase() != "reports") {
                 jQuery("#ddlconfiguredby").select2('val', data[0].userID);
-                jQuery("#ddlconfiguredby").prop('disabled', true)
+               // jQuery("#ddlconfiguredby").prop('disabled', true)
             }
         },
         error: function (xhr, status, error) {
@@ -114,6 +114,9 @@ function formvalidate() {
         focusInvalid: false, // do not focus the last invalid input
 
         rules: {
+            ddlconfiguredby: {
+                required: true
+            }
         },
 
         messages: {
@@ -236,16 +239,20 @@ function fetchRFQVendorSummary() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-
+            
+          
 
             jQuery("#tblVendorSummary").empty();
             //jQuery('#tblVendorSummary').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold hide'>RFQ StartDate</th><th class='bold'>RFQ EndDate</th><th class='bold'>Currency</th><th class='bold'>RFQ Status</th></tr></thead>");
             //Sid RFQ Stages
             jQuery('#tblVendorSummary').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>RFQ Config Date</th><th class='bold'>RFQ StartDate</th><th class='bold'>RFQ EndDate</th><th class='bold'>Currency</th><th class='bold'>RFQ Status</th></tr></thead>");
             if (BidData.length > 0) {
-
+               
+                let _subject = "";
                 for (var i = 0; i < BidData.length; i++) {
-                    var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(BidData[i].rfqSubject) + "'\) href='javascript:;'>" + BidData[i].rfqid + "</a></td>";
+                   
+                    _subject = StringDecodingMechanism(BidData[i].rfqSubject)
+                    var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(_subject) + "'\) href='javascript:;'>" + BidData[i].rfqid + "</a></td>";
                     str += "<td>" + BidData[i].rfqSubject + "</td>";
                     str += "<td>" + BidData[i].rfqConfiguredBy + "</td>";
                     str += "<td>" + fnConverToLocalTime(BidData[i].rfqConfigureDate) + "</td>";
@@ -262,7 +269,7 @@ function fetchRFQVendorSummary() {
                     str += "</tr>";
                     jQuery('#tblVendorSummary').append(str);
                 }
-
+               
                 var table = $('#tblVendorSummary');
                 table.removeAttr('width').dataTable({
                     "bDestroy": true,
@@ -280,10 +287,31 @@ function fetchRFQVendorSummary() {
                     dom: 'Bfrtip',
                     buttons: [
                         'pageLength',
-                        // 'excelHtml5',
+                       
                         {
                             extend: 'excelHtml5',
                             text: '<i class="fa fa-file-excel-o"></i> Excel',
+                            exportOptions: {
+                                columns: ':visible',
+                                format: {
+                                    body: function (data, column, node) {
+                                    
+                                         if (column === 0) {
+                                            let text = data.match(/>([^<]+)</)[1];
+                                            return parseFloat(text);
+                                        }
+                                        else if (column >= 8 && column <= 11) {
+                                            let text = removeThousandSeperator(data);
+                                            return parseFloat(text);
+                                        }
+                                        else {
+                                            return data;
+                                        }
+
+                                    }
+
+                                }
+                            },
 
                         },
                         {
@@ -339,8 +367,9 @@ function fetchRFQVendorSummary() {
         }
     });
 }
-function getSummary(RFQID, subject) {
-    var encrypdata = fnencrypt("RFQID=" + RFQID + "&RFQSubject=" + (subject))
+function getSummary(RFQID,subject) {    
+    let _subject = StringDecodingMechanism(subject)
+    var encrypdata = fnencrypt("RFQID=" + RFQID + "&RFQSubject=" + _subject)
     if (sessionStorage.getItem("CustomerID") != 32) {
 
         window.open("eRFQAnalysis.html?param=" + encrypdata, "_blank")
@@ -412,11 +441,11 @@ function fetchBidVendorSummaryDetail() {
             jQuery('#tblVendorSummarydetails').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>Configure Date</th><th class='bold'>Start Date</th><th class='bold'>RFQ Deadline</th><th class='bold'>Short Name</th><th class='bold'>Quantity</th><th class='bold'>UOM</th><th>Currency</th><th>Vendor</th><th class='bold'>Last Invoice Price (LIP)</th><th class='bold'>Target Price (TP)</th><th class='bold'>L1 Price</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfTR + "</th></tr></thead>");
             if (BidData.length > 0) {
                 var bID = 0;
-
-
+                let _subject = "";
+              
                 for (var i = 0; i < BidData.length; i++) {
-
-                    var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(BidData[i].rfqSubject) + "'\) href='javascript:;' >" + BidData[i].rfqid + "</a></td>";
+                    _subject = StringDecodingMechanism(BidData[i].rfqSubject)
+                    var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(_subject) + "'\) href='javascript:;' >" + BidData[i].rfqid + "</a></td>";
                     str += "<td>" + BidData[i].rfqSubject + "</td>";
                     str += "<td>" + BidData[i].rfqConfiguredBy + "</td>";
 
@@ -500,17 +529,29 @@ function fetchBidVendorSummaryDetail() {
                     dom: 'Bfrtip',
                     buttons: [
                         'pageLength',
-                        // 'excelHtml5',
+                    
                         {
                             extend: 'excelHtml5',
                             exportOptions: {
                                 columns: ':visible',
                                 format: {
                                     body: function (data, column, node) {
-                                        return column === 4 ?
-                                            data.replace(/[$,.]/g, '') : data.replace(/(&nbsp;|<([^>]+)>)/ig, "");
-                                        data.replace(/<br\s*\/?>/ig, "\r\n");
-                                        data;
+                                        if (column === 4) {
+                                            return column === 4 ? data.replace(/[$,.]/g, '') : data.replace(/(&nbsp;|<([^>]+)>)/ig, "");
+                                            data.replace(/<br\s*\/?>/ig, "\r\n");
+                                            data;
+                                        }
+                                        else if (column === 11 || column === 12 || column === 0) {
+                                            let text = data.match(/>([^<]+)</)[1];
+                                            return parseFloat(text);
+                                        }
+                                        else if (column === 7 || (column >= 13 && column <= 15)) {
+                                            let text = removeThousandSeperator(data);
+                                            return parseFloat(text);
+                                        }
+                                        else {
+                                            return data;
+                                        }
 
                                     }
 
@@ -702,11 +743,11 @@ function fetchBidVendorSummarySummarization() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-            var BidLIP = stringDivider("RFQ Value at Last Invoice Price(LIP)", 15, "<br/>\n");
-            var BidTP = stringDivider("RFQ Value at Target Price(TP)", 15, "<br/>\n");
-            var BidFinal = stringDivider("RFQ Value as per L1", 15, "<br/>\n");
-            var savinfLIP = stringDivider("Total Saving wrt LIP", 12, "<br/>\n");
-            var savinfTR = stringDivider("Total Saving wrt TP", 12, "<br/>\n");
+            var BidLIP = stringDivider("RFQ Value at Last Invoice Price(LIP)", 45, "<br/>\n");
+            var BidTP = stringDivider("RFQ Value at Target Price(TP)", 45, "<br/>\n");
+            var BidFinal = stringDivider("RFQ Value as per L1", 45, "<br/>\n");
+            var savinfLIP = stringDivider("Total Saving wrt LIP", 40, "<br/>\n");
+            var savinfTR = stringDivider("Total Saving wrt TP", 40, "<br/>\n");
             jQuery("#tblVendorSummarySUmzation").empty();
             //Sid RFQ Stages
             jQuery('#tblVendorSummarySUmzation').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>Configure Date</th><th class='bold'>Start Date</th><th class='bold'>RFQ Deadline</th><th class='bold'>Currency</th><th class='bold'>" + BidLIP + "</th><th class='bold'>" + BidTP + "</th><th class='bold'>" + BidFinal + "</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfTR + "</th></tr></thead>");
@@ -752,6 +793,7 @@ function fetchBidVendorSummarySummarization() {
 
                     jQuery('#tblVendorSummarySUmzation').append(str);
                 }
+        
                 var table = $('#tblVendorSummarySUmzation');
                 table.removeAttr('width').dataTable({
                     "bDestroy": true,
@@ -766,11 +808,31 @@ function fetchBidVendorSummarySummarization() {
                     dom: 'Bfrtip',
                     buttons: [
                         'pageLength',
-                        // 'excelHtml5',
+                      
                         {
                             extend: 'excelHtml5',
                             text: '<i class="fa fa-file-excel-o"></i> Excel',
+                            exportOptions: {
+                                columns: ':visible',
+                                format: {
+                                    body: function (data, column, node) {
 
+                                        if (column === 0) {
+                                            let text = data.match(/>([^<]+)</)[1];
+                                            return parseFloat(text);
+                                        }
+                                        else if (column >= 7 && column <= 11) {
+                                            let text = removeThousandSeperator(data);
+                                            return parseFloat(text);
+                                        }
+                                        else {
+                                            return data;
+                                        }
+
+                                    }
+
+                                }
+                            },
                         },
                         {
                             extend: 'pdfHtml5',

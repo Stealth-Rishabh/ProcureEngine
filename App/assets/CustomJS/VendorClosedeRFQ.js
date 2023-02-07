@@ -4,9 +4,8 @@ var _RFQBidType = "";
 
 //FROM HTML
 jQuery(document).ready(function () {
-
-
     Pageloaded()
+    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -291,11 +290,20 @@ function fnsubmitQuery() {
             dataType: "json",
             success: function (data) {
                
-                bootbox.alert("Query's Response Submitted Successfully.", function () {
-                    window.location = 'VendorHome.html';
-                    jQuery.unblockUI();
+               
+                if (window.innerWidth <= 768) {
+                    bootbox.alert("Query's Response Submitted Successfully.").on("shown.bs.modal", setTimeout(function (e) {
+                        window.location = "index.html";
+                        return false;
+                    }, 2000));
+                }
+                else {
+                    bootbox.alert("Query's Response Submitted Successfully.", function () {
+                        window.location = 'VendorHome.html';
+                        jQuery.unblockUI();
 
-                });
+                    });
+                }
 
             },
             error: function (xhr, status, error) {

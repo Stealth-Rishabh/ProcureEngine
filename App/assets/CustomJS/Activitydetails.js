@@ -2,9 +2,9 @@ var Changepassworderror = $('#errordivChangePassword');
 var Changepasswordsuccess = $('#successdivChangePassword');
 Changepassworderror.hide();
 Changepasswordsuccess.hide();
-jQuery(document).ready(function () {
-
+jQuery(document).ready(function () {   
     Pageloaded()
+    var x = isAuthenticated();
     sessionStorage.setItem('CurrentBidID', 0);
     sessionStorage.setItem('hddnRFQID', 0);
     sessionStorage.setItem('CurrentRFIID', 0);
@@ -29,10 +29,10 @@ jQuery(document).ready(function () {
     App.init();
     Tasks.initDashboardWidget();
 
-    /* if (sessionStorage.getItem('UserType') == 'E') {
+     if (sessionStorage.getItem('UserType') == 'E') {
          fetchMenuItemsFromSession(0, 0);
  
-     }*/
+     }
 
     fetchDashboardData();
     handleChangePasword();
@@ -102,6 +102,7 @@ function handleChangePasword() {
 
 }
 function ChangePassword() {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     debugger;
     var isSubmit = true;
@@ -217,6 +218,7 @@ function fnConfirmArchive(RFQID) {
 
 }
 function fnArchive(RFQID) {
+    var x = isAuthenticated();
     var Data = {
         "RFQID": parseInt(RFQID),
         "UserID": sessionStorage.getItem('UserID'),
@@ -249,6 +251,7 @@ function fnArchive(RFQID) {
 
 
 function fetchDashboardData() {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var custId = parseInt(sessionStorage.getItem('CustomerID'));
     jQuery.ajax({
@@ -489,7 +492,7 @@ function fetchDashboardData() {
     });
 }
 function fetchBidDataDashboard(requesttype) {
-
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (requesttype == 'Today') {
         jQuery('#spanPanelCaption').html("Open Bids");

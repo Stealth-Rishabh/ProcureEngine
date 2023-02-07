@@ -1,6 +1,7 @@
-function onloadcalls() {
 
+function onloadcalls() {
     Pageloaded();
+    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     App.init();
     setCommonData();
@@ -16,16 +17,17 @@ function onloadcalls() {
             $('.page-container').show();
             $('#frmprofile').show()
             $('#frmprofilevendor').hide();
+            fetchCountry()
             prefferedTimezone();
             fetchUserDetails();
             fetchMenuItemsFromSession(0, 0);
+            $('#ddlCountryCd').select2();
             $('#bid').removeClass('page-sidebar-closed page-full-width');
         }
         else if (sessionStorage.getItem("UserType") == "V") {
             fetchMasters();
             prefferedTimezone();
             fetchMyProfileVendor();
-
             $('#ddlCountryCd').select2();
             $('#ddlCountryAltCd').select2();
             $('#ddlpreferredTime').select2();
@@ -48,12 +50,9 @@ function onloadcalls() {
 }
 
 
-
 var APIPath = sessionStorage.getItem("APIPath");
 var cc = 0;
-function fetchUserDetails() {
-
-
+function fetchUserDetails() { 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var userReqObj = {
         "UserID": sessionStorage.getItem('UserID'),
@@ -70,11 +69,12 @@ function fetchUserDetails() {
         data: JSON.stringify(userReqObj),
         dataType: "json",
         success: function (data) {
-
+          
             cc = 0;
             if (data.length > 0) {
                 let userdetails = JSON.parse(data[0].jsondata);
                 $('#username').html(userdetails[0].UserName)
+                $('#ddlCountryCd').val(userdetails[0].DialingCodeMobile)
                 $('#usermobileno').val(userdetails[0].MobileNo)
                 $('#userEmailID').html(userdetails[0].EmailID)
                 $('#userRole').html(userdetails[0].RoleName)
@@ -84,6 +84,14 @@ function fetchUserDetails() {
                     //abheedev
                     $('#ddlpreferredTime').val(userdetails[0].preferredtimezone).trigger('change')
                 }, 800)
+                if (userdetails[0].DialingCodeMobile != "" && userdetails[0].DialingCodeMobile != undefined && userdetails[0].DialingCodeMobile != null) {
+                  
+                    setTimeout(function () {
+                        $('#ddlCountryCd').val(userdetails[0].DialingCodeMobile).trigger('change')
+
+                    }, 500)
+
+                }
                 let userOrg = JSON.parse(data[1].jsondata);
                 if (userOrg != null) {
                     if (userOrg.length > 0) {
@@ -101,6 +109,7 @@ function fetchUserDetails() {
                         else {
                             $('#theadgroup').addClass('hide');
                         }
+                        
                     }
                     else {
                         $('#userOrg').addClass('hide')
@@ -535,6 +544,9 @@ function formvalidate() {
         rules: {
             usermobileno: {
                 required: true
+            },
+            ddlCountryCd: {
+                required: true                
             }
 
         },
@@ -642,13 +654,14 @@ function formvalidate() {
 
 function updMobileNo() {
 
-
+    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var _cleanString = StringEncodingMechanism($('#vendoraddress').val());
     var _cleanString1 = StringEncodingMechanism($('#vendorCity').val());
     var data = {
         "UserID": sessionStorage.getItem("UserID"),
         "UserType": sessionStorage.getItem('UserType'),
+        "DialingCd": parseInt(jQuery("#ddlCountryCd option:selected").val()),
         "MobileNo": $('#usermobileno').val(),
         "Address1": _cleanString,
         "Address2": _cleanString1,
@@ -1205,7 +1218,7 @@ $("#chkAll").click(function () {
 function sendToCompanies() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    //debugger;
+    
     var custids = [];
     if ($("#selectedcompanieslists > tbody > tr").length > 0) {
         $("#selectedcompanieslists> tbody > tr").each(function (index) {
@@ -1318,7 +1331,3 @@ function multilingualLanguage() {
     });
 
 }
-
-
-
-

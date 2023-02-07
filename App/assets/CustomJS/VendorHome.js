@@ -5,7 +5,8 @@ Changepasswordsuccess.hide();
 //FROM HTML
 
 jQuery(document).ready(function () {
-
+    Pageloaded()
+    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -400,7 +401,7 @@ function fnOpenLink(linkurl, Bidid, isterms, bidtype, version) {
         // },1000)
 
     }
-
+ 
     _Bidtype = bidtype;
 
     if (bidtype == 'VQ' || bidtype == 'RFQ' || bidtype == 'RFI' || bidtype == 'eRFQ') {
@@ -543,26 +544,27 @@ function fetchReguestforQuotationDetailseRFQ() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
+            debugger
             let _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
             let _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
             sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
             sessionStorage.setItem('CustomerID', RFQData[0].general[0].customerID)
             jQuery('.rfqtc').show();
             jQuery('.bidtc').hide();
-
+            jQuery('#bid_EventID').html("Event ID : " + sessionStorage.getItem("hddnRFQID"));
             //abheedev
             $('#uniform-chkIsAccepted').find("span").removeClass('checked');
             $('#btnContinue').attr("disabled", true);
-
 
             jQuery('#RFQSubject').text(_cleanStringSub)
 
             $('#Currency').html(RFQData[0].general[0].currencyNm)
             jQuery('#RFQDescription').text(_cleanStringDesc)
-
+           
             jQuery('#rfqstartdate').text(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
             jQuery('#rfqenddate').text(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
             jQuery('#rfqTermandCondition').attr("name", RFQData[0].general[0].rfqTermandCondition)
+
 
             //abheedev
         },

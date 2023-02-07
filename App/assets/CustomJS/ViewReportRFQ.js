@@ -25,15 +25,7 @@ $(document).ready(function () {
     }
     fetchAttachments();
     fetchApproverRemarks(RFQID);
-    setTimeout(function () {
-        jQuery.unblockUI();
-    }, 1500);
-    setTimeout(function () {
 
-        saveAspdf()
-
-
-    }, 2000)
 
 });
 
@@ -48,6 +40,7 @@ function fetchReguestforQuotationDetails(RFQID) {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
+        async: false,
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
@@ -65,7 +58,7 @@ function fetchReguestforQuotationDetails(RFQID) {
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = xhr.responseText;//eval("(" +  + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
@@ -87,7 +80,7 @@ function fetchrfqcomprative(RFQID) {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-          
+
             var str = '';
             var strHead = '';
 
@@ -120,16 +113,16 @@ function fetchrfqcomprative(RFQID) {
 
                 //For Printing Header
                 //@abheedev bug349 start
-                strHead = "<tr  style='background: #f5f5f5; color:light black;'><th style='display: none;' >&nbsp;</th><th>SrNo</th><th>ItemCode</th><th>Short Name</th><th>Quantity</th><th>UOM</th><th>Target price</th>"
+                strHead = "<tr  style='background: #f5f5f5; color:light black;'><th style='display: none;' >&nbsp;</th><th>SrNo</th><th>ItemCode</th><th>Short Name</th><th>Quantity</th><th>UOM</th><th>Target/Budget price</th>"
                 //@abheedev bug349 end
                 strHeadQ = "<tr  style='background:#f5f5f5; color:light black;'><th colspan='6'>Question</th>"
 
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
                     strHead += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].vendorName; +"</th>";
-                   
+
                     strHeadQ += "<th colspan='5' style='text-align:center;'>" + data[0].vendorNames[i].vendorName; +"</th>";
-                    
-                      
+
+
                 }
                 strHead += "<th>Line-wise Lowest Quote</th><th colspan='5' style='text-align:center;'>Last PO Details</th><th>Delivery Location</th>";
                 strHead += "</tr>"
@@ -145,7 +138,7 @@ function fetchrfqcomprative(RFQID) {
 
                     if (data[0].vendorNames[i].rfqStatus == 'C') {
 
-                        strHead += "<th colspan='4' style='text-align:center;'>"+"Submission Time:" + fnConverToLocalTime(data[0].vendorNames[i].responseSubmitDT) + "</th>";
+                        strHead += "<th colspan='4' style='text-align:center;'>" + "Submission Time:" + fnConverToLocalTime(data[0].vendorNames[i].responseSubmitDT) + "</th>";
                     }
                     else if (data[0].vendorNames[i].rfqStatus == 'I') {
 
@@ -200,8 +193,8 @@ function fetchrfqcomprative(RFQID) {
 
                         //@abheedev bug349 part2 start
                         str += "<tr><td style='display:none'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + (i + 1) + "</td><td style='display:none'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td class=text-right>" + thousands_separators(data[0].quotesDetails[i].quantity) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";
-                        
-                       
+
+
                         for (var j = 0; j < data[0].quotesDetails.length; j++) {
 
                             if ((data[0].quotesDetails[i].rfqParameterId) == (data[0].quotesDetails[j].rfqParameterId)) {// true that means reflect on next vendor
@@ -311,7 +304,7 @@ function fetchrfqcomprative(RFQID) {
                 ////For Loading Factor reason Row
                 //abheedev bug 349 part2 start
                 str += "<tr><td colspan=6 style='text-align:center;'><b>Loading Reason</b></td>";
-                 //abheedev bug 349 part2 start
+                //abheedev bug 349 part2 start
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
                     for (var k = 0; k < data[0].loadedFactor.length; k++) {
                         if (data[0].loadedFactor[k].vendorID == data[0].vendorNames[l].vendorID) {
@@ -551,8 +544,8 @@ function fetchrfqcomprative(RFQID) {
                         t = k;
 
                     }
-                   //abheedev bug 472-479
-                    strQ += "<td colspan=" + 2 + ">&nbsp;</td><td colspan=" + (t + (4*t) + 6) + " style='text-align:center'>No Questions Mapped</td>";
+                    //abheedev bug 472-479
+                    strQ += "<td colspan=" + 2 + ">&nbsp;</td><td colspan=" + (t + (4 * t) + 6) + " style='text-align:center'>No Questions Mapped</td>";
 
                     strQ += "</tr>";
 
@@ -573,7 +566,7 @@ function fetchrfqcomprative(RFQID) {
                             }
 
                         });
-                       
+
                         if (flag3 == 'T') {
 
                             strQ += "<tr><td colspan='6'>" + data[0].approverStatus[p].approverName + "</td>";
@@ -607,7 +600,7 @@ function fetchrfqcomprative(RFQID) {
 
 
                             strQ += "<td  id=techremark" + p + ">" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") + "</td> </tr>";
-                           
+
                             jQuery('#tblRFQComprativetestQ').append(strQ);
 
                         }
@@ -660,7 +653,7 @@ function fetchrfqcomprativeRA(RFQID, BidID) {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            
+
             var str = '';
             var strHead = '';
 
@@ -699,7 +692,7 @@ function fetchrfqcomprativeRA(RFQID, BidID) {
                 //@abheedev bug349 start
                 strHead = "<tr  style='background: #f5f5f5; color:light black;'><th class='hide'>&nbsp;</th><th>SrNo</th><th>ItemCode</th><th>Short Name</th><th>Quantity</th><th>UOM</th><th>Target Price</th>"
                 strHeadQ = "<tr  style='background:#f5f5f5; color:light black;'><th colspan='6'>Question</th><th colspan='6'>Our Requirement</th>"
-                 //@abheedev bug349 end
+                //@abheedev bug349 end
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
 
 
@@ -931,7 +924,7 @@ function fetchrfqcomprativeRA(RFQID, BidID) {
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
 
                         str += "<td colspan=4 style='text-align:center;'><b>" + data[0].vendorNames[k].vName; +"</b></td>";
-                 }
+                    }
                     str += "<td colspan=7><b>Our Requirement</b></td></tr>";
 
 
@@ -1262,6 +1255,7 @@ function fetchAttachments() {
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + $('#hdnRfqID').val() + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
+        async: false,
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
@@ -1299,17 +1293,23 @@ function fetchAttachments() {
 }
 
 var FromPage = getUrlVarsURL(decryptedstring)["FromPage"];
+
 function saveAspdf() {
 
     //var pdf = new jsPDF('l', 'mm', [300, 475]);
-    var pdf = new jsPDF('l', 'pt', 'a0');
+    // var pdf = new jsPDF('l', 'pt', 'a0');
+    var pdf = new jsPDF('p', 'pt', 'a0', true);
+
+    pdf.setFontSize(10);// optional
     var options = {
         pagesplit: true
     };
     var encrypdata;
+    // pdf.setLineWidth(2);
+    // pdf.rect(10, 20, 150, 75);
     pdf.addHTML(document.body, options, function () {
         pdf.save('ComprativeAnalysis.pdf');
-        window.close();
+        // window.close();
 
     });
 
@@ -1322,6 +1322,7 @@ function fetchApproverRemarks(RFQID) {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
+        async: false,
         crossDomain: true,
         dataType: "json",
         success: function (data) {
@@ -1342,6 +1343,12 @@ function fetchApproverRemarks(RFQID) {
                 $('#tblapprovalprocess').hide();
                 jQuery.unblockUI();
             }
+            setTimeout(function () {
+
+                saveAspdf();
+                jQuery.unblockUI();
+
+            }, 2000);
 
         },
         error: function (xhr, status, error) {

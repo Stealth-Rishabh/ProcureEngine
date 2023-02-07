@@ -3,6 +3,7 @@ $(document).ready(function () {
 
     //FROM HTML
     Pageloaded()
+    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     Metronic.init();
     Layout.init();

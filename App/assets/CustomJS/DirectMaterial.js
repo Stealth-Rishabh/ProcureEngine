@@ -1041,9 +1041,9 @@ function ConfigureBidForProductTab2() {
     PriceDetails = '';
     //    if (parseInt($('#txtminimumdecreament').val()) > parseInt($('#txtCeilingPrice').val())) {
 
-    //	   
+    //
     //	    $('#form_wizard_1').bootstrapWizard('previous');
-    //		$('#spandanger').html('Minimum decrement should be less than Bid start price.')
+    //		$('#spandanger').html('Minimum decrement should be less than Start Unit Price.')
     //		$('.alert-danger').show();
     //		Metronic.scrollTo($('.alert-danger'),-200);
     //		$('.alert-danger').fadeOut(5000);
@@ -1391,7 +1391,7 @@ function InsUpdProductSevices() {
         }
         else if (parseInt($('#txtminimumdecreament').val()) > parseInt($('#txtCeilingPrice').val())) {
             error.show();
-            $('#spandanger').html('Minimum decrement should be less than Bid start price.');
+            $('#spandanger').html('Minimum decrement should be less than Start Unit Price.');
 
             Metronic.scrollTo(error, -200);
 
@@ -1627,7 +1627,7 @@ function InsUpdProductSevices() {
         else if ($('#txtCeilingPrice').val() == "") {
 
             error.show();
-            $('#spandanger').html('Please Enter Bid start price in Number only...');
+            $('#spandanger').html('Please Enter Start Unit Price in Number only...');
             Metronic.scrollTo(error, -200);
 
             error.fadeOut(3000);
@@ -1662,7 +1662,7 @@ function InsUpdProductSevices() {
         }
         else if (parseInt($('#txtminimumdecreament').val()) > parseInt($('#txtCeilingPrice').val())) {
             error.show();
-            $('#spandanger').html('Minimum decrement should be less than Bid start price.');
+            $('#spandanger').html('Minimum decrement should be less than Start Unit Price.');
 
             Metronic.scrollTo(error, -200);
 
@@ -1809,7 +1809,7 @@ function ParametersQuery() {
 
     if (!jQuery("#tblServicesProduct thead").length) {
 
-        jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:100px;'></th><th>Short Name</th><th>TargetRate</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Contract Duration</th><th>Delivery Location</th><th>Bid start price</th><th>Mask Vendor</th><th>Minimum Decreament</th><th>Decreament On</th><th>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide>FileSeqNo</th></tr></thead>");
+        jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:100px;'></th><th>Short Name</th><th>TargetRate</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Contract Duration</th><th>Delivery Location</th><th>Start Unit Price</th><th>Mask Vendor</th><th>Minimum Decreament</th><th>Decreament On</th><th>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide>FileSeqNo</th></tr></thead>");
         jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><button type="button" class="btn btn-sm btn-success" onclick="editvalues(trid' + i + ',tridPrev' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + $('#txtshortname').val() + '</td><td>' + $('#txttargetprice').val() + '</td><td>' + $('#txtquantitiy').val() + '</td><td>' + $('#dropuom').val() + '</td><td>' + $('#txtbiddescriptionP').val() + '</td><td>' + $('#txtContractDuration').val() + '</td><td>' + $('#txtedelivery').val() + '</td><td>' + $('#txtCeilingPrice').val() + '</td><td>' + status + '</td><td>' + $('#txtminimumdecreament').val() + '</td><td>' + $("#drpdecreamenton option:selected").text() + '</td><td><a href=PortalDocs/Bid/' + sessionStorage.getItem('CurrentBidID') + '/' + FileseqNo + '/' + filetoupload.replace(/%20/g, " ") + ' style="text-decoration:none;">' + filetoupload + '</a></td><td class=hide>' + $("#drpdecreamenton").val() + '</td><td>' + $("#txtlastinvoiceprice").val() + '</td><td class=hide>' + FileseqNo + '</td></tr>');
         //i = i + 1;
 
@@ -1828,7 +1828,7 @@ function ParametersQuery() {
 
     if (!jQuery("#tblServicesProductPrev thead").length) {
 
-        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Short Name</th><th>TargetRate</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Contract Duration</th><th>Delivery Location</th><th>Bid start price</th><th>Mask Vendor</th><th>Minimum Decreament</th><th>Decreament On</th><th >Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide>FileSeqNo</th></tr></thead>");
+        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Short Name</th><th>TargetRate</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Contract Duration</th><th>Delivery Location</th><th>Start Unit Price</th><th>Mask Vendor</th><th>Minimum Decreament</th><th>Decreament On</th><th >Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide>FileSeqNo</th></tr></thead>");
         jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + $('#txtshortname').val() + '</td><td>' + $('#txttargetprice').val() + '</td><td>' + $('#txtquantitiy').val() + '</td><td>' + $('#dropuom').val() + '</td><td>' + $('#txtbiddescriptionP').val() + '</td><td>' + $('#txtContractDuration').val() + '</td><td>' + $('#txtedelivery').val() + '</td><td>' + $('#txtCeilingPrice').val() + '</td><td>' + status + '</td><td>' + $('#txtminimumdecreament').val() + '</td><td>' + $("#drpdecreamenton option:selected").text() + '</td><td>' + filetoupload + '</td><td class=hide>' + $("#drpdecreamenton").val() + '</td><td>' + $("#txtlastinvoiceprice").val() + '</td><td class=hide>' + FileseqNo + '</td></tr>');
         //i = i + 1;
 
@@ -2059,8 +2059,8 @@ function fetchProductServicesBidDetails() {
                 var max = BidData[0].BidProductDetails[0].AttachmentSeqID;
                 $('#wrap_scroller').show();
                 $('#wrap_scrollerPrev').show();
-                jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>Short Name</th><th>TargetRate</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Contract Duration</th><th>Delivery Location</th><th>Bid start price</th><th>Mask Vendor</th><th>Minimum Decreament</th><th>Decreament On</th><th>Attachment</th><th class=hide></th><th>Last InvoicePrice</th><th class=hide></th></tr></thead>");
-                jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Short Name</th><th>TargetRate</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Contract Duration</th><th>Delivery Location</th><th>Bid start price</th><th>Mask Vendor</th><th>Minimum Decreament</th><th>Decreament On</th><th>Attachment</th><th class=hide></th><th>Last InvoicePrice</th><th class=hide></th></tr></thead>");
+                jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>Short Name</th><th>TargetRate</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Contract Duration</th><th>Delivery Location</th><th>Start Unit Price</th><th>Mask Vendor</th><th>Minimum Decreament</th><th>Decreament On</th><th>Attachment</th><th class=hide></th><th>Last InvoicePrice</th><th class=hide></th></tr></thead>");
+                jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Short Name</th><th>TargetRate</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Contract Duration</th><th>Delivery Location</th><th>Start Unit Price</th><th>Mask Vendor</th><th>Minimum Decreament</th><th>Decreament On</th><th>Attachment</th><th class=hide></th><th>Last InvoicePrice</th><th class=hide></th></tr></thead>");
                 for (var i = 0; i < BidData[0].BidProductDetails.length; i++) {
 
                     if (max < BidData[0].BidProductDetails[i].AttachmentSeqID) {

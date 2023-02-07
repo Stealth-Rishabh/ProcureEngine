@@ -2,6 +2,7 @@ jQuery(document).ready(function () {
 
     $('.thousandseparated').inputmask();
     Pageloaded()
+    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -676,21 +677,20 @@ function deletePEFAquote() {
         "UserID": sessionStorage.getItem("UserID")
 
     }
-    setTimeout(function () {
-        connection.invoke("RemovePEFAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
-            //return console.error(err.toString());
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spandanger', '');
-            }
-            jQuery.unblockUI();
-            return false;
 
-        });
-    }, 1000);
+    connection.invoke("RemovePEFAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
+        //return console.error(err.toString());
+        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+        if (xhr.status == 401) {
+            error401Messagebox(err.Message);
+        }
+        else {
+            fnErrorMessageText('spandanger', '');
+        }
+        jQuery.unblockUI();
+        return false;
+
+    });
     connection.on("refreshPEFAQuotes", function (data) {
         var JsonMsz = JSON.parse(data[0]);
 
@@ -754,21 +754,20 @@ function deleteFAquote() {
         "UserID": sessionStorage.getItem("UserID")
 
     }
-    setTimeout(function () {
-        connection.invoke("RemoveFAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
-            //return console.error(err.toString());
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spandanger', '');
-            }
-            jQuery.unblockUI();
-            return false;
 
-        });
-    }, 1000);
+    connection.invoke("RemoveFAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
+        //return console.error(err.toString());
+        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+        if (xhr.status == 401) {
+            error401Messagebox(err.Message);
+        }
+        else {
+            fnErrorMessageText('spandanger', '');
+        }
+        jQuery.unblockUI();
+        return false;
+
+    });
     connection.on("refreshFAQuotes", function (data) {
         var JsonMsz = JSON.parse(data[0]);
 
@@ -830,21 +829,19 @@ function deleteRAquote() {
         "UserID": sessionStorage.getItem("UserID")
 
     }
-    setTimeout(function () {
-        connection.invoke("RemovePSQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
-            //return console.error(err.toString());
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spandanger', '');
-            }
-            jQuery.unblockUI();
-            return false;
+    connection.invoke("RemovePSQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
+        //return console.error(err.toString());
+        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+        if (xhr.status == 401) {
+            error401Messagebox(err.Message);
+        }
+        else {
+            fnErrorMessageText('spandanger', '');
+        }
+        jQuery.unblockUI();
+        return false;
 
-        });
-    }, 1000);
+    });
     connection.on("refreshRAQuotes", function (data) {
 
         var JsonMsz = JSON.parse(data[0]);
@@ -906,21 +903,19 @@ function deleteCoalquote() {
         "UserID": sessionStorage.getItem("UserID")
 
     }
-    setTimeout(function () {
-        connection.invoke("RemoveCAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
-            //return console.error(err.toString());
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spandanger', '');
-            }
-            jQuery.unblockUI();
-            return false;
+    connection.invoke("RemoveCAQuote", JSON.stringify(QuoteProduct)).catch(function (err) {
+        //return console.error(err.toString());
+        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+        if (xhr.status == 401) {
+            error401Messagebox(err.Message);
+        }
+        else {
+            fnErrorMessageText('spandanger', '');
+        }
+        jQuery.unblockUI();
+        return false;
 
-        });
-    }, 1000);
+    });
     connection.on("refreshCAQuotes", function (data) {
         var JsonMsz = JSON.parse(data[0]);
 
@@ -1320,7 +1315,7 @@ function invitevendors() {
             "UserID": sessionStorage.getItem("UserID")
         }
 
-
+        //console.log(JSON.stringify(data))
         jQuery.ajax({
             url: APIPath + "ResetInviteVendor/Invitevendors",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1650,12 +1645,12 @@ function fetchallexportdetails() {
                         if ($('#hdnClosingval').val() == "S") {
                             $(".staggered-item").show();
 
-                            jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S. No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Unit price</th><th class=hide>Mask Vendor</th><th style='width:60px !important'>Minimum<br/>Decrement</th><th>Decrement On</th><th>Last<br/>Invoice Price</th><th>Item<br/>Duration(Min)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th><th>Closing Time</th><th class=Paction>Action</th><th style=width:200px>Bid Duration<br/>(in minutes)</th></tr></thead>");
-                            jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>S.No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Unit price</th><th>Hide Target Price</th><th style='width:60px !important'>Minimum<br/>Decrement</th><th>Decrement On</th><th>Last<br/>Invoice Price</th><th>Item<br/>Duration(Min)</th><th>Closing Time</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                            jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S. No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Start Unit price</th><th class=hide>Mask Vendor</th><th style='width:60px !important'>Minimum<br/>Decrement</th><th>Decrement On</th><th>Last<br/>Invoice Price</th><th>Item<br/>Duration(Min)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th><th>Closing Time</th><th class=Paction>Action</th><th style=width:200px>Bid Duration<br/>(in minutes)</th></tr></thead>");
+                            jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>S.No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Start Unit price</th><th>Hide Target Price</th><th style='width:60px !important'>Minimum<br/>Decrement</th><th>Decrement On</th><th>Last<br/>Invoice Price</th><th>Item<br/>Duration(Min)</th><th>Closing Time</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
                         }
                         else {
-                            jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>S.No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Unit price</th><th>Hide Target Price</th><th>Minimum Decrement</th><th>Decrement On</th><th>Last InvoicePrice</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
-                            jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S. No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Unit price</th><th class=hide>Mask Vendor</th><th>Minimum Decrement</th><th>Decrement On</th><th>Last InvoicePrice</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                            jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>S.No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Start Unit price</th><th>Hide Target Price</th><th>Minimum Decrement</th><th>Decrement On</th><th>Last InvoicePrice</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                            jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S. No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Start Unit price</th><th class=hide>Mask Vendor</th><th>Minimum Decrement</th><th>Decrement On</th><th>Last InvoicePrice</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
                         }
 
                     }
@@ -1758,12 +1753,12 @@ function fetchallexportdetails() {
                     if ($('#hdnClosingval').val() == "S") {
                         $(".staggered-item").show();
 
-                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S. No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>GST %</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th class=hide>Mask Vendor</th><th style='width:60px !important'>Minimum<br/>Decrement</th><th>Decrement On</th><th>Last<br/>Invoice Price</th><th>Item<br/>Duration(Min)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th><th>Closing Time</th><th style=width:200px>Bid Duration<br/>(in minutes)</th></tr></thead>");
-                        jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>S.No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>GST %</th><th>Quantity</th><th>UOM</th><th>Bid start price</th><th>Hide Target Price</th><th style='width:60px !important'>Minimum<br/>Decrement</th><th>Decrement On</th><th>Last<br/>Invoice Price</th><th>Item<br/>Duration(Min)</th><th>Closing Time</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S. No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>GST %</th><th>Quantity</th><th>UOM</th><th>Start Unit Price</th><th class=hide>Mask Vendor</th><th style='width:60px !important'>Minimum<br/>Decrement</th><th>Decrement On</th><th>Last<br/>Invoice Price</th><th>Item<br/>Duration(Min)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th><th>Closing Time</th><th style=width:200px>Bid Duration<br/>(in minutes)</th></tr></thead>");
+                        jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>S.No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>GST %</th><th>Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Hide Target Price</th><th style='width:60px !important'>Minimum<br/>Decrement</th><th>Decrement On</th><th>Last<br/>Invoice Price</th><th>Item<br/>Duration(Min)</th><th>Closing Time</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
                     }
                     else {
-                        jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>S.No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>GST %</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Hide Target Price</th><th>Minimum Decrement</th><th>Decrement On</th><th>Last InvoicePrice</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
-                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S. No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>GST %</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th class=hide>Mask Vendor</th><th>Minimum Decrement</th><th>Decrement On</th><th>Last InvoicePrice</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                        jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:150px !important;'></th><th>S.No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>GST %</th><th>Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Hide Target Price</th><th>Minimum Decrement</th><th>Decrement On</th><th>Last InvoicePrice</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S. No.</th><th>Item/Product/Service</th><th>Remarks</th><th>Target Price</th><th>GST %</th><th>Quantity</th><th>UOM</th><th>Start Unit Price</th><th class=hide>Mask Vendor</th><th>Minimum Decrement</th><th>Decrement On</th><th>Last InvoicePrice</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
                     }
 
                     for (var i = 0; i < BidData[0].bidCoalDetails.length; i++) {
@@ -1829,15 +1824,15 @@ function fetchallexportdetails() {
 
                     $('#hdnauctiontype').val(BidData[0].bidDetails[0].bidForID)
                     if (BidData[0].bidDetails[0].bidForID == 81 || BidData[0].bidDetails[0].bidForID == 83) {
-                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S.No.</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Unit Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
+                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S.No.</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Start Unit price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
                         $("#txtBidDurationForBidOpen").removeAttr("disabled", "disabled");
                         $('#btndiv').show()
                         $('#plusbtn').removeAttr("disabled", "disabled");
                         $('#minusbtn').removeAttr("disabled", "disabled");
-                        jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th></th><th>S.No.</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Unit Price</th><th>Hide Target Price</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
+                        jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th></th><th>S.No.</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Start Unit price</th><th>Hide Target Price</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
                     }
                     if (BidData[0].bidDetails[0].bidForID == 82) {
-                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S.No.</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Unit Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th class=hide>Show L1 Price</th></tr></thead>");
+                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S.No.</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Start Unit price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th class=hide>Show L1 Price</th></tr></thead>");
                         $("#txtBidDurationForBidOpen").attr("disabled", "disabled");
                         $('#btndiv').hide()
                         $('#plusbtn').attr("disabled", "disabled");
@@ -1897,12 +1892,12 @@ function fetchallexportdetails() {
                     $('#wrap_scrollerPrevtab_0').show();
 
                     $('#hdnauctiontype').val(BidData[0].bidDetails[0].bidForID)
-                    $("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S.No.</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Total Quantity</th><th>Min.Quantity</th><th>Max.Quantity</th><th>UOM</th><th>Bid Unit Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
+                    $("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S.No.</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Total Quantity</th><th>Min.Quantity</th><th>Max.Quantity</th><th>UOM</th><th>Start Unit price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
                     $("#txtBidDurationForBidOpen").removeAttr("disabled", "disabled");
                     $('#btndiv').show()
                     $('#plusbtn').removeAttr("disabled", "disabled");
                     $('#minusbtn').removeAttr("disabled", "disabled");
-                    jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th></th><th>S.No.</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Total Quantity</th><th>Min.Quantity</th><th>Max.Quantity</th><th>UOM</th><th>Bid Unit Price</th><th>Hide Target Price</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
+                    jQuery("#tblServicesProductPrevtab_0").append("<thead><tr style='background: gray; color: #FFF;'><th></th><th>S.No.</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Total Quantity</th><th>Min.Quantity</th><th>Max.Quantity</th><th>UOM</th><th>Start Unit price</th><th>Hide Target Price</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
 
 
                     for (var i = 0; i < BidData[0].bidFrenchDetails.length; i++) {
@@ -2322,12 +2317,10 @@ function fnTimeUpdateS(index, seaid) {
         "UserID": sessionStorage.getItem('UserID'),
         "GroupNo": $('#groupno' + index).text()
     }
-    setTimeout(function () {
-        connection.invoke("UpdateTimefromAdmin", JSON.stringify(Data)).catch(function (err) {
-            return console.error(err.toString());
+    connection.invoke("UpdateTimefromAdmin", JSON.stringify(Data)).catch(function (err) {
+        return console.error(err.toString());
 
-        });
-    }, 1000);
+    });
     connection.on("refreshTimer", function (data) {
         var JsonMsz = JSON.parse(data[0]);
 
@@ -2492,12 +2485,10 @@ function fnupdateStaggerReopendatetime() {
     }
 
     //console.log(JSON.stringify(Data))
-    setTimeout(function () {
-        connection.invoke("PauseStagger", JSON.stringify(Data)).catch(function (err) {
-            return console.error(err.toString());
+    connection.invoke("PauseStagger", JSON.stringify(Data)).catch(function (err) {
+        return console.error(err.toString());
 
-        });
-    }, 1000);
+    });
     connection.on("refreshBidStatusAfterPause", function (data) {
 
         erroropenbid.hide();
@@ -2638,12 +2629,11 @@ function fnTimeUpdateClosedBid(isMailSend) {
         "UserID": sessionStorage.getItem('UserID'),
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID"))
     }
-    setTimeout(function () {
-        connection.invoke("UpdateBidStatusfromManage", JSON.stringify(Data)).catch(function (err) {
-            return console.error(err.toString());
 
-        });
-    }, 1000);
+    connection.invoke("UpdateBidStatusfromManage", JSON.stringify(Data)).catch(function (err) {
+        return console.error(err.toString());
+
+    });
     connection.on("refreshTimeronClients", function (data) {
 
         if (data == sessionStorage.getItem('UserID')) {
@@ -3219,12 +3209,10 @@ function formSubmitEditEvent() {
         }
 
         if (Data != '') {
-            setTimeout(function () {
-                connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
-                    return console.error(err.toString());
+            connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
+                return console.error(err.toString());
 
-                });
-            }, 1000);
+            });
             connection.on("refreshBidDetailsManage", function (data) {
                 var JsonMsz = JSON.parse(data[0]);
                 if (JsonMsz.UserID == sessionStorage.getItem('UserID')) {
@@ -4129,20 +4117,17 @@ function updMinDecreament() {
     if (Data != '' || Data != null) {
 
         if (sessionStorage.getItem('hdnbidtypeid') == 7) {
-            setTimeout(function () {
-                connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
-                    return console.error(err.toString());
+            connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
+                return console.error(err.toString());
 
-                });
-            }, 1000);
+            });
         }
         else {
-            setTimeout(function () {
-                connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
-                    return console.error(err.toString());
 
-                });
-            }, 1000);
+            connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
+                return console.error(err.toString());
+
+            });
         }
         connection.on("refreshBidDetailsManage", function (data) {
             var JsonMsz = JSON.parse(data[0]);
@@ -4205,12 +4190,11 @@ function updMinIncreament() {
     }
 
     if (Data != '' || Data != null) {
-        setTimeout(function () {
-            connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
-                return console.error(err.toString());
 
-            });
-        }, 1000);
+        connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
+            return console.error(err.toString());
+
+        });
         connection.on("refreshBidDetailsManage", function (data) {
             var JsonMsz = JSON.parse(data[0]);
             if (JsonMsz.UserID == sessionStorage.getItem('UserID')) {
@@ -4288,18 +4272,15 @@ function UpdShowL1Price() {
     if (Data != '' || Data != null) {
 
         if (sessionStorage.getItem('hdnbidtypeid') != 8) {
-            setTimeout(function () {
-                connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
-                    return console.error(err.toString());
-                });
-            }, 1000);
+            connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
+                return console.error(err.toString());
+            });
         }
         else {
-            setTimeout(function () {
-                connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
-                    return console.error(err.toString());
-                });
-            }, 1000);
+
+            connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
+                return console.error(err.toString());
+            });
         }
         connection.on("refreshBidDetailsManage", function (data) {
 
@@ -4380,18 +4361,14 @@ function UpdShowStartPrice() {
 
     if (Data != '' || Data != null) {
         if (sessionStorage.getItem('hdnbidtypeid') != 8) {
-            setTimeout(function () {
-                connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
-                    return console.error(err.toString());
-                });
-            }, 1000);
+            connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
+                return console.error(err.toString());
+            });
         }
         else {
-            setTimeout(function () {
-                connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
-                    return console.error(err.toString());
-                });
-            }, 1000);
+            connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
+                return console.error(err.toString());
+            });
         }
         connection.on("refreshBidDetailsManage", function (data) {
             var JsonMsz = JSON.parse(data[0]);
@@ -4484,19 +4461,16 @@ function updBidStartPrice() {
     if (Data != '' || Data != null) {
 
         if (sessionStorage.getItem('hdnbidtypeid') != 8) {
-            setTimeout(function () {
-                connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
-                    return console.error(err.toString());
-                });
-            }, 1000);
+            connection.invoke("UpdateBidDetailsfromManage", JSON.stringify(Data)).catch(function (err) {
+                return console.error(err.toString());
+
+            });
         }
         else {
-            setTimeout(function () {
-                connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
-                    return console.error(err.toString());
+            connection.invoke("UpdateBidDetailsCoalfromManage", JSON.stringify(Data)).catch(function (err) {
+                return console.error(err.toString());
 
-                });
-            }, 1000);
+            });
         }
 
         connection.on("refreshBidDetailsManage", function (data) {

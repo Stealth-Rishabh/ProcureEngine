@@ -1,5 +1,4 @@
 
-
 $(document).ready(function () {
     formvalidate()
     fetchregisterusers();
@@ -33,11 +32,9 @@ function formvalidate() {
         focusInvalid: false, // do not focus the last invalid input
 
         rules: {
-
-            /* ddlEventType: {
-                 required: true
-             }*/
-
+            ddlconfiguredby: {
+                required: true
+            }
         },
 
         messages: {
@@ -192,7 +189,7 @@ function fetchregisterusers() {
             }
             if (data[0].role.toLowerCase() == "user" && data[0].roleName.toLowerCase() != "reports") {
                 jQuery("#ddlconfiguredby").select2('val', data[0].userID);
-                jQuery("#ddlconfiguredby").prop('disabled', true)
+                //jQuery("#ddlconfiguredby").prop('disabled', true)
             }
         },
         error: function (xhr, status, error) {

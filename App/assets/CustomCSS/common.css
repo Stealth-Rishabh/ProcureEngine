@@ -51,7 +51,7 @@ body {
 }
 
 .date-picker {
-    z-index: 1151 !important;
+    z-index: 2 !important;
 }
 
 #divalertSerach {
@@ -148,6 +148,10 @@ input#file-excelparameter {
     position: fixed;
     top: -120px;
 }
+input#file-excelparameterB {
+    position: fixed;
+    top: -120px;
+}
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -189,7 +193,7 @@ input[type=number] {
         padding: 5px 5px;
         transition: opacity 1s ease-in-out;
         position: absolute;
-        z-index: 2;
+        z-index: 3 !important;
         right: 100%;
         bottom: 110%;
     }
@@ -1088,4 +1092,32 @@ tr.header {
     top: 10%;
     left: 10%;
     background-color: white;
+}
+
+
+
+/*mobile specific css*/
+
+@media only screen and (max-width:900px) {
+   button{
+       margin-bottom:4px !important;
+   }
+
+   
+    div {
+        display: block;
+        word-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin:2px;        
+    }
+    #divappendstatusbar {
+        margin-top: 16px !important;
+        overflow:initial;
+    }
+    label {
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+    
 }

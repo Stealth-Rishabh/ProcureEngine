@@ -1,0 +1,19 @@
+﻿a {
+    /* overflow: hidden;*/
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/*mobile specific css*/
+
+@media only screen and (max-width:900px) {
+    button {
+        margin-bottom: 4px !important;
+    }
+
+    a {
+        /* overflow: hidden;*/
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}

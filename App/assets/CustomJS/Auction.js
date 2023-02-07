@@ -163,8 +163,8 @@ var decodeEntities = (function () {
 function stringDivider(str, width, spaceReplacer) {
     if (str.length > width) {
         var p = width
-        for (; p > 0 && str[p] != ' '; p--) {
-        }
+        //for (; p > 0 && str[p] != ' '; p--) {
+        //}
         if (p > 0) {
             var left = str.substring(0, p);
             var right = str.substring(p + 1);
@@ -305,8 +305,8 @@ function checkfilesize(fileid) {
     //if (size > 5242880)// checks the file more than 5 MB
     //{
 
-    if (fname.length > 70) {
-        $('.alert-danger').html('File Name should not be more than 70 charachters!')
+    if (fname.length > 200) {
+        $('.alert-danger').html('File Name should not be more than 200 charachters!')
         $('.alert-danger').show();
         Metronic.scrollTo($('.alert-danger'), -200);
         $('.alert-danger').fadeOut(5000);
@@ -342,7 +342,7 @@ function thousands_Sep_Text(num) {
     num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return num_parts.join(".");
 }
-function thousands_separators(num) {
+/*function thousands_separators(num) {
     var res = "";
     if (num != null && num != undefined) {
         x = num.toString();
@@ -362,7 +362,17 @@ function thousands_separators(num) {
         res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
     }
     return res;
+}*/
+function thousands_separators(num) {
+    let str = "";
+    let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
+    if (num != null && num != undefined) {
+        str = num.toLocaleString(culturecode);
+    }
+    return str;
 }
+
+
 function thousands_separators_NonMadCol(ele) {
     var num = ele.value;
 
@@ -382,16 +392,35 @@ function thousands_separators_NonMadCol(ele) {
     ele.value = res;
 }
 function thousands_separators_input(ele) {
+  
     var valArr, val = ele.value;
+    let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
     val = val.replaceAll(/[^0-9\.]/g, '');
+    val = val.replace(/[,]/g, '');
 
+    
     if (val != "") {
         valArr = val.split('.');
-        valArr[0] = (parseInt(valArr[0], 10)).toLocaleString();
+        valArr[0] = (parseInt(valArr[0], 10)).toLocaleString(culturecode);
         val = valArr.join('.');
     }
     ele.value = val;
 }
+/*function thousands_separators_input(ele) {
+    var regex = /^[0-9,.]+$/g;
+    var str = ele.value;
+    if (!(regex.test(str))) {
+        str = "";
+        $(ele).val("")
+    }
+    str = str.replaceAll(',', "");
+    if (str != "") {
+        str = parseFloat(str);
+    }
+    $(ele).val(str.toLocaleString(sessionStorage.getItem("culturecode")));
+}*/
+
+
 function removeZero(ele) {
 
     var val = ele.value;
@@ -403,6 +432,7 @@ function removeZero(ele) {
 }
 
 function removeThousandSeperator(val) {
+    
     if (val.length > 4) {
         val = val.replace(/,/g, '');
 
@@ -441,6 +471,7 @@ function convertTo24Hour(time) {
     return time;
 }
 function CancelBidDuringConfig(_bidId, _for) {
+    var x = isAuthenticated();
     var Cancelbid = {
         "BidID": parseInt(_bidId),
         "For": _for,
@@ -943,15 +974,17 @@ function fnGetCurrentPrefferedProfileDTTime() {
     return theStDate;
 
 }
-//abheedev bug 353 end
-function fnConverToLocalTime(dttime) {
+
+/*function fnConverToLocalTime(dttime) {
+
+    
     if (dttime != null) {
         var theStDate = new Date(dttime)
         theStDate = new Date(theStDate + ' UTC');
 
         if (sessionStorage.getItem('preferredtimezone') != null) {
             theStDate = theStDate.toLocaleString("en-GB", {
-                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "medium", hourCycle: "h24", timeStyle: "short"
             })
         }
         else {
@@ -961,10 +994,13 @@ function fnConverToLocalTime(dttime) {
 
         }
         theStDate = theStDate.replace('at', '-');
+      
         return theStDate;
     }
     else return '..'
 }
+*/
+
 function fnSetLocalFromTimeZone(dateTime) {
 
     var retDt = new Date();
@@ -1030,7 +1066,7 @@ function fnConverToLocalTimeWithSeconds(dttime) {
 
         if (sessionStorage.getItem('preferredtimezone') != null) {
             theStDate = theStDate.toLocaleString("en-GB", {
-                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "medium"
+                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "medium", hourCycle: "h24", timeStyle: "medium"
             })
         }
         else {
@@ -1050,7 +1086,7 @@ function keepTimeOnly(date) {
     timeOnly = timeOnly.toTimeString().slice(0, 9)
     return timeOnly;
 }
-function fnConverToShortDT(dttime) {
+/*function fnConverToShortDT(dttime) {
     if (dttime != null) {
 
 
@@ -1070,7 +1106,8 @@ function fnConverToShortDT(dttime) {
         return theStDate;
     }
     else return '..'
-}
+
+}*/
 
 function fnConverToTime(dttime) {
     if (dttime != null) {
@@ -1987,4 +2024,91 @@ function fnGetCurrentPrefferedProfileDTTime() {
     theStDate = theStDate.replace('at', '-');
     return theStDate;
 
+}
+
+/*function localecommaseperator(ele) {
+    var regex = /[^\d,]+/g
+    var str = ele.value;
+    if ((regex.test(str))) {
+        str = "";
+        $(ele).val("")
+    }
+    str = str.replaceAll(',', "")
+    if (str != "") {
+        str = parseFloat(str);
+    }
+    $(ele).val(str.toLocaleString(sessionStorage.getItem("culturecode")))
+
+}*/
+function localecommaseperator(ele) {
+
+    var valArr, val = ele.value;
+    val = val.replaceAll(/[^0-9\.]/g, '');
+    val = val.replace(/[,]/g, '');
+
+
+    if (val != "") {
+        valArr = val.split('.');
+        valArr[0] = (parseInt(valArr[0], 10)).toLocaleString(sessionStorage.getItem("culturecode"));
+        val = valArr.join('.');
+    }
+    ele.value = val;
+}
+
+function localeseperator(ele) {
+    let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
+    str = ele.toLocaleString(culturecode);
+    return str;
+}
+
+//abheedev changes to date-time formating on 06/02/2023
+function fnConverToLocalTime(dttime) {
+    let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
+    if (dttime != null) {
+        var theStDate = new Date(dttime);
+        theStDate = new Date(theStDate + ' UTC');
+
+        let options = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        };
+
+        if (sessionStorage.getItem('preferredtimezone') != null) {
+            options.timeZone = sessionStorage.getItem('preferredtimezone');
+        }
+
+        theStDate = theStDate.toLocaleDateString(culturecode, options);
+      //  theStDate = theStDate.toLocaleDateString("en-US", options);
+        return theStDate;
+    } else {
+        return '..';
+    }
+}
+
+//date format change by abheedev on 06/02/2023
+function fnConverToShortDT(dttime) {
+    let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
+    if (dttime != null) {
+        var theStDate = new Date(dttime);
+
+        let options = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+        };
+
+        if (sessionStorage.getItem('preferredtimezone') != null) {
+            options.timeZone = sessionStorage.getItem('preferredtimezone');
+        }
+
+
+        //  theStDate = theStDate.toLocaleDateString("en-US", options);
+        theStDate = theStDate.toLocaleDateString(culturecode, options);
+        return theStDate;
+    } else {
+        return '..';
+    }
 }

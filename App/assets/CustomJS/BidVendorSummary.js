@@ -66,7 +66,7 @@ function fetchregisterusers() {
             }
             if (data[0].role.toLowerCase() == "user" && data[0].roleName.toLowerCase() != "reports") {
                 jQuery("#ddlconfiguredby").select2('val', data[0].userID);
-                jQuery("#ddlconfiguredby").prop('disabled', true)
+               // jQuery("#ddlconfiguredby").prop('disabled', true)
             }
         },
         error: function (xhr, status, error) {
@@ -249,8 +249,10 @@ function formvalidate() {
 
             ddlBidtype: {
                 required: true
+            },
+            ddlconfiguredby: {
+                required: true
             }
-
         },
 
         messages: {
@@ -465,6 +467,7 @@ function fetchBidVendorSummary(dtfrom, dtto, subject) {
                     str += "</tr>";
                     jQuery('#tblVendorSummary').append(str);
                 }
+            
                 var table = $('#tblVendorSummary');
                 table.removeAttr('width').dataTable({
                     "bDestroy": true,
@@ -480,10 +483,27 @@ function fetchBidVendorSummary(dtfrom, dtto, subject) {
                     dom: 'Bfrtip',
                     buttons: [
                         'pageLength',
-                        // 'excelHtml5',
+                       
                         {
                             extend: 'excelHtml5',
-                            text: '<i class="fa fa-file-excel-o"></i> Excel'
+                            text: '<i class="fa fa-file-excel-o"></i> Excel',
+                            exportOptions: {
+                                columns: ':visible',
+                                format: {
+                                    body: function (data, column, node) {
+                                
+                                        if (column === 0) {
+                                            let text = data.match(/>([^<]+)</)[1];
+                                            return parseFloat(text);
+                                        }
+                                        else {
+                                            return data;
+                                        }
+
+                                    }
+
+                                }
+                            }
 
                         },
                         {
@@ -571,10 +591,10 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-            var LastHD = stringDivider("Last Invoice Price (LIP)", 15, "<br/>\n");
-            var savinfLIP = stringDivider("Total Saving wrt LIP", 12, "<br/>\n");
-            var savinfstart = stringDivider("Total Saving wrt SP", 12, "<br/>\n");
-            var savinfTR = stringDivider("Total Saving wrt TP", 12, "<br/>\n");
+            var LastHD = stringDivider("Last Invoice Price (LIP)", 45, "<br/>\n");
+            var savinfLIP = stringDivider("Total Saving wrt LIP", 40, "<br/>\n");
+            var savinfstart = stringDivider("Total Saving wrt SP",40, "<br/>\n");
+            var savinfTR = stringDivider("Total Saving wrt TP", 40, "<br/>\n");
             jQuery("#tblVendorSummarydetails").empty();
 
             jQuery('#tblVendorSummarydetails').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>Bid Subject</th><th class='bold'>Configured By</th><th class='bold'>Bid Date</th><th class='bold'>Item/Service</th><th class='bold'>Quantity</th><th class='bold'>UOM</th><th class='bold'>Currency</th><th>Vendor</th><th class='bold'>" + LastHD + "</th><th class='bold'>Start Price (SP)</th><th class='bold'>Target Price (TP)</th><th class='bold'>Initial Quote</th><th class='bold'>L1 Price</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfstart + "</th><th class='bold'>" + savinfTR + "</th><th>Bid Status</th></tr></thead>");
@@ -671,24 +691,34 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
                     fixedColumns: true,
                     "bAutoWidth": false,
                     "aaSorting": [[0, 'asc']],
-
                     "iDisplayLength": 10,
                     "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
                     dom: 'Bfrtip',
                     buttons: [
                         'pageLength',
-                        // 'excelHtml5',
                         {
                             extend: 'excelHtml5',
                             exportOptions: {
                                 columns: ':visible',
                                 format: {
                                     body: function (data, column, node) {
-                                        return column === 4 ?
-                                            data.replace(/[$,.]/g, '') : data.replace(/(&nbsp;|<([^>]+)>)/ig, "");
-                                        data.replace(/<br\s*\/?>/ig, "\r\n");
-                                        data;
-
+                                        if (column === 4) {
+                                            return column === 4 ? data.replace(/[$,.]/g, '') : data.replace(/(&nbsp;|<([^>]+)>)/ig, "");
+                                            data.replace(/<br\s*\/?>/ig, "\r\n");
+                                            data;
+                                        }
+                                        else if (column === 9 || column === 11 || column === 0) {                                           
+                                            let text = data.match(/>([^<]+)</)[1];
+                                            return parseFloat(text);
+                                        }
+                                        else if (column === 5 || column === 10 || (column >= 12 && column <= 16)) {                                          
+                                            let text =removeThousandSeperator(data) ;
+                                            return parseFloat(text);
+                                        } 
+                                        else {
+                                            return data;
+                                        }
+                                        
                                     }
 
                                 }
@@ -786,13 +816,13 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-            var BidLIP = stringDivider("Bid Value as per Last Invoice Price(LIP)", 15, "<br/>\n");
-            var BidSP = stringDivider("Bid Value at Start Price(SP)", 15, "<br/>\n");
-            var BidTP = stringDivider("Bid Value at Target Price(TP)", 15, "<br/>\n");
-            var BidFinal = stringDivider("Bid Value as per L1", 15, "<br/>\n");
-            var savinfLIP = stringDivider("Total Saving wrt LIP", 12, "<br/>\n");
-            var savinfstart = stringDivider("Total Saving wrt SP", 12, "<br/>\n");
-            var savinfTR = stringDivider("Total Saving wrt TP", 12, "<br/>\n");
+            var BidLIP = stringDivider("Bid Value as per Last Invoice Price(LIP)", 45, "<br/>\n");
+            var BidSP = stringDivider("Bid Value at Start Price(SP)", 45, "<br/>\n");
+            var BidTP = stringDivider("Bid Value at Target Price(TP)", 45, "<br/>\n");
+            var BidFinal = stringDivider("Bid Value as per L1", 45, "<br/>\n");
+            var savinfLIP = stringDivider("Total Saving wrt LIP", 40, "<br/>\n");
+            var savinfstart = stringDivider("Total Saving wrt SP", 40, "<br/>\n");
+            var savinfTR = stringDivider("Total Saving wrt TP", 40, "<br/>\n");
             jQuery("#tblVendorSummarySUmzation").empty();
 
             jQuery('#tblVendorSummarySUmzation').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>Bid Subject</th><th class='bold'>Configured By</th><th class='bold'>Bid Date</th><th class='bold'>Currency</th><th class='bold'>" + BidLIP + "</th><th class='bold'>" + BidSP + "</th><th class='bold'>" + BidTP + "</th><th class='bold'>" + BidFinal + "</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfstart + "</th><th class='bold'>" + savinfTR + "</th></tr></thead>");
@@ -854,10 +884,30 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
                     dom: 'Bfrtip',
                     buttons: [
                         'pageLength',
-                        // 'excelHtml5',
                         {
                             extend: 'excelHtml5',
                             text: '<i class="fa fa-file-excel-o"></i> Excel',
+                            exportOptions: {
+                                columns: ':visible',
+                                format: {
+                                    body: function (data, column, node) {
+                                     
+                                        if (column >= 5 && column <= 11) {
+                                            let text = removeThousandSeperator(data);
+                                            return parseFloat(text);
+                                        }
+                                        else if (column === 0) {
+                                            let text = data.match(/>([^<]+)</)[1];
+                                            return parseFloat(text);
+                                        }
+                                        else {
+                                            return data;
+                                        }
+
+                                    }
+
+                                }
+                            },
 
                         },
                         {
@@ -942,15 +992,15 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
 
 
             var PriceFor = "";
-            var LastHD = stringDivider("Last Invoice Price (LIP)", 15, "<br/>\n");
-            var savinfLIP = stringDivider("Total Saving wrt LIP", 12, "<br/>\n");
-            var savinfTR = stringDivider("Total Saving wrt TP", 12, "<br/>\n");
+            var LastHD = stringDivider("Last Invoice Price (LIP)", 45, "<br/>\n");
+            var savinfLIP = stringDivider("Total Saving wrt LIP", 40, "<br/>\n");
+            var savinfTR = stringDivider("Total Saving wrt TP", 40, "<br/>\n");
 
 
             if (jQuery("#ddlBidFor option:selected").val() == "81" || jQuery("#ddlBidFor option:selected").val() == "83") {
 
                 PriceFor = 'H1 Price';
-                var savinfstart = stringDivider("Total Saving wrt SP", 12, "<br/>\n");
+                var savinfstart = stringDivider("Total Saving wrt SP", 40, "<br/>\n");
                 var startPrice = 'Start Price (SP)'
             }
             else {
@@ -1064,7 +1114,6 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
                 var table = $('#tblVendorSummarydetails');
                 table.removeAttr('width').dataTable({
                     "bDestroy": true,
-
                     "oLanguage": { "sSearch": "", "sLengthMenu": "\_MENU_" },
                     fixedColumns: false,
                     "bAutoWidth": false,
@@ -1077,10 +1126,30 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
                     dom: 'Bfrtip',
                     buttons: [
                         'pageLength',
-                        // 'excelHtml5',
                         {
                             extend: 'excelHtml5',
                             text: '<i class="fa fa-file-excel-o"></i> Excel',
+                            exportOptions: {
+                                columns: ':visible',
+                                format: {
+                                    body: function (data, column, node) {
+                                        
+                                        if (column === 5 || column === 10 || (column >= 12 && column <= 16)) {
+                                            let text = removeThousandSeperator(data);
+                                            return parseFloat(text);
+                                        }
+                                        else if (column === 0 || column === 9 || column === 11) {
+                                            let text = data.match(/>([^<]+)</)[1];
+                                            return parseFloat(text);
+                                        }
+                                        else {
+                                            return data;
+                                        }
+
+                                    }
+
+                                }
+                            },
                         },
                         {
                             extend: 'pdfHtml5',
@@ -1174,24 +1243,24 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-            var BidLIP = stringDivider("Bid Value as per Last Invoice Price(LIP)", 15, "<br/>\n");
+            var BidLIP = stringDivider("Bid Value as per Last Invoice Price(LIP)", 45, "<br/>\n");
 
-            var BidTP = stringDivider("Bid Value at Target Price(TP)", 15, "<br/>\n");
-            var BidFinal = stringDivider("Bid Value as per L1", 15, "<br/>\n");
-            var savinfLIP = stringDivider("Total Saving wrt LIP", 12, "<br/>\n");
+            var BidTP = stringDivider("Bid Value at Target Price(TP)", 45, "<br/>\n");
+            var BidFinal = stringDivider("Bid Value as per L1", 45, "<br/>\n");
+            var savinfLIP = stringDivider("Total Saving wrt LIP", 40, "<br/>\n");
 
-            var savinfTR = stringDivider("Total Saving wrt TP", 12, "<br/>\n");
+            var savinfTR = stringDivider("Total Saving wrt TP", 40, "<br/>\n");
 
             if (jQuery("#ddlBidFor option:selected").val() == "81" || jQuery("#ddlBidFor option:selected").val() == "83") {
 
-                var BidFinal = stringDivider("Bid Value as per H1", 15, "<br/>\n");
-                var BidSP = stringDivider("Bid Value at Start Price(SP)", 15, "<br/>\n");
-                var savinfstart = stringDivider("Total Saving wrt SP", 12, "<br/>\n");
+                var BidFinal = stringDivider("Bid Value as per H1", 40, "<br/>\n");
+                var BidSP = stringDivider("Bid Value at Start Price(SP)",40, "<br/>\n");
+                var savinfstart = stringDivider("Total Saving wrt SP",40, "<br/>\n");
             }
             else {
-                var BidFinal = stringDivider("Bid Value as per L1", 15, "<br/>\n");
-                var BidSP = stringDivider("Bid Value at Ceiling/ Max. Price(CP)", 15, "<br/>\n");
-                var savinfstart = stringDivider("Total Saving wrt CP", 12, "<br/>\n");
+                var BidFinal = stringDivider("Bid Value as per L1", 45, "<br/>\n");
+                var BidSP = stringDivider("Bid Value at Ceiling/ Max. Price(CP)", 45, "<br/>\n");
+                var savinfstart = stringDivider("Total Saving wrt CP", 40, "<br/>\n");
             }
 
             jQuery("#tblVendorSummarySUmzation").empty();
@@ -1289,6 +1358,7 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
                     str += "</tr>";
                     jQuery('#tblVendorSummarySUmzation').append(str);
                 }
+              
                 var table = $('#tblVendorSummarySUmzation');
                 table.removeAttr('width').dataTable({
                     "bDestroy": true,
@@ -1303,10 +1373,30 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
                     dom: 'Bfrtip',
                     buttons: [
                         'pageLength',
-                        // 'excelHtml5',
                         {
                             extend: 'excelHtml5',
                             text: '<i class="fa fa-file-excel-o"></i> Excel',
+                            exportOptions: {
+                                columns: ':visible',
+                                format: {
+                                    body: function (data, column, node) {
+                                  
+                                        if ((column >= 5 && column <= 11)) {
+                                            let text = removeThousandSeperator(data);
+                                            return parseFloat(text);
+                                        }
+                                        else if (column === 0) {
+                                            let text = data.match(/>([^<]+)</)[1];
+                                            return parseFloat(text);
+                                        }                                       
+                                        else {
+                                            return data;
+                                        }
+
+                                    }
+
+                                }
+                            },
                         },
                         {
                             extend: 'pdfHtml5',

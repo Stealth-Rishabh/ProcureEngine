@@ -541,11 +541,12 @@ function GetOverviewmasterbyId(idx) {
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         if (res.result != null) {
-
+            let _cleanStringSub = StringDecodingMechanism(res.result[0].nfaSubject);
+            let _cleanStringDet = StringDecodingMechanism(res.result[0].nfaDescription);
             if (res.result.length > 0) {
                 $("#txtEventref").val(res.result[0].eventReftext);
-                $("#txtTitle").val(res.result[0].nfaSubject);
-                $("#txtNFADetail").val(res.result[0].nfaDescription);
+                $("#txtTitle").val(_cleanStringSub);
+                $("#txtNFADetail").val(_cleanStringDet);
                 $("#ddlEventType").val(res.result[0].eventID);
                 setTimeout(function () {
                     GetEventRefData();
@@ -578,11 +579,13 @@ function GetOverviewmasterbyId(idx) {
                 setTimeout(function () {
                     bindPurchaseGroupDDL()
                     $("#ddlPurchasegroup").val(res.result[0].purchaseGroup);
-                }, 900)
-
-                $("#ddlCondition").val(res.result[0].conditionID);
-
-
+                },900)
+           
+                  
+                setTimeout(function () {
+                    bindConditionDDL()
+                    $("#ddlCondition").val(res.result[0].conditionID);
+                },700)
             }
         }
     });
@@ -677,19 +680,20 @@ $("#txtEventref").typeahead({
     minLength: 2,
     updater: function (item) {
         if (map[item].refId != "0") {
-
+            let _cleanStringSub = StringDecodingMechanism(map[item].bidSubject);
+            let _cleanStringDet = StringDecodingMechanism(map[item].bidDetails);
             sessionStorage.setItem('hdnEventrefId', map[item].refId);
             sessionStorage.setItem('hdnEventForID', map[item].bidForID);
 
-            $('#txtTitle').val("NFA -" + map[item].bidSubject)
-            $('#txtNFADetail').val(map[item].bidDetails)
+            $('#txtTitle').val("NFA -" + _cleanStringSub)
+            $('#txtNFADetail').val(_cleanStringDet)
 
         }
         else {
             gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
         }
 
-        return item;
+        return StringDecodingMechanism(item);
     }
 });
 
@@ -1019,7 +1023,6 @@ $("#txtProjectName").on("keyup", function () {
 
 //abheedev backlog 286
 function Savedata() {
-
     var overviewList = [];
     var p_title = $("#txtTitle").val();
     var p_descript = $("#txtNFADetail").val();
@@ -1116,7 +1119,7 @@ function Savetab2Data() {
 
 };
 function GetNfaOverviewParams() {
-
+   
     var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx) + "&For=nfrequestNotselected&Purchaseorg=" + $('#ddlPurchaseOrg option:selected').val();
 
     var ParamData = callajaxReturnSuccess(url, "Get", {})
@@ -1252,6 +1255,7 @@ function getSummary(bidid, bidforid, bidtypeid, RFQID) {
     }
 }
 function FetchMatrixApprovers() {
+    
     var amount = removeThousandSeperator($("#txtAmountFrom").val());
     var budget = removeThousandSeperator($("#txtBudget").val());
     var groupId = $('#ddlPurchasegroup option:selected').val()//sessionStorage.getItem("hdnPurchaseGroupID");
@@ -1649,7 +1653,7 @@ $("#searchPop-up").keyup(function () {
 });
 
 function bindConditionDDL() {
-
+    
     var url = "NFA/fetchNFACondition?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=N";
 
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});

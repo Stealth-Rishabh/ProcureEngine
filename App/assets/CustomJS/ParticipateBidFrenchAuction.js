@@ -1,6 +1,7 @@
 jQuery(document).ready(function () {
 
     Pageloaded()
+    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
@@ -288,29 +289,31 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
 });
 
 function sendChatMsgs() {
-    var _cleanString = StringEncodingMechanism($("#txtChatMsg").val());
-    var data = {
-        "ChatMsg": _cleanString,
-        "fromID": sessionStorage.getItem("UserID"),
-        "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
-        "msgType": 'S',
-        "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : ''
+    if ($("#txtChatMsg").val() != '' && $("#txtChatMsg").val() != null) {
+        var _cleanString = StringEncodingMechanism($("#txtChatMsg").val());
+        var data = {
+            "ChatMsg": _cleanString,
+            "fromID": sessionStorage.getItem("UserID"),
+            "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
+            "msgType": 'S',
+            "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : ''
 
+        }
+        $("#chatList").append('<div class="post in">'
+            + '<div class="message">'
+            + '<span class="arrow"></span>'
+            + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
+            + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;"></span>'//time
+            + '<span class="body" style="color: #c3c3c3;">' + $("#txtChatMsg").val() + '</span>'
+            + '</div>'
+            + '</div>');
+
+        connection.invoke("SendMessage", JSON.stringify(data), $('#hddnadminConnection').val()).catch(function (err) {
+            return console.error(err.toString());
+
+        });
+        $("#txtChatMsg").val('')
     }
-    $("#chatList").append('<div class="post in">'
-        + '<div class="message">'
-        + '<span class="arrow"></span>'
-        + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
-        + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;"></span>'//time
-        + '<span class="body" style="color: #c3c3c3;">' + $("#txtChatMsg").val() + '</span>'
-        + '</div>'
-        + '</div>');
-
-    connection.invoke("SendMessage", JSON.stringify(data), $('#hddnadminConnection').val()).catch(function (err) {
-        return console.error(err.toString());
-
-    });
-    $("#txtChatMsg").val('')
 }
 
 /////****** Chat END*****************/////
@@ -493,7 +496,7 @@ function fetchBidSummaryVendorFrench() {
 
             jQuery("#tblParticipantsVender").empty();
             if (_isBidStarted == false) {
-                jQuery("#tblParticipantsVender").append("<thead> <tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product</th><th>Quantity</th><th>UOM</th><th class='hide'>Bid Start Price (" + $('#lblcurrency').text() + ")</th></thead>");
+                jQuery("#tblParticipantsVender").append("<thead> <tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product</th><th>Quantity</th><th>UOM</th><th class='hide'>Start Unit Price (" + $('#lblcurrency').text() + ")</th></thead>");
 
                 for (var i = 0; i < data.length; i++) {
                     _offeredPrice = (data[i].offeredPrice < 0) ? 'NA' : data[i].offeredPrice;
@@ -504,7 +507,7 @@ function fetchBidSummaryVendorFrench() {
             else {
                 if (data.length > 0) {
 
-                    jQuery("#tblParticipantsVender").append("<thead> <tr style='background: gray; color: #FFF'><th>S No</th><th class=hide>Item Code</th><th>Item/Product</th><th>Total Quantity</th><th>Min. Quantity</th><th>Max. Quantity</th><th>UOM</th><th id='bidStartPrice'>Bid start price</th><th class=hide>Target Price</th><th>Minimum Increment</th><th>Last Quote</th><th>H1 Price</th><th>Bidded Quantity*</th><th>Enter_Quote*</th><th>Action</th><th> Status</th><th>Allocated Quantity</th></thead>");
+                    jQuery("#tblParticipantsVender").append("<thead> <tr style='background: gray; color: #FFF'><th>S No</th><th class=hide>Item Code</th><th>Item/Product</th><th>Total Quantity</th><th>Min. Quantity</th><th>Max. Quantity</th><th>UOM</th><th id='bidStartPrice'>Start Unit Price</th><th class=hide>Target Price</th><th>Minimum Increment</th><th>Last Quote</th><th>H1 Price</th><th>Bidded Quantity*</th><th>Enter_Quote*</th><th>Action</th><th> Status</th><th>Allocated Quantity</th></thead>");
                     for (var i = 0; i < data.length; i++) {
 
 
@@ -702,7 +705,7 @@ function InsUpdQuoteFrench(rowID) {
     else if (parseFloat(removeThousandSeperator($('#txtquote' + i).val())) < parseFloat(($('#ceilingprice' + i).text()))) {
 
         $('#spanamount' + i).removeClass('hide')
-        $('#spanamount' + i).text('Amount should not be less than Bid start price')
+        $('#spanamount' + i).text('Amount should not be less than Start Unit Price')
         return false
     }
     else if (jQuery("#H1Price" + i).text() != "0" && BidForID == "83" && valdiff < parseFloat(Amount) && $('#incon' + i).text() == "A") {

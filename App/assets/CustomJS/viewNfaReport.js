@@ -3,7 +3,7 @@ var idx = 0;
 $(document).ready(function () {
     $('[data-toggle="popover"]').popover({})
     Pageloaded()
-
+    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
