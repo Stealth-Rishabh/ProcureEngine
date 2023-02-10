@@ -1429,6 +1429,17 @@ function fetchallexportdetails() {
             jQuery('#txtConversionRatePrev').html(BidData[0].bidDetails[0].conversionRate)
             jQuery('#txtConversionRatePrevtab_0').html(BidData[0].bidDetails[0].conversionRate)
             _finalStatus = BidData[0].bidDetails[0].finalStatus
+            if (BidData[0].bidDetails[0].isRunningBid.toLowerCase() == 'notrunningbid') {
+                if (BidData[0].bidDetails[0].status == 'Pause') {
+                    isRunningBid = 'Y';
+                }
+                else {
+                    isRunningBid = 'N';
+                }
+            }
+            else {
+                isRunningBid = 'Y'
+            }
             if (sessionStorage.getItem("hdnbidtypeid") == 7 || sessionStorage.getItem("hdnbidtypeid") == 8) {
 
                 if ($.trim(BidData[0].bidDetails[0].showRankToVendor) == "Y") {
