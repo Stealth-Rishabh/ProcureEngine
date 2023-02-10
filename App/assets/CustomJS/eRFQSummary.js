@@ -438,7 +438,7 @@ function fetchBidVendorSummaryDetail() {
             var savinfTR = stringDivider("Total Saving wrt TP", 12, "<br/>\n");
             jQuery("#tblVendorSummarydetails").empty();
             //Sid RFQ Stages
-            jQuery('#tblVendorSummarydetails').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>Configure Date</th><th class='bold'>Start Date</th><th class='bold'>RFQ Deadline</th><th class='bold'>Short Name</th><th class='bold'>Quantity</th><th class='bold'>UOM</th><th>Currency</th><th>Vendor</th><th class='bold'>Last Invoice Price (LIP)</th><th class='bold'>Target Price (TP)</th><th class='bold'>L1 Price</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfTR + "</th></tr></thead>");
+            jQuery('#tblVendorSummarydetails').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>Configure Date</th><th class='bold'>Start Date</th><th class='bold'>RFQ Deadline</th><th class='bold'>Short Name</th><th class='bold'>Quantity</th><th class='bold'>UOM</th><th>Currency</th><th>Vendor</th><th class='bold'>Last Invoice Price (LIP)</th><th class='bold'>Target/Budget Price (TP)</th><th class='bold'>L1 Price</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfTR + "</th></tr></thead>");
             if (BidData.length > 0) {
                 var bID = 0;
                 let _subject = "";
@@ -614,7 +614,7 @@ function fetchBidVendorSummaryDetail() {
 function editLIP(rfqid, rfqparameterid, price, fieldName) {
 
     if (fieldName == "TP") {
-        $('#lblfieldName').html("Target Price <span class='required'>*</span>")
+        $('#lblfieldName').html("Target/Budget Price <span class='required'>*</span>")
     }
     else {
         $('#lblfieldName').html("Last Invoice Price <span class='required'>*</span>")
@@ -744,7 +744,7 @@ function fetchBidVendorSummarySummarization() {
         dataType: "json",
         success: function (BidData) {
             var BidLIP = stringDivider("RFQ Value at Last Invoice Price(LIP)", 45, "<br/>\n");
-            var BidTP = stringDivider("RFQ Value at Target Price(TP)", 45, "<br/>\n");
+            var BidTP = stringDivider("RFQ Value at Target/Budget Price(TP)", 45, "<br/>\n");
             var BidFinal = stringDivider("RFQ Value as per L1", 45, "<br/>\n");
             var savinfLIP = stringDivider("Total Saving wrt LIP", 40, "<br/>\n");
             var savinfTR = stringDivider("Total Saving wrt TP", 40, "<br/>\n");

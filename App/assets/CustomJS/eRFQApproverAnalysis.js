@@ -284,7 +284,7 @@ function fetchrfqcomprative() {
                 $('#btnPDF').show()
                 $('#displayComparativetabs').show();
                 //For Printing Header
-                strHead = "<tr  style='background: #f5f5f5; color:light black;'><th class='hide'>&nbsp;</th><th>SrNo</th><th>ItemCode</th><th>ItemRemark</th><th>Short Name</th><th>Quantity</th><th>UOM</th><th>Target Price</th>"
+                strHead = "<tr  style='background: #f5f5f5; color:light black;'><th class='hide'>&nbsp;</th><th>SrNo</th><th>ItemCode</th><th>ItemRemark</th><th>Short Name</th><th>Quantity</th><th>UOM</th><th>Target/Budget Price</th>"
                 strHeadQ = "<tr  style='background:#f5f5f5; color:light black;'><th>Question</th><th>Our Requirement</th>"
                 jQuery("#drpVendors").empty();
                 jQuery("#drpVendors").append(jQuery("<option ></option>").val("").html("Only for auto PO confirmation"));

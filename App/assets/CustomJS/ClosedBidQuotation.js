@@ -2329,7 +2329,7 @@ function ParametersQuery() {
         //unitrate = thousands_separators(parseFloat(removeThousandSeperator($('#txtunitrate').val())).round(3));  
         unitrate = thousands_separators($('#txtunitrate').val());
     }
-    if ($("#txttargetprice").val() != null || $("#txttargetprice").val() != '') {
+    if ($("#txttargetprice").val() != null && $("#txttargetprice").val() != '') {
         //TP = thousands_separators(parseFloat(removeThousandSeperator($('#txttargetprice').val())).round(3)); 
         TP = thousands_separators($('#txttargetprice').val());
     }

@@ -690,7 +690,7 @@ function fetchrfqcomprativeRA(RFQID, BidID) {
                 $('#displayComparativetabs').show();
                 //For Printing Header
                 //@abheedev bug349 start
-                strHead = "<tr  style='background: #f5f5f5; color:light black;'><th class='hide'>&nbsp;</th><th>SrNo</th><th>ItemCode</th><th>Short Name</th><th>Quantity</th><th>UOM</th><th>Target Price</th>"
+                strHead = "<tr  style='background: #f5f5f5; color:light black;'><th class='hide'>&nbsp;</th><th>SrNo</th><th>ItemCode</th><th>Short Name</th><th>Quantity</th><th>UOM</th><th>Target/Budget Price</th>"
                 strHeadQ = "<tr  style='background:#f5f5f5; color:light black;'><th colspan='6'>Question</th><th colspan='6'>Our Requirement</th>"
                 //@abheedev bug349 end
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
