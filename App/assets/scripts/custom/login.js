@@ -1,8 +1,8 @@
 sessionStorage.clear();
 
 //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-//sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
 
 var Token = '';
@@ -139,8 +139,8 @@ var Login = function () {
     }
 
     function validateUser() {
-        //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
-        sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+        sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+        //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
         //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
         var path = window.location.pathname;
         var url = '';
@@ -409,24 +409,25 @@ function Changeforgotpasswordfn() {
     var UserType = '';
     var path = window.location.pathname;
     var url = '';
-    var lastPart = (path.substr(path.length - 7)).slice(0, -1);
+    //var lastPart = (path.substr(path.length - 7)).slice(0, -1);
+    var lastPart = (path.substr(path.length - (path.length - 1))).slice(0, -1);
     var LinkUrl = window.location.href;
-
+    var custid = 0;
     if (lastPart.toLocaleLowerCase() == "vendor") {
         UserType = 'V';
     }
     else {
         UserType = 'E';
+        if (sessionStorage.getItem('CustomerID') != null && sessionStorage.getItem('CustomerID') != undefined) {
+            custid = parseInt(sessionStorage.getItem('CustomerID'));
+        }
     }
-    var custid = 0;
+    
     //var UserType = 'V'
-    //if (sessionStorage.getItem('CustomerID') != null && sessionStorage.getItem('CustomerID') != undefined) {
-    //    custid = sessionStorage.getItem('CustomerID');
-    //    UserType = 'E';
-    //}
+    
     var data = {
         "EmailID": $("#txtemail").val(),
-        "CustomerID": parseInt(custid),
+        "CustomerID": custid,
         "UserType": UserType
     }
 
@@ -584,7 +585,8 @@ function IsAcceptedBidTermsRFIRFQ(Usertype) {
 }
 
 function SetSessionItems(lastPart, value) {
-    sessionStorage.setItem("CustomerID", value.customerID);
+    //sessionStorage.setItem("CustomerID", value.customerID);
+    sessionStorage.setItem("CustomerID", '32');
     sessionStorage.setItem("UserID", value.userID);
     sessionStorage.setItem("UserName", value.userName);
     sessionStorage.setItem("RoleID", value.roleID);
