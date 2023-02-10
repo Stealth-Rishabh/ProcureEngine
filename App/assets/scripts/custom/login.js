@@ -173,6 +173,7 @@ var Login = function () {
                             sessionStorage.setItem("Token", data.tokenString.accessToken)
                             //fnGetUserBasicDetails(lastPart)
                             sessionStorage.setItem("RefreshToken", data.tokenString.refreshToken);
+                            sessionStorage.setItem("IsSSOAuth", "N");
                             SetSessionItems(lastPart, data.userDetails[0]);
                             break;
                         //case "Your account has been Locked. Please contact administrator.":
@@ -249,6 +250,7 @@ var Login = function () {
                             sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
                             sessionStorage.setItem("Token", data.tokenString.accessToken);
                             sessionStorage.setItem("RefreshToken", data.tokenString.refreshToken);
+                            sessionStorage.setItem("IsSSOAuth", "N");
                             SetSessionItems(lastPart, data.userDetails[0]);
                             break;
                         //case "Your account has been Locked. Please contact administrator.":
@@ -585,8 +587,7 @@ function IsAcceptedBidTermsRFIRFQ(Usertype) {
 }
 
 function SetSessionItems(lastPart, value) {
-    //sessionStorage.setItem("CustomerID", value.customerID);
-    sessionStorage.setItem("CustomerID", '32');
+    sessionStorage.setItem("CustomerID", value.customerID);
     sessionStorage.setItem("UserID", value.userID);
     sessionStorage.setItem("UserName", value.userName);
     sessionStorage.setItem("RoleID", value.roleID);

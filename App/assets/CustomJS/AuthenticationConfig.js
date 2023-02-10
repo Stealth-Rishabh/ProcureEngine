@@ -56,20 +56,19 @@ myMSALObj.handleRedirectPromise()
         console.error(error);
     });
 
+
+
 function handleResponse(response) {
-
-
-
-    if (response !== null) {
-
-        username = response.account.username;
-        passTokenToApi();
-    } else {
-        selectAccount();
+    if (sessionStorage.getItem("IsSSOAuth") == "Y") {
+        if (response !== null) {
+            username = response.account.username;
+            passTokenToApi();
+        }
+        else {
+            selectAccount();
+        }
     }
 }
-
-
 function passTokenToApi() {
 
     getTokenRedirect(tokenRequest)
@@ -132,7 +131,8 @@ function isAuthenticated() {
         "RefreshToken": refreshToken
 
     }
-    if (sessionStorage.getItem('CustomerID') != "32") {
+    
+    if (sessionStorage.getItem("IsSSOAuth") == "N") {
         var urlAc = sessionStorage.getItem("APIPath") + "Token/refresh";
         try {
 
