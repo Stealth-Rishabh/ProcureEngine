@@ -116,7 +116,7 @@ connection.on("refreshColumnStatusCoal", function (data) {
                 if (data.length > 0) {
                     for (var i = 0; i < data.length; i++) {
                         let TotalBidValue = '';
-                        TotalBidValue = removeThousandSeperator(parseFloat(removeThousandSeperator(data[i].quantity))) * parseFloat(removeThousandSeperator(data[i].l1Quote));
+                        TotalBidValue = removeThousandSeperator(parseFloat(removeThousandSeperator(data[i].quantity))) * parseFloat(removeThousandSeperator(data[i].loQuotedPrice));
              
                         if (data[i].noOfExtension >= 1) {
 
@@ -393,7 +393,8 @@ function fetchBidSummaryVendorproduct() {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (data, status, jqXHR) {     
+        success: function (data, status, jqXHR) {  
+            debugger
             if (data.length > 0) {
                 let TotalBidValue = '';
                 if (_isBidStarted == false) {
@@ -419,7 +420,7 @@ function fetchBidSummaryVendorproduct() {
                             var IQuote = data[i].iqQuotedPrice == '0' ? '' : data[i].iqQuotedPrice;
                             var LqQuote = data[i].lqQuotedPrice == '0' ? '' : data[i].lqQuotedPrice;
                             var decreamentOn = data[i].decreamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
-                            TotalBidValue = parseFloat(data[i].quantity) * parseFloat(data[i].l1Quote);
+                            TotalBidValue = parseFloat(data[i].quantity) * parseFloat(data[i].loQuotedPrice);
                             
 
                             jQuery("#Coalitems").append('<table class="table table-bordered" id=tblParticipantsService' + i + ' ></table><div id=collapse class="panel-collapse"><div class="panel-body" style="margin-top:-10px!important;" ><div class="col-md-12"><table class="table" id=itemquotes' + i + '></table></div>');
