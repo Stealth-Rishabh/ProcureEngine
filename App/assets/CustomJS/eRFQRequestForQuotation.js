@@ -1973,8 +1973,8 @@ function fetchRFIParameteronload() {
 
             if (data[0].parameters.length > 0) {
 
-                jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:100px;'></th><th>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
-                jQuery('#tblRFQPrev').append('<thead><tr style="background: grey; color:light black;"><th>S No</th><th>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>');
+                jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:100px;'></th><th>Item Code</th><th>Item/Service</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                jQuery('#tblRFQPrev').append('<thead><tr style="background: grey; color:light black;"><th>S No</th><th>Item Code</th><th>Item/Service</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>');
 
                 for (var i = 0; i < data[0].parameters.length; i++) {
                     rowAppItems = rowAppItems + 1
@@ -2032,7 +2032,7 @@ function fetchBoqParameters(flag) {
             $('#scrolr').show(); 
             $('#wrap_scrollerPrev').show();
             if (data[0].parameters.length > 0) {
-                jQuery("#tblServicesProductboq,#tblboqparamprev").append('<thead><tr style="background: gray; color: #FFF;"><th style="width:5%!important"></th><th>S No</th><th>Item Code</th><th style="width:10%!important">Item/Service</th><th style="width:10%!important">Target Price</th><th style="width:5%!important">Quantity</th><th style="width:5%!important">UOM</th><th style="width:10%!important">Description</th><th style="width:5%!important">Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead><tbody>');
+                jQuery("#tblServicesProductboq,#tblboqparamprev").append('<thead><tr style="background: gray; color: #FFF;"><th style="width:5%!important"></th><th>S No</th><th>Item Code</th><th style="width:10%!important">Item/Service</th><th style="width:10%!important">Target/Budget Price</th><th style="width:5%!important">Quantity</th><th style="width:5%!important">UOM</th><th style="width:10%!important">Description</th><th style="width:5%!important">Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead><tbody>');
                 
                
                 for (var r = 0; r < data[0].boqSummary.length; r++) {
@@ -2061,8 +2061,8 @@ function fetchBoqParameters(flag) {
                                                 $('#TblMHP' + data[0].parameters[j].srno + data[0].parameters[j].boqsheetName).append("<tr><td colspan=19 class=hiddenRow><div class='accordian-body collapse' id='demo1P" + j + data[0].parameters[j].srno + "' style='padding-left:75px!important'><table id='TblMHP" + data[0].parameters[j].srno + k + "' class='table table-condensed table table-striped table-bordered table-hover' cellpadding=0 cellspacing=0></tr>");
                                                // }
 
-                                                $('#TblMH' + data[0].parameters[j].srno + k).append("<thead><tr><th style='width:5%!important'>Srno</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target Price</th></tr></thead>")
-                                                $('#TblMHP' + data[0].parameters[j].srno + k).append("<thead><tr><th style='width:5%!important'>Srno</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target Price</th></tr></thead>")
+                                                $('#TblMH' + data[0].parameters[j].srno + k).append("<thead><tr><th style='width:5%!important'>Srno</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target/Budget Price</th></tr></thead>")
+                                                $('#TblMHP' + data[0].parameters[j].srno + k).append("<thead><tr><th style='width:5%!important'>Srno</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target/Budget Price</th></tr></thead>")
                                                 for (var l = k; l < data[0].parameters.length; l++) {
                                                     if (data[0].parameters[l].rfqParameterParentID == "0" && data[0].parameters[l].rfqUomId == "" && data[0].parameters[l].rfQuantity == 0 && data[0].parameters[k].rfqParameterId == data[0].parameters[l].rfqParameterParentID && data[0].parameters[l].boqsheetName == data[0].parameters[k].boqsheetName) {
 
@@ -2075,8 +2075,8 @@ function fetchBoqParameters(flag) {
                                                         $("#demo12" + l).append("<table id=TblMH1" + l + " class='table table-condensed table table-striped table-bordered table-hover' cellpadding=0 cellspacing=0></table>");
                                                         $("#demo12P" + l).append("<table id=TblMH1P" + l + " class='table table-condensed table table-striped table-bordered table-hover' cellpadding=0 cellspacing=0></table>");
 
-                                                        $('#TblMH1' + l).append("<thead><tr><th style='width:5%!important'>SrNo</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target Price</th></tr></thead>")
-                                                        $('#TblMH1P' + l).append("<thead><tr><th style='width:5%!important'>SrNo</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target Price</th></tr></thead>")
+                                                        $('#TblMH1' + l).append("<thead><tr><th style='width:5%!important'>SrNo</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target/Budget Price</th></tr></thead>")
+                                                        $('#TblMH1P' + l).append("<thead><tr><th style='width:5%!important'>SrNo</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target/Budget Price</th></tr></thead>")
 
                                                         for (var m = l; m < data[0].parameters.length; m++) {
                                                             if (data[0].parameters[m].rfqUomId == "" && data[0].parameters[m].rfQuantity == 0 && data[0].parameters[l].rfqParameterId == data[0].parameters[m].rfqParameterParentID && data[0].parameters[l].boqsheetName == data[0].parameters[m].boqsheetName) {
@@ -2104,8 +2104,8 @@ function fetchBoqParameters(flag) {
                                                         $("#demo12" + l + data[0].parameters[j].srno).append("<table id=TblMH1" + l + data[0].parameters[j].srno + " class='table table-condensed table table-striped table-bordered table-hover' cellpadding=0 cellspacing=0></table>");
                                                         $("#demo12P" + l + data[0].parameters[j].srno).append("<table id=TblMH1P" + l + data[0].parameters[j].srno + " class='table table-condensed table table-striped table-bordered table-hover' cellpadding=0 cellspacing=0></table>");
 
-                                                        $('#TblMH1' + l + data[0].parameters[j].srno).append("<thead><tr><th style='width:5%!important'>SrNo</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target Price</th></tr></thead>")
-                                                        $('#TblMH1P' + l + data[0].parameters[j].srno).append("<thead><tr><th style='width:5%!important'>SrNo</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target Price</th></tr></thead>")
+                                                        $('#TblMH1' + l + data[0].parameters[j].srno).append("<thead><tr><th style='width:5%!important'>SrNo</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target/Budget Price</th></tr></thead>")
+                                                        $('#TblMH1P' + l + data[0].parameters[j].srno).append("<thead><tr><th style='width:5%!important'>SrNo</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target/Budget Price</th></tr></thead>")
                                                         for (var m = l; m < data[0].parameters.length; m++) {
                                                             if (data[0].parameters[m].rfqUomId == "" && data[0].parameters[m].rfQuantity == 0 && data[0].parameters[l].rfqParameterId == data[0].parameters[m].rfqParameterParentID && data[0].parameters[l].boqsheetName == data[0].parameters[m].boqsheetName) {
                                                                 $('#TblMH' + l).append("<tr><td data-toggle='collapse' class='accordion-toggle'  data-target='#demo123" + m + "' style='width:5%!important' > <button type='button' class='btn btn-default btn-xs' onclick='fncollapse(mainItem12" + l + ")' ><span class='glyphicon glyphicon-plus' id='mainItem12" + l + "'></span></button>&nbsp" + data[0].parameters[l].srno + "</td><td colspan='10'>" + data[0].parameters[l].rfqShortName + "</td></tr>");
@@ -2314,7 +2314,7 @@ function ParametersQuery() {
 
     if (!jQuery("#tblServicesProduct thead").length) {
         //abheedev bug 388 start
-        jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:100px;'></th><th>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+        jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:100px;'></th><th>Item Code</th><th>Item/Service</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
         jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button type="button" class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + '>' + $('#txtItemCode').val() + '</td><td id=sname' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TP' + i + '>' + thousands_separators(parseFloat(removeThousandSeperator(TP)).round(2)) + '</td><td class=text-right id=quan' + i + '>' + quan + '</td><td id=uom' + i + '>' + $("#dropuom").val() + '</td><td id=desc' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=delivery' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tat' + i + '>' + $('#txttat').val() + '</td><td id=remarks' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=pono' + i + '>' + $("#txtPono").val() + '</td><td id=povname' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrate' + i + '>' + unitrate + '</td><td id=podate' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalue' + i + '>' + Povalue + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
         //abheedev bug 388 end
     }
@@ -2328,7 +2328,7 @@ function ParametersQuery() {
 
     if (!jQuery("#tblRFQPrev thead").length) {
 
-        jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:20%!important;'>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+        jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:20%!important;'>Item Code</th><th>Item/Service</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
         jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td  style="width:20%!important;" id=itemcodeprev' + i + '>' + $('#txtItemCode').val() + '</td><td id=snameprev' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TPPrev' + i + '>' + thousands_separators(parseFloat(removeThousandSeperator(TP)).round(2)) + '</td><td class=text-right id=quanprev' + i + '>' + quan + '</td><td id=uomprev' + i + '>' + $("#dropuom").val() + '</td><td id=descprev' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=deliveryprev' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tatprev' + i + '>' + $('#txttat').val() + '</td><td id=remarksprev' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=ponoprev' + i + '>' + $("#txtPono").val() + '</td><td id=povnameprev' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrateprev' + i + '>' + unitrate + '</td><td id=podateprev' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalueprev' + i + '>' + Povalue + '</td></tr>');
 
     }
@@ -3342,7 +3342,7 @@ function printDataparameter(result) {
          else if (targetPrice != '' && (!targetPrice.match(numberOnly))) {
  
              $("#error-excelparameter").show();
-             $("#errspan-excelparameter").html('Target Price should be in numbers or upto 3 decimal places only of item no ' + (i + 1) + '.');
+             $("#errspan-excelparameter").html('Target/Budget Price should be in numbers or upto 3 decimal places only of item no ' + (i + 1) + '.');
              $("#file-excelparameter").val('');
              return false;
          }
@@ -3488,7 +3488,7 @@ function fnSeteRFQparameterTable() {
 
             if (!jQuery("#tblServicesProduct thead").length) {
                 //abheedev bug 388 start
-                jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:100px;'></th><th>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:100px;'></th><th>Item Code</th><th>Item/Service</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
                 jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td><button type="button" class="btn btn-xs btn-success" onclick="editRow(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button type="button" class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridprev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td  style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td id=sname' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class=text-right id=TP' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class=text-right id=quan' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td id=uom' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td id=desc' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td id=delivery' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=tat' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td id=remarks' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td id=pono' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td id=povname' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td id=podate' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class=text-right id=povalue' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td><td class=hide id=parameterid' + i + '>0</td></tr>');
                 //abheedev bug 388 start
             }
@@ -3502,7 +3502,7 @@ function fnSeteRFQparameterTable() {
 
             if (!jQuery("#tblRFQPrev thead").length) {
 
-                jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:20%!important;'>Item Code</th><th>Item/Service</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:20%!important;'>Item Code</th><th>Item/Service</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
                 jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td  style="width:20%!important;" id=itemcode' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td id=snameprev' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class=text-right id=TPPrev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td id=uomprev' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td id=descprev' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td id=deliveryprev' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td class=text-right id=tatprev' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td id=remarksprev' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td id=ponoprev' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td id=povnameprev' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td id=podateprev' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class=text-right id=povalueprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td></tr>');
 
             }
@@ -3840,7 +3840,7 @@ function fnfillInstructionExcel() {
         }
     }
     $('#tblUOM').append("<tr><td colspan=2>&nbsp;</td></tr><tr><td colspan=2>&nbsp;</td></tr>")
-    $('#tblUOM').append('<tr><th data-style="Header"  colspan=2>Please ensure Target price and Quantity and TAT should be in numbers only.</th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=2>Please ensure Target/Budget Price and Quantity and TAT should be in numbers only.</th></tr>')
 }
 
 function addMoreTermsCondition() {
