@@ -3,7 +3,6 @@ jQuery(document).ready(function () {
     
     $('[data-toggle="popover"]').popover({})
     Pageloaded()
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -96,7 +95,7 @@ jQuery(document).ready(function () {
 });
 
 function FetchRecomendedVendor() {
-
+    var x = isAuthenticated();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "NFA/GETNFAActivity/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&NFaIdx=" + idx,
@@ -547,7 +546,7 @@ $("#ddlCategory").on('change', function () {
     }
 });
 function FetchCurrency(CurrencyID) {
-
+    var x = isAuthenticated();
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -932,6 +931,7 @@ function ajaxFileDelete(closebtnid, fileid, filename, deletionFor, filepath, srn
 }
 
 function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor, srno) {
+    var x = isAuthenticated();
     if (srno == 0) {
         $('#' + closebtnid).remove();
         $('#' + filepath).html('')
@@ -1544,7 +1544,7 @@ function viewallmatrix() {
     bindApproverMaster('N');
 }
 function fetchReguestforQuotationDetails() {
-
+    var x = isAuthenticated();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
@@ -1594,7 +1594,7 @@ function fetchReguestforQuotationDetails() {
 
 }
 function FetchBidVendors() {
-
+    var x = isAuthenticated();
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1646,7 +1646,7 @@ function FetchBidVendors() {
 }
 
 function frmAzurePPCForm() {
-
+    var x = isAuthenticated();
     var RFQID = 0, BidID = 0;
     var EnquiryIssuedOn = new Date();
 
@@ -1772,7 +1772,7 @@ function frmAzurePPCForm() {
 
 function fetchAzPPcFormDetails() {
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
+    var x = isAuthenticated();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=0&BidID=0&nfaID=" + idx,
@@ -2098,6 +2098,7 @@ function fetchAzPPcFormDetails() {
     })
 }
 function Bindtab2DataforPreview() {
+    var x = isAuthenticated();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=0&BidID=0&nfaID=" + idx,
