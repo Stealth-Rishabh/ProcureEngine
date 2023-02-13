@@ -471,7 +471,7 @@ function convertTo24Hour(time) {
     return time;
 }
 function CancelBidDuringConfig(_bidId, _for) {
-    var x = isAuthenticated();
+   
     var Cancelbid = {
         "BidID": parseInt(_bidId),
         "For": _for,
@@ -490,6 +490,7 @@ function CancelBidDuringConfig(_bidId, _for) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
+          
             if (data == '1' && _for == 'BID') {
                 bootbox.alert("Bid Cancelled successfully.", function () {
                     window.location = "index.html";

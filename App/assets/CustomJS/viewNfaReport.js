@@ -3,7 +3,6 @@ var idx = 0;
 $(document).ready(function () {
     $('[data-toggle="popover"]').popover({})
     Pageloaded()
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -211,7 +210,7 @@ function DownloadFile(aID) {
 }
 
 function fetchApproverStatus() {
-
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = sessionStorage.getItem("APIPath") + "NFA/GetNFAApproverStatus/?NFaIdx=" + idx
 
@@ -322,7 +321,7 @@ function fetchApproverStatus() {
 }
 
 function FetchRecomendedVendor() {
-
+    var x = isAuthenticated();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "NFA/GETNFAActivity/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&NFaIdx=" + idx,
@@ -360,7 +359,7 @@ function FetchRecomendedVendor() {
 
 }
 function GetQuestions() {
-
+    var x = isAuthenticated();
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",

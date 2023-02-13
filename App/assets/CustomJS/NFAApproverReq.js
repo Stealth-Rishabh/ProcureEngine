@@ -65,6 +65,7 @@ $(document).ready(function () {
 
 });
 function Bindtab2DataforPreview() {
+    var x = isAuthenticated();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=0&BidID=0&nfaID=" + idx,
@@ -155,6 +156,7 @@ function Bindtab2DataforPreview() {
     });
 }
 function fetchRegisterUser() {
+    var x = isAuthenticated();
     var data = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
@@ -377,7 +379,7 @@ function DownloadFile(aID) {
 }
 
 function fetchApproverStatus() {
-
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = sessionStorage.getItem("APIPath") + "NFA/GetNFAApproverStatus/?NFaIdx=" + idx
 
@@ -524,7 +526,7 @@ jQuery("#txtApprover").typeahead({
 
 });
 function FetchRecomendedVendor() {
-
+    var x = isAuthenticated();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "NFA/GETNFAActivity/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&NFaIdx=" + idx,
@@ -743,6 +745,7 @@ function validateAppsubmitData() {
 
 }
 function ApprovalApp() {
+    var x = isAuthenticated();
     var _cleanString = StringEncodingMechanism(jQuery("#txtRemarksApp").val());
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
@@ -793,6 +796,7 @@ $("#editValuesModal").on("hidden.bs.modal", function () {
     $('#txtdelegate').val()
 });
 function DelegateUser() {
+    var x = isAuthenticated();
     var _cleanString2 = StringEncodingMechanism(jQuery("#txtdelegate").val());
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -865,7 +869,7 @@ var queslength = 0;
 var PendingOn = 'A';
 sessionStorage.setItem('HeaderID', 0)
 function GetQuestions() {
-
+    var x = isAuthenticated();
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -940,7 +944,7 @@ function GetQuestions() {
     })
 }
 function GetQuestionsforCreator(pendingon) {
-
+    var x = isAuthenticated();
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1062,6 +1066,7 @@ $(document).on('keyup', '.form-control', function () {
     }
 });
 function fnsubmitQueryByCreator() {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var flag = "T";
     var rowCount = jQuery('#tblqueryresponse >tbody>tr').length;
@@ -1207,6 +1212,7 @@ function deletequesrow(rowid) {
     }
 }
 function submitQuery() {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     $('#btnTechquery').prop('disabled', true)
@@ -1316,7 +1322,7 @@ function fnquerywithdaw() {
     });
 }
 function withdrawquery() {
-
+    var x = isAuthenticated();
     var checkedValue = '';
     $("#tblqueryresponse> tbody > tr").each(function (index) {
         var this_row = $(this);
@@ -1411,6 +1417,7 @@ function fnRecall() {
     });
 }
 function DisableActivityRecall() {
+    var x = isAuthenticated();
     var _cleanString = StringEncodingMechanism(jQuery("#txtRemarksrecall").val());
     var data = {
         "NFAID": parseInt(idx),

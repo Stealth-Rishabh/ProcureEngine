@@ -95,6 +95,7 @@ function formvalidate() {
 }
 var orgData = [];
 function BindPurchaseOrg() {
+    var x = isAuthenticated();
     var url = sessionStorage.getItem("APIPath") + "NFA/GetPurchaseOrgByUserid?CustomerId=" + sessionStorage.getItem('CustomerID') + "&UserId=" + encodeURIComponent(sessionStorage.getItem('UserID'));
     jQuery.ajax({
         type: "GET",
@@ -127,8 +128,8 @@ function BindPurchaseOrg() {
 
 };
 function bindPurchaseGroupDDL() {
+    var x = isAuthenticated();
     var url = sessionStorage.getItem("APIPath") + "NFA/GetPurchaseGroupByUserID?CustomerId=" + parseInt(sessionStorage.getItem("CustomerID")) + "&OrgId=" + parseInt($('#ddlPurchaseOrg option:selected').val()) + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"));
-
 
     jQuery.ajax({
         type: "GET",
@@ -161,6 +162,7 @@ function bindPurchaseGroupDDL() {
 
 };
 function fetchregisterusers() {
+    var x = isAuthenticated();
     var data = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
@@ -205,6 +207,7 @@ function fetchregisterusers() {
     });
 }
 function fetNFAReport(dtfrom, dtto, subject) {
+    var x = isAuthenticated();
     var result = '';
     if ($("#ddlconfiguredby").select2('data').length) {
         $.each($("#ddlconfiguredby").select2('data'), function (key, item) {
