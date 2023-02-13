@@ -3,6 +3,7 @@ var allUsers = [];
 
 
 function fetchRegisterUser() {
+    var x = isAuthenticated();
     var data = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
@@ -165,7 +166,7 @@ function DownloadFile(aID) {
 }
 
 function fetchApproverStatus() {
-
+    var x = isAuthenticated();
     //jQuery.blockUI({ message: '<h5><img src="assets_1/layouts/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = sessionStorage.getItem("APIPath") + "NFA/GetNFAApproverStatus/?NFaIdx=" + idx
 

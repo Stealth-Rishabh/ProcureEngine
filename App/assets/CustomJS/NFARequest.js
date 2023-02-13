@@ -53,7 +53,7 @@ jQuery(document).ready(function () {
 });
 
 function FetchRecomendedVendor() {
-
+    var x = isAuthenticated();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "NFA/GETNFAActivity/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&NFaIdx=" + idx,
@@ -469,7 +469,7 @@ $("#ddlCategory").on('change', function () {
     }
 });
 function FetchCurrency(CurrencyID) {
-
+    var x = isAuthenticated();
     jQuery.ajax({
 
         type: "GET",
@@ -878,6 +878,7 @@ function ajaxFileDelete(closebtnid, fileid, filename, deletionFor, filepath, srn
 }
 
 function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor, srno) {
+    var x = isAuthenticated();
     if (srno == 0) {
         $('#' + closebtnid).remove();
         $('#' + filepath).html('')

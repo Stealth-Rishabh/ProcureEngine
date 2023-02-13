@@ -2,7 +2,6 @@ jQuery(document).ready(function () {
   
     $('[data-toggle="popover"]').popover({})
     Pageloaded()
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -67,7 +66,7 @@ $(document).ready(function () {
 });
 
 function FetchCurrency(CurrencyID) {
-
+    var x = isAuthenticated();
     jQuery.ajax({
 
         type: "GET",
@@ -460,6 +459,7 @@ $('.panel-group').on('hidden.bs.collapse', toggleIcon);
 $('.panel-group').on('shown.bs.collapse', toggleIcon);
 
 function fetchRegisterUser() {
+    var x = isAuthenticated();
     var data = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
