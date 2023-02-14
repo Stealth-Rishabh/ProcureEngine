@@ -158,7 +158,9 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
-
+.hiddenRow {
+    padding: 0 !important;
+}
 input[type=number] {
     -moz-appearance: textfield;
 }

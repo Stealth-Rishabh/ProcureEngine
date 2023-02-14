@@ -51,8 +51,7 @@ function fetchReguestforQuotationDetails(RFQID) {
                 RFqsub = RFQData[0].general[0].rfqSubject;
                 $('#logo').attr("src", RFQData[0].general[0].logoImage);
                 $('#spnconfiguredby').html(RFQData[0].general[0].rfqConfigureByName)
-
-                jQuery('#tbldetails >tbody').append("<tr><td><b>RFQ Subject:</b> " + RFQData[0].general[0].rfqSubject + "</td><td><b>RFQ Description:</b> " + RFQData[0].general[0].rfqDescription + "</td></tr><tr><td><b>Event ID:</b> " + RFQID + "</td><td><b>RFQ Date:</b> " + fnConverToLocalTime(RFQData[0].general[0].rfqStartDate) + ' - ' + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td></tr><tr><td><b>Currency:</b> " + RFQData[0].general[0].currencyNm + "</td><td><b>Conversion Rate:</b> " + RFQData[0].general[0].rfqConversionRate + " </td></tr>")
+                jQuery('#tbldetails >tbody').append("<tr><td><b>RFQ Subject:</b> " + RFQData[0].general[0].rfqSubject + "</td><td><b>RFQ Description:</b> " + RFQData[0].general[0].rfqDescription + "</td></tr><tr><td><b>Event ID:</b> " + RFQID + "</td><td><b>RFQ Date:</b> " + fnConverToLocalTime(RFQData[0].general[0].rfqStartDate) + ' - ' + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td></tr><tr><td><b>Currency:</b> " + RFQData[0].general[0].currencyNm + "</td><td><b>Conversion Rate:</b> " + RFQData[0].general[0].rfqConversionRate + " </td></tr><tr><td><b>Ref No.:</b> " +  RFQData[0].general[0].rfqReference + " </td></tr>")
 
             }
         },
