@@ -381,7 +381,6 @@ function getSummary(RFQID,subject) {
 
 }
 function fetchBidVendorSummaryDetail() {
-
     var dtfrom = '', dtto = '', subject = 'X-X';
     result = '';
     if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
@@ -442,9 +441,13 @@ function fetchBidVendorSummaryDetail() {
             if (BidData.length > 0) {
                 var bID = 0;
                 let _subject = "";
+                let totalSavingLIP = "";
+                let totalSavingTP = "";
               
                 for (var i = 0; i < BidData.length; i++) {
                     _subject = StringDecodingMechanism(BidData[i].rfqSubject)
+                    totalSavingLIP = ((BidData[i].rfqLastInvoicePrice - BidData[i].minPrice) * BidData[i].quantity).round(2)
+                    totalSavingTP = ((BidData[i].rfqTargetPrice - BidData[i].minPrice) * BidData[i].quantity).round(2)
                     var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(_subject) + "'\) href='javascript:;' >" + BidData[i].rfqid + "</a></td>";
                     str += "<td>" + BidData[i].rfqSubject + "</td>";
                     str += "<td>" + BidData[i].rfqConfiguredBy + "</td>";
@@ -496,16 +499,27 @@ function fetchBidVendorSummaryDetail() {
 
                     str += "<td class=text-right>" + thousands_separators(BidData[i].minPrice) + "</td>";
                     if (BidData[i].rfqLastInvoicePrice != 0) {
-
-                        str += "<td class=text-right>" + thousands_separators(((BidData[i].rfqLastInvoicePrice - BidData[i].minPrice) * BidData[i].quantity).round(2)) + "</td>"
+                        if (totalSavingLIP < 0) {
+                            str += "<td class=text-right>" + 0 + "</td>"
+                        }
+                        else {
+                            str += "<td class=text-right>" + thousands_separators(totalSavingLIP) + "</td>"
+                        }
                     }
                     else {
 
                         str += '<td class=text-right>' + 0 + '</td>';
                     }
                     if (BidData[i].rfqTargetPrice != 0) {
+                        
+                        if (totalSavingTP < 0) {
+                            str += "<td class=text-right>" + 0 + "</td>"
+                        }
+                        else {
+                            str += "<td class=text-right>" + thousands_separators(totalSavingTP) + "</td>"
+                        }
 
-                        str += "<td class=text-right>" + thousands_separators(((BidData[i].rfqTargetPrice - BidData[i].minPrice) * BidData[i].quantity).round(2)) + "</td>"
+                       
                     }
                     else {
 
@@ -689,7 +703,6 @@ $('#editLastInvoiceprice').on("hidden.bs.modal", function () {
 
 
 function fetchBidVendorSummarySummarization() {
-
     var dtfrom = '', dtto = '', subject = 'X-X';
     result = '';
     if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
@@ -743,19 +756,23 @@ function fetchBidVendorSummarySummarization() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
+           
             var BidLIP = stringDivider("RFQ Value at Last Invoice Price(LIP)", 45, "<br/>\n");
             var BidTP = stringDivider("RFQ Value at Target/Budget Price(TP)", 45, "<br/>\n");
             var BidFinal = stringDivider("RFQ Value as per L1", 45, "<br/>\n");
             var savinfLIP = stringDivider("Total Saving wrt LIP", 40, "<br/>\n");
             var savinfTR = stringDivider("Total Saving wrt TP", 40, "<br/>\n");
+            
             jQuery("#tblVendorSummarySUmzation").empty();
             //Sid RFQ Stages
             jQuery('#tblVendorSummarySUmzation').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>Configure Date</th><th class='bold'>Start Date</th><th class='bold'>RFQ Deadline</th><th class='bold'>Currency</th><th class='bold'>" + BidLIP + "</th><th class='bold'>" + BidTP + "</th><th class='bold'>" + BidFinal + "</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfTR + "</th></tr></thead>");
 
             if (BidData.length > 0) {
-
+                let totalSavingLIP = "";
+                let totalSavingTP = "";
                 for (var i = 0; i < BidData.length; i++) {
-
+                    totalSavingLIP = (BidData[i].rfqValueAsLastInvoicePrice - BidData[i].rfqValueAsMinPrice).round(2)
+                    totalSavingTP = (BidData[i].rfqValueAsTargetPrice - BidData[i].rfqValueAsMinPrice).round(2)
                     var str = "<tr><td><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(BidData[i].rfqSubject) + "'\) href='javascript:;'>" + BidData[i].rfqid + "</a></td>";
                     str += "<td>" + BidData[i].rfqSubject + "</td>";
                     str += "<td>" + BidData[i].rfqConfiguredBy + "</td>";
@@ -773,16 +790,26 @@ function fetchBidVendorSummarySummarization() {
                     str += "<td class=text-right>" + thousands_separators(BidData[i].rfqValueAsTargetPrice) + "</td>";
                     str += "<td class=text-right>" + thousands_separators(BidData[i].rfqValueAsMinPrice) + "</td>";
                     if (BidData[i].RFQValueAsLastInvoicePrice != 0) {
-
-                        str += "<td class=text-right>" + thousands_separators((BidData[i].rfqValueAsLastInvoicePrice - BidData[i].rfqValueAsMinPrice).round(2)) + "</td>";
+                      
+                        if (totalSavingLIP < 0) {
+                            str += "<td class=text-right>" + 0 + "</td>";
+                        }
+                        else {
+                            str += "<td class=text-right>" + thousands_separators(totalSavingLIP) + "</td>";
+                        }
                     }
                     else {
 
                         str += "<td class=text-right>" + 0 + "</td>"
                     }
                     if (BidData[i].rfqValueAsTargetPrice != 0) {
-
-                        str += "<td class=text-right>" + thousands_separators((BidData[i].rfqValueAsTargetPrice - BidData[i].rfqValueAsMinPrice).round(2)) + "</td>";
+                       
+                        if (totalSavingTP < 0) {
+                            str += "<td class=text-right>" + 0 + "</td>";
+                        }
+                        else {
+                            str += "<td class=text-right>" + thousands_separators(totalSavingTP) + "</td>";
+                        }
                     }
                     else {
 
