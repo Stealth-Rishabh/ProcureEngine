@@ -121,7 +121,7 @@ function selectAccount() {
 //Check JWT Validity
 
 
-function isAuthenticated() {
+async function isAuthenticated() {
     debugger;
     var token = sessionStorage.getItem("Token");
     var refreshToken = sessionStorage.getItem("RefreshToken");
@@ -165,7 +165,7 @@ function isAuthenticated() {
         }
     }
     else {
-        myMSALObj.handleRedirectPromise()
+        await myMSALObj.handleRedirectPromise()
             .then(handleResponse)
             .catch(error => {
                 console.error(error);

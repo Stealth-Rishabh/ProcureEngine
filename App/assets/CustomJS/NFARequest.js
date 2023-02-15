@@ -541,9 +541,9 @@ function GetOverviewmasterbyId(idx) {
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         if (res.result != null) {
-            let _cleanStringSub = StringDecodingMechanism(res.result[0].nfaSubject);
-            let _cleanStringDet = StringDecodingMechanism(res.result[0].nfaDescription);
             if (res.result.length > 0) {
+                let _cleanStringSub = StringDecodingMechanism(res.result[0].nfaSubject);
+                let _cleanStringDet = StringDecodingMechanism(res.result[0].nfaDescription);
                 $("#txtEventref").val(res.result[0].eventReftext);
                 $("#txtTitle").val(_cleanStringSub);
                 $("#txtNFADetail").val(_cleanStringDet);
