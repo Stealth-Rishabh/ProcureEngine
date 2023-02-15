@@ -206,7 +206,7 @@ function fetchRegisterUser() {
 //abheedev backlog 471
 var nfaid = 0;
 function GetOverviewmasterbyId(idx) {
-
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
     var GetData = callajaxReturnSuccess(url, "Get", {});
@@ -320,6 +320,7 @@ function getSummary(bidid, bidforid, bidtypeid, RFQID) {
     }
 }
 function BindAttachmentsOfEdit() {
+    var x = isAuthenticated();
     var url = "NFA/FetchNFaFiles?CustomerId=" + parseInt(CurrentCustomer) + "&NfaId=" + parseInt(idx);
 
     var GetFilesData = callajaxReturnSuccess(url, "Get", {})
@@ -354,6 +355,7 @@ function BindAttachmentsOfEdit() {
 };
 
 function BindSaveparams() {
+    var x = isAuthenticated();
     var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx) + "&For=NFApp";
 
     var ParamData = callajaxReturnSuccess(url, "Get", {})

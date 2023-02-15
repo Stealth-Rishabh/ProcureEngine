@@ -121,7 +121,7 @@ function Bindtab2DataforPreview() {
 
 var nfaid
 function GetOverviewmasterbyId(idx) {
-
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
     var GetData = callajaxReturnSuccess(url, "Get", {});
@@ -224,6 +224,7 @@ function getSummary(bidid, bidforid, bidtypeid, RFQID) {
     }
 }
 function BindAttachmentsOfEdit() {
+    var x = isAuthenticated();
     var url = "NFA/FetchNFaFiles?CustomerId=" + parseInt(CurrentCustomer) + "&NfaId=" + parseInt(idx);
 
     var GetFilesData = callajaxReturnSuccess(url, "Get", {})
