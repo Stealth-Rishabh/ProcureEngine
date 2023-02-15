@@ -1,8 +1,8 @@
 sessionStorage.clear();
 
 //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+//sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
 
 var Token = '';
@@ -139,13 +139,13 @@ var Login = function () {
     }
 
     function validateUser() {
-        sessionStorage.setItem("APIPath", 'http://localhost:51739/');
-        //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+       // sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+        sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
         //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
         var path = window.location.pathname;
         var url = '';
         var lastPart = (path.substr(path.length - (path.length - 1))).slice(0, -1);
-        //lastPart = 'vendor'
+        lastPart = 'vendor'
         var LinkUrl = window.location.href;
         if (lastPart.toLocaleLowerCase() == "vendor") {
             var pwd = fnencrypt(jQuery("#password").val().trim());
@@ -601,6 +601,9 @@ function SetSessionItems(lastPart, value) {
     sessionStorage.setItem("culturecode", value.cultureCode);
     //sessionStorage.setItem("localcode", value.localecode);
     sessionStorage.setItem("utcoffset", value.utcoffset);
+    sessionStorage.setItem("isWhatsappOpted", value.isWhatsappOpted);
+    sessionStorage.setItem("mobileNo", value.mobileNo);
+
     setTimeout(function () {
         if (sessionStorage.getItem("UserType") == "P") {
             if ((value.VendorID != '0')) {

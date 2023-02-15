@@ -1,5 +1,9 @@
 var Changepassworderror = $('#errordivChangePassword');
 var Changepasswordsuccess = $('#successdivChangePassword');
+let isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted')
+let mobileNo = sessionStorage.getItem('mobileNo');
+//let mobileNo = "9506902863";
+
 Changepassworderror.hide();
 Changepasswordsuccess.hide();
 //FROM HTML
@@ -22,6 +26,9 @@ jQuery(document).ready(function () {
             });
         }
     }
+   if (isWhatsappOpted == "") {
+        whatsappAlert()
+   }   
     setCommonData();
     App.init();
     //  multilingualLanguage()
@@ -544,7 +551,7 @@ function fetchReguestforQuotationDetailseRFQ() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-            debugger
+           
             let _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
             let _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
             sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
@@ -1276,6 +1283,93 @@ jQuery('#bidchkIsAccepted').click(function () {
     }
 });
 
+//whatsapp message to vendor
+let whatsappdialog
+function whatsappAlert() {
+    
+    bootbox.dialog({
+        title: "Now get alerts on WhatsApp!",
+        message: "We'll send you important updates and notifications on Whatsapp",
+        closeButton: false,
+        buttons: {
+            ok: {
+                label: "Yes, opt in",
+                className: "btn-success",
+                callback: function () {
+                    $.ajax({
+                        url: sessionStorage.getItem("APIPath") + "User/UpdateWhatsApp/?IsWhatsappOpted=Y",
+                        type: "POST",
+                        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+                        data: [],
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data) {
+                            SendWhatsApp()
+                            sessionStorage.setItem('isWhatsappOpted', 'Y');
+                            isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted');
+                        },
+                        error: function (error) {
+                            console.error("Error sending WhatsApp message:", error);
+                        }
+                    });
+
+
+                }
+            },
+            cancel: {
+                label: "Skip",
+                className: "btn-danger",
+                callback: function () {
+                    $.ajax({
+                        url: sessionStorage.getItem("APIPath") + "User/UpdateWhatsApp/?IsWhatsappOpted=N",
+                        type: "POST",
+                        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+                        data: [],
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data) {
+                            
+                            sessionStorage.setItem('isWhatsappOpted', 'N');
+                            isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted');
+
+                        },
+                        error: function (error) {
+                            console.error("Error sending WhatsApp message:", error);
+                        }
+
+                    });
+                }
+            }
+           
+        }
+        
+     });
+   
+}
+
+
+function SendWhatsApp() {
+    let data = {
+        "tonumber": mobileNo,
+        "template": "vendorwelcome"
+    }
+    $.ajax({
+        url: sessionStorage.getItem("APIPath") + "BlobFiles/SendWhatsApp",
+        type: "POST",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            bootbox.alert("You are successfully subscribed to Whatsapp", function () {
+                return true;
+            });          
+        },
+        error: function (error) {
+            console.error("Error sending WhatsApp message:", error);
+        }
+    });
+}
 
 /*function multilingualLanguage() {
 

@@ -169,7 +169,7 @@ function fncheckapprovers() {
 
 
 function GetApprovermasterbyId(idx) {
-
+    var x = isAuthenticated();
     var url = "NFA/FetchApproverMasterById?CustomerId=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
 
     var GetData = callajaxReturnSuccess(url, "Get", {});
@@ -263,7 +263,7 @@ $("#txtDetails").typeahead({
 
 
 function CheckDuplicate() {
-
+    var x = isAuthenticated();
     var amountFrom = $("#txtAmountFrom").val();
     var amountTo = $("#txtAmountTo").val();
 
@@ -299,6 +299,7 @@ function CheckDuplicate() {
 //New Appprover Logic
 //Purchase ORG.
 function BindPurchaseOrg() {
+    var x = isAuthenticated();
     var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=0";
 
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
@@ -322,7 +323,7 @@ function BindPurchaseOrg() {
 };
 
 function bindPurchaseGroupDDL() {
-
+    var x = isAuthenticated();
     var url = "NFA/GetPurchaseGroupByID?CustomerId=" + parseInt(CurrentCustomer) + "&OrgId=" + $('#ddlPurchaseOrg option:selected').val();
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
 
@@ -342,7 +343,7 @@ function bindPurchaseGroupDDL() {
 };
 
 function bindConditionDDL() {
-
+    var x = isAuthenticated();
     var url = "NFA/fetchNFACondition?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=N";
 
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
@@ -394,6 +395,7 @@ $("#txtAmountTo").on("keyup", function () {
 
 
 function SaveApproverMaster() {
+    var x = isAuthenticated();
     var p_approvaltype = $("#ddlApproveltype option:selected").val();
     var isActive = $("#chkIsActive").is(':checked');
     var amountFrom = $("#txtAmountFrom").val();
@@ -1246,7 +1248,7 @@ function CreateSeqData() {
 }
 
 function SaveApproverSeqData(objSeqData) {
-
+    var x = isAuthenticated();
     var url = "NFA/InsertUpdateMultipleSeq?customerid=" + parseInt(CurrentCustomer) + "&nfaApproverid=" + nfaApproverIDX;
 
     //alert(JSON.stringify(objSeqData))
@@ -1261,7 +1263,7 @@ function SaveApproverSeqData(objSeqData) {
 };
 
 function BindApproverSeqpreview() {
-
+    var x = isAuthenticated();
     var url = "NFA/FetchApproverSeq";
     var model = {
 
@@ -1665,7 +1667,7 @@ var FormWizard = function () {
 }();
 
 function BindApproverSeqOnEdit() {
-
+    var x = isAuthenticated();
     var url = "NFA/FetchApproverSeq";
     var model = {
 
@@ -1770,6 +1772,7 @@ function onClear() {
     $("#txtmodelPurchaseOrg").val('');
 };
 function BindData() {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=0";
@@ -1850,7 +1853,7 @@ function onEditClick(idx, checked) {
     jQuery.unblockUI();
 };
 function SaveUpdateData() {
-
+    var x = isAuthenticated();
     var url = "NFA/InsertUpdatePurchaseOrg";
     var idx = $("#hdnmodelOrgID").val();
     var Name = $("#txtmodelPurchaseOrg").val();
@@ -1898,8 +1901,10 @@ function CompleteProcess() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
-                    //window.location.reload();
-                    $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
+                    
+                    $('.modal-footer .btn-success').prop('disabled', true);
+                    CompleteAprroverSeq()
+                    //abheedev button duplicate
                     bootbox.alert("NFA Approver Matrix Configured Successfully.", function () {
                         window.location.reload();
                         return false;
@@ -1971,7 +1976,7 @@ function ValidatePurchaseGroup() {
 }
 function BindModelPurchaseOrg() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
+    var x = isAuthenticated();
     var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=0";
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
@@ -1997,7 +2002,7 @@ function BindModelPurchaseOrg() {
 
 };
 function bindPurchaseGroupData() {
-
+    var x = isAuthenticated();
     jQuery.blockUI({ message: LoadingMessage });
     var url = "NFA/GetPurchaseGroup?CustomerId=" + parseInt(CurrentCustomer);
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
@@ -2030,6 +2035,7 @@ function bindPurchaseGroupData() {
     jQuery.unblockUI();
 };
 function SavePurchaseGroup() {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: LoadingMessage });
     var url = "NFA/InsertUpdatePurchaseGroup";
     var idx = $("#hdnmodelGroupID").val();
@@ -2132,3 +2138,29 @@ jQuery("#txtSearchmatrix").keyup(function () {
 
     });
 });
+
+
+function CompleteAprroverSeq() {
+    var x = isAuthenticated();
+    
+    var data = {
+        CustomerID: parseInt(CurrentCustomer),
+        NfaApproverID: parseInt(nfaApproverIDX)
+        
+    };
+    var url = "NFA/CompleteAprroverSeq";
+    
+    var SaveApproverMaster = callajaxReturnSuccess(url, "Post", JSON.stringify(data));
+    SaveApproverMaster.success(function (res) {
+        if (res.status != "E") {
+       
+            console.log(res);        
+        }
+        else {
+            alert("Error :" + res.error);
+        }
+    });
+    SaveApproverMaster.error(function (xhr, status, error) {
+        //  jQuery.unblockUI();
+    })
+};
