@@ -3,8 +3,7 @@ $(document).ready(function () {
     BindData();
 });
 function BindPurchaseOrg() {
-
-
+    var x = isAuthenticated();
     var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=0";
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
@@ -90,6 +89,7 @@ function Validate() {
     }
 };
 function BindData() {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var url = "NFA/GetNFAText?CustomerID=" + parseInt(CurrentCustomer) + "&Isactive=2";
@@ -172,7 +172,7 @@ function onEditClick(idx, checked, isdefault, Porgid) {
 };
 
 function SaveUpdate() {
-
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var isdefault = 'N'
     var url = "NFA/CreateUpdateNfaParam";

@@ -1,7 +1,8 @@
-
+let isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted') 
+let mobileNo = sessionStorage.getItem('mobileNo');
+//let mobileNo = "9821250345";
 function onloadcalls() {
     Pageloaded();
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     App.init();
     setCommonData();
@@ -211,7 +212,7 @@ function fetchVendorDetails() {
 
 //vendor myprofile_vendor.html
 function fetchMyProfileVendor() {
-
+    
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var tzID = parseInt(sessionStorage.getItem("timezoneid"));
     var userReqObj = {
@@ -242,6 +243,15 @@ function fetchMyProfileVendor() {
             }
 
             $('#vendorComp').val(vendorCompstxt.slice(0, -1));
+            //code written for whatsapp notification
+          
+            if (isWhatsappOpted === 'Y' || isWhatsappOpted === 'N') {
+               
+                
+                $('#uniform-whatsappAlert' + isWhatsappOpted).find('span').addClass('checked');
+
+            }
+
 
             if (vendordetails[0].tmpVendorID != '' && vendordetails[0].tmpVendorID != null && vendordetails[0].tmpVendorID != undefined) {
                 sessionStorage.setItem('tmpVendorID', vendordetails[0].tmpVendorID);
@@ -1330,4 +1340,75 @@ function multilingualLanguage() {
         });
     });
 
+}
+//whatsapp notification changes
+
+$('input[name="whatsappAlert"]').change(function () {
+       
+        if ($(this).val() == "Y") {
+            $.ajax({
+                url: sessionStorage.getItem("APIPath") + "User/UpdateWhatsApp/?IsWhatsappOpted=Y",
+                type: "POST",
+                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+                data: [],
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    SendWhatsApp()
+                    sessionStorage.setItem('isWhatsappOpted', 'Y');
+                    isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted');
+                    console.log(isWhatsappOpted);
+                },
+                error: function (error) {
+                    console.error("Error sending WhatsApp message:", error);
+                }
+            });
+        }
+        else {
+            $.ajax({
+                url: sessionStorage.getItem("APIPath") + "User/UpdateWhatsApp/?IsWhatsappOpted=N",
+                type: "POST",
+                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+                data: [],
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    sessionStorage.setItem('isWhatsappOpted', 'N');
+                    isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted');
+                    console.log(isWhatsappOpted);
+                },
+                error: function (error) {
+                    console.error("Error sending WhatsApp message:", error);
+                }
+            });
+        }
+    });
+
+
+
+
+
+function SendWhatsApp() {
+   
+    let data = {
+        "tonumber": mobileNo,
+        "template": "vendorwelcome"
+    }
+    $.ajax({
+        url: sessionStorage.getItem("APIPath") + "BlobFiles/SendWhatsApp",
+        type: "POST",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+           
+            bootbox.alert("You are successfully subscribed to Whatsapp", function () {
+                return true;
+            });
+        },
+        error: function (error) {
+            console.error("Error sending WhatsApp message:", error);
+        }
+    });
 }

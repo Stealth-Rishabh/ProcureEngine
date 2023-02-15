@@ -667,8 +667,7 @@ function frmApprovalPPCForm(nfagroupid) {
 }
 var orgData = [];
 function BindPurchaseOrg() {
-
-
+    var x = isAuthenticated();
     var url = "NFA/GetPurchaseOrgByUserid?CustomerId=" + parseInt(CurrentCustomer) + "&UserId=" + encodeURIComponent(UserID);
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
@@ -696,6 +695,7 @@ function BindPurchaseOrg() {
 
 };
 function bindPurchaseGroupDDL() {
+    var x = isAuthenticated();
     var url = "NFA/GetPurchaseGroupByUserID?CustomerId=" + parseInt(CurrentCustomer) + "&OrgId=" + parseInt($('#ddlPurchaseOrg option:selected').val()) + "&UserID=" + encodeURIComponent(UserID);
 
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});

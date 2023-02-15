@@ -583,7 +583,7 @@ function FetchCurrency(CurrencyID) {
 }
 
 function bindNFAOverViewMaster() {
-
+    var x = isAuthenticated();
     var url = "NFA/GetNFAOverViews?CustomerID=" + parseInt(CurrentCustomer) + "&userid=" + UserID;
 
     var GetData = callajaxReturnSuccess(url, "Get", {});
@@ -605,6 +605,7 @@ function bindNFAOverViewMaster() {
 };
 
 function GetOverviewmasterbyId(idx) {
+    var x = isAuthenticated();
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
@@ -717,7 +718,7 @@ function fncheckvendorOnEvent() {
     }
 }
 function GetEventRefData() {
-
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var EventTypeId = $("#ddlEventType option:selected").val();
 
@@ -977,7 +978,7 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor, srno) {
 
 var orgData = [];
 function BindPurchaseOrg() {
-
+    var x = isAuthenticated();
     var url = "NFA/GetPurchaseOrgByUserid?CustomerId=" + parseInt(CurrentCustomer) + "&UserId=" + encodeURIComponent(UserID);
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
@@ -1003,6 +1004,7 @@ function BindPurchaseOrg() {
 
 };
 function bindPurchaseGroupDDL() {
+    var x = isAuthenticated();
     var url = "NFA/GetPurchaseGroupByUserID?CustomerId=" + parseInt(CurrentCustomer) + "&OrgId=" + parseInt($('#ddlPurchaseOrg option:selected').val()) + "&UserID=" + encodeURIComponent(UserID);
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
@@ -1025,6 +1027,7 @@ function bindPurchaseGroupDDL() {
 };
 var p_eventType;
 function Savedata() {
+    var x = isAuthenticated();
     var overviewList = [];
     var p_title = $("#txtTitle").val();
     var p_descript = $("#txtNFADetail").val();
@@ -1156,7 +1159,7 @@ function FetchMatrixApprovers() {
 };
 
 function BindApprovers(amount, groupId, orgid, conId, budgetType, budget) {
-
+    var x = isAuthenticated();
     var url = "NFA/FetchNFAApprovers?customerId=" + parseInt(CurrentCustomer) + "&userID=" + UserID + "&amount=" + parseFloat(amount) + "&groupId=" + parseInt(groupId) + "&orgid=" + parseInt(orgid) + "&conId=" + parseInt(conId) + "&budgetType=" + budgetType + "&NFAID=" + parseInt(idx);
 
     var GetData = callajaxReturnSuccess(url, "Get", {});
@@ -1210,6 +1213,7 @@ function ConfirmSaveApprovers() {
     });
 }
 function SaveApproversConfirmation() {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
    
     var approversData = [];
@@ -1277,6 +1281,7 @@ function SaveApproversConfirmation() {
 }
 
 function SaveAttachmentinDB() {
+    var x = isAuthenticated();
     var url = "NFA/InsUpdateNFAFiles?customerId=" + parseInt(CurrentCustomer) + "&NfaIdx=" + parseInt(idx);
     var lstFiles = [];
     var objFiles = {};
@@ -1309,6 +1314,7 @@ function SaveAttachmentinDB() {
 };
 
 function BindAttachmentsOfEdit() {
+    var x = isAuthenticated();
     var url = "NFA/FetchNFaFiles?CustomerId=" + parseInt(CurrentCustomer) + "&NfaId=" + parseInt(idx);
 
     var GetFilesData = callajaxReturnSuccess(url, "Get", {})
@@ -1350,7 +1356,7 @@ function BindAttachmentsOfEdit() {
 
 
 function SaveFirstTabActivity() {
-
+    var x = isAuthenticated();
     objActivity = {
         FromUserId: UserID,
         ToUserId: UserID,
@@ -1378,6 +1384,7 @@ Array.prototype.min = function () {
 };
 
 function SaveActivityDetails(data) {
+    var x = isAuthenticated();
     var aquaticCreatures = data.filter(function (details) {
         return details.apprSeq == ApprSeqval.min();
     });
@@ -1395,7 +1402,7 @@ function SaveActivityDetails(data) {
 
 function BindData() {
 
-
+    var x = isAuthenticated();
     var url = "NFA/GetNFAText?CustomerID=" + parseInt(CurrentCustomer);
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
@@ -1450,7 +1457,7 @@ function onEditClick(idx, checked) {
 };
 
 function SaveUpdate() {
-
+    var x = isAuthenticated();
     var url = "NFA/CreateUpdateNfaParam";
     var idx = $("#hdnParamID").val();
     var paramtext = $("#txtParamText").val();
@@ -1493,7 +1500,7 @@ $("#searchPop-up").keyup(function () {
 });
 
 function bindConditionDDL() {
-
+    var x = isAuthenticated();
     var url = "NFA/fetchNFACondition?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=N";
 
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
