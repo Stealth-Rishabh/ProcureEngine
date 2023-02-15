@@ -812,7 +812,7 @@ function InsUpdQuoteScrap(rowID) {
         $('#hdnselectedindex').val(i);
 
      
-        connection.invoke("RefreshBidParticipationFA", JSON.stringify(QuoteProduct), parseInt(sessionStorage.getItem("BidID"))).catch(function (err) {
+        connection.invoke("RefreshBidParticipationFA", JSON.stringify(QuoteProduct)).catch(function (err) {
             return console.error(err.toString());
         });
         $('#txtquote' + i).val('')

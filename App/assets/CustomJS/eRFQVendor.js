@@ -2465,7 +2465,29 @@ function warnforsubmit() {
         }
     });
 }
+function downloadBOQ() {
 
+
+
+    fetch(sessionStorage.getItem("APIPath") + "eRFQVendor/RFQBoqdownload/?RFQId=" + sessionStorage.getItem('hddnRFQID') + "&VendorID=" + sessionStorage.getItem('VendorId') + "&RFQVersionId=0")
+        .then(resp => resp.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'Grid.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            downloadexcel();
+            bootbox.alert("File downloaded Successfully.", function () {
+                return true;
+            });
+
+        })
+
+}
 
 //************************* Usused code
 //function fetchRFQParameterlastquotesonload(ver) {
