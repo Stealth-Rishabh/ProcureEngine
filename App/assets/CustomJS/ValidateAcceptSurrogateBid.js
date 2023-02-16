@@ -255,6 +255,9 @@ function fnGtrTokenValidatePassword() {
                         else if (BIDTypeID == "7" && BidClosingType == 'S') {
                             window.location = "ParticipateBidStagger.html";
                         }
+                        else if (BIDTypeID == "8") {
+                            window.location = "ParticipateBidCoalExport.html";
+                        }
                         else if (BIDTypeID == "9") {
                             window.location = "ParticipateBidFrenchAuction.html";
                         }
