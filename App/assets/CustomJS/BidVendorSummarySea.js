@@ -1850,10 +1850,7 @@ connection.on("refreshFAQuotes", function (data) {
 
     fetchBidSummaryDetails(sessionStorage.getItem('BidID'), BidForID)
 });
-connection.on("refreshCAQuotes", function (data) {
 
-    fetchBidSummaryDetails(sessionStorage.getItem('BidID'), BidForID)
-});
 connection.on("refreshColumnStatus", function (data1) {
 
     if (data1.length > 1) {
@@ -2290,7 +2287,7 @@ connection.on("refreshColumnStatusCoal", function (data1) {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-
+         
             if (data.length > 0) {
                 //jQuery("#tblBidSummary > thead").empty();
                 // jQuery("#tblBidSummary > tbody").empty();
@@ -2361,7 +2358,16 @@ connection.on("refreshColumnStatusCoal", function (data1) {
 
 
 
-                    strsumm += "<td id=vname" + i + " class=showvendor>" + data[i].vendorName + "</td><td class=text-right>" + (data[i].landedPrice == '0' ? '' : thousands_separators(data[i].landedPrice)) + "</td><td class=text-right>" + (data[i].cess == '0' ? '' : thousands_separators(data[i].cess)) + "</td><td class=text-right>" + data[i].gst + "</td><td class=text-right>" + (data[i].ncv == '0' ? '' : thousands_separators(data[i].ncv)) + "</td><td id=level" + i + " id=level" + i + " >" + data[i].srNo + "</td><td class='text-right' id=initialQuote" + i + ">" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
+                    strsumm += "<td id=vname" + i + " class=showvendor>" + data[i].vendorName + "</td><td class=text-right>" + (data[i].landedPrice == '0' ? '' : thousands_separators(data[i].landedPrice)) + "</td><td class=text-right>" + (data[i].cess == '0' ? '' : thousands_separators(data[i].cess)) + "</td><td class=text-right>" + data[i].gst + "</td><td class=text-right>" + (data[i].ncv == '0' ? '' : thousands_separators(data[i].ncv)) + "</td>"
+                   //abheedev remove coal quote
+                    if (data[i].srNo != 'N/A' && data[i].srNo.toLowerCase() != 'not participated' && data[i].srNo.toLowerCase() != 'not quoted') {
+                        strsumm += '<td id=level' + i + ' width="5%">' + data[i].srNo + '<a href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td>';
+                    }
+                    else {
+                        strsumm += '<td id=level' + i + ' width="5%">' + data[i].srNo + '</td>';
+
+                    }
+                    strsumm += "<td class='text-right' id = initialQuote" + i + " > " + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td > ";
                     strsumm += "<td class='text-right' id=lowestquote" + i + " >" + (data[i].lQuote == '0' ? '' : thousands_separators(data[i].lQuote)) + "</td><td id=bidvalue" + i + " class=hide>" + thousands_separators(TotalBidValue) + "</td><td>" + (data[i].offeredQuan == '0' ? '' : thousands_separators(data[i].offeredQuan)) + "</td>";
                     strsumm += "<td class=hide id=selectedcurr" + i + ">" + data[i].selectedCurrency + "</td><td class=hide id=TP" + i + ">" + removeThousandSeperator(data[i].targetPrice) + "</td><td class=hide id=lastinvoice" + i + ">" + removeThousandSeperator(data[i].lastInvoicePrice) + "</td><td class=hide id=quantity" + i + ">" + data[i].quantity + "</td><td class=hide id=coalid" + i + ">" + data[i].coalID + "</td></tr>";
 
