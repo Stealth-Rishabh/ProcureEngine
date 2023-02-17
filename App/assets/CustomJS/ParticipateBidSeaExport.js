@@ -1,6 +1,5 @@
 jQuery(document).ready(function () {
     Pageloaded()
-    var x = isAuthenticated();
     $('ul#chatList').slimScroll({
         height: '250px'
     });

@@ -596,12 +596,17 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
             var savinfstart = stringDivider("Total Saving wrt SP",40, "<br/>\n");
             var savinfTR = stringDivider("Total Saving wrt TP", 40, "<br/>\n");
             jQuery("#tblVendorSummarydetails").empty();
-
             jQuery('#tblVendorSummarydetails').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>Bid Subject</th><th class='bold'>Configured By</th><th class='bold'>Bid Date</th><th class='bold'>Item/Service</th><th class='bold'>Quantity</th><th class='bold'>UOM</th><th class='bold'>Currency</th><th>Vendor</th><th class='bold'>" + LastHD + "</th><th class='bold'>Start Price (SP)</th><th class='bold'>Target Price (TP)</th><th class='bold'>Initial Quote</th><th class='bold'>L1 Price</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfstart + "</th><th class='bold'>" + savinfTR + "</th><th>Bid Status</th></tr></thead>");
             if (BidData.length > 0) {
                 var bID = 0;
+                let totalSavingLIP = "";
+                let totalSavingSP = "";
+                let totalSavingTP = "";
 
                 for (var i = 0; i < BidData.length; i++) {
+                    totalSavingLIP = ((BidData[i].lastInvoicePrice - BidData[i].minPrice) * BidData[i].quantity).round(2)
+                    totalSavingSP = ((BidData[i].startPrice - BidData[i].minPrice) * BidData[i].quantity).round(2)
+                    totalSavingTP = ((BidData[i].targetprice - BidData[i].minPrice) * BidData[i].quantity).round(2)
                     var encrypdata = fnencrypt("BidID=" + BidData[i].bidID + "&BidTypeID=" + BidData[i].bidTypeID + "&BidForID=" + BidData[i].bidForID)
 
                     var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].bidID + "'\,\'" + BidData[i].bidForID + "'\,\'0'\) href='javascript:;' >" + BidData[i].bidID + "</a></td>";
@@ -660,19 +665,35 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
 
                     str += "<td class=text-right>" + thousands_separators(BidData[i].initialQuote) + "</td>";
                     str += "<td class=text-right>" + thousands_separators(BidData[i].minPrice) + "</td>";
+                   
                     if (BidData[i].lastInvoicePrice != 0) {
-
-                        str += "<td class=text-right>" + thousands_separators(((BidData[i].lastInvoicePrice - BidData[i].minPrice) * BidData[i].quantity).round(2)) + "</td>"
+                        if (totalSavingLIP < 0) {
+                            str += "<td class=text-right>" + 0 + "</td>"
+                        }
+                        else {
+                            str += "<td class=text-right>" + thousands_separators(totalSavingLIP) + "</td>"
+                        }
+                       
                     }
                     else {
 
                         str += '<td class=text-right>' + 0 + '</td>';
                     }
 
-
-                    str += "<td class=text-right>" + thousands_separators(((BidData[i].startPrice - BidData[i].minPrice) * BidData[i].quantity).round(2)) + "</td>";
+                    if (totalSavingSP < 0) {
+                        str += "<td class=text-right>" + 0 + "</td>";
+                    }
+                    else {
+                        str += "<td class=text-right>" + thousands_separators(totalSavingSP) + "</td>";
+                    }
                     if (BidData[i].targetprice != 0) {
-                        str += "<td class=text-right>" + thousands_separators(((BidData[i].targetprice - BidData[i].minPrice) * BidData[i].quantity).round(2)) + "</td>";
+
+                        if (totalSavingTP < 0) {
+                            str += "<td class=text-right>" + 0 + "</td>"
+                        }
+                        else {
+                            str += "<td class=text-right>" + thousands_separators(totalSavingTP) + "</td>"
+                        }
                     }
                     else {
                         str += "<td class=text-right>" + 0 + "</td>";
@@ -828,8 +849,13 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
             jQuery('#tblVendorSummarySUmzation').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>Bid Subject</th><th class='bold'>Configured By</th><th class='bold'>Bid Date</th><th class='bold'>Currency</th><th class='bold'>" + BidLIP + "</th><th class='bold'>" + BidSP + "</th><th class='bold'>" + BidTP + "</th><th class='bold'>" + BidFinal + "</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfstart + "</th><th class='bold'>" + savinfTR + "</th></tr></thead>");
             if (BidData.length > 0) {
                 var bID = 0;
+                let totalSavingLIP = "";
+                let totalSavingSP = "";
+                let totalSavingTP = "";
                 for (var i = 0; i < BidData.length; i++) {
-
+                    totalSavingLIP = (BidData[i].bidValueAsLIP - BidData[i].bidValueAsPrice).round(2)
+                    totalSavingSP = (BidData[i].bidValueAsStartPrice - BidData[i].bidValueAsPrice).round(2)
+                    totalSavingTP = (BidData[i].bidValueAsTargetPrice - BidData[i].bidValueAsPrice).round(2)
                     var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].bidID + "'\,\'" + BidData[i].bidForID + "'\,\'0'\) href='javascript:;' >" + BidData[i].bidID + "</a></td>";
                     str += "<td>" + BidData[i].bidSubject + "</td>";
                     str += "<td>" + BidData[i].configuredBy + "</td>";
@@ -851,17 +877,32 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
 
                     if (BidData[i].bidValueAsLIP != 0) {
 
-                        str += "<td class=text-right>" + thousands_separators((BidData[i].bidValueAsLIP - BidData[i].bidValueAsPrice).round(2)) + "</td>"
+                        if (totalSavingLIP < 0) {
+                            str += "<td class=text-right>" + 0 + "</td>"
+                        }
+                        else {
+                            str += "<td class=text-right>" + thousands_separators(totalSavingLIP) + "</td>"
+                        }
                     }
                     else {
                         str += "<td class=text-right>" + 0 + "</td>"
                     }
-
-
-                    str += "<td class=text-right>" + thousands_separators((BidData[i].bidValueAsStartPrice - BidData[i].bidValueAsPrice).round(2)) + "</td>";
+                   
+                    if (totalSavingSP < 0) {
+                        str += "<td class=text-right>" + 0 + "</td>"
+                    }
+                    else {
+                        str += "<td class=text-right>" + thousands_separators(totalSavingSP) + "</td>";
+                    }
+                    
                     if (BidData[i].bidValueAsTargetPrice != 0) {
 
-                        str += "<td class=text-right>" + thousands_separators((BidData[i].bidValueAsTargetPrice - BidData[i].bidValueAsPrice).round(2)) + "</td>";
+                        if (totalSavingTP < 0) {
+                            str += "<td class=text-right>" + 0 + "</td>"
+                        }
+                        else {
+                            str += "<td class=text-right>" + thousands_separators(totalSavingTP) + "</td>"
+                        }
                     }
                     else {
                         str += "<td class=text-right>" + 0 + "</td>"
@@ -1018,9 +1059,13 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
 
             jQuery('#tblVendorSummarydetails').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>Bid Subject</th><th class='bold'>Configured By</th><th class='bold'>Bid Date</th><th class='bold'>Item/Product</th><th class='bold'>Quantity</th><th class='bold'>UOM</th><th class='bold'>Currency</th><th>Vendor</th><th class='bold'>" + LastHD + "</th><th class='bold'>" + startPrice + "</th><th class='bold'>Target Price (TP)</th><th class='bold'>Initial Quote</th><th class='bold'>" + PriceFor + "</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfstart + "</th><th class='bold'>" + savinfTR + "</th><th>Bid Status</th></tr></thead>");
             if (BidData.length > 0) {
+             
                 var bID = 0;
+                let totalSavingLIP = "";
+                let totalSavingSP = "";
+                let totalSavingTP = "";
                 for (var i = 0; i < BidData.length; i++) {
-
+                    
                     var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].bidID + "'\,\'" + BidData[i].bidForID + "'\,\'0'\) href='javascript:;'>" + BidData[i].bidID + "</a></td>";
                     str += "<td>" + BidData[i].bidSubject + "</td>";
                     str += "<td>" + BidData[i].configuredBy + "</td>";
@@ -1069,38 +1114,74 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
                     }
                     str += "<td class=text-right>" + thousands_separators(BidData[i].initialQuote) + "</td>";
                     str += "<td class=text-right>" + thousands_separators(BidData[i].minPrice) + "</td>";
-
+                 
                     if (jQuery("#ddlBidFor option:selected").val() == "81" || jQuery("#ddlBidFor option:selected").val() == "83") {
+                        totalSavingLIP = ((BidData[i].minPrice - BidData[i].lastInvoicePrice) * BidData[i].quantity).round(2)
+                        totalSavingSP = ((BidData[i].minPrice - BidData[i].startPrice) * BidData[i].quantity).round(2)
+                        totalSavingTP = ((BidData[i].minPrice - BidData[i].targetprice) * BidData[i].quantity).round(2)
                         if (BidData[i].lastInvoicePrice != 0) {
 
-                            str += "<td class=text-right>" + thousands_separators(((BidData[i].minPrice - BidData[i].lastInvoicePrice) * BidData[i].quantity).round(2)) + "</td>"
+                            if (totalSavingLIP < 0) {
+                                str += "<td class=text-right>" + 0 + "</td>"
+                            }
+                            else {
+                                str += "<td class=text-right>" + thousands_separators(totalSavingLIP) + "</td>"
+                            }
                         }
                         else {
                             str += "<td class=text-right>" + 0 + "</td>"
                         }
 
-
-                        str += "<td class=text-right>" + thousands_separators(((BidData[i].minPrice - BidData[i].startPrice) * BidData[i].quantity).round(2)) + "</td>";
+                        if (totalSavingSP < 0) {
+                            str += "<td class=text-right>" + 0 + "</td>"
+                        }
+                        else {
+                            str += "<td class=text-right>" + thousands_separators(totalSavingSP) + "</td>";
+                        }                       
                         if (BidData[i].targetprice != 0) {
-                            str += "<td class=text-right>" + thousands_separators(((BidData[i].minPrice - BidData[i].targetprice) * BidData[i].quantity).round(2)) + "</td>";
+                            if (totalSavingTP < 0) {
+                                str += "<td class=text-right>" + 0 + "</td>"
+                            }
+                            else {
+                                str += "<td class=text-right>" + thousands_separators(totalSavingTP) + "</td>"
+                            }
+
                         }
                         else {
                             str += "<td class=text-right>" + 0 + "</td>";
                         }
                     }
                     else {
+                        totalSavingLIP = ((BidData[i].lastInvoicePrice - BidData[i].minPrice) * BidData[i].quantity).round(2)
+                        totalSavingSP = ((BidData[i].startPrice - BidData[i].minPrice) * BidData[i].quantity).round(2)
+                        totalSavingTP = ((BidData[i].targetprice - BidData[i].minPrice) * BidData[i].quantity).round(2)
                         if (BidData[i].lastInvoicePrice != 0) {
 
-                            str += "<td class=text-right>" + thousands_separators(((BidData[i].lastInvoicePrice - BidData[i].minPrice) * BidData[i].quantity).round(2)) + "</td>"
+                            if (totalSavingLIP < 0) {
+                                str += "<td class=text-right>" + 0 + "</td>"
+                            }
+                            else {
+                                str += "<td class=text-right>" + thousands_separators(totalSavingLIP) + "</td>"
+                            }
                         }
                         else {
                             str += "<td class=text-right>" + 0 + "</td>"
                         }
+                        if (totalSavingSP < 0) {
+                            str += "<td class=text-right>" + 0 + "</td>"
+                        }
+                        else {
+                            str += "<td class=text-right>" + thousands_separators(totalSavingSP) + "</td>";
+                        } 
 
-
-                        str += "<td class=text-right>" + thousands_separators(((BidData[i].startPrice - BidData[i].minPrice) * BidData[i].quantity).round(2)) + "</td>";
+                        
                         if (BidData[i].targetprice != 0) {
-                            str += "<td class=text-right>" + thousands_separators(((BidData[i].targetprice - BidData[i].minPrice) * BidData[i].quantity).round(2)) + "</td>";
+                            if (totalSavingTP < 0) {
+                                str += "<td class=text-right>" + 0 + "</td>"
+                            }
+                            else {
+                                str += "<td class=text-right>" + thousands_separators(totalSavingTP) + "</td>"
+                            }
                         }
                         else {
                             str += "<td class=text-right>" + 0 + "</td>";
@@ -1267,9 +1348,13 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
 
             jQuery('#tblVendorSummarySUmzation').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>Bid Subject</th><th class='bold'>Configured By</th><th class='bold'>Bid Date</th><th class='bold'>Currency</th><th class='bold'>" + BidLIP + "</th><th class='bold'>" + BidSP + "</th><th class='bold'>" + BidTP + "</th><th class='bold'>" + BidFinal + "</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfstart + "</th><th class='bold'>" + savinfTR + "</th></tr></thead>");
             if (BidData.length > 0) {
+             
                 var bID = 0;
+                let totalSavingLIP = "";
+                let totalSavingSP = "";
+                let totalSavingTP = "";
                 for (var i = 0; i < BidData.length; i++) {
-
+                
                     var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].bidID + "'\,\'" + BidData[i].bidForID + "'\,\'0'\) href='javascript:;'>" + BidData[i].bidID + "</a></td>";
                     str += "<td>" + BidData[i].bidSubject + "</td>";
                     str += "<td>" + BidData[i].configuredBy + "</td>";

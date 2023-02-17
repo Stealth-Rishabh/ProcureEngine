@@ -941,6 +941,7 @@ function fetchrfqcomprative() {
                 //abheedev bug 349 part2  end
 
                 if ($("#ddlrfqVersion option:selected").val() != 0) {
+                    debugger
                     str += "<tr id='reinvitationTRRem'><td colspan=8><b>Re-Invitation Remarks</b></td>";
                     strExcel += "<tr><td colspan=7><b>Re-Invitation Remarks</b></td>";
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
@@ -978,7 +979,7 @@ function fetchrfqcomprative() {
                     });
                     if (maxValue == $("#ddlrfqVersion option:selected").val()) {
                         $("#btn-reInvite").removeClass('hide')
-                        str += "<tr id='reinvitationTR'><td colspan=5><b>Re-Invitation Row</b></td>";
+                        str += "<tr id='reinvitationTR'><td colspan=8><b>Re-Invitation Row</b></td>";
 
                         for (var k = 0; k < data[0].vendorNames.length; k++) {
 
