@@ -15,6 +15,7 @@ $('#txtloadingfactorreason').maxlength({
     alwaysShow: true
 });
 function fetchRFIRFQSubjectforReport(subjectFor) {
+
     jQuery.ajax({
         //url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchRFQSubjectforReport/?SubjectFor=" + subjectFor + "&Userid=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
         url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchRFQSubjectforReport/?SubjectFor=" + subjectFor + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
@@ -58,7 +59,7 @@ jQuery("#txtrfirfqsubject").typeahead({
     },
     minLength: 2,
     updater: function (item) {
-        
+
         if (map[item].rfqid != '0') {
 
             $('#hdnRfqID').val(map[item].rfqid);
@@ -449,6 +450,7 @@ var bidopeningdate = null;
 var _rfqBidType = '';
 var CurrentDateTime = new Date();
 var _openQuotes = '';
+var isboq = 'N';
 function fetchReguestforQuotationDetails() {
     var attachment = '';
     var termattach = '';
@@ -491,6 +493,14 @@ function fetchReguestforQuotationDetails() {
                     $('#cancl_btn').hide();
 
                 }
+                if (RFQData[0].general[0].boqReq == true) {
+                    isboq = "Y";
+                    fetchrfqcomprativeBoq();
+                }
+                else {
+                    isboq = "N";
+                    fetchrfqcomprative();
+                }
                 /*else {
                     $('#cancl_btn').hide();
 
@@ -512,7 +522,7 @@ function fetchReguestforQuotationDetails() {
                 TechnicalApproval = RFQData[0].general[0].technicalApproval;
                 $('#tbldetails').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td></tr>")
                 //abheedev bug 274
-                $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqId + "</td><td>" + "<b>Ref No-</b>"+ RFQData[0].general[0].rfqReference + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqStartDate) + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td><td colspan='25'>" + RFQData[0].general[0].rfqDescription + "</td></tr>")
+                $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqId + "</td><td>" + "<b>Ref No-</b>" + RFQData[0].general[0].rfqReference + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqStartDate) + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td><td colspan='25'>" + RFQData[0].general[0].rfqDescription + "</td></tr>")
             }
         },
         error: function (xhr, status, error) {
@@ -740,7 +750,12 @@ function updloadingfactor() {
                 //abheedev bug 349 start
                 setTimeout(function () {
                     $("#editloadingfactor").modal('hide');
-                    fetchrfqcomprative();
+                    if (isboq == "Y") {
+                        fetchrfqcomprativeBoq();
+                    }
+                    else {
+                        fetchrfqcomprative();
+                    }
                 }, 1000)
                 rowques = 0;
 
@@ -950,7 +965,7 @@ jQuery("#txtApprover").typeahead({
     },
     minLength: 2,
     updater: function (item) {
-        
+
         if (map[item].userID != "0") {
             sessionStorage.setItem('hdnApproverid', map[item].userID);
             $('#hdnApproverID').val(map[item].userID)
