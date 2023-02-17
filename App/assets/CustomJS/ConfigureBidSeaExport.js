@@ -6,7 +6,6 @@ jQuery(document).ready(function () {
     $('[data-toggle="popover"]').popover({})
 
     Pageloaded()
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -648,7 +647,7 @@ function addWeightageToVendor(index) {
 }
 
 $("#weightageModal").on("hidden.bs.modal", function () {
-    var weightageval = $("#txtWeightageval").val()
+    var weightageval = $("#txtWeightageval").val() || 0;
     $("#txtWeightageval").val('')
     $("#tblcolweightage" + $("#hdnweightageIndex").val()).html(weightageval);
     $("#tblcolweightagePrev" + $("#hdnweightageIndex").val()).html(weightageval);
