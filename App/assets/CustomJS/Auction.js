@@ -1875,13 +1875,18 @@ function StringEncodingMechanism(maliciousText) {
 function StringDecodingMechanism(maliciousText) {
 
     var returnStr = maliciousText;
-    returnStr = returnStr.replaceAll('&lt;', '<');
-    returnStr = returnStr.replaceAll('&gt;', '>');
-    returnStr = returnStr.replaceAll('&quot;', '"');
-    returnStr = returnStr.replaceAll("&#x27;", "'");
-    returnStr = returnStr.replaceAll('&#x2F;', '/');
-    // returnStr = returnStr.replaceAll('alert-', 'alert(');
-    returnStr = returnStr.replaceAll('&amp;', '&');
+    if (returnStr != null) {
+        returnStr = returnStr.replaceAll('&lt;', '<');
+        returnStr = returnStr.replaceAll('&gt;', '>');
+        returnStr = returnStr.replaceAll('&quot;', '"');
+        returnStr = returnStr.replaceAll("&#x27;", "'");
+        returnStr = returnStr.replaceAll('&#x2F;', '/');
+        // returnStr = returnStr.replaceAll('alert-', 'alert(');
+        returnStr = returnStr.replaceAll('&amp;', '&');
+    }
+    else {
+        returnStr = '';
+    }
     return returnStr;
 }
 
