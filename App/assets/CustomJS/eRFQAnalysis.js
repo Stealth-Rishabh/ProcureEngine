@@ -5,7 +5,6 @@ jQuery(document).ready(function () {
         position: 'fixed'
     });
     Pageloaded()
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
 
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
