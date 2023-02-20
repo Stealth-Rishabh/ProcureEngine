@@ -66,7 +66,6 @@ $(document).ready(function () {
 });
 
 function FetchCurrency(CurrencyID) {
-    var x = isAuthenticated();
     jQuery.ajax({
 
         type: "GET",
@@ -299,7 +298,6 @@ function CheckDuplicate() {
 //New Appprover Logic
 //Purchase ORG.
 function BindPurchaseOrg() {
-    var x = isAuthenticated();
     var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=0";
 
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
@@ -343,7 +341,6 @@ function bindPurchaseGroupDDL() {
 };
 
 function bindConditionDDL() {
-    var x = isAuthenticated();
     var url = "NFA/fetchNFACondition?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=N";
 
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
@@ -461,7 +458,6 @@ $('.panel-group').on('hidden.bs.collapse', toggleIcon);
 $('.panel-group').on('shown.bs.collapse', toggleIcon);
 
 function fetchRegisterUser() {
-    var x = isAuthenticated();
     var data = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
