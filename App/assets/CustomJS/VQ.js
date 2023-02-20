@@ -469,7 +469,7 @@ function fetchRFIDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-          
+          debugger
             if (BidData.length > 0) {
 
                 jQuery('#tblServicesProduct').empty();
@@ -864,12 +864,12 @@ function fetchTempVendors() {
             dataType: "json",
 
             success: function (data) {
-
+                debugger
             jQuery("#tblTempVendorslist").empty();
                 if (data.length > 0) {
                     jQuery('#tblTempVendorslist').append('<thead><tr style="background: gray; color: #FFF;"><th>Company</th><th>Email</th><th>Mobile No</th><th>Contact Person</th><th>Actions</th></tr></thead>')
                     for (var i = 0; i < data.length; i++) {
-                         jQuery('#tblTempVendorslist').append("<tr><td>" + data[i].companyName + "</td><td>" + data[i].emailId + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].contactPerson + "</td><td><button type=button class='btn default btn-xs blue' onclick='editTempCompany(\"" + data[i].rowID + "\",\"" + data[i].companyName + "\",\"" + data[i].emailId + "\",\"" + data[i].mobileNo + "\",\"" + data[i].contactPerson + "\")'><i class='fa fa-edit' style='margin-top: 0px !important;'></i> Modify</button><button type=button class='btn default btn-xs red' onclick='deleteRFITempVendors(\"" + data[i].rowid + "\")'><i class='fa fa-times' style='margin-top: 0px !important;'></i> Delete</button></td></tr>");
+                        jQuery('#tblTempVendorslist').append("<tr><td>" + data[i].companyName + "</td><td>" + data[i].emailId + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].contactPerson + "</td><td><button type=button class='btn default btn-xs blue' onclick='editTempCompany(\"" + data[i].rowID + "\",\"" + data[i].companyName + "\",\"" + data[i].emailId + "\",\"" + data[i].mobileNo + "\",\"" + data[i].contactPerson + "\")'><i class='fa fa-edit' style='margin-top: 0px !important;'></i> Modify</button><button type=button class='btn default btn-xs red' onclick='deleteRFITempVendors(\"" + data[i].rowID + "\")'><i class='fa fa-times' style='margin-top: 0px !important;'></i> Delete</button></td></tr>");
                        
                     }
                 }

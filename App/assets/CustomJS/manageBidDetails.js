@@ -1080,8 +1080,8 @@ function ValidateVendor() {
     return status;
 }
 function resetpasswordForBidVendor() {
+    debugger
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
     if (sessionStorage.getItem("hdnbid") == '0') {
         error1.show();
         $('#spandanger').html('').html('Please select Bid...');
