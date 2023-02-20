@@ -22,7 +22,7 @@ jQuery(document).ready(function () {
 
     fetchParticipantsVenderTable();
     fetchMapCategory('M', 0);
-
+   
     fetchBidType();// for serach vendor
     clearform();
     fetchCountry();
@@ -75,7 +75,7 @@ $("#btnExport").click(function (e) {
 //
 
 
-$('#txtUI,txtPanNo,#txtTINNo,#txtPhoneNo,#txtMobileNo').maxlength({
+$('#txtPanNo,#txtTINNo,#txtPhoneNo,#txtMobileNo').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
@@ -88,11 +88,10 @@ jQuery.validator.addMethod(
     "This field is required."
 );
 var _vendorId = "";
+var form1 = $('#entryForm');
 var FormValidation = function () {
-
-
     var ValidateParticipants = function () {
-        var form1 = $('#entryForm');
+        
         var error1 = $('.alert-danger', form1);
         var success1 = $('.alert-success', form1);
         //abheedev 24 / 11 / 2022
@@ -103,6 +102,9 @@ var FormValidation = function () {
             ignore: "",
 
             rules: {
+                ddlUI: {
+                    required: true,                   
+                },
                 txtAddress: {
                     required: true
                 },
@@ -118,8 +120,9 @@ var FormValidation = function () {
                 txtZipCd: {
                     required: true
                 },
-                txtPanNo: {
-                    required: true
+                txtUI: {
+                    required: true,
+                    email:true
                 },
                 txtTINNo: {
                     required: true
@@ -236,10 +239,10 @@ var FormValidation = function () {
             },
 
             submitHandler: function (form) {
-              
+                 
                 var flag = "T";
-
-
+               
+                debugger
                 if (validateVendorCategory() == 'false') {
                     jQuery('#spanerterr').text('Please select at least one Group')
                     jQuery('#divalerterr').slideDown('show');
@@ -292,6 +295,7 @@ var FormValidation = function () {
 
 
 function RegisterParticipants() {
+    debugger
     var _cleanString = StringEncodingMechanism(jQuery("#ParticipantName").val());
     var _cleanString2 = StringEncodingMechanism(jQuery("#txtAddress").val());
 
@@ -321,6 +325,7 @@ function RegisterParticipants() {
             jQuery('#divalerterr').css('display', 'none');
         }, 5000);
     }
+    debugger
     var RegisterParticipants = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
@@ -335,7 +340,7 @@ function RegisterParticipants() {
         "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
         "CityName": jQuery("#ddlCity option:selected").text(),
         "ZipCode": jQuery("#txtZipCd").val(),
-        "PanNo": jQuery("#txtPanNo").val(),
+        "PanNo": jQuery("#txtPanNo").val() || "",
         "TinNo": jQuery("#txtTINNo").val(),
         "DialingCodePhone": parseInt(jQuery("#ddlCountryCdPhone option:selected").val()),
         "PhoneNo": jQuery("#txtPhoneNo").val(),
@@ -365,8 +370,7 @@ function RegisterParticipants() {
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
 
-
-
+            debugger
             $("#hdnParticipantID").val(data.participantID)
             $("#hdnParticipantCode").val(data.vendorCode)
 
@@ -1149,29 +1153,46 @@ jQuery("#ParticipantName").typeahead({
 });
 //abheedev bug 590
 function validatePanNumber(pan) {
-   
+    debugger 
     clearform();
+    beforeTaxDisable();
     $("#ddlpreferredTime").select2("val", "");
     $("#ddlState").select2("val", "0")
     $("#ddlCity").select2("val", "0")
-
+    if (!validateEmail()) {
+        jQuery('#spanerterr').text('Please Enter valid Email Id then Proceed to Search.')
+        jQuery('#divalerterr').slideDown('show');
+        App.scrollTo(jQuery('#divalerterr'), -200);
+        $('#ddlUI').addClass('has-error')
+        setTimeout(function () {
+            $('#divalerterr').css('display', 'none');
+        }, 1000);
+       
+        return 
+    }
     // fnValidateGST();
     fnfetchfoundVendors();
 
 }
 
-function fnValidateGST() {
 
-
-}
 
 
 function fnfetchfoundVendors() {
-
+    debugger
     var UniqueId = "";
     if ($('#txtUI').val() == null || $('#txtUI').val() == undefined || $('#txtUI').val() == "") {
-        if ($('#ddlUI').val().toLowerCase() == "servicetaxno") {
-            UniqueId = "GST No."
+        if ($('#ddlUI').val()=="EmailID") {
+            UniqueId = "Email Id"
+            form1.validate({
+                rules: {
+                    txtUI: {
+                        required: true,
+                        email: true
+                    }
+                }
+            })
+            
         }
         else {
             UniqueId = "PE Vendor Code"
@@ -1183,6 +1204,8 @@ function fnfetchfoundVendors() {
     }
 
     else {
+      
+        
         jQuery.ajax({
             type: "GET",
             contentType: "application/json; charset=utf-8",
@@ -1192,9 +1215,8 @@ function fnfetchfoundVendors() {
             crossDomain: true,
             dataType: "json",
             success: function (data) {
-               
-               
-                if ($('#txtUI').val().length == "15" && $('#ddlUI').val().toLowerCase() == "servicetaxno") {
+               debugger
+                if ($('#ddlUI').val() == "EmailID") {
 
                     $('#divVendorForm').removeClass('hide')
                     $('#div_tableVendor').removeClass('hide');
@@ -1204,6 +1226,8 @@ function fnfetchfoundVendors() {
                     $('#divVendorForm').removeClass('hide')
                     $('#div_tableVendor').removeClass('hide');
                 }
+
+               
 
                 $('#tblVendorFoundDetails').empty();
                 var addr1 = "";
@@ -1230,9 +1254,10 @@ function fnfetchfoundVendors() {
                             }
                         }
                     }
+                   
                 }
                 else {
-
+                   /* debugger
                     if ($('#ddlUI').val() == "PanNo") {
                         $('#txtPanNo').val($('#txtUI').val().toUpperCase())
                         $('#txtPanNo').attr('disabled', 'disabled')
@@ -1243,8 +1268,12 @@ function fnfetchfoundVendors() {
                         $('#txtTINNo').val($('#txtUI').val().toUpperCase())
                         $('#txtPanNo').attr('disabled', 'disabled')
                         $('#txtTINNo').attr('disabled', 'disabled')
+                    }*/
+                    if ($('#ddlUI').val() == "EmailID") {
+                        $('#txtcompanyemail').val($('#txtUI').val())
+                        $('#txtAlternateeMailID').val($('#txtUI').val())
+                        $('#txtcompanyemail').attr('disabled', 'disabled')
                     }
-
                 }
             },
             error: function (xhr, status, error) {
@@ -1271,37 +1300,18 @@ function fnfetchfoundVendors() {
 function AddVendor() {
 
     clearform();
+    beforeTaxDisable() 
     $('#divVendorForm').removeClass('hide')
-    $('#ParticipantName').removeAttr('disabled')
-    $('#ContactName').removeAttr('disabled')
-    $('#txtAddress').removeAttr('disabled')
-    $('#txtPanNo').removeAttr('disabled')
-    $('#txtTINNo').removeAttr('disabled')
-    $('#ddlCountryCdPhone').removeAttr('disabled')
-    $('#txtPhoneNo').removeAttr('disabled')
-    $('#ddlCountryCd').removeAttr('disabled')
-    $('#txtMobileNo').removeAttr('disabled')
-    $('#txtcompanyemail').removeAttr('disabled')
-    $('#chkalternatemail').removeAttr('disabled')
-    $('#ddlCountry').removeAttr('disabled')
-    $('#ddlState').removeAttr('disabled')
-    $('#ddlCity').removeAttr('disabled')
     
-    jQuery("#ContactName").removeAttr('disabled')
     $('#lbl_panmsz').addClass('hide');
     $('#hdnParticipantID').val('0');
 
-    if ($('#ddlUI').val() == "PanNo") {
-        $('#txtPanNo').val($('#txtUI').val());
-        $('#txtPanNo').attr('disabled', 'disabled');
+    if ($('#ddlUI').val() == "EmailID") {
+        $('#txtcompanyemail').val($('#txtUI').val())
+        $('#txtAlternateeMailID').val($('#txtUI').val())
+        $('#txtcompanyemail').attr('disabled', 'disabled')
     }
-    else {
-        var pan = $('#txtUI').val().substr(2, 10);//11
-        $('#txtPanNo').val(pan);
-        $('#txtTINNo').val($('#txtUI').val());
-        $('#txtPanNo').attr('disabled', 'disabled');
-        $('#txtTINNo').attr('disabled', 'disabled');
-    }
+    
 }
 $("#txtUI").keyup(function () {
     clearform();
@@ -1582,8 +1592,17 @@ function clearform() {
     $('#div_tableVendor').addClass('hide');
 }
 function fnchangeplaceholder() {
+    debugger
     clearform();
-    $('#txtUI').val('');
+    if ($('#ddlUI  option:selected').val() == "VendorCode") {
+        $("#txtUI").attr('maxlength', '11');
+        $("#txtUI").attr('minlength', '11');
+    }
+    else {
+        $("#txtUI").removeAttr('maxlength');
+        $("#txtUI").removeAttr('minlength');
+    }
+   /* $('#txtUI').val('');
     $('#txtUI').attr("placeholder", $('#ddlUI  option:selected').text());
     if ($('#ddlUI  option:selected').val() == "PanNo") {
         $("#txtUI").attr('maxlength', '10');
@@ -1596,7 +1615,7 @@ function fnchangeplaceholder() {
     else {
         $("#txtUI").attr('maxlength', '11');
         $("#txtUI").attr('minlength', '11');
-    }
+    }*/
 
 }
 jQuery("#txtSVendor").keyup(function () {
@@ -1807,3 +1826,238 @@ function DownloadFile(aID) {
 
     fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + _vendorId);
 }
+
+
+
+
+
+
+   /* $('#ddlCountry').on('change', function () {
+        debugger
+        switch ($(this).val()) {
+            case "111":
+                $('.tax-group').html(
+                    ' <label class="col-md-3 control-label">GST No.<span class="required">*</span></label>' +
+                    '<div class="col-md-9"><input type="text" class="form-control" placeholder="Enter GST No." id="txtTINNo" maxlength="15" name="txtTINNo"></div>'
+                );
+                break;
+            case '253':
+                $('.tax-group').html(
+                    ' <label class="col-md-3 control-label">TAN No.<span class="required">*</span></label>' +
+                    '<div class="col-md-9"><input type="text" class="form-control" placeholder="Enter TAN No." id="txtTINNo" maxlength="15" name="txtTINNo"></div>'
+                );
+                break;
+            case 'uk':
+                $('.tax-group').html(
+                    ' <label class="col-md-3 control-label">TAN No.<span class="required">*</span></label>' +
+                    '<div class="col-md-9"><input type="text" class="form-control" placeholder="Enter TAN No." id="txtTINNo" maxlength="15" name="txtTINNo"></div>'
+                );
+                break;
+            default:
+                $('.tax-group').html(
+                    ' <label class="col-md-3 control-label">TAX ID.<span class="required">*</span></label>' +
+                    '<div class="col-md-9"><input type="text" class="form-control" placeholder="Enter TAX Id" id="txtTINNo" maxlength="15" name="txtTINNo"></div>'
+                );
+        }
+    });
+*/
+
+//abheedev tax specification
+var taxjsondata;
+
+function getTaxData() {
+    return new Promise(function (resolve, reject) {
+        $.getJSON("assets/CustomJSON/taxdetail.json", function (data) {
+            if (data) {
+                resolve(data);
+            } else {
+                reject(new Error("Failed to load data"));
+            }
+        });
+    });
+}
+
+getTaxData().then(function (data) {
+    debugger
+    taxjsondata = data;
+    $('#ddlCountry').on('change', function () {
+
+        debugger
+
+        let selectedValue = $(this).val() || "111";
+        updateForm(taxjsondata, selectedValue);
+    });
+
+}).catch(function (error) {
+    console.error(error);
+});
+
+
+function updateForm(data, selectedValue) {
+    debugger
+    for (var i = 0; i < data.countries.length; i++) {
+        if (data.countries[i].countryid === selectedValue) {
+            var country = data.countries[i];
+            debugger
+            $(".tax-group").empty();
+            $.each(country.formFields, function (i, field) {              
+                $(".tax-group").append('<label class="col-md-3 control-label">' + field.label + '<span class="required">*</span></label><div class="col-md-9"><input class="form-control" id="txtTINNo" minlength="' + field.minlength + '" maxlength="' + field.maxlength + '" type="' + field.type + '" placeholder="' + field.placeholder + '"/></div>');
+            });
+            if (data.countries[i].countryid === "111") {
+                $("#txtTINNo").attr("onchange","extractPan(this)");
+                $(".pan-group").show();
+                $(".pan-group").append('<label class="col-md-3 control-label"> PAN No.<span class="required">*</span> </label><div class="col-md-9"><input type="text" class="form-control" placeholder="Enter PAN No." id="txtPanNo" name="txtPanNo" maxlength="10" /></div>');
+            }
+            else {
+                $("#txtTINNo").attr("onchange","validateTaxInternational(this)");
+                $(".pan-group").empty().hide();
+            }
+            break;
+        }
+        else {
+          //  var country = data.countries[i];
+         
+                $(".tax-group").empty();               
+                $(".tax-group").append('<label class="col-md-3 control-label">' + "Federal TAX No" + '<span class="required">*</span></label><div class="col-md-9"><input class="form-control" id="txtTINNo" minlength="' + 10 + '" maxlength="' + 15 + '" type="' + "text" + '" placeholder="' + "Enter Your Country Tax Identification Number" + '"/></div>');           
+                $("#txtTINNo").attr("onchange", "validateTaxInternational(this)");                                 
+                $(".pan-group").empty().hide();    
+        }
+    }
+}
+
+
+
+function extractPan(data) {
+    debugger
+    var reggst = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/
+    if (!reggst.test(data.value)) {
+        bootbox.alert('GST Number Format is not valid. please check it');
+        return false;
+    }
+   
+    if (data.value.length === 15) {
+        let panNumber = ""
+        panNumber = data.value.substring(2, 12);
+        $("#txtPanNo").val(panNumber);
+        $("#txtPanNo").attr("disabled", "disabled");
+        ValidateGST(data.value)
+        afterTaxEnable()
+    }
+    else {
+        $("#txtPanNo").val();
+        $("#txtPanNo").removeAttr("disabled", "disabled");
+        beforeTaxDisable()
+    }
+  
+}
+//to validate tax for other countries
+function validateTaxInternational(data) {
+    debugger
+    // Get the value of the minlength attribute
+    var minLengthValue = $('#txtTINNo').attr('minlength');
+
+    // Get the value of the maxlength attribute
+    var maxLengthValue = $('#txtTINNo').attr('maxlength');
+
+    // Print the values to the console
+    console.log('minlength value: ' + minLengthValue);
+    console.log('maxlength value: ' + maxLengthValue);
+
+    if (data.value.length >= minLengthValue && data.value.length <= maxLengthValue) {
+        afterTaxEnable()
+    }
+    else if (data.value.length <= maxLengthValue) {
+        
+        beforeTaxDisable()
+       
+    }
+
+}
+
+function ValidateGST(data) {
+    debugger
+    let GSTNo = data
+    console.log(sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo);
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+
+            debugger
+            console.log("successful");
+            
+        },
+        error: function (xhr, status, error) {
+            debugger
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+
+    })
+}
+
+function beforeTaxDisable() {
+    $('#ParticipantName').attr('disabled', 'disabled');
+    $('#ContactName').attr('disabled', 'disabled');
+    $('#txtAddress').attr('disabled', 'disabled');
+    $('#txtPanNo').attr('disabled', 'disabled');
+    $('#ddlState').attr('disabled', 'disabled');
+    $('#ddlCity').attr('disabled', 'disabled');
+    $('#txtZipCd').attr('disabled', 'disabled');
+    $('#ddlCountryCd').attr('disabled', 'disabled');
+    $('#txtMobileNo').attr('disabled', 'disabled');
+    $('#ddlCountryCdPhone').attr('disabled', 'disabled');
+    $('#txtPhoneNo').attr('disabled', 'disabled');
+    $('#ddlpreferredTime').attr('disabled', 'disabled');
+    $('#txtcompanyemail').attr('disabled', 'disabled');
+    $('#chkalternatemail').attr('disabled', 'disabled');
+    $('#chkIsActiveparticipant').attr('disabled', 'disabled');
+
+}
+
+function afterTaxEnable() {
+    $('#ParticipantName').removeAttr('disabled');
+    $('#ContactName').removeAttr('disabled');
+    $('#txtAddress').removeAttr('disabled');
+    $('#ddlState').removeAttr('disabled');
+    $('#ddlCity').removeAttr('disabled');
+    $('#txtZipCd').removeAttr('disabled');
+    $('#ddlCountryCd').removeAttr('disabled');
+    $('#txtMobileNo').removeAttr('disabled');
+    $('#ddlCountryCdPhone').removeAttr('disabled');
+    $('#txtPhoneNo').removeAttr('disabled');
+    $('#ddlpreferredTime').removeAttr('disabled');
+    $('#txtcompanyemail').removeAttr('disabled');
+    $('#chkalternatemail').removeAttr('disabled');
+    $('#chkIsActiveparticipant').removeAttr('disabled');
+
+}
+
+
+// validating email
+
+function validateEmail() {
+    debugger
+    email = $("#txtUI").val();
+    // Define a regular expression pattern for valid email addresses
+    var pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    // Use the test() method of the pattern object to match the pattern to the email address
+    if (pattern.test(email)) {
+        return true
+    }
+    else {
+        
+        return false
+    }
+}
+
+

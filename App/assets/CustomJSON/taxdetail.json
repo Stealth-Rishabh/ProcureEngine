@@ -1,0 +1,32 @@
+﻿{
+  "countries": [
+    {
+      "name": "United Arab Emirates",
+      "countryid": "253",
+      "formFields": [
+        {
+          "label": "TAN No",
+          "type": "text",
+          "placeholder": "Enter Tax Identification Number",
+          "maxlength": 15,
+          "minlength": 15
+        }
+
+      ]
+    },
+    {
+      "name": "India",
+      "countryid": "111",
+      "formFields": [
+        {
+          "label": "GST No",
+          "type": "text",
+          "placeholder": "Enter Goods and Services Tax Number",
+          "maxlength": 15,
+          "minlength": 15
+        }
+
+      ]
+    }
+  ]
+}
