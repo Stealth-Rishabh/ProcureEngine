@@ -1,5 +1,5 @@
 jQuery(document).ready(function () {
-  
+
     $('[data-toggle="popover"]').popover({})
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
@@ -29,7 +29,7 @@ jQuery(document).ready(function () {
     setCommonData();
 
     FetchCurrency("0");
-  
+
 });
 var WBSeq = 0;
 var NBSeq = 0;
@@ -66,6 +66,7 @@ $(document).ready(function () {
 });
 
 function FetchCurrency(CurrencyID) {
+    var x = isAuthenticated();
     jQuery.ajax({
 
         type: "GET",
@@ -298,6 +299,7 @@ function CheckDuplicate() {
 //New Appprover Logic
 //Purchase ORG.
 function BindPurchaseOrg() {
+    var x = isAuthenticated();
     var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=0";
 
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
@@ -341,6 +343,7 @@ function bindPurchaseGroupDDL() {
 };
 
 function bindConditionDDL() {
+    var x = isAuthenticated();
     var url = "NFA/fetchNFACondition?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=N";
 
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
@@ -458,6 +461,7 @@ $('.panel-group').on('hidden.bs.collapse', toggleIcon);
 $('.panel-group').on('shown.bs.collapse', toggleIcon);
 
 function fetchRegisterUser() {
+    var x = isAuthenticated();
     var data = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
@@ -1897,7 +1901,7 @@ function CompleteProcess() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
-                    
+
                     $('.modal-footer .btn-success').prop('disabled', true);
                     CompleteAprroverSeq()
                     //abheedev button duplicate
@@ -1910,7 +1914,6 @@ function CompleteProcess() {
             cancel: {
                 label: "No",
                 className: "btn-default"
-                
             }
         }
     });
@@ -2135,26 +2138,25 @@ jQuery("#txtSearchmatrix").keyup(function () {
 
 
 function CompleteAprroverSeq() {
-    debugger
     var x = isAuthenticated();
-    
+
     var data = {
         cusID: parseInt(CurrentCustomer),
-        idx: parseInt(nfaApproverIDX)                  
+        idx: parseInt(nfaApproverIDX)
+
     };
     var url = "NFA/CompleteAprroverSeq";
-    
+
     var SaveApproverMaster = callajaxReturnSuccess(url, "Post", JSON.stringify(data));
     SaveApproverMaster.success(function (res) {
         if (res.status != "E") {
-       debugger
-            console.log(res);        
+            console.log(res);
         }
         else {
             alert("Error :" + res.error);
         }
     });
     SaveApproverMaster.error(function (xhr, status, error) {
-        //  jQuery.unblockUI();
+        
     })
 };

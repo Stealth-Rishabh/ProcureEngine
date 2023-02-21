@@ -41,7 +41,7 @@ var Login = function () {
             invalidHandler: function (event, validator) { //display error alert on form submit   
                 $('#alrt1').show();
                 $('#alertmessage1').html('User name/ Password cannot be blank.')
-                App.scrollTo($('#alrt1'), -200);
+                //App.scrollTo($('#alrt1'), -200);
                 $('#alrt1').fadeOut(5000);
             },
 
@@ -139,13 +139,13 @@ var Login = function () {
     }
 
     function validateUser() {
-       // sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+        //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
         sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
         //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
         var path = window.location.pathname;
         var url = '';
         var lastPart = (path.substr(path.length - (path.length - 1))).slice(0, -1);
-       // lastPart = 'vendor'
+        //lastPart = 'vendor'
         var LinkUrl = window.location.href;
         if (lastPart.toLocaleLowerCase() == "vendor") {
             var pwd = fnencrypt(jQuery("#password").val().trim());
@@ -162,7 +162,6 @@ var Login = function () {
                 beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
                 contentType: "application/json",
                 success: function (data) {
-                    debugger;
                     var successMsg = "";
                     var isSuccess = true;
                     switch (data.responseResult.status) {
@@ -206,7 +205,7 @@ var Login = function () {
                         jQuery.unblockUI();
                         $('#alrt1').show();
                         $('#alertmessage1').html(successMsg)
-                        App.scrollTo($('#alrt1'), -200);
+                        //App.scrollTo($('#alrt1'), -200);
                         $('#alrt1').fadeOut(5000);
                     }
 
@@ -216,7 +215,7 @@ var Login = function () {
                     jQuery.unblockUI();
                     $('#alrt1').show();
                     $('#alertmessage1').html('Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect')
-                    App.scrollTo($('#alrt1'), -200);
+                    //App.scrollTo($('#alrt1'), -200);
                     $('#alrt1').fadeOut(5000);
                 }
             });
@@ -283,7 +282,7 @@ var Login = function () {
                         jQuery.unblockUI();
                         $('#alrt1').show();
                         $('#alertmessage1').html(successMsg)
-                        App.scrollTo($('#alrt1'), -200);
+                        //App.scrollTo($('#alrt1'), -200);
                         $('#alrt1').fadeOut(5000);
                     }
                     //sessionStorage.setItem("MainUrl", decodeURIComponent(LinkUrl));
@@ -295,7 +294,7 @@ var Login = function () {
                     jQuery.unblockUI();
                     $('#alrt1').show();
                     $('#alertmessage1').html('Wrong Crendtials' + ' <br>' + 'Provided username and password is incorrect')
-                    App.scrollTo($('#alrt1'), -200);
+                    //App.scrollTo($('#alrt1'), -200);
                     $('#alrt1').fadeOut(5000);
                 }
             });
@@ -407,11 +406,11 @@ var Login = function () {
 
 }();
 function Changeforgotpasswordfn() {
+    debugger;
     jQuery.blockUI({ message: '<h5><img src="../../../App/assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var UserType = '';
     var path = window.location.pathname;
     var url = '';
-    //var lastPart = (path.substr(path.length - 7)).slice(0, -1);
     var lastPart = (path.substr(path.length - (path.length - 1))).slice(0, -1);
     var LinkUrl = window.location.href;
     var custid = 0;
@@ -424,13 +423,11 @@ function Changeforgotpasswordfn() {
             custid = parseInt(sessionStorage.getItem('CustomerID'));
         }
     }
-    
-    //var UserType = 'V'
-    
+
     var data = {
         "EmailID": $("#txtemail").val(),
-        "CustomerID": custid,
-        "UserType": UserType
+        "UserType": UserType,
+        "CustomerID": custid
     }
 
     jQuery.ajax({
@@ -449,7 +446,7 @@ function Changeforgotpasswordfn() {
                     $('#succs2').show();
                     $('#sucssmessage2').html(data.successMsg + 'You have ' + data.lockCount + ' attempts left.');
                     $('#succs2').fadeOut(6000);
-                    App.scrollTo($('#succs2'), -200);
+                    //App.scrollTo($('#succs2'), -200);
                     resetfileds()
                     jQuery.unblockUI();
                     break;
@@ -457,7 +454,7 @@ function Changeforgotpasswordfn() {
                     $('#alrt2').show();
                     $('#alertmessage2').html(data.successMsg);
                     $('#alrt2').fadeOut(6000);
-                    App.scrollTo($('#alrt2'), -200);
+                    //App.scrollTo($('#alrt2'), -200);
                     resetfileds()
                     jQuery.unblockUI();
                     break;
@@ -603,7 +600,6 @@ function SetSessionItems(lastPart, value) {
     sessionStorage.setItem("utcoffset", value.utcoffset);
     sessionStorage.setItem("isWhatsappOpted", value.isWhatsappOpted);
     sessionStorage.setItem("mobileNo", value.mobileNo);
-
     setTimeout(function () {
         if (sessionStorage.getItem("UserType") == "P") {
             if ((value.VendorID != '0')) {
@@ -643,7 +639,7 @@ function fetchMenuItemsForSession(urlLast) {
                             jQuery.unblockUI();
                             $('#alrt1').show();
                             $('#alertmessage1').html('Enter a valid user name/ password.')
-                            App.scrollTo($('#alrt1'), -200);
+                            //App.scrollTo($('#alrt1'), -200);
                             $('#alrt1').fadeOut(5000);
                         }
                     }
@@ -656,7 +652,7 @@ function fetchMenuItemsForSession(urlLast) {
                             jQuery.unblockUI();
                             $('#alrt1').show();
                             $('#alertmessage1').html('Enter a valid user name/ password.')
-                            App.scrollTo($('#alrt1'), -200);
+                            //App.scrollTo($('#alrt1'), -200);
                             $('#alrt1').fadeOut(5000);
                         }
 
