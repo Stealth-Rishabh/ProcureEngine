@@ -1909,10 +1909,8 @@ function CompleteProcess() {
             },
             cancel: {
                 label: "No",
-                className: "btn-default",
-                callback: function () {
-                    window.location.href = "index.html";
-                }
+                className: "btn-default"
+                
             }
         }
     });
@@ -2137,19 +2135,19 @@ jQuery("#txtSearchmatrix").keyup(function () {
 
 
 function CompleteAprroverSeq() {
+    debugger
     var x = isAuthenticated();
     
     var data = {
-        CustomerID: parseInt(CurrentCustomer),
-        NfaApproverID: parseInt(nfaApproverIDX)
-        
+        cusID: parseInt(CurrentCustomer),
+        idx: parseInt(nfaApproverIDX)                  
     };
     var url = "NFA/CompleteAprroverSeq";
     
     var SaveApproverMaster = callajaxReturnSuccess(url, "Post", JSON.stringify(data));
     SaveApproverMaster.success(function (res) {
         if (res.status != "E") {
-       
+       debugger
             console.log(res);        
         }
         else {
