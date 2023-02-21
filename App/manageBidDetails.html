@@ -525,7 +525,7 @@
                                                         <div class="portlet light ">
 
                                                             <div class="portlet-body">
-                                                                <form action="#" class="form-horizontal">
+                                                                <form action="#" class="form-horizontal" onsubmit="preventSubmit(event)">
                                                                     <div class="form-body">
                                                                         <div class="form-group">
                                                                             <label class="col-lg-2  control-label">
@@ -542,7 +542,7 @@
                                                                     </div>
                                                                     <div class="form-actions fluid padding5px">
                                                                         <div class="col-md-offset-4 col-md-6">
-                                                                            <button type="submit" class="btn green" onclick="resetpasswordForBidVendor()">
+                                                                            <button type="button" class="btn green" onclick="resetpasswordForBidVendor()">
                                                                                 <!--Reset Password-->
                                                                                 Resend Password
                                                                             </button>
@@ -571,7 +571,7 @@
                                                                         <input type="text" class="form-control" placeholder="Search Vendor Name" autocomplete="off" id="txtSearch" name="txtSearch" />
                                                                     </div>
                                                                 </div>
-                                                                </br></br></br>
+                                                                <br/><br/><br/>
                                                                 <form action="#" id="entryForm" class="form-horizontal">
                                                                     <div class="form-group">
 
