@@ -953,10 +953,10 @@ $('#deletepopup').on('hidden.bs.modal', function () {
 
 });
 
-jQuery("#txtvendor, #txtvendorSurrogateBid").keyup(function () {
+/*jQuery("#txtvendor, #txtvendorSurrogateBid").keyup(function () {
     sessionStorage.setItem('hdnselectedvendor', '0');
     sessionStorage.setItem('hdnselectedEmail', '');
-});
+});*/
 
 jQuery("#txtvendor,#txtvendorSurrogateBid").typeahead({
     source: function (query, process) {
@@ -1119,6 +1119,7 @@ function resetpasswordForBidVendor() {
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             contentType: "application/json",
             success: function (data) {
+               debugger
                 // if (data = "1") {
                 success1.show();
                 $('#spansuccess1').html('New password is sent to registered email of vendor..');
@@ -5226,3 +5227,10 @@ $("#btndownloadTemplate").click(function (e) {
     tableToExcelMultipleWorkSheet(['tblBiddetailsPreprice'], ['DataTemplate'], 'PrePricingXLTemplate -' + postfix + '.xls')
 
 });
+
+//prevent form from submission
+
+function preventSubmit(event) {
+    event.preventDefault(); // prevent default form submission behavior
+    
+}
