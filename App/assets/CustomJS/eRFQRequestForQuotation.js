@@ -6,6 +6,7 @@ jQuery(document).ready(function () {
     date.setDate(date.getDate() - 1);
     $('#txtPODate').datepicker({ startDate: "-1d" });
     Pageloaded()
+    // var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -2078,7 +2079,7 @@ function fetchBoqParameters() {
                                                             $('#TblMHP' + l).append("<tr><td data-toggle='collapse' class='accordion-toggle'  data-target='#demo123P" + m + "' style='width:5%!important' > <button type='button' class='btn btn-default btn-xs' onclick='fncollapse(mainItem12P" + l + ")' ><span class='glyphicon glyphicon-plus' id='mainItem12P" + l + "'></span></button>&nbsp;" + data[0].parameters[l].srno + "</td><td colspan='10'>" + data[0].parameters[l].rfqShortName + "</td></tr>");
                                                         }
                                                         else if (data[0].parameters[l].rfqParameterId == data[0].parameters[m].rfqParameterParentID) {
-                                                            $('#TblMH1' + l).append("<tr><td>" + data[0].parameters[m].srno + "</td><td>" + data[0].parameters[m].rfqShortName + "</td><td>" + thousands_separators(data[0].parameters[m].rfQuantity) + "</td><td>" + data[0].parameters[m].rfqUomId+ "</td><td>" + thousands_separators(data[0].parameters[m].rfqTargetPrice) + "</td></tr>")
+                                                            $('#TblMH1' + l).append("<tr><td>" + data[0].parameters[m].srno + "</td><td>" + data[0].parameters[m].rfqShortName + "</td><td>" + thousands_separators(data[0].parameters[m].rfQuantity) + "</td><td>" + data[0].parameters[m].rfqUomId + "</td><td>" + thousands_separators(data[0].parameters[m].rfqTargetPrice) + "</td></tr>")
                                                             $('#TblMH1P' + l).append("<tr><td>" + data[0].parameters[m].srno + "</td><td>" + data[0].parameters[m].rfqShortName + "</td><td>" + thousands_separators(data[0].parameters[m].rfQuantity) + "</td><td>" + data[0].parameters[m].rfqUomId + "</td><td>" + thousands_separators(data[0].parameters[m].rfqTargetPrice) + "</td></tr>")
                                                         }
                                                     }
@@ -3122,6 +3123,7 @@ function fnNoExcelUpload() {
 }
 
 function handleFileparameter(e) {
+
     //Get the files from Upload control
     var files = e.target.files;
     var i, f;
@@ -3185,6 +3187,7 @@ function isValidDate(str) {
 }
 var Rowcount = 0;
 function printDataparameter(result) {
+
     var loopcount = result.length; //getting the data length for loop.
     var ErrorMszDuplicate = '';
     var i;
@@ -3311,7 +3314,7 @@ function printDataparameter(result) {
             return false;
 
         }
-        else if (!moment(podate, ['MM/DD/YYYY', 'M/D/YY'], true).isValid() && !moment(podate, ['MM-DD-YYYY','M-D-YY'], true).isValid() && podate != '') {
+        else if (!moment(podate, ['MM/DD/YYYY', 'M/D/YY'], true).isValid() && !moment(podate, ['MM-DD-YYYY', 'M-D-YY'], true).isValid() && podate != '') {
 
             $("#error-excelparameter").show();
             $("#errspan-excelparameter").html('PO Date is incorrect of item no ' + (i + 1) + '. Please set PODate in MM/DD/YYYY or MM-DD-YYYY.');
@@ -3614,6 +3617,7 @@ function fninsBoqfile() {
             return;
         },
         error: function (xhr, status, error) {
+
             // $(".alert-danger").find("span").html('').html(filename + " Couldn't upload successfully on Azure");
             Metronic.scrollTo(error, -200);
             $(".alert-danger").show();
