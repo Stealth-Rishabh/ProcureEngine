@@ -51,7 +51,8 @@ function fetchReguestforQuotationDetails(RFQID) {
                 RFqsub = RFQData[0].general[0].rfqSubject;
                 $('#logo').attr("src", RFQData[0].general[0].logoImage);
                 $('#spnconfiguredby').html(RFQData[0].general[0].rfqConfigureByName)
-                jQuery('#tbldetails >tbody').append("<tr><td><b>RFQ Subject:</b> " + RFQData[0].general[0].rfqSubject + "</td><td><b>RFQ Description:</b> " + RFQData[0].general[0].rfqDescription + "</td></tr><tr><td><b>Event ID:</b> " + RFQID + "</td><td><b>RFQ Date:</b> " + fnConverToLocalTime(RFQData[0].general[0].rfqStartDate) + ' - ' + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td></tr><tr><td><b>Currency:</b> " + RFQData[0].general[0].currencyNm + "</td><td><b>Conversion Rate:</b> " + RFQData[0].general[0].rfqConversionRate + " </td></tr><tr><td><b>Ref No.:</b> " +  RFQData[0].general[0].rfqReference + " </td></tr>")
+                jQuery('#tbldetails >tbody').append("<tr><td><b>RFQ Subject:</b> " + RFQData[0].general[0].rfqSubject + "</td><td><b>RFQ Description:</b> " + RFQData[0].general[0].rfqDescription + "</td></tr><tr><td><b>Event ID:</b> " + RFQID + "</td><td><b>RFQ Date:</b> " + fnConverToLocalTime(RFQData[0].general[0].rfqStartDate) + ' - ' + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td></tr><tr><td><b>Currency:</b> " + RFQData[0].general[0].currencyNm + "</td><td><b>Conversion Rate:</b> " + RFQData[0].general[0].rfqConversionRate + " </td></tr><tr><td><b>Ref No.:</b> " + RFQData[0].general[0].rfqReference + " </td></tr>")
+
             }
         },
         error: function (xhr, status, error) {
@@ -165,7 +166,7 @@ function fetchrfqcomprative(RFQID) {
                 strHead += "</tr>";
 
                 jQuery('#tblRFQComprative > thead').append(strHead);
-              //  jQuery('#tblRFQComprativeQ > thead').append(strHeadQ);
+                //jQuery('#tblRFQComprativeQ > thead').append(strHeadQ);
 
 
                 //For Printing Header Ends
@@ -470,27 +471,26 @@ function fetchrfqcomprative(RFQID) {
                     }
                     str += "<td colspan='7'>&nbsp;</td>";
                     str += " </tr>";
-
                 }
 
                 //question table change
-                str  += "<tr  style='background:#f5f5f5; color:light black;'><th colspan='6'>Question</th>"
+                str += "<tr  style='background:#f5f5f5; color:light black;'><th colspan='6'>Question</th>"
 
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
-                   
+
 
                     str += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].vendorName; +"</th>";
 
 
                 }
-                
+
                 str += "<th colspan='7'>Our Requirement</th>"
                 str += "</tr>"
 
 
                 if (data[0].questions.length > 0) {
 
-                   // $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
+                    // $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
                     for (var p = 0; p < data[0].noOfQuestions[0].noOfQuestionsCount; p++) {
 
                         var flag2 = 'T';
@@ -562,7 +562,7 @@ function fetchrfqcomprative(RFQID) {
 
                 }
                 if (data[0].approverStatus.length > 0) {
-                   // $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
+                    // $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
                     for (var p = 0; p < data[0].noOfTApprover[0].noOfTechnicalApprover; p++) {
 
                         var flag3 = 'T';
@@ -759,7 +759,7 @@ function fetchrfqcomprative(RFQID) {
 
 
                 jQuery('#tblRFQComprative').append(str);
-              //  jQuery('#tblRFQComprativeQ').append(strQ);
+                //jQuery('#tblRFQComprativeQ').append(strQ);
 
 
             }
@@ -1437,12 +1437,31 @@ function fetchAttachments() {
 
 var FromPage = getUrlVarsURL(decryptedstring)["FromPage"];
 
+function testPDF() {
+    html2canvas(document.getElementById('divGenerateReport'), {
+        onrendered: function (canvasObj) {
+            var pdf = new jsPDF('P', 'pt', 'a4'),
+                pdfConf = {
+                    pagesplit: false,
+                    backgroundColor: '#FFF'
+                };
+            document.body.appendChild(canvasObj); //appendChild is required for html to add page in pdf
+            pdf.addHTML(canvasObj, 0, 0, pdfConf, function () {
+                document.body.removeChild(canvasObj);
+                //pdf.addPage();
+                pdf.save('Test.pdf');
+            });
+        }
+    });
+}
+
 function saveAspdf() {
+
 
     //var pdf = new jsPDF('l', 'mm', [300, 475]);
     // var pdf = new jsPDF('l', 'pt', 'a0');
-    var pdf = new jsPDF('p', 'pt', 'a0', true);
-
+    var pdf = new jsPDF('portrait', 'pt', 'a0', true);
+    // pdf.rect(20, 20, pdf.internal.pageSize.width - 40, pdf.internal.pageSize.height - 40, 'S');
     pdf.setFontSize(10);// optional
     var options = {
         pagesplit: true
@@ -1486,10 +1505,12 @@ function fetchApproverRemarks(RFQID) {
                 $('#tblapprovalprocess').hide();
                 jQuery.unblockUI();
             }
+            jQuery.unblockUI();
             setTimeout(function () {
 
                 saveAspdf();
-                jQuery.unblockUI();
+                //testPDF();
+
 
             }, 2000);
 
