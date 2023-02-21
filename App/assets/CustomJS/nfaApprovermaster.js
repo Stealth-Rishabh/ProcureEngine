@@ -1913,7 +1913,12 @@ function CompleteProcess() {
             },
             cancel: {
                 label: "No",
-                className: "btn-default"
+                className: "btn-default",
+                callback: function () {
+                    // Hide the modal on "No" button click
+                    $('.bootbox.modal').modal('hide');
+                }
+                
             }
         }
     });
