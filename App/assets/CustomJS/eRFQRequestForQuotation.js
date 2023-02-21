@@ -3122,7 +3122,6 @@ function fnNoExcelUpload() {
 }
 
 function handleFileparameter(e) {
-
     //Get the files from Upload control
     var files = e.target.files;
     var i, f;
@@ -3186,7 +3185,6 @@ function isValidDate(str) {
 }
 var Rowcount = 0;
 function printDataparameter(result) {
-
     var loopcount = result.length; //getting the data length for loop.
     var ErrorMszDuplicate = '';
     var i;
@@ -3313,7 +3311,7 @@ function printDataparameter(result) {
             return false;
 
         }
-        else if (!moment(podate, 'MM/DD/YYYY', true).isValid() && podate != '') {
+        else if (!moment(podate, ['MM/DD/YYYY', 'M/D/YY'], true).isValid() && !moment(podate, ['MM-DD-YYYY','M-D-YY'], true).isValid() && podate != '') {
 
             $("#error-excelparameter").show();
             $("#errspan-excelparameter").html('PO Date is incorrect of item no ' + (i + 1) + '. Please set PODate in MM/DD/YYYY or MM-DD-YYYY.');
