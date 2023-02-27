@@ -1124,4 +1124,16 @@ tr.header {
     
 }
 
+.gstvalidicon {
+    background: url('../../assets/global/img/icons-done.png') no-repeat center center;
+    padding-right: 30px;
+    background-size: 25px 25px;    
+}
+/*invitevendor*/
+.btn-flex-rgt {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px
+}
+
 
