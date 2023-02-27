@@ -53,7 +53,7 @@ jQuery(document).ready(function () {
 
 
     jQuery("#btnsumbit").click(function () {
-
+        debugger
         dynamiccontrolvalidation();
     });
 });
@@ -75,8 +75,13 @@ $("#btnExport").click(function (e) {
 //
 
 
-$('#txtPanNo,#txtTINNo,#txtPhoneNo,#txtMobileNo').maxlength({
+$('#txtPanNo,#txtPhoneNo,#txtMobileNo').maxlength({
     limitReachedClass: "label label-danger",
+    alwaysShow: true
+});
+
+$('#txtTINNo').maxlength({
+   
     alwaysShow: true
 });
 jQuery.validator.addMethod(
@@ -381,13 +386,14 @@ function RegisterParticipants() {
             else {
                 $('#divalertsucess').slideDown('show');
                 App.scrollTo(jQuery('#divalertsucess'), -200);
-                clearform();
+               // $('#div_tableVendor').removeClass('hide');
+               // clearform();
             }
             setTimeout(function () {
                 jQuery('#divalertsucess').css('display', 'none');
                 jQuery('#divalerterr').css('display', 'none');
             }, 5000);
-            fetchParticipantsVenderTable();
+          //  fetchParticipantsVenderTable();
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
@@ -469,6 +475,7 @@ function fnshowexistedVendorForextend() {
 var addr1 = "";
 var addr2 = "";
 function fnfetchDetailsforExtension() {
+    debugger
     var data = dataforExistedEmailforExtend;
 
     addr1 = data[0].address1.replace(/\n/g, " ");
@@ -1067,6 +1074,7 @@ function validateVendorCategory() {
 }
 
 function dynamiccontrolvalidation() {
+    debugger
     var status = "True";
 
     return status;
@@ -1254,7 +1262,7 @@ function fnfetchfoundVendors() {
                             }
                         }
                     }
-                   
+                    $('#btnAddAnother').removeClass('hide');
                 }
                 else {
                    /* debugger
@@ -1269,6 +1277,7 @@ function fnfetchfoundVendors() {
                         $('#txtPanNo').attr('disabled', 'disabled')
                         $('#txtTINNo').attr('disabled', 'disabled')
                     }*/
+                    $('#btnAddAnother').addClass('hide');
                     if ($('#ddlUI').val() == "EmailID") {
                         $('#txtcompanyemail').val($('#txtUI').val())
                         $('#txtAlternateeMailID').val($('#txtUI').val())
@@ -1298,7 +1307,7 @@ function fnfetchfoundVendors() {
 }
 
 function AddVendor() {
-
+    debugger
     clearform();
     beforeTaxDisable() 
     $('#divVendorForm').removeClass('hide')
@@ -1314,11 +1323,19 @@ function AddVendor() {
     
 }
 $("#txtUI").keyup(function () {
-    clearform();
+    clearformkeyup();
 });
 function EditVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone, dialingcode, mobile, addr1, addr2, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid) {
+    
+    $('#ddlCountry').val(countryid).trigger('change')
+    setTimeout(function () {
+        $('#ddlState').val(stateid).trigger('change')
+    }, 500)
 
+    setTimeout(function () {
 
+        $('#ddlCity').val(cityid).trigger('change')
+    }, 1000)
     $('#hdnFlagType').val(buttonname);
     jQuery("#hdnParticipantID").val(vendorid);
     $("#hdnParticipantCode").val(vendorcode);
@@ -1337,9 +1354,9 @@ function EditVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone,
     $('#ddlpreferredTime').val(prefferredTZ).trigger('change') //abheedev 28/11/2022 bug 530
 
     //@abheedev
-
-    $('#ddlCountryCd').val(dialingcode)//.trigger('change')
-    $('#ddlCountryCdPhone').val(dialingcodephone)//.trigger('change')
+    debugger
+    $('#ddlCountryCd').val(dialingcode).trigger('change')
+    $('#ddlCountryCdPhone').val(dialingcodephone).trigger('change')
 
 
 
@@ -1352,15 +1369,7 @@ function EditVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone,
         jQuery('#chkIsActiveparticipant').parents('div').removeClass('checked');
     }
 
-    $('#ddlCountry').val(countryid).trigger('change')
-    setTimeout(function () {
-        $('#ddlState').val(stateid).trigger('change')
-    }, 500)
-
-    setTimeout(function () {
-
-        $('#ddlCity').val(cityid).trigger('change')
-    }, 1000)
+   
     $('#divVendorForm').removeClass('hide');
     fetchMapCategory('Z', vendorid);
 
@@ -1548,7 +1557,7 @@ function ExtendParticipants() {
 }
 //abheedev bug 590
 function clearform() {
-    
+    debugger
     jQuery("#ParticipantName").val('');
     jQuery("#ContactName").val('');
     jQuery("#txtAddress").val('');
@@ -1589,7 +1598,8 @@ function clearform() {
     jQuery("#hdnFlagType").val(0)
     $('#divVendorForm').addClass('hide')
     $('#lbl_panmsz').addClass('hide')
-    $('#div_tableVendor').addClass('hide');
+  //  $('#div_tableVendor').addClass('hide');
+    $('#btnAddAnother').addClass('hide');
 }
 function fnchangeplaceholder() {
     debugger
@@ -1878,11 +1888,11 @@ function getTaxData() {
 }
 
 getTaxData().then(function (data) {
-    debugger
+  
     taxjsondata = data;
     $('#ddlCountry').on('change', function () {
 
-        debugger
+       
 
         let selectedValue = $(this).val() || "111";
         updateForm(taxjsondata, selectedValue);
@@ -1894,11 +1904,11 @@ getTaxData().then(function (data) {
 
 
 function updateForm(data, selectedValue) {
-    debugger
+  
     for (var i = 0; i < data.countries.length; i++) {
         if (data.countries[i].countryid === selectedValue) {
             var country = data.countries[i];
-            debugger
+         
             $(".tax-group").empty();
             $.each(country.formFields, function (i, field) {              
                 $(".tax-group").append('<label class="col-md-3 control-label">' + field.label + '<span class="required">*</span></label><div class="col-md-9"><input class="form-control" id="txtTINNo" minlength="' + field.minlength + '" maxlength="' + field.maxlength + '" type="' + field.type + '" placeholder="' + field.placeholder + '"/></div>');
@@ -1929,23 +1939,23 @@ function updateForm(data, selectedValue) {
 
 function extractPan(data) {
     debugger
+    $('#txtTINNo').removeClass("gstvalidicon")
     var reggst = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/
-    if (!reggst.test(data.value)) {
-        bootbox.alert('GST Number Format is not valid. please check it');
-        return false;
-    }
+    
    
     if (data.value.length === 15) {
-        let panNumber = ""
-        panNumber = data.value.substring(2, 12);
-        $("#txtPanNo").val(panNumber);
-        $("#txtPanNo").attr("disabled", "disabled");
+        if (!reggst.test(data.value)) {
+            bootbox.alert('GST Number Format is not valid. please check it');
+            return false;
+        }
+        
         ValidateGST(data.value)
-        afterTaxEnable()
+        
     }
     else {
-        $("#txtPanNo").val();
-        $("#txtPanNo").removeAttr("disabled", "disabled");
+       
+        $("#txtPanNo").val("");
+       // $("#txtPanNo").removeAttr("disabled", "disabled");
         beforeTaxDisable()
     }
   
@@ -1979,14 +1989,37 @@ function ValidateGST(data) {
     let GSTNo = data
     console.log(sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo);
     jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo,
+        url: sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" +GSTNo,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
             debugger
-            console.log("successful");
+            if (data.status != 'E') {
+                var data = jQuery.parseJSON(data);
+                let panNumber = ""
+
+                console.log(data.gstin);
+                $('#txtTINNo').addClass("gstvalidicon")
+
+
+                panNumber = data.gstin.substring(2, 12);
+                $("#txtPanNo").val(panNumber);
+                $("#txtPanNo").attr("disabled", "disabled");
+                afterTaxEnable()
+                setTimeout(function () {
+                    $('#txtTINNo').removeClass("gstvalidicon");
+                }, 2000);
+            }
+            else {
+                $('.alert-danger').html('No such GST number exist')
+                $('.alert-danger').show();
+                Metronic.scrollTo($('.alert-danger'), -200);
+                $('.alert-danger').fadeOut(5000);
+                beforeTaxDisable()
+               
+            }
+            
             
         },
         error: function (xhr, status, error) {
@@ -2060,4 +2093,48 @@ function validateEmail() {
     }
 }
 
+function clearformkeyup() {
+    debugger
+    jQuery("#ParticipantName").val('');
+    jQuery("#ContactName").val('');
+    jQuery("#txtAddress").val('');
+    jQuery("#txtCity").val('');
+    jQuery("#txtZipCd").val('');
+    jQuery("#txtPanNo").val('');
+    jQuery("#txtTINNo").val('');
+    jQuery("#txtPhoneNo").val('');
+    jQuery("#txtMobileNo").val('');
+    jQuery("#ContactName").val('');
+    jQuery("#txtcompanyemail").val('');
+    jQuery("#txtAlternateeMailID").val('');
+    jQuery('#hdnParticipantID').val('0');
+    $("#ddlCountry").val('111');
 
+    $('.childchkbox').each(function () {
+        jQuery(this).closest('span#spancheckedvendorgroup').removeAttr('class');
+    })
+    status = "True"
+    $('#ParticipantName').removeAttr('disabled')
+    $('#txtAddress').removeAttr('disabled')
+    $('#ContactName').removeAttr('disabled')
+    //$('#txtCity').removeAttr('disabled')
+    $('#txtZipCd').removeAttr('disabled')
+    $('#txtPanNo').removeAttr('disabled')
+    $('#txtTINNo').removeAttr('disabled')
+    $('#ddlCountryCdPhone').removeAttr('disabled')
+    $('#txtPhoneNo').removeAttr('disabled')
+    $('#ddlCountryCd').removeAttr('disabled')
+    $('#txtMobileNo').removeAttr('disabled')
+    $('#txtcompanyemail').removeAttr('disabled')
+    $('#chkalternatemail').removeAttr('disabled')
+    $('#ddlCountry').removeAttr('disabled')
+    $('#ddlState').removeAttr('disabled')
+    $('#ddlCity').removeAttr('disabled')
+    jQuery("#hdnParticipantID").val(0)
+    jQuery("#hdnParticipantCode").val(0)
+    jQuery("#hdnFlagType").val(0)
+    $('#divVendorForm').addClass('hide')
+    $('#lbl_panmsz').addClass('hide')
+    $('#div_tableVendor').addClass('hide');
+    $('#btnAddAnother').addClass('hide');
+}
