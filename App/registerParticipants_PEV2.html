@@ -175,6 +175,8 @@
                                     </div>
                                 </div>
                                 <div class="portlet-body form">
+                                     <!--invite vendor-->
+                                    <div class="btn-flex-rgt"><button onclick="routeToInviteVendor()" type="button" class="btn btn-sm btn-outline-info">Invite Vendor</button></div>
                                     <!-- BEGIN FORM-->
                                     <form action="#" id="entryForm" class="form-horizontal">
                                         <div id="divalertsucess" class="alert alert-success divalertstyle">
@@ -238,7 +240,7 @@
                                                             GST No. <span class="required">*</span>
                                                         </label>
                                                         <div class="col-md-9">
-                                                            <input type="text" class="form-control" placeholder="Enter Goods and Services Tax Number" id="txtTINNo" maxlength="15" name="txtTINNo" onchange="extractPan(this)" autocomplete="off"  style="background:url('assets/global/img/icons-done.png') no-repeat right center; padding-right: 30px;">
+                                                            <input type="text" class="form-control" placeholder="Enter Goods and Services Tax Number" id="txtTINNo" maxlength="15" name="txtTINNo" onkeyup="extractPan(this)" autocomplete="off">
                                                         </div>
 
                                                     </div>
