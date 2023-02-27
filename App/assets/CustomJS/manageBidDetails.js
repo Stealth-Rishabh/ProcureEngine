@@ -2,7 +2,6 @@ jQuery(document).ready(function () {
 
     $('.thousandseparated').inputmask();
     Pageloaded()
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -1080,7 +1079,6 @@ function ValidateVendor() {
     return status;
 }
 function resetpasswordForBidVendor() {
-    debugger
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (sessionStorage.getItem("hdnbid") == '0') {
         error1.show();
@@ -1119,7 +1117,6 @@ function resetpasswordForBidVendor() {
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             contentType: "application/json",
             success: function (data) {
-               debugger
                 // if (data = "1") {
                 success1.show();
                 $('#spansuccess1').html('New password is sent to registered email of vendor..');
