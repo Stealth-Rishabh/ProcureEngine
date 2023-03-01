@@ -106,7 +106,14 @@ function gritternotification(msz) {
 
     return false;
 }
-function calltoaster(msz, title, type) {
+
+
+
+
+
+ function calltoaster(msz, title, type) {
+     $(".toast-success").remove();
+   // toastr.clear()
     var options = {
         tapToDismiss: false,
         "closeButton": true,
@@ -119,11 +126,12 @@ function calltoaster(msz, title, type) {
         "hideDuration": "0",
         "showEasing": "swing"
 
-    }
-    if (type == 'success') {
-        toastr.clear();
-        toastr.success('New Message', 'You have a new message.', options);
+     }
 
+    if (type == 'success') {       
+       
+        toastr.success('New Message', 'You have a new message.', options);
+       
     } else if (type == 'error') {
         toastr.error(decodeURIComponent(msz), 'Error');
     } else if (type == 'warning') {
@@ -700,7 +708,6 @@ function fetchBroadcastMsgs(userId, msgType) {
     })
 }
 function fetchvendor() {
-
     toastr.clear();
     var _bidId = parseInt(getUrlVarsURL(decryptedstring)['BidID']);
     var data = {
@@ -783,7 +790,6 @@ function fetchvendor() {
     });
 }
 function fetchUserChats(userId, msgType) {
-
     toastr.clear();
     var _bidId = 0;
     _bidId = (sessionStorage.getItem('BidID') == 0) ? BidID : sessionStorage.getItem('BidID');

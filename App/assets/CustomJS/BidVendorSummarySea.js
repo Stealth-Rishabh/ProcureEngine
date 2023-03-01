@@ -2551,11 +2551,11 @@ connection.on("refreshBidDetailsManage", function (data) {
 /////****** Chat *****************/////
 connection.on("ReceiveMessage", function (objChatmsz) {
 
+
     let chat = JSON.parse(objChatmsz)
 
-    toastr.clear();
-    $(".pulsate-regular").css('animation', 'pulse 2s infinite')
-    toastr.success('You have a new message.', 'New Message')
+    calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
+
     $("#chatList").append('<div class="post out">'
         + '<div class="message">'
         + '<span class="arrow"></span>'
@@ -2564,6 +2564,7 @@ connection.on("ReceiveMessage", function (objChatmsz) {
         + '<span class="body" style="color: #c3c3c3;">' + chat.ChatMsg + '</span>'
         + '</div>'
         + '</div>');
+
 });
 connection.onclose(error => {
     bootbox.alert("You are not connected to the Bid as Your Internet connection is unstable, please refresh the page!!", function () {
@@ -2573,6 +2574,7 @@ connection.onclose(error => {
 //}
 
 function sendChatMsgs() {
+
     if ($("#txtChatMsg").val() != '' && $("#txtChatMsg").val() != null) {
         var data = {
             "ChatMsg": $('#txtChatMsg').val(),

@@ -1,5 +1,4 @@
 jQuery(document).ready(function () {
-
     Pageloaded();
 
     setInterval(function () { Pageloaded() }, 15000);
@@ -36,7 +35,10 @@ jQuery(document).ready(function () {
     }
     $(".pulsate-regular").css('animation', 'none');
 
+
 });
+
+
 var BidTypeID = 0;
 var BidForID = 0;
 var Duration = '0.00';
@@ -87,7 +89,30 @@ connection.on("disconnectSR", function (connectionId) {
     });
 });*/
 
+connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
 
+
+    let data = JSON.parse(rdataJson)
+
+    if (data[0].VendorID == "0") {
+        $('#hddnadminConnection').val(connectionId)
+        if (flag == false) {
+            $('#adminconn').removeClass('badge-success').addClass('badge-danger')
+            $('#admstatus').text("Buyer Offline")
+            $('#chatbtn').addClass('hide')
+            $('#txtChatMsg').addClass('hide')
+        }
+        else {
+            $('#adminconn').removeClass('badge-danger').addClass('badge-success')
+            $('#admstatus').text("Buyer Online")
+            $('#chatbtn').removeClass('hide')
+            $('#txtChatMsg').removeClass('hide')
+        }
+
+    }
+
+
+});
 connection.on("refreshPEFAQuotes", function (data) {
     if (BidForID == 81 || BidForID == 83) {
         fetchBidSummaryVendorScrap();
@@ -298,11 +323,12 @@ connection.on("ReceiveMessage", function (objChatmsz) {
 
     let chat = JSON.parse(objChatmsz)
 
-    //toastr.clear();
+     //toastr.clear();
     $(".pulsate-regular").css('animation', 'pulse 2s infinite')
     //toastr.success('You have a new message.', 'New Message')
-    calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
 
+    calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');  
+    
     $("#hddnadminConnection").val(chat.fromconnectionID)
     // if (sessionStorage.getItem("UserID") != chat.fromID) {
     $("#chatList").append('<div class="post out">'
@@ -343,7 +369,9 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
 
 /////****** Chat Start*****************/////
 
-
+function openForm() {
+    fetchUserChats(sessionStorage.getItem("UserID"), "T");//T stands for both single & Broadcast
+}
 function sendChatMsgs() {
     if ($("#txtChatMsg").val() != '' && $("#txtChatMsg").val() != null) {
         var _cleanString = StringEncodingMechanism($("#txtChatMsg").val());
@@ -353,7 +381,8 @@ function sendChatMsgs() {
             "fromID": sessionStorage.getItem("UserID"),
             "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
             "msgType": 'S',
-            "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : ''
+            "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : '',
+            "fromconnectionID": $('#hddnadminConnection').val()
 
         }
         $("#chatList").append('<div class="post in">'
@@ -812,7 +841,7 @@ function InsUpdQuoteScrap(rowID) {
         $('#hdnselectedindex').val(i);
 
 
-        connection.invoke("RefreshBidParticipationFA", JSON.stringify(QuoteProduct), parseInt(sessionStorage.getItem("BidID"))).catch(function (err) {
+        connection.invoke("RefreshBidParticipationFA", JSON.stringify(QuoteProduct)).catch(function (err) {
             return console.error(err.toString());
         });
         $('#txtquote' + i).val('')
