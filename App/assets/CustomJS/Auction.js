@@ -106,14 +106,9 @@ function gritternotification(msz) {
 
     return false;
 }
-
-
-
-
-
- function calltoaster(msz, title, type) {
-     $(".toast-success").remove();
-   // toastr.clear()
+function calltoaster(msz, title, type) {
+    $(".toast-success").remove();
+     // toastr.clear()
     var options = {
         tapToDismiss: false,
         "closeButton": true,
@@ -126,12 +121,10 @@ function gritternotification(msz) {
         "hideDuration": "0",
         "showEasing": "swing"
 
-     }
-
-    if (type == 'success') {       
-       
+    }
+    if (type == 'success') {
         toastr.success('New Message', 'You have a new message.', options);
-       
+
     } else if (type == 'error') {
         toastr.error(decodeURIComponent(msz), 'Error');
     } else if (type == 'warning') {
@@ -708,6 +701,7 @@ function fetchBroadcastMsgs(userId, msgType) {
     })
 }
 function fetchvendor() {
+
     toastr.clear();
     var _bidId = parseInt(getUrlVarsURL(decryptedstring)['BidID']);
     var data = {
@@ -790,6 +784,7 @@ function fetchvendor() {
     });
 }
 function fetchUserChats(userId, msgType) {
+
     toastr.clear();
     var _bidId = 0;
     _bidId = (sessionStorage.getItem('BidID') == 0) ? BidID : sessionStorage.getItem('BidID');
@@ -966,14 +961,14 @@ function fnUploadFilesonAzure(fileID, filename, foldername) {
 //** DownLoad Files from Blob
 function fnDownloadAttachments(filename, foldername) {
 
-   
+
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/DownloadFiles/?fileName=" + filename + "&foldername=" + foldername,
         type: "Get",
         cache: false,
         crossDomain: true,
         success: function (data) {
-         
+
             //abheedev bug 353 start line 894 to 922.
             if (data.indexOf('<?xml') != -1) //if file is xml then give error
             {
