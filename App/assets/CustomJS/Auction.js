@@ -106,10 +106,6 @@ function gritternotification(msz) {
 
     return false;
 }
-
-
-
-
 function calltoaster(msz, title, type) {
     var options = {
         tapToDismiss: false,
@@ -127,7 +123,7 @@ function calltoaster(msz, title, type) {
     if (type == 'success') {
         toastr.clear();
         toastr.success('New Message', 'You have a new message.', options);
-        
+
     } else if (type == 'error') {
         toastr.error(decodeURIComponent(msz), 'Error');
     } else if (type == 'warning') {
@@ -398,13 +394,13 @@ function thousands_separators_NonMadCol(ele) {
     ele.value = res;
 }
 function thousands_separators_input(ele) {
-  
+
     var valArr, val = ele.value;
     let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
     val = val.replaceAll(/[^0-9\.]/g, '');
     val = val.replace(/[,]/g, '');
 
-    
+
     if (val != "") {
         valArr = val.split('.');
         valArr[0] = (parseInt(valArr[0], 10)).toLocaleString(culturecode);
@@ -438,7 +434,7 @@ function removeZero(ele) {
 }
 
 function removeThousandSeperator(val) {
-    
+
     if (val.length > 4) {
         val = val.replace(/,/g, '');
 
@@ -477,7 +473,7 @@ function convertTo24Hour(time) {
     return time;
 }
 function CancelBidDuringConfig(_bidId, _for) {
-   
+    var x = isAuthenticated();
     var Cancelbid = {
         "BidID": parseInt(_bidId),
         "For": _for,
@@ -496,7 +492,6 @@ function CancelBidDuringConfig(_bidId, _for) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-          
             if (data == '1' && _for == 'BID') {
                 bootbox.alert("Bid Cancelled successfully.", function () {
                     window.location = "index.html";
@@ -604,7 +599,7 @@ function replaceQuoutesFromText(ele) {
 ////******* Chat functions*********/////////////////////////////
 
 function openForm() {
-   
+
     $(".pulsate-regular").css('animation', 'none');
 }
 
@@ -612,9 +607,8 @@ function closeForm() {
     document.getElementById("myForm").style.display = "none";
 }
 //** when click on vendor from List
-
 function openChatDiv(name, email, vendorId, connectionid, userid, contactperson) {
-  
+
     $("#chat-label").html(contactperson + '(' + name + ')');
     $("#hddnVendorId").val(vendorId);
     $("#hddnVendorConnection").val(connectionid);
@@ -671,6 +665,7 @@ function fetchBroadcastMsgs(userId, msgType) {
 
             $("#listBroadCastMessages").empty();
             if (data.length > 0) {
+
                 for (var i = 0; i < data.length; i++) {
 
                     if (sessionStorage.getItem("UserID") == data[i].fromUserId) {
@@ -788,7 +783,7 @@ function fetchvendor() {
     });
 }
 function fetchUserChats(userId, msgType) {
-    
+
     toastr.clear();
     var _bidId = 0;
     _bidId = (sessionStorage.getItem('BidID') == 0) ? BidID : sessionStorage.getItem('BidID');
@@ -799,6 +794,7 @@ function fetchUserChats(userId, msgType) {
         "UserType": sessionStorage.getItem("UserType"),
         "msgType": msgType
     }
+    //console.log(JSON.stringify(data))
 
     jQuery.ajax({
         type: "POSt",
@@ -812,29 +808,44 @@ function fetchUserChats(userId, msgType) {
         dataType: "json",
         success: function (data, status, jqXHR) {
             $("#chatList").empty();
+
             if (data.length > 0) {
                 $(".pulsate-regular").css('animation', 'none');
-                for (var i = 0; i < data.length; i++) {
 
-                    if (sessionStorage.getItem("UserID") == data[i].fromUserId) {
-                        $("#chatList").append('<div class="post in">'
-                            + '<div class="message">'
-                            + '<span class="arrow"></span>'
-                            + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
-                            + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + fnConverToLocalTime(data[i].msgTime) + '</span>'
-                            + '<span class="body" style="color: #c3c3c3;">' + data[i].chatMsg + '</span>'
-                            + '</div>'
-                            + '</div>');
-                    }
-                    if (sessionStorage.getItem("UserID") != data[i].fromUserId) {
-                        $("#chatList").append('<div class="post out">'
-                            + '<div class="message">'
-                            + '<span class="arrow"></span>'
-                            + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
-                            + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + fnConverToLocalTime(data[i].msgTime) + '</span>'
-                            + '<span class="body" style="color: #c3c3c3;">' + data[i].chatMsg + '</span>'
-                            + '</div>'
-                            + '</div>');
+                $('#hddnadminConnection').val(data[0].fromconnectionID)
+                if (data[0].fromconnectionID == '') {
+                    $('#adminconn').removeClass('badge-success').addClass('badge-danger')
+                    $('#admstatus').text("Buyer Offline")
+                    $('#chatbtn').addClass('hide')
+                    $('#txtChatMsg').addClass('hide')
+                }
+                else {
+                    $('#adminconn').removeClass('badge-danger').addClass('badge-success')
+                    $('#admstatus').text("Buyer Online")
+                    $('#chatbtn').removeClass('hide')
+                    $('#txtChatMsg').removeClass('hide')
+                }
+
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].chatMsg != "") {
+                        if (sessionStorage.getItem("UserID") == data[i].fromUserId) {
+                            $("#chatList").append('<div class="post in">'
+                                + '<div class="message">'
+                                + '<span class="arrow"></span>'
+                                + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + fnConverToLocalTime(data[i].msgTime) + '</span>'
+                                + '<span class="body" style="color: #c3c3c3;">' + data[i].chatMsg + '</span>'
+                                + '</div>'
+                                + '</div>');
+                        }
+                        if (sessionStorage.getItem("UserID") != data[i].fromUserId) {
+                            $("#chatList").append('<div class="post out">'
+                                + '<div class="message">'
+                                + '<span class="arrow"></span>'
+                                + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + fnConverToLocalTime(data[i].msgTime) + '</span>'
+                                + '<span class="body" style="color: #c3c3c3;">' + data[i].chatMsg + '</span>'
+                                + '</div>'
+                                + '</div>');
+                        }
                     }
                 }
 
@@ -948,16 +959,15 @@ function fnUploadFilesonAzure(fileID, filename, foldername) {
 
 //** DownLoad Files from Blob
 function fnDownloadAttachments(filename, foldername) {
-    
 
+   
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/DownloadFiles/?fileName=" + filename + "&foldername=" + foldername,
         type: "Get",
         cache: false,
         crossDomain: true,
         success: function (data) {
-            debugger
-            console.log(url)
+         
             //abheedev bug 353 start line 894 to 922.
             if (data.indexOf('<?xml') != -1) //if file is xml then give error
             {
@@ -1882,7 +1892,6 @@ function StringEncodingMechanism(maliciousText) {
 }
 
 function StringDecodingMechanism(maliciousText) {
-
     var returnStr = maliciousText;
     if (returnStr != null) {
         returnStr = returnStr.replaceAll('&lt;', '<');
@@ -2117,7 +2126,7 @@ function fnConverToLocalTime(dttime) {
         }
 
         theStDate = theStDate.toLocaleDateString(culturecode, options);
-      //  theStDate = theStDate.toLocaleDateString("en-US", options);
+        //  theStDate = theStDate.toLocaleDateString("en-US", options);
         return theStDate;
     } else {
         return '..';
