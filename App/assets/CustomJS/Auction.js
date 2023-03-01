@@ -106,6 +106,10 @@ function gritternotification(msz) {
 
     return false;
 }
+
+
+
+
 function calltoaster(msz, title, type) {
     var options = {
         tapToDismiss: false,
@@ -121,7 +125,9 @@ function calltoaster(msz, title, type) {
 
     }
     if (type == 'success') {
-        toastr.success(decodeURIComponent(msz), title, options);
+        toastr.clear();
+        toastr.success('New Message', 'You have a new message.', options);
+        
     } else if (type == 'error') {
         toastr.error(decodeURIComponent(msz), 'Error');
     } else if (type == 'warning') {
@@ -598,7 +604,7 @@ function replaceQuoutesFromText(ele) {
 ////******* Chat functions*********/////////////////////////////
 
 function openForm() {
-
+   
     $(".pulsate-regular").css('animation', 'none');
 }
 
@@ -606,8 +612,9 @@ function closeForm() {
     document.getElementById("myForm").style.display = "none";
 }
 //** when click on vendor from List
-function openChatDiv(name, email, vendorId, connectionid, userid, contactperson) {
 
+function openChatDiv(name, email, vendorId, connectionid, userid, contactperson) {
+  
     $("#chat-label").html(contactperson + '(' + name + ')');
     $("#hddnVendorId").val(vendorId);
     $("#hddnVendorConnection").val(connectionid);
@@ -781,7 +788,7 @@ function fetchvendor() {
     });
 }
 function fetchUserChats(userId, msgType) {
-
+    
     toastr.clear();
     var _bidId = 0;
     _bidId = (sessionStorage.getItem('BidID') == 0) ? BidID : sessionStorage.getItem('BidID');
@@ -941,7 +948,7 @@ function fnUploadFilesonAzure(fileID, filename, foldername) {
 
 //** DownLoad Files from Blob
 function fnDownloadAttachments(filename, foldername) {
-
+    
 
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/DownloadFiles/?fileName=" + filename + "&foldername=" + foldername,
@@ -949,6 +956,8 @@ function fnDownloadAttachments(filename, foldername) {
         cache: false,
         crossDomain: true,
         success: function (data) {
+            debugger
+            console.log(url)
             //abheedev bug 353 start line 894 to 922.
             if (data.indexOf('<?xml') != -1) //if file is xml then give error
             {
