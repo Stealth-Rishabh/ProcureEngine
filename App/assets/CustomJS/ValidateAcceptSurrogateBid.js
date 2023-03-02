@@ -75,9 +75,9 @@ function fetchBidHeaderDetails() {
                 jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
 
 
-                jQuery("#lblbidduration").text(data[0].bidDuration);
+                jQuery("#lblbidduration").text(data[0].bidDuration + ' mins');
                 jQuery("#lblcurrency").text(data[0].currencyName);
-                jQuery("#lblbiddurationTT").text(data[0].bidDuration);
+                jQuery("#lblbiddurationTT").text(data[0].bidDuration + ' mins');
                 jQuery("#lblcurrencyTT").text(data[0].currencyName);
                 jQuery("#lblConvRate").text(data[0].conversionRate);
                 jQuery("#lblstatus").text(data[0].conversionRate);
