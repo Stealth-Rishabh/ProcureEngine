@@ -1161,7 +1161,6 @@ jQuery("#ParticipantName").typeahead({
 });
 //abheedev bug 590
 function validatePanNumber(pan) {
-    debugger 
     clearform();
     beforeTaxDisable();
     $("#ddlpreferredTime").select2("val", "");
@@ -1307,7 +1306,6 @@ function fnfetchfoundVendors() {
 }
 
 function AddVendor() {
-    debugger
     clearform();
     beforeTaxDisable() 
     $('#divVendorForm').removeClass('hide')
@@ -2094,7 +2092,6 @@ function validateEmail() {
 }
 
 function clearformkeyup() {
-    debugger
     jQuery("#ParticipantName").val('');
     jQuery("#ContactName").val('');
     jQuery("#txtAddress").val('');
@@ -2137,4 +2134,7 @@ function clearformkeyup() {
     $('#lbl_panmsz').addClass('hide')
     $('#div_tableVendor').addClass('hide');
     $('#btnAddAnother').addClass('hide');
+}
+function routeToInviteVendor() {
+    window.location.href = "InviteVendor.html";
 }
