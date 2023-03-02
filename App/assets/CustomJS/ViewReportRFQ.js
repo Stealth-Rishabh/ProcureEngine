@@ -566,7 +566,7 @@ function fetchrfqcomprative(RFQID) {
                     for (var p = 0; p < data[0].noOfTApprover[0].noOfTechnicalApprover; p++) {
 
                         var flag3 = 'T';
-                        $("#tblRFQComprativetest > tbody > tr").each(function (index) {
+                        $("#tblRFQComprativetestQ > tbody > tr").each(function (index) {
                             var this_row = $(this);
                             if ($.trim(this_row.find('td:eq(0)').html().toLowerCase()) == data[0].approverStatus[p].approverName.toLowerCase()) {
                                 flag3 = 'F';
