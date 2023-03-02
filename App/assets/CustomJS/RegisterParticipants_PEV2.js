@@ -2138,3 +2138,7 @@ function clearformkeyup() {
     $('#div_tableVendor').addClass('hide');
     $('#btnAddAnother').addClass('hide');
 }
+
+function routeToInviteVendor() {
+    window.location.href = "InviteVendor.html";
+}
