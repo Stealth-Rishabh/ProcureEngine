@@ -201,8 +201,10 @@ function onlyNumberKey(evt) {
 function callPagejs(pagejs) {
 
     var js = [];
-    js.push("assets/SSO/msalHead.js");
-    js.push("assets/CustomJS/AuthenticationConfig.js");
+    if (sessionStorage.getItem("ISFromSurrogate") != "Y") {
+        js.push("assets/SSO/msalHead.js");
+        js.push("assets/CustomJS/AuthenticationConfig.js");
+    }
     js.push("assets/CustomJS/Auction.js?v=" + Math.random());
     var Pages = pagejs.split(',')
     for (var i = 0; i < Pages.length; i++) {

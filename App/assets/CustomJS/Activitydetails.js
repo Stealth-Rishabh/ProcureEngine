@@ -5,7 +5,6 @@ Changepassworderror.hide();
 Changepasswordsuccess.hide();
 jQuery(document).ready(function () {   
     Pageloaded()
-    var x = isAuthenticated();
     sessionStorage.setItem('CurrentBidID', 0);
     sessionStorage.setItem('hddnRFQID', 0);
     sessionStorage.setItem('CurrentRFIID', 0);
