@@ -244,16 +244,15 @@ function fetNFAReport(dtfrom, dtto, subject) {
         success: function (data) {
 
             jQuery("#tblNFASummary").empty();
-            jQuery('#tblNFASummary').append("<thead><tr><th class='bold'>ID</th><th class='bold'>Subject</th><th class='bold'>Configured By</th><th class='bold'>Date</th><th class='bold'>Aging</th><th class='bold'>Currency</th><th class='bold'>Purchase Org</th><th class='bold'>Purchase Group</th><th class='bold'>Amount</th><th class='bold'>Status</th></tr></thead>");
+            jQuery('#tblNFASummary').append("<thead><tr><th class='bold'>ID</th><th class='bold'>Subject</th><th class='bold'>Configured By</th><th class='bold'>Date</th><th class='bold'>Aging</th><th class='bold'>Currency</th><th class='bold'>Purchase Org</th><th class='bold'>Purchase Group</th><th class='bold'>Amount</th><th class='bold'>Budget</th><th class='bold'>Deviation %</th><th class='bold'>Status</th><th class='bold'>Pending With</th><th class='bold'>Pending Since</th></tr></thead>");
             if (data.length > 0) {
 
                 for (var i = 0; i < data.length; i++) {
 
-
                     var str = "<tr><td  class=text-right><a onclick=getSummary(\'" + data[i].nfaID + "'\,\'" + data[i].eventID + "'\,\'" + data[i].eventRefernce + "'\) href='javascript:;' >" + data[i].nfaID + "</a></td>";
                     str += "<td>" + data[i].nfaSubject + "</td>";
                     str += "<td>" + data[i].createdBy + "</td>";
-                    BidDate = fnConverToLocalTime(data[i].updatedOn);
+                    BidDate = fnConverToShortDT(data[i].updatedOn);
 
                     str += "<td>" + BidDate + "</td>";
                     str += "<td>" + data[i].aging + "</td>";
@@ -261,7 +260,17 @@ function fetNFAReport(dtfrom, dtto, subject) {
                     str += "<td>" + data[i].orgName + "</td>";
                     str += "<td>" + data[i].groupName + "</td>";
                     str += "<td>" + data[i].nfaAmount + "</td>";
+                    str += "<td>" + data[i].nfaBudget + "</td>";
+                    if (parseInt(data[i].nfaBudget) > 0)
+                        str += "<td>" + ((parseInt(data[i].nfaBudget) - parseInt(data[i].nfaAmount)) / parseInt(data[i].nfaBudget) * 100).round(2) + "</td>";
+                    else
+                        str += "<td>Budget not defined </td>";
+
                     str += "<td>" + data[i].finalStatus + "</td>";
+                    str += "<td>" + data[i].pendingWith + "</td>";
+                    str += "<td>" + data[i].pendingSince + "</td>";
+
+
 
                     str += "</tr>";
                     jQuery('#tblNFASummary').append(str);
@@ -332,6 +341,99 @@ function fetNFAReport(dtfrom, dtto, subject) {
         }
     });
 }
+
+function downloadNFAReport() {
+
+    if ($("#ddlconfiguredby").val() == "" || $("#ddlconfiguredby").val() == null) {
+        
+        $(".alert-danger").removeClass("display-hide");
+        $("#error").html("please select Configured by to download file...");
+        setTimeout(function () {
+            $(".alert-danger").addClass("display-hide");
+        }, 2000)
+        return false;
+    }
+    var dtfrom = '', dtto = '', subject = 'X-X';
+    if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
+        dtfrom = new Date(2000, 01, 01);
+
+    }
+    else {
+        var dateParts = $("#txtFromDate").val().split("/");
+        dtfrom = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+    }
+
+    if ($("#txtToDate").val() == null || $("#txtToDate").val() == '') {
+        dtto = null;
+
+    }
+    else {
+        var dateParts = $("#txtToDate").val().split("/");
+        dtto = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+        dtto.setDate(dtto.getDate() + 1);
+    }
+    if (jQuery("#txtnfasubject").val() != null && jQuery("#txtnfasubject").val() != "") {
+        subject = jQuery("#txtnfasubject").val()
+    }
+
+    var x = isAuthenticated();
+    var result = '';
+    if ($("#ddlconfiguredby").select2('data').length) {
+        $.each($("#ddlconfiguredby").select2('data'), function (key, item) {
+            result = result + (item.id) + ','
+
+        });
+        result = result.slice(0, -1)
+    }
+
+    var url = sessionStorage.getItem("APIPath") + "NFA/downloadNFAReport/";
+    var Tab1Data = {
+        "EventID": parseInt(jQuery("#ddlEventType option:selected").val()),
+        "OrgID": parseInt(jQuery("#ddlPurchaseOrg option:selected").val()),
+        "GroupID": parseInt(jQuery("#ddlPurchasegroup option:selected").val()),
+        "FromDate": dtfrom,
+        "ToDate": dtto,
+        "NFASubject": subject,
+        "FinalStatus": jQuery("#ddlNFAstatus option:selected").val(),
+        "UserID": sessionStorage.getItem('UserID'),
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "ConfiguredBy": result == '' ? '0' : result,
+
+    };
+    $(".loaderC").removeClass("hide");
+    setTimeout(function () {
+        fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(Tab1Data),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'NFATAT.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+
+               
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                setTimeout(function () {
+                    $(".loaderC").addClass("hide");
+                }, 500);
+            });
+
+    },500)
+}
+
 function getSummary(nfaid) {
     var encrypdata = fnencrypt("nfaIdx=" + nfaid + "&FwdTo=View")
     window.open("NFAApproverReq.html?param=" + encrypdata, "_blank")

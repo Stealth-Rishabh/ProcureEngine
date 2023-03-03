@@ -2,7 +2,6 @@ $("#openquote").hide();
 jQuery(document).ready(function () {
 
     Pageloaded()
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -158,6 +157,7 @@ function formValidation() {
         },
 
         submitHandler: function (form) {
+            debugger
             if (sessionStorage.getItem('hdnRFQApproverID') != "0" && jQuery("#txtApproverRFQ").val() != "") {
 
                 $('.alert-danger').show();
@@ -558,10 +558,10 @@ function fetchReguestforQuotationDetails(RFQID) {
             jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate);
             sessionStorage.setItem('techapp', RFQData[0].general[0].technicalApproval)
             if (RFQData[0].general[0].technicalApproval.toLowerCase() == "afterrfq") {
-                jQuery('#lbltechnicalApproval').html("After All RFQ Responses")
+                jQuery('#lbltechnicalApproval').html("<b>After All RFQ Responses</b>")
             }
             else if (RFQData[0].general[0].technicalApproval.toLowerCase() == "rfq") {
-                jQuery('#lbltechnicalApproval').html("With individual RFQ Response")
+                jQuery('#lbltechnicalApproval').html("<b>With individual RFQ Response</b>")
             }
             else {
                 jQuery('#lbltechnicalApproval').html("Not Required")
@@ -651,7 +651,7 @@ function fetchReguestforQuotationDetails(RFQID) {
                 jQuery('#tblapprovers').append("<thead><tr style='background: gray; color: #FFF;'><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:20%!important'>ApproverType</th><th class='bold' style='width:15%!important'>Sequence</th><th style='width:5%!important' class=hide></th></tr></thead>");
 
                 for (var i = 0; i < RFQData[0].approvers.length; i++) {
-
+                    debugger
                     if (RFQData[0].approvers[i].approverType == "C") {
                         approvertype = "Commercial";
 
@@ -659,6 +659,8 @@ function fetchReguestforQuotationDetails(RFQID) {
                     }
                     else {
                         approvertype = "Technical";
+                        jQuery('#lbltechnicalApproval').append(jQuery('<option selected></option>').val(RFQData[0].approvers[i].adminSrNo).html(RFQData[0].approvers[i].userName))
+
 
                     }
                     str = "<tr><td>" + RFQData[0].approvers[i].userName + "</td>";

@@ -61,17 +61,18 @@
     <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
-   
+    <script src="assets/CustomJS/Common.js" type="text/javascript"></script>
+
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
-   
+
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="#" >
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage"/>
+                <a class="navbar-brand" href="#">
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
                 </a>
-              
+
             </div>
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
@@ -82,9 +83,9 @@
                                 <span id="spanUserName"
                                       class="username username-hide-on-mobile"></span>
                             </b>
-                            
+
                         </a>
-                       
+
                     </li>
 
                     <li class="dropdown dropdown-quick-sidebar-toggler">
@@ -209,14 +210,14 @@
                                             </div>
                                         </div>
                                         <!--<div class="col-md-4 ">
-                                        <div class="form-control">
-                                            <label class="col-md-6 control-label">
-                                                Bid Time:
-                                            </label>
-                                            <label class="col-md-6 control-label" id="lblbidtime">
-                                            </label>
-                                        </div>
-                                    </div>-->
+                                            <div class="form-control">
+                                                <label class="col-md-6 control-label">
+                                                    Bid Time:
+                                                </label>
+                                                <label class="col-md-6 control-label" id="lblbidtime">
+                                                </label>
+                                            </div>
+                                        </div>-->
                                         <div class="col-md-4 ">
                                             <div class="form-control">
                                                 <label class="col-md-6 control-label">
@@ -313,8 +314,8 @@
                                         <input id="hdnnoofextension" type="hidden" value="0" />
                                         <input id="hdnselectedindex" type="hidden" value="0" />
                                         <!--<div class="table-responsive">
-                                        <table class="table table-bordered" id="tblParticipantsService"></table>
-                                    </div>-->
+                                            <table class="table table-bordered" id="tblParticipantsService"></table>
+                                        </div>-->
                                         <div class="panel-group accordion" id="Coalitems">
                                         </div>
                                         <table class="table table-bordered" id="tblParticipantsServiceBeforeStartBid"></table>
@@ -354,6 +355,7 @@
 
 
                                     <div class="scroller scroller490" style="overflow: hidden; width: auto; height: 440px;">
+
                                         <div class="page-quick-sidebar-chat-user-messages" id="chatList">
                                         </div>
                                     </div>
@@ -429,13 +431,12 @@
 
             });
             jQuery(document).ready(function () {
-                 callPagejs('ParticipateBidCoalExport.js');
+                callPagejs('ParticipateBidCoalExport.js');
 
             });
         </script>
-        <!--<script src="assets/CustomJS/Common.js" type="text/javascript"></script>
-        <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-        <script src="assets/CustomJS/ParticipateBidCoalExport.js" type="text/javascript"></script>-->
+
+
         <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

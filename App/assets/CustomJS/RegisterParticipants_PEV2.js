@@ -313,13 +313,19 @@ function RegisterParticipants() {
     else {
         status = 'N';
     }
+    debugger
     var InsertQuery = '';
+    var ProductCatId = [];
     $('.childchkbox').each(function () {
         if (this.checked) {
             InsertQuery = InsertQuery + $(this).val() + "#";
+            var CategoryTypeId = {
+                "CategoryID": $(this).val()
+            }
+            ProductCatId.push(CategoryTypeId);
         }
     });
-
+   
     if (InsertQuery == '') {
 
         $('#divalerterr').find('span').text('Please select atleast one group!');
@@ -360,7 +366,8 @@ function RegisterParticipants() {
         "ActionType": $('#hdnFlagType').val(),
         "ContactPerson": $('#ContactName').val(),
         "AlternateEmailID": $('#txtAlternateeMailID').val(),
-        "ProductCatID": InsertQuery
+        "ProductCatID": InsertQuery,
+        "ProductCatIDList": ProductCatId
 
 
     };
@@ -368,7 +375,9 @@ function RegisterParticipants() {
    
     jQuery.ajax({
 
-        url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RegParticpants_PEV2/",
+        //url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RegParticpants_PEV2/",
+        url: sessionStorage.getItem("APIPath") + "VendorLCMController/VendorRegistrationByUser/",
+        
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "POST",
         data: JSON.stringify(RegisterParticipants),
@@ -1161,6 +1170,7 @@ jQuery("#ParticipantName").typeahead({
 });
 //abheedev bug 590
 function validatePanNumber(pan) {
+    debugger 
     clearform();
     beforeTaxDisable();
     $("#ddlpreferredTime").select2("val", "");
@@ -1222,15 +1232,21 @@ function fnfetchfoundVendors() {
             crossDomain: true,
             dataType: "json",
             success: function (data) {
-               debugger
+                debugger
+                if (data.length < 1) {
+                    $("#hdnFlagType").val("New")
+                }
                 if ($('#ddlUI').val() == "EmailID") {
-
                     $('#divVendorForm').removeClass('hide')
+                    $('#divVendorCompaniesForm').removeClass('hide')
+                    $('#divVendorContactForm').removeClass('hide')
                     $('#div_tableVendor').removeClass('hide');
                 }
 
                 else if ($('#txtUI').val().length == "11" && $('#ddlUI').val().toLowerCase() == "vendorcode" && $('#txtUI').val().substring(0, 2).toLowerCase() == "vd" && $('#txtUI').val() != "") {
                     $('#divVendorForm').removeClass('hide')
+                    $('#divVendorCompaniesForm').removeClass('hide')
+                    $('#divVendorContactForm').removeClass('hide')
                     $('#div_tableVendor').removeClass('hide');
                 }
 
@@ -1306,10 +1322,13 @@ function fnfetchfoundVendors() {
 }
 
 function AddVendor() {
+    debugger
     clearform();
     beforeTaxDisable() 
     $('#divVendorForm').removeClass('hide')
-    
+    $('#divVendorCompaniesForm').removeClass('hide')
+    $('#divVendorContactForm').removeClass('hide')
+    $('#hdnFlagType').val("Add");
     $('#lbl_panmsz').addClass('hide');
     $('#hdnParticipantID').val('0');
 
@@ -1367,8 +1386,9 @@ function EditVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone,
         jQuery('#chkIsActiveparticipant').parents('div').removeClass('checked');
     }
 
-   
-    $('#divVendorForm').removeClass('hide');
+    $('#divVendorForm').removeClass('hide')
+    $('#divVendorCompaniesForm').removeClass('hide')
+    $('#divVendorContactForm').removeClass('hide')
     fetchMapCategory('Z', vendorid);
 
     if (buttonname == "EditCustomerVendor") {
@@ -1380,16 +1400,16 @@ function EditVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone,
         $('#txtTINNo').attr('disabled', 'disabled');
         $('#ddlCountryCdPhone').attr('disabled', 'disabled');
         $('#txtPhoneNo').attr('disabled', 'disabled');
-        $('#ddlCountryCd').attr('disabled', 'disabled');
-        $('#txtMobileNo').attr('disabled', 'disabled');
-        $('#txtcompanyemail').attr('disabled', 'disabled');
+        /*$('#ddlCountryCd').attr('disabled', 'disabled');*/
+        /*$('#txtMobileNo').attr('disabled', 'disabled');*/
+        /*$('#txtcompanyemail').attr('disabled', 'disabled');*/
         $('#chkalternatemail').attr('disabled', 'disabled');
-        $('#txtAlternateeMailID').attr('disabled', 'disabled')
-        $("#ContactName").attr('disabled', 'disabled');
+       /* $('#txtAlternateeMailID').attr('disabled', 'disabled')*/
+        /*$("#ContactName").attr('disabled', 'disabled');*/
         $("#ddlCountry").attr('disabled', 'disabled');
         $("#ddlState").attr('disabled', 'disabled');
         $("#ddlCity").attr('disabled', 'disabled');
-        $("#ddlpreferredTime").attr('disabled', 'disabled');
+        /*$("#ddlpreferredTime").attr('disabled', 'disabled');*/
         $("#chkIsActiveparticipant").attr('disabled', 'disabled');
         $('#lbl_panmsz').removeClass('hide');
     }
@@ -1403,15 +1423,15 @@ function EditVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone,
         $('#txtTINNo').removeAttr('disabled');
         $('#ddlCountryCdPhone').removeAttr('disabled');
         $('#txtPhoneNo').removeAttr('disabled');
-        $('#ddlCountryCd').removeAttr('disabled');
-        $('#txtMobileNo').removeAttr('disabled');
-        $('#txtcompanyemail').removeAttr('disabled');
+       /* $('#ddlCountryCd').removeAttr('disabled');*/
+        /*$('#txtMobileNo').removeAttr('disabled');*/
+        /*$('#txtcompanyemail').removeAttr('disabled');*/
         $('#chkalternatemail').removeAttr('disabled');
         $("#ddlCountry").removeAttr('disabled');
         $("#ddlState").removeAttr('disabled');
         $("#ddlCity").removeAttr('disabled');
         //$('#txtAlternateeMailID').removeAttr('disabled')
-        jQuery("#ContactName").removeAttr('disabled');
+        /*jQuery("#ContactName").removeAttr('disabled');*/
         $('#lbl_panmsz').addClass('hide');
     }
 }
@@ -1460,19 +1480,20 @@ function ExtendVendor(vendorid, vname, contactp, emailid, dialingcodephone, phon
     $('#txtPanNo').attr('disabled', 'disabled');
     $('#txtTINNo').attr('disabled', 'disabled');
     $('#txtPhoneNo').attr('disabled', 'disabled');
-    $('#txtMobileNo').attr('disabled', 'disabled');
-    $('#txtcompanyemail').attr('disabled', 'disabled');
+    /*$('#txtMobileNo').attr('disabled', 'disabled');*/
+   /* $('#txtcompanyemail').attr('disabled', 'disabled');*/
     $('#chkalternatemail').attr('disabled', 'disabled');
-    $('#txtAlternateeMailID').attr('disabled', 'disabled')
-    jQuery("#ContactName").attr('disabled', 'disabled');
+   /* $('#txtAlternateeMailID').attr('disabled', 'disabled')*/
+   /* jQuery("#ContactName").attr('disabled', 'disabled');*/
     jQuery("#ddlCountry").attr('disabled', 'disabled');
     jQuery("#ddlState").attr('disabled', 'disabled');
     jQuery("#ddlCity").attr('disabled', 'disabled');
     //@abheedev
-    $('#ddlCountryCd').attr('disabled', 'disabled')
+   /* $('#ddlCountryCd').attr('disabled', 'disabled')*/
     $('#ddlCountryCdPhone').attr('disabled', 'disabled')
-
-    $('#divVendorForm').removeClass('hide');
+    $('#divVendorForm').removeClass('hide')
+    $('#divVendorCompaniesForm').removeClass('hide')
+    $('#divVendorContactForm').removeClass('hide')
     $('#lbl_panmsz').removeClass('hide');
     if (isactive == "Y") {
         $('input:checkbox[name=chkIsActiveparticipant]').prop('checked', true);
@@ -1486,11 +1507,14 @@ function ExtendVendor(vendorid, vname, contactp, emailid, dialingcodephone, phon
 }
 function ExtendParticipants() {
     var InsertQuery = '';
+   
     $('.childchkbox').each(function () {
         if (this.checked) {
             InsertQuery = InsertQuery + $(this).val() + "#";
+            
         }
     });
+   
 
     if (InsertQuery == '') {
         $('#divalerterr').find('span').text('Please select atleast one group!');
@@ -1565,7 +1589,6 @@ function clearform() {
     jQuery("#txtTINNo").val('');
     jQuery("#txtPhoneNo").val('');
     jQuery("#txtMobileNo").val('');
-    jQuery("#ContactName").val('');
     jQuery("#txtcompanyemail").val('');
     jQuery("#txtAlternateeMailID").val('');
     jQuery('#hdnParticipantID').val('0');
@@ -1577,16 +1600,16 @@ function clearform() {
     status = "True"
     $('#ParticipantName').removeAttr('disabled')
     $('#txtAddress').removeAttr('disabled')
-    $('#ContactName').removeAttr('disabled')
+   /* $('#ContactName').removeAttr('disabled')*/
     //$('#txtCity').removeAttr('disabled')
     $('#txtZipCd').removeAttr('disabled')
     $('#txtPanNo').removeAttr('disabled')
     $('#txtTINNo').removeAttr('disabled')
     $('#ddlCountryCdPhone').removeAttr('disabled')
     $('#txtPhoneNo').removeAttr('disabled')
-    $('#ddlCountryCd').removeAttr('disabled')
-    $('#txtMobileNo').removeAttr('disabled')
-    $('#txtcompanyemail').removeAttr('disabled')
+    /*$('#ddlCountryCd').removeAttr('disabled')*/
+    /*$('#txtMobileNo').removeAttr('disabled')*/
+    /*$('#txtcompanyemail').removeAttr('disabled')*/
     $('#chkalternatemail').removeAttr('disabled')
     $('#ddlCountry').removeAttr('disabled')
     $('#ddlState').removeAttr('disabled')
@@ -1595,6 +1618,8 @@ function clearform() {
     jQuery("#hdnParticipantCode").val(0)
     jQuery("#hdnFlagType").val(0)
     $('#divVendorForm').addClass('hide')
+    $('#divVendorCompaniesForm').addClass('hide')
+    $('#divVendorContactForm').addClass('hide')
     $('#lbl_panmsz').addClass('hide')
   //  $('#div_tableVendor').addClass('hide');
     $('#btnAddAnother').addClass('hide');
@@ -2038,18 +2063,18 @@ function ValidateGST(data) {
 
 function beforeTaxDisable() {
     $('#ParticipantName').attr('disabled', 'disabled');
-    $('#ContactName').attr('disabled', 'disabled');
+   /* $('#ContactName').attr('disabled', 'disabled');*/
     $('#txtAddress').attr('disabled', 'disabled');
     $('#txtPanNo').attr('disabled', 'disabled');
     $('#ddlState').attr('disabled', 'disabled');
     $('#ddlCity').attr('disabled', 'disabled');
     $('#txtZipCd').attr('disabled', 'disabled');
-    $('#ddlCountryCd').attr('disabled', 'disabled');
-    $('#txtMobileNo').attr('disabled', 'disabled');
+   /* $('#ddlCountryCd').attr('disabled', 'disabled');*/
+   /* $('#txtMobileNo').attr('disabled', 'disabled');*/
     $('#ddlCountryCdPhone').attr('disabled', 'disabled');
     $('#txtPhoneNo').attr('disabled', 'disabled');
-    $('#ddlpreferredTime').attr('disabled', 'disabled');
-    $('#txtcompanyemail').attr('disabled', 'disabled');
+   /* $('#ddlpreferredTime').attr('disabled', 'disabled');*/
+   /* $('#txtcompanyemail').attr('disabled', 'disabled')*/;
     $('#chkalternatemail').attr('disabled', 'disabled');
     $('#chkIsActiveparticipant').attr('disabled', 'disabled');
 
@@ -2057,17 +2082,17 @@ function beforeTaxDisable() {
 
 function afterTaxEnable() {
     $('#ParticipantName').removeAttr('disabled');
-    $('#ContactName').removeAttr('disabled');
+    /*$('#ContactName').removeAttr('disabled');*/
     $('#txtAddress').removeAttr('disabled');
     $('#ddlState').removeAttr('disabled');
     $('#ddlCity').removeAttr('disabled');
     $('#txtZipCd').removeAttr('disabled');
-    $('#ddlCountryCd').removeAttr('disabled');
-    $('#txtMobileNo').removeAttr('disabled');
+   /* $('#ddlCountryCd').removeAttr('disabled');*/
+   /* $('#txtMobileNo').removeAttr('disabled');*/
     $('#ddlCountryCdPhone').removeAttr('disabled');
     $('#txtPhoneNo').removeAttr('disabled');
-    $('#ddlpreferredTime').removeAttr('disabled');
-    $('#txtcompanyemail').removeAttr('disabled');
+    /*$('#ddlpreferredTime').removeAttr('disabled');*/
+    /*$('#txtcompanyemail').removeAttr('disabled');*/
     $('#chkalternatemail').removeAttr('disabled');
     $('#chkIsActiveparticipant').removeAttr('disabled');
 
@@ -2092,6 +2117,7 @@ function validateEmail() {
 }
 
 function clearformkeyup() {
+    debugger
     jQuery("#ParticipantName").val('');
     jQuery("#ContactName").val('');
     jQuery("#txtAddress").val('');
@@ -2113,16 +2139,16 @@ function clearformkeyup() {
     status = "True"
     $('#ParticipantName').removeAttr('disabled')
     $('#txtAddress').removeAttr('disabled')
-    $('#ContactName').removeAttr('disabled')
+   /* $('#ContactName').removeAttr('disabled')*/
     //$('#txtCity').removeAttr('disabled')
     $('#txtZipCd').removeAttr('disabled')
     $('#txtPanNo').removeAttr('disabled')
     $('#txtTINNo').removeAttr('disabled')
     $('#ddlCountryCdPhone').removeAttr('disabled')
     $('#txtPhoneNo').removeAttr('disabled')
-    $('#ddlCountryCd').removeAttr('disabled')
-    $('#txtMobileNo').removeAttr('disabled')
-    $('#txtcompanyemail').removeAttr('disabled')
+   /* $('#ddlCountryCd').removeAttr('disabled')*/
+    /*$('#txtMobileNo').removeAttr('disabled')*/
+    /*$('#txtcompanyemail').removeAttr('disabled')*/
     $('#chkalternatemail').removeAttr('disabled')
     $('#ddlCountry').removeAttr('disabled')
     $('#ddlState').removeAttr('disabled')
@@ -2131,10 +2157,13 @@ function clearformkeyup() {
     jQuery("#hdnParticipantCode").val(0)
     jQuery("#hdnFlagType").val(0)
     $('#divVendorForm').addClass('hide')
+    $('#divVendorCompaniesForm').addClass('hide')   
+    $('#divVendorContactForm').addClass('hide')
     $('#lbl_panmsz').addClass('hide')
     $('#div_tableVendor').addClass('hide');
     $('#btnAddAnother').addClass('hide');
 }
+
 function routeToInviteVendor() {
     window.location.href = "InviteVendor.html";
 }
