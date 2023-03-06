@@ -1070,7 +1070,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
 
                     for (var i = 0; i < data.length; i++) {
 
-                        itemstatus = data[i].itemStatus.toLowerCase() || ""
+                        itemstatus = (data[i].itemStatus||"").toLowerCase()
                         _offeredPrice = (data[i].offeredPrice < 0) ? 'NA' : data[i].offeredPrice;
                         TotalBidValue = parseFloat(data[i].quantity) * parseFloat(data[i].lQuote);
                         TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
