@@ -39,10 +39,21 @@ function getCurrenttime() {
 
 $(document).ready(function () {
 
-
     var path = window.location.pathname;
     page = path.split("/").pop();
 
+    if (page.toLowerCase() == "bidadmin.html") {
+        fnToCheckUserIPaccess();
+        $(window).focus(function () {
+            if (_bidClosingType == "S" && BidTypeID == "7") {
+                fnrefreshStaggerTimerdataonItemClose()
+            }
+            else {
+                fetchBidTime();
+            }
+            $(window).blur();
+        });
+    }
     if (window.location.search) {
         var param = getUrlVars()["param"]
         var decryptedstring = fndecrypt(param)
@@ -562,7 +573,7 @@ function fetchBidSummary(BidID) {
                     $('#btndiv').hide()
                     $('#spinnerBidclosingTab').hide()
 
-                    if (data[0].status.toLocaleLowerCase() == 'close' && BidTypeID != 9) {
+                    if (data[0].status.toLowerCase() == 'close' && BidTypeID != 9) {
                         fnfetchvendortotalSummary(BidID, BidTypeID)
                         $('#btn_invite_vendors').hide();
                     }
@@ -580,10 +591,10 @@ function fetchBidSummary(BidID) {
                     $('#cancl_btn').show();
 
                 }
-                if (data[0].status.toLocaleLowerCase() == 'close') {
+                if (data[0].status.toLowerCase() == 'close') {
                     $('#bid_status').show();
                 }
-                else if (data[0].status.toLocaleLowerCase() == 'pause') {
+                else if (data[0].status.toLowerCase() == 'pause') {
                     $('#bid_status').show();
                     $('#bid_status').html('Bid is paused from the selected Item / Service.<b> Serial No: ' + data[0].pausedSno + '</b>.');
                     $('.forbtnpause').hide()
@@ -1059,6 +1070,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
 
                     for (var i = 0; i < data.length; i++) {
 
+                        itemstatus = (data[i].itemStatus||"").toLowerCase()
                         _offeredPrice = (data[i].offeredPrice < 0) ? 'NA' : data[i].offeredPrice;
                         TotalBidValue = parseFloat(data[i].quantity) * parseFloat(data[i].lQuote);
                         TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue.toFixed(2) : TotalBidValue;
@@ -1223,15 +1235,18 @@ function fetchBidSummaryDetails(BidID, BidForID) {
 
                         jQuery('#tblBidSummary > tbody').append(str);
                         jQuery('#tblbidsummarypercentagewise > tbody ').append(strsumm);
-                        if (page.toLocaleLowerCase() == "bidadmin.html") {
-                            if (data[i].itemStatus == "Open" && _bidClosingType == 'S' && $('#Sname' + i).text() != "") {
+                        if (page.toLowerCase() == "bidadmin.html") {
+                            if (data[i].itemStatus == "Open" && _bidClosingType == 'S' && $('#Sname' + i).text() != "" && parseInt(data[i].itemLeftTime) >= 0) {
                                 displayForS = document.querySelector('#itemleftTime' + i);
                                 startTimerForStaggerItem((parseInt(data[i].itemLeftTime)), displayForS);
-                                $('.itemtimeleft').removeClass('hide')
+                                $('.itemtimeleft').show();
+                            }
+                            else if ((itemstatus == "close" || itemstatus == "inactive") && _bidClosingType == 'S') {
+                                $('#itemleftTime' + i).text('')
                             }
                         }
                         else {
-                            $('.itemtimeleft').addClass('hide')
+                            $('.itemtimeleft').hide()
                         }
 
                         if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
@@ -1506,7 +1521,7 @@ function fnfetchvendortotalSummary(BidID, BidTypeID) {
                 for (var i = 0; i < data.length; i++) {
                     jQuery("#tblbidvendortotalsummary").append("<tr><td><i style='color: blue!important;cursor:pointer;' onclick='fnShowVendorConnecHistory(" + data[i].vendorID + ")' class='hide fa fa-info-circle fa-fw IPicon'  aria-hidden='true'></i>&nbsp;" + data[i].vendorName + "</td><td class=text-right >" + thousands_separators(data[i].totalamount) + "</td><td class='text-right loadingfactor'>" + data[i].advFactor + "</td></tr>");
                 }
-                if (page.toLocaleLowerCase() == "bidsummary.html") {
+                if (page.toLowerCase() == "bidsummary.html") {
                     $('.IPicon').removeClass('hide')
                 }
             }
@@ -1574,6 +1589,7 @@ function fnrefreshStaggerTimerdataonItemClose() {
 
     //Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidStagger/?BidID=" + BidID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
     Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidStagger/?BidID=" + BidID
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1605,6 +1621,7 @@ function fnrefreshStaggerTimerdataonItemClose() {
                 }
 
                 for (var i = 0; i < data.length; i++) {
+
                     if (data[i].itemStatus.toLowerCase() == 'open') {
                         openlefttime = openlefttime + data[i].itemLeftTime;
                     }
@@ -1686,11 +1703,13 @@ function fnrefreshStaggerTimerdataonItemClose() {
                                     displayForS = document.querySelector('#itemleftTime' + j);
                                     startTimerForStaggerItem((parseInt(data[i].itemLeftTime)), displayForS);
                                 }
+                                else if (data[i].itemStatus.toLowerCase() == "inactive") {
+                                    $('#itemleftTime' + i).text('')
+                                }
                                 $('#itemleftTime' + j).css({
                                     'color': 'Red',
                                     'font-weight': '500'
                                 });
-
                             }
                             j = j + 1;
                         }
@@ -1763,7 +1782,6 @@ function fnbidpause() {
 }
 function fnpauseaction(index, seid, sno) {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    debugger;
     var _bidDate = new Date();
     let StTime =
         new Date(_bidDate.toLocaleString("en", {
@@ -1821,6 +1839,7 @@ connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame',
     console.log(err.toString())
 });
 connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
+
     let data = JSON.parse(rdataJson)
 
     if ($("#hddnadminConnection").val() == "0") {
@@ -1829,14 +1848,16 @@ connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
     var StID = 'sticon' + data[0].userID.trim()
 
     if (flag == true) {
-
+        $('#chatbtn').show()
+        $('#txtChatMsg').show()
         $('#' + StID).removeClass('badge-danger').addClass('badge-success')
         $('#v' + data[0].userID).removeAttr('disabled')
         $('#v' + data[0].userID).attr('onclick', 'openChatDiv(\'' + data[0].VendorName + '\', \'' + data[0].EmailId + '\', \'' + data[0].VendorID + '\', \'' + connectionId + '\',\'' + data[0].userID + '\',\'' + data[0].ContactPerson + '\')');
 
     }
     else {
-
+        $('#chatbtn').hide()
+        $('#txtChatMsg').hide()
         $('#' + StID).removeClass('badge-success').addClass('badge-danger')
         $('#v' + data[0].userID).attr('disabled', 'disabled')
         $('#v' + data[0].userID).attr('onclick', 'openChatDiv(\'' + data[0].VendorName + '\', \'' + data[0].EmailId + '\', \'' + data[0].VendorID + '\', \'' + '' + '\',\'' + data[0].userID + '\',\'' + data[0].ContactPerson + '\')');
@@ -2551,11 +2572,9 @@ connection.on("refreshBidDetailsManage", function (data) {
 /////****** Chat *****************/////
 connection.on("ReceiveMessage", function (objChatmsz) {
 
-
     let chat = JSON.parse(objChatmsz)
 
     calltoaster(encodeURIComponent(chat.ChatMsg), 'New Message', 'success');
-
     $("#chatList").append('<div class="post out">'
         + '<div class="message">'
         + '<span class="arrow"></span>'
@@ -2564,7 +2583,6 @@ connection.on("ReceiveMessage", function (objChatmsz) {
         + '<span class="body" style="color: #c3c3c3;">' + chat.ChatMsg + '</span>'
         + '</div>'
         + '</div>');
-
 });
 connection.onclose(error => {
     bootbox.alert("You are not connected to the Bid as Your Internet connection is unstable, please refresh the page!!", function () {
@@ -2574,7 +2592,6 @@ connection.onclose(error => {
 //}
 
 function sendChatMsgs() {
-
     if ($("#txtChatMsg").val() != '' && $("#txtChatMsg").val() != null) {
         var data = {
             "ChatMsg": $('#txtChatMsg').val(),
@@ -3441,8 +3458,8 @@ function linegraphsforItems(itemId) {
                 for (var x = 0; x < data[0].submissionTime.length; x++) {
 
 
+                    graphtime.push(keepTimeOnly(fnConverToLocalTime(data[0].submissionTime[x].subTime)));
 
-                    graphtime.push(keepTimeOnly(data[0].submissionTime[x].subTime));
 
                 }
 
