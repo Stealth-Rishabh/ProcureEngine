@@ -93,6 +93,8 @@ jQuery.validator.addMethod(
     "This field is required."
 );
 var _vendorId = "";
+let ParticipantID = "";
+let AssociatedVendorID=""
 var form1 = $('#entryForm');
 var FormValidation = function () {
     var ValidateParticipants = function () {
@@ -336,6 +338,7 @@ function RegisterParticipants() {
             jQuery('#divalerterr').css('display', 'none');
         }, 5000);
     }
+    debugger
    
     var RegisterParticipants = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
@@ -384,7 +387,7 @@ function RegisterParticipants() {
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
 
-           
+           debugger
             $("#hdnParticipantID").val(data.participantID)
             $("#hdnParticipantCode").val(data.vendorCode)
 
@@ -1197,7 +1200,6 @@ function validatePanNumber(pan) {
 
 
 function fnfetchfoundVendors() {
-   debugger
     var UniqueId = "";
     if ($('#txtUI').val() == null || $('#txtUI').val() == undefined || $('#txtUI').val() == "") {
         if ($('#ddlUI').val()=="EmailID") {
@@ -1222,37 +1224,52 @@ function fnfetchfoundVendors() {
     }
 
     else {
-        let customerid=parseInt(sessionStorage.getItem('CustomerID'))
-        
+        debugger
+        let customerid = parseInt(sessionStorage.getItem('CustomerID'));
+        let emailid = $('#txtUI').val();
         jQuery.ajax({
             type: "GET",
             contentType: "application/json; charset=utf-8",
             //url: sessionStorage.getItem("APIPath") + "RegisterParticipants/GetVendors/?FieldName=" + $('#ddlUI').val() + "&FieldValue=" + $('#txtUI').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
-            url: sessionStorage.getItem("APIPath") + "VendorLCM/GetVendorByEmail/?Email=" + $('#txtUI').val() + "&CustomerId=" + customerid,
+            url: sessionStorage.getItem("APIPath") + "VendorLCM/GetVendorByEmail/?Email=" + emailid + "&CustomerId=" + customerid,
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             cache: false,
             crossDomain: true,
             dataType: "json",
             success: function (data) {
                 debugger
-                
-                if (data.length < 1) {
+                if (!data.isVendorPresent) {
+                    $("#hdnFlagType").val("New")
+                    $('#divVendorForm').removeClass('hide')
+                    $('#divVendorCompaniesForm').removeClass('hide')                    
+                    $('#divVendorContactForm').removeClass('hide')
+                    $('#txtcompanyemail').val($('#txtUI').val())
+                    $('#txtAlternateeMailID').val($('#txtUI').val())
+                    $('#txtcompanyemail').attr('disabled', 'disabled')
+                    return true
+                    
+                }
+                let parentData = data.vendorMasterToReturn;
+                let childData = data.vendorChildrenToReturn;
+                ParticipantID = parentData.vendorID;
+                AssociatedVendorID = childData.childId;
+                if (!parentData) {
                     $("#hdnFlagType").val("New")
                     $('#divVendorCompaniesForm').removeClass('hide')
                 }
                 else {
-                    let isactiveUser = data[0].isActive;
-                    $("#ContactName").val(data[0].vendorName)
-                    $("#ddlCountryCd").val(data[0].dialingCodeMobile).trigger("change")
-                    $("#txtMobileNo").val(data[0].mobileNo)
-                    $("#txtcompanyemail").val(data[0].emailID)
-                    if (data[0].alternateEmailID == "") {
-                        $("#txtAlternateeMailID").val(data[0].emailID)
+                    let isactiveUser = parentData.isActive;
+                    $("#ContactName").val(parentData.vendorName)
+                    $("#ddlCountryCd").val(parentData.dialingCodeMobile).trigger("change")
+                    $("#txtMobileNo").val(parentData.mobileNo)
+                    $("#txtcompanyemail").val(parentData.emailID)
+                    if (parentData.alternateEmailID == "") {
+                        $("#txtAlternateeMailID").val(parentData.emailID)
                     }
                     else {
-                        $("#txtAlternateeMailID").val(data[0].alternateEmailID)
+                        $("#txtAlternateeMailID").val(parentData.alternateEmailID)
                     }
-                    $("#ddlpreferredTime").val(data[0].prefferedTZ).trigger("change")
+                    $("#ddlpreferredTime").val(parentData.preferredtimezone).trigger("change")
                     if (isactiveUser == "Y") {
                         jQuery('input:checkbox[name=chkIsActiveparticipant]').prop('checked', true);
                         jQuery('#chkIsActiveparticipant').parents('div').addClass('checked');
@@ -1262,44 +1279,48 @@ function fnfetchfoundVendors() {
                         jQuery('#chkIsActiveparticipant').parents('div').removeClass('checked');
                     }
 
-                    $("#hdnParticipantID").val(data[0].vendorID)
-                }
-                if ($('#ddlUI').val() == "EmailID") {
-                    $('#divVendorForm').removeClass('hide')                   
+                    $("#hdnParticipantID").val(parentData.vendorID)
+                    $('#divVendorCompaniesForm').removeClass('hide')
+                    $('#divVendorForm').removeClass('hide')
                     $('#divVendorContactForm').removeClass('hide')
                     $('#div_tableVendor').removeClass('hide');
                 }
+               
 
                                
                 $('#tblVendorFoundDetails').empty();
                 var addr1 = "";
                 var addr2 = "";
-                if (data.length > 0) {
-
-                    $('#tblVendorFoundDetails').append("<thead><tr><th>VendorCode</th><th>Vendor</th><th>Contact Person</th><th>Mobile</th><th>EmailID</th><th></th></tr></thead><tbody>")
-                    for (var i = 0; i < data.length; i++) {
+                let taxIdNo = "";
+                let addrC = "";
+                if (childData.length>0) {
+                    debugger
+                    $('#tblVendorFoundDetails').append("<thead><tr><th class='hide'></th><th>Company Name</th><th>Address</th><th>Tax Identification Number</th><th></th></tr></thead><tbody>")
+                    for (var i = 0; i < childData.length; i++) {
                      
                        
-                        addr1 = (data[i].address1 || "").replace(/\n/g, " ");                   
-                        addr2 = (data[i].address2 || "").replace(/\n/g, " ");
-
-                       
-                        if (data[i].buttonName == "Extend") {
-                            $('#tblVendorFoundDetails').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td><a href=\"#\"   onclick=\"ExtendVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].dialingCodePhone + "'\,\'" + data[i].phone + "'\,\'" + data[i].dialingCodeMobile + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].zipCode + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].prefferedTZ + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].dialingCodePhone + "'\,\'" + data[i].phone + "'\,\'" + data[i].dialingCode + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].zipCode + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                        addr1 = (childData[i].address1 || "").replace(/\n/g, " ");                   
+                        addr2 = (childData[i].address2 || "").replace(/\n/g, " ");
+                        taxIdNo = childData[i].taxIdType + " " + childData[i].taxId;
+                        addrC = childData[i].address + " " + childData[i].city + " " + childData[i].state + " " + childData[i].country;
+                        if (parentData.action == "Extend") {
+                            $('#btnAddAnother').addClass('hide');
+                            $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"ExtendVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityID || 33110) + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
 
                         }
                         else {
-                            if (data[i].buttonName.toLowerCase() == "editcustomervendor") {
-                                $('#tblVendorFoundDetails').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].dialingCodePhone + "'\,\'" + data[i].phone + "'\,\'" + data[i].dialingCodeMobile + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].zipCode + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].prefferedTZ + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a>&nbsp;<a href=\"#\"  onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].dialingCodePhone + "'\,\'" + data[i].phone + "'\,\'" + data[i].dialingCode + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].zipCode + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                            if (childData[i].action == "Edit") {
+                                $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a>&nbsp;<a href=\"#\"  onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
 
                             }
                             else {
-                                $('#tblVendorFoundDetails').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].dialingCodePhone + "'\,\'" + data[i].phone + "'\,\'" + data[i].dialingCodeMobile + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].zipCode + "'\,\'" + (data[i].serviceTaxNo || "").toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + (data[i].panNo|| "").toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].prefferedTZ + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"  onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].dialingCodePhone + "'\,\'" + data[i].phone + "'\,\'" + data[i].dialingCode + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].zipCode + "'\,\'" + (data[i].serviceTaxNo || "").toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + (data[i].panNo || "").toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                                $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + (childData[i].taxId2 || "").toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"  onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + (childData[i].taxId2 || "").toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + childData[i].countryID + "'\,\'" + childData[i].stateID + "'\,\'" + childData[i].cityID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
 
                             }
+                            $('#btnAddAnother').removeClass('hide');
                         }
                     }
-                    $('#btnAddAnother').removeClass('hide');
+                    
                 }
                 else {
                    /* 
@@ -1314,7 +1335,8 @@ function fnfetchfoundVendors() {
                         $('#txtPanNo').attr('disabled', 'disabled')
                         $('#txtTINNo').attr('disabled', 'disabled')
                     }*/
-                    $('#btnAddAnother').addClass('hide');
+                   
+                    $('#btnAddAnother').removeClass('hide');
                     if ($('#ddlUI').val() == "EmailID") {
                         $('#txtcompanyemail').val($('#txtUI').val())
                         $('#txtAlternateeMailID').val($('#txtUI').val())
@@ -1459,21 +1481,26 @@ function EditVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone,
         $('#lbl_panmsz').addClass('hide');
     }
 }
-function ExtendVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone, dialingcode, mobile, addr1, addr2, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid) {
+function ExtendVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid) {
+    debugger
+    $('#divVendorForm').removeClass('hide')
+    $('#divVendorCompaniesForm').removeClass('hide')
+    $('#divVendorContactForm').removeClass('hide')
 
     $("#hdnParticipantID").val(vendorid);
     $("#hdnParticipantCode").val(vendorcode);
     $('#hdnFlagType').val(buttonname);
     $("#ParticipantName").val(vname);
-    $("#txtAddress").val(addr1);
-   
-    $("#txtZipCd").val(zipcode);
-    $("#txtPanNo").val(pan);
+    $("#txtAddress").val(addr);
     $("#txtTINNo").val(gst);
+    $("#txtPanNo").val(pan);
+
+    $("#txtZipCd").val(zipcode);
+   
     $("#txtPhoneNo").val(phone);
 
     $("#txtMobileNo").val(mobile);
-    $("#ContactName").val(contactp);
+   
 
     $('#ddlCountry').val(countryid).trigger('change')
     setTimeout(function () {
@@ -1486,14 +1513,16 @@ function ExtendVendor(vendorid, vname, contactp, emailid, dialingcodephone, phon
    
     $('#ddlpreferredTime').val(prefferredTZ) //.trigger('change')
 
-
+    
     jQuery("#txtcompanyemail").val(emailid);
     jQuery("#txtAlternateeMailID").val(alternateemailid);
     //abheedev
 
     $('#ddlCountryCd').val(dialingcode)//.trigger('change')
     $('#ddlCountryCdPhone').val(dialingcodephone)//.trigger('change')
-
+    $("#txtTINNo").val(gst);
+    $("#txtPanNo").val(pan);
+   
 
 
 
@@ -1515,9 +1544,7 @@ function ExtendVendor(vendorid, vname, contactp, emailid, dialingcodephone, phon
     //@abheedev
    /* $('#ddlCountryCd').attr('disabled', 'disabled')*/
     $('#ddlCountryCdPhone').attr('disabled', 'disabled')
-    $('#divVendorForm').removeClass('hide')
-    $('#divVendorCompaniesForm').removeClass('hide')
-    $('#divVendorContactForm').removeClass('hide')
+    
     $('#lbl_panmsz').removeClass('hide');
     if (isactive == "Y") {
         $('input:checkbox[name=chkIsActiveparticipant]').prop('checked', true);
@@ -1553,7 +1580,9 @@ function ExtendParticipants() {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "VendorCode": jQuery("#hdnParticipantCode").val(),
         "UserID": sessionStorage.getItem('UserID'),
-        "ProductCatID": InsertQuery
+        "ProductCatID": InsertQuery,
+        "ParticipantID": ParticipantID ,
+        "AssociatedVendorID": AssociatedVendorID ,
     }
     jQuery.ajax({
 
