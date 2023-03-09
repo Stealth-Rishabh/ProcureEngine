@@ -387,11 +387,17 @@ function fetchMyProfileVendor() {
                 }
             }, 800)
             if (vendordetails[0].CountryID !== "" && vendordetails[0].CountryID != null && vendordetails[0].CountryID != undefined) {
-                $('#ddlCountry').val(vendordetails[0].CountryID)
+
                 setTimeout(function () {
+
+                    $('#ddlCountry').val(vendordetails[0].CountryID).trigger('change')
+                }, 1500)
+                setTimeout(function () {
+
                     $('#ddlState').val(vendordetails[0].StateID).trigger('change')
-                }, 900)
+                }, 1500)
                 setTimeout(function () {
+
                     $('#ddlCity').val(vendordetails[0].CityID).trigger('change')
 
                 }, 1500)
