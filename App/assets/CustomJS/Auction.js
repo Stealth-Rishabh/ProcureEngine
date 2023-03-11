@@ -1237,7 +1237,7 @@ function validateEmail(email) {
 var allvendorsforautocomplete;
 
 function fetchParticipantsVender() {
-
+    debugger
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1247,7 +1247,7 @@ function fetchParticipantsVender() {
         crossDomain: true,
         dataType: "json",
         success: function (Venderdata) {
-
+            debugger
             if (Venderdata.length > 0) {
                 allvendorsforautocomplete = Venderdata;
 
@@ -1397,10 +1397,10 @@ function fetchBidType() {
 
 }
 
-function fnfetchCatVendors() {  
-    debugger
+function fnfetchCatVendors() { 
+    
     let data = {
-        "CategoryID": JSON.parse(sessionStorage.getItem("hdnCategoryGrpID")),
+        "ProductCatIDList": JSON.parse(sessionStorage.getItem("hdnCategoryGrpID")),
         "VendorID": sessionStorage.getItem('hdnVendorID'),
         "CustomerID": sessionStorage.getItem('CustomerID')
     }
@@ -1415,7 +1415,7 @@ function fnfetchCatVendors() {
         contentType: "application/json; charset=utf-8",
         crossDomain:true,
         success: function (data) {
-            debugger
+           
             $('#div_table').removeClass('hide');
             $('#tbldetails').empty();
             if (data.length) {

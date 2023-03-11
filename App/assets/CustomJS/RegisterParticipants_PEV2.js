@@ -572,10 +572,12 @@ function fetchParticipantsVenderTable() {
         crossDomain: true,
         dataType: "json",
         success: function (Venderdata) {
-            debugger
+           
             jQuery("#tblParticipantsVender > tbody").empty();
             if (Venderdata.length > 0) {
                 vendorsForAutoComplete = Venderdata;
+                jQuery("#txtsearchvendor").empty();
+                jQuery("#txtsearchvendor").append(jQuery("<option></option>").val(0).html("All"));
                 for (var i = 0; i < Venderdata.length; i++) {
                     jQuery("#txtsearchvendor").append(jQuery("<option></option>").val(Venderdata[i].participantID).html(Venderdata
                     [i].participantName));
@@ -921,7 +923,7 @@ function fetchMapCategory(categoryFor, vendorId) {
         cache: false,
         dataType: "json",
         success: function (data) {
-            debugger
+         
             
             jQuery("#tblCategoryMaster").empty();
             for (var i = 0; i < data.length; i++) {
@@ -1267,7 +1269,7 @@ function fnfetchfoundVendors() {
             crossDomain: true,
             dataType: "json",
             success: function (data) {
-                 debugger
+                
                 if (!data.isVendorPresent) {
                     $("#hdnFlagType").val("New")
                     $('#divVendorForm').removeClass('hide')
@@ -1322,7 +1324,7 @@ function fnfetchfoundVendors() {
                 
                     $('#tblVendorFoundDetails').append("<thead><tr><th class='hide'></th><th>Company Name</th><th>Address</th><th>Tax Identification Number</th><th></th></tr></thead><tbody>")
                     for (var i = 0; i < childData.length; i++) {
-                   debugger
+             
                         //AssociatedVendorID = childData[i].childId;
                         addr1 = (childData[i].address1 || "").replace(/\n/g, " ");                   
                         addr2 = (childData[i].address2 || "").replace(/\n/g, " ");
@@ -2301,12 +2303,12 @@ function enableParent() {
 
 //advance vendor search
 function fetchAdvanceSearch() {
-    debugger
-    let categoryresult = [];
    
+    let categoryresult = [];
+    let selectedValue = $('#txtsearchvendor').val();
     if ($("#txtsearchcat").select2('data').length) {
         $.each($("#txtsearchcat").select2('data'), function (key, item) {
-            debugger
+         
             var CategoryTypeId = {
                 "CategoryID": parseInt(item.id)
             }
@@ -2317,18 +2319,12 @@ function fetchAdvanceSearch() {
         });
 
     }
-    if ($("#txtsearchvendor").select2('data')) {
-        if ($("#txtsearchvendor").select2('data').length) {
-            $.each($("#txtsearchvendor").select2('data'), function (key, item) {
-                debugger
-                sessionStorage.setItem('hdnVendorID', item.id);
-            });
-
-        }
-    }
+    if (selectedValue) {
+        sessionStorage.setItem('hdnVendorID', selectedValue);
+    } 
     
 
-    console.log(sessionStorage.getItem("hdnCategoryGrpID"))
-    console.log(sessionStorage.getItem("hdnVendorID"))
     fnfetchCatVendors()
 }
+
+
