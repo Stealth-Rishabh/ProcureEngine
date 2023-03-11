@@ -54,6 +54,7 @@ jQuery(document).ready(function () {
     fetchRegisterUser('1');
     fetchVendorGroup('M', 0);
     fetchParticipantsVender();// fetch all vendors for advance search
+    
     setTimeout(function () {
         $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
         $('#txtConversionRate').val(1);
@@ -65,6 +66,18 @@ jQuery(document).ready(function () {
     document.getElementById('browseBtnExcelParameterB').addEventListener('click', function () {
         document.getElementById('file-excelparameterB').click();
     });
+
+    $('#txtVendorGroup').select2({
+    })
+
+    
+   /* $('#txtSearch').select2({
+        placeholder: 'Search Vendors',
+    })
+    
+    setTimeout(function () {
+        rfqParticipantVendor()
+    },2000)*/
 });
 function fncollapse(id) {
 
@@ -3738,6 +3751,7 @@ function fetchBidBoq(data) {
 //****** End Boq File Upload
 
 function fetchVendorGroup(categoryFor, vendorId) {
+   
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -3747,8 +3761,14 @@ function fetchVendorGroup(categoryFor, vendorId) {
         cache: false,
         dataType: "json",
         success: function (data) {
+         
             if (data.length > 0) {
                 vendorsForAutoComplete = data;
+                jQuery("#txtVendorGroup").empty();
+                for (var i = 0; i < data.length; i++) {
+                    jQuery("#txtVendorGroup").append(jQuery("<option></option>").val(data[i].categoryID).html(data[i].categoryName));
+
+                }
             }
 
             jQuery.unblockUI();
@@ -3774,7 +3794,17 @@ jQuery("#txtVendorGroup").keyup(function () {
     jQuery("#tblvendorlist> tbody").empty();
     sessionStorage.setItem('hdnVendorID', '0');
 });
-jQuery("#txtVendorGroup").typeahead({
+
+jQuery("#txtVendorGroup").change(function () {
+   
+    if (jQuery("#txtVendorGroup").val() != "0") {
+        getCategoryWiseVendors(jQuery("#txtVendorGroup").val());
+    }
+    else {
+        gritternotification('Please select Vendor  properly!!!');
+    }
+});
+/*jQuery("#txtVendorGroup").typeahead({
     source: function (query, process) {
         var data = vendorsForAutoComplete
         usernames = [];
@@ -3800,7 +3830,7 @@ jQuery("#txtVendorGroup").typeahead({
         return item;
     }
 
-});
+});*/
 
 jQuery("#txtSearch").keyup(function () {
     jQuery("#txtVendorGroup").val('')
@@ -3809,6 +3839,8 @@ jQuery("#txtSearch").keyup(function () {
 });
 
 sessionStorage.setItem('hdnVendorID', 0);
+
+
 jQuery("#txtSearch").typeahead({
     source: function (query, process) {
         var data = allvendorsforautocomplete;
@@ -3829,14 +3861,14 @@ jQuery("#txtSearch").typeahead({
 
         if (map[item].participantID != "0") {
 
-            vName = map[item].participantName + '(' + map[item].companyEmail + ')';
+            vName = map[item].participantName + '(' + map[item].companyEmail + ')' + ' - ' + map[item].tinNo ;
 
             jQuery('#tblvendorlist').append("<tr id=vList" + map[item].participantID + " ><td class='hide'>" + map[item].participantID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\)\"; id=\"chkvender" + map[item].participantID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>");
 
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
 
-                    //** remove from main table if already selected in selected List
+                    
                     if (map[item].participantID == $(this).find("td:eq(0)").text()) {
                         $('#vList' + map[item].participantID).remove();
 
@@ -3857,7 +3889,7 @@ jQuery("#txtSearch").typeahead({
 
 });
 function getCategoryWiseVendors(categoryID) {
-
+    debugger
     jQuery.ajax({
 
         type: "GET",
@@ -3871,7 +3903,7 @@ function getCategoryWiseVendors(categoryID) {
         dataType: "json",
 
         success: function (data) {
-
+            debugger
             jQuery("#tblvendorlist > tbody").empty();
             var vName = '';
             for (var i = 0; i < data.length; i++) {
@@ -3975,3 +4007,42 @@ function deleteterms(icount) {
     $('#tr' + icount).remove();
     $('#trTermsprev' + icount).remove();
 }
+
+
+/*jQuery("#txtSearch").change(function () {
+    debugger
+    if (jQuery("#txtSearch").val() != "0") {
+
+        vName = jQuery("#txtSearch").val().text();
+
+        jQuery('#tblvendorlist').append("<tr id=vList" + jQuery("#txtSearch").val() + " ><td class='hide'>" + jQuery("#txtSearch").val() + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + jQuery("#txtSearch").val() + "'\)\"; id=\"chkvender" + jQuery("#txtSearch").val() + "\" value=" + jQuery("#txtSearch").val() + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>");
+
+        if ($("#selectedvendorlists > tbody > tr").length > 0) {
+            $("#selectedvendorlists> tbody > tr").each(function (index) {
+
+                    *//*//*//** remove from main table if already selected in selected List
+                if (jQuery("#txtSearch").val() == $(this).find("td:eq(0)").text()) {
+                    $('#vList' + jQuery("#txtSearch").val()).remove();
+
+                }
+                $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true);
+                $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).closest("span#spanchecked").addClass("checked")
+
+            });
+        }
+
+    }
+    else {
+        gritternotification('Please select Vendor  properly!!!');
+    }
+});*/
+
+/*function rfqParticipantVendor() {
+    debugger
+    jQuery("#txtSearch").empty();
+    jQuery("#txtSearch").append(jQuery("<option></option>").val(0).html("All"));
+    for (var i = 0; i < allvendorsforautocomplete.length; i++) {
+        jQuery("#txtSearch").append(jQuery("<option></option>").val(allvendorsforautocomplete[i].participantID).html(allvendorsforautocomplete
+        [i].participantName + " " + allvendorsforautocomplete[i].companyEmail + " - " + allvendorsforautocomplete[i].tinNo));
+    }
+}*/
