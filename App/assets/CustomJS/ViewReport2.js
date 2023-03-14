@@ -241,14 +241,14 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                         if (sname != data[i].shortName) {
                             sname = data[i].shortName
                             if (BidForID == 81 || BidForID == 83) {
-                                var str = "<tr id=low" + i + "><td>" + data[i].shortName + "</td><td class='text-right'>" + thousands_separators(data[i].targetPrice) + "</td><td class='text-right'>" + thousands_separators(data[i].lastInvoicePrice) + "</td><td class='text-right'>" + thousands_separators(data[i].ceilingPrice) + "</td><td class='text-right'>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td>" + data[i].minimumIncreament + "</td>";
+                                var str = "<tr id=low" + i + "><td>" + data[i].shortName + "</td><td class='text-right'>" + thousands_separators((data[i].targetPrice).round(2)) + "</td><td class='text-right'>" + thousands_separators((data[i].lastInvoicePrice).round(2)) + "</td><td class='text-right'>" + thousands_separators((data[i].ceilingPrice).round(2)) + "</td><td class='text-right'>" + thousands_separators((data[i].quantity).round(2)) + "</td><td>" + data[i].uom + "</td><td>" + data[i].minimumIncreament + "</td>";
                                 counterForItenscount = counterForItenscount + 1;
                                 if (counterForItenscount <= 6) {
                                     fnPaintGraph(data[i].shortName, counterForItenscount, data[i].psid)
                                 }
 
                             } else {
-                                var str = "<tr id=low" + i + "><td>" + data[i].shortName + "</td><td class='text-right'>" + thousands_separators(data[i].targetPrice) + "</td><td class='text-right'>" + thousands_separators(data[i].lastInvoicePrice) + "</td><td class='text-right'>" + thousands_separators(data[i].startingPrice) + "</td><td class='text-right'>" + thousands_separators(data[i].ceilingPrice) + "</td><td class='text-right'>" + thousands_separators(thousands_separators(data[i].quantity)) + "</td><td>" + data[i].uom + "</td><td>" + data[i].minimumIncreament + "</td>";
+                                var str = "<tr id=low" + i + "><td>" + data[i].shortName + "</td><td class='text-right'>" + thousands_separators((data[i].targetPrice).round(2)) + "</td><td class='text-right'>" + thousands_separators((data[i].lastInvoicePrice).round(2)) + "</td><td class='text-right'>" + thousands_separators((data[i].startingPrice).round(2)) + "</td><td class='text-right'>" + thousands_separators((data[i].ceilingPrice).round(2)) + "</td><td class='text-right'>" + thousands_separators((data[i].quantity).round(2)) + "</td><td>" + data[i].uom + "</td><td>" + data[i].minimumIncreament + "</td>";
 
                             }
 
@@ -269,14 +269,14 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                         if (BidForID == 81 || BidForID == 83) {
                             str += "<td>" + data[i].srNo + "</td><td>" + data[i].vendorName + "</td><td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
                             str += "<td class=text-right>" + thousands_separators((data[i].lQuote == '0' ? '' : data[i].lQuote)) + "</td>";
-                            str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
+                            str += "<td class=text-right>" + thousands_separators((TotalBidValue).round(2)) + "</td>";
 
                         }
                         else {
                             // alert(data[i].SrNo)
                             str += "<td>" + data[i].srNo + "</td><td>" + data[i].vendorName + "</td>";
                             str += "<td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
-                            str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
+                            str += "<td class=text-right>" + thousands_separators((TotalBidValue).round(2)) + "</td>";
 
                         }
                         if (data[i].srNo == 'H1') {
@@ -742,9 +742,9 @@ function fngetConnHistory(bidid) {
             jQuery("#tblIPHistory").empty();
             if (JSonData != null && JSonData.length > 0) {
                 $('#tblIPHistory').show();
-                jQuery("#tblIPHistory").append("<thead><tr style='background: #44b6ae;'><th colspan=4 style='font-size:19px; text-align:left;color: #FFF;'>Connection History</th></tr><tr><th>IP</th><th style='width:20%!important;'>From</th><th style='width:20%!important;'>To</th><th style='width:20%!important;'>Status</th></thead>");
+                jQuery("#tblIPHistory").append("<thead><tr style='background: #44b6ae;'><th colspan=4 style='font-size:19px; text-align:left;color: #FFF;'>Connection History</th></tr><tr><th style='width:20%!important;'>From</th><th style='width:20%!important;'>To</th><th style='width:20%!important;'>Status</th></thead>");
                 for (var i = 0; i < JSonData.length; i++) {
-                    jQuery("#tblIPHistory").append("<tr><td>" + JSonData[i].machineIP + "</td><td>" + fnConverToLocalTime(JSonData[i].ConnectionFrom) + "</td><td>" + fnConverToLocalTime(JSonData[i].ConnectionTo) + "</td><td>" + JSonData[i].Status + "</td></tr>");
+                    jQuery("#tblIPHistory").append("<tr><<td>" + fnConverToLocalTime(JSonData[i].ConnectionFrom) + "</td><td>" + fnConverToLocalTime(JSonData[i].ConnectionTo) + "</td><td>" + JSonData[i].Status + "</td></tr>");
                 }
             }
             else {
