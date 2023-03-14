@@ -16,7 +16,7 @@ $(document).ready(function () {
     fetchBidSummaryDetails(BidID, BidTypeID, BidForID)
     FetchRecomendedVendor(BidID)
     fnfetchvendortotalSummary(BidID, BidTypeID)
-    fngetConnHistory(BidID);
+   // fngetConnHistory(BidID);
 
 
 });
