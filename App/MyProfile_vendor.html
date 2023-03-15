@@ -211,12 +211,12 @@
                                                         <div id="collapse2" class="panel-collapse collapse noheight" seqno="3">
                                                             <div class="panel-body">
                                                                 <div class="row" id="tab1check">
-                                                                    <div class="col-lg-12">
+                                                                    <div class="col-md-12">
                                                                         <div class="row">
                                                                             <div class="col-md-6">
                                                                                 <h4 class="text-capitalize text-center headstyle1" data-i18n="primarycontactdetail">Primary Contact Detail</h4>
                                                                                 <div class="form-group">
-                                                                                    <div class="col-lg-12">
+                                                                                    <div class="col-md-12">
                                                                                         <label class="col-md-3 control-label txtalignleft" data-i18n="name">
                                                                                             Name
                                                                                         </label>
@@ -228,7 +228,7 @@
                                                                                 </div>
 
                                                                                 <div class="form-group">
-                                                                                    <div class="col-lg-12 ">
+                                                                                    <div class="col-md-12 ">
                                                                                         <label class="col-md-3 control-label txtalignleft" data-i18n="mobileno">
                                                                                             Mobile No
                                                                                         </label>
@@ -245,7 +245,7 @@
                                                                                 </div>
 
                                                                                 <div class="form-group">
-                                                                                    <div class="col-lg-12">
+                                                                                    <div class="col-md-12">
                                                                                         <label class="col-md-3 control-label txtalignleft" data-i18n="emailid">
                                                                                             Email ID
                                                                                         </label>
@@ -256,7 +256,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="form-group">
-                                                                                    <div class="col-lg-12">
+                                                                                    <div class="col-md-12">
                                                                                         <label class="col-md-3 control-label txtalignleft" data-i18n="whatsappnotification">
                                                                                             Whatsapp Notification
 
@@ -279,7 +279,7 @@
                                                                             <div class="col-md-6">
                                                                                 <h4 class="text-capitalize text-center headstyle1" data-i18n="alternatecontactdetail">Alternate Contact Detail</h4>
                                                                                 <div class="form-group">
-                                                                                    <div class="col-lg-12">
+                                                                                    <div class="col-md-12">
                                                                                         <label class="col-md-3 control-label txtalignleft" data-i18n="name">
                                                                                             Name
                                                                                         </label>
@@ -291,7 +291,7 @@
                                                                                 </div>
 
                                                                                 <div class="form-group">
-                                                                                    <div class="col-lg-12">
+                                                                                    <div class="col-md-12">
                                                                                         <label class="col-md-3 control-label txtalignleft" data-i18n="mobileno">
                                                                                             Mobile No
                                                                                         </label>
@@ -308,7 +308,7 @@
                                                                                 </div>
 
                                                                                 <div class="form-group">
-                                                                                    <div class="col-lg-12">
+                                                                                    <div class="col-md-12">
                                                                                         <label class="col-md-3 control-label txtalignleft" data-i18n="emailid">
                                                                                             Email ID
                                                                                         </label>
@@ -318,7 +318,7 @@
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="col-lg-12">
+                                                                                <div class="col-md-12">
                                                                                     <div class="form-group">
                                                                                         <label class="control-label col-md-3 txtalignleft" data-i18n="preferredzone">Preferred Time/Zone:</label>
                                                                                         <div class="col-md-9">
@@ -337,7 +337,7 @@
                                                                 <div class="fluid">
                                                                     <div class="col-md-offset-5 col-md-6">
                                                                         <br />
-                                                                        <button type="submit" class="btn btn-success">
+                                                                        <button type="button" class="btn btn-success" onclick="updateVendorContactDetails()">
                                                                             Update Contact
                                                                         </button>
                                                                     </div>
@@ -399,13 +399,16 @@
                                                                                                 <div class="col-md-4">
                                                                                                     <select class="form-control" name="ddlCountry" onchange="fetchState();" id="ddlCountry" tabindex="4"></select>
                                                                                                 </div>
-                                                                                                <label class="col-md-2 control-label" data-i18n="state">
-                                                                                                    GST No.
-                                                                                                </label>
-                                                                                                <div class="col-md-4">
+                                                                                                <span class="tax-group">
+                                                                                                    <label class="col-md-2 control-label" data-i18n="state">
+                                                                                                        GST No.
+                                                                                                    </label>
+                                                                                                    <div class="col-md-4">
 
-                                                                                                    <input type="text" class="form-control" id="vendorservicetaxno" name="vendorservicetaxno" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled>
-                                                                                                </div>
+                                                                                                        <input type="text" class="form-control" id="vendorservicetaxno" name="vendorservicetaxno" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled>
+                                                                                                    </div>
+                                                                                                </span>
+                                                                                               
 
                                                                                             </div>
                                                                                         </div>
@@ -634,18 +637,66 @@
                                                                                     </a>
                                                                                 </h4>
 
-                                                                            </div><div id="collapse1" class="panel-collapse active" seqno="2">
+                                                                            </div><div id="collapse1" class="panel-collapse collapse" seqno="2">
                                                                                 <div class="panel-body">
                                                                                     <div class="row">
 
 
 
+                                                                                       
+
                                                                                         <div class="form-group">
-                                                                                            <div class="col-lg-11">
-                                                                                                <label class="col-md-3 control-label txtalignleft">
+                                                                                            <div class="col-md-12">
+                                                                                                <label class="col-md-2 control-label txtalignleft">
+                                                                                                    Payment Terms
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <select class="form-control" name="ddPayTerms" id="ddPayTerms" tabindex="4"></select>
+                                                                                                </div>
+                                                                                                <label class="col-md-2 control-label">
+                                                                                                    IFSC Code
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <input type="text" class="form-control"
+                                                                                                           id="ifsccode" name="ifsccode" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-md-12">
+                                                                                                <label class="col-md-2 control-label txtalignleft">
+                                                                                                    Name of Bank
+                                                                                                </label>
+                                                                                                <div class="col-md-4 ">
+                                                                                                    <input type="text" class="form-control"
+                                                                                                           id="bankname" name="bankname" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                </div>
+                                                                                                <label class="col-md-2 control-label txtalignleft">
+                                                                                                    Bank A/c No
+                                                                                                </label>
+                                                                                                <div class="col-md-4 ">
+                                                                                                    <input type="text" class="form-control"
+                                                                                                           id="bankaccount" name="bankaccount" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-md-12">
+                                                                                                <label class="col-md-2 control-label txtalignleft">
+                                                                                                    Account Holder Name
+                                                                                                </label>
+                                                                                                <div class="col-md-4 ">
+                                                                                                    <input type="text" class="form-control"
+                                                                                                           id="accountholder" name="accountholder" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                </div>
+                                                                                                <label class="col-md-2 control-label txtalignleft">
                                                                                                     Attach Cancelled Cheque
                                                                                                 </label>
-                                                                                                <div class="col-md-3">
+                                                                                                <div class="col-md-4">
 
                                                                                                     <div class="inputgroup">
                                                                                                         <div class="att_input">
@@ -655,73 +706,6 @@
                                                                                                         </div>
                                                                                                     </div>
 
-                                                                                                </div>
-
-                                                                                                <div class="inputgroup">
-                                                                                                    <label class="col-md-3 control-label">
-                                                                                                        TAN No
-                                                                                                    </label>
-                                                                                                    <div class="col-md-3">
-                                                                                                        <input type="text" class="form-control"
-                                                                                                               id="tan" name="tan" maxlength="10" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-
-                                                                                        <div class="form-group">
-                                                                                            <div class="col-lg-11">
-                                                                                                <label class="col-md-3 control-label txtalignleft">
-                                                                                                    Payment Terms
-                                                                                                </label>
-                                                                                                <div class="col-md-9">
-                                                                                                    <select class="form-control" name="ddPayTerms" id="ddPayTerms" tabindex="4"></select>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-
-                                                                                        <div class="form-group">
-                                                                                            <div class="col-lg-11">
-                                                                                                <label class="col-md-3 control-label txtalignleft">
-                                                                                                    Name of Bank
-                                                                                                </label>
-                                                                                                <div class="col-md-9 ">
-                                                                                                    <input type="text" class="form-control"
-                                                                                                           id="bankname" name="bankname" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-
-                                                                                        <div class="form-group">
-                                                                                            <div class="col-lg-11 ">
-                                                                                                <label class="col-md-3 control-label txtalignleft">
-                                                                                                    Bank A/c No
-                                                                                                </label>
-                                                                                                <div class="col-md-3 ">
-                                                                                                    <input type="text" class="form-control"
-                                                                                                           id="bankaccount" name="bankaccount" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
-                                                                                                </div>
-
-                                                                                                <div class="inputgroup">
-                                                                                                    <label class="col-md-3 control-label">
-                                                                                                        IFSC Code
-                                                                                                    </label>
-                                                                                                    <div class="col-md-3 ">
-                                                                                                        <input type="text" class="form-control"
-                                                                                                               id="ifsccode" name="ifsccode" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-
-                                                                                        <div class="form-group">
-                                                                                            <div class="col-lg-11">
-                                                                                                <label class="col-md-3 control-label txtalignleft">
-                                                                                                    Account Holder Name
-                                                                                                </label>
-                                                                                                <div class="col-md-9 ">
-                                                                                                    <input type="text" class="form-control"
-                                                                                                           id="accountholder" name="accountholder" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -744,14 +728,14 @@
                                                                                     </a>
                                                                                 </h4>
                                                                             </div>
-                                                                            <div id="collapse3" class="panel-collapse active" seqno="4">
+                                                                            <div id="collapse3" class="panel-collapse collapse" seqno="4">
                                                                                 <div class="panel-body">
                                                                                     <div class="row">
 
 
                                                                                         <div class="form-group">
-                                                                                            <div class="col-lg-11">
-                                                                                                <label class="col-md-3 control-label txtalignleft">
+                                                                                            <div class="col-md-12">
+                                                                                                <label class="col-md-2 control-label txtalignleft">
                                                                                                     Last FY Turn Over
                                                                                                 </label>
 
@@ -763,17 +747,17 @@
                                                                                                             <option value="EUR" data-i18n="eur">EUR</option>
                                                                                                         </select>
                                                                                                     </div>
-                                                                                                    <div class="col-md-2 xyz">
+                                                                                                    <div class="col-md-3 xyz">
                                                                                                         <input type="text" class="form-control selectno thousand"
                                                                                                                id="txtLastFiscal" name="txtLastFiscal" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" />
                                                                                                     </div>
                                                                                                 </div>
 
                                                                                                 <div class="inputgroup">
-                                                                                                    <label class="col-md-3 control-label xyz">
+                                                                                                    <label class="col-md-2 control-label xyz">
                                                                                                         Last FY Turn Over Year
                                                                                                     </label>
-                                                                                                    <div class="col-md-3 xyz">
+                                                                                                    <div class="col-md-4 xyz">
                                                                                                         <input type="text" class="form-control selectno "
                                                                                                                id="txtLastFiscalyear" name="txtLastFiscalyear" maxlength="4" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" disabled />
                                                                                                     </div>
@@ -782,8 +766,8 @@
                                                                                         </div>
 
                                                                                         <div class="form-group">
-                                                                                            <div class="col-lg-11">
-                                                                                                <label class="col-md-3 control-label txtalignleft">
+                                                                                            <div class="col-md-12">
+                                                                                                <label class="col-md-2 control-label txtalignleft">
                                                                                                     2nd Last FY Turn Over
                                                                                                 </label>
 
@@ -795,17 +779,17 @@
                                                                                                             <option value="EUR">EUR</option>
                                                                                                         </select>
                                                                                                     </div>
-                                                                                                    <div class="col-md-2 xyz">
+                                                                                                    <div class="col-md-3 xyz">
                                                                                                         <input type="text" class="form-control selectno thousand"
                                                                                                                id="txt2LastFiscal" name="txt2LastFiscal" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" />
                                                                                                     </div>
                                                                                                 </div>
 
                                                                                                 <div class="inputgroup">
-                                                                                                    <label class="col-md-3 control-label">
+                                                                                                    <label class="col-md-2 control-label">
                                                                                                         2nd Last FY Turn Over Year
                                                                                                     </label>
-                                                                                                    <div class="col-md-3 xyz">
+                                                                                                    <div class="col-md-4 xyz">
                                                                                                         <input type="text" class="form-control selectno"
                                                                                                                id="txt2LastFiscalyear" name="txt2LastFiscalyear" maxlength="4" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" disabled />
 
