@@ -1436,21 +1436,21 @@ function SendWhatsApp() {
 //myprofile changes based on email
 
 function fetchMyProfileVendor() {
-   
+         debugger
         let customerid = parseInt(sessionStorage.getItem('CustomerID'));
-        let emailid = "avendor1121@gmail.com";
+        let VendorId = parseInt(sessionStorage.getItem('VendorId'));
         jQuery.ajax({
             type: "GET",
             contentType: "application/json; charset=utf-8",
             //url: sessionStorage.getItem("APIPath") + "RegisterParticipants/GetVendors/?FieldName=" + $('#ddlUI').val() + "&FieldValue=" + $('#txtUI').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
-            url: sessionStorage.getItem("APIPath") + "VendorLCM/GetVendorByEmail/?Email=" + emailid + "&CustomerId=" + customerid,
+            url: sessionStorage.getItem("APIPath") + "VendorLCM/GetVendorById/?Id=" + VendorId + "&CustomerId=" + customerid,
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             cache: false,
             crossDomain: true,
             dataType: "json",
             success: function (data) {
-               
-                if (!data.isVendorPresent) {
+               debugger
+               /* if (!data.isVendorPresent) {
                     $("#hdnFlagType").val("New")
                     $('#divVendorForm').removeClass('hide')
                     $('#divVendorCompaniesForm').removeClass('hide')
@@ -1461,7 +1461,7 @@ function fetchMyProfileVendor() {
                     $('#txtcompanyemail').attr('disabled', 'disabled')
                     return true
 
-                }
+                }*/
                 let parentData = data.vendorMasterToReturn;
                 let childData = data.vendorChildrenToReturn;
                 ParticipantID = parentData.vendorID;
@@ -1526,7 +1526,7 @@ function fetchMyProfileVendor() {
                                 
             },
             error: function (xhr, status, error) {
-
+                debugger
                 var err = xhr.responseText//eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
@@ -1688,7 +1688,7 @@ function updateForm(data, selectedValue) {
 
             $(".tax-group").empty();
             $.each(country.formFields, function (i, field) {
-                $(".tax-group").append('<label class="col-md-3 control-label">' + field.label + '<span class="required">*</span></label><div class="col-md-6"><input class="form-control" id="txtTINNo" minlength="' + field.minlength + '" maxlength="' + field.maxlength + '" type="' + field.type + '" placeholder="' + field.placeholder + '"/></div>');
+                $(".tax-group").append('<label class="col-md-2 control-label">' + field.label + '<span class="required">*</span></label><div class="col-md-4"><input class="form-control" id="txtTINNo" minlength="' + field.minlength + '" maxlength="' + field.maxlength + '" type="' + field.type + '" placeholder="' + field.placeholder + '"/></div>');
             });
             if (data.countries[i].countryid === "111") {
                 $("#txtTINNo").attr("onchange", "extractPan(this)");
@@ -1705,9 +1705,47 @@ function updateForm(data, selectedValue) {
             //  var country = data.countries[i];
 
             $(".tax-group").empty();
-            $(".tax-group").append('<label class="col-md-3 control-label">' + "Federal TAX No" + '<span class="required">*</span></label><div class="col-md-6"><input class="form-control" id="txtTINNo" minlength="' + 10 + '" maxlength="' + 15 + '" type="' + "text" + '" placeholder="' + "Enter Your Country Tax Identification Number" + '"/></div>');
+            $(".tax-group").append('<label class="col-md-2 control-label">' + "Federal TAX No" + '<span class="required">*</span></label><div class="col-md-4"><input class="form-control" id="txtTINNo" minlength="' + 10 + '" maxlength="' + 15 + '" type="' + "text" + '" placeholder="' + "Enter Your Country Tax Identification Number" + '"/></div>');
             $("#txtTINNo").attr("onchange", "validateTaxInternational(this)");
             $(".pan-group").empty().hide();
         }
     }
+}
+
+//update contact detail
+function updateVendorContactDetails() {
+    debugger
+    let data = {
+        "VendorID": parseInt(sessionStorage.getItem('VendorId')),
+        "EmailID": $('#vendorEmailID').val(),
+        "AlternateEmailID": $('#vendorAltEmailID').val(),
+        "VendorName": $('#personname').val(), 
+        "ContactPerson": $('#personnamealt').val(), 
+        "MobileNo": $('#vendormobileno').val(),
+        "Phone": $('#vendoraltmobileno').val(),
+        "DialingCodeMobile": parseInt($('#ddlCountryCd').val()),
+        "DialingCodePhone": parseInt($('#ddlCountryAltCd').val()),
+        "preferredtimezone": parseInt($('#ddlpreferredTime').val())
+    }
+        
+         
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        //url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&UserType=" + sessionStorage.getItem('UserType'),
+        url: APIPath + "VendorLCM/UpdatePrimaryDetail",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+                      console.log("success")
+        },
+        error: function (xhr, status, error) {
+            debugger
+            console.log("error")
+        }
+    });
 }
