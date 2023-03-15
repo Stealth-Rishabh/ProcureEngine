@@ -1,4 +1,4 @@
-let isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted') 
+let isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted')
 let mobileNo = sessionStorage.getItem('mobileNo');
 //let mobileNo = "9821250345";
 function onloadcalls() {
@@ -28,7 +28,7 @@ function onloadcalls() {
         else if (sessionStorage.getItem("UserType") == "V") {
             fetchMasters();
             prefferedTimezone();
-            fetchMyProfileVendor();
+            fetchMyProfileVendor();       
             $('#ddlCountryCd').select2();
             $('#ddlCountryAltCd').select2();
             $('#ddlpreferredTime').select2();
@@ -53,7 +53,7 @@ function onloadcalls() {
 
 var APIPath = sessionStorage.getItem("APIPath");
 var cc = 0;
-function fetchUserDetails() { 
+function fetchUserDetails() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var userReqObj = {
         "UserID": sessionStorage.getItem('UserID'),
@@ -70,7 +70,7 @@ function fetchUserDetails() {
         data: JSON.stringify(userReqObj),
         dataType: "json",
         success: function (data) {
-          
+
             cc = 0;
             if (data.length > 0) {
                 let userdetails = JSON.parse(data[0].jsondata);
@@ -86,7 +86,7 @@ function fetchUserDetails() {
                     $('#ddlpreferredTime').val(userdetails[0].preferredtimezone).trigger('change')
                 }, 800)
                 if (userdetails[0].DialingCodeMobile != "" && userdetails[0].DialingCodeMobile != undefined && userdetails[0].DialingCodeMobile != null) {
-                  
+
                     setTimeout(function () {
                         $('#ddlCountryCd').val(userdetails[0].DialingCodeMobile).trigger('change')
 
@@ -110,7 +110,7 @@ function fetchUserDetails() {
                         else {
                             $('#theadgroup').addClass('hide');
                         }
-                        
+
                     }
                     else {
                         $('#userOrg').addClass('hide')
@@ -211,8 +211,8 @@ function fetchVendorDetails() {
 
 
 //vendor myprofile_vendor.html
-function fetchMyProfileVendor() {
-    
+/*function fetchMyProfileVendor() {
+    debugger
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var tzID = parseInt(sessionStorage.getItem("timezoneid"));
     var userReqObj = {
@@ -220,6 +220,15 @@ function fetchMyProfileVendor() {
         "UserType": sessionStorage.getItem('UserType')
     }
     $("#ddlpreferredTime").val(tzID)
+    //dummy code for table
+    let childdata = {
+        "childId": 8989,
+        "companyName":"ASPL PVT limited"
+        }
+    $('#tblCompaniesFoundDetails').empty();
+    $('#tblCompaniesFoundDetails').append("<thead><tr><th class='hide'></th><th>Company Name</th><th>Address</th><th>Tax Identification Number</th><th></th></tr></thead><tbody>")
+    $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData.childId + "</td><td>" + childData.companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"ExtendVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityID || 33110) + "'\,\'" + (childData[i].childId || "") + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -231,7 +240,7 @@ function fetchMyProfileVendor() {
         data: JSON.stringify(userReqObj),
         dataType: "json",
         success: function (data) {
-
+            debugger
             var vendordetails = JSON.parse(data[0].jsondata);
             var vendorComps = JSON.parse(data[1].jsondata);
             var CompPer = JSON.parse(data[2].jsondata);
@@ -244,10 +253,10 @@ function fetchMyProfileVendor() {
 
             $('#vendorComp').val(vendorCompstxt.slice(0, -1));
             //code written for whatsapp notification
-          
+
             if (isWhatsappOpted === 'Y' || isWhatsappOpted === 'N') {
-               
-                
+
+
                 $('#uniform-whatsappAlert' + isWhatsappOpted).find('span').addClass('checked');
 
             }
@@ -525,7 +534,7 @@ function fetchMyProfileVendor() {
     });
 
 }
-
+*/
 var profileerror = $('#errordiv');
 var profilesuccess = $('#successdiv');
 profilesuccess.hide();
@@ -562,7 +571,7 @@ function formvalidate() {
                 required: true
             },
             ddlCountryCd: {
-                required: true                
+                required: true
             }
 
         },
@@ -670,7 +679,7 @@ function formvalidate() {
 
 function updMobileNo() {
 
-    
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var _cleanString = StringEncodingMechanism($('#vendoraddress').val());
     var _cleanString1 = StringEncodingMechanism($('#vendorCity').val());
@@ -1234,7 +1243,7 @@ $("#chkAll").click(function () {
 function sendToCompanies() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    
+
     var custids = [];
     if ($("#selectedcompanieslists > tbody > tr").length > 0) {
         $("#selectedcompanieslists> tbody > tr").each(function (index) {
@@ -1350,52 +1359,52 @@ function multilingualLanguage() {
 //whatsapp notification changes
 
 $('input[name="whatsappAlert"]').change(function () {
-       
-        if ($(this).val() == "Y") {
-            $.ajax({
-                url: sessionStorage.getItem("APIPath") + "User/UpdateWhatsApp/?IsWhatsappOpted=Y",
-                type: "POST",
-                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-                data: [],
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    SendWhatsApp()
-                    sessionStorage.setItem('isWhatsappOpted', 'Y');
-                    isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted');
-                    console.log(isWhatsappOpted);
-                },
-                error: function (error) {
-                    console.error("Error sending WhatsApp message:", error);
-                }
-            });
-        }
-        else {
-            $.ajax({
-                url: sessionStorage.getItem("APIPath") + "User/UpdateWhatsApp/?IsWhatsappOpted=N",
-                type: "POST",
-                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-                data: [],
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    sessionStorage.setItem('isWhatsappOpted', 'N');
-                    isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted');
-                    console.log(isWhatsappOpted);
-                },
-                error: function (error) {
-                    console.error("Error sending WhatsApp message:", error);
-                }
-            });
-        }
-    });
+
+    if ($(this).val() == "Y") {
+        $.ajax({
+            url: sessionStorage.getItem("APIPath") + "User/UpdateWhatsApp/?IsWhatsappOpted=Y",
+            type: "POST",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            data: [],
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                SendWhatsApp()
+                sessionStorage.setItem('isWhatsappOpted', 'Y');
+                isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted');
+                console.log(isWhatsappOpted);
+            },
+            error: function (error) {
+                console.error("Error sending WhatsApp message:", error);
+            }
+        });
+    }
+    else {
+        $.ajax({
+            url: sessionStorage.getItem("APIPath") + "User/UpdateWhatsApp/?IsWhatsappOpted=N",
+            type: "POST",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            data: [],
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                sessionStorage.setItem('isWhatsappOpted', 'N');
+                isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted');
+                console.log(isWhatsappOpted);
+            },
+            error: function (error) {
+                console.error("Error sending WhatsApp message:", error);
+            }
+        });
+    }
+});
 
 
 
 
 
 function SendWhatsApp() {
-   
+
     let data = {
         "tonumber": mobileNo,
         "template": "vendorwelcome"
@@ -1408,7 +1417,7 @@ function SendWhatsApp() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-           
+
             bootbox.alert("You are successfully subscribed to Whatsapp", function () {
                 return true;
             });
@@ -1417,4 +1426,288 @@ function SendWhatsApp() {
             console.error("Error sending WhatsApp message:", error);
         }
     });
+}
+
+//fetch profile by email
+
+
+
+
+//myprofile changes based on email
+
+function fetchMyProfileVendor() {
+   
+        let customerid = parseInt(sessionStorage.getItem('CustomerID'));
+        let emailid = "avendor1121@gmail.com";
+        jQuery.ajax({
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            //url: sessionStorage.getItem("APIPath") + "RegisterParticipants/GetVendors/?FieldName=" + $('#ddlUI').val() + "&FieldValue=" + $('#txtUI').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
+            url: sessionStorage.getItem("APIPath") + "VendorLCM/GetVendorByEmail/?Email=" + emailid + "&CustomerId=" + customerid,
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            cache: false,
+            crossDomain: true,
+            dataType: "json",
+            success: function (data) {
+               
+                if (!data.isVendorPresent) {
+                    $("#hdnFlagType").val("New")
+                    $('#divVendorForm').removeClass('hide')
+                    $('#divVendorCompaniesForm').removeClass('hide')
+                    $('#divVendorFormbtn').removeClass('hide')
+                    $('#divVendorContactForm').removeClass('hide')
+                    $('#txtcompanyemail').val($('#txtUI').val())
+                    $('#txtAlternateeMailID').val($('#txtUI').val())
+                    $('#txtcompanyemail').attr('disabled', 'disabled')
+                    return true
+
+                }
+                let parentData = data.vendorMasterToReturn;
+                let childData = data.vendorChildrenToReturn;
+                ParticipantID = parentData.vendorID;
+
+                let isactiveUser = parentData.isActive;
+                $("#personname").val(parentData.vendorName)
+                $("#personnamealt").val(parentData.vendorName)
+                $("#ddlCountryCd").val(parentData.dialingCodeMobile).trigger("change")
+                $("#ddlCountryAltCd").val(parentData.dialingCodeMobile).trigger("change")
+                $("#vendormobileno").val(parentData.mobileNo)
+                $("#vendoraltmobileno").val(parentData.mobileNo)
+                $("#vendorEmailID").val(parentData.emailID)
+                if (parentData.alternateEmailID == "") {
+                    $("#vendorAltEmailID").val(parentData.emailID)
+                }
+                else {
+                    $("#vendorAltEmailID").val(parentData.alternateEmailID)
+                }
+                $("#ddlpreferredTime").val(parentData.preferredtimezone).trigger("change")
+                if (isactiveUser == "Y") {
+                    jQuery('input:checkbox[name=chkIsActiveparticipant]').prop('checked', true);
+                    jQuery('#chkIsActiveparticipant').parents('div').addClass('checked');
+                }
+                else {
+                    jQuery('input:checkbox[name=chkIsActiveparticipant]').prop('checked', false);
+                    jQuery('#chkIsActiveparticipant').parents('div').removeClass('checked');
+                }
+
+                $("#hdnParticipantID").val(parentData.vendorID)
+                $('#divVendorForm').removeClass('hide')
+                $('#divVendorContactForm').removeClass('hide')
+                $('#div_tableVendor').removeClass('hide');
+
+
+
+
+
+                $('#tblCompaniesFoundDetails').empty();
+                var addr1 = "";
+                var addr2 = "";
+                let taxIdNo = "";
+                let addrC = "";
+                if (childData.length > 0) {
+
+                    $('#tblCompaniesFoundDetails').append("<thead><tr><th class='hide'></th><th>Company Name</th><th>Address</th><th>Tax Identification Number</th><th></th></tr></thead><tbody>")
+
+                    for (var i = 0; i < childData.length; i++) {
+                        debugger
+                        //AssociatedVendorID = childData[i].childId;
+                        addr1 = (childData[i].address1 || "").replace(/\n/g, " ");
+                        addr2 = (childData[i].address2 || "").replace(/\n/g, " ");
+                        taxIdNo = childData[i].taxIdType + " " + childData[i].taxId;
+                        addrC = childData[i].address + " " + childData[i].city + " " + childData[i].state + " " + childData[i].country;
+                       
+                            
+                        $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityID || 33110) + "'\,\'" + (childData[i].childId || "") + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");                                               
+                        $('#btnAddAnother').removeClass('hide');
+                        
+                    }
+
+                }
+                                
+            },
+            error: function (xhr, status, error) {
+
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
+                }
+                else {
+                    fnErrorMessageText('spanerterr', '');
+                }
+                jQuery.unblockUI();
+                return false;
+            }
+
+        })
+
+
+  
+    setTimeout(function () {
+        jQuery('#divalerterr').css('display', 'none');
+    }, 5000);
+}
+
+
+//edit vendor
+
+function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid, childid) {
+    debugger
+    $('#childDetailsForm').removeClass('hide')
+   
+    $('#ddlCountry').val(countryid).trigger('change')
+    setTimeout(function () {
+        $('#ddlState').val(stateid).trigger('change')
+    }, 500)
+
+    setTimeout(function () {
+
+        $('#ddlCity').val(cityid).trigger('change')
+    }, 1000)
+    $('#hdnFlagType').val(buttonname);
+    $('#hdnChildID').val(childid);
+
+    jQuery("#hdnParticipantID").val(vendorid);
+    $("#hdnParticipantCode").val(vendorcode);
+    jQuery("#ParticipantName").val(vname);
+    jQuery("#txtAddress").val(decodeURIComponent(addr));
+
+    jQuery("#txtPanNo").val(pan);
+    jQuery("#txtTINNo").val(gst);
+    jQuery("#txtPhoneNo").val(phone);
+    jQuery("#txtMobileNo").val(mobile);
+    jQuery("#txtcompanyemail").val(emailid);
+    jQuery("#txtAlternateeMailID").val(alternateemailid);
+    jQuery("#txtZipCd").val(zipcode)
+
+    $('#ddlpreferredTime').val(prefferredTZ).trigger('change') //abheedev 28/11/2022 bug 530
+
+    //@abheedev
+
+    $('#ddlCountryCd').val(dialingcode).trigger('change')
+    $('#ddlCountryCdPhone').val(dialingcodephone).trigger('change')
+
+
+
+    if (isactive == "Y" || isactive.toLowerCase() == "yes") {
+        jQuery('input:checkbox[name=chkIsActiveparticipant]').prop('checked', true);
+        jQuery('#chkIsActiveparticipant').parents('div').addClass('checked');
+    }
+    else {
+        jQuery('input:checkbox[name=chkIsActiveparticipant]').prop('checked', false);
+        jQuery('#chkIsActiveparticipant').parents('div').removeClass('checked');
+    }
+
+    $('#divVendorForm').removeClass('hide')
+    $('#divVendorCompaniesForm').removeClass('hide')
+    $('#divVendorFormbtn').removeClass('hide')
+    $('#divVendorContactForm').removeClass('hide')
+    fetchMapCategory('Z', vendorid);
+
+    if (buttonname == "EditCustomerVendor") {
+        $('#ParticipantName').attr('disabled', 'disabled');
+        $('#txtAddress').attr('disabled', 'disabled');
+        $('#txtCity').attr('disabled', 'disabled');
+        $('#txtZipCd').attr('disabled', 'disabled');
+        $('#txtPanNo').attr('disabled', 'disabled');
+        $('#txtTINNo').attr('disabled', 'disabled');
+        $('#ddlCountryCdPhone').attr('disabled', 'disabled');
+        $('#txtPhoneNo').attr('disabled', 'disabled');
+        /*$('#ddlCountryCd').attr('disabled', 'disabled');*/
+        /*$('#txtMobileNo').attr('disabled', 'disabled');*/
+        /*$('#txtcompanyemail').attr('disabled', 'disabled');*/
+        $('#chkalternatemail').attr('disabled', 'disabled');
+        /* $('#txtAlternateeMailID').attr('disabled', 'disabled')*/
+        /*$("#ContactName").attr('disabled', 'disabled');*/
+        $("#ddlCountry").attr('disabled', 'disabled');
+        $("#ddlState").attr('disabled', 'disabled');
+        $("#ddlCity").attr('disabled', 'disabled');
+        /*$("#ddlpreferredTime").attr('disabled', 'disabled');*/
+        $("#chkIsActiveparticipant").attr('disabled', 'disabled');
+        $('#lbl_panmsz').removeClass('hide');
+    }
+    else {
+
+        $('#ParticipantName').removeAttr('disabled');
+        $('#txtAddress').removeAttr('disabled');
+        $('#txtCity').removeAttr('disabled');
+        $('#txtZipCd').removeAttr('disabled');
+        $('#txtPanNo').removeAttr('disabled');
+        $('#txtTINNo').removeAttr('disabled');
+        $('#ddlCountryCdPhone').removeAttr('disabled');
+        $('#txtPhoneNo').removeAttr('disabled');
+        /* $('#ddlCountryCd').removeAttr('disabled');*/
+        /*$('#txtMobileNo').removeAttr('disabled');*/
+        /*$('#txtcompanyemail').removeAttr('disabled');*/
+        $('#chkalternatemail').removeAttr('disabled');
+        $("#ddlCountry").removeAttr('disabled');
+        $("#ddlState").removeAttr('disabled');
+        $("#ddlCity").removeAttr('disabled');
+        //$('#txtAlternateeMailID').removeAttr('disabled')
+        /*jQuery("#ContactName").removeAttr('disabled');*/
+        $('#lbl_panmsz').addClass('hide');
+    }
+}
+
+
+//abheedev tax specification
+var taxjsondata;
+
+function getTaxData() {
+    return new Promise(function (resolve, reject) {
+        $.getJSON("assets/CustomJSON/taxdetail.json", function (data) {
+            if (data) {
+                resolve(data);
+            } else {
+                reject(new Error("Failed to load data"));
+            }
+        });
+    });
+}
+
+getTaxData().then(function (data) {
+
+    taxjsondata = data;
+    $('#ddlCountry').on('change', function () {
+        debugger
+
+
+        let selectedValue = $(this).val() || "111";
+        updateForm(taxjsondata, selectedValue);
+    });
+
+}).catch(function (error) {
+    console.error(error);
+});
+
+
+function updateForm(data, selectedValue) {
+    debugger
+    for (var i = 0; i < data.countries.length; i++) {
+        if (data.countries[i].countryid === selectedValue) {
+            var country = data.countries[i];
+
+            $(".tax-group").empty();
+            $.each(country.formFields, function (i, field) {
+                $(".tax-group").append('<label class="col-md-3 control-label">' + field.label + '<span class="required">*</span></label><div class="col-md-6"><input class="form-control" id="txtTINNo" minlength="' + field.minlength + '" maxlength="' + field.maxlength + '" type="' + field.type + '" placeholder="' + field.placeholder + '"/></div>');
+            });
+            if (data.countries[i].countryid === "111") {
+                $("#txtTINNo").attr("onchange", "extractPan(this)");
+                $(".pan-group").show();
+                $(".pan-group").append('<label class="col-md-3 control-label"> PAN No.<span class="required">*</span> </label><div class="col-md-6"><input type="text" class="form-control" placeholder="Enter PAN No." id="txtPanNo" name="txtPanNo" maxlength="10" /></div>');
+            }
+            else {
+                $("#txtTINNo").attr("onchange", "validateTaxInternational(this)");
+                $(".pan-group").empty().hide();
+            }
+            break;
+        }
+        else {
+            //  var country = data.countries[i];
+
+            $(".tax-group").empty();
+            $(".tax-group").append('<label class="col-md-3 control-label">' + "Federal TAX No" + '<span class="required">*</span></label><div class="col-md-6"><input class="form-control" id="txtTINNo" minlength="' + 10 + '" maxlength="' + 15 + '" type="' + "text" + '" placeholder="' + "Enter Your Country Tax Identification Number" + '"/></div>');
+            $("#txtTINNo").attr("onchange", "validateTaxInternational(this)");
+            $(".pan-group").empty().hide();
+        }
+    }
 }
