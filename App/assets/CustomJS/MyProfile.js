@@ -1647,3 +1647,67 @@ function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingco
         $('#lbl_panmsz').addClass('hide');
     }
 }
+
+
+//abheedev tax specification
+var taxjsondata;
+
+function getTaxData() {
+    return new Promise(function (resolve, reject) {
+        $.getJSON("assets/CustomJSON/taxdetail.json", function (data) {
+            if (data) {
+                resolve(data);
+            } else {
+                reject(new Error("Failed to load data"));
+            }
+        });
+    });
+}
+
+getTaxData().then(function (data) {
+
+    taxjsondata = data;
+    $('#ddlCountry').on('change', function () {
+        debugger
+
+
+        let selectedValue = $(this).val() || "111";
+        updateForm(taxjsondata, selectedValue);
+    });
+
+}).catch(function (error) {
+    console.error(error);
+});
+
+
+function updateForm(data, selectedValue) {
+    debugger
+    for (var i = 0; i < data.countries.length; i++) {
+        if (data.countries[i].countryid === selectedValue) {
+            var country = data.countries[i];
+
+            $(".tax-group").empty();
+            $.each(country.formFields, function (i, field) {
+                $(".tax-group").append('<label class="col-md-3 control-label">' + field.label + '<span class="required">*</span></label><div class="col-md-6"><input class="form-control" id="txtTINNo" minlength="' + field.minlength + '" maxlength="' + field.maxlength + '" type="' + field.type + '" placeholder="' + field.placeholder + '"/></div>');
+            });
+            if (data.countries[i].countryid === "111") {
+                $("#txtTINNo").attr("onchange", "extractPan(this)");
+                $(".pan-group").show();
+                $(".pan-group").append('<label class="col-md-3 control-label"> PAN No.<span class="required">*</span> </label><div class="col-md-6"><input type="text" class="form-control" placeholder="Enter PAN No." id="txtPanNo" name="txtPanNo" maxlength="10" /></div>');
+            }
+            else {
+                $("#txtTINNo").attr("onchange", "validateTaxInternational(this)");
+                $(".pan-group").empty().hide();
+            }
+            break;
+        }
+        else {
+            //  var country = data.countries[i];
+
+            $(".tax-group").empty();
+            $(".tax-group").append('<label class="col-md-3 control-label">' + "Federal TAX No" + '<span class="required">*</span></label><div class="col-md-6"><input class="form-control" id="txtTINNo" minlength="' + 10 + '" maxlength="' + 15 + '" type="' + "text" + '" placeholder="' + "Enter Your Country Tax Identification Number" + '"/></div>');
+            $("#txtTINNo").attr("onchange", "validateTaxInternational(this)");
+            $(".pan-group").empty().hide();
+        }
+    }
+}
