@@ -26,12 +26,16 @@ function onloadcalls() {
             $('#bid').removeClass('page-sidebar-closed page-full-width');
         }
         else if (sessionStorage.getItem("UserType") == "V") {
+
+            
+           debugger
             fetchMasters();
             prefferedTimezone();
-            fetchMyProfileVendor();       
             $('#ddlCountryCd').select2();
             $('#ddlCountryAltCd').select2();
             $('#ddlpreferredTime').select2();
+            setTimeout(function () { fetchMyProfileVendor();},500)  
+      
         }
     }
     $(".thousand").inputmask({
@@ -212,7 +216,7 @@ function fetchVendorDetails() {
 
 //vendor myprofile_vendor.html
 /*function fetchMyProfileVendor() {
-    debugger
+   
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var tzID = parseInt(sessionStorage.getItem("timezoneid"));
     var userReqObj = {
@@ -240,7 +244,7 @@ function fetchVendorDetails() {
         data: JSON.stringify(userReqObj),
         dataType: "json",
         success: function (data) {
-            debugger
+            
             var vendordetails = JSON.parse(data[0].jsondata);
             var vendorComps = JSON.parse(data[1].jsondata);
             var CompPer = JSON.parse(data[2].jsondata);
@@ -1436,7 +1440,7 @@ function SendWhatsApp() {
 //myprofile changes based on email
 
 function fetchMyProfileVendor() {
-         debugger
+         
         let customerid = parseInt(sessionStorage.getItem('CustomerID'));
         let VendorId = parseInt(sessionStorage.getItem('VendorId'));
         jQuery.ajax({
@@ -1449,7 +1453,7 @@ function fetchMyProfileVendor() {
             crossDomain: true,
             dataType: "json",
             success: function (data) {
-               debugger
+                debugger
                /* if (!data.isVendorPresent) {
                     $("#hdnFlagType").val("New")
                     $('#divVendorForm').removeClass('hide')
@@ -1468,11 +1472,13 @@ function fetchMyProfileVendor() {
 
                 let isactiveUser = parentData.isActive;
                 $("#personname").val(parentData.vendorName)
-                $("#personnamealt").val(parentData.vendorName)
-                $("#ddlCountryCd").val(parentData.dialingCodeMobile).trigger("change")
-                $("#ddlCountryAltCd").val(parentData.dialingCodeMobile).trigger("change")
+                $("#personnamealt").val(parentData.contactPerson)
+               
                 $("#vendormobileno").val(parentData.mobileNo)
-                $("#vendoraltmobileno").val(parentData.mobileNo)
+                $("#vendoraltmobileno").val(parentData.phone)
+                $("#ddlCountryCd").val(parentData.dialingCodeMobile).trigger("change")
+                $("#ddlCountryAltCd").val(parentData.dialingCodePhone).trigger("change")
+                $("#ddlpreferredTime").val(parentData.preferredtimezone).trigger("change")
                 $("#vendorEmailID").val(parentData.emailID)
                 if (parentData.alternateEmailID == "") {
                     $("#vendorAltEmailID").val(parentData.emailID)
@@ -1480,23 +1486,17 @@ function fetchMyProfileVendor() {
                 else {
                     $("#vendorAltEmailID").val(parentData.alternateEmailID)
                 }
-                $("#ddlpreferredTime").val(parentData.preferredtimezone).trigger("change")
-                if (isactiveUser == "Y") {
-                    jQuery('input:checkbox[name=chkIsActiveparticipant]').prop('checked', true);
-                    jQuery('#chkIsActiveparticipant').parents('div').addClass('checked');
-                }
-                else {
-                    jQuery('input:checkbox[name=chkIsActiveparticipant]').prop('checked', false);
-                    jQuery('#chkIsActiveparticipant').parents('div').removeClass('checked');
-                }
 
+                if (isWhatsappOpted === 'Y' || isWhatsappOpted === 'N') {
+
+
+                    $('#uniform-whatsappAlert' + isWhatsappOpted).find('span').addClass('checked');
+
+                }
+               
+                
                 $("#hdnParticipantID").val(parentData.vendorID)
-                $('#divVendorForm').removeClass('hide')
-                $('#divVendorContactForm').removeClass('hide')
-                $('#div_tableVendor').removeClass('hide');
-
-
-
+                
 
 
                 $('#tblCompaniesFoundDetails').empty();
@@ -1509,7 +1509,7 @@ function fetchMyProfileVendor() {
                     $('#tblCompaniesFoundDetails').append("<thead><tr><th class='hide'></th><th>Company Name</th><th>Address</th><th>Tax Identification Number</th><th></th></tr></thead><tbody>")
 
                     for (var i = 0; i < childData.length; i++) {
-                        debugger
+                      
                         //AssociatedVendorID = childData[i].childId;
                         addr1 = (childData[i].address1 || "").replace(/\n/g, " ");
                         addr2 = (childData[i].address2 || "").replace(/\n/g, " ");
@@ -1526,7 +1526,7 @@ function fetchMyProfileVendor() {
                                 
             },
             error: function (xhr, status, error) {
-                debugger
+            
                 var err = xhr.responseText//eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
@@ -1551,7 +1551,7 @@ function fetchMyProfileVendor() {
 //edit vendor
 
 function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid, childid) {
-    debugger
+
     $('#childDetailsForm').removeClass('hide')
    
     $('#ddlCountry').val(countryid).trigger('change')
@@ -1568,16 +1568,16 @@ function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingco
 
     jQuery("#hdnParticipantID").val(vendorid);
     $("#hdnParticipantCode").val(vendorcode);
-    jQuery("#ParticipantName").val(vname);
-    jQuery("#txtAddress").val(decodeURIComponent(addr));
+    jQuery("#vendorname").val(vname);
+    jQuery("#vendoraddress").val(decodeURIComponent(addr));
 
-    jQuery("#txtPanNo").val(pan);
+    jQuery("#vendorpanno").val(pan);
     jQuery("#txtTINNo").val(gst);
     jQuery("#txtPhoneNo").val(phone);
     jQuery("#txtMobileNo").val(mobile);
     jQuery("#txtcompanyemail").val(emailid);
     jQuery("#txtAlternateeMailID").val(alternateemailid);
-    jQuery("#txtZipCd").val(zipcode)
+    jQuery("#pincode").val(zipcode)
 
     $('#ddlpreferredTime').val(prefferredTZ).trigger('change') //abheedev 28/11/2022 bug 530
 
@@ -1668,7 +1668,7 @@ getTaxData().then(function (data) {
 
     taxjsondata = data;
     $('#ddlCountry').on('change', function () {
-        debugger
+
 
 
         let selectedValue = $(this).val() || "111";
@@ -1681,7 +1681,7 @@ getTaxData().then(function (data) {
 
 
 function updateForm(data, selectedValue) {
-    debugger
+   
     for (var i = 0; i < data.countries.length; i++) {
         if (data.countries[i].countryid === selectedValue) {
             var country = data.countries[i];
@@ -1714,7 +1714,9 @@ function updateForm(data, selectedValue) {
 
 //update contact detail
 function updateVendorContactDetails() {
+
     debugger
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     let data = {
         "VendorID": parseInt(sessionStorage.getItem('VendorId')),
         "EmailID": $('#vendorEmailID').val(),
@@ -1741,11 +1743,104 @@ function updateVendorContactDetails() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-                      console.log("success")
+            debugger
+            console.log("success")
+
+            fetchMyProfileVendor()            
+            profileerror.hide();
+            jQuery.unblockUI();
+            jQuery("#success").text("Your Contact details updated successfully..");
+            profilesuccess.show();
+            profilesuccess.fadeOut(5000);
+            App.scrollTo(profilesuccess, -200);
         },
         error: function (xhr, status, error) {
             debugger
             console.log("error")
+            jQuery.unblockUI();
+        }
+    });
+}
+
+
+function UpdateCompanyDetail() {
+
+    debugger
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    if ($('#gstattach').html() !== '') {
+        gstfilename = $('#gstattach').html();
+
+    }
+    else {
+        gstfilename = jQuery('#filegst').val().substring(jQuery('#filegst').val().lastIndexOf('\\') + 1)
+        gstfilename = gstfilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    }
+
+
+    if ($('#panattach').html() !== '') {
+        panfilename = $('#panattach').html();
+    }
+    else {
+        panfilename = jQuery('#filepan').val().substring(jQuery('#filepan').val().lastIndexOf('\\') + 1)
+        panfilename = panfilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    }
+    if ($('#msmeattach').html() !== '') {
+        msmefilename = $('#msmeattach').html();
+    } else {
+        msmefilename = jQuery('#filemsme').val().substring(jQuery('#filemsme').val().lastIndexOf('\\') + 1)
+        msmefilename = msmefilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    }
+    let VendorId = parseInt(sessionStorage.getItem('VendorId'))
+    let data = {
+        "ChildId":  parseInt($('#hdnChildID').val()),
+        "Address": $('#vendoraddress').val(),
+        "City":   jQuery("#ddlCity option:selected").text(), 
+        "State": jQuery("#ddlState option:selected").text(), 
+        "Country": jQuery("#ddlCountry option:selected").text(),
+        "ZipCode": $('#pincode').val(),
+        "TaxId": $('#txtTINNo').val(),
+        "TaxId2": $('#vendorpanno').val()||"",
+        "MSME": jQuery("#txtUdyam").val(),
+        "MSMEType": jQuery("#ddlMSMEClass option:selected").val(),
+        "MSMECheck": jQuery("#ddlMSME option:selected").val(),
+        "CompanyName": $('#vendorname').val(),
+        "Currency": "INR",
+        "TaxIdFile": gstfilename,
+        "TaxId2File": panfilename,
+        "MSMEFile": msmefilename,
+        "CityId": parseInt(jQuery("#ddlCity option:selected").val()),
+        "StateId": parseInt(jQuery("#ddlState option:selected").val()),
+        "CountryId": parseInt(jQuery("#ddlCountry option:selected").val()),
+    }
+
+    console.log(APIPath + "VendorLCM/UpdateCompanyDetail/?Id=" + VendorId)
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        //url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&UserType=" + sessionStorage.getItem('UserType'),
+        url: APIPath + "VendorLCM/UpdateCompanyDetail/?Id="+VendorId,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+            debugger
+            console.log("success")
+
+            fetchMyProfileVendor()
+            profileerror.hide();
+            jQuery.unblockUI();
+            jQuery("#success").text("Your Contact details updated successfully..");
+            profilesuccess.show();
+            profilesuccess.fadeOut(5000);
+            App.scrollTo(profilesuccess, -200);
+        },
+        error: function (xhr, status, error) {
+            debugger
+            console.log("error")
+            jQuery.unblockUI();
         }
     });
 }
