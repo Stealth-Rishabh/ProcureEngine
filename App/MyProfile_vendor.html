@@ -208,7 +208,7 @@
                                                             </h4>
 
                                                         </div>
-                                                        <div id="collapse2" class="panel-collapse collapse noheight" seqno="3">
+                                                        <div id="collapse2" class="panel-collapse active noheight" seqno="3">
                                                             <div class="panel-body">
                                                                 <div class="row" id="tab1check">
                                                                     <div class="col-md-12">
@@ -408,7 +408,7 @@
                                                                                                         <input type="text" class="form-control" id="vendorservicetaxno" name="vendorservicetaxno" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled>
                                                                                                     </div>
                                                                                                 </span>
-                                                                                               
+
 
                                                                                             </div>
                                                                                         </div>
@@ -558,9 +558,9 @@
                                                                                                     <div class="col-md-4 xyz">
                                                                                                         <select class="form-control selects ddlMSMEClass" id="ddlMSMEClass" name="ddlMSMEClass">
                                                                                                             <option value='' data-i18n="select">Select</option>
-                                                                                                            <option value="Micro" data-i18n="micro">Micro</option>
-                                                                                                            <option value="Small" data-i18n="small">Small</option>
-                                                                                                            <option value="Medium" data-i18n="medium">Medium</option>
+                                                                                                            <option value="MIC" data-i18n="micro">Micro</option>
+                                                                                                            <option value="SMA" data-i18n="small">Small</option>
+                                                                                                            <option value="MED" data-i18n="medium">Medium</option>
                                                                                                         </select>
                                                                                                     </div>
                                                                                                 </div>
@@ -612,7 +612,15 @@
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
+                                                                                        <div class="fluid">
+                                                                                            <div class="col-md-offset-5 col-md-6">
+                                                                                                <br />
+                                                                                                <button type="button" class="btn btn-success" onclick="UpdateCompanyDetail()">
+                                                                                                    Update Company Details
+                                                                                                </button>
+                                                                                            </div>
 
+                                                                                        </div>
 
                                                                                     </div>
 
@@ -907,6 +915,11 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <!--Hidden Input details-->
+                                            <input type="hidden" value="0" id="hdnParticipantID" />
+                                            <input type="hidden" value="0" id="hdnParticipantCode" />
+                                            <input type="hidden" value="0" id="hdnFlagType" />
+                                            <input type="hidden" value="" id="hdnChildID" />
                                             <div class="form-actions fluid">
                                                 <div class="col-md-offset-5 col-md-6">
                                                     <button type="button" class="btn btn-success" onclick="sendToCompanies()">
@@ -969,6 +982,5 @@
             onloadcalls();
         });
     </script>
-
 </body>
 </html>
