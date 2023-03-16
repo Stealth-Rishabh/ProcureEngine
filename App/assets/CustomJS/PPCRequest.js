@@ -610,7 +610,7 @@ function GetOverviewmasterbyId(idx) {
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
         if (res.result != null) {
-
+            debugger
             if (res.result.length > 0) {
               
                 $("#txtEventref").val(res.result[0].eventReftext);
@@ -650,16 +650,19 @@ function GetOverviewmasterbyId(idx) {
               
                 $("#ddlBudget").val(res.result[0].budgetStatus);
 
-                $("#ddlPurchaseOrg").val(res.result[0].purchaseOrg);
-                
+                //abheedev 16/03/2023
                 setTimeout(function () {
-                    bindPurchaseGroupDDL()
-                    $("#ddlPurchasegroup").val(res.result[0].purchaseGroup);
+                   
+                    $("#ddlPurchaseOrg").val(res.result[0].purchaseOrg).trigger('change');
                 }, 900)
+
                 setTimeout(function () {
-                    bindConditionDDL()
-                    $("#ddlCondition").val(res.result[0].conditionID);
-                }, 900)
+                   
+
+                    $("#ddlPurchasegroup").val(res.result[0].purchaseGroup).trigger('change');
+                }, 3000)
+
+                $("#ddlCondition").val(res.result[0].conditionID).trigger('change');
 
             }
         }
@@ -990,9 +993,9 @@ function BindPurchaseOrg() {
                 $('#ddlPurchaseOrg').append('<option value=' + value.purchaseOrgID + '>' + value.purchaseOrgName + '</option>');
 
             });
-            setTimeout(function () {
-                bindPurchaseGroupDDL();
-            }, 500);
+           
+            bindPurchaseGroupDDL();
+            
         }
 
     });
