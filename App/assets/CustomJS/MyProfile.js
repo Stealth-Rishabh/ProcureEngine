@@ -1965,7 +1965,16 @@ function editBankDetail(bankingId, childId, bankCountryKey, bankRoutingNumber, b
 }
 
 function Addanotherbank() {
+   debugger
+    jQuery("#ifsccode").val("")
+    jQuery("#bankaccount").val("")
+    jQuery("#bankname").val("")
+    jQuery("#accountholder").val(jQuery("#vendorname").val())
+    $("#accountholder").removeAttr("disabled")
+    jQuery("#ddPayTerms").val("0").trigger('change')
+    $('#hdnActionType').val("Add")
 
+    $('#filecheck').val("");
 }
 
 function UpdateFinancialDetail() {
