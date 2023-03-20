@@ -586,14 +586,14 @@
                                                                                                     <input type="text" class="form-control" placeholder="MSME Udyam No."
                                                                                                            id="txtUdyam" name="txtUdyam" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
                                                                                                 </div>
-                                                                                               
+
                                                                                             </div>
                                                                                         </div>
 
 
                                                                                         <div class="form-group hideInput hide">
-                                                                                            <div class="col-md-12">                                                                                                                                                                                              
-                                                                                               <div class="inputgroup hideInput hide">
+                                                                                            <div class="col-md-12">
+                                                                                                <div class="inputgroup hideInput hide">
                                                                                                     <label class="col-md-2 control-label">
                                                                                                         Attach MSME Udyam certificate<span class="required"> *</span>
                                                                                                     </label>
@@ -629,7 +629,7 @@
                                                                                         <div class="fluid">
                                                                                             <div class="col-md-offset-5 col-md-6">
                                                                                                 <br />
-                                                                                                <button type="button" class="btn btn-success" onclick="UpdateCompanyDetail()">
+                                                                                                <button type="button" class="btn btn-success" id="buttoncompanyupdate" onclick="UpdateCompanyDetail()">
                                                                                                     Update Company Details
                                                                                                 </button>
                                                                                             </div>
@@ -647,7 +647,7 @@
 
                                                                         </div>
 
-                                                                        <div class="panel panel-default">
+                                                                        <div class="panel panel-default" id="bankaccordion">
                                                                             <div class="panel-heading">
                                                                                 <h4 class="panel-title">
                                                                                     <a class="accordion-toggle  total-tab headingfont" data-toggle="collapse" data-parent="#accordion2" href="#collapse1">
@@ -660,103 +660,103 @@
                                                                                 </h4>
 
                                                                             </div><div id="collapse1" class="panel-collapse collapse" seqno="2">
-                                                                                      <div class="panel-body">
-                                                                                          <div class="col-md-12 text-right">
-                                                                                              <button class="btn btn-xs btn-primary tooltips " type="button" id="btnAddAnother" data-placement="top" data-original-title="Click here to add another bank account details" onclick="Addanotherbank()">
-                                                                                                  <i class="fa fa-plus-circle"></i> Add Account
-                                                                                                  
-                                                                                              </button>
-                                                                                          </div>
-                                                                                          <div class="clearfix"></div>
-                                                                                          <div class="table-scrollable">
-                                                                                              <table class="table table-striped table-bordered table-hover" id="tblGetBankDetail"></table>
+                                                                                <div class="panel-body">
+                                                                                    <div class="col-md-12 text-right">
+                                                                                        <button class="btn btn-xs btn-primary tooltips " type="button" id="btnAddBank" data-placement="top" data-original-title="Click here to add another bank account details" onclick="Addanotherbank()">
+                                                                                            <i class="fa fa-plus-circle"></i> Add Account
 
-                                                                                          </div>
-                                                                                          <div class="row" id="bankForm">
-                                                                                              <div class="form-group">
+                                                                                        </button>
+                                                                                    </div>
+                                                                                    <div class="clearfix"></div>
+                                                                                    <div>
+                                                                                        <table class="table table-striped table-bordered table-hover" id="tblGetBankDetail"></table>
 
-                                                                                                  <div class="col-md-12">
-                                                                                                      <label class="col-md-2 control-label txtalignleft">
-                                                                                                          Payment Terms
-                                                                                                      </label>
-                                                                                                      <div class="col-md-4">
-                                                                                                          <select class="form-control" name="ddPayTerms" id="ddPayTerms" tabindex="4"></select>
-                                                                                                      </div>
-                                                                                                      <label class="col-md-2 control-label">
-                                                                                                          IFSC Code
-                                                                                                      </label>
-                                                                                                      <div class="col-md-4">
-                                                                                                          <input type="text" class="form-control"
-                                                                                                                 id="ifsccode" name="ifsccode" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
-                                                                                                      </div>
+                                                                                    </div>
+                                                                                    <div class="row" id="bankForm">
+                                                                                        <div class="form-group">
 
-                                                                                                  </div>
-                                                                                              </div>
+                                                                                            <div class="col-md-12">
+                                                                                                <label class="col-md-2 control-label txtalignleft">
+                                                                                                    Payment Terms
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <select class="form-control" name="ddPayTerms" id="ddPayTerms" tabindex="4"></select>
+                                                                                                </div>
+                                                                                                <label class="col-md-2 control-label">
+                                                                                                    IFSC Code
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <input type="text" class="form-control"
+                                                                                                           id="ifsccode" name="ifsccode" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                </div>
 
-                                                                                              <div class="form-group">
-                                                                                                  <div class="col-md-12">
-                                                                                                      <label class="col-md-2 control-label txtalignleft">
-                                                                                                          Name of Bank
-                                                                                                      </label>
-                                                                                                      <div class="col-md-4 ">
-                                                                                                          <input type="text" class="form-control"
-                                                                                                                 id="bankname" name="bankname" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
-                                                                                                      </div>
-                                                                                                      <label class="col-md-2 control-label txtalignleft">
-                                                                                                          Bank A/c No
-                                                                                                      </label>
-                                                                                                      <div class="col-md-4 ">
-                                                                                                          <input type="text" class="form-control"
-                                                                                                                 id="bankaccount" name="bankaccount" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
-                                                                                                      </div>
-                                                                                                  </div>
-                                                                                              </div>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-md-12">
+                                                                                                <label class="col-md-2 control-label txtalignleft">
+                                                                                                    Name of Bank
+                                                                                                </label>
+                                                                                                <div class="col-md-4 ">
+                                                                                                    <input type="text" class="form-control"
+                                                                                                           id="bankname" name="bankname" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                </div>
+                                                                                                <label class="col-md-2 control-label txtalignleft">
+                                                                                                    Bank A/c No
+                                                                                                </label>
+                                                                                                <div class="col-md-4 ">
+                                                                                                    <input type="text" class="form-control"
+                                                                                                           id="bankaccount" name="bankaccount" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
 
 
-                                                                                              <div class="form-group">
-                                                                                                  <div class="col-md-12">
-                                                                                                      <label class="col-md-2 control-label txtalignleft">
-                                                                                                          Account Holder Name
-                                                                                                      </label>
-                                                                                                      <div class="col-md-4 ">
-                                                                                                          <input type="text" class="form-control"
-                                                                                                                 id="accountholder" name="accountholder" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
-                                                                                                      </div>
-                                                                                                      <label class="col-md-2 control-label txtalignleft">
-                                                                                                          Attach Cancelled Cheque
-                                                                                                      </label>
-                                                                                                      <div class="col-md-4">
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-md-12">
+                                                                                                <label class="col-md-2 control-label txtalignleft">
+                                                                                                    Account Holder Name
+                                                                                                </label>
+                                                                                                <div class="col-md-4 ">
+                                                                                                    <input type="text" class="form-control"
+                                                                                                           id="accountholder" name="accountholder" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                </div>
+                                                                                                <label class="col-md-2 control-label txtalignleft">
+                                                                                                    Attach Cancelled Cheque
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
 
-                                                                                                          <div class="inputgroup">
-                                                                                                              <div class="att_input">
-                                                                                                                 
-                                                                                                                      <input type="file" class="form-control" tabindex="5" id="filecheck"
-                                                                                                                             onchange="checkfilesize(this)" />
-                                                                                                                 
-                                                                                                                      <span class="help-block uploadedfile"><a href="javascript:;" onclick="DownloadFile(this)" id="checkattach" class="txtleftnone"></a></span>
-                                                                                                              </div>
-                                                                                                          </div>
+                                                                                                    <div class="inputgroup">
+                                                                                                        <div class="att_input">
 
-                                                                                                      </div>
-                                                                                                  </div>
-                                                                                              </div>
-                                                                                              <div class="fluid">
-                                                                                                  <div class="col-md-offset-5 col-md-6">
-                                                                                                      <br />
-                                                                                                      <button type="button" class="btn btn-success" onclick="UpdateBankDetail()">
-                                                                                                          Update Bank Details
-                                                                                                      </button>
-                                                                                                  </div>
+                                                                                                            <input type="file" class="form-control" tabindex="5" id="filecheck"
+                                                                                                                   onchange="checkfilesize(this)" />
 
-                                                                                              </div>
-                                                                                              <div class="clearfix">&nbsp;</div>
+                                                                                                            <span class="help-block uploadedfile"><a href="javascript:;" onclick="DownloadFile(this)" id="checkattach" class="txtleftnone"></a></span>
+                                                                                                        </div>
+                                                                                                    </div>
 
-                                                                                          </div>
-                                                                                      </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="fluid">
+                                                                                            <div class="col-md-offset-5 col-md-6">
+                                                                                                <br />
+                                                                                                <button type="button" class="btn btn-success" id="buttonbankupdate" onclick="UpdateBankDetail()">
+                                                                                                    Update Bank Details
+                                                                                                </button>
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                        <div class="clearfix">&nbsp;</div>
+
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
 
-                                                                        <div class="panel panel-default">
+                                                                        <div class="panel panel-default" id="financeaccordion">
                                                                             <div class="panel-heading">
                                                                                 <h4 class="panel-title">
                                                                                     <a class="accordion-toggle total-tab collapsed headingfont" data-toggle="collapse" data-parent="#accordion2" href="#collapse3">
@@ -770,7 +770,14 @@
                                                                             </div>
                                                                             <div id="collapse3" class="panel-collapse collapse" seqno="4">
                                                                                 <div class="panel-body">
-                                                                                    <div class="table-scrollable">
+                                                                                    <div class="col-md-12 text-right">
+                                                                                        <button class="btn btn-xs btn-primary tooltips " type="button" id="btnAddFinance" data-placement="top" data-original-title="Click here to add another year financial details" onclick="Addanotherfinance()">
+                                                                                            <i class="fa fa-plus-circle"></i> Add Finance
+
+                                                                                        </button>
+                                                                                    </div>
+                                                                                    <div class="clearfix"></div>
+                                                                                    <div>
                                                                                         <table class="table table-striped table-bordered table-hover" id="tblGetFinancialDetail"></table>
 
                                                                                     </div>
@@ -778,7 +785,7 @@
                                                                                     <div class="row">
 
 
-                                                                                        <div class="form-group">
+                                                                                        <div class="form-group" id="financeform">
                                                                                             <div class="col-md-12">
                                                                                                 <label class="col-md-1 control-label txtalignleft">
                                                                                                     Turn Over
@@ -818,18 +825,19 @@
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
-                                                                                        </div>
+                                                                                            <div class="fluid">
+                                                                                                <div class="col-md-offset-5 col-md-6">
+                                                                                                    <br />
+                                                                                                    <button type="button" class="btn btn-success" id="buttonfinancialupdate" onclick="UpdateFinancialDetail()">
+                                                                                                        Add Financial Details
+                                                                                                    </button>
+                                                                                                </div>
 
-
-                                                                                        <div class="fluid">
-                                                                                            <div class="col-md-offset-5 col-md-6">
-                                                                                                <br />
-                                                                                                <button type="button" class="btn btn-success" onclick="UpdateFinancialDetail()">
-                                                                                                    Add Financial Details
-                                                                                                </button>
                                                                                             </div>
-
                                                                                         </div>
+
+
+
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -856,7 +864,7 @@
                                                         </div>
 
                                                     </div>
-
+                                                    <div class="clearfix"></div>
                                                 </div>
                                             </div>
                                            

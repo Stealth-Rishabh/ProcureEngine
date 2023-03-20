@@ -28,7 +28,7 @@ function onloadcalls() {
         else if (sessionStorage.getItem("UserType") == "V") {
 
             
-           debugger
+          
             fetchMasters();
             prefferedTimezone();
             $('#ddlCountryCd').select2();
@@ -957,7 +957,7 @@ function updateVendor() {
 }
 
 function fetchMsme() {
-    debugger
+    
     if (jQuery("#ddlMSME option:selected").val() == 'Y') {
         $('.hideInput').removeClass('hide');
         $('#frmprofilevendornew').validate();
@@ -1454,7 +1454,7 @@ function fetchMyProfileVendor() {
             crossDomain: true,
             dataType: "json",
             success: function (data) {
-                debugger
+               
                /* if (!data.isVendorPresent) {
                     $("#hdnFlagType").val("New")
                     $('#divVendorForm').removeClass('hide')
@@ -1552,9 +1552,10 @@ function fetchMyProfileVendor() {
 //edit vendor
 
 function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile) {
-    debugger
+  
     $('#childDetailsForm').removeClass('hide')
-   
+    $("#bankaccordion").show()
+    $("#financeaccordion").show()
     $('#ddlCountry').val(countryid).trigger('change')
     setTimeout(function () {
         $('#ddlState').val(stateid).trigger('change')
@@ -1607,7 +1608,7 @@ function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingco
     $('#checkattach').html("")
 
     //finance specific
-    debugger
+   
     
    
 
@@ -1617,10 +1618,15 @@ function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingco
 
     $('#vendorname').attr('disabled', 'disabled');
     $('#ddlNatureEstaiblishment').attr('disabled', 'disabled');
-   
+
+    //hide tags
+    $('#bankForm').hide();
+    $('#financeform').hide();
+    $("#txtTINNo").removeAttr("onchange");
+    
     GetFinancialDetail(parseInt(childid))
     GetBankDetail(parseInt(childid))
-    debugger    
+        
 
 }
 
@@ -1694,7 +1700,7 @@ function updateForm(data, selectedValue) {
 //update contact detail
 function updateVendorContactDetails() {
 
-    debugger
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     let data = {
         "VendorID": parseInt(sessionStorage.getItem('VendorId')),
@@ -1722,8 +1728,7 @@ function updateVendorContactDetails() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-            debugger
-            console.log("success")
+           
 
             fetchMyProfileVendor()            
             profileerror.hide();
@@ -1734,7 +1739,7 @@ function updateVendorContactDetails() {
             App.scrollTo(profilesuccess, -200);
         },
         error: function (xhr, status, error) {
-            debugger
+            
             console.log("error")
             jQuery.unblockUI();
         }
@@ -1744,7 +1749,6 @@ function updateVendorContactDetails() {
 
 function UpdateCompanyDetail() {
 
-    debugger
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if ($('#gstattach').html() !== '') {
         gstfilename = $('#gstattach').html();
@@ -1807,19 +1811,16 @@ function UpdateCompanyDetail() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-            debugger
-            console.log("success")
-
-            fetchMyProfileVendor()
             profileerror.hide();
             jQuery.unblockUI();
             jQuery("#success").text("Your Company specific details updated successfully..");
             profilesuccess.show();
             profilesuccess.fadeOut(5000);
             App.scrollTo(profilesuccess, -200);
+            setTimeout(function () { location.reload() }, 2000)
         },
         error: function (xhr, status, error) {
-            debugger
+          
             console.log("error")
             jQuery.unblockUI();
         }
@@ -1830,7 +1831,7 @@ function UpdateCompanyDetail() {
 
 
 function UpdateBankDetail() {  
-    debugger
+
     let ActionType = $('#hdnActionType').val()
    
     if ($('#checkattach').html() !== '') {
@@ -1885,7 +1886,7 @@ function UpdateBankDetail() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-            debugger
+           
             console.log("success")
            
             profileerror.hide();
@@ -1898,7 +1899,7 @@ function UpdateBankDetail() {
              
         },
         error: function (xhr, status, error) {
-            debugger
+            
             console.log("error")
             jQuery.unblockUI();
         }
@@ -1907,7 +1908,7 @@ function UpdateBankDetail() {
 
 
 function GetBankDetail(ChildId) {
-    debugger    
+    
     console.log(sessionStorage.getItem("APIPath") + "VendorLCM/GetBankDetail/?ChildId=" + ChildId)
     jQuery.ajax({
         type: "GET",
@@ -1918,21 +1919,27 @@ function GetBankDetail(ChildId) {
         cache: false,
         dataType: "json",
         success: function (childData) {
-            debugger
-            $('#tblGetBankDetail').empty()
-            $('#tblGetBankDetail').append("<thead><tr><th>Action</th><th>Bank Name</th><th>Account Number</th><th>IFSC Code</th></tr></thead><tbody>")
-            for (var i = 0; i < childData.length; i++) {
+            if (childData.length > 0) {
+                $('#tblGetBankDetail').empty();
+                $('#tblGetBankDetail').append("<thead><tr><th>Action</th><th>Bank Name</th><th>Account Number</th><th>IFSC Code</th></tr></thead><tbody>");
+                for (var i = 0; i < childData.length; i++) {
 
 
-                $('#tblGetBankDetail').append("<tr><td><button type='button' class='btn btn-primary' onclick=\"editBankDetail(\'" + childData[i].bankingId + "'\,\'" + childData[i].childId + "'\,\'" + childData[i].bankCountryKey + "'\,\'" + childData[i].bankRoutingNumber + "'\,\'" + childData[i].bankName + "'\,\'" + childData[i].cancelledCheckFile + "'\,\'" + childData[i].payTerm + "'\,\'" + childData[i].bankAccountNumber + "'\)\">Edit</button></td><td>" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "</td><td>" + childData[i].bankRoutingNumber+"</td></tr>")
+                    $('#tblGetBankDetail').append("<tr><td><button type='button' class='btn btn-primary' onclick=\"editBankDetail(\'" + childData[i].bankingId + "'\,\'" + childData[i].childId + "'\,\'" + childData[i].bankCountryKey + "'\,\'" + childData[i].bankRoutingNumber + "'\,\'" + childData[i].bankName + "'\,\'" + childData[i].cancelledCheckFile + "'\,\'" + childData[i].payTerm + "'\,\'" + childData[i].bankAccountNumber + "'\)\">Edit</button></td><td>" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "</td><td>" + childData[i].bankRoutingNumber + "</td></tr>")
 
+
+                }
+
+                jQuery.unblockUI();
 
             }
-
-            jQuery.unblockUI();
+            else {
+                $('#tblGetBankDetail').empty();
+            }
+            
         },
         error: function (xhr, status, error) {
-            debugger
+          
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -1949,8 +1956,8 @@ function GetBankDetail(ChildId) {
 }
 
 function editBankDetail(bankingId, childId, bankCountryKey, bankRoutingNumber, bankName, cancelledCheckFile, payTerm, bankAccountNumber) {
-    debugger
-
+   
+    $('#bankForm').show();
     $('#hdnBankingId').val(bankingId)
     $('#hdnChildID').val(childId)
     jQuery("#ifsccode").val(bankRoutingNumber)
@@ -1965,21 +1972,27 @@ function editBankDetail(bankingId, childId, bankCountryKey, bankRoutingNumber, b
 }
 
 function Addanotherbank() {
-   debugger
+   
+    $('#bankForm').show();
     jQuery("#ifsccode").val("")
     jQuery("#bankaccount").val("")
     jQuery("#bankname").val("")
-    jQuery("#accountholder").val(jQuery("#vendorname").val())
+    jQuery("#accountholder").val()
     $("#accountholder").removeAttr("disabled")
     jQuery("#ddPayTerms").val("0").trigger('change')
     $('#hdnActionType').val("Add")
-
     $('#filecheck').val("");
+}
+
+function Addanotherfinance() {
+    
+    $('#financeform').show();
+
 }
 
 function UpdateFinancialDetail() {
 
-    debugger
+   
     let financialyearfrom = parseInt($('#fromFiscalyear').val())
     let financialyearto = parseInt($('#toFiscalyear').val())
 
@@ -2020,7 +2033,7 @@ function UpdateFinancialDetail() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-            debugger
+           
             console.log("success")
             if (data.isSuccess == "2") {
                 jQuery("#error").text("Turnover for the said financial year already updated..");
@@ -2029,16 +2042,17 @@ function UpdateFinancialDetail() {
                 App.scrollTo(profileerror, -200);
                 return false;
             }
-            fetchMyProfileVendor()
+            
             profileerror.hide();
             jQuery.unblockUI();
             jQuery("#success").text("Your Finance specific details added successfully..");
             profilesuccess.show();
             profilesuccess.fadeOut(5000);
             App.scrollTo(profilesuccess, -200);
+            setTimeout(function () { location.reload() }, 1000)
         },
         error: function (xhr, status, error) {
-            debugger
+       
             console.log("error")
             jQuery.unblockUI();
         }
@@ -2047,7 +2061,7 @@ function UpdateFinancialDetail() {
 
 
 function GetFinancialDetail(ChildId) {
-    debugger
+    
     console.log(sessionStorage.getItem("APIPath") + "VendorLCM/GetFinancialDetail/?Id=" + VendorId + "&ChildId=" + ChildId)
     jQuery.ajax({
         type: "GET",
@@ -2058,21 +2072,25 @@ function GetFinancialDetail(ChildId) {
         cache: false,
         dataType: "json",
         success: function (childData) {
-            debugger
-            $('#tblGetFinancialDetail').empty()
-            $('#tblGetFinancialDetail').append("<thead><tr><th class='hide'></th><th>Turn Over</th><th>Financial Year</th></tr></thead><tbody>")
-            for (var i = 0; i < childData.length; i++) {
+            if (childData.length > 0) {
+                $('#tblGetFinancialDetail').empty()
+                $('#tblGetFinancialDetail').append("<thead><tr><th class='hide'></th><th>Turn Over</th><th>Financial Year</th></tr></thead><tbody>")
+                for (var i = 0; i < childData.length; i++) {
 
-                               
-                $('#tblGetFinancialDetail').append("<tr><td class='hide'>" + childData[i].financialDetailId + "</td><td>" + childData[i].turnover + "</td><td>" + childData[i].financialYearFrom + " - " + childData[i].financialYearTo + "</td></tr>")
-                    
 
+                    $('#tblGetFinancialDetail').append("<tr><td class='hide'>" + childData[i].financialDetailId + "</td><td>" + childData[i].turnover + "</td><td>" + childData[i].financialYearFrom + " - " + childData[i].financialYearTo + "</td></tr>")
+
+
+                }
+
+                jQuery.unblockUI();
             }
-
-            jQuery.unblockUI();
+            else {
+                $('#tblGetFinancialDetail').empty()
+            }
         },
         error: function (xhr, status, error) {
-            debugger
+           
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -2091,17 +2109,84 @@ function GetFinancialDetail(ChildId) {
 
 
 function Addanother() {
+    $("#bankaccordion").hide()
+    $("#financeaccordion").hide()
     $('#hdnFlagType').val("Add");
     $("#childDetailsForm").removeClass('hide')
     $("#AddAssociate").removeClass('hide')
+    $("#buttoncompanyupdate").hide()
+    $("#buttonbankupdate").hide()
+    $("#buttonfinancialupdate").hide()
+    $("#tblGetBankDetail").hide()
+    $("#tblGetFinancialDetail").hide()
+    $("#btnAddBank").hide()
+    $("#btnAddFinance").hide()
+    $("#bankForm").show()
+    $("#financeform").show()
     cleanAddChild()
+
+    $("#txtTINNo").attr("onchange", "extractPan(this)");
 }
 
 
 function AddAssociateVendorDetail() { 
-    let data = {
 
-        }
+   
+
+    if ($('#gstattach').html() !== '') {
+        gstfilename = $('#gstattach').html();
+
+    }
+    else {
+        gstfilename = jQuery('#filegst').val().substring(jQuery('#filegst').val().lastIndexOf('\\') + 1)
+        gstfilename = gstfilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    }
+
+    if ($('#panattach').html() !== '') {
+        panfilename = $('#panattach').html();
+    }
+    else {
+        panfilename = jQuery('#filepan').val().substring(jQuery('#filepan').val().lastIndexOf('\\') + 1)
+        panfilename = panfilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    }
+    if ($('#msmeattach').html() !== '') {
+        msmefilename = $('#msmeattach').html();
+    } else {
+        msmefilename = jQuery('#filemsme').val().substring(jQuery('#filemsme').val().lastIndexOf('\\') + 1)
+        msmefilename = msmefilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    }
+    if ($('#checkattach').html() !== '') {
+        checkfilename = $('#checkattach').html();
+    }
+    else {
+        checkfilename = jQuery('#filecheck').val().substring(jQuery('#filecheck').val().lastIndexOf('\\') + 1)
+        checkfilename = checkfilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    }  
+
+    let data = {
+        "Address": $('#vendoraddress').val(),
+        "City": $("#ddlCity option:selected").text().trim(),
+        "State": $("#ddlState option:selected").text().trim(),
+        "Country": $("#ddlCountry option:selected").text().trim(),
+        "ZipCode": $('#pincode').val(),
+        "TaxId": $('#txtTINNo').val(),
+        "TaxIdType": "GST",
+        "TaxId2": $('#vendorpanno').val() || "",
+        "TaxIdType2": "PAN",
+        "MSME": jQuery("#txtUdyam").val(),
+        "MSMEType": jQuery("#ddlMSMEClass option:selected").val().trim(),
+        "MSMECheck": jQuery("#ddlMSME option:selected").val(),
+        "CompanyName": $('#vendorname').val(),
+        "TaxIdFile": gstfilename,
+        "TaxId2File": panfilename,
+        "MSMEFile": msmefilename,
+        "CityId": parseInt(jQuery("#ddlCity option:selected").val()),
+        "StateId": parseInt(jQuery("#ddlState option:selected").val()),
+        "CountryId": parseInt(jQuery("#ddlCountry option:selected").val())||parseInt(111),
+        "SupplierType": jQuery("#ddlVendorType option:selected").val(),
+
+    }
+    console.log(sessionStorage.getItem("APIPath") + "VendorLCM/AddAssociateVendorDetail/?Id=" + VendorId)
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "VendorLCM/AddAssociateVendorDetail/?Id=" + VendorId,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -2110,13 +2195,14 @@ function AddAssociateVendorDetail() {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            fetchMyProfileVendor()
+            
             profileerror.hide();
             jQuery.unblockUI();
-            jQuery("#success").text("Your New Conpany is added successfully..");
+            jQuery("#success").text("Your New Company is added successfully..");
             profilesuccess.show();
             profilesuccess.fadeOut(5000);
             App.scrollTo(profilesuccess, -200);
+            setTimeout(function () { location.reload() }, 2000)
             
             
         },
@@ -2165,4 +2251,116 @@ function cleanAddChild() {
     $('#vendorname').removeAttr('disabled');
     $("#ddlNatureEstaiblishment").removeAttr('disabled');
     $("#ddlCountry").removeAttr('disabled');
+}
+
+
+
+//to validate gst
+
+function extractPan(data) {
+  
+    $('#txtTINNo').removeClass("gstvalidicon")
+    var reggst = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/
+
+
+    if (data.value.length === 15) {
+        if (!reggst.test(data.value)) {
+            bootbox.alert('GST Number Format is not valid. please check it');
+            return false;
+        }
+
+        ValidateGST(data.value)
+
+    }
+    else {
+
+        $("#vendorpanno").val("");
+        
+        //beforeTaxDisable()
+    }
+
+}
+//to validate tax for other countries
+function validateTaxInternational(data) {
+
+    // Get the value of the minlength attribute
+    var minLengthValue = $('#txtTINNo').attr('minlength');
+
+    // Get the value of the maxlength attribute
+    var maxLengthValue = $('#txtTINNo').attr('maxlength');
+
+    // Print the values to the console
+    console.log('minlength value: ' + minLengthValue);
+    console.log('maxlength value: ' + maxLengthValue);
+
+    if (data.value.length >= minLengthValue && data.value.length <= maxLengthValue) {
+        afterTaxEnable()
+    }
+    else if (data.value.length <= maxLengthValue) {
+
+        beforeTaxDisable()
+
+    }
+
+}
+
+function ValidateGST(data) {
+
+    let GSTNo = data
+    console.log(sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo);
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+        
+            if (data.status != 'E') {
+                var data = jQuery.parseJSON(data);
+                let panNumber = ""
+                let legalName = data.legalName
+                let companytype = data.constitution
+
+                console.log(data.gstin);
+                $('#txtTINNo').addClass("gstvalidicon")
+
+
+                panNumber = data.gstin.substring(2, 12);
+                $("#vendorpanno").val(panNumber);
+                $("#vendorpanno").attr("disabled", "disabled");
+                //afterTaxEnable()
+                $("#vendorname").val(legalName);
+                $("#vendorname").attr("disabled", "disabled");
+                $("#ddlNatureEstaiblishment").val(companytype);
+                $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
+                setTimeout(function () {
+                    $('#txtTINNo').removeClass("gstvalidicon");
+                }, 2000);
+            }
+            else {
+                $('.alert-danger').html('No such GST number exist')
+                $('.alert-danger').show();
+                Metronic.scrollTo($('.alert-danger'), -200);
+                $('.alert-danger').fadeOut(5000);
+                $('.alert-danger').html('')
+                beforeTaxDisable()
+
+            }
+
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+
+    })
 }
