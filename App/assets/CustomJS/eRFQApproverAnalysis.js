@@ -727,17 +727,17 @@ function fetchrfqcomprative() {
                                         if (data[0].questions[s].vendorID == data[0].vendorNames[q].vendorID) {
 
                                             if (data[0].questions[s].answer != '' && data[0].questions[s].answer != 'Rejected') {
-                                                strQ += "<td>" + data[0].questions[s].answer + "</td>";
+                                                strQ += "<td colspan=4>" + data[0].questions[s].answer + "</td>";
 
 
                                             }
                                             else if (data[0].questions[s].answer == 'Rejected') {
-                                                strQ += "<td  style='color: red!important; text-align: center;'>Regretted</td>"
+                                                strQ += "<td colspan=4 style='color: red!important; text-align: center;'>Regretted</td>"
 
 
                                             }
                                             else {
-                                                strQ += "<td  style='color: red!important; text-align: center;' >Not Quoted</td>";
+                                                strQ += "<td colspan=4  style='color: red!important; text-align: center;' >Not Quoted</td>";
 
                                             }
 
