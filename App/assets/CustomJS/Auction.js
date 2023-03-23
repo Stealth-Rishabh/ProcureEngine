@@ -394,7 +394,27 @@ function thousands_separators_NonMadCol(ele) {
     var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
     ele.value = res;
 }
+
+
 function thousands_separators_input(ele) {
+    var valArr, val = ele.value;
+    let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
+    val = val.replaceAll(/[^0-9\.]/g, '');
+    val = val.replace(/[,]/g, '');
+
+    if (val === "" || val.startsWith(".")) {
+        ele.value = val;
+        return;
+    }
+
+    valArr = val.split('.');
+    valArr[0] = (parseInt(valArr[0], 10)).toLocaleString(culturecode);
+    val = valArr.join('.');
+    ele.value = val;
+}
+
+
+/*function thousands_separators_input(ele) {
 
     var valArr, val = ele.value;
     let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
@@ -408,20 +428,8 @@ function thousands_separators_input(ele) {
         val = valArr.join('.');
     }
     ele.value = val;
-}
-/*function thousands_separators_input(ele) {
-    var regex = /^[0-9,.]+$/g;
-    var str = ele.value;
-    if (!(regex.test(str))) {
-        str = "";
-        $(ele).val("")
-    }
-    str = str.replaceAll(',', "");
-    if (str != "") {
-        str = parseFloat(str);
-    }
-    $(ele).val(str.toLocaleString(sessionStorage.getItem("culturecode")));
 }*/
+
 
 
 function removeZero(ele) {
