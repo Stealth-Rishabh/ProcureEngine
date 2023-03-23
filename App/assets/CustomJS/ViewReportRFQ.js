@@ -6,7 +6,6 @@ function getCurrenttime() {
 }
 
 $(document).ready(function () {
-
     getCurrenttime();
     param = getUrlVars()["param"];
     decryptedstring = fndecrypt(param);
@@ -119,7 +118,7 @@ function fetchrfqcomprative(RFQID) {
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
                     strHead += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].vendorName; +"</th>";
 
-                    strHeadQ += "<th colspan='5' style='text-align:center;'>" + data[0].vendorNames[i].vendorName; +"</th>";
+                    strHeadQ += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].vendorName; +"</th>";
 
 
                 }
