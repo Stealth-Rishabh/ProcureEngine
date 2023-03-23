@@ -1398,11 +1398,11 @@ function fetchBidType() {
 }
 
 function fnfetchCatVendors() { 
-    
+  
     let data = {
         "ProductCatIDList": JSON.parse(sessionStorage.getItem("hdnCategoryGrpID")),
-        "VendorID": sessionStorage.getItem('hdnVendorID'),
-        "CustomerID": sessionStorage.getItem('CustomerID')
+        "VendorID": parseInt(sessionStorage.getItem('hdnVendorID')),
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     }
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     // alert(sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchCategoryVendorForAdvSearch_PEV2/?CategoryID=" + sessionStorage.getItem("hdnCategoryGrpID") + "&VendorID=" + sessionStorage.getItem('hdnVendorID') + "&CustomerID=" + sessionStorage.getItem('CustomerID'))
@@ -1432,7 +1432,7 @@ function fnfetchCatVendors() {
                 jQuery.unblockUI();
                 return false;
             }
-            
+            jQuery.unblockUI(); 
         },
         error: function (xhr, status, error) {
 
@@ -1443,7 +1443,7 @@ function fnfetchCatVendors() {
             else {
                 jQuery('#divalerterrsearch').slideDown('show');
                 $('#div_table').addClass('hide');
-                $('#spanerterrserach').text('You have error .Please try again')
+                $('#spanerterrserach').text('Please Select Category to Proceed')
             }
             jQuery.unblockUI();
             return false;           
@@ -2005,7 +2005,7 @@ function checkPasswordValidation(value) {
     }
 
 
-    const isValidLength = /^.{6,8}$/;
+    const isValidLength = /^.{6,15}$/;
     if (!isValidLength.test(value)) {
         return "Password must be 6-8 Characters Long.";
     }

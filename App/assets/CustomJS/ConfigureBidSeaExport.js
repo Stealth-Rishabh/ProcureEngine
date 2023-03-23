@@ -116,6 +116,7 @@ sessionStorage.setItem('hdnApproverid', 0);
 
 jQuery("#txtApprover").typeahead({
     source: function (query, process) {
+       
         var data = allUsers;
         usernames = [];
         map = {};
@@ -131,6 +132,7 @@ jQuery("#txtApprover").typeahead({
     minLength: 2,
     updater: function (item) {
         if (map[item].userID != "0") {
+            debugger
             sessionStorage.setItem('hdnApproverid', map[item].userID);
             fnApproversQuery(map[item].emailID, map[item].userID, map[item].userName);
 
@@ -314,6 +316,7 @@ sessionStorage.setItem('hdnpreApproverid', 0);
 
 jQuery("#txtpreApproverBid").typeahead({
     source: function (query, process) {
+        debugger
         var data = allUsers;
         usernames = [];
         map = {};
@@ -328,6 +331,7 @@ jQuery("#txtpreApproverBid").typeahead({
     },
     minLength: 2,
     updater: function (item) {
+        debugger
         if (map[item].userID != "0") {
             sessionStorage.setItem('hdnpreApproverid', map[item].userID);
             addBidpreApprovers(map[item].emailID, map[item].userID, map[item].userName);
@@ -3902,6 +3906,7 @@ function fetchRFIRFQSubjectforReport(subjectFor) {
 
 jQuery("#txtrfirfqsubject").typeahead({
     source: function (query, process) {
+        
         var data = sessionStorage.getItem('hdnRfiRfqSubject');
         Subject = [];
         map = {};
@@ -3916,7 +3921,7 @@ jQuery("#txtrfirfqsubject").typeahead({
     },
     minLength: 2,
     updater: function (item) {
-
+      
         if (map[item].rfqid != '0') {
             $('#hdnRfiRfqID').val(map[item].rfqid);
             fnpulldatafromRFQ();

@@ -63,6 +63,7 @@ jQuery("#txtrfirfqsubject").typeahead({
         if (map[item].rfqid != '0') {
 
             $('#hdnRfqID').val(map[item].rfqid);
+            FetchRFQVersion();
             fetchReguestforQuotationDetails()
             fetchRFQApproverStatus(map[item].rfqid);
             /*if (sessionStorage.getItem('CustomerID') == "32") {
@@ -71,7 +72,7 @@ jQuery("#txtrfirfqsubject").typeahead({
             else {
                 fetchRFQApproverStatus(map[item].rfqid);
             }*/
-            FetchRFQVersion();
+
             fetchAttachments();
             fetchApproverRemarks('C');
         }
@@ -522,7 +523,7 @@ function fetchReguestforQuotationDetails() {
                 TechnicalApproval = RFQData[0].general[0].technicalApproval;
                 $('#tbldetails').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td></tr>")
                 //abheedev bug 274
-                $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqId + "</td><td>" + "<b>Ref No-</b>" + RFQData[0].general[0].rfqReference + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqStartDate) + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td><td colspan='25'>" + RFQData[0].general[0].rfqDescription + "</td></tr>")
+                $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqId + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqStartDate) + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td><td colspan='25'>" + RFQData[0].general[0].rfqDescription + "</td></tr>")
             }
         },
         error: function (xhr, status, error) {
@@ -568,6 +569,7 @@ function FetchRFQVersion() {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
+        async: false,
         crossDomain: true,
         dataType: "json",
         success: function (data) {
@@ -611,13 +613,13 @@ function RFQFetchL1Package(VendorID, Counter) {
         dataType: "json",
         success: function (data) {
 
-            $("#withoutGSTL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithoutGST));
-            $("#withoutGSTL1RankExcel" + VendorID).html(data[0].totalL1RankWithoutGST);
-            $("#withGSTL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithGST));
-            $("#withGSTL1RankExcel" + VendorID).html((data[0].totalL1RankWithGST));
-            $("#totL1Rank" + VendorID).html(thousands_separators(data[0].totalL1RankWithoutGST));
+            $("#withoutGSTL1Rank" + VendorID).html(thousands_separators((data[0].totalL1RankWithoutGST).round(2)));
+            $("#withoutGSTL1RankExcel" + VendorID).html(thousands_separators((data[0].totalL1RankWithoutGST).round(2)));
+            $("#withGSTL1Rank" + VendorID).html(thousands_separators((data[0].totalL1RankWithGST).round(2)));
+            $("#withGSTL1RankExcel" + VendorID).html(thousands_separators((data[0].totalL1RankWithGST).round(2)));
+            $("#totL1Rank" + VendorID).html(thousands_separators((data[0].totalL1RankWithoutGST).round(2)));
 
-            $("#totL1RankExcel" + VendorID).html((data[0].totalL1RankWithoutGST));
+            $("#totL1RankExcel" + VendorID).html(thousands_separators((data[0].totalL1RankWithoutGST).round(2)));
 
 
         }, error: function (xhr, status, error) {
@@ -867,14 +869,14 @@ function RFQFetchTotalPriceForReport(VendorID, Counter) {
         dataType: "json",
         success: function (data) {
             //abheedev bug 349 start
-            $("#totBoxwithoutgst" + VendorID).html(thousands_separators(data[0].totalPriceExTax) + " &nbsp;<a class='lambdafactor' style='cursor:pointer' onclick=editwithgstlambdafactor(" + data[0].totalPriceExTax + "," + Counter + "," + VendorID + ")><i class='fa fa-pencil'></i></a>");
-            $("#totBoxwithoutgstExcel" + VendorID).html(data[0].totalPriceExTax);
-            $("#totBoxwithgst" + VendorID).html(thousands_separators(data[0].totalPriceIncTax));
-            $("#totBoxwithgstExcel" + VendorID).html(data[0].totalPriceIncTax);
-            $("#totBoxTax" + VendorID).html(thousands_separators(data[0].totalPriceExTax));
+            $("#totBoxwithoutgst" + VendorID).html(thousands_separators((data[0].totalPriceExTax).round(2)) + " &nbsp;<a class='lambdafactor' style='cursor:pointer' onclick=editwithgstlambdafactor(" + data[0].totalPriceExTax + "," + Counter + "," + VendorID + ")><i class='fa fa-pencil'></i></a>");
+            $("#totBoxwithoutgstExcel" + VendorID).html(thousands_separators((data[0].totalPriceExTax).round(2)));
+            $("#totBoxwithgst" + VendorID).html(thousands_separators((data[0].totalPriceIncTax).round(2)));
+            $("#totBoxwithgstExcel" + VendorID).html(thousands_separators((data[0].totalPriceIncTax).round(2)));
+            $("#totBoxTax" + VendorID).html(thousands_separators((data[0].totalPriceExTax)).round(2));
 
 
-            $("#totBoxTaxExcel" + VendorID).html(data[0].totalPriceExTax);
+            $("#totBoxTaxExcel" + VendorID).html(thousands_separators((data[0].totalPriceExTax)).round(2));
             //abheedev bug 349 end
             if ($("#ddlrfqVersion option:selected").val() == 99) {
 
