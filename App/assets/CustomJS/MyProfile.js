@@ -34,7 +34,7 @@ function onloadcalls() {
             $('#ddlCountryCd').select2();
             $('#ddlCountryAltCd').select2();
             $('#ddlpreferredTime').select2();
-            setTimeout(function () { fetchMyProfileVendor();},500)  
+            setTimeout(function () { fetchMyProfileVendor()},500)  
       
         }
     }
@@ -1454,7 +1454,7 @@ function fetchMyProfileVendor() {
             crossDomain: true,
             dataType: "json",
             success: function (data) {
-               
+               debugger
                /* if (!data.isVendorPresent) {
                     $("#hdnFlagType").val("New")
                     $('#divVendorForm').removeClass('hide')
@@ -1471,6 +1471,7 @@ function fetchMyProfileVendor() {
                 let childData = data.vendorChildrenToReturn;
                 ParticipantID = parentData.vendorID;
 
+               
                 let isactiveUser = parentData.isActive;
                 $("#personname").val(parentData.vendorName)
                 $("#personnamealt").val(parentData.contactPerson)
@@ -1552,7 +1553,9 @@ function fetchMyProfileVendor() {
 //edit vendor
 
 function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile) {
-  
+    
+    $("#filegst").hide()
+    $("#filepan").hide()
     $('#childDetailsForm').removeClass('hide')
     $("#bankaccordion").show()
     $("#financeaccordion").show()
@@ -1612,7 +1615,6 @@ function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingco
     
    
 
-    $('#txtTINNo').attr('disabled', 'disabled');
     $('#ddlCountry').attr('disabled', 'disabled');
     $('#vendorpanno').attr('disabled', 'disabled');
 
@@ -1622,7 +1624,7 @@ function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingco
     //hide tags
     $('#bankForm').hide();
     $('#financeform').hide();
-    $("#txtTINNo").removeAttr("onchange");
+    
     
     GetFinancialDetail(parseInt(childid))
     GetBankDetail(parseInt(childid))
@@ -1737,6 +1739,7 @@ function updateVendorContactDetails() {
             profilesuccess.show();
             profilesuccess.fadeOut(5000);
             App.scrollTo(profilesuccess, -200);
+            setTimeout(function () { location.reload() }, 2000)
         },
         error: function (xhr, status, error) {
             
@@ -1831,7 +1834,7 @@ function UpdateCompanyDetail() {
 
 
 function UpdateBankDetail() {  
-
+    debugger
     let ActionType = $('#hdnActionType').val()
    
     if ($('#checkattach').html() !== '') {
@@ -1850,7 +1853,7 @@ function UpdateBankDetail() {
             "BankCountryKey": "IN",
             "BankRoutingNumber": jQuery("#ifsccode").val(),
             "BankAccountNumber": jQuery("#bankaccount").val(),
-            "BankName": jQuery("#vendorname").val(),
+            "BankName": jQuery("#bankname").val(),
             "CancelledCheckFile": checkfilename,
             "Currency": "INR",
             "PayTerm": jQuery("#ddPayTerms option:selected").val(),
@@ -1864,7 +1867,7 @@ function UpdateBankDetail() {
             "BankCountryKey": "IN",
             "BankRoutingNumber": jQuery("#ifsccode").val(),
             "BankAccountNumber": jQuery("#bankaccount").val(),
-            "BankName": jQuery("#vendorname").val(),
+            "BankName": jQuery("#bankname").val(),
             "CancelledCheckFile": checkfilename,
             "Currency": "INR",
             "PayTerm": jQuery("#ddPayTerms option:selected").val(),
@@ -1919,6 +1922,7 @@ function GetBankDetail(ChildId) {
         cache: false,
         dataType: "json",
         success: function (childData) {
+            debugger
             if (childData.length > 0) {
                 $('#tblGetBankDetail').empty();
                 $('#tblGetBankDetail').append("<thead><tr><th>Action</th><th>Bank Name</th><th>Account Number</th><th>IFSC Code</th></tr></thead><tbody>");
@@ -1956,7 +1960,7 @@ function GetBankDetail(ChildId) {
 }
 
 function editBankDetail(bankingId, childId, bankCountryKey, bankRoutingNumber, bankName, cancelledCheckFile, payTerm, bankAccountNumber) {
-   
+ 
     $('#bankForm').show();
     $('#hdnBankingId').val(bankingId)
     $('#hdnChildID').val(childId)
@@ -1967,12 +1971,13 @@ function editBankDetail(bankingId, childId, bankCountryKey, bankRoutingNumber, b
     $("#accountholder").attr("disabled", "disabled")
     jQuery("#ddPayTerms").val(payTerm).trigger('change')
     $('#hdnActionType').val("Update")   
-
-    $('#filecheck').val(cancelledCheckFile).trigger('change');
+    debugger
+    $('#filecheck').hide()
+    $('#checkattach').show() 
+    $('#checkattach').html(cancelledCheckFile);  
 }
 
-function Addanotherbank() {
-   
+function Addanotherbank() {  
     $('#bankForm').show();
     jQuery("#ifsccode").val("")
     jQuery("#bankaccount").val("")
@@ -2203,8 +2208,7 @@ function AddAssociateVendorDetail() {
             profilesuccess.fadeOut(5000);
             App.scrollTo(profilesuccess, -200);
             setTimeout(function () { location.reload() }, 2000)
-            
-            
+                       
         },
         error: function (xhr, status, error) {
 
@@ -2364,3 +2368,24 @@ function ValidateGST(data) {
 
     })
 }
+
+//edit options for files
+
+function editCheck(){
+    $("#checkattach").html("");
+    $("#uploadcheck").hide();
+    $("#filecheck").show();   
+}
+
+function editGST() {
+    $("#gstattach").html("");
+    $("#uploadgst").hide();
+    $("#filegst").show();
+}
+
+function editPAN() {
+    $("#panattach").html("");
+    $("#uploadpan").hide();
+    $("#filepan").show();
+}
+

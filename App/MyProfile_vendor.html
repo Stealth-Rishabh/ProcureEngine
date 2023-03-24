@@ -409,8 +409,7 @@
                                                                                                         GST No.
                                                                                                     </label>
                                                                                                     <div class="col-md-4">
-
-                                                                                                        <input type="text" class="form-control" id="vendorservicetaxno" name="vendorservicetaxno" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled>
+                                                                                                        <input type="text" class="form-control" id="txtTINNo" name="txtTINNo" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)"  disabled>
                                                                                                     </div>
                                                                                                 </span>
 
@@ -424,10 +423,9 @@
                                                                                                     <div class="inputgroup">
                                                                                                         <div class="att_input">
                                                                                                             <input type="file" class="form-control" tabindex="5" id="filegst" onchange="checkfilesize(this)">
-                                                                                                            <span class="help-block uploadedfile">
+                                                                                                            <label class="control-label uploadedfile" id="uploadgst"><a href="javascript:;" onclick="DownloadFile(this)" id="gstattach" class="txtleftnone"></a><span class="fix-left-margin" onclick="editGST()" id="editgst"><i class="fa fa-pencil"></i></span></label>
 
-                                                                                                                <a href="javascript:;" id="gstattach" onclick="DownloadFile(this)" class="txtleftnone"></a>
-                                                                                                            </span>
+                                                                                                          
                                                                                                         </div>
                                                                                                     </div>
 
@@ -457,7 +455,8 @@
                                                                                                     <div class="inputgroup">
                                                                                                         <div class="att_input">
                                                                                                             <input type="file" class="form-control" tabindex="5" id="filepan" onchange="checkfilesize(this)">
-                                                                                                            <span class="help-block uploadedfile"> <a href="javascript:;" id="panattach" onclick="DownloadFile(this)" class="txtleftnone"></a></span>
+                                                                                                            <label class="control-label uploadedfile" id="uploadpan"><a href="javascript:;" onclick="DownloadFile(this)" id="panattach" class="txtleftnone"></a><span class="fix-left-margin" onclick="editPAN()"  id="editpan"><i class="fa fa-pencil"></i></span></label>
+
                                                                                                         </div>
                                                                                                     </div>
 
@@ -733,7 +732,8 @@
                                                                                                             <input type="file" class="form-control" tabindex="5" id="filecheck"
                                                                                                                    onchange="checkfilesize(this)" />
 
-                                                                                                            <span class="help-block uploadedfile"><a href="javascript:;" onclick="DownloadFile(this)" id="checkattach" class="txtleftnone"></a></span>
+                                                                                                            <label class="control-label uploadedfile" id="uploadcheck"><a href="javascript:;" onclick="DownloadFile(this)" id="checkattach" class="txtleftnone"></a><span class="fix-left-margin" onclick="editCheck()" id="editcheck"><i class="fa fa-pencil"></i></span></label>
+                                                                                                       
                                                                                                         </div>
                                                                                                     </div>
 
