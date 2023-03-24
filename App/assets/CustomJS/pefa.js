@@ -1,7 +1,6 @@
 jQuery(document).ready(function () {
 
     Pageloaded()
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -750,11 +749,11 @@ var FormWizard = function () {
                     },
                     txttargetprice: {
                         numberWithComma: true,
-                        maxlength: 14
+                        maxlength: 21
                     },
                     txtlastinvoiceprice: {
                         numberWithComma: true,
-                        maxlength: 14
+                        maxlength: 21
                     },
                     txtStartingPrice: {
                         required: true,
@@ -785,10 +784,10 @@ var FormWizard = function () {
 
                     },
                     txtlastinvoiceprice: {
-                        maxlength:"please enter no more than 10 digit"
+                        maxlength: "please enter number upto 15 digit"
                     },
                     txttargetprice: {
-                        maxlength: "please enter no more than 10 digit"
+                        maxlength: "please enter number upto 15 digit"
                     },
 
                 },
@@ -3228,7 +3227,7 @@ function printdataSeaBid(result) {
 
                 // if values are correct then creating a temp table
                 $("<tr><td id=itemserviceexcel" + i + ">" + replaceQuoutesFromStringFromExcel(result[i].ItemService) + "</td><td id=TPexcel" + i + ">" + targetPrice + "</td><td id=hideTP" + i + ">" + result[i].HideTargetPrice + "</td><td id=quanexcel" + i + ">" + result[i].Quantity + "</td><td id=uom" + i + ">" + result[i].UOM + "</td><td id=BSPexcel" + i + ">" + BidstartPrice + "</td><td id=incrmenton" + i + ">" + result[i].IncreamentOn + "</td><td id=mininc" + i + ">" + minimuminc + "</td><td id=LIPexcel" + i + ">" + LastInvoicePrice + "</td><td id=showH1" + i + ">" + result[i].ShowH1Price + "</td><td id=showstartprice" + i + ">" + result[i].ShowStartPrice + "</td></tr>").appendTo("#temptableForExcelDataparameter");
-                var arr = $("#temptableForExcelDataparameter tr");
+                /*var arr = $("#temptableForExcelDataparameter tr");
 
                 $.each(arr, function (i, item) {
                     var currIndex = $("#temptableForExcelDataparameter tr").eq(i);
@@ -3242,12 +3241,23 @@ function printdataSeaBid(result) {
                             ErrorMszDuplicate = ErrorMszDuplicate + 'Item with same name already exists at row no ' + (i + 1) + ' . Item will not insert.!<BR>'
                         }
                     });
-                });
+                });*/
             }
 
             z++;
 
         } // for loop ends
+
+        var seen = {};
+        $('#temptableForExcelDataparameter tr ').each(function (index) {
+            var txt = $("td:first-child", $(this)).text();
+            if (seen[txt]) {
+                $(this).remove();
+                st = 'false'
+                ErrorMszDuplicate = ErrorMszDuplicate + ' PEFA Item with same name already exists at row no ' + (index + 1) + ' . Item will not insert.!<BR>'
+            }
+            else seen[txt] = true;
+        });
 
         var excelCorrect = 'N';
         var excelCorrectUOM = 'N';
