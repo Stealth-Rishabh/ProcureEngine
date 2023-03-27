@@ -122,7 +122,7 @@ function selectAccount() {
 
 
 async function isAuthenticated() {
-    debugger;
+
     var token = sessionStorage.getItem("Token");
     var refreshToken = sessionStorage.getItem("RefreshToken");
     var isValid = true;

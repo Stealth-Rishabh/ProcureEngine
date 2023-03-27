@@ -1920,7 +1920,7 @@ function fetchrfqcomprativeBoq() {
                     });
                     if (maxValue == $("#ddlrfqVersion option:selected").val()) {
                         $("#btn-reInvite").removeClass('hide')
-                        str += "<tr id='reinvitationTR'><td colspan=5><b>Re-Invitation Row</b></td>";
+                        str += "<tr id='reinvitationTR'><td colspan=8><b>Re-Invitation Row</b></td>";
 
                         for (var k = 0; k < data[0].vendorNames.length; k++) {
 

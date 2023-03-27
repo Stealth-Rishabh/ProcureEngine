@@ -55,7 +55,6 @@ if (window.location.search) {
     var FwdTo = getUrlVarsURL(decryptedstring)["FwdTo"];
     var AppStatus = getUrlVarsURL(decryptedstring)["AppStatus"];
     var VID = getUrlVarsURL(decryptedstring)["VID"];
-
     $('#hdnRfqID').val(RFQID);
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     setTimeout(function () {
@@ -174,7 +173,6 @@ var RFQBidType = '';
 var RFQEndDate = new Date();
 var _openQuotes = '';
 function fetchrfqcomprative() {
- 
     var url = '';
     //ShowPrice = "N";
     //alert('1-'+ ShowPrice);
@@ -194,7 +192,7 @@ function fetchrfqcomprative() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-      
+
             var str = '';
             var strHead = '';
 
@@ -221,7 +219,7 @@ function fetchrfqcomprative() {
             $('#tblRFQComprativeQ > tbody').empty();
             $('#tblRFQComprativetestQ > tbody').empty();
             jQuery("#tblRFQComprativeForExcelQ > tbody").empty();
-           
+
             var _rfqBidType = sessionStorage.getItem("RFQBIDType");
             var _openQuotes = sessionStorage.getItem("OpenQuotes");
 
@@ -284,7 +282,7 @@ function fetchrfqcomprative() {
                 $('#displayComparativetabs').show();
                 //For Printing Header
                 strHead = "<tr  style='background: #f5f5f5; color:light black;'><th class='hide'>&nbsp;</th><th>SrNo</th><th>ItemCode</th><th>ItemRemark</th><th>Short Name</th><th>Quantity</th><th>UOM</th><th>Target/Budget Price</th>"
-                strHeadQ = "<tr  style='background:#f5f5f5; color:light black;'><th>Question</th><th>Our Requirement</th>"
+                strHeadQ = "<tr colspan='1'  style='background:#f5f5f5; color:light black;'><th>Question</th><th colspan='1'>Our Requirement</th>"
                 jQuery("#drpVendors").empty();
                 jQuery("#drpVendors").append(jQuery("<option ></option>").val("").html("Only for auto PO confirmation"));
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
@@ -329,15 +327,15 @@ function fetchrfqcomprative() {
                 strHead += "</tr>";
                 jQuery('#tblRFQComprative > thead').append(strHead);
                 jQuery('#tblRFQComprativeQ > thead').append(strHeadQ);
-             
+
                 //For Printing Header Ends
 
 
                 var x = 0;
                 var minprice = 0;
                 var unitrate = 0;
-                
-               
+
+
                 for (var i = 0; i < data[0].noofQuotes[0].noofRFQParameter; i++) {
                     unitrate = 0;
 
@@ -356,7 +354,7 @@ function fetchrfqcomprative() {
 
                         str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + (i + 1) + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].remarks + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].quantity).round(2)) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + thousands_separators((data[0].quotesDetails[i].targetPrice).round(2)) + "</td>";
                         for (var j = 0; j < data[0].quotesDetails.length; j++) {
-                          
+
                             if ((data[0].quotesDetails[i].rfqParameterId) == (data[0].quotesDetails[j].rfqParameterId)) {
                                 x = x + 1;
 
@@ -729,17 +727,17 @@ function fetchrfqcomprative() {
                                         if (data[0].questions[s].vendorID == data[0].vendorNames[q].vendorID) {
 
                                             if (data[0].questions[s].answer != '' && data[0].questions[s].answer != 'Rejected') {
-                                                strQ += "<td>" + data[0].questions[s].answer + "</td>";
+                                                strQ += "<td colspan=4>" + data[0].questions[s].answer + "</td>";
 
 
                                             }
                                             else if (data[0].questions[s].answer == 'Rejected') {
-                                                strQ += "<td  style='color: red!important; text-align: center;'>Regretted</td>"
+                                                strQ += "<td colspan=4 style='color: red!important; text-align: center;'>Regretted</td>"
 
 
                                             }
                                             else {
-                                                strQ += "<td  style='color: red!important; text-align: center;' >Not Quoted</td>";
+                                                strQ += "<td colspan=4  style='color: red!important; text-align: center;' >Not Quoted</td>";
 
                                             }
 
@@ -766,17 +764,17 @@ function fetchrfqcomprative() {
                         t = k;
 
                     }
-                   
-                    strQ += "<td colspan=" + ((4*t) + 2) + ">No Questions Mapped</td>";
+
+                    strQ += "<td colspan=" + ((4 * t) + 2) + ">No Questions Mapped</td>";
 
                     strQ += "</tr>";
 
                 }
-                
+
                 strQ += "<tr><td><b>Technical Approval</b></td>";
                 if (AppType == 'T') {
-                
-        
+
+
                     if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "afterrfq") {
                         strQ += "<td>After All RFQ Responses</td>"
                     }
@@ -788,7 +786,7 @@ function fetchrfqcomprative() {
                     }
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
 
-                        strQ += '<td style="text-align:center"><input style="width:16px!important;height:16px!important;"  type=checkbox name=AppRequired' + data[0].vendorNames[k].vendorID + ' id=AppYes' + data[0].vendorNames[k].vendorID + '  onclick="check(' + data[0].vendorNames[k].vendorID + ')" value="Y" /> &nbsp;<span style="margin-bottom:10px!important" for=AppYes' + data[0].vendorNames[k].vendorID + ' >Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style="width:16px!important;height:16px!important;" type=checkbox class=md-radio name=AppRequired' + data[0].vendorNames[k].vendorID + ' id=AppNo' + data[0].vendorNames[k].vendorID + '  onclick="check(' + data[0].vendorNames[k].vendorID + ')" value="N"  /> &nbsp;<span for=AppNo' + data[0].vendorNames[k].vendorID + '>No</span></td>'
+                        strQ += '<td style="text-align:center" colspan="4"><input style="width:16px!important;height:16px!important;"  type=checkbox name=AppRequired' + data[0].vendorNames[k].vendorID + ' id=AppYes' + data[0].vendorNames[k].vendorID + '  onclick="check(' + data[0].vendorNames[k].vendorID + ')" value="Y" /> &nbsp;<span style="margin-bottom:10px!important" for=AppYes' + data[0].vendorNames[k].vendorID + ' >Yes</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><input style="width:16px!important;height:16px!important;" type=checkbox class=md-radio name=AppRequired' + data[0].vendorNames[k].vendorID + ' id=AppNo' + data[0].vendorNames[k].vendorID + '  onclick="check(' + data[0].vendorNames[k].vendorID + ')" value="N"  /> &nbsp;<span for=AppNo' + data[0].vendorNames[k].vendorID + '>No</span></td>'
 
                     }
                     strQ += "</tr>"
@@ -796,7 +794,7 @@ function fetchrfqcomprative() {
 
                     strQ += "<tr><td colspan=2></td>";
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
-                        strQ += '<td style="text-align:center;"><a href="#RaiseQuery" class="btn btn-xs yellow" style="pointer:cursor;text-decoration:none;" id=btn_raisequery' + data[0].vendorNames[k].vendorID + '  onclick="fnRaiseQuery(' + data[0].vendorNames[k].vendorID + ')" data-toggle="modal" data-backdrop="static" data-keyboard="false">Query/Response</a>&nbsp; <span id=querycount' + data[0].vendorNames[k].vendorID + ' ></span></td>'
+                        strQ += '<td style="text-align:center;" colspan="4"><a href="#RaiseQuery" class="btn btn-xs yellow" style="pointer:cursor;text-decoration:none;" id=btn_raisequery' + data[0].vendorNames[k].vendorID + '  onclick="fnRaiseQuery(' + data[0].vendorNames[k].vendorID + ')" data-toggle="modal" data-backdrop="static" data-keyboard="false">Query/Response</a>&nbsp;<br/><span id=querycount' + data[0].vendorNames[k].vendorID + ' ></span></td>'
                     }
                     strQ += "</tr>";
                 }
@@ -808,13 +806,13 @@ function fetchrfqcomprative() {
                     }
 
                     if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "afterrfq") {
-                        strQ += "<td colspan=" + (4*t) + ">After All RFQ Responses</td>"
+                        strQ += "<td colspan=" + (4 * t) + ">After All RFQ Responses</td>"
                     }
                     else if (data[0].vendorNames[0].technicalApproval.toLowerCase() == "rfq") {
-                        strQ += "<td colspan=" + (4*t) + ">With Indivisual RFQ Response</td>"
+                        strQ += "<td colspan=" + (4 * t) + ">With Indivisual RFQ Response</td>"
                     }
                     else {
-                        strQ += "<td colspan=" + (4*t) + ">Not Required</td>"
+                        strQ += "<td colspan=" + (4 * t) + ">Not Required</td>"
                     }
                     strQ += "</tr>"
 
@@ -826,7 +824,7 @@ function fetchrfqcomprative() {
                 for (var k = 1; k <= data[0].vendorNames.length; k++) {
                     t = k;
                 }
-                strQ += "<td colspan=" + ((4*t) + 2) + ">&nbsp;</td>";
+                strQ += "<td colspan=" + ((4 * t) + 2) + ">&nbsp;</td>";
 
                 strQ += "</tr>";
 
@@ -856,15 +854,15 @@ function fetchrfqcomprative() {
                                         if (data[0].approverStatus[s].vendorID == data[0].vendorNames[q].vendorID) {
 
                                             if (data[0].approverStatus[s].status == 'Approved') {
-                                                strQ += "<td colspan=3 style='color: green!important; text-align: center;'>" + data[0].approverStatus[s].status + "</td>";
+                                                strQ += "<td colspan=4 style='color: green!important; text-align: center;'>" + data[0].approverStatus[s].status + "</td>";
 
                                             }
                                             else if (data[0].approverStatus[s].status == 'Rejected') {
-                                                strQ += "<td colspan=3 style='color: red!important; text-align: center;'>Not Approved</td>";
+                                                strQ += "<td colspan=4 style='color: red!important; text-align: center;'>Not Approved</td>";
 
                                             }
                                             else if (data[0].approverStatus[s].status == 'Pending') {
-                                                strQ += "<td colspan=3 style='color: blue!important; text-align: center;'>Pending</td>";
+                                                strQ += "<td colspan=4 style='color: blue!important; text-align: center;'>Pending</td>";
 
 
                                             }
@@ -893,7 +891,7 @@ function fetchrfqcomprative() {
                     t = k;
 
                 }
-                strQ += "<td colspan=" + ((4*t) + 2) + ">&nbsp;</td>";
+                strQ += "<td colspan=" + ((4 * t) + 2) + ">&nbsp;</td>";
 
                 strQ += "</tr>";
 
@@ -1088,7 +1086,6 @@ function deletequesrow(rowid) {
 }
 function submitTechnicalQuery() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
     $('#btnTechquery').attr('disabled', 'disabled')
     $('#btnSubmitApp').attr('disabled', 'disabled')
     var quesquery = "";
@@ -1985,7 +1982,6 @@ function fnFWDeRFQ() {
     });
 }
 function ApprovalApp() {
-
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvalstatus = "";
     var chkstatus = 'T';
