@@ -836,3 +836,36 @@ function GetCustomerSpecificMaster(CustId) {
 
     });
 }
+
+function GetCountrySpecificMaster(CountryKey) {
+    debugger
+    console.log(sessionStorage.getItem("APIPath") + "KDSMaster/GetCountrySpecificMaster/?CountryKey=" + CountryKey)
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "KDSMaster/GetCountrySpecificMaster/?CountryKey=" + CountryKey,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        dataType: "json",
+        success: function (childData) {
+            debugger
+            jQuery.unblockUI();
+
+        },
+        error: function (xhr, status, error) {
+            debugger
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+}

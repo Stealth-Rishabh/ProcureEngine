@@ -707,7 +707,7 @@ function fetchParticipantsparked() {
 }
 let customerid = parseInt(sessionStorage.getItem('CustomerID'));
 function fnViewDetails(tmpvendorid, vendorid) {   
-    debugger
+  
     $('#viewalldetails').modal('show');
     $('#childDetailsForm').addClass('hide')
     fetchVendorRegistrationDetails(customerid, parseInt(vendorid));
@@ -715,7 +715,7 @@ function fnViewDetails(tmpvendorid, vendorid) {
     
 }
 /*function fetchVendorRegistrationDetails(tmpvendorid, vendorid) {
-    debugger
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
 
@@ -728,7 +728,7 @@ function fnViewDetails(tmpvendorid, vendorid) {
         crossDomain: true,
         dataType: "json",
         success: function (json) {
-            debugger
+            
             var companydetails = JSON.parse(json[0].jsondata);
             if (json.length > 1) {
 
@@ -858,7 +858,7 @@ function fnViewDetails(tmpvendorid, vendorid) {
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
-            debugger
+           
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -2386,7 +2386,7 @@ function fetchVendorRegistrationDetails(custid, vendId) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-        
+             
             /* if (!data.isVendorPresent) {
                  $("#hdnFlagType").val("New")
                  $('#divVendorForm').removeClass('hide')
@@ -2443,7 +2443,7 @@ function fetchVendorRegistrationDetails(custid, vendId) {
                     addrC = childData[i].address + " " + childData[i].city + " " + childData[i].state + " " + childData[i].country;
 
 
-                    $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendorModal(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].country || "") + "'\,\'" + (childData[i].state || "") + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].city || "") + "'\,\'" + (childData[i].childId || "") + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Expand</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                    $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendorModal(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].country || "") + "'\,\'" + (childData[i].state || "") + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].city || "") + "'\,\'" + (childData[i].childId || "") + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\,\'" + childData[i].countryId + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Expand</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
                     $('#btnAddAnother').removeClass('hide');
 
                 }
@@ -2452,7 +2452,7 @@ function fetchVendorRegistrationDetails(custid, vendId) {
 
         },
         error: function (xhr, status, error) {
-            debugger
+           
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -2473,8 +2473,8 @@ function fetchVendorRegistrationDetails(custid, vendId) {
     }, 5000);
 }
 
-function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, country, state, prefferredTZ, city, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile) {
-   
+function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, country, state, prefferredTZ, city, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile,countryId) {
+ 
     $('#childDetailsForm').removeClass('hide')
     $("#bankaccordion").show()
     $("#financeaccordion").show()
@@ -2563,8 +2563,9 @@ function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dial
     
     GetFinancialDetail(parseInt(childid), parseInt(vendorid))
     GetBankDetail(parseInt(childid))
-    debugger
+   
     GetCustomerSpecificMaster(customerid) //function defined in common.js
+    GetCountrySpecificMaster(countryId)  //function defined in common.js
     GetVendorExternalDetail(parseInt(vendorid), parseInt(childid), customerid)
 
 
