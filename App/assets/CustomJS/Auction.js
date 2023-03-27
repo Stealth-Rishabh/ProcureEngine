@@ -394,7 +394,27 @@ function thousands_separators_NonMadCol(ele) {
     var res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
     ele.value = res;
 }
+
+
 function thousands_separators_input(ele) {
+    var valArr, val = ele.value;
+    let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
+    val = val.replaceAll(/[^0-9\.]/g, '');
+    val = val.replace(/[,]/g, '');
+
+    if (val === "" || val.startsWith(".")) {
+        ele.value = val;
+        return;
+    }
+
+    valArr = val.split('.');
+    valArr[0] = (parseInt(valArr[0], 10)).toLocaleString(culturecode);
+    val = valArr.join('.');
+    ele.value = val;
+}
+
+
+/*function thousands_separators_input(ele) {
 
     var valArr, val = ele.value;
     let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
@@ -408,20 +428,8 @@ function thousands_separators_input(ele) {
         val = valArr.join('.');
     }
     ele.value = val;
-}
-/*function thousands_separators_input(ele) {
-    var regex = /^[0-9,.]+$/g;
-    var str = ele.value;
-    if (!(regex.test(str))) {
-        str = "";
-        $(ele).val("")
-    }
-    str = str.replaceAll(',', "");
-    if (str != "") {
-        str = parseFloat(str);
-    }
-    $(ele).val(str.toLocaleString(sessionStorage.getItem("culturecode")));
 }*/
+
 
 
 function removeZero(ele) {
@@ -1398,11 +1406,11 @@ function fetchBidType() {
 }
 
 function fnfetchCatVendors() { 
-    
+  
     let data = {
         "ProductCatIDList": JSON.parse(sessionStorage.getItem("hdnCategoryGrpID")),
-        "VendorID": sessionStorage.getItem('hdnVendorID'),
-        "CustomerID": sessionStorage.getItem('CustomerID')
+        "VendorID": parseInt(sessionStorage.getItem('hdnVendorID')),
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     }
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     // alert(sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchCategoryVendorForAdvSearch_PEV2/?CategoryID=" + sessionStorage.getItem("hdnCategoryGrpID") + "&VendorID=" + sessionStorage.getItem('hdnVendorID') + "&CustomerID=" + sessionStorage.getItem('CustomerID'))
@@ -1432,7 +1440,7 @@ function fnfetchCatVendors() {
                 jQuery.unblockUI();
                 return false;
             }
-            
+            jQuery.unblockUI(); 
         },
         error: function (xhr, status, error) {
 
@@ -1443,7 +1451,7 @@ function fnfetchCatVendors() {
             else {
                 jQuery('#divalerterrsearch').slideDown('show');
                 $('#div_table').addClass('hide');
-                $('#spanerterrserach').text('You have error .Please try again')
+                $('#spanerterrserach').text('Please Select Category to Proceed')
             }
             jQuery.unblockUI();
             return false;           
@@ -2005,7 +2013,7 @@ function checkPasswordValidation(value) {
     }
 
 
-    const isValidLength = /^.{6,8}$/;
+    const isValidLength = /^.{6,15}$/;
     if (!isValidLength.test(value)) {
         return "Password must be 6-8 Characters Long.";
     }
