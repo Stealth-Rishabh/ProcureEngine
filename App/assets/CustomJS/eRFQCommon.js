@@ -452,6 +452,8 @@ var _rfqBidType = '';
 var CurrentDateTime = new Date();
 var _openQuotes = '';
 var isboq = 'N';
+var ShowPrice = 'Y';
+
 function fetchReguestforQuotationDetails() {
     var attachment = '';
     var termattach = '';
@@ -476,7 +478,11 @@ function fetchReguestforQuotationDetails() {
                 sessionStorage.setItem('RFQBidType', _rfqBidType);
                 sessionStorage.setItem('OpenQuotes', _openQuotes);
                 _curentRFQStatus = RFQData[0].general[0].rfqStatus;
+
+                ShowPrice = RFQData[0].general[0].showQuotedPrice;
+
                 sessionStorage.setItem('CurrentRFQStatus', _curentRFQStatus)
+
                 if (_rfqBidType == 'Closed') {
                     $('#div_bidopendate').show()
                     if (bidopeningdate != null) {
