@@ -768,4 +768,71 @@ function isNumeric(str) {
         !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
 }
 
+//sap master related apis
+function GetCustomerSpecificMaster(CustId) {
+    debugger
+    console.log(sessionStorage.getItem("APIPath") + "KDSMaster/GetCustomerSpecificMaster/?Id=" +CustId)
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "KDSMaster/GetCustomerSpecificMaster/?Id="+ CustId,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        dataType: "json",
+        success: function (childData) {
+            debugger
+            jQuery.unblockUI();
 
+        },
+        error: function (xhr, status, error) {
+            debugger
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+}
+
+
+//KDSMaster / GetCountrySpecificMaster = string CountryKey
+function GetCustomerSpecificMaster(CustId) {
+    debugger
+    console.log(sessionStorage.getItem("APIPath") + "KDSMaster/GetCustomerSpecificMaster/?Id=" + CustId)
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "KDSMaster/GetCustomerSpecificMaster/?Id=" + CustId,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        dataType: "json",
+        success: function (childData) {
+            debugger
+            jQuery.unblockUI();
+
+        },
+        error: function (xhr, status, error) {
+            debugger
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+}
