@@ -2374,7 +2374,7 @@ function fetchAdvanceSearch() {
 
 function fetchVendorRegistrationDetails(custid, vendId) {
 
-    debugger
+   
     console.log(sessionStorage.getItem("APIPath") + "VendorLCM/GetVendorById/?Id=" + vendId + "&CustomerId=" + custid)
     jQuery.ajax({
         type: "GET",
@@ -2386,7 +2386,7 @@ function fetchVendorRegistrationDetails(custid, vendId) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-            debugger
+        
             /* if (!data.isVendorPresent) {
                  $("#hdnFlagType").val("New")
                  $('#divVendorForm').removeClass('hide')
@@ -2404,26 +2404,25 @@ function fetchVendorRegistrationDetails(custid, vendId) {
             ParticipantID = parentData.vendorID;
             $('#spnvendorcode').text(ParticipantID)
             let isactiveUser = parentData.isActive;
-            $("#personname").val(parentData.vendorName)
-            $("#personnamealt").val(parentData.contactPerson)
+            $("#personname").text(parentData.vendorName)
+            $("#personnamealt").text(parentData.contactPerson)
 
-            $("#vendormobileno").val(parentData.mobileNo)
-            $("#vendoraltmobileno").val(parentData.phone)
+            $("#vendormobileno").text(parentData.mobileNo)
+            $("#vendoraltmobileno").text(parentData.phone)
             $("#ddlCountryCdm").text(parentData.mobilePrefix)
             $("#ddlCountryAltCd").text(parentData.phonePrefix)
             $("#ddlpreferredTime").text(parentData.preferredtimezone)
-            $("#vendorEmailID").val(parentData.emailID)
+            $("#vendorEmailID").text(parentData.emailID)
             if (parentData.alternateEmailID == "") {
-                $("#vendorAltEmailID").val(parentData.emailID)
+                $("#vendorAltEmailID").text(parentData.emailID)
             }
             else {
-                $("#vendorAltEmailID").val(parentData.alternateEmailID)
+                $("#vendorAltEmailID").text(parentData.alternateEmailID)
             }
 
             $('#ddlpreferredTimem').val(parentData.preferredtimezone).trigger('change') //abheedev 28/11/2022 bug 530
 
-            $("#hdnParticipantID").val(parentData.vendorID)
-
+           
 
 
             $('#tblCompaniesFoundDetails').empty();
@@ -2489,30 +2488,49 @@ function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dial
     
 
     
-    jQuery("#vendorname").val(vname);
-    jQuery("#vendoraddress").val(decodeURIComponent(addr));
+    jQuery("#vendorname").text(vname);
+    jQuery("#vendoraddress").text(decodeURIComponent(addr));
 
-    jQuery("#vendorpanno").val(pan);
+    jQuery("#vendorpanno").text(pan);
 
-    jQuery("#txtTINNom").val(gst);
-    jQuery("#txtPhoneNo").val(phone);
-    jQuery("#txtMobileNo").val(mobile);
-    jQuery("#txtcompanyemail").val(emailid);
-    jQuery("#txtAlternateeMailID").val(alternateemailid);
-    jQuery("#pincode").val(zipcode)
+    jQuery("#txtTINNom").text(gst);
+    jQuery("#txtPhoneNo").text(phone);
+    jQuery("#txtMobileNo").text(mobile);
+    jQuery("#txtcompanyemail").text(emailid);
+    jQuery("#txtAlternateeMailID").text(alternateemailid);
+    jQuery("#pincode").text(zipcode)
 
     
 
     //@abheedev
 
-    $('#ddlCountryCd').val(dialingcode).trigger('change')
-    $('#ddlCountryCdPhone').val(dialingcodephone).trigger('change')
-
+   
     //company specific
-    jQuery("#ddlNatureEstaiblishment").val("Private Limited Company");
+    jQuery("#ddlNatureEstaiblishment").text("Private Limited Company");
     $('#ddlVendorType').val(supplierType).trigger('change')
-    $('#ddlMSME').val(msmeCheck).trigger('change')
-   // $('#ddlMSMEClass').val(msmeType).trigger('change')
+    if (supplierType == "1") {
+        $('#ddlVendorType').text("Supply Vendor")
+    }
+    else if (supplierType == "2") {
+        $('#ddlVendorType').text("Service Vendor")
+    }
+    else if (supplierType == "3") {
+        $('#ddlVendorType').text("Both")
+    }
+    else {
+        $('#ddlVendorType').text("")
+    }
+    if (msmeCheck == "Y") {
+        $('#ddlMSME').text("Yes")
+    }
+    else if (msmeCheck == "N") {
+        $('#ddlMSME').text("No")
+    }
+    else {
+        $('#ddlMSME').text("")
+    }
+        
+    // $('#ddlMSMEClass').val(msmeType).trigger('change')
    // $('#txtUdyam').val(msmeNo)
    // $('#msmeattach').html(msmeFile)
     $('#gstattach').html(taxIdFile)
@@ -2546,6 +2564,7 @@ function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dial
     GetFinancialDetail(parseInt(childid), parseInt(vendorid))
     GetBankDetail(parseInt(childid))
     debugger
+    GetCustomerSpecificMaster(customerid) //function defined in common.js
     GetVendorExternalDetail(parseInt(vendorid), parseInt(childid), customerid)
 
 
@@ -2553,7 +2572,7 @@ function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dial
 
 
 function GetBankDetail(ChildId) {
-    debugger
+    
     console.log(sessionStorage.getItem("APIPath") + "VendorLCM/GetBankDetail/?ChildId=" + ChildId)
     jQuery.ajax({
         type: "GET",
@@ -2564,14 +2583,14 @@ function GetBankDetail(ChildId) {
         cache: false,
         dataType: "json",
         success: function (childData) {
-            debugger
+          
             if (childData.length > 0) {
                 $('#tblGetBankDetail').empty();
                 $('#tblGetBankDetail').append("<thead><tr><th>Action</th><th>Bank Name</th><th>Account Number</th><th>IFSC Code</th></tr></thead><tbody>");
                 for (var i = 0; i < childData.length; i++) {
 
 
-                    $('#tblGetBankDetail').append("<tr><td><button type='button' class='btn btn-primary' onclick=\"editBankDetail(\'" + childData[i].bankingId + "'\,\'" + childData[i].childId + "'\,\'" + childData[i].bankCountryKey + "'\,\'" + childData[i].bankRoutingNumber + "'\,\'" + childData[i].bankName + "'\,\'" + childData[i].cancelledCheckFile + "'\,\'" + childData[i].payTerm + "'\,\'" + childData[i].bankAccountNumber + "'\)\">Expand</button></td><td>" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "</td><td>" + childData[i].bankRoutingNumber + "</td></tr>")
+                    $('#tblGetBankDetail').append("<tr><td><button type='button' class='btn btn-primary' onclick=\" expandBankDetail(\'" + childData[i].bankingId + "'\,\'" + childData[i].childId + "'\,\'" + childData[i].bankCountryKey + "'\,\'" + childData[i].bankRoutingNumber + "'\,\'" + childData[i].bankName + "'\,\'" + childData[i].cancelledCheckFile + "'\,\'" + childData[i].payTerm + "'\,\'" + childData[i].bankAccountNumber + "'\)\">Expand</button></td><td>" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "</td><td>" + childData[i].bankRoutingNumber + "</td></tr>")
 
 
                 }
@@ -2601,22 +2620,21 @@ function GetBankDetail(ChildId) {
     });
 }
 
-function editBankDetail(bankingId, childId, bankCountryKey, bankRoutingNumber, bankName, cancelledCheckFile, payTerm, bankAccountNumber) {
-    debugger
+function expandBankDetail(bankingId, childId, bankCountryKey, bankRoutingNumber, bankName, cancelledCheckFile, payTerm, bankAccountNumber) {
+ 
     $('#bankForm').show();
    
-    jQuery("#ifsccode").val(bankRoutingNumber)
-    jQuery("#bankaccount").val(bankAccountNumber)
-    jQuery("#bankname").val(bankName)
-    jQuery("#accountholder").val(jQuery("#vendorname").val())
-    $("#accountholder").attr("disabled", "disabled")
-    jQuery("#ddPayTerms").val(payTerm).trigger('change')
+    jQuery("#ifsccode").text(bankRoutingNumber)
+    jQuery("#bankaccount").text(bankAccountNumber)
+    jQuery("#bankname").text(bankName)
+    jQuery("#accountholder").text(jQuery("#vendorname").text())
+   
     
-    $('#filecheck').val(cancelledCheckFile).trigger('change');
+    $('#checkattach').html(cancelledCheckFile);
 }
 
 function GetFinancialDetail(ChildId,VendId) {
-    debugger
+   
     console.log(sessionStorage.getItem("APIPath") + "VendorLCM/GetFinancialDetail/?Id=" + VendId + "&ChildId=" + ChildId)
     jQuery.ajax({
         type: "GET",
@@ -2627,7 +2645,7 @@ function GetFinancialDetail(ChildId,VendId) {
         cache: false,
         dataType: "json",
         success: function (childData) {
-            debugger
+           
             if (childData.length > 0) {
                 $('#tblGetFinancialDetail').empty()
                 $('#tblGetFinancialDetail').append("<thead><tr><th class='hide'></th><th>Financial Year</th><th>Turn Over</th></tr></thead><tbody>")
@@ -2681,7 +2699,7 @@ function fetchpayment() {
         dataType: "json",
         success: function (data) {
            
-            debugger
+           
 
            
             $("#ddPayTerms").empty();
@@ -2796,7 +2814,7 @@ function GetVendorExternalDetail(vendId, ChildId, CustId) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "VendorLCM/GetVendorExternalDetail/?Id=" + VendId + "&ChildId=" + ChildId + "&CustomerId=" + CustId,
+        url: sessionStorage.getItem("APIPath") + "VendorLCM/GetVendorExternalDetail/?Id=" + vendId + "&ChildId=" + ChildId + "&CustomerId=" + CustId,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
