@@ -63,6 +63,7 @@ jQuery("#txtrfirfqsubject").typeahead({
         if (map[item].rfqid != '0') {
 
             $('#hdnRfqID').val(map[item].rfqid);
+            FetchRFQVersion();
             fetchReguestforQuotationDetails()
             fetchRFQApproverStatus(map[item].rfqid);
             /*if (sessionStorage.getItem('CustomerID') == "32") {
@@ -71,7 +72,7 @@ jQuery("#txtrfirfqsubject").typeahead({
             else {
                 fetchRFQApproverStatus(map[item].rfqid);
             }*/
-            FetchRFQVersion();
+
             fetchAttachments();
             fetchApproverRemarks('C');
         }
@@ -451,6 +452,8 @@ var _rfqBidType = '';
 var CurrentDateTime = new Date();
 var _openQuotes = '';
 var isboq = 'N';
+var ShowPrice = 'Y';
+
 function fetchReguestforQuotationDetails() {
     var attachment = '';
     var termattach = '';
@@ -475,7 +478,11 @@ function fetchReguestforQuotationDetails() {
                 sessionStorage.setItem('RFQBidType', _rfqBidType);
                 sessionStorage.setItem('OpenQuotes', _openQuotes);
                 _curentRFQStatus = RFQData[0].general[0].rfqStatus;
+
+                ShowPrice = RFQData[0].general[0].showQuotedPrice;
+
                 sessionStorage.setItem('CurrentRFQStatus', _curentRFQStatus)
+
                 if (_rfqBidType == 'Closed') {
                     $('#div_bidopendate').show()
                     if (bidopeningdate != null) {
@@ -522,7 +529,7 @@ function fetchReguestforQuotationDetails() {
                 TechnicalApproval = RFQData[0].general[0].technicalApproval;
                 $('#tbldetails').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqDescription + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td></tr>")
                 //abheedev bug 274
-                $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqId + "</td><td>" + "<b>Ref No-</b>" + RFQData[0].general[0].rfqReference + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqStartDate) + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td><td colspan='25'>" + RFQData[0].general[0].rfqDescription + "</td></tr>")
+                $('#tbldetailsExcel > tbody').append("<tr><td>" + RFQData[0].general[0].rfqSubject + "</td><td>" + RFQData[0].general[0].rfqId + "</td><td>" + RFQData[0].general[0].currencyNm + "</td><td >" + RFQData[0].general[0].rfqConversionRate + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqStartDate) + "</td><td>" + fnConverToLocalTime(RFQData[0].general[0].rfqEndDate) + "</td><td colspan='25'>" + RFQData[0].general[0].rfqDescription + "</td></tr>")
             }
         },
         error: function (xhr, status, error) {
@@ -568,6 +575,7 @@ function FetchRFQVersion() {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
+        async: false,
         crossDomain: true,
         dataType: "json",
         success: function (data) {
