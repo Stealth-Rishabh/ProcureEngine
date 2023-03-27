@@ -41,6 +41,7 @@ if (window.location.search) {
 
     var param = getUrlVars()["param"];
     var decryptedstring = fndecrypt(param);
+
     var RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
     var Type = getUrlVarsURL(decryptedstring)["Type"];
 
@@ -141,6 +142,7 @@ function fetchrfqcomprative() {
             var strHeadExcelQ = '';
             var strExcelQ = '';
             var allvendorresponse = 'Y';
+            var ShowPrice = 'N'
             var _CurrentDate = new Date();
             if (_rfqBidType == 'Closed') {
                 if (_openQuotes == 'Y') {
@@ -151,12 +153,13 @@ function fetchrfqcomprative() {
                     ShowPrice = 'N';
                     $('#btnPDF').hide()
                 }
+
             }
             else {
-                //ShowPrice = 'N';
+                ShowPrice = 'Y';
                 $('#btnPDF').show()
-            }
 
+            }
             sessionStorage.setItem('ShowPrice', ShowPrice);
             jQuery('#tblRFQComprative > thead').empty()
             jQuery("#tblRFQComprativeForExcel > thead").empty();
@@ -387,6 +390,8 @@ function fetchrfqcomprative() {
 
 
                                     }
+
+
                                     else if (data[0].quotesDetails[j].lowestPrice == "Y" && data[0].quotesDetails[j].highestPrice == "Y" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
                                         strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
                                         //abheedev backlog 333
@@ -434,14 +439,15 @@ function fetchrfqcomprative() {
                             strExcel += "<td >" + thousands_separators((data[0].quotesDetails[i].lowestPriceValue).round(2)) + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td colspan=2>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
                         }
                         else {
-
                             if (totallowestValue != 0) {
+                                totallowestValue = "Quoted";
                                 str += "<td class=text-right>Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
                                 strExcel += "<td >Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td colspan=2>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
                             }
                         }
                         str += "</tr>"
                         strExcel += "</tr>"
+
                         jQuery('#tblRFQComprativetest').append(str);
 
                     }
@@ -676,7 +682,7 @@ function fetchrfqcomprative() {
 
                                             if (data[0].commercialTerms[s].remarks != '' && data[0].commercialTerms[s].remarks != 'Rejected') {
                                                 str += "<td colspan=4>" + data[0].commercialTerms[s].remarks + "</td>";
-                                                strExcel += "<td colspan=4>" + encodeURIComponent(data[0].commercialTerms[s].remarks) + "</td>";
+                                                strExcel += "<td colspan=4>" + data[0].commercialTerms[s].remarks + "</td>";
 
                                             }
                                             else if (data[0].commercialTerms[s].remarks == 'Rejected') {
@@ -963,7 +969,6 @@ function fetchrfqcomprative() {
                             reInvited = 'Y'
                         }
                     });
-                    debugger
                     if (maxValue == $("#ddlrfqVersion option:selected").val()) {
                         $("#btn-reInvite").removeClass('hide')
                         str += "<tr id='reinvitationTR'><td colspan=8><b>Re-Invitation Row</b></td>";
@@ -1108,14 +1113,14 @@ function fetchrfqcomprativeBoq() {
             var strHead = '';
             var strHeadExcel = '';
             var strExcel = '';
-            let totaltargetprice = 0;
+
             var totallowestValue = 0;
             var strQ = '';
             var strHeadQ = '';
             var strHeadExcelQ = '';
             var strExcelQ = '';
             var allvendorresponse = 'Y';
-
+            var ShowPrice = 'N'
             var _CurrentDate = new Date();
             if (_rfqBidType == 'Closed') {
                 if (_openQuotes == 'Y') {
@@ -1129,11 +1134,10 @@ function fetchrfqcomprativeBoq() {
 
             }
             else {
-                //ShowPrice = 'Y';
+                ShowPrice = 'Y';
                 $('#btnPDF').show()
 
             }
-
             sessionStorage.setItem('ShowPrice', ShowPrice);
             jQuery('#tblRFQComprativeBoq > thead').empty()
             jQuery("#tblRFQComprativeForExcel > thead").empty();
@@ -1169,8 +1173,8 @@ function fetchrfqcomprativeBoq() {
 
                 }
                 $('#displayComparativetabs').show();
-                strHead = "<tr  style='background: #f5f5f5; color:light black;'><th class='hide'>&nbsp;</th><th>ItemCode</th><th>Short Name</th><th>Item Description</th><th>Item Remark</th><th>Quantity</th><th>UOM</th><th>Target/Budget Price</th>"
-                strHeadExcel = "<tr><th>ItemCode</th><th>Short Name</th><th>ItemDescription</th><th>Quantity</th><th>UOM</th><th>Target/Budget Price</th>"
+                strHead = "<tr  style='background: #f5f5f5; color:light black;'><th class='hide'>&nbsp;</th><th>SrNo</th><th>ItemCode</th><th>Short Name</th><th>Item Description</th><th>Item Remark</th><th>Quantity</th><th>UOM</th><th>Target/Budget Price</th>"
+                strHeadExcel = "<tr><th>SrNo</th><th>ItemCode</th><th>Short Name</th><th>ItemDescription</th><th>Quantity</th><th>UOM</th><th>Target/Budget Price</th>"
 
                 strHeadQ = "<tr  style='background:#f5f5f5; color:light black;'><th>Question</th><th>Our Requirement</th>"
                 strHeadExcelQ = "<tr><th colspan=4>Question</th><th colspan=3>Our Requirement</th>"
@@ -1205,8 +1209,8 @@ function fetchrfqcomprativeBoq() {
                 strHeadQ += "</tr>"
                 strHeadExcelQ += "<td colspan='9'>&nbsp;</td></tr>"
 
-                strHead += "<tr style='background: #f5f5f5; color:light black;'><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
-                strHeadExcel += "<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
+                strHead += "<tr style='background: #f5f5f5; color:light black;'><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
+                strHeadExcel += "<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
 
 
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
@@ -1234,8 +1238,8 @@ function fetchrfqcomprativeBoq() {
                 strHead += "</tr>"
                 strHeadExcel += "</tr>"
 
-                strHead += "<tr style='background: #f5f5f5; color:light black;'><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
-                strHeadExcel += "<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
+                strHead += "<tr style='background: #f5f5f5; color:light black;'><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
+                strHeadExcel += "<tr><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th>";
 
 
                 var taxHRTextinc = stringDivider("Unit Price (With GST)", 24, "\n");
@@ -1283,9 +1287,8 @@ function fetchrfqcomprativeBoq() {
                         if (flag == 'T') {
 
                             minprice = 0;
-                            totaltargetprice = totaltargetprice + parseFloat(data[0].quotesDetails[i].targetPrice)
-                            str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].boqsheetName + "</td><td>" + StringDecodingMechanism(data[0].quotesDetails[i].itemDesc) + "</td><td>" + data[0].quotesDetails[i].remarks + "</td><td class='text-right'>" + 1 + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td class=text-right>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
-                            strExcel += "<tr><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].boqsheetName + "</td><td>" + StringDecodingMechanism(data[0].quotesDetails[i].itemDesc) + "</td><td>" + thousands_separators((data[0].quotesDetails[i].quantity).round(2)) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
+                            str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + data[0].quotesDetails[i].srno + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].boqsheetName + "</td><td>" + StringDecodingMechanism(data[0].quotesDetails[i].itemDesc) + "</td><td>" + data[0].quotesDetails[i].remarks + "</td><td class='text-right'>" + 1 + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td class=text-right>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
+                            strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].boqsheetName + "</td><td>" + StringDecodingMechanism(data[0].quotesDetails[i].itemDesc) + "</td><td>" + thousands_separators((data[0].quotesDetails[i].quantity).round(2)) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
 
 
 
@@ -1393,6 +1396,7 @@ function fetchrfqcomprativeBoq() {
                             }
                             else {
                                 if (totallowestValue != 0) {
+                                    totallowestValue = "Quoted";
                                     str += "<td class=text-right>Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
                                     strExcel += "<td >Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td colspan=2>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
                                 }
@@ -1406,19 +1410,19 @@ function fetchrfqcomprativeBoq() {
                     }
                 }
                 // for calculating total target price
-                /*  let totaltargetprice = 0;
-                  let ttpArray = [];
-                  for (var t = 0; t < data[0].quotesDetails.length; t++) {
-  
-                      let isPresent = ttpArray.includes(data[0].quotesDetails[t].rfqParameterId)
-                      if (!isPresent) {
-                          ttpArray.push(data[0].quotesDetails[t].rfqParameterId);
-                          totaltargetprice = totaltargetprice + data[0].quotesDetails[t].targetPrice;
-                      }
-                      else {
-                          break;
-                      }
-                  }*/
+                let totaltargetprice = 0;
+                let ttpArray = [];
+                for (var t = 0; t < data[0].quotesDetails.length; t++) {
+
+                    let isPresent = ttpArray.includes(data[0].quotesDetails[t].rfqParameterId)
+                    if (!isPresent) {
+                        ttpArray.push(data[0].quotesDetails[t].rfqParameterId);
+                        totaltargetprice = totaltargetprice + data[0].quotesDetails[t].targetPrice;
+                    }
+                    else {
+                        break;
+                    }
+                }
                 str += "<tr><td colspan=7 style='text-align:center;'><b>Total</b></td><td colspan=1 style='text-align:center;'><b>" + thousands_separators(totaltargetprice) + "</b></td>";
                 strExcel += "<tr><td colspan=7><b>Total</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
