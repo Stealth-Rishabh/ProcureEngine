@@ -160,7 +160,7 @@ function fetchrfqcomprative(RFQID) {
                 var taxHRTextinc = stringDivider("Unit Price  (With GST)", 32, "<br/>\n");
                 var taxHRTextEx = stringDivider("Unit Price (Without GST)", 32, "<br/>\n");
                 var HRAmount = stringDivider("Amount (Inc. GST)", 24, "<br/>\n");
-                 for (var j = 0; j < data[0].vendorNames.length; j++) {
+                for (var j = 0; j < data[0].vendorNames.length; j++) {
                     strHead += "<th>" + initialtaxHRTextEx + "</th><th>" + taxHRTextEx + "</th><th>" + taxHRTextinc + "</th><th>" + HRAmount + "</th>";
                 }
                 strHead += "<th>" + taxHRTextEx + "</th><th>Po No</th><th>PO Date</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Value</th><th>&nbsp;</th>";
@@ -191,7 +191,7 @@ function fetchrfqcomprative(RFQID) {
                     x = -1;
                     if (flag == 'T') {
 
-                      
+
                         str += "<tr><td style='display:none'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + (i + 1) + "</td><td style='display:none'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].quantity).round(2)) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + thousands_separators((data[0].quotesDetails[i].targetPrice).round(2)) + "</td>";
 
 
@@ -458,7 +458,7 @@ function fetchrfqcomprative(RFQID) {
                                     }
                                 }
                             }
-                            str += "<td colspan=7>" + data[0].commercialTerms[p].requirement + "</td>";
+                            str += "<td colspan=7 style='color: black!important; text-align: center;'>" + data[0].commercialTerms[p].requirement + "</td>";
                             str += " </tr>";
                             jQuery('#tblRFQComprativetest').append(str);
                         }
@@ -505,153 +505,153 @@ function fetchrfqcomprative(RFQID) {
                     }
                     str += "<td colspan='7'>&nbsp;</td>";
                     str += " </tr>";
-                
-
-                //question table change
-                str += "<tr  style='background:#f5f5f5; color:light black;'><th colspan='6'>Question</th>"
-
-                for (var i = 0; i < data[0].vendorNames.length; i++) {
 
 
-                    str += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].vendorName; +"</th>";
+                    //question table change
+                    str += "<tr  style='background:#f5f5f5; color:light black;'><th colspan='6'>Question</th>"
+
+                    for (var i = 0; i < data[0].vendorNames.length; i++) {
 
 
-                }
-
-                str += "<th colspan='7'>Our Requirement</th>"
-                str += "</tr>"
+                        str += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].vendorName; +"</th>";
 
 
-                if (data[0].questions.length > 0) {
+                    }
 
-                    // $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
-                    for (var p = 0; p < data[0].noOfQuestions[0].noOfQuestionsCount; p++) {
-
-                        var flag2 = 'T';
-                        $("#tblRFQComprativetestQ > tbody > tr").each(function (index) {
-                            var this_row = $(this);
-                            if ($.trim(this_row.find('td:eq(0)').html().toLowerCase()) == data[0].questions[p].question.toLowerCase()) {
-                                flag2 = 'F';
-
-                            }
-
-                        });
+                    str += "<th colspan='7'>Our Requirement</th>"
+                    str += "</tr>"
 
 
-                        if (flag2 == 'T') {
-                            //abheedev bug349 part2 start
-                            str += "<tr><td colspan='6'>" + data[0].questions[p].question + "</td>";
-                            //abheedev bug349 part2 end
+                    if (data[0].questions.length > 0) {
 
-                            for (var s = 0; s < data[0].questions.length; s++) {
+                        // $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
+                        for (var p = 0; p < data[0].noOfQuestions[0].noOfQuestionsCount; p++) {
 
-                                if ((data[0].questions[p].questionID) == (data[0].questions[s].questionID)) {// true that means reflect on next vendor
+                            var flag2 = 'T';
+                            $("#tblRFQComprativetestQ > tbody > tr").each(function (index) {
+                                var this_row = $(this);
+                                if ($.trim(this_row.find('td:eq(0)').html().toLowerCase()) == data[0].questions[p].question.toLowerCase()) {
+                                    flag2 = 'F';
 
-                                    //  q = q + 1;
-                                    for (var q = 0; q < data[0].vendorNames.length; q++) {
-                                        if (data[0].questions[s].vendorID == data[0].vendorNames[q].vendorID) {
-
-                                            if (data[0].questions[s].answer != '' && data[0].questions[s].answer != 'Rejected') {
-                                                str += "<td colspan='4'>" + data[0].questions[s].answer + "</td>";
-
-
-                                            }
-                                            else if (data[0].questions[s].answer == 'Rejected') {
-                                                str += "<td colspan='4' style='color: red!important; text-align: center;'>Regretted</td>"
-
-
-                                            }
-                                            else {
-                                                str += "<td colspan='4'  style='color: red!important; text-align: center;' >Not Quoted</td>";
-
-                                            }
-
-                                        }
-
-                                    }
                                 }
-                            }
+
+                            });
 
 
-                            str += " <td colspan='7'>" + data[0].questions[p].requirement + "</td></tr>";
+                            if (flag2 == 'T') {
+                                //abheedev bug349 part2 start
+                                str += "<tr><td colspan='6'>" + data[0].questions[p].question + "</td>";
+                                //abheedev bug349 part2 end
 
-                            jQuery('#tblRFQComprativetest').append(str);
+                                for (var s = 0; s < data[0].questions.length; s++) {
 
-                        }
-                    }
-                }
-                else {
-                    str += "<tr>";
+                                    if ((data[0].questions[p].questionID) == (data[0].questions[s].questionID)) {// true that means reflect on next vendor
 
-                    t = 0;
-                    for (var k = 1; k <= data[0].vendorNames.length; k++) {
+                                        //  q = q + 1;
+                                        for (var q = 0; q < data[0].vendorNames.length; q++) {
+                                            if (data[0].questions[s].vendorID == data[0].vendorNames[q].vendorID) {
 
-                        t = k;
-
-                    }
-                    //abheedev bug 472-479
-                    str += "<td colspan=" + 6 + ">&nbsp;</td><td colspan=" + (t + (4 * t) + 3) + " style='text-align:center'>No Questions Mapped</td>";
-
-                    str += "</tr>";
-
-                }
-                if (data[0].approverStatus.length > 0) {
-                    // $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
-                    for (var p = 0; p < data[0].noOfTApprover[0].noOfTechnicalApprover; p++) {
-
-                        var flag3 = 'T';
-                        $("#tblRFQComprativetestQ > tbody > tr").each(function (index) {
-                            var this_row = $(this);
-                            if ($.trim(this_row.find('td:eq(0)').html().toLowerCase()) == data[0].approverStatus[p].approverName.toLowerCase()) {
-                                flag3 = 'F';
-
-                            }
-
-                        });
-
-                        if (flag3 == 'T') {
-
-                            str += "<tr><td colspan='6'>" + data[0].approverStatus[p].approverName + "</td>";
-                            for (var s = 0; s < data[0].approverStatus.length; s++) {
-
-                                if ((data[0].approverStatus[p].approverID) == (data[0].approverStatus[s].approverID)) {// true that means reflect on next vendor
-
-                                    for (var q = 0; q < data[0].vendorNames.length; q++) {
-                                        if (data[0].approverStatus[s].vendorID == data[0].vendorNames[q].vendorID) {
-
-                                            if (data[0].approverStatus[s].status == 'Approved') {
-                                                str += "<td colspan='4' style='color: green!important; text-align: center;'>" + data[0].approverStatus[s].status + "</td>";
+                                                if (data[0].questions[s].answer != '' && data[0].questions[s].answer != 'Rejected') {
+                                                    str += "<td colspan='4'>" + data[0].questions[s].answer + "</td>";
 
 
-                                            }
-                                            else if (data[0].approverStatus[s].status == 'Rejected') {
-                                                str += "<td colspan='4' style='color: red!important; text-align: center;'>Not Approved</td>";
+                                                }
+                                                else if (data[0].questions[s].answer == 'Rejected') {
+                                                    str += "<td colspan='4' style='color: red!important; text-align: center;'>Regretted</td>"
 
 
-                                            }
-                                            else {
-                                                str += "<td colspan='4' style='color: blue!important; text-align: center;'>Pending</td>";
+                                                }
+                                                else {
+                                                    str += "<td colspan='4'  style='color: red!important; text-align: center;' >Not Quoted</td>";
 
+                                                }
 
                                             }
 
                                         }
                                     }
                                 }
+
+
+                                str += " <td colspan='7' style='color: black!important; text-align: center;'>" + data[0].questions[p].requirement + "</td></tr>";
+
+                                jQuery('#tblRFQComprativetest').append(str);
+
                             }
+                        }
+                    }
+                    else {
+                        str += "<tr>";
+
+                        t = 0;
+                        for (var k = 1; k <= data[0].vendorNames.length; k++) {
+
+                            t = k;
+
+                        }
+                        //abheedev bug 472-479
+                        str += "<td colspan=" + 6 + ">&nbsp;</td><td colspan=" + (t + (4 * t) + 3) + " style='text-align:center'>No Questions Mapped</td>";
+
+                        str += "</tr>";
+
+                    }
+                    if (data[0].approverStatus.length > 0) {
+                        // $('#tblRFQComprativetestQ > tbody').empty(); // clear again for comparision of Question
+                        for (var p = 0; p < data[0].noOfTApprover[0].noOfTechnicalApprover; p++) {
+
+                            var flag3 = 'T';
+                            $("#tblRFQComprativetestQ > tbody > tr").each(function (index) {
+                                var this_row = $(this);
+                                if ($.trim(this_row.find('td:eq(0)').html().toLowerCase()) == data[0].approverStatus[p].approverName.toLowerCase()) {
+                                    flag3 = 'F';
+
+                                }
+
+                            });
+
+                            if (flag3 == 'T') {
+
+                                str += "<tr><td colspan='6'>" + data[0].approverStatus[p].approverName + "</td>";
+                                for (var s = 0; s < data[0].approverStatus.length; s++) {
+
+                                    if ((data[0].approverStatus[p].approverID) == (data[0].approverStatus[s].approverID)) {// true that means reflect on next vendor
+
+                                        for (var q = 0; q < data[0].vendorNames.length; q++) {
+                                            if (data[0].approverStatus[s].vendorID == data[0].vendorNames[q].vendorID) {
+
+                                                if (data[0].approverStatus[s].status == 'Approved') {
+                                                    str += "<td colspan='4' style='color: green!important; text-align: center;'>" + data[0].approverStatus[s].status + "</td>";
 
 
-                            str += "<td colspan='7'  id=techremark" + p + ">" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") + "</td> </tr>";
+                                                }
+                                                else if (data[0].approverStatus[s].status == 'Rejected') {
+                                                    str += "<td colspan='4' style='color: red!important; text-align: center;'>Not Approved</td>";
 
-                            jQuery('#tblRFQComprativetest').append(str);
+
+                                                }
+                                                else {
+                                                    str += "<td colspan='4' style='color: blue!important; text-align: center;'>Pending</td>";
+
+
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                }
+
+
+                                str += "<td colspan='7' style='color: black!important; text-align: center;'  id=techremark" + p + ">" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") + "</td> </tr>";
+
+                                jQuery('#tblRFQComprativetest').append(str);
+
+                            }
 
                         }
 
                     }
 
                 }
-
-            }
 
                 //For Qusetion table
                 // ***************** Start  Answer Question Row
@@ -706,7 +706,7 @@ function fetchrfqcomprative(RFQID) {
                             }
 
 
-                            strQ += " <td>" + data[0].questions[p].requirement + "</td></tr>";
+                            strQ += " <td style='color: black!important; text-align: center;'>" + data[0].questions[p].requirement + "</td></tr>";
 
                             jQuery('#tblRFQComprativetestQ').append(strQ);
 
@@ -794,7 +794,7 @@ function fetchrfqcomprative(RFQID) {
 
 
                 jQuery('#tblRFQComprative').append(str);
-               // jQuery('#tblRFQComprativeQ').append(strQ);
+                // jQuery('#tblRFQComprativeQ').append(strQ);
 
 
             }
@@ -1154,7 +1154,7 @@ function fetchrfqcomprativeRA(RFQID, BidID) {
                                     }
                                 }
                             }
-                            str += "<td colspan=6>" + data[0].commercialTerms[p].requirement + "</td>";
+                            str += "<td colspan=6 style='color: black!important; text-align: center;'>" + data[0].commercialTerms[p].requirement + "</td>";
 
 
                             str += " </tr>";
@@ -1506,7 +1506,7 @@ function saveAspdf() {
     // pdf.rect(10, 20, 150, 75);
     pdf.addHTML(document.body, options, function () {
         pdf.save('ComprativeAnalysis.pdf');
-        window.close();
+        // window.close();
 
     });
 
