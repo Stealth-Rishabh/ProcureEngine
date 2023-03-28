@@ -1984,7 +1984,8 @@ function fnremoveVendors(vid) {
     sessionStorage.setItem('hdnVendorID', 0);
 }
 function invitevendors() {
-
+    var CurDateonly = new Date();
+    var EndDate = new Date(jQuery('#RFQEndDate').text().replace('-', ''));
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (sessionStorage.getItem("hdnrfqid") == '0') {
         error1.show();
@@ -1995,6 +1996,17 @@ function invitevendors() {
         gritternotification('Please select RFQ!!!');
         return false;
 
+    }
+
+
+    if (EndDate < CurDateonly) {
+        error1.show();
+        $('#spandanger').html('Vendor cannnot be added after event is ended');
+        error1.fadeOut(3000);
+        App.scrollTo(error1, -200);
+        jQuery.unblockUI();
+        gritternotification('Vendor cannnot be added after event is ended');
+        return false;
     }
 
     else {
