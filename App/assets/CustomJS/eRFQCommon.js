@@ -928,6 +928,7 @@ function fetchRegisterUser() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
+            debugger
             if (data.length > 0) {
                 allUsers = data;
             }

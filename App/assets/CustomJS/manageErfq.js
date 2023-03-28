@@ -157,7 +157,6 @@ function formValidation() {
         },
 
         submitHandler: function (form) {
-            debugger
             if (sessionStorage.getItem('hdnRFQApproverID') != "0" && jQuery("#txtApproverRFQ").val() != "") {
 
                 $('.alert-danger').show();
@@ -426,8 +425,8 @@ function InsUpdRFQDEtailTab1() {
          StartDT = new Date($('#RFQStartDate').text().replace('-', ''));
      }
  
-     var EndDT = new Date($('#RFQEndDate').text().replace('-', ''));*/
-     _RFQBidType = sessionStorage.getItem('hdnRFQBidType');
+     var EndDT = new Date($('#RFQEndDate').text().replace('-', ''));
+     _RFQBidType = sessionStorage.getItem('hdnRFQBidType');*/
 
     //**  Get Start date
     if ($('#RFQStartDate').text() != null && $('#RFQStartDate').text() != "") {
@@ -534,12 +533,14 @@ function fetchReguestforQuotationDetails(RFQID) {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
+
             if (sessionStorage.getItem('CustomerID') == "32") {
                 $('#ctrladdapprovers').addClass('hide')
             }
             else {
                 $('#ctrladdapprovers').removeClass('hide')
             }
+
             var RFQopenDate = "Not Set";
             var _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
             var _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
@@ -569,9 +570,7 @@ function fetchReguestforQuotationDetails(RFQID) {
             if (_RFQBidType.toLocaleLowerCase() == 'closed') {
                 // let CurDT = new Date();
                 // let BidDT = new Date(fnConverToLocalTime(RFQData[0].general[0].bidopeningdate).replace('-', ''));
-                if (RFQData[0].general[0].bidopeningdate != null) {
-                    Dateandtimevalidate(fnConverToLocalTime(RFQData[0].general[0].bidopeningdate), 'bidclosdt');
-                }
+                Dateandtimevalidate(fnConverToLocalTime(RFQData[0].general[0].bidopeningdate), 'bidclosdt');
                 $("#divRFQOpenDate").show();
                 $("#litab2").hide();
                 $("#litab2").attr("disabled", "disabled");
@@ -601,6 +600,14 @@ function fetchReguestforQuotationDetails(RFQID) {
                 $("#litab2").show();
                 $("#litab2").removeAttr("disabled");
 
+            }
+            //27/03/203 abheedev
+            if (RFQData[0].general[0].openQuotes == "Y") {
+
+                $('#openquote').hide()
+            }
+            else {
+                $('#openquote').show()
             }
             jQuery('#refno').html(RFQData[0].general[0].rfqReference);
             jQuery('#txtRFQReference').html(RFQData[0].general[0].rfqReference)
@@ -651,7 +658,7 @@ function fetchReguestforQuotationDetails(RFQID) {
                 jQuery('#tblapprovers').append("<thead><tr style='background: gray; color: #FFF;'><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:20%!important'>ApproverType</th><th class='bold' style='width:15%!important'>Sequence</th><th style='width:5%!important' class=hide></th></tr></thead>");
 
                 for (var i = 0; i < RFQData[0].approvers.length; i++) {
-                    debugger
+
                     if (RFQData[0].approvers[i].approverType == "C") {
                         approvertype = "Commercial";
 
@@ -1228,6 +1235,7 @@ function addmoreattachments() {
 }
 
 function UpdateRFQOPenDateAfterClose() {
+
     var BidOpenDate = new Date($('#txtbidopendatetime').val().replace('-', ''));
     var CurDateonly = new Date();
     var EndDate = new Date(jQuery('#RFQEndDate').text().replace('-', ''));
@@ -1239,8 +1247,7 @@ function UpdateRFQOPenDateAfterClose() {
         $('.alert-danger').fadeOut(7000);
         return false;
     }
-    //else if (isBidDTValid == "1" || BidOpenDate < EndDate) { //else if (BidOpenDate < CurDateonly || BidOpenDate < EndDate) {
-    else if (BidOpenDate < EndDate) {
+    else if (isBidDTValid == "1" || BidOpenDate < EndDate) { //else if (BidOpenDate < CurDateonly || BidOpenDate < EndDate) {
         $('.alert-danger').show();
         $('.alert-danger').html('RFQ Open Date cannot be smaller that the End Date or Current Date');
         Metronic.scrollTo($(".alert-danger"), -200);
@@ -1272,7 +1279,7 @@ function UpdateRFQOPenDateAfterClose() {
             data: JSON.stringify(DateData),
             dataType: "json",
             success: function (data) {
-                if (data == 1) {
+                if (data == '1') {
                     fetchReguestforQuotationDetails(sessionStorage.getItem('hdnrfqid'))
                     $('.alert-success').show();
                     $('.alert-success').html('RFQ Open Date updated successfully');
@@ -1288,13 +1295,13 @@ function UpdateRFQOPenDateAfterClose() {
                 else {
                     var msg = "";
                     switch (data) {
-                        case 2:
+                        case '2':
                             msg = "RFQ does not Exists";
                             break;
-                        case 3:
+                        case '3':
                             msg = "RFQ Open Date Cannot be set before the Deadline.";
                             break;
-                        case 4:
+                        case '4':
                             msg = "The quotes have already been opened. Open Date Cannot altered anyfurther.";
                             break;
                         default:
@@ -2077,6 +2084,7 @@ function Dateandtimevalidate(StartDT, istocheck) {
         data: JSON.stringify(Tab1Data),
         dataType: "json",
         success: function (data) {
+
             if (istocheck == "enddate") {
                 if (data == "1") {
                     ExtendDuration();
@@ -2159,7 +2167,7 @@ function ExtendDuration() {
         data: JSON.stringify(RFQData),
         dataType: "json",
         success: function (data) {
-            if (data == 1) {
+            if (data == '1') {
                 $('#deadlineModal').text($("#txtextendDate").val())
 
                 success1.show();
@@ -2176,13 +2184,13 @@ function ExtendDuration() {
             else {
                 var msg = '';
                 switch (data) {
-                    case 2:
+                    case '2':
                         msg = 'RFQ does not exist.';
                         break;
-                    case 3:
+                    case '3':
                         msg = 'RFQ End Date Cannot be greater than the RFQ Open Date.';
                         break;
-                    case 4:
+                    case '4':
                         msg = 'Date Cannot be extended as Quotes have been opened.';
                         break
                     default:
@@ -2190,13 +2198,8 @@ function ExtendDuration() {
                         break;
 
                 }
-                /*$('.alert-danger').show();
-                $('#spandanger').html(msg);
-                Metronic.scrollTo($(".alert-danger"), -200);
-                $('.alert-danger').fadeOut(7000);
-                return false;*/
                 $('.alert-danger').show();
-                $('.alert-danger').html(msg);
+                $('#spandanger').html(msg);
                 Metronic.scrollTo($(".alert-danger"), -200);
                 $('.alert-danger').fadeOut(7000);
                 return false;

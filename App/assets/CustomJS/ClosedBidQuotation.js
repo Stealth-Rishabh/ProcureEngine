@@ -427,17 +427,16 @@ var FormWizard = function () {
                     error.hide();
                     if (index == 1) {
 
-                        //var StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
-                        // var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
-                        // var CurDateonly = new Date(currentdate.toDateString())
-                        // var StartDTdateonly = new Date(StartDT.toDateString())
-                        // var BidOpenDate = new Date($('#txtbidopendatetime').val().replace('-', ''));
+                        var StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
+                        var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
+                        var CurDateonly = new Date(currentdate.toDateString())
+                        var StartDTdateonly = new Date(StartDT.toDateString())
+                        var BidOpenDate = new Date($('#txtbidopendatetime').val().replace('-', ''));
                         if (form.valid() == false) {
                             return false;
 
                         }
-                        else (form.valid() == true)
-                        {
+                        else if (form.valid() == true) {
 
                             if ($('#txtstartdatettime').val() != "" && $('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() != undefined) {
                                 Dateandtimevalidate($('#txtstartdatettime').val(), 'startdt');
@@ -448,7 +447,7 @@ var FormWizard = function () {
 
 
                         }
-                        /*else if ($('#txtenddatettime').val() == '') {
+                        else if ($('#txtenddatettime').val() == '') {
                             $('.alert-danger').show();
                             $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
                             $('#spandanger').html('Please Enter RFQ END Date');
@@ -513,9 +512,10 @@ var FormWizard = function () {
                         else {
                             InsUpdRFQDEtailTab1()
 
-                        }*/
+                        }
 
-                    } else if (index == 2) {
+                    }
+                    else if (index == 2) {
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
                             $('.alert-danger').show();
                             $('#spandanger').html('Please Configure RFQ Parameters.');
@@ -1147,7 +1147,7 @@ return false;
 */
 
 function fnGetTermsCondition() {
-    debugger
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1157,7 +1157,7 @@ function fnGetTermsCondition() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            debugger
+
             jQuery("#tblTermsCondition").empty();
             jQuery("#tbltermsconditionprev").empty();
             if (data.length > 0) {
@@ -1354,7 +1354,7 @@ function CheckTerms(event, ID) {
 }*/
 
 function fnsavetermscondition(isbuttonclick) {
-    debugger
+
     var checkedValue = '2~I~#';
     var checkedOtherTerms = '', isOtherTerms = "Y";
     $("#tblTermsCondition> tbody > tr").each(function (index) {
@@ -1402,7 +1402,7 @@ function fnsavetermscondition(isbuttonclick) {
             data: JSON.stringify(Attachments),
             dataType: "json",
             success: function (data) {
-                debugger
+
 
                 fnGetTermsCondition();
                 if (isbuttonclick == 'Y') {

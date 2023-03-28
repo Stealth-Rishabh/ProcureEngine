@@ -2366,7 +2366,6 @@ function fnSendActivityToCommercial() {
                 else {
                     fetchrfqcomprativeBoq();
                 }
-
                 if (sessionStorage.getItem('RFQBidType') == 'Closed') {
                     FetchInvitedVendorsForeRFQ();
                 }

@@ -384,26 +384,51 @@
                                                                                                     Country <span class="required">*</span>
                                                                                                 </label>
                                                                                                 <div class="col-md-6">
-                                                                                                    <select class="form-control" name="ddlCountry" id="ddlCountry" onchange="fetchState()" tabindex="4"></select>
+                                                                                                    <select class="form-control" name="ddlCountry" id="ddlCountry" tabindex="4"></select>
                                                                                                 </div>
                                                                                             </div>
 
-                                                                                            <div class="form-group">
-                                                                                                <label class="col-md-3 control-label">
-                                                                                                    GST No. <span class="required">*</span>
+                                                                                            <div class="form-group tax-group">
+                                                                                                <label class="col-md-3 control-label" id="taxlabel">
+                                                                                                    Tax Type <span class="required">*</span>
                                                                                                 </label>
                                                                                                 <div class="col-md-6">
-                                                                                                    <input type="text" class="form-control" placeholder="Enter Goods and Services Tax Number" id="txtTINNo" maxlength="15" name="txtTINNo" onkeyup="extractPan(this)" autocomplete="off">
+                                                                                                    <select class="form-control" name="txtTINType" id="txtTINType" tabindex="4">
+                                                                                                    </select>
+
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                            <div class="form-group tax-group">
+                                                                                                <label class="col-md-3 control-label" id="taxlabel">
+                                                                                                    Tax Id <span class="required">*</span>
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+                                                                                                    <input type="text" class="form-control" placeholder="Enter Tax No." id="txtTINNo" name="txtTINNo" maxlength="15" onkeyup="extractPan(this)" autocomplete="off" />
+
 
                                                                                                 </div>
 
                                                                                             </div>
                                                                                             <div class="form-group pan-group">
+                                                                                                <label class="col-md-3 control-label" id="taxlabel">
+                                                                                                    Tax Type 2 <span class="required">*</span>
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+                                                                                                    <select class="form-control" name="txtTINType2" id="txtTINType2" tabindex="4">
+                                                                                                    </select>
+
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                            <div class="form-group pan-group">
+
                                                                                                 <label class="col-md-3 control-label">
-                                                                                                    PAN No. <span class="required">*</span>
+                                                                                                    Tax Id 2 <span class="required">*</span>
                                                                                                 </label>
                                                                                                 <div class="col-md-6">
                                                                                                     <input type="text" class="form-control" placeholder="Enter PAN No." id="txtPanNo" name="txtPanNo" maxlength="10" />
+
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div class="form-group">
@@ -430,7 +455,7 @@
                                                                                                     State <span class="required">*</span>
                                                                                                 </label>
                                                                                                 <div class="col-md-6">
-                                                                                                    <select class="form-control" name="ddlState" id="ddlState" onchange="fetchCity()" tabindex="4"></select>
+                                                                                                    <select class="form-control" name="ddlState" id="ddlState" tabindex="4"></select>
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div class="form-group">
@@ -1323,11 +1348,7 @@
                                                                                                 </label>
                                                                                                 <div class="col-md-4">
                                                                                                     <select class="form-control" id="VendorAccGrp" name="VendorAccGrp">
-                                                                                                        <option value="0" data-i18n="select">Select</option>
-                                                                                                        <option value="ZVBP" data-i18n="supplyvendor">Vendor Bill Payable </option>
-                                                                                                        <option value="ZOTV" data-i18n="servicevendor">One time Vendor</option>
-                                                                                                        <option value="ZDOM" data-i18n="both">Domestic Vendor</option>
-                                                                                                        <option value="ZEMC" data-i18n="both">Employee - Contracted</option>
+                                                                                                        
 
                                                                                                     </select>
 
@@ -1338,11 +1359,7 @@
                                                                                                 </label>
                                                                                                 <div class="col-md-4">
                                                                                                     <select class="form-control" id="PORG" name="PORG">
-                                                                                                        <option value="0" data-i18n="select">Select</option>
-                                                                                                        <option value="1P03" data-i18n="supplyvendor">Kalsar </option>
-                                                                                                        <option value="1P05" data-i18n="servicevendor">Kathua</option>
-                                                                                                        <option value="1P10" data-i18n="both">Greator noida</option>
-
+                                                                                                        
 
                                                                                                     </select>
 
@@ -1358,11 +1375,7 @@
                                                                                                 </label>
                                                                                                 <div class="col-md-4">
                                                                                                     <select class="form-control" id="Incoterm" name="Incoterm">
-                                                                                                        <option value="0" data-i18n="select">Select</option>
-                                                                                                        <option value="CFR" data-i18n="supplyvendor">Costs and freight </option>
-                                                                                                        <option value="CIF" data-i18n="servicevendor">Costs, insurance & freight</option>
-                                                                                                        <option value="CIP" data-i18n="both">Carriage and insurance paid to</option>
-
+                                                                                                       
 
                                                                                                     </select>
 
@@ -1372,11 +1385,7 @@
                                                                                                 </label>
                                                                                                 <div class="col-md-4">
                                                                                                     <select class="form-control" id="SchemaGrp" name="SchemaGrp">
-                                                                                                        <option value="0" data-i18n="select">Select</option>
-                                                                                                        <option value="DM" data-i18n="supplyvendor">Jakson Schema Domestic vendor</option>
-                                                                                                        <option value="IM" data-i18n="servicevendor">Jakson Schema Import vendor</option>
-                                                                                                        <option value="ST" data-i18n="both">Jakson Schema Grp Vendor-STO</option>
-
+                                                                                                        
                                                                                                     </select>
 
                                                                                                 </div>
@@ -1429,11 +1438,7 @@
                                                                                                 </label>
                                                                                                 <div class="col-md-4">
                                                                                                     <select class="form-control" id="CoCd" name="CoCd">
-                                                                                                        <option value="0" data-i18n="select">Select</option>
-                                                                                                        <option value="1000" data-i18n="supplyvendor">Jakson Limited</option>
-                                                                                                        <option value="1001" data-i18n="servicevendor">Jakson SKS Joint Venture</option>
-                                                                                                        <option value="1002" data-i18n="both">Jakson Gorkha Joint Ventu</option>
-
+                                                                                                       
                                                                                                     </select>
 
                                                                                                 </div>
@@ -1456,11 +1461,7 @@
                                                                                                 </label>
                                                                                                 <div class="col-md-4">
                                                                                                     <select class="form-control" id="PayTerm" name="PayTerm">
-                                                                                                        <option value="0" data-i18n="select">Select</option>
-                                                                                                        <option value="Z000" data-i18n="supplyvendor">100% Payment in Advance against PI</option>
-                                                                                                        <option value="Z001" data-i18n="servicevendor">50% Payment in Advance, 50% against receipt of material</option>
-                                                                                                        <option value="Z100" data-i18n="both">10% Advance against ABG, 90% Payment within 90 days through LC from the date of material receipt</option>
-
+                                                                                                        
                                                                                                     </select>
 
                                                                                                 </div>
