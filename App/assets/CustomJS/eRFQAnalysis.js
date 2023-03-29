@@ -59,7 +59,7 @@ if (window.location.search) {
     fetchAttachments();
 }
 function FetchInvitedVendorsForeRFQ() {
-
+    var x = isAuthenticated();
     var verId = parseInt($('#ddlrfqVersion').val());
     jQuery.ajax({
         //url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchInvitedVendors/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + '&CustomerID=' + sessionStorage.getItem('CustomerID'),
@@ -115,7 +115,9 @@ function getSummary(vendorid, version) {
 
 var Vendor;
 function fetchrfqcomprative() {
-
+    var x = isAuthenticated();
+    var _rfqID = parseInt($('#hdnRfqID').val());
+    var _versionNo = parseInt($('#ddlrfqVersion option:selected').val());
     $('#tblRFQComprative').show();
     $('#tblRFQComprativeBoq').hide();
     sessionStorage.setItem("RFQVersionId", $("#ddlrfqVersion option:selected").val())
@@ -123,7 +125,8 @@ function fetchrfqcomprative() {
 
     jQuery.ajax({
         //url: sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=" + $('#ddlrfqVersion option:selected').val(),
-        url: sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + $('#hdnRfqID').val() + "&RFQVersionId=" + $('#ddlrfqVersion option:selected').val(),
+        //url: sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + $('#hdnRfqID').val() + "&RFQVersionId=" + $('#ddlrfqVersion option:selected').val(),
+        url: sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + _rfqID + "&RFQVersionId=" + _versionNo,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         async: false,
