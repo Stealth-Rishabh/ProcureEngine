@@ -533,14 +533,12 @@ function fetchReguestforQuotationDetails(RFQID) {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-
             if (sessionStorage.getItem('CustomerID') == "32") {
                 $('#ctrladdapprovers').addClass('hide')
             }
             else {
                 $('#ctrladdapprovers').removeClass('hide')
             }
-
             var RFQopenDate = "Not Set";
             var _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
             var _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
@@ -570,7 +568,9 @@ function fetchReguestforQuotationDetails(RFQID) {
             if (_RFQBidType.toLocaleLowerCase() == 'closed') {
                 // let CurDT = new Date();
                 // let BidDT = new Date(fnConverToLocalTime(RFQData[0].general[0].bidopeningdate).replace('-', ''));
-                Dateandtimevalidate(fnConverToLocalTime(RFQData[0].general[0].bidopeningdate), 'bidclosdt');
+                if (RFQData[0].general[0].bidopeningdate != null) {
+                    Dateandtimevalidate(fnConverToLocalTime(RFQData[0].general[0].bidopeningdate), 'bidclosdt');
+                }
                 $("#divRFQOpenDate").show();
                 $("#litab2").hide();
                 $("#litab2").attr("disabled", "disabled");
@@ -670,7 +670,6 @@ function fetchReguestforQuotationDetails(RFQID) {
                     else {
                         approvertype = "Technical";
                         jQuery('#lbltechnicalApproval').append(jQuery('<option selected></option>').val(RFQData[0].approvers[i].adminSrNo).html(RFQData[0].approvers[i].userName))
-
 
                     }
                     str = "<tr><td>" + RFQData[0].approvers[i].userName + "</td>";
@@ -1238,7 +1237,6 @@ function addmoreattachments() {
 }
 
 function UpdateRFQOPenDateAfterClose() {
-
     var BidOpenDate = new Date($('#txtbidopendatetime').val().replace('-', ''));
     var CurDateonly = new Date();
     var EndDate = new Date(jQuery('#RFQEndDate').text().replace('-', ''));
@@ -1250,7 +1248,8 @@ function UpdateRFQOPenDateAfterClose() {
         $('.alert-danger').fadeOut(7000);
         return false;
     }
-    else if (isBidDTValid == "1" || BidOpenDate < EndDate) { //else if (BidOpenDate < CurDateonly || BidOpenDate < EndDate) {
+    //else if (isBidDTValid == "1" || BidOpenDate < EndDate) { //else if (BidOpenDate < CurDateonly || BidOpenDate < EndDate) {
+    else if (BidOpenDate < EndDate) {
         $('.alert-danger').show();
         $('.alert-danger').html('RFQ Open Date cannot be smaller that the End Date or Current Date');
         Metronic.scrollTo($(".alert-danger"), -200);
@@ -1282,6 +1281,7 @@ function UpdateRFQOPenDateAfterClose() {
             data: JSON.stringify(DateData),
             dataType: "json",
             success: function (data) {
+                debugger;
                 if (data == '1') {
                     fetchReguestforQuotationDetails(sessionStorage.getItem('hdnrfqid'))
                     $('.alert-success').show();
@@ -2000,8 +2000,6 @@ function invitevendors() {
         return false;
 
     }
-
-
     if (EndDate < CurDateonly) {
         error1.show();
         $('#spandanger').html('Vendor cannnot be added after event is ended');
@@ -2011,7 +2009,6 @@ function invitevendors() {
         gritternotification('Vendor cannnot be added after event is ended');
         return false;
     }
-
     else {
         var checkedValue = '';
         var temp = new Array();
@@ -2099,7 +2096,6 @@ function Dateandtimevalidate(StartDT, istocheck) {
         data: JSON.stringify(Tab1Data),
         dataType: "json",
         success: function (data) {
-
             if (istocheck == "enddate") {
                 if (data == "1") {
                     ExtendDuration();
@@ -2182,6 +2178,7 @@ function ExtendDuration() {
         data: JSON.stringify(RFQData),
         dataType: "json",
         success: function (data) {
+            debugger;
             if (data == '1') {
                 $('#deadlineModal').text($("#txtextendDate").val())
 
@@ -2213,8 +2210,13 @@ function ExtendDuration() {
                         break;
 
                 }
-                $('.alert-danger').show();
+                /*$('.alert-danger').show();
                 $('#spandanger').html(msg);
+                Metronic.scrollTo($(".alert-danger"), -200);
+                $('.alert-danger').fadeOut(7000);
+                return false;*/
+                $('.alert-danger').show();
+                $('.alert-danger').html(msg);
                 Metronic.scrollTo($(".alert-danger"), -200);
                 $('.alert-danger').fadeOut(7000);
                 return false;
