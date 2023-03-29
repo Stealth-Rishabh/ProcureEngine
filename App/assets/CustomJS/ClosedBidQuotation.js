@@ -427,11 +427,11 @@ var FormWizard = function () {
                     error.hide();
                     if (index == 1) {
 
-                        var StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
-                        var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
-                        var CurDateonly = new Date(currentdate.toDateString())
-                        var StartDTdateonly = new Date(StartDT.toDateString())
-                        var BidOpenDate = new Date($('#txtbidopendatetime').val().replace('-', ''));
+                        //var StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
+                        //var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
+                        //var CurDateonly = new Date(currentdate.toDateString())
+                        //var StartDTdateonly = new Date(StartDT.toDateString())
+                        //var BidOpenDate = new Date($('#txtbidopendatetime').val().replace('-', ''));
                         if (form.valid() == false) {
                             return false;
 
@@ -447,7 +447,7 @@ var FormWizard = function () {
 
 
                         }
-                        else if ($('#txtenddatettime').val() == '') {
+                        /*else if ($('#txtenddatettime').val() == '') {
                             $('.alert-danger').show();
                             $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
                             $('#spandanger').html('Please Enter RFQ END Date');
@@ -512,7 +512,7 @@ var FormWizard = function () {
                         else {
                             InsUpdRFQDEtailTab1()
 
-                        }
+                        }*/
 
                     }
                     else if (index == 2) {
@@ -633,9 +633,53 @@ function Dateandtimevalidate(dttime, forDT) {
     var Tab1Data = {
         "BidDate": ST
     }
-
+    var isValid = true;
+    var errorMsg = '';
     // console.log(JSON.stringify(Tab1Data))
+    /*if($('#txtenddatettime').val() == '' || $('#txtenddatettime').val() ==null)
+    {
+        isValid = false;
+        errMsg = 'End Date Cannot be Blank';
+    }
+    else
+    {
+        var _endDt = $('#txtenddatettime').val().replace('-', '')
+        var EndDt = new Date(_endDt);
+        var curDt = new Date();
+        if (EndDt < curDt)
+        {
+            isValid = false;
+            errMsg = 'End Date less than current date';
+        }
+        else if ($('#txtbidopendatetime').val() != null && $('#txtbidopendatetime').val() != '')
+        {
+            var _opnDt = $('#txtbidopendatetime').val().replace('-', '')
+            var OpnDt = new Date(_opnDt)
+            if(OpnDt < EndDt)
+            {
+                isValid = false;
+                errMsg = 'Bid cannot be opened befor the end date';
+            }
+        }
+        
+    }
+    if(isValid)
+    {
+        InsUpdRFQDEtailTab1()
+    }
+    else
+    {
+        $('#form_wizard_1').bootstrapWizard('previous');
+        $('.alert-danger').show();
+        $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
+        $('#spandanger').html(errMsg);
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        // $('#txtenddatettime').val('')
 
+        return false;
+        
+    }*/
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -659,17 +703,19 @@ function Dateandtimevalidate(dttime, forDT) {
             }
             else {
                 isvalidEndDt = data;
+                debugger;
                 //** End Date is Valid
                 if (data == "1") {
                     if ($('#txtbidopendatetime').val() != null && $('#txtbidopendatetime').val() != '') {
                         Dateandtimevalidate($('#txtbidopendatetime').val(), 'bidopendt');
+                        isvalidbidopenDt = data;
                     }
                 }
             }
 
             if (isvalidEndDt != undefined || isvalidStartDt != undefined || isvalidbidopenDt != undefined) {
                 let enddate, Startdate, bidopendate;
-                if ($('#txtstartdatettime').val() != '') {
+                if ($('#txtenddatettime').val() != '') {
                     var EndDT = new Date();
                     EndDT = $('#txtenddatettime').val().replace('-', '');
                     enddate =
@@ -694,6 +740,7 @@ function Dateandtimevalidate(dttime, forDT) {
                             timeZone: sessionStorage.getItem('preferredtimezone')
                         }));
                 }
+                debugger;
                 if ($('#txtstartdatettime').val() != '' && isvalidStartDt != "1" && isvalidStartDt != undefined) {//&& StartDTdateonly < CurDateonly
                     $('#form_wizard_1').bootstrapWizard('previous');
                     $('.alert-danger').show();
@@ -703,7 +750,8 @@ function Dateandtimevalidate(dttime, forDT) {
                     $('.alert-danger').fadeOut(7000);
                     $('#txtstartdatettime').val();
 
-                    return false;
+                    //return false;
+                    isValid = false;
                 }
                 else if ($('#txtstartdatettime').val() != '' && enddate < Startdate) {
                     $('#form_wizard_1').bootstrapWizard('previous');
@@ -714,7 +762,8 @@ function Dateandtimevalidate(dttime, forDT) {
                     $('.alert-danger').fadeOut(7000);
                     // $('#txtenddatettime').val('')
 
-                    return false;
+                    //return false;
+                    isValid = false;
                 }
                 else if (isvalidEndDt != "1" && isvalidEndDt != undefined) {//EndDT < currentdate
                     $('#form_wizard_1').bootstrapWizard('previous');
@@ -725,7 +774,8 @@ function Dateandtimevalidate(dttime, forDT) {
                     $('.alert-danger').fadeOut(7000);
                     //$('#txtenddatettime').val('')
 
-                    return false;
+                    //return false;
+                    isValid = false;
                 }
                 else if ($('#tblapprovers >tbody >tr').length == 0 && $('#drp_TechnicalApp').val().toLowerCase() == "na") {
 
@@ -735,7 +785,8 @@ function Dateandtimevalidate(dttime, forDT) {
                     Metronic.scrollTo($(".alert-danger"), -200);
                     $('.alert-danger').fadeOut(5000);
 
-                    return false;
+                    //return false;
+                    isValid = false;
 
                 }
                 else if (($('#tblapprovers >tbody >tr').length == 0 || $('#tblapproverstech >tbody >tr').length == 0) && ($('#drp_TechnicalApp').val().toLowerCase() == "rfq" || $('#drp_TechnicalApp').val().toLowerCase() == "afterrfq")) {
@@ -744,24 +795,36 @@ function Dateandtimevalidate(dttime, forDT) {
                     $('#spandanger').html('Please Map Approver.');
                     Metronic.scrollTo($(".alert-danger"), -200);
                     $('.alert-danger').fadeOut(5000);
-                    return false;
+                    //return false;
+                    isValid = false;
 
                 }
-                else if ($('#txtbidopendatetime').val() != '' && bidopendate < enddate && isvalidEndDt != undefined && isvalidbidopenDt != undefined) {
-                    $('.alert-danger').show();
-                    $('#txtbidopendatetime').closest('.inputgroup').addClass('has-error');
-                    $('#spandanger').html('Bid Cannot be opened before Submission Date ');
-                    Metronic.scrollTo($(".alert-danger"), -200);
-                    $('.alert-danger').fadeOut(7000);
-                    $('#txtbidopendatetime').val('')
-                    return false;
+                else if ($('#txtbidopendatetime').val() != null) {
+                    if (bidopendate < enddate) {
+                        $('#form_wizard_1').bootstrapWizard('previous');
+                        $('.alert-danger').show();
+                        $('#txtbidopendatetime').closest('.inputgroup').addClass('has-error');
+                        $('#spandanger').html('Bid Cannot be opened before Submission Date ');
+                        Metronic.scrollTo($(".alert-danger"), -200);
+                        $('.alert-danger').fadeOut(7000);
+                        $('#txtbidopendatetime').val('')
+                        //return false;
+                        isValid = false;
+                    }
                 }
                 else {
-                    InsUpdRFQDEtailTab1()
+                    /*if(isValid){
+                        InsUpdRFQDEtailTab1()
+                    }*/
                 }
             }
-
-
+            debugger;
+            if (!isValid) {
+                return false;
+            }
+            else {
+                InsUpdRFQDEtailTab1()
+            }
 
         },
         error: function (xhr, status, error) {

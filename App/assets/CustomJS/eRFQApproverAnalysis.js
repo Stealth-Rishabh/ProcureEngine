@@ -55,6 +55,7 @@ if (window.location.search) {
     var FwdTo = getUrlVarsURL(decryptedstring)["FwdTo"];
     var AppStatus = getUrlVarsURL(decryptedstring)["AppStatus"];
     var VID = getUrlVarsURL(decryptedstring)["VID"];
+
     $('#hdnRfqID').val(RFQID);
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     setTimeout(function () {
@@ -173,6 +174,7 @@ var RFQBidType = '';
 var RFQEndDate = new Date();
 var _openQuotes = '';
 function fetchrfqcomprative() {
+
     var url = '';
     //ShowPrice = "N";
     //alert('1-'+ ShowPrice);
@@ -222,7 +224,7 @@ function fetchrfqcomprative() {
 
             var _rfqBidType = sessionStorage.getItem("RFQBIDType");
             var _openQuotes = sessionStorage.getItem("OpenQuotes");
-
+            debugger;
             if (_rfqBidType != 'Closed') {
                 if (AppType == "T" && FwdTo != 'Admin') {
 
@@ -249,7 +251,7 @@ function fetchrfqcomprative() {
                 else {
                     ShowPrice = 'N';
                 }
-                if (bidopeningdate == null) {
+                /*if (bidopeningdate == null) {
                     ShowPrice = 'N';
 
                 }
@@ -270,7 +272,7 @@ function fetchrfqcomprative() {
                         ShowPrice = 'N';
 
                     }
-                }
+                }*/
             }
 
             sessionStorage.setItem('ShowPrice', ShowPrice);
@@ -591,7 +593,7 @@ function fetchrfqcomprative() {
 
                 str += "<td colspan=" + (t + 10) + ">&nbsp;</td></tr>";
 
-
+                debugger;
 
                 if (data[0].commercialTerms.length > 0) {
 
@@ -1086,6 +1088,7 @@ function deletequesrow(rowid) {
 }
 function submitTechnicalQuery() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+
     $('#btnTechquery').attr('disabled', 'disabled')
     $('#btnSubmitApp').attr('disabled', 'disabled')
     var quesquery = "";
@@ -1982,6 +1985,7 @@ function fnFWDeRFQ() {
     });
 }
 function ApprovalApp() {
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvalstatus = "";
     var chkstatus = 'T';
