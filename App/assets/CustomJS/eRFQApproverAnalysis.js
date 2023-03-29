@@ -249,11 +249,11 @@ function fetchrfqcomprative() {
                 else {
                     ShowPrice = 'N';
                 }
-                /*if (bidopeningdate == null) {
+                if (bidopeningdate == null) {
                     ShowPrice = 'N';
 
-                }*/
-                /*else {
+                }
+                else {
                     var newDt = fnConverToLocalTime(bidopeningdate);
                     bidopeningdate = new Date(newDt.replace('-', ''));
                     if (bidopeningdate < new Date()) {
@@ -270,7 +270,7 @@ function fetchrfqcomprative() {
                         ShowPrice = 'N';
 
                     }
-                }*/
+                }
             }
 
             sessionStorage.setItem('ShowPrice', ShowPrice);
@@ -737,7 +737,7 @@ function fetchrfqcomprative() {
 
                                             }
                                             else {
-                                                strQ += "<td colspan=4  style='color: red!important; text-align: center;' >Not Quoted</td>";
+                                                strQ += "<td colspan=4 style='color: red!important; text-align: center;' >Not Quoted</td>";
 
                                             }
 
