@@ -141,9 +141,11 @@ function fetchrfqcomprative() {
             var strHeadExcelQ = '';
             var strExcelQ = '';
             var allvendorresponse = 'Y';
-            var ShowPrice = 'N'
             var _CurrentDate = new Date();
             if (_rfqBidType == 'Closed') {
+                //to show only final version
+                $("#ddlrfqVersion").empty();
+                $('#ddlrfqVersion').append('<option  value="99" >Final Version</option>');
                 if (_openQuotes == 'Y') {
                     ShowPrice = 'Y';
                     $('#btnPDF').show()
@@ -154,7 +156,7 @@ function fetchrfqcomprative() {
                 }
             }
             else {
-                ShowPrice = 'Y';
+                //ShowPrice = 'N';
                 $('#btnPDF').show()
             }
 
@@ -437,7 +439,6 @@ function fetchrfqcomprative() {
                         else {
 
                             if (totallowestValue != 0) {
-                                totallowestValue = "Quoted";
                                 str += "<td class=text-right>Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
                                 strExcel += "<td >Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td colspan=2>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
                             }
@@ -965,6 +966,7 @@ function fetchrfqcomprative() {
                             reInvited = 'Y'
                         }
                     });
+                    
                     if (maxValue == $("#ddlrfqVersion option:selected").val()) {
                         $("#btn-reInvite").removeClass('hide')
                         str += "<tr id='reinvitationTR'><td colspan=8><b>Re-Invitation Row</b></td>";
@@ -2366,6 +2368,7 @@ function fnSendActivityToCommercial() {
                 else {
                     fetchrfqcomprativeBoq();
                 }
+
                 if (sessionStorage.getItem('RFQBidType') == 'Closed') {
                     FetchInvitedVendorsForeRFQ();
                 }
