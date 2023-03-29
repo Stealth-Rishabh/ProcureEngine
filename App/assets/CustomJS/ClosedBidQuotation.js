@@ -427,16 +427,16 @@ var FormWizard = function () {
                     error.hide();
                     if (index == 1) {
 
-                        var StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
+                        /*var StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
                         var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
                         var CurDateonly = new Date(currentdate.toDateString())
                         var StartDTdateonly = new Date(StartDT.toDateString())
-                        var BidOpenDate = new Date($('#txtbidopendatetime').val().replace('-', ''));
+                        var BidOpenDate = new Date($('#txtbidopendatetime').val().replace('-', ''));*/
                         if (form.valid() == false) {
                             return false;
 
                         }
-                        else if (form.valid() == true) {
+                        else if  (form.valid() == true) {
 
                             if ($('#txtstartdatettime').val() != "" && $('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() != undefined) {
                                 Dateandtimevalidate($('#txtstartdatettime').val(), 'startdt');
@@ -447,7 +447,7 @@ var FormWizard = function () {
 
 
                         }
-                        else if ($('#txtenddatettime').val() == '') {
+                     /*   else if ($('#txtenddatettime').val() == '') {
                             $('.alert-danger').show();
                             $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
                             $('#spandanger').html('Please Enter RFQ END Date');
@@ -513,7 +513,7 @@ var FormWizard = function () {
                             InsUpdRFQDEtailTab1()
 
                         }
-
+*/
                     }
                     else if (index == 2) {
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
