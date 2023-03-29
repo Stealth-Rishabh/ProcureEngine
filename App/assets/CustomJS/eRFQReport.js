@@ -105,7 +105,13 @@ function fetchReguestforQuotationDetails() {
         dataType: "json",
         success: function (RFQData) {
             $('#tbldetailsExcel > tbody').empty();
+            if (RFQData[0].general[0].rfqBidType == 'Closed') {
+                sessionStorage.setItem('ShowPrice', RFQData[0].general[0].openQuotes)
 
+            }
+            else {
+                sessionStorage.setItem('ShowPrice', RFQData[0].general[0].showQuotedPrice)
+            }
             jQuery('#RFQSubject').html(RFQData[0].general[0].rfqSubject)
             jQuery('#lbl_ConfiguredBy').html("RFQ Configured By: " + RFQData[0].general[0].rfqConfigureByName)
 
