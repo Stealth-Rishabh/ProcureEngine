@@ -956,7 +956,7 @@ function fnSubmiteRFQSendmail(ismailsent) {
     //var EndDT = new Date($('#lblrfqenddate').text().replace('-', ''));
     Dateandtimevalidate($('#lblrfqenddate').text(), 'enddate');
 
-
+    debugger
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (validateSubmit) {
         var Tab2data = {
@@ -979,7 +979,7 @@ function fnSubmiteRFQSendmail(ismailsent) {
             data: JSON.stringify(Tab2data),
             dataType: "json",
             success: function (data) {
-
+                debugger
                 setTimeout(function () {
                     fetchRFQResponse('Question', sessionStorage.getItem('RFQVersionId'))
                     if (ismailsent == "Y") {

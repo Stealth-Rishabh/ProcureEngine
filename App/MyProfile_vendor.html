@@ -409,7 +409,7 @@
                                                                                                         GST No.
                                                                                                     </label>
                                                                                                     <div class="col-md-4">
-                                                                                                        <input type="text" class="form-control" id="txtTINNo" name="txtTINNo" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)"  disabled>
+                                                                                                        <input type="text" class="form-control" id="txtTINNo" name="txtTINNo" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled>
                                                                                                     </div>
                                                                                                 </span>
 
@@ -425,7 +425,7 @@
                                                                                                             <input type="file" class="form-control" tabindex="5" id="filegst" onchange="checkfilesize(this)">
                                                                                                             <label class="control-label uploadedfile" id="uploadgst"><a href="javascript:;" onclick="DownloadFile(this)" id="gstattach" class="txtleftnone"></a><span class="fix-left-margin" onclick="editGST()" id="editgst"><i class="fa fa-pencil"></i></span></label>
 
-                                                                                                          
+
                                                                                                         </div>
                                                                                                     </div>
 
@@ -455,7 +455,7 @@
                                                                                                     <div class="inputgroup">
                                                                                                         <div class="att_input">
                                                                                                             <input type="file" class="form-control" tabindex="5" id="filepan" onchange="checkfilesize(this)">
-                                                                                                            <label class="control-label uploadedfile" id="uploadpan"><a href="javascript:;" onclick="DownloadFile(this)" id="panattach" class="txtleftnone"></a><span class="fix-left-margin" onclick="editPAN()"  id="editpan"><i class="fa fa-pencil"></i></span></label>
+                                                                                                            <label class="control-label uploadedfile" id="uploadpan"><a href="javascript:;" onclick="DownloadFile(this)" id="panattach" class="txtleftnone"></a><span class="fix-left-margin" onclick="editPAN()" id="editpan"><i class="fa fa-pencil"></i></span></label>
 
                                                                                                         </div>
                                                                                                     </div>
@@ -669,7 +669,6 @@
                                                                                     <div class="clearfix"></div>
                                                                                     <div>
                                                                                         <table class="table table-striped table-bordered table-hover" id="tblGetBankDetail"></table>
-
                                                                                     </div>
                                                                                     <div class="row" id="bankForm">
                                                                                         <div class="form-group">
@@ -733,7 +732,7 @@
                                                                                                                    onchange="checkfilesize(this)" />
 
                                                                                                             <label class="control-label uploadedfile" id="uploadcheck"><a href="javascript:;" onclick="DownloadFile(this)" id="checkattach" class="txtleftnone"></a><span class="fix-left-margin" onclick="editCheck()" id="editcheck"><i class="fa fa-pencil"></i></span></label>
-                                                                                                       
+
                                                                                                         </div>
                                                                                                     </div>
 
@@ -867,7 +866,7 @@
                                                     <div class="clearfix"></div>
                                                 </div>
                                             </div>
-                                           
+
                                         </div>
                                     </form>
                                 </div>
@@ -972,6 +971,7 @@
                 </div>
                 <div class="clearfix">
                 </div>
+                <!--bank associatedcustomer model-->
                 <!-- END PAGE CONTENT-->
             </div>
         </div>
@@ -982,6 +982,61 @@
         </div>
         <div class="scroll-to-top">
             <i class="icon-arrow-up"></i>
+        </div>
+    </div>
+    <div id="bankcustomermap" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Customer Bank Details
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="alert alert-danger display-hide" id="errordiv1">
+                        <button class="close" data-close="alert"></button>
+                        <span id="errormsg"></span>
+                    </div>
+                    <div class="alert alert-success display-hide" id="successdiv1">
+                        <button class="close" data-close="alert"></button>
+                        <span id="successmsg"></span>
+                    </div>
+                    <form action="#" id="mapsections" class="form-horizontal" role="form">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <div class="col-md-12">
+
+                                    <label class="col-md-4 control-label txtalignleft" data-i18n="state">
+                                        Select Customer
+                                    </label>
+                                    <div class="col-md-4">
+                                        <select class="form-control" id="mapbankcustomer" name="mapbankcustomer">
+                                        </select>
+
+                                    </div>
+
+                                    
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                     
+                                    <div class="col-md-offset-5 col-md-6">
+                                        <button type="button" class="btn btn-success" onclick="UpdateBankMapping()">
+                                            Update Bank
+                                        </button>
+                                    </div>
+                                       
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
     <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">

@@ -67,7 +67,14 @@ jQuery(document).ready(function () {
     $('#ddlpreferredTimem').select2().on('change', function () { $(this).valid(); });
     
     //***********
-  
+    if (window.location.search) {
+        debugger
+        var param = getUrlVars()["param"]
+        var decryptedstring = fndecrypt(param)
+        vendoridparam = getUrlVarsURL(decryptedstring)["VendorId"];
+        let tmpvendoridparam = parseInt(sessionStorage.getItem('CustomerID'))
+        fnViewDetails(tmpvendoridparam, vendoridparam)
+    }
  
 
     jQuery("#btnsumbit").click(function () {
@@ -2563,7 +2570,7 @@ function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dial
     $("#txtTINNo").removeAttr("onchange");
     
     GetFinancialDetail(parseInt(childid), parseInt(vendorid))
-    GetBankDetail(parseInt(childid))
+    GetBankDetail(parseInt(childid), customerid)
    
     GetCustomerSpecificMaster(customerid) //function defined in common.js
     GetCountrySpecificMaster(countryKey)  //function defined in common.js
@@ -2573,19 +2580,19 @@ function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dial
 }
 
 
-function GetBankDetail(ChildId) {
-    
-    console.log(sessionStorage.getItem("APIPath") + "VendorLCM/GetBankDetail/?ChildId=" + ChildId)
+function GetBankDetail(ChildId, customerid) {
+    debugger
+    console.log(sessionStorage.getItem("APIPath") + "VendorLCM/GetBankDetail/?ChildId=" + ChildId + "&CustomerId=" + customerid)
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "VendorLCM/GetBankDetail/?ChildId=" + ChildId,
+        url: sessionStorage.getItem("APIPath") + "VendorLCM/GetBankDetail/?ChildId=" + ChildId + "&CustomerId=" + customerid,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
         dataType: "json",
         success: function (childData) {
-          
+          debugger
             if (childData.length > 0) {
                 $('#tblGetBankDetail').empty();
                 $('#tblGetBankDetail').append("<thead><tr><th>Action</th><th>Bank Name</th><th>Account Number</th><th>IFSC Code</th></tr></thead><tbody>");

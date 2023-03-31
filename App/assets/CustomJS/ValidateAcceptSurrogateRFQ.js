@@ -159,8 +159,10 @@ var erroropenbid = $('#errorOpenbid');
 var successopenbid = $('#successopenbid');
 
 function validatepassword() {
+    debugger
     //sessionStorage.setItem("APIPath", 'http://www.support2educate.com/procurengine/API/api/');
-    sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+    //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+    sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  </h5>' });
     if (jQuery("#txtpassword").val() == "") {
@@ -182,7 +184,7 @@ function validatepassword() {
             crossDomain: true,
             dataType: "json",
             success: function (response) {
-
+                debugger
                 sessionStorage.setItem("Token", response.token)
                 fnGtrTokenValidatePassword()
 

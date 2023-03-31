@@ -1,5 +1,4 @@
 jQuery(document).ready(function () {
-
     $('.thousandseparated').inputmask();
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
@@ -2534,7 +2533,7 @@ function fnGetPauseHistory() {
             $("#tblbidpauseHistory").empty()
             if (data.length > 0) {
                 $('#divpausehitory').removeClass('hide');
-
+                debugger
                 $("#tblbidpauseHistory").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Paused Item</th><th>Pause Date Time</th><th>Re Open Date Time</th><th>Balance Duration (mins)</th></thead>");
                 for (var i = 0; i < data.length; i++) {
                     var bidPauseDate = fnConverToLocalTime(data[i].bidPauseDate);

@@ -19,46 +19,14 @@
     setCommonData();
     fetchMenuItemsFromSession(9, 10);   
     fetchBidType();// for serach vendor
-    fetchCountry();
+ 
     //abheedev 25/11/2022
-    $('#ddlCountry').select2({
-        searchInputPlaceholder: "Search Country",
-    })
-    $('#ddlCountryCd').select2({
-        searchInputPlaceholder: "Dialing Code",
-        //allowClear: true
-    });
-
-    $('#ddlCountryCdPhone').select2({
-        searchInputPlaceholder: "Dialing Code",
-        // allowClear: true
-    });
-
-    $('#ddlState').select2({
-        searchInputPlaceholder: "Search State",
-        allowClear: true
-    }).on('change', function () { $(this).valid(); });
-    $('#ddlCity').select2({
-        searchInputPlaceholder: "Search City",
-        allowClear: true
-    }).on('change', function () { $(this).valid(); });
-    $('#ddlpreferredTime').select2().on('change', function () { $(this).valid(); });
-    //***********
-
+  
 
 });
 
 
 
-//invite vendor
-
-function routeToInviteVendor() {
-    window.location.href = "InviteVendor.html";
-}
-
-function routeToRegisterParticipant() {
-    window.location.href = "registerParticipants_PEV2.html";
-}
 
 // Define an array to store the entered email ids
 let emailIds = [];
@@ -66,27 +34,36 @@ let i = 1;
 // Get the input and button elements from the HTML
 const inputInviteVendor = document.getElementById("txtInviteVendor");
 $("#emailTable").hide();
+$("#createdEmailTable").hide();
+$("#notCreatedEmailTable").hide();
 $("#btnvendorsumbit").hide();
 
 // Add email of vendor
 $("#addbtnvendor").click(function () {
     debugger
-
     const email = $("#txtInviteVendor").val().trim();
 
     if (isValidEmail(email)) {
 
-        emailIds.push(email);
+        if (!emailIds.includes(email)) {
+            emailIds.push(email);
 
-
+        }
+        else {
+            bootbox.alert("email address is already added");
+            $("#txtInviteVendor").val("");
+            return false;
+        }
 
         $("#txtInviteVendor").val("")
         $("#emailTable").show();
-        $("#btnvendorsumbit").show();
+        
         // Add a new row to the email table
-
-        jQuery("#emailTable").append('<tr id=trAppid' + i + '><td>' + i + '</td><td>' + email + '</td></tr>');
-
+        if (jQuery("#emailTable tbody tr").length < 1) {
+            i = 0;
+        }
+        jQuery("#emailTable").append('<tr id=trAppid' + i + '><td>' +( i + 1) + '</td><td>' + email + '</td></tr>');
+        $("#btnvendorsumbit").show();
         i = i + 1
     }
 });
@@ -125,9 +102,33 @@ function InviteVendorsToRegister() {
         data: JSON.stringify(TabDet),
         dataType: "json",
         success: function (data) {
-
             debugger;
-            alert('YES!!!!')
+            $("#emailTable tbody").empty();
+            $("#createdEmailTable tbody").empty();
+            $("#notCreatedEmailTable tbody").empty();
+            $("#emailTable").hide();
+            
+            $("#btnvendorsumbit").hide();
+            let createdVendorList = data.createdVendorList || "" ;
+            let notCreatedVendor = data.notCreatedVendor;
+            
+            if (createdVendorList.length > 0 && createdVendorList!="") {
+                for (let i = 0; i < createdVendorList.length; i++) {
+                    $("#createdEmailTable").show();
+                   
+                    jQuery("#createdEmailTable").append('<tr id=trCEAppid' + i + '><td>' + (i+1) + '</td><td>' + createdVendorList[i].email + '</td></tr>');
+                    
+                }
+            }
+            if (notCreatedVendor.length > 0) {
+                for (let i = 0; i < notCreatedVendor.length; i++) {
+                    $("#notCreatedEmailTable").show();
+                    jQuery("#notCreatedEmailTable").append('<tr id=trNCEAppid' + i + '><td>' + (i+1) + '</td><td>' + notCreatedVendor[i].email + '</td><td>' + notCreatedVendor[i].message + '</td></tr>');
+                   
+                }
+            }
+            emailIds.length=0          
+            bootbox.alert('Check email invitation status below')
         },
         error: function (xhr, status, error) {
             debugger

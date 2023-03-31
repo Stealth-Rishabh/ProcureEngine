@@ -1130,13 +1130,16 @@
                                     <label class="col-md-3 control-label" id="lblsbjct">
                                         Select Indent
                                     </label>
-                                    <div class="col-md-9 paddingleft7px">
+                                    <div class="col-md-6 paddingleft7px">
                                         <input type="hidden" id="hdnRfiRfqID" value='0' />
 
                                         <input type="text" class="form-control" id="txtrfirfqsubject"
                                                name="txtrfirfqsubject"
                                                data-provide="typeahead" autocomplete="off" maxlength="120"
                                                placeholder="Subject" onkeyup="replaceQuoutesFromString(this)" />
+                                    </div>
+                                    <div class="col-md-3 paddingleft7px">
+                                       <button type="button" class="btn btn-primary" onclick="FetchSAPPI()">Go</button>
                                     </div>
                                 </div>
 

@@ -550,6 +550,7 @@ function onkeyCess(index) {
     }
 
     if (parseFloat($('#landedp' + index).val()) > 0 && parseFloat($('#ncv' + index).val()) > 0) {
+        
         var price = (parseFloat($('#landedp' + index).val()) + parseFloat(cess)) / parseFloat($('#ncv' + index).val());
         // $('#txtquote' + index).val(price.round(3));
         //  $('#txtquote' + index).innerHTML=(price.round(3));
