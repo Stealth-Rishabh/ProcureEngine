@@ -2441,7 +2441,7 @@ function GetCustomerForBankMapping(vendid, ChildId, bankingId) {
                 jQuery("#mapbankcustomer").append(jQuery("<option></option>").val(data[i].customerId).html(data[i].customerName));
             }
             $('#bankcustomermap').show();
-
+           
         },
         error: function (xhr, status, error) {
 
@@ -2463,7 +2463,20 @@ function GetCustomerForBankMapping(vendid, ChildId, bankingId) {
 
 
 function UpdateBankMapping() {
+    if ($('#mapbankcustomer').val() === '0') {
+        debugger
+        jQuery("#errordiv1").show();
+        jQuery("#errordiv1").text("please select valid company to proceed further..");
 
+        setTimeout(function () {
+
+            jQuery("#errordiv1").hide();
+            jQuery("#errordiv1").text("");
+           
+
+        }, 2000)
+        return false;
+    }
     debugger
     let data = {
         "AssociatedVendorId": parseInt($('#hdnChildID').val()),
@@ -2485,9 +2498,30 @@ function UpdateBankMapping() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
+            if (data.isSuccess !== 0) {
+                
+                jQuery("#successdiv1").show();
+                jQuery("#successdiv1").text("Company is mapped successfully..");
 
-            debugger
-            console.log("sucess")
+                setTimeout(function () {
+                    jQuery("#successdiv1").hide();
+                    jQuery("#successdiv1").text("");
+
+                }, 2000)
+            }
+            else {
+
+                jQuery("#errordiv1").show();
+                jQuery("#errordiv1").text(data.message);
+
+                setTimeout(function () {
+
+                    jQuery("#errordiv1").hide();
+                    jQuery("#errordiv1").text("");
+
+                }, 2000)
+            }
+            
            
         },
         error: function (xhr, status, error) {
@@ -2496,4 +2530,10 @@ function UpdateBankMapping() {
             jQuery.unblockUI();
         }
     });
+}
+
+
+function hideModal() {
+    debugger
+    $('.modal').hide();
 }
