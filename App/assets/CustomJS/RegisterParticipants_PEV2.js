@@ -2452,7 +2452,7 @@ function fetchVendorRegistrationDetails(custid, vendId) {
                     addrC = childData[i].address + " " + childData[i].city + " " + childData[i].state + " " + childData[i].country;
 
 
-                    $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendorModal(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].country || "") + "'\,\'" + (childData[i].state || "") + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].city || "") + "'\,\'" + (childData[i].childId || "") + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\,\'" + childData[i].countryKey + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-expand\"></i>Expand</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                    $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendorModal(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].country || "") + "'\,\'" + (childData[i].state || "") + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].city || "") + "'\,\'" + (childData[i].childId || "") + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-expand\"></i>Expand</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
                     $('#btnAddAnother').removeClass('hide');
 
                 }
@@ -2482,7 +2482,7 @@ function fetchVendorRegistrationDetails(custid, vendId) {
     }, 5000);
 }
 
-function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, country, state, prefferredTZ, city, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile, countryKey) {
+function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, country, state, prefferredTZ, city, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile, countryKey, taxIdType, taxIdType2) {
  
     $('#childDetailsForm').removeClass('hide')
     $("#bankaccordion").show()
@@ -2490,7 +2490,9 @@ function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dial
     $('#ddlCountrym').text(country)    
     $('#ddlStatem').text(state)
     $('#ddlCitym').text(city)
-
+    $('#txtTINTypemodal').text(taxIdType)
+    $('#txtTINTypemodal2').text(taxIdType2)
+    
 
         
     
@@ -2820,7 +2822,7 @@ function UpdateExternalSource() {
         "ReconAcc": jQuery("ReconAcc").val(),
         "PayTerm": jQuery("#PayTerm").val(),
         "CheckDoubleInvoice": $('input[name="CheckDoubleInvoice"]').val(),
-        "WitholdingTaxType": jQuery("#WitholdingTaxType option:selected").val(),
+        "WitholdingTaxType": "",
         "SubjectToTds": jQuery("#SubjectToTds").text() || "",
         "TypeOfRecepient": jQuery("#TypeOfRecepient").text() || "",
         "WitholdingTaxCode": jQuery("#WitholdingTaxCode").text() || "",
@@ -2896,35 +2898,35 @@ function PostToExternalSource() {
         "MOB_NUM": jQuery("#vendormobileno").text(),
         "FAX_NUM": "",
         "EMAIL": jQuery("#vendorEmailID").text(), 
-        "BVKID": "",
-        "BANKS": parseInt(sessionStorage.getItem('CustomerID')),
-        "BANKL": parseInt(sessionStorage.getItem('CustomerID')),
-        "BANKN": parseInt(sessionStorage.getItem('CustomerID')),
-        "BKONT": parseInt(sessionStorage.getItem('CustomerID')),
-        "BUKRS": parseInt(sessionStorage.getItem('CustomerID')),
-        "AKONT": parseInt(sessionStorage.getItem('CustomerID')),
-        "ZTERM": parseInt(sessionStorage.getItem('CustomerID')),
-        "REPRF": parseInt(sessionStorage.getItem('CustomerID')),
-        "WITHT": parseInt(sessionStorage.getItem('CustomerID')),
-        "WT_SUBJCT": parseInt(sessionStorage.getItem('CustomerID')),
-        "QSREC": parseInt(sessionStorage.getItem('CustomerID')),
-        "WT_WITHCD": parseInt(sessionStorage.getItem('CustomerID')),
-        "EKORG": parseInt(sessionStorage.getItem('CustomerID')),
-        "WAERS": parseInt(sessionStorage.getItem('CustomerID')),
-        "INCO1": parseInt(sessionStorage.getItem('CustomerID')),
-        "INCO2_L": parseInt(sessionStorage.getItem('CustomerID')),
-        "INCO3_L": parseInt(sessionStorage.getItem('CustomerID')),
-        "EKGRP": parseInt(sessionStorage.getItem('CustomerID')),
-        "KALSK": parseInt(sessionStorage.getItem('CustomerID')),
-        "TAXNUM1": parseInt(sessionStorage.getItem('CustomerID')),
-        "TAXTYP1": parseInt(sessionStorage.getItem('CustomerID')),
-        "J_1IPANNO": parseInt(sessionStorage.getItem('CustomerID')),
-        "PARVW": parseInt(sessionStorage.getItem('CustomerID')),
-        "LIFN2": parseInt(sessionStorage.getItem('CustomerID')),
-        "VEND_CLASS": parseInt(sessionStorage.getItem('CustomerID')),
-        "MINDK": parseInt(sessionStorage.getItem('CustomerID')),
-        "ISEC": parseInt(sessionStorage.getItem('CustomerID')),
-        "J_1ICSTNO": parseInt(sessionStorage.getItem('CustomerID')),
+        "BVKID": "", 
+        "BANKS": jQuery("#bankCountryKey").text(), 
+        "BANKL": jQuery("#ifsccode").text(),
+        "BANKN": jQuery("#bankaccount").text(),
+        "BKONT": "",
+        "BUKRS": jQuery("#CoCd option:selected").val(), 
+        "AKONT": jQuery("ReconAcc").val(), 
+        "ZTERM": jQuery("#PayTerm").val(), 
+        "REPRF": $('input[name="CheckDoubleInvoice"]').val(),
+        "WITHT": jQuery("#WitholdingTaxType option:selected").val(),
+        "WT_SUBJCT": jQuery("#SubjectToTds").text() || "",
+        "QSREC": jQuery("#TypeOfRecepient").text() || "",
+        "WT_WITHCD":"",
+        "EKORG": jQuery("#PORG option:selected").val(),
+        "WAERS": "INR",
+        "INCO1": jQuery("#Incoterm option:selected").val(),
+        "INCO2_L": jQuery("#Incoterm option:selected").text(),
+        "INCO3_L":"",
+        "EKGRP": "",
+        "KALSK": jQuery("#SchemaGrp option:selected").val(), 
+        "TAXNUM1": jQuery("#txtTINTypemodal").text(),
+        "TAXTYP1": jQuery("#txtTINNom").text(), 
+        "J_1IPANNO": jQuery("#vendorpanno").text()||"",
+        "PARVW": "",
+        "LIFN2": "",
+        "VEND_CLASS":"",
+        "MINDK":"",
+        "ISEC": "",
+        "J_1ICSTNO":"",
     };
 
     console.log(sessionStorage.getItem("APIPath") + "VendorLCM/PostToExternalSource/");
