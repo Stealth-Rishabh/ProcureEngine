@@ -278,25 +278,30 @@ function fetchCountry() {
         async: false,
         dataType: "json",
         success: function (data) {
+            debugger
             $("#ddlCountry").empty();
             $("#ddlCountryCd").empty();
             $("#ddlCountryCdPhone").empty();
             var vlal = new Array();
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
-                    $("#ddlCountry").append("<option value=" + data[i].countryID + ">" + data[i].countryName + "</option>");
+                    $("#ddlCountry").append("<option value='" + data[i].countryKey + "' data-countryid='" + data[i].countryID + "'>" + data[i].countryName + "</option>");
                     $("#ddlCountryCd").append(jQuery("<option></option>").val(data[i].countryID).html(data[i].dialingCode));
                     $("#ddlCountryCdPhone").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
                 }
 
-                $("#ddlCountry").val('111').trigger("change");
+                $("#ddlCountry").val('IN').trigger("change");
+
                 $("#ddlCountryCd").val('111');
                 $("#ddlCountryCdPhone").val('111');
+
+
+
             }
             else {
                 $("#ddlCountry").append('<tr><td>No countries found..</td></tr>');
             }
-            jQuery.unblockUI();
+
         },
         error: function (xhr, status, error) {
 
@@ -330,6 +335,12 @@ function fetchCountry() {
 
                 jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val(lstTZ[i].id).html(lstTZ[i].timezonelong));
             }
+            jQuery("#ddlpreferredTimem").empty();
+            jQuery("#ddlpreferredTimem").append(jQuery("<option ></option>").val("").html("Select"));
+            for (var i = 0; i < lstTZ.length; i++) {
+
+                jQuery("#ddlpreferredTimem").append(jQuery("<option ></option>").val(lstTZ[i].id).html(lstTZ[i].timezonelong));
+            }
         },
         error: function (xhr, status, error) {
 
@@ -345,9 +356,8 @@ function fetchCountry() {
         }
     });
 }
-
 function fetchState() {
-
+    debugger
     var countryid = $('#ddlCountry option:selected').val();
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
