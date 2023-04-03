@@ -39,7 +39,10 @@ jQuery(document).ready(function () {
         fetchAttachments();
         fnGetApprovers();
         GetQuestions();
+        fetchRFIRFQSubjectforReport('RFQ')
+        
         fetchReguestforQuotationDetails();
+
     }
     FormWizard.init();
     ComponentsPickers.init();
@@ -4046,3 +4049,376 @@ function deleteterms(icount) {
         [i].participantName + " " + allvendorsforautocomplete[i].companyEmail + " - " + allvendorsforautocomplete[i].tinNo));
     }
 }*/
+
+
+//change for pull indent
+
+/*
+jQuery("#txtrfirfqsubject").typeahead({
+    source: function (query, process) {
+        debugger
+        var data = sessionStorage.getItem('hdnRfiRfqSubject');
+        Subject = [];
+        map = {};
+        var commonsubject = "";
+        jQuery.each(jQuery.parseJSON(data), function (i, commonsubject) {
+            map[commonsubject.rfqSubject] = commonsubject;
+            Subject.push(commonsubject.rfqSubject);
+        });
+
+        process(Subject);
+
+    },
+    minLength: 2,
+    updater: function (item) {
+        debugger
+        if (map[item].rfqid != '0') {
+            $('#hdnRfiRfqID').val(map[item].rfqid);
+            fnpulldatafromRFQ();
+        }
+        else {
+            gritternotification('Please Select RFQ properly!!!')
+            jQuery('#divalerterrpull').slideDown('show');
+            $('#spanerterrpull').text('Please Select RFQ properly!!!')
+
+            return false;
+            setTimeout(function () {
+                jQuery('#divalerterrpull').css('display', 'none');
+            }, 5000);
+        }
+
+        return item;
+    }
+
+});*/
+jQuery("#txtrfirfqsubject").keyup(function () {
+    $('#hdnRfiRfqID').val(0);
+
+});
+function fnpulldatafromRFQ() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    if ($('#hdnRfiRfqID').val() == "0") {
+
+        gritternotification('Please Select RFQ properly!!!')
+        jQuery('#divalerterrpull').slideDown('show');
+        $('#spanerterrpull').text('Please Select RFQ properly!!!')
+        setTimeout(function () {
+            jQuery('#divalerterrpull').css('display', 'none');
+        }, 2000);
+        jQuery.unblockUI();
+        return false;
+    }
+    else {
+        populatetablewithRFQData();
+    }
+}
+var ispulledrfqcounter = 0;
+function populatetablewithRFQData() {
+    var stRFQ = 'true';
+    totalitemdurationstagger = 0;
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/FetcheRFQParameterseRAItems/?RFQID=" + $('#hdnRfiRfqID').val() + "&Version=0",// Version is optional if required will use.
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+            debugger
+            if (data.length > 0) {
+                if (ispulledrfqcounter == 0) {
+                    jQuery("#tblServicesProduct").empty();
+                    jQuery("#tblServicesProductPrev").empty();
+                    rowAppItemsrno = 0;
+                    rowAppItems = 0;
+                }
+
+                ispulledrfqcounter = ispulledrfqcounter + 1;
+                for (var i = 0; i < data.length; i++) {
+                    var decrementon = ''
+                    decrementon = 'Amount'
+                   
+                    if (!jQuery("#tblServicesProduct thead").length) {
+                        jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:10%!important;'></th><th  style='width:20%!important;'>Item Code</th><th>Item/Service</th><th  class=hide>Description</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Hide Target Price</th><th>Minimum Decrement</th><th>Decrement On</th><th class=hide>Last Invoice Price</th><th class=itemclass>Bid Duration (in mins)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                        jQuery("#tblServicesProduct").append('<tr id=trid' + rowAppItems + '><td>' + (rowAppItemsrno + 1) + '</td><td style="width:10%!important;"><a class="btn  btn-xs btn-success" onclick="editvalues(' + rowAppItems + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-xs btn-danger" onclick="deleterow(trid' + rowAppItems + ',tridPrev' + rowAppItems + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td style="width:20%!important;" id=itemcode' + rowAppItems + '>' + data[i].itemCode + '</td><td id=destinationport' + rowAppItems + '>' + data[i].rfqShortName + '</td><td class=hide>' + data[i].rfqDescription + '</td><td id=remarks' + rowAppItems + '>' + data[i].rfqRemark + '</td><td class=text-right id=TP' + rowAppItems + ' >' + thousands_separators(data[i].rfqTargetPrice) + '</td><td class=text-right id=quan' + rowAppItems + ' >' + thousands_separators(data[i].rfqQuantity) + '</td><td id=uom' + rowAppItems + ' >' + data[i].rfquom + '</td><td class=text-right id=CP' + rowAppItems + '>' + thousands_separators(data[i].rfqBidStartPrice) + '</td><td id=maskvendor' + rowAppItems + '>Y</td><td class=text-right id=mindec' + rowAppItems + ' >' + thousands_separators(data[i].minimumdecreamentOn) + '</td><td id=decon' + rowAppItems + ' >' + decrementon + '</td><td class=hide id=deconval' + rowAppItems + ' >A</td><td class="text-right hide" id=LIP' + rowAppItems + '>' + thousands_separators(data[i].rfqLastInvoicePrice) + '</td><td class="itemclass text-right" id=itemdura' + rowAppItems + '>' + 10 + '</td><td id=maskL1' + rowAppItems + ' >' + ShowL1Price + '</td><td id=showstart' + rowAppItems + '>N</td><td class=text-right id=unitrate' + rowAppItems + ' >' + thousands_separators(data[i].poUnitRate) + '</td><td id=pono' + rowAppItems + ' >' + data[i].poNo + '</td><td id=povendorname' + rowAppItems + '>' + data[i].poVendorName + '</td><td id=podate' + rowAppItems + '>' + data[i].poDate + '</td><td class=text-right id=povalue' + rowAppItems + '>' + thousands_separators(data[i].poValue) + '</td><td class=hide id=pullrfqid' + rowAppItems + '>' + $('#hdnRfiRfqID').val() + '</td><td class=hide id=rfqparameterid' + rowAppItems + '>' + data[i].rfqParameterID + '</td></tr>');
+                    }
+                    else {
+                        jQuery("#tblServicesProduct").append('<tr id=trid' + rowAppItems + '><td>' + (rowAppItemsrno + 1) + '</td><td style="width:10%!important;"><a class="btn  btn-xs btn-success" onclick="editvalues(' + rowAppItems + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-xs btn-danger" onclick="deleterow(trid' + rowAppItems + ',tridPrev' + rowAppItems + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td style="width:20%!important;" id=itemcode' + rowAppItems + '>' + data[i].itemCode + '</td><td id=destinationport' + rowAppItems + '>' + data[i].rfqShortName + '</td><td class=hide>' + data[i].rfqDescription + '</td><td id=remarks' + rowAppItems + '>' + data[i].rfqRemark + '</td><td class=text-right id=TP' + rowAppItems + ' >' + thousands_separators(data[i].rfqTargetPrice) + '</td><td class=text-right id=quan' + rowAppItems + ' >' + thousands_separators(data[i].rfqQuantity) + '</td><td id=uom' + rowAppItems + ' >' + data[i].rfquom + '</td><td class=text-right id=CP' + rowAppItems + '>' + thousands_separators(data[i].rfqBidStartPrice) + '</td><td id=maskvendor' + rowAppItems + '>Y</td><td class=text-right id=mindec' + rowAppItems + ' >' + thousands_separators(data[i].minimumdecreamentOn) + '</td><td id=decon' + rowAppItems + ' >' + decrementon + '</td><td class=hide id=deconval' + rowAppItems + ' >A</td><td class="text-right hide" id=LIP' + rowAppItems + '>' + thousands_separators(data[i].rfqLastInvoicePrice) + '</td><td class="itemclass text-right" id=itemdura' + rowAppItems + ' >' + 10 + '</td><td id=maskL1' + rowAppItems + '>' + ShowL1Price + '</td><td id=showstart' + rowAppItems + '>N</td><td class=text-right id=unitrate' + rowAppItems + '>' + thousands_separators(data[i].poUnitRate) + '</td><td id=pono' + rowAppItems + ' >' + data[i].poNo + '</td><td id=povendorname' + rowAppItems + '>' + data[i].poVendorName + '</td><td id=podate' + rowAppItems + '>' + data[i].poDate + '</td><td class=text-right id=povalue' + rowAppItems + '>' + thousands_separators(data[i].poValue) + '</td><td class=hide id=pullrfqid' + rowAppItems + '>' + $('#hdnRfiRfqID').val() + '</td><td class=hide id=rfqparameterid' + rowAppItems + '>' + data[i].rfqParameterID + '</td></tr>');
+
+                    }
+                    $('#wrap_scroller').show();
+
+                    if (!jQuery("#tblServicesProductPrev thead").length) {
+
+                        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th>Item Code</th><th>Item/Service</th><th class=hide>Description</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Hide Target Price</th><th>Minimum Decrement</th><th>Decrement On</th><th class=hide>Last Invoice Price</th><th class=itemclass>Bid Duration (in mins)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                        jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + rowAppItems + '><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcodeprev' + rowAppItems + '>' + data[i].itemCode + '</td><td id=destinationportprev' + rowAppItems + '>' + data[i].rfqShortName + '</td><td class=hide>' + data[i].rfqDescription + '</td><td id=remarksprev' + rowAppItems + '>' + data[i].rfqRemark + '</td><td class=text-right id=TPprev' + rowAppItems + '>' + thousands_separators(data[i].rfqTargetPrice) + '</td><td class=text-right id=quanprev' + rowAppItems + '>' + thousands_separators(data[i].rfqQuantity) + '</td><td id=uomprev' + rowAppItems + '>' + data[i].rfquom + '</td><td class=text-right id=CPprev' + rowAppItems + ' >' + thousands_separators(data[i].rfqBidStartPrice) + '</td><td id=maskvendorprev' + rowAppItems + ' >Y</td><td class=text-right id=mindecprev' + rowAppItems + ' >' + thousands_separators(data[i].minimumdecreamentOn) + '</td><td id=deconprev' + rowAppItems + '>' + (decrementon||"") + '</td><td class=hide id=deconvalprev' + rowAppItems + ' >A</td><td class="text-right hide" id=LIPprev' + rowAppItems + ' >' + thousands_separators(data[i].rfqLastInvoicePrice) + '</td><td class="itemclass text-right" id=itemduraprev' + rowAppItems + ' >' + 10 + '</td><td id=maskL1prev' + rowAppItems + ' >' + ShowL1Price + '</td><td id=showstartprev' + rowAppItems + ' >N</td><td class=text-right id=unitrateprev' + rowAppItems + ' >' + thousands_separators(data[i].poUnitRate) + '</td><td id=ponoprev' + rowAppItems + ' >' + data[i].poNo + '</td><td id=povendornameprev' + rowAppItems + ' >' + data[i].poVendorName + '</td><td  id=podateprev' + rowAppItems + ' >' + data[i].poDate + '</td><td class=text-right id=povalueprev' + rowAppItems + ' >' + thousands_separators(data[i].poValue) + '</td><td class=hide id=pullrfqidprev' + rowAppItems + ' >' + $('#hdnRfiRfqID').val() + '</td><td class=hide id=rfqparameteridprev' + rowAppItems + ' >' + data[i].rfqParameterID + '</td></tr>');
+
+                        totalitemdurationstagger = parseInt(totalitemdurationstagger) + parseInt(0);
+
+                    } else {
+
+                        jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + rowAppItems + '><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcodeprev' + rowAppItems + ' >' + data[i].itemCode + '</td><td id=destinationportprev' + rowAppItems + '>' + data[i].rfqShortName + '</td><td class=hide>' + data[i].rfqDescription + '</td><td id=remarksprev' + rowAppItems + '>' + data[i].rfqRemark + '</td><td class=text-right id=TPprev' + rowAppItems + '>' + thousands_separators(data[i].rfqTargetPrice) + '</td><td class=text-right id=quanprev' + rowAppItems + '>' + thousands_separators(data[i].rfqQuantity) + '</td><td id=uomprev' + rowAppItems + '>' + data[i].rfquom + '</td><td class=text-right id=CPprev' + rowAppItems + ' >' + thousands_separators(data[i].rfqBidStartPrice) + '</td><td id=maskvendorprev' + rowAppItems + ' >Y</td><td class=text-right id=mindecprev' + rowAppItems + ' >' + thousands_separators(data[i].minimumdecreamentOn) + '</td><td id=deconprev' + rowAppItems + '>' + (decrementon || "") + '</td><td class=hide id=deconvalprev' + rowAppItems + ' >A</td><td class="text-right hide" id=LIPprev' + rowAppItems + ' >' + thousands_separators(data[i].rfqLastInvoicePrice) + '</td><td class="itemclass text-right" id=itemduraprev' + rowAppItems + ' >' + 10 + '</td><td id=maskL1prev' + rowAppItems + ' >' + ShowL1Price + '</td><td id=showstartprev' + rowAppItems + ' >N</td><td class=text-right id=unitrateprev' + rowAppItems + ' >' + thousands_separators(data[i].poUnitRate) + '</td><td id=ponoprev' + rowAppItems + ' >' + data[i].poNo + '</td><td id=povendornameprev' + rowAppItems + ' >' + data[i].poVendorName + '</td><td  id=podateprev' + rowAppItems + ' >' + data[i].poDate + '</td><td class=text-right id=povalueprev' + rowAppItems + ' >' + thousands_separators(data[i].poValue) + '</td><td class=hide id=pullrfqidprev' + rowAppItems + ' >' + $('#hdnRfiRfqID').val() + '</td><td class=hide id=rfqparameteridprev' + rowAppItems + ' >' + data[i].rfqParameterID + '</td></tr>');
+                        totalitemdurationstagger = parseInt(totalitemdurationstagger) + parseInt(0);
+
+                    }
+                 }
+                
+
+            }
+            else {
+                jQuery('#divalerterrpull').slideDown('show');
+                $('#spanerterrpull').text('No RFQ participation till now!!!')
+                setTimeout(function () {
+                    jQuery('#divalerterrpull').css('display', 'none');
+                }, 5000);
+                jQuery.unblockUI();
+                return false;
+            }
+
+        },
+        error: function (xhr) {
+            jQuery('#divalerterrpull').slideDown('show');
+            $('#spanerterrpull').text('You have error .Please try again after page refresh.')
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+
+            setTimeout(function () {
+                jQuery('#divalerterrpull').css('display', 'none');
+            }, 5000);
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+    });
+
+}
+
+
+function fetchRFIRFQSubjectforReport(subjectFor) {
+  
+    jQuery.ajax({
+        //url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchRFQSubjectforReport/?SubjectFor=" + subjectFor + "&Userid=..&CustomerID=" + sessionStorage.getItem('CustomerID'),//UserID =.. for fetch all RFQ
+        url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchRFQSubjectforReport/?SubjectFor=" + subjectFor + "&CustomerID=" + sessionStorage.getItem('CustomerID'),//UserID =.. for fetch all RFQ
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+        
+            sessionStorage.setItem('hdnRfiRfqSubject', JSON.stringify(data));
+        },
+        error: function (xhr) {
+            var err = xhr.responseText
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+        }
+    });
+
+}
+
+function FetchSAPPI() {
+    debugger
+    let PIId = $('#txtrfirfqsubject').val()
+    let CustomerID = parseInt(sessionStorage.getItem('CustomerID'))
+    console.log(sessionStorage.getItem("APIPath") + "SAPIntegration/FetchSAPPI/?PIId=" + PIId + "&CustomerID=" + CustomerID)
+    jQuery.ajax({
+        //url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchRFQSubjectforReport/?SubjectFor=" + subjectFor + "&Userid=..&CustomerID=" + sessionStorage.getItem('CustomerID'),//UserID =.. for fetch all RFQ
+        url: sessionStorage.getItem("APIPath") + "SAPIntegration/FetchSAPPI/?PIId=" + PIId + "&CustomerID=" + CustomerID,//UserID =.. for fetch all RFQ
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+
+            debugger
+            $('#RFQPullSAPModal').modal('hide');
+            if (data.length > 0) {
+                jQuery("#tblServicesProduct").empty();
+                jQuery("#tblServicesProductPrev").empty();
+                jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:10%!important;'></th><th  style='width:20%!important;'>Item Code</th><th>Item/Service</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remark</th><th>PO Number</th><th>VendorName</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th><th class='hide'></th></tr></thead>");
+                jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:10%!important;'></th><th  style='width:20%!important;'>Item Code</th><th>Item/Service</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remark</th><th>PO Number</th><th>VendorName</th><th>Unit Rate</th><th>PO No.</th><th> Vendor Name</th><th>unit rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+
+                for (var i = 0; i < data.length; i++) {
+                    var decrementon = ""
+
+
+
+                    // jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (i + 1) + '</td><td style="width:10%!important;"><a class="btn  btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td style="width:20%!important;" id=itemcode' + i + '>' + data[i].rfqItemCode + '</td><td id=destinationport' + i + '>' + data[i].rfqShortName + '</td><td>' + data[i].rfqTargetPrice + '</td><td class=text-right id=quan' + rowAppItems + ' >' + thousands_separators(data[i].rfQuantity) + '</td><td id=uom' + i + ' >' + data[i].rfqUomId + '</td><td id=desc' + i + ' >' + data[i].rfqDescription + '</td><td id=del' + i + ' >' + data[i].rfqDelivery + '</td><td id=tat' + i + ' >' + (data[i].tat || "") + '</td><td id=remark' + i + ' >' + (data[i].rfqRemark || "") + '</td><td id=po' + i + ' >' + (data[i].rfqPoNo || "") + '</td><td id=vname' + i + ' >' + (data[i].rfqVendorName || "") + '</td><td id=unitrate' + i + ' >' + (data[i].rfqUnitRate || "") + '</td><td id=podate' + i + ' >' + (data[i].rfqpoDate || "") + '</td><td id=povalue' + i + ' >' + (data[i].rfqpoValue || "") + '</td></tr>');
+
+                    jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (i + 1) + '</td><td style="width:10%!important;"><a class="btn  btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td style="width:20%!important;" id=itemcode' + i + '>' + data[i].rfqItemCode + '</td><td id=sname' + i + '>' + data[i].rfqShortName + '</td><td id=TP' + i + '>' + data[i].rfqTargetPrice + '</td><td class=text-right id=quan' + rowAppItems + ' >' + thousands_separators(data[i].rfQuantity) + '</td><td id=uom' + i + ' >' + data[i].rfqUomId + '</td><td id=desc' + i + ' >' + data[i].rfqDescription + '</td><td id=delivery' + i + ' >' + data[i].rfqDelivery + '</td><td id=tat' + i + ' >' + (data[i].tat || "") + '</td><td id=remarks' + i + ' >' + (data[i].rfqRemark || "") + '</td><td id=pono' + i + ' >' + (data[i].rfqPoNo || "") + '</td><td id=povname' + i + ' >' + (data[i].rfqVendorName || "") + '</td><td id=unitrate' + i + ' >' + (data[i].rfqUnitRate || "") + '</td><td id=podate' + i + ' >' + (data[i].rfqpoDate || "") + '</td><td id=povalue' + i + ' >' + (data[i].rfqpoValue || "") + '</td><td class="hide" id=parameterid' + i + ' >' + i + '</td></tr>');
+
+
+
+
+
+                    //  jQuery("#tblServicesProductPrev").append('<tr id=trid' + i + '><td>' + (i + 1) + '</td><td style="width:10%!important;"><a class="btn  btn-xs btn-success" onclick="editvalues(' + rowAppItems + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-xs btn-danger" onclick="deleterow(trid' + rowAppItems + ',tridPrev' + rowAppItems + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td style="width:20%!important;" id=itemcode' + i + '>' + data[i].rfqItemCode + '</td><td id=destinationport' + i + '>' + data[i].rfqShortName + '</td><td>' + data[i].rfqTargetPrice + '</td><td class=text-right id=quan' + rowAppItems + ' >' + thousands_separators(data[i].rfQuantity) + '</td><td id=uom' + i + ' >' + data[i].rfqUomId + '</td><td id=desc' + i + ' >' + data[i].rfqDescription + '</td><td id=del' + i + ' >' + data[i].rfqDelivery + '</td><td id=tat' + i + ' >' + (data[i].tat || "") + '</td><td id=remark' + i + ' >' + (data[i].rfqRemark || "") + '</td><td id=po' + i + ' >' + (data[i].rfqPoNo || "") + '</td><td id=vname' + i + ' >' + (data[i].rfqVendorName || "") + '</td><td id=unitrate' + i + ' >' + (data[i].rfqUnitRate || "") + '</td><td id=podate' + i + ' >' + (data[i].rfqpoDate || "") + '</td><td id=povalue' + i + ' >' + (data[i].rfqpoValue || "") + '</td></tr>');
+
+                    jQuery("#tblRFQPrev").append('<tr id=trid' + i + '><td>' + (i + 1) + '</td><td style="width:10%!important;"><a class="btn  btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td style="width:20%!important;" id=itemcode' + i + '>' + data[i].rfqItemCode + '</td><td id=sname' + i + '>' + data[i].rfqShortName + '</td><td id=TP' + i + '>' + data[i].rfqTargetPrice + '</td><td class=text-right id=quan' + rowAppItems + ' >' + thousands_separators(data[i].rfQuantity) + '</td><td id=uom' + i + ' >' + data[i].rfqUomId + '</td><td id=desc' + i + ' >' + data[i].rfqDescription + '</td><td id=delivery' + i + ' >' + data[i].rfqDelivery + '</td><td id=tat' + i + ' >' + (data[i].tat || "") + '</td><td id=remarks' + i + ' >' + (data[i].rfqRemark || "") + '</td><td id=pono' + i + ' >' + (data[i].rfqPoNo || "") + '</td><td id=povname' + i + ' >' + (data[i].rfqVendorName || "") + '</td><td id=unitrate' + i + ' >' + (data[i].rfqUnitRate || "") + '</td><td id=podate' + i + ' >' + (data[i].rfqpoDate || "") + '</td><td id=povalue' + i + ' >' + (data[i].rfqpoValue || "") + '</td><td class="hide" id=parameterid' + i + ' >' + i + '</td></tr>');
+
+
+
+
+
+
+
+                }
+
+
+
+                jQuery.unblockUI();
+                return true;
+
+            }
+            else {
+                jQuery('#divalerterrpull').slideDown('show');
+                $('#spanerterrpull').text('No RFQ participation till now!!!')
+                setTimeout(function () {
+                    jQuery('#divalerterrpull').css('display', 'none');
+                }, 5000);
+                jQuery.unblockUI();
+                return false;
+            }
+        },
+        error: function (xhr) {
+            debugger
+            var err = xhr.responseText
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+        }
+    });
+}
+
+/*function FetchSAPPI(Indent) {
+    debugger
+    let PIId = Indent
+    let CustomerID = parseInt(sessionStorage.getItem('CustomerID'))
+    console.log(sessionStorage.getItem("APIPath") + "SAPIntegration/FetchSAPPI/?PIId=" + PIId + "&CustomerID=" + CustomerID)
+    jQuery.ajax({
+        //url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchRFQSubjectforReport/?SubjectFor=" + subjectFor + "&Userid=..&CustomerID=" + sessionStorage.getItem('CustomerID'),//UserID =.. for fetch all RFQ
+        url: sessionStorage.getItem("APIPath") + "SAPIntegration/FetchSAPPI/?PIId=" + PIId + "&CustomerID=" + CustomerID,//UserID =.. for fetch all RFQ
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        async:false,
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+   
+            debugger
+            $('#RFQPullSAPModal').modal('hide');
+            if (data.length > 0) {
+                jQuery("#tblServicesProduct").empty();
+                jQuery("#tblServicesProductPrev").empty();
+                jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:10%!important;'></th><th  style='width:20%!important;'>Item Code</th><th>Item/Service</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remark</th><th>PO Number</th><th>VendorName</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th><th class='hide'></th></tr></thead>");
+                jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:10%!important;'></th><th  style='width:20%!important;'>Item Code</th><th>Item/Service</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remark</th><th>PO Number</th><th>VendorName</th><th>Unit Rate</th><th>PO No.</th><th> Vendor Name</th><th>unit rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+
+                for (var i = 0; i < data.length; i++) {
+                    var decrementon=""
+                    
+
+                       
+                   // jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (i + 1) + '</td><td style="width:10%!important;"><a class="btn  btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td style="width:20%!important;" id=itemcode' + i + '>' + data[i].rfqItemCode + '</td><td id=destinationport' + i + '>' + data[i].rfqShortName + '</td><td>' + data[i].rfqTargetPrice + '</td><td class=text-right id=quan' + rowAppItems + ' >' + thousands_separators(data[i].rfQuantity) + '</td><td id=uom' + i + ' >' + data[i].rfqUomId + '</td><td id=desc' + i + ' >' + data[i].rfqDescription + '</td><td id=del' + i + ' >' + data[i].rfqDelivery + '</td><td id=tat' + i + ' >' + (data[i].tat || "") + '</td><td id=remark' + i + ' >' + (data[i].rfqRemark || "") + '</td><td id=po' + i + ' >' + (data[i].rfqPoNo || "") + '</td><td id=vname' + i + ' >' + (data[i].rfqVendorName || "") + '</td><td id=unitrate' + i + ' >' + (data[i].rfqUnitRate || "") + '</td><td id=podate' + i + ' >' + (data[i].rfqpoDate || "") + '</td><td id=povalue' + i + ' >' + (data[i].rfqpoValue || "") + '</td></tr>');
+
+                    jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (i + 1) + '</td><td style="width:10%!important;"><a class="btn  btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td style="width:20%!important;" id=itemcode' + i + '>' + data[i].rfqItemCode + '</td><td id=sname' + i + '>' + data[i].rfqShortName + '</td><td id=TP' + i + '>' + data[i].rfqTargetPrice + '</td><td class=text-right id=quan' + rowAppItems + ' >' + thousands_separators(data[i].rfQuantity) + '</td><td id=uom' + i + ' >' + data[i].rfqUomId + '</td><td id=desc' + i + ' >' + data[i].rfqDescription + '</td><td id=delivery' + i + ' >' + data[i].rfqDelivery + '</td><td id=tat' + i + ' >' + (data[i].tat || "") + '</td><td id=remarks' + i + ' >' + (data[i].rfqRemark || "") + '</td><td id=pono' + i + ' >' + (data[i].rfqPoNo || "") + '</td><td id=povname' + i + ' >' + (data[i].rfqVendorName || "") + '</td><td id=unitrate' + i + ' >' + (data[i].rfqUnitRate || "") + '</td><td id=podate' + i + ' >' + (data[i].rfqpoDate || "") + '</td><td id=povalue' + i + ' >' + (data[i].rfqpoValue || "") + '</td><td class="hide" id=parameterid' + i + ' >' + i + '</td></tr>');
+                  
+                   
+
+
+                        
+                  //  jQuery("#tblServicesProductPrev").append('<tr id=trid' + i + '><td>' + (i + 1) + '</td><td style="width:10%!important;"><a class="btn  btn-xs btn-success" onclick="editvalues(' + rowAppItems + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-xs btn-danger" onclick="deleterow(trid' + rowAppItems + ',tridPrev' + rowAppItems + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td style="width:20%!important;" id=itemcode' + i + '>' + data[i].rfqItemCode + '</td><td id=destinationport' + i + '>' + data[i].rfqShortName + '</td><td>' + data[i].rfqTargetPrice + '</td><td class=text-right id=quan' + rowAppItems + ' >' + thousands_separators(data[i].rfQuantity) + '</td><td id=uom' + i + ' >' + data[i].rfqUomId + '</td><td id=desc' + i + ' >' + data[i].rfqDescription + '</td><td id=del' + i + ' >' + data[i].rfqDelivery + '</td><td id=tat' + i + ' >' + (data[i].tat || "") + '</td><td id=remark' + i + ' >' + (data[i].rfqRemark || "") + '</td><td id=po' + i + ' >' + (data[i].rfqPoNo || "") + '</td><td id=vname' + i + ' >' + (data[i].rfqVendorName || "") + '</td><td id=unitrate' + i + ' >' + (data[i].rfqUnitRate || "") + '</td><td id=podate' + i + ' >' + (data[i].rfqpoDate || "") + '</td><td id=povalue' + i + ' >' + (data[i].rfqpoValue || "") + '</td></tr>');
+                    
+                    jQuery("#tblRFQPrev").append('<tr id=trid' + i + '><td>' + (i + 1) + '</td><td style="width:10%!important;"><a class="btn  btn-xs btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></a>&nbsp;<a class="btn  btn-xs btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td style="width:20%!important;" id=itemcode' + i + '>' + data[i].rfqItemCode + '</td><td id=sname' + i + '>' + data[i].rfqShortName + '</td><td id=TP' + i + '>' + data[i].rfqTargetPrice + '</td><td class=text-right id=quan' + rowAppItems + ' >' + thousands_separators(data[i].rfQuantity) + '</td><td id=uom' + i + ' >' + data[i].rfqUomId + '</td><td id=desc' + i + ' >' + data[i].rfqDescription + '</td><td id=delivery' + i + ' >' + data[i].rfqDelivery + '</td><td id=tat' + i + ' >' + (data[i].tat || "") + '</td><td id=remarks' + i + ' >' + (data[i].rfqRemark || "") + '</td><td id=pono' + i + ' >' + (data[i].rfqPoNo || "") + '</td><td id=povname' + i + ' >' + (data[i].rfqVendorName || "") + '</td><td id=unitrate' + i + ' >' + (data[i].rfqUnitRate || "") + '</td><td id=podate' + i + ' >' + (data[i].rfqpoDate || "") + '</td><td id=povalue' + i + ' >' + (data[i].rfqpoValue || "") + '</td><td class="hide" id=parameterid' + i + ' >' + i + '</td></tr>');
+
+
+                   
+                  
+                   
+                   
+
+                }
+                
+
+                
+                jQuery.unblockUI();
+                return true;
+
+            }
+            else {
+                jQuery('#divalerterrpull').slideDown('show');
+                $('#spanerterrpull').text('No RFQ participation till now!!!')
+                setTimeout(function () {
+                    jQuery('#divalerterrpull').css('display', 'none');
+                }, 5000);
+                jQuery.unblockUI();
+                return false;
+            }
+        },
+        error: function (xhr) {
+            debugger
+            var err = xhr.responseText
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+        }
+    });
+}*/
+
+/*
+jQuery("#txtrfirfqsubject").typeahead({
+    source: function (query, process) {
+        debugger
+        Subject = ["1400000001", "1400000002", "1400000021", "1400000023", "1400000024", "1400000025", "1400000026", "1400000027", "1400000038", "1400000053", "1400000054"]
+        process(Subject);
+
+    },
+    minLength: 2,
+    updater: function (item) {
+        debugger
+        if (item != '0') {
+            FetchSAPPI(item)
+           
+        }
+        else {
+            gritternotification('Please Select RFQ properly!!!')
+            jQuery('#divalerterrpull').slideDown('show');
+            $('#spanerterrpull').text('Please Select RFQ properly!!!')
+
+            return false;
+            setTimeout(function () {
+                jQuery('#divalerterrpull').css('display', 'none');
+            }, 5000);
+        }
+
+        return item;
+    }
+
+});*/
+jQuery("#txtrfirfqsubject").keyup(function () {
+    $('#hdnRfiRfqID').val(0);
+
+});
+function fnpulldatafromRFQ() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    if ($('#hdnRfiRfqID').val() == "0") {
+
+        gritternotification('Please Select RFQ properly!!!')
+        jQuery('#divalerterrpull').slideDown('show');
+        $('#spanerterrpull').text('Please Select RFQ properly!!!')
+        setTimeout(function () {
+            jQuery('#divalerterrpull').css('display', 'none');
+        }, 2000);
+        jQuery.unblockUI();
+        return false;
+    }
+    else {
+        populatetablewithRFQData();
+    }
+}
+
+$('#RFQPullSAPModal').on("hidden.bs.modal", function () {
+
+    $('#txtrfirfqsubject').val("") 
+
+})

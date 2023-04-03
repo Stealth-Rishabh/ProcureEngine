@@ -404,7 +404,7 @@
                                                                                                     Tax Id <span class="required">*</span>
                                                                                                 </label>
                                                                                                 <div class="col-md-6">
-                                                                                                    <input type="text" class="form-control" placeholder="Enter Tax No." id="txtTINNo" name="txtTINNo" maxlength="15" onkeyup="extractPan(this)" autocomplete="off" />
+                                                                                                    <input type="text" class="form-control" placeholder="Enter Tax No." id="txtTINNo" name="txtTINNo" maxlength="15"  autocomplete="off" />
 
 
                                                                                                 </div>
@@ -548,6 +548,7 @@
                                                                                     <input type="hidden" value="0" id="hdnParticipantCode" />
                                                                                     <input type="hidden" value="0" id="hdnFlagType" />
                                                                                     <input type="hidden" value="" id="hdnChildID" />
+                                                                                    <input type="hidden" value="" id="hdnVendorCode" />
                                                                                     <div class="clearfix"></div>
 
                                                                                 </div>
@@ -1035,8 +1036,32 @@
                                                                                             <div class="col-md-4 labelcontrol">
                                                                                                 <div class="text-left" name="ddlCountrym" id="ddlCountrym" tabindex="4"></div>
                                                                                             </div>
+
+
                                                                                         </div>
                                                                                     </div>
+                                                                                    <div class="form-group">
+                                                                                        <div class="col-md-12">
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="country">
+                                                                                                Tax Type:
+                                                                                            </label>
+                                                                                            <div class="col-md-4 labelcontrol">
+                                                                                                <div class="text-left" name="txtTINTypemodal" id="txtTINTypemodal" tabindex="4"></div>
+                                                                                            </div>
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="country">
+                                                                                                Tax Type 2:
+                                                                                            </label>
+                                                                                            <div class="col-md-4 labelcontrol">
+                                                                                                <div class="text-left" name="txtTINTypemodal2" id="txtTINTypemodal2" tabindex="4"></div>
+                                                                                            </div>
+
+
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                  
+
+
 
                                                                                     <div class="form-group">
                                                                                         <div class="col-md-12">
@@ -1045,7 +1070,6 @@
                                                                                                     GST No.
                                                                                                 </label>
                                                                                                 <div class="col-md-4">
-
                                                                                                     <label type="text" class="control-label" id="txtTINNom" name="txtTINNom"></label>
                                                                                                 </div>
                                                                                             </span>
@@ -1213,6 +1237,20 @@
                                                                                 </div>
                                                                                 <div class="row" id="bankForm">
 
+                                                                                    <div class="form-group hide">
+                                                                                        <div class="col-md-12">
+                                                                                            <label class="col-md-2 control-label txtalignleft">
+                                                                                               Bank Country key
+                                                                                            </label>
+                                                                                            <div class="col-md-4">
+                                                                                                <label class="control-label" name="bankCountryKey" id="bankCountryKey"></label>
+
+                                                                                            </div>
+                                                                                           
+                                                                                        </div>
+                                                                                    </div>
+
+
                                                                                     <div class="form-group">
                                                                                         <div class="col-md-12">
                                                                                             <label class="col-md-2 control-label txtalignleft">
@@ -1303,121 +1341,13 @@
                                                                             </div>
                                                                         </div>
 
-                                                                        <div class="panel panel-default">
-                                                                            <div class="panel-heading">
-                                                                                <h4 class="panel-title">
-                                                                                    <a class="accordion-toggle active total-tab headingfont" data-toggle="collapse" data-parent="#accordion2" href="#collapse5">
-                                                                                        <span data-i18n="companydetails">User Specific Details</span>
-                                                                                        <div class="outer_wrap">
-                                                                                            <span class="progress-value" id="companyspan" name="companyspan"></span>
-                                                                                            <div class="cs_chart" id="company_chart" data-percent=""></div>
-                                                                                        </div>
-                                                                                    </a>
-                                                                                </h4>
-                                                                            </div>
-                                                                            <div id="collapse5" class="panel-collapse collapse">
-                                                                                <div class="panel-body">
-                                                                                    <div class="row">
 
-
-                                                                                        <div class="form-group">
-                                                                                            <div class="col-md-12">
-
-                                                                                                <label class="col-md-2 control-label txtalignleft" data-i18n="state">
-                                                                                                    SAP Vendor ID
-                                                                                                </label>
-                                                                                                <div class="col-md-4">
-
-                                                                                                    <label class="control-label" id="externalsourceid" name="externalsourceid" autocomplete="off" tabindex="1"></label>
-                                                                                                </div>
-                                                                                                <label class="col-md-2 control-label txtalignleft" data-i18n="state">
-                                                                                                    ARIBA Vendor ID
-                                                                                                </label>
-                                                                                                <div class="col-md-4">
-
-                                                                                                    <label class="control-label" id="extchsourceid" name="extchsourceid" autocomplete="off" tabindex="1"></label>
-                                                                                                </div>
-
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="form-group">
-                                                                                            <div class="col-md-12">
-
-                                                                                                <label class="col-md-2 control-label txtalignleft" data-i18n="state">
-                                                                                                    Vendor Account Group
-                                                                                                </label>
-                                                                                                <div class="col-md-4">
-                                                                                                    <select class="form-control" id="VendorAccGrp" name="VendorAccGrp">
-                                                                                                        
-
-                                                                                                    </select>
-
-                                                                                                </div>
-
-                                                                                                <label class="col-md-2 control-label txtalignleft" data-i18n="state">
-                                                                                                    Purchase ORG
-                                                                                                </label>
-                                                                                                <div class="col-md-4">
-                                                                                                    <select class="form-control" id="PORG" name="PORG">
-                                                                                                        
-
-                                                                                                    </select>
-
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-
-                                                                                        <div class="form-group">
-                                                                                            <div class="col-md-12">
-
-                                                                                                <label class="col-md-2 control-label txtalignleft" data-i18n="state">
-                                                                                                    Income terms
-                                                                                                </label>
-                                                                                                <div class="col-md-4">
-                                                                                                    <select class="form-control" id="Incoterm" name="Incoterm">
-                                                                                                       
-
-                                                                                                    </select>
-
-                                                                                                </div>
-                                                                                                <label class="col-md-2 control-label txtalignleft" data-i18n="state">
-                                                                                                    Schema Group
-                                                                                                </label>
-                                                                                                <div class="col-md-4">
-                                                                                                    <select class="form-control" id="SchemaGrp" name="SchemaGrp">
-                                                                                                        
-                                                                                                    </select>
-
-                                                                                                </div>
-
-                                                                                            </div>
-                                                                                        </div>
-
-
-                                                                                        <div class="fluid">
-                                                                                            <div class="col-md-offset-5 col-md-6">
-                                                                                                <br />
-                                                                                                <button type="button" class="btn btn-success" id="UpdateUserByDetail" onclick="UpdateUserByDetail()">
-                                                                                                    Update User Details
-                                                                                                </button>
-                                                                                            </div>
-
-                                                                                        </div>
-                                                                                    </div>
-
-
-
-                                                                                </div>
-
-                                                                            </div>
-
-                                                                        </div>
 
                                                                         <div class="panel panel-default">
                                                                             <div class="panel-heading">
                                                                                 <h4 class="panel-title">
                                                                                     <a class="accordion-toggle active total-tab headingfont" data-toggle="collapse" data-parent="#accordion2" href="#collapse6">
-                                                                                        <span data-i18n="companydetails">Financer Specific Details</span>
+                                                                                        <span data-i18n="companydetails">Tax Details</span>
                                                                                         <div class="outer_wrap">
                                                                                             <span class="progress-value" id="companyspan" name="companyspan"></span>
                                                                                             <div class="cs_chart" id="company_chart" data-percent=""></div>
@@ -1427,9 +1357,13 @@
                                                                             </div>
                                                                             <div id="collapse6" class="panel-collapse collapse">
                                                                                 <div class="panel-body">
+                                                                                    <div class="col-md-12 text-right">
+                                                                                        <button class="btn btn-xs btn-primary tooltips " type="button" id="btnPostToExternalSource" data-placement="top" data-original-title="Click here to post to SAP" onclick="PostToExternalSource()">
+                                                                                            <i class="fa fa-plus-circle"></i> Add to External Source
+                                                                                        </button>
+                                                                                    </div>
+                                                                                    <div class="clearfix"></div>
                                                                                     <div class="row">
-
-
                                                                                         <div class="form-group">
                                                                                             <div class="col-md-12">
 
@@ -1438,7 +1372,6 @@
                                                                                                 </label>
                                                                                                 <div class="col-md-4">
                                                                                                     <select class="form-control" id="CoCd" name="CoCd">
-                                                                                                       
                                                                                                     </select>
 
                                                                                                 </div>
@@ -1461,7 +1394,6 @@
                                                                                                 </label>
                                                                                                 <div class="col-md-4">
                                                                                                     <select class="form-control" id="PayTerm" name="PayTerm">
-                                                                                                        
                                                                                                     </select>
 
                                                                                                 </div>
@@ -1534,8 +1466,8 @@
                                                                                         <div class="fluid">
                                                                                             <div class="col-md-offset-5 col-md-6">
                                                                                                 <br />
-                                                                                                <button type="button" class="btn btn-success" id="UpdateFinancerByDetail" onclick="UpdateFinancerByDetail()">
-                                                                                                    Update Finance Details
+                                                                                                <button type="button" class="btn btn-success" id="UpdateFinancerByDetail" onclick="UpdateExternalSource()">
+                                                                                                    Update Tax Details
                                                                                                 </button>
                                                                                             </div>
 
@@ -1549,6 +1481,111 @@
                                                                             </div>
 
                                                                         </div>
+
+                                                                        <div class="panel panel-default">
+                                                                            <div class="panel-heading">
+                                                                                <h4 class="panel-title">
+                                                                                    <a class="accordion-toggle active total-tab headingfont" data-toggle="collapse" data-parent="#accordion2" href="#collapse5">
+                                                                                        <span data-i18n="companydetails"> SAP Details</span>
+                                                                                        <div class="outer_wrap">
+                                                                                            <span class="progress-value" id="companyspan" name="companyspan"></span>
+                                                                                            <div class="cs_chart" id="company_chart" data-percent=""></div>
+                                                                                        </div>
+                                                                                    </a>
+                                                                                </h4>
+                                                                            </div>
+                                                                            <div id="collapse5" class="panel-collapse collapse">
+                                                                                <div class="panel-body">
+                                                                                    <div class="row">
+
+
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-md-12">
+
+                                                                                                <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                    SAP Vendor ID
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+
+                                                                                                    <label class="control-label" id="externalsourceid" name="externalsourceid" autocomplete="off" tabindex="1"></label>
+                                                                                                </div>
+                                                                                                <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                    ARIBA Vendor ID
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+
+                                                                                                    <label class="control-label" id="extchsourceid" name="extchsourceid" autocomplete="off" tabindex="1"></label>
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-md-12">
+
+                                                                                                <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                    Vendor Account Group
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <select class="form-control" id="VendorAccGrp" name="VendorAccGrp">
+                                                                                                    </select>
+
+                                                                                                </div>
+
+                                                                                                <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                    Purchase ORG
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <select class="form-control" id="PORG" name="PORG">
+                                                                                                    </select>
+
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-md-12">
+
+                                                                                                <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                    Inco terms
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <select class="form-control" id="Incoterm" name="Incoterm">
+                                                                                                    </select>
+
+                                                                                                </div>
+                                                                                                <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                    Schema Group
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <select class="form-control" id="SchemaGrp" name="SchemaGrp">
+                                                                                                    </select>
+
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                        </div>
+
+
+                                                                                        <div class="fluid">
+                                                                                            <div class="col-md-offset-5 col-md-6">
+                                                                                                <br />
+                                                                                                <button type="button" class="btn btn-success" id="UpdateUserByDetail" onclick="UpdateExternalSource()">
+                                                                                                    Update SAP Details
+                                                                                                </button>
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    </div>
+
+
+
+                                                                                </div>
+
+                                                                            </div>
+
+                                                                        </div>
+
+
                                                                     </div>
 
 

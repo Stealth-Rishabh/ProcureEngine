@@ -888,22 +888,30 @@ function GetCountrySpecificMaster(CountryKey) {
         dataType: "json",
         success: function (data) {
            
-           
+            
             
             jQuery("#txtTINType").empty();
-            jQuery("#txtTINType").append(jQuery("<option></option>").val(0).html("Select"));
+            
             for (var i = 0; i < data.taxTypeMaster.length; i++) {
                 jQuery("#txtTINType").append(jQuery("<option></option>").val(data.taxTypeMaster[i].taxType).html(data.taxTypeMaster[i].description));
             }
-            jQuery("#txtTINType2").empty();
-            jQuery("#txtTINType2").append(jQuery("<option></option>").val(0).html("Select"));
-            for (var i = 0; i < data.taxTypeMaster.length; i++) {
-                jQuery("#txtTINType2").append(jQuery("<option></option>").val(data.taxTypeMaster[i].taxType).html(data.taxTypeMaster[i].description));
-            }
-
-            if (CountryKey = "IN") {
+            
+            debugger
+            if (CountryKey === "IN") {
+                $("#txtTINNo").attr("onchange", "extractPan(this)");
+                $("#txtPanNo").attr("disabled","disabled");
                 $("#txtTINType2").empty();
-                $("#txtTINType2").append(jQuery("<option></option>").val("PAN").html("India:PAN Number"));
+                $("#txtTINType2").append(jQuery("<option></option>").val("PAN").html("PAN Number"));
+            }
+            else {
+                jQuery("#txtTINType2").empty();
+                $("#txtTINNo").attr("onchange", "");
+                $("#txtPanNo").removeAttr("disabled");
+                
+                for (var i = 0; i < data.taxTypeMaster.length; i++) {
+                    jQuery("#txtTINType2").append(jQuery("<option></option>").val(data.taxTypeMaster[i].taxType).html(data.taxTypeMaster[i].description));
+                } 
+                afterTaxEnable()
             }
             
             $("#ddlState").empty();

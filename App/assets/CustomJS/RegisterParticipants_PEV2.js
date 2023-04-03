@@ -67,7 +67,14 @@ jQuery(document).ready(function () {
     $('#ddlpreferredTimem').select2().on('change', function () { $(this).valid(); });
     
     //***********
-  
+    if (window.location.search) {
+        debugger
+        var param = getUrlVars()["param"]
+        var decryptedstring = fndecrypt(param)
+        vendoridparam = getUrlVarsURL(decryptedstring)["VendorId"];
+        let tmpvendoridparam = parseInt(sessionStorage.getItem('CustomerID'))
+        fnViewDetails(tmpvendoridparam, vendoridparam)
+    }
  
 
     jQuery("#btnsumbit").click(function () {
@@ -2407,7 +2414,8 @@ function fetchVendorRegistrationDetails(custid, vendId) {
             let isactiveUser = parentData.isActive;
             $("#personname").text(parentData.vendorName)
             $("#personnamealt").text(parentData.contactPerson)
-
+            $("#hdnVendorCode").val(parentData.vendorCode) //hidden vendor code
+            
             $("#vendormobileno").text(parentData.mobileNo)
             $("#vendoraltmobileno").text(parentData.phone)
             $("#ddlCountryCdm").text(parentData.mobilePrefix)
@@ -2444,7 +2452,7 @@ function fetchVendorRegistrationDetails(custid, vendId) {
                     addrC = childData[i].address + " " + childData[i].city + " " + childData[i].state + " " + childData[i].country;
 
 
-                    $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendorModal(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].country || "") + "'\,\'" + (childData[i].state || "") + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].city || "") + "'\,\'" + (childData[i].childId || "") + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\,\'" + childData[i].countryKey + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Expand</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                    $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendorModal(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].country || "") + "'\,\'" + (childData[i].state || "") + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].city || "") + "'\,\'" + (childData[i].childId || "") + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-expand\"></i>Expand</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
                     $('#btnAddAnother').removeClass('hide');
 
                 }
@@ -2453,13 +2461,13 @@ function fetchVendorRegistrationDetails(custid, vendId) {
 
         },
         error: function (xhr, status, error) {
-           
+           debugger
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                fnErrorMessageText('spanerterr', '');
+                fnErrorMessageText('spanerterr', 'network error');
             }
             jQuery.unblockUI();
             return false;
@@ -2474,7 +2482,7 @@ function fetchVendorRegistrationDetails(custid, vendId) {
     }, 5000);
 }
 
-function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, country, state, prefferredTZ, city, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile, countryKey) {
+function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, country, state, prefferredTZ, city, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile, countryKey, taxIdType, taxIdType2) {
  
     $('#childDetailsForm').removeClass('hide')
     $("#bankaccordion").show()
@@ -2482,7 +2490,9 @@ function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dial
     $('#ddlCountrym').text(country)    
     $('#ddlStatem').text(state)
     $('#ddlCitym').text(city)
-
+    $('#txtTINTypemodal').text(taxIdType)
+    $('#txtTINTypemodal2').text(taxIdType2)
+    
 
         
     
@@ -2500,6 +2510,7 @@ function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dial
     jQuery("#txtcompanyemail").text(emailid);
     jQuery("#txtAlternateeMailID").text(alternateemailid);
     jQuery("#pincode").text(zipcode)
+    
 
     
 
@@ -2561,9 +2572,10 @@ function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dial
     $('#bankForm').hide();
     $('#financeform').hide();
     $("#txtTINNo").removeAttr("onchange");
+    jQuery("#hdnChildID").val(childid)
     
     GetFinancialDetail(parseInt(childid), parseInt(vendorid))
-    GetBankDetail(parseInt(childid))
+    GetBankDetail(parseInt(childid), customerid)
    
     GetCustomerSpecificMaster(customerid) //function defined in common.js
     GetCountrySpecificMaster(countryKey)  //function defined in common.js
@@ -2573,26 +2585,26 @@ function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dial
 }
 
 
-function GetBankDetail(ChildId) {
-    
-    console.log(sessionStorage.getItem("APIPath") + "VendorLCM/GetBankDetail/?ChildId=" + ChildId)
+function GetBankDetail(ChildId, customerid) {
+    debugger
+    console.log(sessionStorage.getItem("APIPath") + "VendorLCM/GetBankDetail/?ChildId=" + ChildId + "&CustomerId=" + customerid)
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "VendorLCM/GetBankDetail/?ChildId=" + ChildId,
+        url: sessionStorage.getItem("APIPath") + "VendorLCM/GetBankDetail/?ChildId=" + ChildId + "&CustomerId=" + customerid,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
         dataType: "json",
         success: function (childData) {
-          
+          debugger
             if (childData.length > 0) {
                 $('#tblGetBankDetail').empty();
                 $('#tblGetBankDetail').append("<thead><tr><th>Action</th><th>Bank Name</th><th>Account Number</th><th>IFSC Code</th></tr></thead><tbody>");
                 for (var i = 0; i < childData.length; i++) {
 
 
-                    $('#tblGetBankDetail').append("<tr><td><button type='button' class='btn btn-primary' onclick=\" expandBankDetail(\'" + childData[i].bankingId + "'\,\'" + childData[i].childId + "'\,\'" + childData[i].bankCountryKey + "'\,\'" + childData[i].bankRoutingNumber + "'\,\'" + childData[i].bankName + "'\,\'" + childData[i].cancelledCheckFile + "'\,\'" + childData[i].payTerm + "'\,\'" + childData[i].bankAccountNumber + "'\)\">Expand</button></td><td>" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "</td><td>" + childData[i].bankRoutingNumber + "</td></tr>")
+                    $('#tblGetBankDetail').append("<tr><td><button type='button' class='btn btn-xs btn-primary' onclick=\" expandBankDetail(\'" + childData[i].bankingId + "'\,\'" + childData[i].childId + "'\,\'" + childData[i].bankCountryKey + "'\,\'" + childData[i].bankRoutingNumber + "'\,\'" + childData[i].bankName + "'\,\'" + childData[i].cancelledCheckFile + "'\,\'" + childData[i].payTerm + "'\,\'" + childData[i].bankAccountNumber + "'\,\'" + childData[i].bankCountryKey + "'\)\">Expand</button></td><td>" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "</td><td>" + childData[i].bankRoutingNumber + "</td></tr>")
 
 
                 }
@@ -2622,7 +2634,7 @@ function GetBankDetail(ChildId) {
     });
 }
 
-function expandBankDetail(bankingId, childId, bankCountryKey, bankRoutingNumber, bankName, cancelledCheckFile, payTerm, bankAccountNumber) {
+function expandBankDetail(bankingId, childId, bankCountryKey, bankRoutingNumber, bankName, cancelledCheckFile, payTerm, bankAccountNumber, bankCountryKey) {
  
     $('#bankForm').show();
    
@@ -2630,6 +2642,7 @@ function expandBankDetail(bankingId, childId, bankCountryKey, bankRoutingNumber,
     jQuery("#bankaccount").text(bankAccountNumber)
     jQuery("#bankname").text(bankName)
     jQuery("#accountholder").text(jQuery("#vendorname").text())
+    jQuery("#bankCountryKey").text(bankCountryKey)
    
     
     $('#checkattach').html(cancelledCheckFile);
@@ -2736,78 +2749,6 @@ function fetchpayment() {
 }
 
 
-function UpdateExternalSource() {
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    var sourcedata = {
-        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-        "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
-        //"ParticipantName": jQuery("#ParticipantName").val(),
-        "ParticipantName": _cleanString,
-        //"Address": jQuery("#txtAddress").val(),
-        "Address": _cleanString2,
-        "CountryID": parseInt(jQuery("#ddlCountry option:selected").val()),
-        "CountryName": jQuery("#ddlCountry option:selected").text(),
-        "StateID": parseInt(jQuery("#ddlState option:selected").val()),
-        "StateName": jQuery("#ddlState option:selected").text(),
-        "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
-        "CityName": jQuery("#ddlCity option:selected").text(),
-        "ZipCode": jQuery("#txtZipCd").val(),
-        "PanNo": jQuery("#txtPanNo").val() || "",
-        "TinNo": jQuery("#txtTINNo").val(),
-        "DialingCodePhone": parseInt(jQuery("#ddlCountryCdPhone option:selected").val()),
-        "PhoneNo": jQuery("#txtPhoneNo").val(),
-        "CompanyEmail": jQuery("#txtcompanyemail").val().trim().toLowerCase(),
-        //New Check
-        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val()),
-        // "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val().attr("selected", "selected")) ,
-        "IsActive": status,
-        "UserID": sessionStorage.getItem('UserID'),
-        "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
-        "MobileNo": jQuery("#txtMobileNo").val(),
-        "ActionType": $('#hdnFlagType').val(),
-        "ContactPerson": $('#ContactName').val(),
-        "AlternateEmailID": $('#txtAlternateeMailID').val(),
-        "ProductCatID": InsertQuery,
-        "ProductCatIDList": ProductCatId,
-        "AssociatedVendorID": parseInt($('#hdnChildID').val()) || 0
-    };
-
-    console.log(sessionStorage.getItem("APIPath") + "VendorLCM/VendorRegistrationByUser/");
-    jQuery.ajax({
-
-        // url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RegParticpants_PEV2/",
-        url: sessionStorage.getItem("APIPath") + "VendorLCM/UpdateExternalSource/",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "POST",
-        async: false,
-        data: JSON.stringify(sourcedata),
-        contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
-
-
-            $("#hdnParticipantID").val(data.participantID)
-            $("#hdnParticipantCode").val(data.vendorCode)
-
-
-;
-            jQuery.unblockUI();
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('spanerterr', '');
-            }
-            jQuery.unblockUI();
-            return false;
-        }
-
-    })
-
-}
 
 
 function GetVendorExternalDetail(vendId, ChildId, CustId) {
@@ -2865,3 +2806,159 @@ $('#ddlState').on('change', function () {
    
     fetchCity(parseInt(stateidentity));
 });
+
+
+function UpdateExternalSource() {
+    debugger
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var sourcedata = {
+        "VendorId": parseInt(jQuery("#spnvendorcode").text()),
+        "ChildId": parseInt(jQuery("#hdnChildID").val()),
+        "ExternalSourceId": jQuery("#externalsourceid").text() || "",
+        "ExternalSource": "",
+        "VendorAccGrp": jQuery("#VendorAccGrp option:selected").val(),
+        "VendorSearchKey": $("#hdnVendorCode").val(),
+        "CoCd": jQuery("#CoCd option:selected").val(),
+        "ReconAcc": jQuery("ReconAcc").val(),
+        "PayTerm": jQuery("#PayTerm").val(),
+        "CheckDoubleInvoice": $('input[name="CheckDoubleInvoice"]').val(),
+        "WitholdingTaxType": "",
+        "SubjectToTds": jQuery("#SubjectToTds").text() || "",
+        "TypeOfRecepient": jQuery("#TypeOfRecepient").text() || "",
+        "WitholdingTaxCode": jQuery("#WitholdingTaxCode").text() || "",
+        "PORG": jQuery("#PORG option:selected").val(),
+        "Currency": "INR",
+        "Incoterm": jQuery("#Incoterm option:selected").val(),
+        "IncotermDescription": jQuery("#Incoterm option:selected").text(),
+        "SchemaGrp": jQuery("#SchemaGrp option:selected").val(),
+        "PartnerNumber": "",
+        "PartnerFunction": "",
+        "CustomerId": parseInt(sessionStorage.getItem('CustomerID')),
+    };
+
+    console.log(sessionStorage.getItem("APIPath") + "VendorLCM/UpdateExternalSource/");
+    jQuery.ajax({
+
+        // url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RegParticpants_PEV2/",
+        url: sessionStorage.getItem("APIPath") + "VendorLCM/UpdateExternalSource/?ActionType=Add",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "POST",
+        async: false,
+        data: JSON.stringify(sourcedata),
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+
+            debugger
+
+            ;
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+
+    })
+
+}
+
+
+
+function PostToExternalSource() {
+    debugger
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var sourcedata = {
+        "PARTNER":"",
+        "VGROUP": jQuery("#VendorAccGrp option:selected").val(),
+        "VEN_CLASS": "",
+        "KUNNR": "",
+        "NAME1": jQuery("#vendorname").text(), 
+        "NAME2": "",
+        "NAME3": "",
+        "SORT1": $("#hdnVendorCode").val(),
+        "STREET": "",
+        "STREET1": "",
+        "STREET2": "",
+        "CPOSTCODE": $("#pincode").text(),
+        "CITY1": $("#ddlCitym").text(),
+        "COUNTRY":$("#ddlCountrym").text(),
+        "REGION":$("#ddlStatem").text(),
+        "LANGU": "EN",
+        "LOCATION": "",
+        "TEL_NUM": jQuery("#vendoraltmobileno").text(),
+        "TEL_EXN": "",
+        "MOB_NUM": jQuery("#vendormobileno").text(),
+        "FAX_NUM": "",
+        "EMAIL": jQuery("#vendorEmailID").text(), 
+        "BVKID": "", 
+        "BANKS": jQuery("#bankCountryKey").text(), 
+        "BANKL": jQuery("#ifsccode").text(),
+        "BANKN": jQuery("#bankaccount").text(),
+        "BKONT": "",
+        "BUKRS": jQuery("#CoCd option:selected").val(), 
+        "AKONT": jQuery("ReconAcc").val(), 
+        "ZTERM": jQuery("#PayTerm").val(), 
+        "REPRF": $('input[name="CheckDoubleInvoice"]').val(),
+        "WITHT": jQuery("#WitholdingTaxType option:selected").val(),
+        "WT_SUBJCT": jQuery("#SubjectToTds").text() || "",
+        "QSREC": jQuery("#TypeOfRecepient").text() || "",
+        "WT_WITHCD":"",
+        "EKORG": jQuery("#PORG option:selected").val(),
+        "WAERS": "INR",
+        "INCO1": jQuery("#Incoterm option:selected").val(),
+        "INCO2_L": jQuery("#Incoterm option:selected").text(),
+        "INCO3_L":"",
+        "EKGRP": "",
+        "KALSK": jQuery("#SchemaGrp option:selected").val(), 
+        "TAXNUM1": jQuery("#txtTINTypemodal").text(),
+        "TAXTYP1": jQuery("#txtTINNom").text(), 
+        "J_1IPANNO": jQuery("#vendorpanno").text()||"",
+        "PARVW": "",
+        "LIFN2": "",
+        "VEND_CLASS":"",
+        "MINDK":"",
+        "ISEC": "",
+        "J_1ICSTNO":"",
+    };
+
+    console.log(sessionStorage.getItem("APIPath") + "VendorLCM/PostToExternalSource/");
+    jQuery.ajax({
+
+        // url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RegParticpants_PEV2/",
+        url: sessionStorage.getItem("APIPath") + "VendorLCM/PostToExternalSource/",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "POST",
+        async: false,
+        data: JSON.stringify(sourcedata),
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+
+            debugger
+
+            ;
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+
+    })
+
+}

@@ -605,9 +605,12 @@ function fetchReguestforQuotationDetails(RFQID) {
             if (RFQData[0].general[0].openQuotes == "Y") {
 
                 $('#openquote').hide()
+                $('#ctrlRFQOpenDates').hide()
+
             }
             else {
                 $('#openquote').show()
+                $('#ctrlRFQOpenDates').show()
             }
             jQuery('#refno').html(RFQData[0].general[0].rfqReference);
             jQuery('#txtRFQReference').html(RFQData[0].general[0].rfqReference)

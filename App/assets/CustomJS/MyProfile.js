@@ -1553,7 +1553,8 @@ function fetchMyProfileVendor() {
 //edit vendor
 
 function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile) {
-    
+
+    let customerid = parseInt(sessionStorage.getItem('CustomerID'));
     $("#filegst").hide()
     $("#filepan").hide()
     $('#childDetailsForm').removeClass('hide')
@@ -1627,9 +1628,8 @@ function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingco
     
     
     GetFinancialDetail(parseInt(childid))
-    GetBankDetail(parseInt(childid))
+    GetBankDetail(parseInt(childid), customerid,parseInt(vendorid))
         
-
 }
 
 
@@ -1910,26 +1910,44 @@ function UpdateBankDetail() {
 }
 
 
-function GetBankDetail(ChildId) {
-    
-    console.log(sessionStorage.getItem("APIPath") + "VendorLCM/GetBankDetail/?ChildId=" + ChildId)
+function GetBankDetail(ChildId, CustId, vendorid) {
+    debugger
+    console.log(sessionStorage.getItem("APIPath") + "VendorLCM/GetBankDetail/?ChildId=" + ChildId + "&CustomerId=" + CustId)
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "VendorLCM/GetBankDetail/?ChildId=" + ChildId,
+        url: sessionStorage.getItem("APIPath") + "VendorLCM/GetBankDetail/?ChildId=" + ChildId + "&CustomerId=" + CustId,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
         dataType: "json",
         success: function (childData) {
             debugger
+     
             if (childData.length > 0) {
                 $('#tblGetBankDetail').empty();
+               
+
                 $('#tblGetBankDetail').append("<thead><tr><th>Action</th><th>Bank Name</th><th>Account Number</th><th>IFSC Code</th></tr></thead><tbody>");
                 for (var i = 0; i < childData.length; i++) {
+                    
+                    $('#tblGetBankDetail').append("<tr onclick=''><td><button type='button' class='btn btn-xs btn-primary' onclick=\"editBankDetail('" + childData[i].bankingId + "','" + childData[i].childId + "','" + childData[i].bankCountryKey + "','" + childData[i].bankRoutingNumber + "','" + childData[i].bankName + "','" + childData[i].cancelledCheckFile + "','" + childData[i].payTerm + "','" + childData[i].bankAccountNumber + "')\">Edit</button><button type='button' class='btn btn-xs yellow' onclick=\"GetCustomerForBankMapping(\'" + vendorid + "','" + childData[i].childId + "','" + childData[i].bankingId + "'\)\">Map Customer</button></td><td class='hovertextLeft' data-hover='Click here to see associated customer with this bank account' onclick=\"viewbankcustomer(\'" + "accordion" + childData[i].bankingId + "'\)\">" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "</td><td>" + childData[i].bankRoutingNumber + "</td></tr>");
+                    if (childData[i].mappedCustomersList.length > 0) {
+                        $('#tblGetBankDetail').append("<tr style='display:none' class='accordion" + childData[i].bankingId + "'><th colspan='5'>Customer list</th></tr>");
 
+                    }
+                    else {
+                        $('#tblGetBankDetail').append("<tr style='display:none' class='accordion" + childData[i].bankingId + "'><th colspan='5'>No customer is associated with this bank account</th></tr>");
 
-                    $('#tblGetBankDetail').append("<tr><td><button type='button' class='btn btn-primary' onclick=\"editBankDetail(\'" + childData[i].bankingId + "'\,\'" + childData[i].childId + "'\,\'" + childData[i].bankCountryKey + "'\,\'" + childData[i].bankRoutingNumber + "'\,\'" + childData[i].bankName + "'\,\'" + childData[i].cancelledCheckFile + "'\,\'" + childData[i].payTerm + "'\,\'" + childData[i].bankAccountNumber + "'\)\">Edit</button></td><td>" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "</td><td>" + childData[i].bankRoutingNumber + "</td></tr>")
+                    }
+                    for (var j = 0; j < childData[i].mappedCustomersList.length; j++) {
+                       
+                        $('#tblGetBankDetail').append("<tr style='display:none' class='accordion" + childData[i].bankingId +"'><td colspan='5'>" + childData[i].mappedCustomersList[j].customerName + "</td><td class='hide'>" + childData[i].mappedCustomersList[j].mappingId + "</td><td class='hide'>" + childData[i].mappedCustomersList[j].bankingId + "</td><td class='hide'>" + childData[i].mappedCustomersList[j].associateVendorId + "</td><td class='hide'>" + childData[i].mappedCustomersList[j].customerId + "</td></tr>")
+
+                    }
+                    
+                    
+
 
 
                 }
@@ -1943,7 +1961,7 @@ function GetBankDetail(ChildId) {
             
         },
         error: function (xhr, status, error) {
-          
+            debugger
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -1958,6 +1976,9 @@ function GetBankDetail(ChildId) {
 
     });
 }
+
+
+
 
 function editBankDetail(bankingId, childId, bankCountryKey, bankRoutingNumber, bankName, cancelledCheckFile, payTerm, bankAccountNumber) {
  
@@ -2389,3 +2410,130 @@ function editPAN() {
     $("#filepan").show();
 }
 
+
+function viewbankcustomer(accordionname) {
+    debugger
+   
+    $('.'+accordionname).toggle();
+}
+
+
+function GetCustomerForBankMapping(vendid, ChildId, bankingId) {
+    debugger
+    $('#hdnBankingId').val(bankingId)
+    $('#hdnChildID').val(ChildId)
+
+    console.log(sessionStorage.getItem("APIPath") + "VendorLCM/GetCustomerForBankMapping/?Id=" + vendid + "&ChildId=" + ChildId)
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "VendorLCM/GetCustomerForBankMapping/?Id=" + vendid + "&ChildId=" + ChildId,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        dataType: "json",
+        success: function (data) {
+            debugger
+           
+            jQuery("#mapbankcustomer").empty();
+            jQuery("#mapbankcustomer").append(jQuery("<option></option>").val(0).html("Select"));
+            for (var i = 0; i < data.length; i++) {
+                jQuery("#mapbankcustomer").append(jQuery("<option></option>").val(data[i].customerId).html(data[i].customerName));
+            }
+            $('#bankcustomermap').show();
+           
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+}
+
+
+
+function UpdateBankMapping() {
+    if ($('#mapbankcustomer').val() === '0') {
+        debugger
+        jQuery("#errordiv1").show();
+        jQuery("#errordiv1").text("please select valid company to proceed further..");
+
+        setTimeout(function () {
+
+            jQuery("#errordiv1").hide();
+            jQuery("#errordiv1").text("");
+           
+
+        }, 2000)
+        return false;
+    }
+    debugger
+    let data = {
+        "AssociatedVendorId": parseInt($('#hdnChildID').val()),
+        "BankingId": parseInt($('#hdnBankingId').val()),
+        "VendorId": parseInt(sessionStorage.getItem('VendorId')),
+        "CustomerId": parseInt($('#mapbankcustomer').val()),        
+    }
+
+    console.log(APIPath + "VendorLCM/UpdateBankMapping/?Id=" + VendorId + "&ActionType=Add")
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        
+        url: APIPath + "VendorLCM/UpdateBankMapping",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+            if (data.isSuccess !== 0) {
+                
+                jQuery("#successdiv1").show();
+                jQuery("#successdiv1").text("Company is mapped successfully..");
+
+                setTimeout(function () {
+                    jQuery("#successdiv1").hide();
+                    jQuery("#successdiv1").text("");
+
+                }, 2000)
+            }
+            else {
+
+                jQuery("#errordiv1").show();
+                jQuery("#errordiv1").text(data.message);
+
+                setTimeout(function () {
+
+                    jQuery("#errordiv1").hide();
+                    jQuery("#errordiv1").text("");
+
+                }, 2000)
+            }
+            
+           
+        },
+        error: function (xhr, status, error) {
+            debugger
+            console.log("error")
+            jQuery.unblockUI();
+        }
+    });
+}
+
+
+function hideModal() {
+    debugger
+    $('.modal').hide();
+}

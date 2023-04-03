@@ -211,6 +211,7 @@ function fetNFAReport(dtfrom, dtto, subject) {
     var result = '';
     if ($("#ddlconfiguredby").select2('data').length) {
         $.each($("#ddlconfiguredby").select2('data'), function (key, item) {
+            debugger
             result = result + (item.id) + ','
 
         });
