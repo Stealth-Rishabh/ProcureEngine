@@ -26,16 +26,15 @@ function onloadcalls() {
             $('#bid').removeClass('page-sidebar-closed page-full-width');
         }
         else if (sessionStorage.getItem("UserType") == "V") {
-
-            
-          
+             debugger
             fetchMasters();
             prefferedTimezone();
             $('#ddlCountryCd').select2();
             $('#ddlCountryAltCd').select2();
             $('#ddlpreferredTime').select2();
-            setTimeout(function () { fetchMyProfileVendor()},500)  
-      
+            fetchMyProfileVendor()
+            fetchCountry()
+                    
         }
     }
     $(".thousand").inputmask({
@@ -1441,7 +1440,7 @@ function SendWhatsApp() {
 //myprofile changes based on email
 let VendorId = parseInt(sessionStorage.getItem('VendorId'));
 function fetchMyProfileVendor() {
-         
+         debugger
         let customerid = parseInt(sessionStorage.getItem('CustomerID'));
        
         jQuery.ajax({
@@ -1453,6 +1452,7 @@ function fetchMyProfileVendor() {
             cache: false,
             crossDomain: true,
             dataType: "json",
+            async:false,
             success: function (data) {
                debugger
                /* if (!data.isVendorPresent) {
@@ -1519,7 +1519,7 @@ function fetchMyProfileVendor() {
                         addrC = childData[i].address + " " + childData[i].city + " " + childData[i].state + " " + childData[i].country;
                        
                             
-                        $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityID || 33110) + "'\,\'" + (childData[i].childId || "") + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");                                               
+                        $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityID || 33110) + "'\,\'" + (childData[i].childId || "") + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");                                               
                         $('#btnAddAnother').removeClass('hide');
                         
                     }
@@ -1552,15 +1552,15 @@ function fetchMyProfileVendor() {
 
 //edit vendor
 
-function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile) {
-
+function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile, countryKey, taxIdType, taxIdType2) {
+    debugger
     let customerid = parseInt(sessionStorage.getItem('CustomerID'));
     $("#filegst").hide()
     $("#filepan").hide()
     $('#childDetailsForm').removeClass('hide')
     $("#bankaccordion").show()
     $("#financeaccordion").show()
-    $('#ddlCountry').val(countryid).trigger('change')
+    $('#ddlCountry').val(countryKey).trigger('change')
     setTimeout(function () {
         $('#ddlState').val(stateid).trigger('change')
     }, 500)
@@ -1633,71 +1633,8 @@ function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingco
 }
 
 
-//abheedev tax specification
-var taxjsondata;
-
-function getTaxData() {
-    return new Promise(function (resolve, reject) {
-        $.getJSON("assets/CustomJSON/taxdetail.json", function (data) {
-            if (data) {
-                resolve(data);
-            } else {
-                reject(new Error("Failed to load data"));
-            }
-        });
-    });
-}
-
-getTaxData().then(function (data) {
-
-    taxjsondata = data;
-    $('#ddlCountry').on('change', function () {
 
 
-
-        let selectedValue = $(this).val() || "111";
-        updateForm(taxjsondata, selectedValue);
-    });
-
-}).catch(function (error) {
-    console.error(error);
-});
-
-
-function updateForm(data, selectedValue) {
-   
-    for (var i = 0; i < data.countries.length; i++) {
-        if (data.countries[i].countryid === selectedValue) {
-            var country = data.countries[i];
-
-            $(".tax-group").empty();
-            $.each(country.formFields, function (i, field) {
-                $(".tax-group").append('<label class="col-md-2 control-label">' + field.label + '<span class="required">*</span></label><div class="col-md-4"><input class="form-control"   id="txtTINNo" minlength="' + field.minlength + '" maxlength="' + field.maxlength + '" type="' + field.type + '" placeholder="' + field.placeholder + '"/></div>');
-            });
-            if (data.countries[i].countryid === "111") {
-                $("#txtTINNo").attr("onchange", "extractPan(this)");
-                $(".pan-group").show();
-                $("#pangroup").show();
-                $(".pan-group").append('<label class="col-md-2 control-label"> PAN No.<span class="required">*</span> </label><div class="col-md-4"><input type="text" class="form-control" placeholder="Enter PAN No." id="vendorpanno" name="vendorpanno" maxlength="10" /></div>');
-            }
-            else {
-                $("#txtTINNo").attr("onchange", "validateTaxInternational(this)");
-                $(".pan-group").empty().hide();
-                $("#pangroup").hide();
-            }
-            break;
-        }
-        else {
-            //  var country = data.countries[i];
-
-            $(".tax-group").empty();
-            $(".tax-group").append('<label class="col-md-2 control-label">' + "Federal TAX No" + '<span class="required">*</span></label><div class="col-md-4"><input class="form-control" id="txtTINNo" minlength="' + 10 + '" maxlength="' + 15 + '" type="' + "text" + '" placeholder="' + "Enter Your Country Tax Identification Number" + '"/></div>');
-            $("#txtTINNo").attr("onchange", "validateTaxInternational(this)");
-            $(".pan-group").empty().hide();
-            $("#pangroup").hide();
-        }
-    }
-}
 
 //update contact detail
 function updateVendorContactDetails() {
@@ -2537,3 +2474,25 @@ function hideModal() {
     debugger
     $('.modal').hide();
 }
+
+
+//fetchcountrywise tax
+
+
+$('#ddlCountry').on('change', function () {
+    debugger
+    let CountryKey = $(this).val();
+
+    GetCountrySpecificMaster(CountryKey)
+
+}
+)
+
+
+$('#ddlState').on('change', function () {
+    debugger
+    let stateidentity = $('option:selected', this).data('stateid');
+    console.log(stateidentity);
+
+    fetchCity(parseInt(stateidentity));
+});
