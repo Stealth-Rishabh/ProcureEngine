@@ -299,7 +299,7 @@
                                                                                             Mobile No
                                                                                         </label>
                                                                                         <div class="col-md-2">
-                                                                                            <select id="ddlCountryAltCd" name="ddlCountryAltCd" class="form-control">
+                                                                                            <select id="ddlCountryCdPhone" name="ddlCountryCdPhone" class="form-control">
                                                                                                 <option Value="">Select</option>
                                                                                             </select>
                                                                                         </div>
@@ -399,31 +399,32 @@
                                                                                                 <label class="col-md-2 control-label txtalignleft" data-i18n="country">
                                                                                                     Country
                                                                                                 </label>
+                                                                                                <div class="col-md-4 coun_stat_city_select">
+                                                                                                    <select class="form-control" name="ddlCountry" id="ddlCountry" tabindex="4"></select>
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-md-12">
+                                                                                                <label class="col-md-2 control-label" id="taxlabel">
+                                                                                                    Tax Type <span class="required">*</span>
+                                                                                                </label>
                                                                                                 <div class="col-md-4">
-                                                                                                    <select class="form-control" name="ddlCountry"  id="ddlCountry" tabindex="4"></select>
+                                                                                                    <select class="form-control" name="txtTINType" id="txtTINType" tabindex="4">
+                                                                                                    </select>
+
+                                                                                                </div>
+                                                                                                <label class="col-md-2 control-label" id="taxlabel">
+                                                                                                    Tax Type 2
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <select class="form-control" name="txtTINType2" id="txtTINType2" tabindex="4">
+                                                                                                    </select>
+
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
-                                                                                         <div class="form-group">
-                                                                                             <div class="col-md-12">
-                                                                                                 <label class="col-md-2 control-label" id="taxlabel">
-                                                                                                     Tax Type <span class="required">*</span>
-                                                                                                 </label>
-                                                                                                 <div class="col-md-4">
-                                                                                                     <select class="form-control" name="txtTINType" id="txtTINType" tabindex="4">
-                                                                                                     </select>
-
-                                                                                                 </div>
-                                                                                                 <label class="col-md-2 control-label" id="taxlabel">
-                                                                                                     Tax Type 2 
-                                                                                                 </label>
-                                                                                                 <div class="col-md-4">
-                                                                                                     <select class="form-control" name="txtTINType2" id="txtTINType2" tabindex="4">
-                                                                                                     </select>
-
-                                                                                                 </div>
-                                                                                             </div>
-                                                                                         </div>
 
                                                                                         <div class="form-group">
                                                                                             <div class="col-md-12">
@@ -541,16 +542,18 @@
                                                                                                 <label class="col-md-2 control-label" data-i18n="state">
                                                                                                     State
                                                                                                 </label>
-                                                                                                <div class="col-md-4">
-                                                                                                    <select class="form-control" name="ddlState" id="ddlState"  tabindex="4"></select>
+                                                                                                <div class="col-md-4 coun_stat_city_select">
+                                                                                                    <select class="form-control" name="ddlState" id="ddlState" tabindex="4"></select>
+
                                                                                                 </div>
+
                                                                                                 <label class="col-md-2 control-label txtalignleft">
                                                                                                     City
                                                                                                 </label>
-                                                                                                <div class="col-md-4">
+                                                                                                <div class="col-md-4 coun_stat_city_select">
                                                                                                     <select class="form-control" name="ddlCity" id="ddlCity" tabindex="4"></select>
-
                                                                                                 </div>
+
                                                                                             </div>
                                                                                         </div>
 
@@ -567,8 +570,25 @@
                                                                                                         <option value="3" data-i18n="both">Both</option>
                                                                                                     </select>
                                                                                                 </div>
+                                                                                                <label class="col-md-2 control-label" data-i18n="language">
+                                                                                                    Language
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <select class="form-control" id="ddllanguage" name="ddllanguage">
+                                                                                                    </select>
+                                                                                                </div>
 
 
+                                                                                             
+
+
+                                                                                            </div>
+                                                                                        </div>
+
+
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-md-12">
+                                                                                                
                                                                                                 <div class="inputgroup">
                                                                                                     <label class="col-md-2 control-label txtalignleft">
                                                                                                         MSME
@@ -585,7 +605,6 @@
 
                                                                                             </div>
                                                                                         </div>
-
                                                                                         <div class="form-group hideInput hide">
                                                                                             <div class="col-md-12">
                                                                                                 <div class="inputgroup hideInput hide">

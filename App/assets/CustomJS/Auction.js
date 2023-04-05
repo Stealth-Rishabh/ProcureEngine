@@ -551,14 +551,14 @@ function replaceQuoutesFromString(ele) {
     str = str.replace(/"/g, '');
    
     str = str.replace(/#/g, '');
-    str = str.replace(/&/g, '');
+    //str = str.replace(/&/g, '');
   
 
     str = str.replace(/~/g, '');
     str = str.replace(/`/g, '');
     str = str.replace(/</g, '');
     str = str.replace(/>/g, '');
-    str = str.replace(/_/g, '');
+   // str = str.replace(/_/g, '');
     str = str.replace(/^/g, '');
     ele.value = str;
     //return val;
@@ -576,7 +576,7 @@ function replaceQuoutesFromStringFromExcel(ele) {
         str = ele.replace(/`/g, '');
         str = ele.replace(/</g, '');
         str = ele.replace(/>/g, '');
-        str = ele.replace(/_/g, '');
+       // str = ele.replace(/_/g, '');
         str = ele.replace(/^/g, '');
     }
 
@@ -599,7 +599,7 @@ function replaceQuoutesFromText(ele) {
     str = str.replace(/`/g, '');
     str = str.replace(/</g, '');
     str = str.replace(/>/g, '');
-    str = str.replace(/_/g, '');
+   // str = str.replace(/_/g, '');
     str = str.replace(/,/g, '');
     str = str.replace(/^/g, '');
     ele.value = str;
