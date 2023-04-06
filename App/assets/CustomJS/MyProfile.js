@@ -2171,10 +2171,14 @@ function AddAssociateVendorDetail() {
         "TaxIdFile": gstfilename,
         "TaxId2File": panfilename,
         "MSMEFile": msmefilename,
-        "CityId": parseInt(jQuery("#ddlCity option:selected").val()),
-        "StateId": parseInt(jQuery("#ddlState option:selected").val()),
-        "CountryId": parseInt(jQuery("#ddlCountry option:selected").val())||parseInt(111),
         "SupplierType": jQuery("#ddlVendorType option:selected").val(),
+        "CityId": parseInt(jQuery("#ddlCity option:selected").val()),
+        "StateId": parseInt(jQuery("#ddlState option:selected").data('stateid')),
+        "CountryId": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
+        "SupplierType": jQuery("#ddlVendorType option:selected").val(),
+        "CountryKey": jQuery("#ddlCountry option:selected").val(),
+        "RegionKey": jQuery("#ddlState option:selected").val(),
+        "Langu": jQuery("#ddllanguage option:selected").val(),
 
     }
     console.log(sessionStorage.getItem("APIPath") + "VendorLCM/AddAssociateVendorDetail/?Id=" + VendorId)
@@ -2239,9 +2243,6 @@ function cleanAddChild() {
     $("#accountholder").val('');
 
     $('#txtTINNo').removeAttr('disabled');
-    $('#vendorpanno').removeAttr('disabled');
-    $('#vendorname').removeAttr('disabled');
-    $("#ddlNatureEstaiblishment").removeAttr('disabled');
     $("#ddlCountry").removeAttr('disabled');
 
     $("#ddlState").val('0').trigger('change');
@@ -2309,7 +2310,7 @@ function ValidateGST(data) {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-        
+           
             if (data.status != 'E') {
                 var data = jQuery.parseJSON(data);
                 let panNumber = ""
@@ -2338,7 +2339,7 @@ function ValidateGST(data) {
                 Metronic.scrollTo($('.alert-danger'), -200);
                 $('.alert-danger').fadeOut(5000);
                 $('.alert-danger').html('')
-                beforeTaxDisable()
+               
 
             }
 
