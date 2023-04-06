@@ -549,6 +549,8 @@
                                                                                     <input type="hidden" value="0" id="hdnFlagType" />
                                                                                     <input type="hidden" value="" id="hdnChildID" />
                                                                                     <input type="hidden" value="" id="hdnVendorCode" />
+                                                                                    <input type="hidden" value="Add" id="hdnExternalActionTypeFinancer"/>
+                                                                                    <input type="hidden" value="Add" id="hdnExternalActionTypeUser"/>
                                                                                     <div class="clearfix"></div>
 
                                                                                 </div>
@@ -1059,7 +1061,7 @@
                                                                                         </div>
                                                                                     </div>
 
-                                                                                  
+
 
 
 
@@ -1204,6 +1206,24 @@
                                                                                                 </label>
                                                                                                 <div class="col-md-4">
                                                                                                     <label class="control-label" name="ddlMSME" id="ddlMSME"></label>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <div class="col-md-12">
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="suppliertype">
+                                                                                                Language
+                                                                                            </label>
+                                                                                            <div class="col-md-4">
+                                                                                                <label class="control-label" name="ddllanguagemodal" id="ddllanguagemodal"></label>
+                                                                                            </div>
+                                                                                            <div class="inputgroup">
+                                                                                                <label class="col-md-2 control-label txtalignleft">
+                                                                                                   Currency
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <label class="control-label" name="ddlcurrencymodal" id="ddlcurrencymodal"></label>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -1357,12 +1377,7 @@
                                                                             </div>
                                                                             <div id="collapse6" class="panel-collapse collapse">
                                                                                 <div class="panel-body">
-                                                                                    <div class="col-md-12 text-right">
-                                                                                        <button class="btn btn-xs btn-primary tooltips " type="button" id="btnPostToExternalSource" data-placement="top" data-original-title="Click here to post to SAP" onclick="PostToExternalSource()">
-                                                                                            <i class="fa fa-plus-circle"></i> Add to External Source
-                                                                                        </button>
-                                                                                    </div>
-                                                                                    <div class="clearfix"></div>
+                                                                                   
                                                                                     <div class="row">
                                                                                         <div class="form-group">
                                                                                             <div class="col-md-12">
@@ -1424,10 +1439,7 @@
                                                                                                 </label>
                                                                                                 <div class="col-md-4">
                                                                                                     <select class="form-control" id="WitholdingTaxType" name="WitholdingTaxType">
-                                                                                                        <option value="0" data-i18n="select">Select</option>
-                                                                                                        <option value="AB" data-i18n="xyz">194</option>
-                                                                                                        <option value="AC" data-i18n="abc">194A</option>
-                                                                                                        <option value="C0" data-i18n="def">194C</option>
+                                                                                                        
                                                                                                     </select>
 
                                                                                                 </div>
@@ -1466,7 +1478,7 @@
                                                                                         <div class="fluid">
                                                                                             <div class="col-md-offset-5 col-md-6">
                                                                                                 <br />
-                                                                                                <button type="button" class="btn btn-success" id="UpdateFinancerByDetail" onclick="UpdateExternalSource()">
+                                                                                                <button type="button" class="btn btn-success" id="UpdateFinancerByDetail" onclick="UpdateExternalSourceFinancer()">
                                                                                                     Update Tax Details
                                                                                                 </button>
                                                                                             </div>
@@ -1496,6 +1508,14 @@
                                                                             </div>
                                                                             <div id="collapse5" class="panel-collapse collapse">
                                                                                 <div class="panel-body">
+
+                                                                                    <div class="col-md-12 text-right">
+                                                                                        <button class="btn btn-xs btn-primary tooltips " type="button" id="btnPostToExternalSource" data-placement="top" data-original-title="Click here to post to SAP" onclick="PostToExternalSource()">
+                                                                                            <i class="fa fa-plus-circle"></i> Add to External Source
+                                                                                        </button>
+                                                                                    </div>
+                                                                                    <div class="clearfix"></div>
+
                                                                                     <div class="row">
 
 
@@ -1569,7 +1589,7 @@
                                                                                         <div class="fluid">
                                                                                             <div class="col-md-offset-5 col-md-6">
                                                                                                 <br />
-                                                                                                <button type="button" class="btn btn-success" id="UpdateUserByDetail" onclick="UpdateExternalSource()">
+                                                                                                <button type="button" class="btn btn-success" id="UpdateUserByDetail" onclick="UpdateExternalSourceUser()">
                                                                                                     Update SAP Details
                                                                                                 </button>
                                                                                             </div>

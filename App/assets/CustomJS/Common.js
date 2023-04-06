@@ -826,7 +826,7 @@ function GetCustomerSpecificMaster(CustId) {
 
 //KDSMaster / GetCountrySpecificMaster = string CountryKey
 function GetCustomerSpecificMaster(CustId) {
-  
+  debugger
     console.log(sessionStorage.getItem("APIPath") + "KDSMaster/GetCustomerSpecificMaster/?Id=" + CustId)
     jQuery.ajax({
         type: "GET",
@@ -837,7 +837,16 @@ function GetCustomerSpecificMaster(CustId) {
         cache: false,
         dataType: "json",
         success: function (data) {
-            
+            debugger
+
+            //vendor account group
+            jQuery("#WitholdingTaxType").empty();
+            jQuery("#WitholdingTaxType").append(jQuery("<option value='0' data-subjectToTDS='0' data-typeOfReceipt='0' data-witholdingTaxCode='0'>Select</option>"));
+            for (var i = 0; i < data.witholdingTax.length; i++) {
+                jQuery("#WitholdingTaxType").append(jQuery("<option value='" + data.witholdingTax[i].witholdingTaxType + "'  data-subjectToTDS='" + data.witholdingTax[i].subjectToTDS + "'   data-typeOfReceipt='" + data.witholdingTax[i].typeOfReceipt + "'  data-witholdingTaxCode='" + data.witholdingTax[i].witholdingTaxCode + "'>" + data.witholdingTax[i].description + "</option>"));
+            }
+           
+           
             //vendor account group
             jQuery("#VendorAccGrp").empty();
             jQuery("#VendorAccGrp").append(jQuery("<option></option>").val(0).html("Select"));
@@ -853,7 +862,7 @@ function GetCustomerSpecificMaster(CustId) {
           
             //income term
             jQuery("#Incoterm").empty();
-            jQuery("#Incoterm").append(jQuery("<option></option>").val(0).html("Select"));
+           
             for (var i = 0; i < data.incoTerm.length; i++) {
                 jQuery("#Incoterm").append(jQuery("<option></option>").val(data.incoTerm[i].incoTerms).html(data.incoTerm[i].description));
             }
@@ -897,19 +906,35 @@ function GetCustomerSpecificMaster(CustId) {
 }
 
 function GetCountrySpecificMaster(CountryKey) {
-
-    console.log(sessionStorage.getItem("APIPath") + "KDSMaster/GetCountrySpecificMaster/?CountryKey=" + CountryKey)
+    debugger
+    console.log(sessionStorage.getItem("APIPath") +"KDSMaster/GetCountrySpecificMaster/?CountryKey=" + CountryKey)
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "KDSMaster/GetCountrySpecificMaster/?CountryKey=" + CountryKey,
+        url: sessionStorage.getItem("APIPath") +"KDSMaster/GetCountrySpecificMaster/?CountryKey="+CountryKey,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
         dataType: "json",
         async:false,
         success: function (data) {
-           
+            debugger
+
+
+            //currency
+            jQuery("#ddlcurrency").empty();
+            jQuery("#ddlcurrency").append(jQuery("<option></option>").val(0).html("Select Currency"));
+            for (var i = 0; i < data.currency.length; i++) {
+                jQuery("#ddlcurrency").append(jQuery("<option></option>").val(data.currency[i].currency).html(data.currency[i].longText));
+            }
+            
+
+            //currency
+            jQuery("#currencyFiscalupdate").empty();
+            jQuery("#currencyFiscalupdate").append(jQuery("<option></option>").val(0).html("Select Currency"));
+            for (var i = 0; i < data.currency.length; i++) {
+                jQuery("#currencyFiscalupdate").append(jQuery("<option></option>").val(data.currency[i].currency).html(data.currency[i].longText));
+            }
             
             //language
             jQuery("#ddllanguage").empty();
@@ -961,7 +986,7 @@ function GetCountrySpecificMaster(CountryKey) {
 
         },
         error: function (xhr, status, error) {
-        
+            debugger
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
