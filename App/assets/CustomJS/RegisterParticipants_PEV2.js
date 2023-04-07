@@ -365,7 +365,7 @@ function RegisterParticipants() {
         }, 5000);
     }
 
-    
+    debugger
     var RegisterParticipants = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),        
@@ -2798,6 +2798,8 @@ function GetVendorExternalDetail(vendId, ChildId, CustId) {
 
             }
             
+            $("#hdnSourceId").val(data.sourceId);
+            
             $('#CoCd').val(data.coCd).trigger('change')
             $('#PayTerm').val(data.payTerm).trigger('change')
             $('#WitholdingTaxType').val(data.witholdingTaxType).trigger('change')
@@ -2881,6 +2883,7 @@ function UpdateExternalSourceFinancer() {
         "PartnerNumber": "",
         "PartnerFunction": "",
         "CustomerId": parseInt(sessionStorage.getItem('CustomerID')),
+        "SourceId": parseInt($("#hdnSourceId").val()) ,
     };
 
     console.log(sessionStorage.getItem("APIPath") + "VendorLCM/UpdateExternalSource/");
@@ -2894,15 +2897,15 @@ function UpdateExternalSourceFinancer() {
         data: JSON.stringify(sourcedata),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+            debugger
 
             $('.alert-success').html('Your data is updated successfully...')
             $('.alert-success').show();
-            Metronic.scrollTo($('.alert-success'), -200);
+           // Metronic.scrollTo($('.alert-success'), -200);
             $('.alert-success').fadeOut(5000);
             $('.alert-success').html('');
             jQuery.unblockUI();
-            setTimeout(function () { location.reload() }, 1000)
+           // setTimeout(function () { location.reload() }, 1000)
 
             
 
@@ -2951,6 +2954,7 @@ function UpdateExternalSourceUser() {
         "PartnerNumber": "",
         "PartnerFunction": "",
         "CustomerId": parseInt(sessionStorage.getItem('CustomerID')),
+        "SourceId": parseInt($("#hdnSourceId").val()),
     };
 
     console.log(sessionStorage.getItem("APIPath") + "VendorLCM/UpdateExternalSource/");
@@ -2964,15 +2968,15 @@ function UpdateExternalSourceUser() {
         data: JSON.stringify(sourcedata),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+            debugger
            
             $('.alert-success').html('Your data is updated successfully...')
             $('.alert-success').show();
-            Metronic.scrollTo($('.alert-success'), -200);
+            //Metronic.scrollTo($('.alert-success'), -200);
             $('.alert-success').fadeOut(5000);
             $('.alert-success').html('');
             jQuery.unblockUI();
-            setTimeout(function () { location.reload() }, 1000)
+            //setTimeout(function () { location.reload() }, 1000)
 
         },
         error: function (xhr, status, error) {
