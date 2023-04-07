@@ -1317,7 +1317,6 @@ function ConfigureBidInsPefaTab1() {
 function ConfigureBidInsPefaTab2() {
 
 
-
     var targetPrice;
     var lastInvoiceprice = 0;
     var mininc = 0; i = 0;
@@ -1343,10 +1342,10 @@ function ConfigureBidInsPefaTab2() {
                 if ($.trim($('#LIPrice' + i).text()) != '') {
                     lastInvoiceprice = removeThousandSeperator($.trim($('#LIPrice' + i).text()));
                 }
-
-                var _cleanString3 = StringEncodingMechanism($.trim($('#shortname' + i).html()));
-
-
+              
+              
+                var _cleanString3 = StringEncodingMechanism($.trim($('#shortname' + i).text()));
+            
                 tab2Items = {
                     "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
                     //"ItemName": $.trim($('#shortname' + i).html()),
@@ -1389,8 +1388,11 @@ function ConfigureBidInsPefaTab2() {
                 if ($.trim($('#minincrement' + i).text()) != '') {
                     mininc = $.trim($('#minincrement' + i).text())
                 }
-
-                var _cleanString4 = StringEncodingMechanism($.trim($('#shortname' + i).html()));
+               
+                
+               
+                var _cleanString4 = StringEncodingMechanism($.trim($('#shortname' + i).text()));
+              
                 tab2Items = {
                     "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
                     //"ItemName": $.trim($('#shortname' + i).html()),
@@ -1414,7 +1416,7 @@ function ConfigureBidInsPefaTab2() {
         }
     }
 
-
+  
     var Tab2data = {
         "ProductDetails": PriceDetails,
         "bidID": parseInt(sessionStorage.getItem('CurrentBidID')),
@@ -1426,7 +1428,7 @@ function ConfigureBidInsPefaTab2() {
     //alert(JSON.stringify(Tab2data))
     console.log(JSON.stringify(Tab2data))
     jQuery.ajax({
-
+     
         type: "POST",
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/ConfigureBidInsPefaTab2/",
@@ -1436,6 +1438,7 @@ function ConfigureBidInsPefaTab2() {
         data: JSON.stringify(Tab2data),
         dataType: "json",
         success: function (data) {
+         
             if (parseInt(data) > 0) {
 
                 return true;

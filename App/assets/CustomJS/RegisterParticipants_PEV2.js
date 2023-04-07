@@ -68,7 +68,7 @@ jQuery(document).ready(function () {
     
     //***********
     if (window.location.search) {
-        debugger
+     
         var param = getUrlVars()["param"]
         var decryptedstring = fndecrypt(param)
         vendoridparam = getUrlVarsURL(decryptedstring)["VendorId"];
@@ -328,7 +328,7 @@ var FormValidation = function () {
 
 
 function RegisterParticipants() {
-   
+   debugger
     var _cleanString = StringEncodingMechanism(jQuery("#ParticipantName").val());
     var _cleanString2 = StringEncodingMechanism(jQuery("#txtAddress").val());
 
@@ -412,7 +412,7 @@ function RegisterParticipants() {
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
 
-          debugger
+            debugger
             $("#hdnParticipantID").val(data.participantID)
             $("#hdnParticipantCode").val(data.vendorCode)
 
@@ -1224,7 +1224,7 @@ jQuery("#ParticipantName").typeahead({
 });
 //abheedev bug 590
 function validatePanNumber(pan) {
-    debugger
+
     clearform();
     beforeTaxDisable();
     $("#ddlpreferredTime").select2("val", "");
@@ -1348,7 +1348,7 @@ function fnfetchfoundVendors() {
                         //AssociatedVendorID = childData[i].childId;
                         addr1 = (childData[i].address1 || "").replace(/\n/g, " ");                   
                         addr2 = (childData[i].address2 || "").replace(/\n/g, " ");
-                        taxIdNo = childData[i].taxIdType + " " + childData[i].taxId;
+                        taxIdNo =  childData[i].taxId;
                         addrC = childData[i].address + " " + childData[i].city + " " + childData[i].state + " " + childData[i].country;
                         if (parentData.action == "Extend") {
                             disableParent()
@@ -1833,7 +1833,7 @@ function fetchCountry() {
         async: false,
         dataType: "json",
         success: function (data) {
-            debugger
+           
             $("#ddlCountry").empty();
             $("#ddlCountryCd").empty();
             $("#ddlCountryCdPhone").empty();
@@ -1959,7 +1959,7 @@ function fetchCountry() {
 }*/
 
 function fetchCity(stateid) {
-    debugger
+  
     if (stateid == null) {
         stateid = 0;
     }    
@@ -1974,7 +1974,7 @@ function fetchCity(stateid) {
         async: false,
         dataType: "json",
         success: function (data) {
-            debugger
+          
             $("#ddlCity").empty();
             if (data.length > 0) {
                 $("#ddlCity").append("<option value=0>Select City</option>");
@@ -2157,7 +2157,7 @@ function extractPan(data) {
 }*/
 
 function ValidateGST(data) {
-
+    debugger
     let GSTNo = data
     console.log(sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo);
     jQuery.ajax({
@@ -2166,8 +2166,9 @@ function ValidateGST(data) {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            debugger
-            if (data.status != 'E') {
+          debugger
+            if (status != 'E') {
+                debugger
                 var data = jQuery.parseJSON(data);
                 let panNumber = ""
                 let legalName= data.legalName
@@ -2394,7 +2395,7 @@ function fetchVendorRegistrationDetails(custid, vendId) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-             debugger
+           
             /* if (!data.isVendorPresent) {
                  $("#hdnFlagType").val("New")
                  $('#divVendorForm').removeClass('hide')
@@ -2448,11 +2449,11 @@ function fetchVendorRegistrationDetails(custid, vendId) {
                     //AssociatedVendorID = childData[i].childId;
                     addr1 = (childData[i].address1 || "").replace(/\n/g, " ");
                     addr2 = (childData[i].address2 || "").replace(/\n/g, " ");
-                    taxIdNo = childData[i].taxIdType + " " + childData[i].taxId;
+                    taxIdNo = childData[i].taxId;
                     addrC = childData[i].address + " " + childData[i].city + " " + childData[i].state + " " + childData[i].country;
 
 
-                    $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendorModal(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].country || "") + "'\,\'" + (childData[i].state || "") + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].city || "") + "'\,\'" + (childData[i].childId || "") + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-expand\"></i>Expand</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                    $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendorModal(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].country || "") + "'\,\'" + (childData[i].state || "") + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].city || "") + "'\,\'" + (childData[i].childId || "") + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\,\'"  + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-expand\"></i>Expand</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
                     $('#btnAddAnother').removeClass('hide');
 
                 }
@@ -2461,7 +2462,7 @@ function fetchVendorRegistrationDetails(custid, vendId) {
 
         },
         error: function (xhr, status, error) {
-           debugger
+         
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -2482,8 +2483,8 @@ function fetchVendorRegistrationDetails(custid, vendId) {
     }, 5000);
 }
 
-function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, country, state, prefferredTZ, city, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile, countryKey, taxIdType, taxIdType2) {
- 
+function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, country, state, prefferredTZ, city, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile, taxIdType, taxIdType2, regionKey, countryKey, Langu, currency) {
+    clearexternal()
     $('#childDetailsForm').removeClass('hide')
     $("#bankaccordion").show()
     $("#financeaccordion").show()
@@ -2494,7 +2495,8 @@ function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dial
     $('#txtTINTypemodal2').text(taxIdType2)
     
 
-        
+    $('#ddllanguagemodal').text(Langu)
+    $('#ddlcurrencymodal').text(currency)   
     
     
 
@@ -2586,7 +2588,7 @@ function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dial
 
 
 function GetBankDetail(ChildId, customerid) {
-    debugger
+  
     console.log(sessionStorage.getItem("APIPath") + "VendorLCM/GetBankDetail/?ChildId=" + ChildId + "&CustomerId=" + customerid)
     jQuery.ajax({
         type: "GET",
@@ -2597,7 +2599,7 @@ function GetBankDetail(ChildId, customerid) {
         cache: false,
         dataType: "json",
         success: function (childData) {
-          debugger
+      
             if (childData.length > 0) {
                 $('#tblGetBankDetail').empty();
                 $('#tblGetBankDetail').append("<thead><tr><th>Action</th><th>Bank Name</th><th>Account Number</th><th>IFSC Code</th></tr></thead><tbody>");
@@ -2762,10 +2764,56 @@ function GetVendorExternalDetail(vendId, ChildId, CustId) {
         data: "{}",
         cache: false,
         dataType: "json",
-        success: function (childData) {
-            debugger
+        success: function (data) {
+            debugger 
 
+            if (!data) {
+                jQuery("#hdnExternalActionTypeUser").val("Add");
+                jQuery("#hdnExternalActionTypeFinancer").val("Add");
+                $("#btnPostToExternalSource").hide();
+                return false
+
+            }
+            if (data.coCd !== 0 || data.vendorAccGrp !== "0") {
+                jQuery("#hdnExternalActionTypeFinancer").val("Update");
+                jQuery("#hdnExternalActionTypeUser").val("Update")
+            }
+            else {
+                jQuery("#hdnExternalActionTypeFinancer").val("Add");
+                jQuery("#hdnExternalActionTypeUser").val("Add");
+            }
+
+           
             
+
+            if (data.partnerNumber == "") {
+                $("#btnPostToExternalSource").show();
+                
+            }
+            else {
+
+                $("#btnPostToExternalSource").hide();
+                $("#externalsourceid").text(data.partnerNumber);
+
+
+            }
+            
+            $("#hdnSourceId").val(data.sourceId);
+            
+            $('#CoCd').val(data.coCd).trigger('change')
+            $('#PayTerm').val(data.payTerm).trigger('change')
+            $('#WitholdingTaxType').val(data.witholdingTaxType).trigger('change')
+            $('#VendorAccGrp').val(data.vendorAccGrp).trigger('change')
+            $('#PORG').val(data.porg).trigger('change')
+            $('#Incoterm').val(data.incoterm).trigger('change')
+            $('#SchemaGrp').val(data.schemaGrp).trigger('change')
+
+            $('#SubjectToTds').text(data.subjectToTds)
+            $('#TypeOfRecepient').text(data.typeOfRecepient)
+            $('#WitholdingTaxCode').text(data.witholdingTaxCode)
+
+            $('#ReconAcc').val(data.reconAcc)
+            $('#uniform-CheckDoubleInvoice' + data.checkDoubleInvoice).find('span').addClass('checked');
 
             jQuery.unblockUI();
             
@@ -2800,7 +2848,7 @@ $('#ddlCountry').on('change', function () {
 
 
 $('#ddlState').on('change', function () {
-    debugger
+  
     let stateidentity = $('option:selected', this).data('stateid');
     console.log(stateidentity);
    
@@ -2808,8 +2856,80 @@ $('#ddlState').on('change', function () {
 });
 
 
-function UpdateExternalSource() {
+function UpdateExternalSourceFinancer() {
     debugger
+    let externalactiontype = jQuery("#hdnExternalActionTypeFinancer").val();
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var sourcedata = {
+        "VendorId": parseInt(jQuery("#spnvendorcode").text()),
+        "ChildId": parseInt(jQuery("#hdnChildID").val()),
+        "ExternalSourceId": jQuery("#externalsourceid").text() || "",
+        "ExternalSource": "",
+        "VendorAccGrp": jQuery("#VendorAccGrp option:selected").val(),
+        "VendorSearchKey": $("#hdnVendorCode").val(),
+        "CoCd": jQuery("#CoCd option:selected").val(),
+        "ReconAcc": jQuery("#ReconAcc").val(),
+        "PayTerm": jQuery("#PayTerm").val(),
+        "CheckDoubleInvoice": $('input[name="CheckDoubleInvoice"]').val(),
+        "WitholdingTaxType": jQuery("#WitholdingTaxType option:selected").val()||"0",
+        "SubjectToTds": jQuery("#WitholdingTaxType option:selected").data('subjecttotds') || "0",
+        "TypeOfRecepient": jQuery("#WitholdingTaxType option:selected").data('typeofreceipt') || "0",
+        "WitholdingTaxCode": jQuery("#WitholdingTaxType option:selected").data('witholdingtaxcode') || "0",
+        "PORG": jQuery("#PORG option:selected").val(),
+        "Currency": jQuery("#ddlcurrencymodal").text(), 
+        "Incoterm": jQuery("#Incoterm option:selected").val(),
+        "IncotermDescription": jQuery("#Incoterm option:selected").text(),
+        "SchemaGrp": jQuery("#SchemaGrp option:selected").val(),
+        "PartnerNumber": "",
+        "PartnerFunction": "",
+        "CustomerId": parseInt(sessionStorage.getItem('CustomerID')),
+        "SourceId": parseInt($("#hdnSourceId").val()) ,
+    };
+
+    console.log(sessionStorage.getItem("APIPath") + "VendorLCM/UpdateExternalSource/");
+    jQuery.ajax({
+
+        // url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RegParticpants_PEV2/",
+        url: sessionStorage.getItem("APIPath") + "VendorLCM/UpdateExternalSource/?ActionType=" + externalactiontype,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "POST",
+        async: false,
+        data: JSON.stringify(sourcedata),
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+            debugger
+
+            $('.alert-success').html('Your data is updated successfully...')
+            $('.alert-success').show();
+           // Metronic.scrollTo($('.alert-success'), -200);
+            $('.alert-success').fadeOut(5000);
+            $('.alert-success').html('');
+            jQuery.unblockUI();
+           // setTimeout(function () { location.reload() }, 1000)
+
+            
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+
+    })
+
+}
+
+function UpdateExternalSourceUser() {
+    debugger
+    let externalactiontype = jQuery("#hdnExternalActionTypeUser").val();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var sourcedata = {
         "VendorId": parseInt(jQuery("#spnvendorcode").text()),
@@ -2834,24 +2954,30 @@ function UpdateExternalSource() {
         "PartnerNumber": "",
         "PartnerFunction": "",
         "CustomerId": parseInt(sessionStorage.getItem('CustomerID')),
+        "SourceId": parseInt($("#hdnSourceId").val()),
     };
 
     console.log(sessionStorage.getItem("APIPath") + "VendorLCM/UpdateExternalSource/");
     jQuery.ajax({
 
         // url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RegParticpants_PEV2/",
-        url: sessionStorage.getItem("APIPath") + "VendorLCM/UpdateExternalSource/?ActionType=Add",
+        url: sessionStorage.getItem("APIPath") + "VendorLCM/UpdateExternalSource/?ActionType=" + externalactiontype,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "POST",
         async: false,
         data: JSON.stringify(sourcedata),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
             debugger
-
-            ;
+           
+            $('.alert-success').html('Your data is updated successfully...')
+            $('.alert-success').show();
+            //Metronic.scrollTo($('.alert-success'), -200);
+            $('.alert-success').fadeOut(5000);
+            $('.alert-success').html('');
             jQuery.unblockUI();
+            //setTimeout(function () { location.reload() }, 1000)
+
         },
         error: function (xhr, status, error) {
 
@@ -2869,6 +2995,7 @@ function UpdateExternalSource() {
     })
 
 }
+
 
 
 
@@ -2904,7 +3031,7 @@ function PostToExternalSource() {
         "BANKN": jQuery("#bankaccount").text(),
         "BKONT": "",
         "BUKRS": jQuery("#CoCd option:selected").val(), 
-        "AKONT": jQuery("ReconAcc").val(), 
+        "AKONT": jQuery("#ReconAcc").val(), 
         "ZTERM": jQuery("#PayTerm").val(), 
         "REPRF": $('input[name="CheckDoubleInvoice"]').val(),
         "WITHT": jQuery("#WitholdingTaxType option:selected").val(),
@@ -2941,10 +3068,14 @@ function PostToExternalSource() {
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
 
-            debugger
-
-            ;
+            $('.alert-success').html('Your data is updated successfully...')
+            $('.alert-success').show();
+            Metronic.scrollTo($('.alert-success'), -200);
+            $('.alert-success').fadeOut(5000);
+            $('.alert-success').html('');
             jQuery.unblockUI();
+            setTimeout(function () { location.reload() }, 1000)
+
         },
         error: function (xhr, status, error) {
 
@@ -2960,5 +3091,27 @@ function PostToExternalSource() {
         }
 
     })
+
+}
+
+
+function clearexternal() {   
+    //taxdetails
+    $("#CoCd").val('0').trigger('change');
+    $("#PayTerm").val('0').trigger('change');
+    $("#WitholdingTaxType").val('0').trigger('change');
+    $("#ReconAcc").val('');
+    $("#TypeOfRecepient").text('');
+    $("#SubjectToTds").text('');
+    $("#WitholdingTaxCode").text('');
+
+    
+    $("#externalsourceid").text('');
+    $("#extchsourceid").text('');
+    $("#VendorAccGrp").val('0').trigger('change');
+    $("#Incoterm").val('CFR').trigger('change');
+    $("#PORG").val('0').trigger('change');
+    $("#SchemaGrp").val('0').trigger('change');
+    $('#uniform-CheckDoubleInvoiceY').find('span').addClass('checked');
 
 }

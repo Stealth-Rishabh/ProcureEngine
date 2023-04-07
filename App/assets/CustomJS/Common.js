@@ -278,10 +278,11 @@ function fetchCountry() {
         async: false,
         dataType: "json",
         success: function (data) {
-            debugger
+          
             $("#ddlCountry").empty();
             $("#ddlCountryCd").empty();
             $("#ddlCountryCdPhone").empty();
+        
             var vlal = new Array();
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
@@ -289,11 +290,13 @@ function fetchCountry() {
                     $("#ddlCountryCd").append(jQuery("<option></option>").val(data[i].countryID).html(data[i].dialingCode));
                     $("#ddlCountryCdPhone").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
                 }
-
-                $("#ddlCountry").val('IN').trigger("change");
-
+            
+               // $("#ddlCountry").val('IN').trigger("change");
+            
                 $("#ddlCountryCd").val('111');
+              
                 $("#ddlCountryCdPhone").val('111');
+               
 
 
 
@@ -326,7 +329,7 @@ function fetchCountry() {
         cache: false,
         dataType: "json",
         success: function (data) {
-
+        
             let lstTZ = JSON.parse(data[0].jsondata);
 
             jQuery("#ddlpreferredTime").empty();
@@ -357,7 +360,7 @@ function fetchCountry() {
     });
 }
 function fetchState() {
-    debugger
+
     var countryid = $('#ddlCountry option:selected').val();
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
@@ -371,17 +374,20 @@ function fetchState() {
         dataType: "json",
         success: function (data) {
             $("#ddlState").empty();
-            if (data.length > 0) {
+            if (data.stateAndRegion.length > 0) {
 
                 $("#ddlState").append("<option value=0>Select State</option>");
-                for (var i = 0; i < data.length; i++) {
-                    $("#ddlState").append("<option value=" + data[i].stateID + ">" + data[i].stateName + "</option>");
+                for (var i = 0; i < data.stateAndRegion.length; i++) {
+                    $("#ddlState").append("<option value='" + data.stateAndRegion[i].regionKey + "' data-stateid='" + data.stateAndRegion[i].stateID + "'>" + data.stateAndRegion[i].stateName + "</option>");
+
                 }
-                //   $("#ddlState").trigger("change");
+             
+
             }
             else {
                 $("#ddlState").append('<tr><td>No state found..</td></tr>');
             }
+
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
@@ -400,9 +406,11 @@ function fetchState() {
     });
 }
 
-function fetchCity() {
-
-    var stateid = $('#ddlState').val();
+function fetchCity(stateid) {
+ 
+    if (stateid == null) {
+        stateid = 0;
+    }
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
@@ -414,13 +422,14 @@ function fetchCity() {
         async: false,
         dataType: "json",
         success: function (data) {
+          
             $("#ddlCity").empty();
             if (data.length > 0) {
                 $("#ddlCity").append("<option value=0>Select City</option>");
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlCity").append("<option value=" + data[i].cityID + ">" + data[i].cityName + "</option>");
                 }
-                //   $("#ddlCity").val('0').trigger("change");
+                $("#ddlCity").val('0').trigger("change");
             }
             else {
                 $("#ddlCity").append('<tr><td>No city found..</td></tr>');
@@ -441,6 +450,7 @@ function fetchCity() {
 
     });
 }
+
 
 function fetchProduct() {
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -518,8 +528,8 @@ function fetchMasters() {
         cache: false,
         dataType: "json",
         success: function (data) {
-            $("#ddlCountry").empty();
-
+            /*$("#ddlCountry").empty();
+            debugger
             if (data.result.lstCountry.length > 0) {
 
                 for (var i = 0; i < data.result.lstCountry.length; i++) {
@@ -532,7 +542,8 @@ function fetchMasters() {
             }
             else {
                 $("#ddlCountry").append('<tr><td>No countries found..</td></tr>');
-            }
+            }*/
+
 
 
             $("#ddlTypeofProduct").empty();
@@ -780,7 +791,7 @@ function isNumeric(str) {
 
 //sap master related apis
 function GetCustomerSpecificMaster(CustId) {
-    debugger
+   
     console.log(sessionStorage.getItem("APIPath") + "KDSMaster/GetCustomerSpecificMaster/?Id=" +CustId)
     jQuery.ajax({
         type: "GET",
@@ -791,12 +802,12 @@ function GetCustomerSpecificMaster(CustId) {
         cache: false,
         dataType: "json",
         success: function (childData) {
-            debugger
+        
             jQuery.unblockUI();
 
         },
         error: function (xhr, status, error) {
-            debugger
+           
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -815,7 +826,7 @@ function GetCustomerSpecificMaster(CustId) {
 
 //KDSMaster / GetCountrySpecificMaster = string CountryKey
 function GetCustomerSpecificMaster(CustId) {
-    debugger
+  debugger
     console.log(sessionStorage.getItem("APIPath") + "KDSMaster/GetCustomerSpecificMaster/?Id=" + CustId)
     jQuery.ajax({
         type: "GET",
@@ -826,7 +837,16 @@ function GetCustomerSpecificMaster(CustId) {
         cache: false,
         dataType: "json",
         success: function (data) {
-            
+            debugger
+
+            //vendor account group
+            jQuery("#WitholdingTaxType").empty();
+            jQuery("#WitholdingTaxType").append(jQuery("<option value='0' data-subjectToTDS='0' data-typeOfReceipt='0' data-witholdingTaxCode='0'>Select</option>"));
+            for (var i = 0; i < data.witholdingTax.length; i++) {
+                jQuery("#WitholdingTaxType").append(jQuery("<option value='" + data.witholdingTax[i].witholdingTaxType + "'  data-subjectToTDS='" + data.witholdingTax[i].subjectToTDS + "'   data-typeOfReceipt='" + data.witholdingTax[i].typeOfReceipt + "'  data-witholdingTaxCode='" + data.witholdingTax[i].witholdingTaxCode + "'>" + data.witholdingTax[i].description + "</option>"));
+            }
+           
+           
             //vendor account group
             jQuery("#VendorAccGrp").empty();
             jQuery("#VendorAccGrp").append(jQuery("<option></option>").val(0).html("Select"));
@@ -842,7 +862,7 @@ function GetCustomerSpecificMaster(CustId) {
           
             //income term
             jQuery("#Incoterm").empty();
-            jQuery("#Incoterm").append(jQuery("<option></option>").val(0).html("Select"));
+           
             for (var i = 0; i < data.incoTerm.length; i++) {
                 jQuery("#Incoterm").append(jQuery("<option></option>").val(data.incoTerm[i].incoTerms).html(data.incoTerm[i].description));
             }
@@ -869,7 +889,7 @@ function GetCustomerSpecificMaster(CustId) {
 
         },
         error: function (xhr, status, error) {
-            debugger
+
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -887,26 +907,50 @@ function GetCustomerSpecificMaster(CustId) {
 
 function GetCountrySpecificMaster(CountryKey) {
     debugger
-    console.log(sessionStorage.getItem("APIPath") + "KDSMaster/GetCountrySpecificMaster/?CountryKey=" + CountryKey)
+    console.log(sessionStorage.getItem("APIPath") +"KDSMaster/GetCountrySpecificMaster/?CountryKey=" + CountryKey)
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "KDSMaster/GetCountrySpecificMaster/?CountryKey=" + CountryKey,
+        url: sessionStorage.getItem("APIPath") +"KDSMaster/GetCountrySpecificMaster/?CountryKey="+CountryKey,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
         dataType: "json",
+        async:false,
         success: function (data) {
-           
+            debugger
+
+
+            //currency
+            jQuery("#ddlcurrency").empty();
+            jQuery("#ddlcurrency").append(jQuery("<option></option>").val(0).html("Select Currency"));
+            for (var i = 0; i < data.currency.length; i++) {
+                jQuery("#ddlcurrency").append(jQuery("<option></option>").val(data.currency[i].currency).html(data.currency[i].longText));
+            }
             
+
+            //currency
+            jQuery("#currencyFiscalupdate").empty();
+            jQuery("#currencyFiscalupdate").append(jQuery("<option></option>").val(0).html("Select Currency"));
+            for (var i = 0; i < data.currency.length; i++) {
+                jQuery("#currencyFiscalupdate").append(jQuery("<option></option>").val(data.currency[i].currency).html(data.currency[i].longText));
+            }
             
+            //language
+            jQuery("#ddllanguage").empty();
+            jQuery("#ddllanguage").append(jQuery("<option></option>").val(0).html("Select"));
+            for (var i = 0; i < data.language.length; i++) {
+                jQuery("#ddllanguage").append(jQuery("<option></option>").val(data.language[i].langu).html(data.language[i].description));
+            }
+
+
             jQuery("#txtTINType").empty();
             
             for (var i = 0; i < data.taxTypeMaster.length; i++) {
                 jQuery("#txtTINType").append(jQuery("<option></option>").val(data.taxTypeMaster[i].taxType).html(data.taxTypeMaster[i].description));
             }
             
-            debugger
+           
             if (CountryKey === "IN") {
                 $("#txtTINNo").attr("onchange", "extractPan(this)");
                 $("#txtPanNo").attr("disabled","disabled");
@@ -921,19 +965,18 @@ function GetCountrySpecificMaster(CountryKey) {
                 for (var i = 0; i < data.taxTypeMaster.length; i++) {
                     jQuery("#txtTINType2").append(jQuery("<option></option>").val(data.taxTypeMaster[i].taxType).html(data.taxTypeMaster[i].description));
                 } 
-                afterTaxEnable()
+               // afterTaxEnable()
             }
-            
             $("#ddlState").empty();
             if (data.stateAndRegion.length > 0) {
 
-                $("#ddlState").append("<option value=0>Select State</option>");
+                $("#ddlState").append("<option value=0 data-stateid=0>Select State</option>");
                 for (var i = 0; i < data.stateAndRegion.length; i++) {
                     $("#ddlState").append("<option value='" + data.stateAndRegion[i].regionKey + "' data-stateid='" + data.stateAndRegion[i].stateID + "'>" + data.stateAndRegion[i].stateName + "</option>");
 
                 }
-                debugger
-                
+              
+
             }
             else {
                 $("#ddlState").append('<tr><td>No state found..</td></tr>');
