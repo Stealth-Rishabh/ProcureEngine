@@ -601,6 +601,7 @@
                                                             <div class="col-md-offset-9 col-md-5" id="btnrowid">
                                                                 <input type="hidden" id="rowid" />
                                                                 <input type="hidden" id="validattachmentSize" />
+                                                                <button type="button" class="btn btn-success" data-toggle="modal" href="#RFQPullSAPModal" id="RFQPullSAP">Pull Indent</button>
                                                                 <button type="button" class="btn btn-info display-none" data-toggle="modal" href="#RfqParameterexcelBoq" id="boqbtnexcel">Boq Excel Upload</button>
                                                                 <span id="spninfoboq" class="hovertext display-none" data-hover="click Excel button to upload BoQ File">
                                                                     <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
@@ -1103,7 +1104,66 @@
             <i class="icon-arrow-up"></i>
         </div>
     </div>
+    <div id="RFQPullSAPModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Pull RFQ data from SAP
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <form action="#" id="ChangePasswordfrm" class="form-horizontal" role="form">
+                        <div id="divalertpull" class="alert alert-success">
+                            <span id="spansuccess1pull"></span>
+                        </div>
+                        <div id="divalerterrpull" class="alert alert-danger divalertstyle">
+                            <span id="spanerterrpull"></span>
+                        </div>
+                        <div class="form-body">
+                            <div class="form-group">
+                                <div class="Controlgroup col-md-12">
+                                    <label class="col-md-3 control-label" id="lblsbjct">
+                                        Select Indent
+                                    </label>
+                                    <div class="col-md-6 paddingleft7px">
+                                        <input type="hidden" id="hdnRfiRfqID" value='0' />
 
+                                        <input type="text" class="form-control" id="txtrfirfqsubject"
+                                               name="txtrfirfqsubject"
+                                               data-provide="typeahead" autocomplete="off" maxlength="120"
+                                               placeholder="Subject" onkeyup="replaceQuoutesFromString(this)" />
+                                    </div>
+                                    <div class="col-md-3 paddingleft7px">
+                                        <button type="button" class="btn btn-primary" onclick="FetchSAPPI()">Go</button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <div class="Controlgroup col-md-12">
+                                    <div class="table-scrollable display-none">
+                                        <table class=" table table-striped table-bordered table-hover" id="tblServicesProductFromRFQ"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions fluid hide">
+                            <div class="col-md-offset-3 col-md-6 txtaligncentre">
+                                <button type="button" id="btnrfirfq" class="btn btn-primary" onclick="fnpulldatafromRFQ()"> Go</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="RfqParameterexcel" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="portlet box blue">

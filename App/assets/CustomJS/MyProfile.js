@@ -1524,7 +1524,7 @@ function fetchMyProfileVendor() {
                     //AssociatedVendorID = childData[i].childId;
                     addr1 = (childData[i].address1 || "").replace(/\n/g, " ");
                     addr2 = (childData[i].address2 || "").replace(/\n/g, " ");
-                    taxIdNo = childData[i].taxIdType + " " + childData[i].taxId;
+                    taxIdNo = childData[i].taxId;
                     addrC = childData[i].address + " " + childData[i].city + " " + childData[i].state + " " + childData[i].country;
 
 
@@ -1561,7 +1561,7 @@ function fetchMyProfileVendor() {
 
 //edit vendor
 
-function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile, countryKey, taxIdType, taxIdType2, city, regionKey, countryKey, Langu,currency) {
+function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile, taxIdType, taxIdType2, city, regionKey, countryKey, Langu, currency) {
 
     let customerid = parseInt(sessionStorage.getItem('CustomerID'));
     $("#filegst").hide()
@@ -1605,7 +1605,7 @@ function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingco
     $('#ddlVendorType').val(supplierType).trigger('change')
     $('#ddlMSME').val(msmeCheck).trigger('change')
     $('#ddlMSMEClass').val(msmeType).trigger('change')
-    
+
     $('#txtUdyam').val(msmeNo)
     $('#msmeattach').html(msmeFile)
     $('#gstattach').html(taxIdFile)
@@ -1737,11 +1737,7 @@ function UpdateCompanyDetail() {
         msmefilename = msmefilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
     }
 
-    // condition ? value_if_true : value_if_false
-    /*  parseInt(jQuery("#ddlCountry option:selected").val()) = 0 ? _countryid = jQuery("#ddlCountrylabel").text() : _countryid = jQuery("#ddlCountry option:selected").val()
-      parseInt(jQuery("#ddlState option:selected").val()) = 0 ? _stateid = jQuery("#ddlStatelabel").text() : _stateid = jQuery("#ddlState option:selected").val()
-      parseInt(jQuery("#ddlCity option:selected").val()) = 0 ? _cityid = jQuery("#ddlCitylabel").text() : _cityid = jQuery("#ddlCity option:selected").val()
-  */
+
     debugger
     let data = {
         "ChildId": parseInt($('#hdnChildID').val()),
