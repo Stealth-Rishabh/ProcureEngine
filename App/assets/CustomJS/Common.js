@@ -267,6 +267,7 @@ function setCommonData() {
 }
 
 function fetchCountry() {
+    debugger
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
@@ -278,7 +279,7 @@ function fetchCountry() {
         async: false,
         dataType: "json",
         success: function (data) {
-
+          
             $("#ddlCountry").empty();
             $("#ddlCountryCd").empty();
             $("#ddlCountryCdPhone").empty();
@@ -290,7 +291,7 @@ function fetchCountry() {
                     $("#ddlCountryCd").append(jQuery("<option></option>").val(data[i].countryID).html(data[i].dialingCode));
                     $("#ddlCountryCdPhone").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
                 }
-
+                debugger
                 $("#ddlCountry").val('IN').trigger("change");
 
                 $("#ddlCountryCd").val('111');
@@ -307,10 +308,10 @@ function fetchCountry() {
 
         },
         error: function (xhr, status, error) {
-
+            debugger
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
-                error401Messagebox(err.Message);
+               // error401Messagebox(err.Message);
             }
             else {
                 fnErrorMessageText('errormsg', '');
@@ -601,17 +602,17 @@ function fetchMasters() {
 
 
 function prefferedTimezone() {
-
+    debugger
 
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "UOM/fetchTimezoneLst/",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+       /* beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },*/
         cache: false,
         dataType: "json",
         success: function (data) {
-
+            debugger
             let lstTZ = JSON.parse(data[0].jsondata);
 
             jQuery("#ddlpreferredTime").empty();
@@ -622,10 +623,10 @@ function prefferedTimezone() {
             }
         },
         error: function (xhr, status, error) {
-
+            debugger
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
-                error401Messagebox(err.Message);
+                //error401Messagebox(err.Message);
             }
             else {
                 fnErrorMessageText('spanerror1', '');
@@ -842,48 +843,48 @@ function GetCustomerSpecificMaster(CustId) {
             jQuery("#WitholdingTaxType").empty();
             jQuery("#WitholdingTaxType").append(jQuery("<option value='0' data-subjectToTDS='' data-typeOfReceipt='' data-witholdingTaxCode=''>Select</option>"));
             for (var i = 0; i < data.witholdingTax.length; i++) {
-                jQuery("#WitholdingTaxType").append(jQuery("<option value='" + data.witholdingTax[i].witholdingTaxType + "'  data-subjectToTDS='" + data.witholdingTax[i].subjectToTDS + "'   data-typeOfReceipt='" + data.witholdingTax[i].typeOfReceipt + "'  data-witholdingTaxCode='" + data.witholdingTax[i].witholdingTaxCode + "'>" + data.witholdingTax[i].description + "</option>"));
+                jQuery("#WitholdingTaxType").append(jQuery("<option value='" + data.witholdingTax[i].witholdingTaxType + "'  data-subjectToTDS='" + data.witholdingTax[i].subjectToTDS + "'   data-typeOfReceipt='" + data.witholdingTax[i].typeOfReceipt + "'  data-witholdingTaxCode='" + data.witholdingTax[i].witholdingTaxCode + "'>" + data.witholdingTax[i].description + " [" + data.witholdingTax[i].witholdingTaxType + "]" + "</option>"));
             }
-
+            $("#WitholdingTaxType").val('0').trigger("change");
 
             //vendor account group
             jQuery("#VendorAccGrp").empty();
 
             for (var i = 0; i < data.accountGroup.length; i++) {
-                jQuery("#VendorAccGrp").append(jQuery("<option></option>").val(data.accountGroup[i].bpGrouping).html(data.accountGroup[i].shortName));
+                jQuery("#VendorAccGrp").append(jQuery("<option></option>").val(data.accountGroup[i].bpGrouping).html(data.accountGroup[i].shortName+" [" + data.accountGroup[i].bpGrouping+"]"));
             }
             $("#VendorAccGrp").val('ZDOM').trigger("change");
             //cocd
             jQuery("#CoCd").empty();
             jQuery("#CoCd").append(jQuery("<option></option>").val(0).html("Select"));
             for (var i = 0; i < data.coCd.length; i++) {
-                jQuery("#CoCd").append(jQuery("<option></option>").val(data.coCd[i].companyCode).html(data.coCd[i].description));
+                jQuery("#CoCd").append(jQuery("<option></option>").val(data.coCd[i].companyCode).html(data.coCd[i].description +" ["+ data.coCd[i].companyCode+"]"));
             }
 
             //income term
             jQuery("#Incoterm").empty();
 
             for (var i = 0; i < data.incoTerm.length; i++) {
-                jQuery("#Incoterm").append(jQuery("<option></option>").val(data.incoTerm[i].incoTerms).html(data.incoTerm[i].description));
+                jQuery("#Incoterm").append(jQuery("<option></option>").val(data.incoTerm[i].incoTerms).html(data.incoTerm[i].description + " [" + data.incoTerm[i].incoTerms + "]"));
             }
 
             //PayTerm
             jQuery("#PayTerm").empty();
             jQuery("#PayTerm").append(jQuery("<option></option>").val(0).html("Select"));
             for (var i = 0; i < data.paymentTerms.length; i++) {
-                jQuery("#PayTerm").append(jQuery("<option></option>").val(data.paymentTerms[i].termsOfPayment).html(data.paymentTerms[i].newPaymentTerms));
+                jQuery("#PayTerm").append(jQuery("<option></option>").val(data.paymentTerms[i].termsOfPayment).html(data.paymentTerms[i].newPaymentTerms +" ["+ data.paymentTerms[i].termsOfPayment+"]"));
             }
             //Purchase ORG
             jQuery("#PORG").empty();
             jQuery("#PORG").append(jQuery("<option></option>").val(0).html("Select"));
             for (var i = 0; i < data.porg.length; i++) {
-                jQuery("#PORG").append(jQuery("<option></option>").val(data.porg[i].purchaseOrganization).html(data.porg[i].description));
+                jQuery("#PORG").append(jQuery("<option></option>").val(data.porg[i].purchaseOrganization).html(data.porg[i].description +" [" +data.porg[i].purchaseOrganization+"]"));
             }
             //Schema Group
             jQuery("#SchemaGrp").empty();
             jQuery("#SchemaGrp").append(jQuery("<option></option>").val(0).html("Select"));
             for (var i = 0; i < data.schemaGroup.length; i++) {
-                jQuery("#SchemaGrp").append(jQuery("<option></option>").val(data.schemaGroup[i].schemaGrp).html(data.schemaGroup[i].description));
+                jQuery("#SchemaGrp").append(jQuery("<option></option>").val(data.schemaGroup[i].schemaGrp).html(data.schemaGroup[i].description +" ["+ data.schemaGroup[i].schemaGrp+"]"));
             }
             jQuery.unblockUI();
 
@@ -906,20 +907,20 @@ function GetCustomerSpecificMaster(CustId) {
 }
 
 function GetCountrySpecificMaster(CountryKey) {
-
+    debugger
     console.log(sessionStorage.getItem("APIPath") + "KDSMaster/GetCountrySpecificMaster/?CountryKey=" + CountryKey)
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "KDSMaster/GetCountrySpecificMaster/?CountryKey=" + CountryKey,
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        /*beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },*/
         data: "{}",
         cache: false,
         dataType: "json",
         async: false,
         success: function (data) {
 
-
+            debugger
 
             //currency
             jQuery("#ddlcurrency").empty();
@@ -986,7 +987,7 @@ function GetCountrySpecificMaster(CountryKey) {
 
         },
         error: function (xhr, status, error) {
-
+            debugger
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -1011,3 +1012,8 @@ function onlynumeric(ele) {
 
     ele.value = ele.value.replace(/[^0-9]/g, '');
 }
+
+
+
+
+
