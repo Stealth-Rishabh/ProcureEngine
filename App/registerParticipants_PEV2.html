@@ -208,12 +208,7 @@
                                         </div>
                                         <div class="portlet-body form acordion_tabs">
                                             <div class="page-container mt-0 nodisplay">
-                                                <div class="alert alert-block alert-danger" id="errordiv">
-                                                    <span id="error"></span>
-                                                </div>
-                                                <div class="alert alert-success" id="successdiv">
-                                                    <span id="success"></span>
-                                                </div>
+
                                                 <form class="form-horizontal" role="form" id="frmprofilevendornew">
                                                     <div>
                                                         <input type="hidden" id="totalcontactpercent" name="totalcontactpercent" />
@@ -548,10 +543,15 @@
                                                                                     <input type="hidden" value="0" id="hdnParticipantCode" />
                                                                                     <input type="hidden" value="0" id="hdnFlagType" />
                                                                                     <input type="hidden" value="" id="hdnChildID" />
-                                                                                    <input type="hidden" value="" id="hdnVendorCode" />
+
+                                                                                    <input type="hidden" value="" id="hdnVendorId" />
                                                                                     <input type="hidden" value="Add" id="hdnExternalActionTypeFinancer" />
                                                                                     <input type="hidden" value="Add" id="hdnExternalActionTypeUser" />
                                                                                     <input type="hidden" value="Add" id="hdnSourceId" />
+                                                                                    <!--country/regionkey-->
+                                                                                    <input type="hidden" value="Add" id="hdnCountryKey" />
+                                                                                    <input type="hidden" value="Add" id="hdnRegionKey" />
+
                                                                                     <div class="clearfix"></div>
 
                                                                                 </div>
@@ -747,12 +747,7 @@
 
                             <div class="portlet-body form">
                                 <form action="#" id="ChangePasswordfrm" class="form-horizontal" role="form">
-                                    <div id="divalertSerach" class="alert alert-success">
-                                        <span id="spansuccess1serach"></span>
-                                    </div>
-                                    <div id="divalerterrsearch" class="alert alert-danger">
-                                        <span id="spanerterrserach"></span>
-                                    </div>
+
                                     <div class="form-body">
                                         <div class="form-group">
 
@@ -871,16 +866,7 @@
                             <div class="portlet-body form">
                                 <form action="#" class="form-horizontal" id="submit_form" method="POST">
                                     <div class="form-body">
-                                        <div class="alert alert-danger display-hide" id="errordiv">
-                                            <button class="close" data-close="alert"></button>
-                                            <span id="errormsg"></span>
-                                        </div>
 
-                                        <div class="alert alert-success display-hide" id="successdiv">
-                                            <button class="close" data-close="alert"></button>
-                                            <span id="successmsg"></span>
-
-                                        </div>
                                         <div class="tab-pane" id="tab1">
                                             <div class="panel-group accordion" id="accordionmodal1">
 
@@ -904,7 +890,7 @@
                                                                                         Name
                                                                                     </label>
                                                                                     <div class="col-md-9 xyz">
-                                                                                        <label type="text" class="control-label"
+                                                                                        <label type="text" class="control-label txtalignleft"
                                                                                                id="personname" name="personname" autocomplete="off" tabindex="1" />
                                                                                     </div>
                                                                                 </div>
@@ -1138,7 +1124,7 @@
                                                                                             </label>
                                                                                             <div class="col-md-4">
 
-                                                                                                <label class="control-label" id="vendorname" name="vendorname"></label>
+                                                                                                <label class="control-label txtalignleft" id="vendorname" name="vendorname"></label>
 
                                                                                             </div>
                                                                                             <label class="col-md-2 control-label txtalignleft" data-i18n="natureofestablishment">
@@ -1221,7 +1207,7 @@
                                                                                             </div>
                                                                                             <div class="inputgroup">
                                                                                                 <label class="col-md-2 control-label txtalignleft">
-                                                                                                   Currency
+                                                                                                    Currency
                                                                                                 </label>
                                                                                                 <div class="col-md-4">
                                                                                                     <label class="control-label" name="ddlcurrencymodal" id="ddlcurrencymodal"></label>
@@ -1261,13 +1247,13 @@
                                                                                     <div class="form-group hide">
                                                                                         <div class="col-md-12">
                                                                                             <label class="col-md-2 control-label txtalignleft">
-                                                                                               Bank Country key
+                                                                                                Bank Country key
                                                                                             </label>
                                                                                             <div class="col-md-4">
                                                                                                 <label class="control-label" name="bankCountryKey" id="bankCountryKey"></label>
 
                                                                                             </div>
-                                                                                           
+
                                                                                         </div>
                                                                                     </div>
 
@@ -1364,7 +1350,7 @@
 
 
 
-                                                                        <div class="panel panel-default">
+                                                                        <div class="panel panel-default" id="sapfinanceraccordion">
                                                                             <div class="panel-heading">
                                                                                 <h4 class="panel-title">
                                                                                     <a class="accordion-toggle active total-tab headingfont" data-toggle="collapse" data-parent="#accordion2" href="#collapse6">
@@ -1378,7 +1364,7 @@
                                                                             </div>
                                                                             <div id="collapse6" class="panel-collapse collapse">
                                                                                 <div class="panel-body">
-                                                                                   
+
                                                                                     <div class="row">
                                                                                         <div class="form-group">
                                                                                             <div class="col-md-12">
@@ -1396,7 +1382,7 @@
                                                                                                     Reconcilation Account
                                                                                                 </label>
                                                                                                 <div class="col-md-4">
-                                                                                                    <input type="text" class="form-control" id="ReconAcc" name="ReconAcc" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)">
+                                                                                                    <input type="text" class="form-control" id="ReconAcc" name="ReconAcc" autocomplete="off" tabindex="1" onkeyup="onlynumeric(this)">
 
 
                                                                                                 </div>
@@ -1440,7 +1426,6 @@
                                                                                                 </label>
                                                                                                 <div class="col-md-4">
                                                                                                     <select class="form-control" id="WitholdingTaxType" name="WitholdingTaxType">
-                                                                                                        
                                                                                                     </select>
 
                                                                                                 </div>
@@ -1495,7 +1480,7 @@
 
                                                                         </div>
 
-                                                                        <div class="panel panel-default">
+                                                                        <div class="panel panel-default" id="sapuseraccordion">
                                                                             <div class="panel-heading">
                                                                                 <h4 class="panel-title">
                                                                                     <a class="accordion-toggle active total-tab headingfont" data-toggle="collapse" data-parent="#accordion2" href="#collapse5">
@@ -1509,6 +1494,16 @@
                                                                             </div>
                                                                             <div id="collapse5" class="panel-collapse collapse">
                                                                                 <div class="panel-body">
+
+
+                                                                                    <div id="divalertsucesssap" class="alert alert-success divalertstyle">
+                                                                                        <span id="spansuccess1"></span>
+                                                                                    </div>
+                                                                                    <div id="divalerterrsap" class="alert alert-danger divalertstyle">
+                                                                                        <span id="spanerterr"> </span>
+                                                                                    </div>
+
+
 
                                                                                     <div class="col-md-12 text-right">
                                                                                         <button class="btn btn-xs btn-primary tooltips " type="button" id="btnPostToExternalSource" data-placement="top" data-original-title="Click here to post to SAP" onclick="PostToExternalSource()">

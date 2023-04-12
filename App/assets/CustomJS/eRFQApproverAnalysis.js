@@ -56,7 +56,7 @@ if (window.location.search) {
     var AppStatus = getUrlVarsURL(decryptedstring)["AppStatus"];
     var VID = getUrlVarsURL(decryptedstring)["VID"];
 
-    var boqReq = "false";
+    var boqReq = false;
     $('#hdnRfqID').val(RFQID);
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     setTimeout(function () {
@@ -64,7 +64,7 @@ if (window.location.search) {
         fetchReguestforQuotationDetails()
 
         FetchRFQVersion();
-        if (boqReq == "false") {
+        if (!boqReq) {
             fetchrfqcomprative();
         }
         else {
