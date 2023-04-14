@@ -7,7 +7,11 @@ function onloadcalls() {
     App.init();
     setCommonData();
     numberonly();
-    formvalidate();
+    //formvalidate();
+    FormValidateContact();
+    FormValidateCompany();
+    FormValidateBank();
+
 
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -28,7 +32,8 @@ function onloadcalls() {
         else if (sessionStorage.getItem("UserType") == "V") {
 
             fetchMasters();
-            fetchCountry()
+            fetchCountry();
+            
             prefferedTimezone();
             $('#ddlCountryCd').select2();
             $('#ddlCountryCdPhone').select2();
@@ -567,7 +572,7 @@ jQuery.validator.addMethod(
     "This field is required."
 );
 
-function formvalidate() {
+/*function formvalidate() {
 
     $('#frmprofile').validate({
         errorElement: 'span', //default input error message container
@@ -633,7 +638,7 @@ function formvalidate() {
                 required: true
             },
 
-            /* txtUdyam: {
+            *//* txtUdyam: {
                  required: true,
              },
              filemsme: {
@@ -642,7 +647,7 @@ function formvalidate() {
              ddlMSMEClass: {
                  required: true,
                  notEqualTo: 0
-             }*/
+             }*//*
         },
         messages: {
             ddlMSMEClass: {
@@ -681,7 +686,7 @@ function formvalidate() {
             updateVendor();
         }
     });
-}
+}*/
 
 //vendor profile.html vendor form
 
@@ -1528,7 +1533,7 @@ function fetchMyProfileVendor() {
                     addrC = childData[i].address + " " + childData[i].city + " " + childData[i].state + " " + childData[i].country;
 
 
-                    $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + childData[i].stateID + "'\,\'" + parentData.preferredtimezone + "'\,\'" + childData[i].cityId + "'\,\'" + (childData[i].childId || "") + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                    $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + childData[i].stateID + "'\,\'" + parentData.preferredtimezone + "'\,\'" + childData[i].cityId + "'\,\'" + (childData[i].childId ) + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
                     $('#btnAddAnother').removeClass('hide');
 
                 }
@@ -1810,6 +1815,14 @@ function UpdateBankDetail() {
         checkfilename = jQuery('#filecheck').val().substring(jQuery('#filecheck').val().lastIndexOf('\\') + 1)
         checkfilename = checkfilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
     }
+
+    if (checkfilename == "") {
+        jQuery("#error").text("please attach valid Check file to proceed...");
+        profileerror.show();
+        profileerror.fadeOut(5000);
+        App.scrollTo(profileerror, -200);
+        return false;
+    }
     let data = "";
     let bankurl = ""
     if (ActionType == "Add") {
@@ -1969,8 +1982,7 @@ function Addanotherbank() {
     jQuery("#ifsccode").val("")
     jQuery("#bankaccount").val("")
     jQuery("#bankname").val("")
-    jQuery("#accountholder").val()
-    $("#accountholder").removeAttr("disabled")
+    jQuery("#accountholder").val($('#vendorname').val())
     jQuery("#ddPayTerms").val("0").trigger('change')
     $('#hdnActionType').val("Add")
     $('#filecheck').val("");
@@ -2125,7 +2137,7 @@ function Addanother() {
 function AddAssociateVendorDetail() {
 
 
-
+    debugger
     if ($('#gstattach').html() !== '') {
         gstfilename = $('#gstattach').html();
 
@@ -2154,6 +2166,17 @@ function AddAssociateVendorDetail() {
     else {
         checkfilename = jQuery('#filecheck').val().substring(jQuery('#filecheck').val().lastIndexOf('\\') + 1)
         checkfilename = checkfilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    }
+    if (jQuery("#txtTINType option:selected").val() == "IN3") {
+
+        if (gstfilename == "" || panfilename == "") {
+            jQuery("#error").text("please attach GST/PAN number to proceed...");
+            profileerror.show();
+            profileerror.fadeOut(5000);
+            App.scrollTo(profileerror, -200);
+            return false;
+           
+        }
     }
 
     let data = {
@@ -2193,7 +2216,7 @@ function AddAssociateVendorDetail() {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+            debugger
             profileerror.hide();
             jQuery.unblockUI();
             jQuery("#success").text("Your New Company is added successfully..");
@@ -2204,7 +2227,7 @@ function AddAssociateVendorDetail() {
 
         },
         error: function (xhr, status, error) {
-
+            debugger
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -2248,8 +2271,7 @@ function cleanAddChild() {
     $('#txtTINNo').removeAttr('disabled');
     $("#ddlCountry").removeAttr('disabled');
 
-    $("#ddlState").val('0').trigger('change');
-    $("#ddlCity").val('0').trigger('change');
+   
 }
 
 
@@ -2544,7 +2566,7 @@ $('#ddlState').on('change', function () {
 
 
 function fetchCity(stateid) {
-
+      debugger
     if (stateid == null) {
         stateid = 0;
     }
@@ -2559,7 +2581,7 @@ function fetchCity(stateid) {
         async: false,
         dataType: "json",
         success: function (data) {
-
+            debugger
             $("#ddlCity").empty();
             if (data.length > 0) {
                 $("#ddlCity").append("<option value=0>Select City</option>");
@@ -2585,5 +2607,266 @@ function fetchCity(stateid) {
             jQuery.unblockUI();
         }
 
+    });
+}
+var formvendorcontact = $('#submit_form_contact');
+var formvendorcompany = $('#submit_form_company'); 
+var formvendorbank = $('#submit_form_bank');
+
+function FormValidateContact() {
+
+    formvendorcontact.validate({
+
+        errorElement: 'span',
+        errorClass: 'help-block',
+        focusInvalid: false,
+        ignore: "",
+        rules: {
+
+            personname: {
+                required: true,
+            },
+            vendormobileno: {
+                required: true,
+                number:true
+            },
+            vendorEmailID: {
+                required: true,
+                email: true
+            },
+            ddlpreferredTime: {
+                required: true
+            }
+
+
+        },
+        messages: {
+
+            personname: {
+                required: "Please Enter Valid name",
+            },
+            vendormobileno: {
+                required: "Please Enter Valid Mobile No"
+            },
+            vendorEmailID: {
+                required: "Please Enter Valid Email Id"
+            },
+            ddlpreferredTime: {
+                required: "Please Enter Valid Preffered time"
+            }
+
+        },
+        invalidHandler: function (event, validator) {
+            //errorVendor.show()
+            // successVendor.hide();
+            $('#successdiv').show()
+            $('#successdiv').hide()
+            $('#successdiv').html("")
+            $('#error').text("Please Enter all required field to proceed");
+            $('#errordiv').fadeOut(6000);
+        },
+
+        highlight: function (element) {
+            $(element).closest('.xyz').addClass('has-error');
+
+        },
+
+        unhighlight: function (element) {
+            $(element).closest('.xyz').removeClass('has-error');
+
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element);
+        },
+        success: function (label) {
+        },
+        submitHandler: function (form) {
+            debugger
+
+            updateVendorContactDetails()
+        }
+    });
+}
+
+
+function FormValidateCompany() {
+
+    formvendorcompany.validate({
+
+        errorElement: 'span',
+        errorClass: 'help-block',
+        focusInvalid: false,
+        ignore: "",
+        rules: {
+
+            ddlCountry: {
+                required: true,
+            },
+            txtTINType: {
+                required: true,                
+            },
+            txtTINNo: {
+                required: true,               
+            },
+            vendorname: {
+                required: true
+            },
+            vendoraddress: {
+                required: true
+            },
+            pincode: {
+                required: true
+            },
+            ddlState: {
+                required: true
+            }, 
+            ddlCity: {
+                required: true
+            },
+            ddllanguage: {
+                required: true
+            },
+            ddlcurrency: {
+                required: true
+            },
+
+
+        },
+        messages: {
+
+            ddlCountry: {
+                required: "Please Enter Valid Country",
+            },
+            txtTINType: {
+                required: "Please Enter Valid TIN Type",
+            },
+            txtTINNo: {
+                required: "Please Enter Valid TIN No.",
+            },
+            vendorname: {
+                required: "Please Enter Valid vendor name"
+            },
+            vendoraddress: {
+                required: "Please Enter Valid address"
+            },
+            pincode: {
+                required: "Please Enter Valid pincode"
+            },
+            ddlState: {
+                required: "Please Enter Valid State"
+            },
+            ddlCity: {
+                required: "Please Enter Valid City"
+            },
+            ddllanguage: {
+                required: "Please Enter Valid Language"
+            },
+            ddlcurrency: {
+                required: "Please Enter Valid Currency"
+            },
+
+        },
+        invalidHandler: function (event, validator) {
+            //errorVendor.show()
+            // successVendor.hide();
+            $('#companiessuccessdiv').show()
+            $('#companiessuccessdiv').hide()
+            $('#companiessuccessdiv').html("")
+            $('#sendcompanieserror').text("Please Enter all required field to proceed");
+            $('#companieserrordiv').fadeOut(6000);
+        },
+
+        highlight: function (element) {
+            $(element).closest('.xyz').addClass('has-error');
+
+        },
+
+        unhighlight: function (element) {
+            $(element).closest('.xyz').removeClass('has-error');
+
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element);
+        },
+        success: function (label) {
+        },
+        submitHandler: function (form) {
+            debugger
+
+            AddAssociateVendorDetail()
+        }
+    });
+}
+
+
+
+function FormValidateBank() {
+
+    formvendorbank.validate({
+
+        errorElement: 'span',
+        errorClass: 'help-block',
+        focusInvalid: false,
+        ignore: "",
+        rules: {
+
+            accountholder: {
+                required: true,
+            },
+            ifsccode: {
+                required: true,
+            },
+            bankname: {
+                required: true,
+            },
+            bankaccount: {
+                required: true
+            }
+        },
+        messages: {
+
+            accountholder: {
+                required: "Please Enter Valid account holder",
+            },
+            ifsccode: {
+                required: "Please Enter Valid IFSC code",
+            },
+            bankname: {
+                required: "Please Enter Valid Bank name",
+            },
+            bankaccount: {
+                required: "Please Enter Valid Bank account",
+            }
+
+        },
+        invalidHandler: function (event, validator) {
+            //errorVendor.show()
+            // successVendor.hide();
+            $('#successdivbank').show()
+            $('#successdivbank').hide()
+            $('#successdivbank').html("")
+            $('#errorbank').text("Please Enter all required field to proceed");
+            $('#errordivbank').fadeOut(6000);
+        },
+
+        highlight: function (element) {
+            $(element).closest('.xyz').addClass('has-error');
+
+        },
+
+        unhighlight: function (element) {
+            $(element).closest('.xyz').removeClass('has-error');
+
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element);
+        },
+        success: function (label) {
+        },
+        submitHandler: function (form) {
+            debugger
+
+            UpdateBankDetail()
+        }
     });
 }
