@@ -279,7 +279,7 @@ function fetchCountry() {
         async: false,
         dataType: "json",
         success: function (data) {
-          
+
             $("#ddlCountry").empty();
             $("#ddlCountryCd").empty();
             $("#ddlCountryCdPhone").empty();
@@ -311,7 +311,7 @@ function fetchCountry() {
             debugger
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
-               // error401Messagebox(err.Message);
+                // error401Messagebox(err.Message);
             }
             else {
                 fnErrorMessageText('errormsg', '');
@@ -332,7 +332,7 @@ function fetchCountry() {
         success: function (data) {
 
             let lstTZ = JSON.parse(data[0].jsondata);
-
+            debugger
             jQuery("#ddlpreferredTime").empty();
             jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val("").html("Select"));
             for (var i = 0; i < lstTZ.length; i++) {
@@ -377,7 +377,7 @@ function fetchState() {
             $("#ddlState").empty();
             if (data.stateAndRegion.length > 0) {
 
-                $("#ddlState").append("<option value=0>Select State</option>");
+                $("#ddlState").append("<option value=''>Select State</option>");
                 for (var i = 0; i < data.stateAndRegion.length; i++) {
                     $("#ddlState").append("<option value='" + data.stateAndRegion[i].regionKey + "' data-stateid='" + data.stateAndRegion[i].stateID + "'>" + data.stateAndRegion[i].stateName + "</option>");
 
@@ -426,7 +426,7 @@ function fetchCity(stateid) {
 
             $("#ddlCity").empty();
             if (data.length > 0) {
-                $("#ddlCity").append("<option value=0>Select City</option>");
+                $("#ddlCity").append("<option value=''>Select City</option>");
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlCity").append("<option value=" + data[i].cityID + ">" + data[i].cityName + "</option>");
                 }
@@ -608,7 +608,7 @@ function prefferedTimezone() {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "UOM/fetchTimezoneLst/",
-       /* beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },*/
+        /* beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },*/
         cache: false,
         dataType: "json",
         success: function (data) {
@@ -844,6 +844,7 @@ function GetCustomerSpecificMaster(CustId) {
             jQuery("#WitholdingTaxType").append(jQuery("<option value='0' data-subjectToTDS='' data-typeOfReceipt='' data-witholdingTaxCode=''>Select</option>"));
             for (var i = 0; i < data.witholdingTax.length; i++) {
                 jQuery("#WitholdingTaxType").append(jQuery("<option value='" + data.witholdingTax[i].witholdingTaxType + "'  data-subjectToTDS='" + data.witholdingTax[i].subjectToTDS + "'   data-typeOfReceipt='" + data.witholdingTax[i].typeOfReceipt + "'  data-witholdingTaxCode='" + data.witholdingTax[i].witholdingTaxCode + "'>" + data.witholdingTax[i].description + " [" + data.witholdingTax[i].witholdingTaxType + "]" + "</option>"));
+
             }
             $("#WitholdingTaxType").val('0').trigger("change");
 
@@ -851,40 +852,42 @@ function GetCustomerSpecificMaster(CustId) {
             jQuery("#VendorAccGrp").empty();
 
             for (var i = 0; i < data.accountGroup.length; i++) {
-                jQuery("#VendorAccGrp").append(jQuery("<option></option>").val(data.accountGroup[i].bpGrouping).html(data.accountGroup[i].shortName+" [" + data.accountGroup[i].bpGrouping+"]"));
+                jQuery("#VendorAccGrp").append(jQuery("<option></option>").val(data.accountGroup[i].bpGrouping).html(data.accountGroup[i].shortName + " [" + data.accountGroup[i].bpGrouping + "]"));
             }
             $("#VendorAccGrp").val('ZDOM').trigger("change");
             //cocd
             jQuery("#CoCd").empty();
             jQuery("#CoCd").append(jQuery("<option></option>").val(0).html("Select"));
             for (var i = 0; i < data.coCd.length; i++) {
-                jQuery("#CoCd").append(jQuery("<option></option>").val(data.coCd[i].companyCode).html(data.coCd[i].description +" ["+ data.coCd[i].companyCode+"]"));
+                jQuery("#CoCd").append(jQuery("<option></option>").val(data.coCd[i].companyCode).html(data.coCd[i].description + " [" + data.coCd[i].companyCode + "]"));
             }
 
             //income term
             jQuery("#Incoterm").empty();
 
             for (var i = 0; i < data.incoTerm.length; i++) {
-                jQuery("#Incoterm").append(jQuery("<option></option>").val(data.incoTerm[i].incoTerms).html(data.incoTerm[i].description + " [" + data.incoTerm[i].incoTerms + "]"));
+
+                jQuery("#Incoterm").append(jQuery("<option value='" + data.incoTerm[i].incoTerms + "'  data-incotermdesc='" + data.incoTerm[i].description + "' >" + data.incoTerm[i].description + " [" + data.incoTerm[i].incoTerms + "]" + "</option>"));
+
             }
 
             //PayTerm
             jQuery("#PayTerm").empty();
             jQuery("#PayTerm").append(jQuery("<option></option>").val(0).html("Select"));
             for (var i = 0; i < data.paymentTerms.length; i++) {
-                jQuery("#PayTerm").append(jQuery("<option></option>").val(data.paymentTerms[i].termsOfPayment).html(data.paymentTerms[i].newPaymentTerms +" ["+ data.paymentTerms[i].termsOfPayment+"]"));
+                jQuery("#PayTerm").append(jQuery("<option></option>").val(data.paymentTerms[i].termsOfPayment).html(data.paymentTerms[i].newPaymentTerms + " [" + data.paymentTerms[i].termsOfPayment + "]"));
             }
             //Purchase ORG
             jQuery("#PORG").empty();
             jQuery("#PORG").append(jQuery("<option></option>").val(0).html("Select"));
             for (var i = 0; i < data.porg.length; i++) {
-                jQuery("#PORG").append(jQuery("<option></option>").val(data.porg[i].purchaseOrganization).html(data.porg[i].description +" [" +data.porg[i].purchaseOrganization+"]"));
+                jQuery("#PORG").append(jQuery("<option></option>").val(data.porg[i].purchaseOrganization).html(data.porg[i].description + " [" + data.porg[i].purchaseOrganization + "]"));
             }
             //Schema Group
             jQuery("#SchemaGrp").empty();
             jQuery("#SchemaGrp").append(jQuery("<option></option>").val(0).html("Select"));
             for (var i = 0; i < data.schemaGroup.length; i++) {
-                jQuery("#SchemaGrp").append(jQuery("<option></option>").val(data.schemaGroup[i].schemaGrp).html(data.schemaGroup[i].description +" ["+ data.schemaGroup[i].schemaGrp+"]"));
+                jQuery("#SchemaGrp").append(jQuery("<option></option>").val(data.schemaGroup[i].schemaGrp).html(data.schemaGroup[i].description + " [" + data.schemaGroup[i].schemaGrp + "]"));
             }
             jQuery.unblockUI();
 
@@ -924,7 +927,7 @@ function GetCountrySpecificMaster(CountryKey) {
 
             //currency
             jQuery("#ddlcurrency").empty();
-            jQuery("#ddlcurrency").append(jQuery("<option></option>").val(0).html("Select Currency"));
+            jQuery("#ddlcurrency").append(jQuery("<option></option>").val('').html("Select Currency"));
             for (var i = 0; i < data.currency.length; i++) {
                 jQuery("#ddlcurrency").append(jQuery("<option></option>").val(data.currency[i].currency).html(data.currency[i].longText));
             }
@@ -932,14 +935,14 @@ function GetCountrySpecificMaster(CountryKey) {
 
             //currency
             jQuery("#currencyFiscalupdate").empty();
-            jQuery("#currencyFiscalupdate").append(jQuery("<option></option>").val(0).html("Select Currency"));
+            jQuery("#currencyFiscalupdate").append(jQuery("<option></option>").val('').html("Select Currency"));
             for (var i = 0; i < data.currency.length; i++) {
                 jQuery("#currencyFiscalupdate").append(jQuery("<option></option>").val(data.currency[i].currency).html(data.currency[i].longText));
             }
 
             //language
             jQuery("#ddllanguage").empty();
-            jQuery("#ddllanguage").append(jQuery("<option></option>").val(0).html("Select"));
+            jQuery("#ddllanguage").append(jQuery("<option></option>").val('').html("Select"));
             for (var i = 0; i < data.language.length; i++) {
                 jQuery("#ddllanguage").append(jQuery("<option></option>").val(data.language[i].langu).html(data.language[i].description));
             }
@@ -955,6 +958,11 @@ function GetCountrySpecificMaster(CountryKey) {
             if (CountryKey === "IN") {
                 $("#txtTINNo").attr("onchange", "extractPan(this)");
                 $("#txtPanNo").attr("disabled", "disabled");
+                $("#vendorpanno").attr("disabled", "disabled");
+                $("#vendorname").attr("disabled", "disabled");
+                $("#ParticipantName").attr("disabled", "disabled");
+                $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
+
                 $("#txtTINType2").empty();
                 $("#txtTINType2").append(jQuery("<option></option>").val("PAN").html("PAN Number"));
             }
@@ -962,6 +970,10 @@ function GetCountrySpecificMaster(CountryKey) {
                 jQuery("#txtTINType2").empty();
                 $("#txtTINNo").attr("onchange", "");
                 $("#txtPanNo").removeAttr("disabled");
+                $("#vendorpanno").removeAttr("disabled");
+                $("#ddlNatureEstaiblishment").removeAttr("disabled");
+                $("#vendorname").removeAttr("disabled");
+                $("#ParticipantName").removeAttr("disabled");
 
                 for (var i = 0; i < data.taxTypeMaster.length; i++) {
                     jQuery("#txtTINType2").append(jQuery("<option></option>").val(data.taxTypeMaster[i].taxType).html(data.taxTypeMaster[i].description));
@@ -971,7 +983,7 @@ function GetCountrySpecificMaster(CountryKey) {
             $("#ddlState").empty();
             if (data.stateAndRegion.length > 0) {
 
-                $("#ddlState").append("<option value=0 data-stateid=0>Select State</option>");
+                $("#ddlState").append("<option value='' data-stateid=0>Select State</option>");
                 for (var i = 0; i < data.stateAndRegion.length; i++) {
                     $("#ddlState").append("<option value='" + data.stateAndRegion[i].regionKey + "' data-stateid='" + data.stateAndRegion[i].stateID + "'>" + data.stateAndRegion[i].stateName + "</option>");
 

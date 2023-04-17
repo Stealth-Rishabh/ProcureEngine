@@ -2320,40 +2320,62 @@ function fetchBoqParameters() {
         success: function (data) {
             jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
             jQuery("#tblServicesProductboq").empty();
-            jQuery("#tblboqparamprev").empty();
+            jQuery("#tblServicesProductboqp").empty();
             $('#scrolr').show();
             $('#wrap_scrollerPrev').show();
+            $('#tblServicesProductboqp').show();
             var sheetcount = 0;
+            var sheetcountp = 0;
             var srno, sheet, parentid;
             if (data[0].parameters.length > 0) {
-                jQuery("#tblServicesProductboq,#tblboqparamprev").append('<thead><tr style="background: gray; color: #FFF;"><th style="width:10%!important"></th><th style="width:10%!important">S No</th><th colspan=6 style="width:80%!important">Item Name</th></tr></thead><tbody>');
+                //table-display
+                jQuery("#tblServicesProductboq").append('<thead><tr style="background: gray; color: #FFF;"><th style="width:10%!important"></th><th style="width:10%!important">S No</th><th colspan=6 style="width:80%!important">Item Name</th></tr></thead><tbody>');
                 for (var i = 0; i < data[0].parameters.length; i++) {
                     srno = data[0].parameters[i].srno;
                     if (sheet == data[0].parameters[i].boqsheetName) {
-                        debugger;
+
                         if (data[0].parameters[i].rfqParameterParentID > 0) {
                             $('#btn' + data[0].parameters[i].rfqParameterParentID).attr('data-target', '#itemDiv' + data[0].parameters[i].rfqParameterParentID);
-                            $("#itemTbl" + data[0].parameters[i].rfqParameterParentID).append("<tr><td colspan=10 class=hiddenRow style='border:none !important'><div class='accordian-body collapse' id='itemDiv" + data[0].parameters[i].rfqParameterParentID + "' ></div></tr>");
-                            $("#itemDiv" + data[0].parameters[i].rfqParameterParentID).append("<table id=itemTbl" + data[0].parameters[i].rfqParameterId + " class='table table-condensed table-bordered BoqTable' cellpadding=0 cellspacing=0></table>");
+
+                            if ($("#itemTbl" + data[0].parameters[i].rfqParameterParentID).find('#itemDiv' + data[0].parameters[i].rfqParameterParentID).length <= 0) {
+                                $("#itemTbl" + data[0].parameters[i].rfqParameterParentID).append("<tr><td colspan=10 class=hiddenRow style='border:none !important'><div class='accordian-body collapse' id='itemDiv" + data[0].parameters[i].rfqParameterParentID + "' ></div></tr>");
+                            }
+
                             if (data[0].parameters[i].rfqUomId != '') {
-                                $('#itemTbl' + data[0].parameters[i].rfqParameterId).append("<thead><tr><th style='width:10%!important'></th><th  style='width:10%!important' class=text-center>S No</th><th style='width:30%!important'>Item Name</th><th style='width:10%!important'>UOM</th><th style='width:10%!important'>Quantity</th><th style='width:30%!important'>Target/Budget Price</th></tr></thead>")
+                                if ($("#itemDiv" + data[0].parameters[i].rfqParameterParentID).find('#th' + data[0].parameters[i].rfqParameterParentID).length <= 0) {
+                                    $('#itemDiv' + data[0].parameters[i].rfqParameterParentID).append("<table id=itemTbl" + data[0].parameters[i].rfqParameterParentID + " class='table table-bordered table-condensed  BoqTable'  style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0><thead id=th" + data[0].parameters[i].rfqParameterParentID + "><tr style='background: #eee;color: #000;'><th style='width:10%!important'></th><th  style='width:10%!important' class=text-left>S No</th><th style='width:30%!important'>Item Name</th><th style='width:10%!important'>UOM</th><th style='width:10%!important'>Quantity</th><th style='width:30%!important'>Target/Budget Price</th></tr></thead></table>")
+                                }
+                                $("#itemDiv" + data[0].parameters[i].rfqParameterParentID).append("<table id=itemTbl" + data[0].parameters[i].rfqParameterId + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0></table>");
+
                                 $('#itemTbl' + data[0].parameters[i].rfqParameterId).append("<tbody><tr><td style='width:10%!important'></td><td  style='width:10%!important' class='text-right'>" + srno + " </td><td style='width:30%!important'>" + data[0].parameters[i].rfqShortName + "</td><td style='width:10%!important'>" + data[0].parameters[i].rfqUomId + "</td><td style='width:10%!important'>" + data[0].parameters[i].rfQuantity + "</td><td style='width:30%!important'>" + data[0].parameters[i].rfqTargetPrice + "</td></tr></tbody>")
                             }
                             else {
+                                $("#itemDiv" + data[0].parameters[i].rfqParameterParentID).append("<table id=itemTbl" + data[0].parameters[i].rfqParameterId + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0></table>");
+
                                 $('#itemTbl' + data[0].parameters[i].rfqParameterId).append("<tbody><tr><td style='width:10%!important' class=border-none><button style='background-color:white !important;margin-left:12%;'  type='button'  data-toggle=collapse   id='btn" + data[0].parameters[i].rfqParameterId + "'  class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItem" + i + ")'><i class='glyphicon glyphicon-plus' id='mainItem" + i + "'></i></button></td><td  style='width:10%!important' class='text-right'>" + srno + " </td><td style='width:80%!important'>" + data[0].parameters[i].rfqShortName + "</td></tr></tbody>")
                             }
                         }
                         else {
                             $("#tblServicesProductboq").append("<tr><td colspan=10 class='hiddenRow' style='border:none !important'><div class='accordian-body collapse' id='itemDiv" + sheetcount + "' ></div></tr>");
-                            $("#itemDiv" + sheetcount).append("<table id=itemTbl" + data[0].parameters[i].rfqParameterId + " class='table table-condensed table-bordered BoqTable' cellpadding=0 cellspacing=0></table>");
+
+                            if ($("#tblServicesProductboq").find('#itemDiv' + sheetcount).length <= 0) {
+                                $("#itemTbl" + data[0].parameters[i].rfqParameterParentID).append("<tr><td colspan=10 class=hiddenRow style='border:none !important'><div class='accordian-body collapse' id='itemDiv" + data[0].parameters[i].rfqParameterParentID + "' ></div></tr>");
+                            }
+
                             if (data[0].parameters[i].rfqUomId != '') {
-                                $('#itemTbl' + data[0].parameters[i].rfqParameterId).append("<thead><tr><th style='width:10%!important'></th><th  style='width:10%!important' class=text-center>S No</th><th style='width:30%!important'>Item Name</th><th style='width:10%!important'>UOM</th><th style='width:10%!important'>Quantity</th><th style='width:30%!important'>Target/Budget Price</th></tr></thead>")
+                                if ($("#itemDiv" + sheetcount).find('#th' + sheetcount).length <= 0) {
+                                    $('#itemDiv' + sheetcount).append("<table id=itemTbl" + sheetcount + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0><thead id=th" + sheetcount + "><tr style='background: #eee;color: #000;'><th style='width:10%!important'></th><th  style='width:10%!important' class=text-left>S No</th><th style='width:30%!important'>Item Name</th><th style='width:10%!important'>UOM</th><th style='width:10%!important'>Quantity</th><th style='width:30%!important'>Target/Budget Price</th></tr></thead></table>")
+                                }
+                                //$('#itemTbl' + data[0].parameters[i].rfqParameterId).append("<thead><tr><th style='width:10%!important'></th><th  style='width:10%!important' class=text-left>S No</th><th style='width:30%!important'>Item Name</th><th style='width:10%!important'>UOM</th><th style='width:10%!important'>Quantity</th><th style='width:30%!important'>Target/Budget Price</th></tr></thead>")
+                                $("#itemDiv" + sheetcount).append("<table id=itemTbl" + data[0].parameters[i].rfqParameterId + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0></table>");
 
                                 $('#itemTbl' + data[0].parameters[i].rfqParameterId).append("<tbody><tr><td style='width:10%!important'></td><td  style='width:10%!important' class='text-right'>" + srno + " </td><td style='width:30%!important'>" + data[0].parameters[i].rfqShortName + "</td><td style='width:10%!important'>" + data[0].parameters[i].rfqUomId + "</td><td style='width:10%!important'>" + data[0].parameters[i].rfQuantity + "</td><td style='width:30%!important'>" + data[0].parameters[i].rfqTargetPrice + "</td></tr></tbody>")
 
 
                             }
                             else {
+                                $("#itemDiv" + sheetcount).append("<table id=itemTbl" + data[0].parameters[i].rfqParameterId + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0></table>");
+
                                 $('#itemTbl' + data[0].parameters[i].rfqParameterId).append("<tbody><tr><td style='width:10%!important' class=border-none ><button style='background-color:white !important; margin-left:5%;' type='button'  data-toggle=collapse   id='btn" + data[0].parameters[i].rfqParameterId + "'  class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItem" + i + ")'><i class='glyphicon glyphicon-plus' id='mainItem" + i + "'></i></button></td><td  style='width:10%!important' class='text-right'>" + srno + " </td><td style='width:80%!important'>" + data[0].parameters[i].rfqShortName + "</td></tr></tbody>")
 
                             }
@@ -2364,9 +2386,9 @@ function fetchBoqParameters() {
                         sheet = data[0].parameters[i].boqsheetName;
                         $("#tblServicesProductboq").append('<tr><td style="width:10%!important"><button style="background-color: white!important;"  type=button data-toggle=collapse data-target=#itemDiv' + sheetcount + '  class="btn iconbtn accordion-toggle" onclick="fncollapse(MainItem' + sheetcount + ')"><span class="glyphicon glyphicon-plus" id=MainItem' + sheetcount + ' ></span></button></td><td style="width:10%!important" class=text-right>' + sheetcount + '</td><td style="width:80%!important" colspan=6><b>' + sheet + '</b></td></tr>');
                         $("#tblServicesProductboq").append("<tr><td colspan=10 class='hiddenRow' style='border:none !important'><div class='accordian-body collapse' id='itemDiv" + sheetcount + "'></div></tr>");
-                        $("#itemDiv" + sheetcount).append("<table id=itemTbl" + data[0].parameters[i].rfqParameterId + " class='table table-condensed table-bordered BoqTable' cellpadding=0 cellspacing=0></table>");
+                        $("#itemDiv" + sheetcount).append("<table id=itemTbl" + data[0].parameters[i].rfqParameterId + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0></table>");
                         if (data[0].parameters[i].rfqUomId != '') {
-                            $('#itemTbl' + data[0].parameters[i].rfqParameterId).append("<thead><tr><th style='width:10%!important'></th><th colspan=2 style='width:10%!important' class=text-center>S No</th><th style='width:30%!important'>Item Name</th><th style='width:10%!important'>UOM</th><th style='width:10%!important'>Quantity</th><th style='width:30%!important'>Target/Budget Price</th></tr></thead>")
+                            $('#itemTbl' + data[0].parameters[i].rfqParameterId).append("<thead><tr style='background: #eee;color: #000;'><th style='width:10%!important'></th><th colspan=2 style='width:10%!important' class=text-left>S No</th><th style='width:30%!important'>Item Name</th><th style='width:10%!important'>UOM</th><th style='width:10%!important'>Quantity</th><th style='width:30%!important'>Target/Budget Price</th></tr></thead>")
                             $('#itemTbl' + data[0].parameters[i].rfqParameterId).append("<tbody><tr><td style='width:10%!important'></td><td  style='width:10%!important' class='text-right'>" + srno + " </td><td style='width:30%!important'>" + data[0].parameters[i].rfqShortName + "</td><td style='width:10%!important'>" + data[0].parameters[i].rfqUomId + "</td><td style='width:10%!important'>" + data[0].parameters[i].rfQuantity + "</td><td style='width:30%!important'>" + data[0].parameters[i].rfqTargetPrice + "</td></tr></tbody>")
                         }
                         else {
@@ -2377,6 +2399,80 @@ function fetchBoqParameters() {
 
                     }
                 }
+
+                //table-display for preview
+                jQuery("#tblServicesProductboqp").append('<thead><tr style="background: gray; color: #FFF;"><th style="width:10%!important"></th><th style="width:10%!important">S No</th><th colspan=6 style="width:80%!important">Item Name</th></tr></thead><tbody>');
+                for (var i = 0; i < data[0].parameters.length; i++) {
+                    srno = data[0].parameters[i].srno;
+                    if (sheet == data[0].parameters[i].boqsheetName) {
+
+                        if (data[0].parameters[i].rfqParameterParentID > 0) {
+                            $('#btnp' + data[0].parameters[i].rfqParameterParentID).attr('data-target', '#itemDivp' + data[0].parameters[i].rfqParameterParentID);
+
+                            if ($("#itemTblp" + data[0].parameters[i].rfqParameterParentID).find('#itemDivp' + data[0].parameters[i].rfqParameterParentID).length <= 0) {
+                                $("#itemTblp" + data[0].parameters[i].rfqParameterParentID).append("<tr><td colspan=10 class=hiddenRow style='border:none !important'><div class='accordian-body collapse' id='itemDivp" + data[0].parameters[i].rfqParameterParentID + "' ></div></tr>");
+                            }
+
+                            if (data[0].parameters[i].rfqUomId != '') {
+                                if ($("#itemDivp" + data[0].parameters[i].rfqParameterParentID).find('#thp' + data[0].parameters[i].rfqParameterParentID).length <= 0) {
+                                    $('#itemDivp' + data[0].parameters[i].rfqParameterParentID).append("<table id=itemTblp" + data[0].parameters[i].rfqParameterParentID + " class='table table-bordered table-condensed  BoqTable'  style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0><thead id=thp" + data[0].parameters[i].rfqParameterParentID + "><tr style='background: #eee;color: #000;'><th style='width:10%!important'></th><th  style='width:10%!important' class=text-left>S No</th><th style='width:30%!important'>Item Name</th><th style='width:10%!important'>UOM</th><th style='width:10%!important'>Quantity</th><th style='width:30%!important'>Target/Budget Price</th></tr></thead></table>")
+                                }
+                                $("#itemDivp" + data[0].parameters[i].rfqParameterParentID).append("<table id=itemTblp" + data[0].parameters[i].rfqParameterId + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0></table>");
+
+                                $('#itemTblp' + data[0].parameters[i].rfqParameterId).append("<tbody><tr><td style='width:10%!important'></td><td  style='width:10%!important' class='text-right'>" + srno + " </td><td style='width:30%!important'>" + data[0].parameters[i].rfqShortName + "</td><td style='width:10%!important'>" + data[0].parameters[i].rfqUomId + "</td><td style='width:10%!important'>" + data[0].parameters[i].rfQuantity + "</td><td style='width:30%!important'>" + data[0].parameters[i].rfqTargetPrice + "</td></tr></tbody>")
+                            }
+                            else {
+                                $("#itemDivp" + data[0].parameters[i].rfqParameterParentID).append("<table id=itemTblp" + data[0].parameters[i].rfqParameterId + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0></table>");
+
+                                $('#itemTblp' + data[0].parameters[i].rfqParameterId).append("<tbody><tr><td style='width:10%!important' class=border-none><button style='background-color:white !important;margin-left:12%;'  type='button'  data-toggle=collapse   id='btnp" + data[0].parameters[i].rfqParameterId + "'  class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItem" + i + ")'><i class='glyphicon glyphicon-plus' id='mainItemp" + i + "'></i></button></td><td  style='width:10%!important' class='text-right'>" + srno + " </td><td style='width:80%!important'>" + data[0].parameters[i].rfqShortName + "</td></tr></tbody>")
+                            }
+                        }
+                        else {
+                            $("#tblServicesProductboqp").append("<tr><td colspan=10 class='hiddenRow' style='border:none !important'><div class='accordian-body collapse' id='itemDivp" + sheetcountp + "' ></div></tr>");
+
+                            if ($("#tblServicesProductboqp").find('#itemDivp' + sheetcountp).length <= 0) {
+                                $("#itemTblp" + data[0].parameters[i].rfqParameterParentID).append("<tr><td colspan=10 class=hiddenRow style='border:none !important'><div class='accordian-body collapse' id='itemDivp" + data[0].parameters[i].rfqParameterParentID + "' ></div></tr>");
+                            }
+
+                            if (data[0].parameters[i].rfqUomId != '') {
+
+                                if ($("#itemDivp" + sheetcountp).find('#th' + sheetcountp).length <= 0) {
+                                    $('#itemDivp' + sheetcountp).append("<table id=itemTblp" + sheetcountp + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0><thead id=th" + sheetcountp + "><tr style='background: #eee;color: #000;'><th style='width:10%!important'></th><th  style='width:10%!important' class=text-left>S No</th><th style='width:30%!important'>Item Name</th><th style='width:10%!important'>UOM</th><th style='width:10%!important'>Quantity</th><th style='width:30%!important'>Target/Budget Price</th></tr></thead></table>")
+                                }
+                                //$('#itemTbl' + data[0].parameters[i].rfqParameterId).append("<thead><tr><th style='width:10%!important'></th><th  style='width:10%!important' class=text-left>S No</th><th style='width:30%!important'>Item Name</th><th style='width:10%!important'>UOM</th><th style='width:10%!important'>Quantity</th><th style='width:30%!important'>Target/Budget Price</th></tr></thead>")
+                                $("#itemDivp" + sheetcountp).append("<table id=itemTblp" + data[0].parameters[i].rfqParameterId + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0></table>");
+
+                                $('#itemTblp' + data[0].parameters[i].rfqParameterId).append("<tbody><tr><td style='width:10%!important'></td><td  style='width:10%!important' class='text-right'>" + srno + " </td><td style='width:30%!important'>" + data[0].parameters[i].rfqShortName + "</td><td style='width:10%!important'>" + data[0].parameters[i].rfqUomId + "</td><td style='width:10%!important'>" + data[0].parameters[i].rfQuantity + "</td><td style='width:30%!important'>" + data[0].parameters[i].rfqTargetPrice + "</td></tr></tbody>")
+
+
+                            }
+                            else {
+                                $("#itemDivp" + sheetcountp).append("<table id=itemTblp" + data[0].parameters[i].rfqParameterId + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0></table>");
+
+                                $('#itemTblp' + data[0].parameters[i].rfqParameterId).append("<tbody><tr><td style='width:10%!important' class=border-none ><button style='background-color:white !important; margin-left:5%;' type='button'  data-toggle=collapse   id='btnp" + data[0].parameters[i].rfqParameterId + "'  class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItem" + i + ")'><i class='glyphicon glyphicon-plus' id='mainItemp" + i + "'></i></button></td><td  style='width:10%!important' class='text-right'>" + srno + " </td><td style='width:80%!important'>" + data[0].parameters[i].rfqShortName + "</td></tr></tbody>")
+
+                            }
+                        }
+                    }
+                    else {
+                        sheetcountp++
+                        sheet = data[0].parameters[i].boqsheetName;
+                        $("#tblServicesProductboqp").append('<tr><td style="width:10%!important"><button style="background-color: white!important;"  type=button data-toggle=collapse data-target=#itemDivp' + sheetcountp + '  class="btn iconbtn accordion-toggle" onclick="fncollapse(MainItem' + sheetcountp + ')"><span class="glyphicon glyphicon-plus" id=MainItem' + sheetcountp + ' ></span></button></td><td style="width:10%!important" class=text-right>' + sheetcountp + '</td><td style="width:80%!important" colspan=6><b>' + sheet + '</b></td></tr>');
+                        $("#tblServicesProductboqp").append("<tr><td colspan=10 class='hiddenRow' style='border:none !important'><div class='accordian-body collapse' id='itemDivp" + sheetcountp + "'></div></tr>");
+                        $("#itemDivp" + sheetcountp).append("<table id=itemTblp" + data[0].parameters[i].rfqParameterId + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0></table>");
+                        if (data[0].parameters[i].rfqUomId != '') {
+                            $('#itemTblp' + data[0].parameters[i].rfqParameterId).append("<thead><tr style='background: #eee;color: #000;'><th style='width:10%!important'></th><th colspan=2 style='width:10%!important' class=text-left>S No</th><th style='width:30%!important'>Item Name</th><th style='width:10%!important'>UOM</th><th style='width:10%!important'>Quantity</th><th style='width:30%!important'>Target/Budget Price</th></tr></thead>")
+                            $('#itemTblp' + data[0].parameters[i].rfqParameterId).append("<tbody><tr><td style='width:10%!important'></td><td  style='width:10%!important' class='text-right'>" + srno + " </td><td style='width:30%!important'>" + data[0].parameters[i].rfqShortName + "</td><td style='width:10%!important'>" + data[0].parameters[i].rfqUomId + "</td><td style='width:10%!important'>" + data[0].parameters[i].rfQuantity + "</td><td style='width:30%!important'>" + data[0].parameters[i].rfqTargetPrice + "</td></tr></tbody>")
+                        }
+                        else {
+                            $('#itemTblp' + data[0].parameters[i].rfqParameterId).append("<tbody><tr><td style='width:10%!important' class=border-none><button style='background-color:white !important; margin-left:5%' type='button'  data-toggle=collapse   id='btnp" + data[0].parameters[i].rfqParameterId + "'  class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItem" + i + ")'><i class='glyphicon glyphicon-plus' id='mainItemp" + i + "'></i></button></td><td  style='width:10%!important' class='text-right'>" + srno + " </td><td style='width:80%!important'>" + data[0].parameters[i].rfqShortName + "</td></tr></tbody>")
+                        }
+
+                        parentid = data[0].parameters[i].rfqParameterId;
+
+                    }
+                }
+
 
             }
         },
@@ -4149,8 +4245,8 @@ function fninsBoqfile() {
 
 
             if (data.status == "S") {
-                var data1 = data.result
-                fetchBidBoq(data1);
+                fetchBoqParameters()
+                $('#RfqParameterexcelBoq').modal('hide');
             }
             else {
 
@@ -4197,216 +4293,7 @@ function fnNoExcelUploadB() {
     $("#file-excelparameterB").val('');
     $('#RfqParameterexcelB').modal('hide');
 }
-function fetchBidBoq(data) {
 
-    jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
-    jQuery("#tblServicesProductboq").empty();
-    jQuery("#tblboqparamprev").empty();
-    $('#scrolr').show();
-    $('#wrap_scrollerPrev').show();
-    var counter = 0, sheetcount = 0;
-    if (data[0].parameters.length > 0) {
-        var srno, sheet, parentid, pid;
-        jQuery("#tblServicesProductboq,#tblboqparamprev").append('<thead><tr style="background: gray; color: #FFF;"><th style="width:5%!important"></th><th style="width:5%!important">S No</th><th style="width:10%!important">Item Code</th><th style="width:20%!important">Item/Service</th><th style="width:10%!important">Target/Budget Price</th><th style="width:40%!important">Description</th><th style="width:10%!important">Delivery Location</th><th class=hide>TAT</th><th style="width:10%!important">Remarks</th><th class=hide>PO No.</th><th class=hide>Vendor Name</th><th class=hide>Unit Rate</th><th class=hide>PO Date</th><th class=hide>PO Value</th></tr></thead><tbody>');
-
-
-        for (var r = 0; r < data[0].boqSummary.length; r++) {
-            for (var i = 0; i < data[0].parameters.length; i++) {
-                if (data[0].boqSummary[r].boqsheetName == data[0].parameters[i].boqsheetName) {
-                    if (data[0].parameters[i].srno == 1 && data[0].parameters[i].rfqParameterParentID == "0") {
-                        pid = data[0].parameters[i].rfqParameterId;
-                        sheet = data[0].parameters[i].boqsheetName;
-                        srno = data[0].parameters[i].srno;
-                        parentid = data[0].parameters[i].rfqParameterParentID;
-                        $("#tblServicesProductboq").append('<tr><td style="width:0.5%!important"><button type=button data-toggle=collapse data-target=#demo' + i + srno + '  class="btn iconbtn accordion-toggle" onclick="fncollapse(MainItem' + i + ')"><span class="glyphicon glyphicon-plus" id=MainItem' + i + ' ></span></button></td><td style="width:6.5%!important" class=text-right>' + srno + '</td><td>' + data[0].parameters[i].rfqItemCode + '</td><td><b>' + sheet + '</b></td><td>' + thousands_separators(data[0].parameters[i].rfqTargetPrice) + '</td><td>' + data[0].parameters[i].rfqDescription + '</td><td>' + data[0].parameters[i].rfqDelivery + '</td><td class="text-right hide" >' + data[0].parameters[i].tat + '</td><td>' + data[0].parameters[i].rfqRemark + '</td><td class="hide">' + data[0].parameters[i].rfqPoNo + '</td><td class="hide">' + data[0].parameters[i].rfqVendorName + '</td><td class="text-right hide" >' + thousands_separators(data[0].parameters[i].rfqUnitRate) + '</td><td class="hide">' + data[0].parameters[i].rfqpoDate + '</td><td class="text-right hide" >' + thousands_separators(data[0].parameters[i].rfqpoValue) + '</td></tr>');
-                        $("#tblboqparamprev").append('<tr><td style="width:0.5%!important"><button type=button class="btn iconbtn accordion-toggle" data-toggle=collapse data-target=#demoP' + i + srno + ' onclick="fncollapse(MainItemP' + i + ')"><span class="glyphicon glyphicon-plus" id=MainItemP' + i + ' ></span></button></td><td style="width:6.5%!important" class=text-right>' + srno + '</td><td>' + data[0].parameters[i].rfqItemCode + '</td><td><b>' + sheet + '</b></td><td>' + thousands_separators(data[0].parameters[i].rfqTargetPrice) + '</td><td>' + data[0].parameters[i].rfqDescription + '</td><td>' + data[0].parameters[i].rfqDelivery + '</td><td class="text-right hide" >' + data[0].parameters[i].tat + '</td><td>' + data[0].parameters[i].rfqRemark + '</td><td class="hide">' + data[0].parameters[i].rfqPoNo + '</td><td class="hide">' + data[0].parameters[i].rfqVendorName + '</td><td class="text-right hide" >' + thousands_separators(data[0].parameters[i].rfqUnitRate) + '</td><td class="hide">' + data[0].parameters[i].rfqpoDate + '</td><td class="text-right hide" >' + thousands_separators(data[0].parameters[i].rfqpoValue) + '</td></tr>');
-
-                        sheetcount = sheetcount + data[0].boqSummary[r].itemCount;
-                        for (var j = counter; j < sheetcount; j++) {
-                            counter = data[0].boqSummary[r].itemCount - 1;
-
-                            if (data[0].parameters[i].rfqUomId == "" && data[0].parameters[j].rfqUomId == "" && data[0].parameters[j].rfqParameterParentID == "0" && data[0].parameters[j].boqsheetName == data[0].parameters[i].boqsheetName) {//&& data[0].parameters[i].rfqParameterParentID == "0"
-
-                                if (data[0].parameters[j].srno == 1) {
-
-                                    $("#tblServicesProductboq").append("<tr><td colspan=10 class=hiddenRow><div class='accordian-body collapse' id='demo" + i + data[0].parameters[i].srno + "' style='padding-left:29px!important'></div></tr>");
-                                    $("#tblboqparamprev").append("<tr><td colspan=10 class=hiddenRow><div class='accordian-body collapse' id='demoP" + i + data[0].parameters[i].srno + "' style='padding-left:29px!important'></div></tr>");
-                                }
-                                pid = data[0].parameters[j].rfqParameterId;
-                                sheet = data[0].parameters[j].boqsheetName;
-                                srno = data[0].parameters[j].srno;
-                                parentid = data[0].parameters[j].rfqParameterParentID;
-
-                                $("#demo" + i + data[0].parameters[i].srno).append("<table id=TblMH" + srno + data[0].parameters[j].boqsheetName.split(' ').join('_') + " class='table table-condensed table-bordered BoqTable' cellpadding=0 cellspacing=0></table>");
-                                $("#demoP" + i + data[0].parameters[i].srno).append("<table id=TblMHP" + srno + data[0].parameters[j].boqsheetName.split(' ').join('_') + " class='table table-condensed table-bordered BoqTable' cellpadding=0 cellspacing=0></table>");
-
-                                $('#TblMH' + srno + data[0].parameters[j].boqsheetName.split(' ').join('_')).append("<tbody><tr><td style='width:1%!important' class=border-none><button type='button'  data-toggle=collapse  data-target='#demo1" + j + srno + "'  class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItem1" + srno + j + ")'><i class='glyphicon glyphicon-plus' id='mainItem1" + srno + j + "'></i></button></td><td  style='width:6.2%!important' class='text-right'>" + srno + " </td><td>" + data[0].parameters[j].rfqShortName + "</td></tr></tbody>")
-                                $('#TblMHP' + srno + data[0].parameters[j].boqsheetName.split(' ').join('_')).append("<tbody><tr><td style='width:1%!important' class=border-none><button type='button' data-toggle=collapse data-target='#demo1P" + j + srno + "'  class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItem1P" + srno + j + ")'><i class='glyphicon glyphicon-plus' id='mainItem1P" + srno + j + "'></i></button></td><td  style='width:6.2%!important'class='text-right'>" + srno + "</td><td>" + data[0].parameters[j].rfqShortName + "</td></tr></tbody>")
-
-                                for (var k = j; k < sheetcount; k++) {
-                                    if (data[0].parameters[j].rfqParameterParentID == "0" && data[0].parameters[k].rfqParameterParentID == "0" && data[0].parameters[i].rfqUomId == "" && data[0].parameters[k].boqsheetName == data[0].parameters[j].boqsheetName) {//&& data[0].parameters[i].rfQuantity == 0
-
-                                        if (data[0].parameters[k].srno == data[0].parameters[j].srno) {
-                                            $('#TblMH' + data[0].parameters[j].srno + data[0].parameters[j].boqsheetName.split(' ').join('_')).append("<tr><td colspan=10 class=hiddenRow><div class='accordian-body collapse' id='demo1" + j + data[0].parameters[j].srno + "' style='padding-left:30px!important'><table id='TblMH" + data[0].parameters[j].srno + k + "' class='table table-condensed table-bordered BoqTable' cellpadding=0 cellspacing=0></table></div></td></tr>");
-                                            $('#TblMHP' + data[0].parameters[j].srno + data[0].parameters[j].boqsheetName.split(' ').join('_')).append("<tr><td colspan=10 class=hiddenRow><div class='accordian-body collapse' id='demo1P" + j + data[0].parameters[j].srno + "' style='padding-left:30px!important'><table id='TblMHP" + data[0].parameters[j].srno + k + "' class='table table-condensed table-bordered BoqTable' cellpadding=0 cellspacing=0></table></div></td></tr>");
-                                        }
-
-                                        $('#TblMH' + data[0].parameters[j].srno + k).append("<thead><tr><th colspan=2 style='width:3.2%!important' class=text-center>Srno</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>UOM</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target/Budget Price</th></tr></thead>")
-                                        $('#TblMHP' + data[0].parameters[j].srno + k).append("<thead><tr><th colspan=2 style='width:3.2%!important' class=text-center>Srno</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>UOM</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target/Budget Price</th></tr></thead>")
-                                        for (var l = k; l < sheetcount; l++) {
-                                            if (data[0].parameters[l].rfqParameterParentID == "0" && data[0].parameters[l].rfqUomId == "" && data[0].parameters[k].rfqParameterId == data[0].parameters[l].rfqParameterParentID && data[0].parameters[l].boqsheetName == data[0].parameters[k].boqsheetName) {//&& data[0].parameters[l].rfQuantity == 0
-
-                                                $('#TblMH' + data[0].parameters[j].srno + k).append("<tr><td style='width:0.5%!important' class=border-none><button data-toggle='collapse'  data-target='#demo12" + l + "' type='button' class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItem12" + l + ")' ><i class='glyphicon glyphicon-plus' id='mainItem12" + l + "'></i></button></td><td style='width:1.2%!important' class='text-right'>" + data[0].parameters[l].srno + "</td><td colspan='10'>" + data[0].parameters[l].rfqShortName + "</td></tr>");
-                                                $('#TblMHP' + data[0].parameters[j].srno + k).append("<tr><td style='width:0.5%!important' class=border-none><button data-toggle='collapse' data-target='#demo12P" + l + "' type='button' class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItem12P" + l + ")' ><i class='glyphicon glyphicon-plus' id='mainItem12P" + l + "'></i></button></td><td style='width:1.2%!important' class='text-right'>" + data[0].parameters[l].srno + "</td><td colspan='10'>" + data[0].parameters[l].rfqShortName + "</td></tr>");
-
-                                                $('#TblMH' + data[0].parameters[j].srno + k).append("<tr><td colspan=10 class=hiddenRow><div class='accordian-body collapse' id='demo12" + l + "' style='padding-left:0px!important'></div></tr>");
-                                                $('#TblMHP' + data[0].parameters[j].srno + k).append("<tr><td colspan=10 class=hiddenRow><div class='accordian-body collapse' id='demo12P" + l + "' style='padding-left:0px!important'></div></tr>");
-
-                                                $("#demo12" + l).append("<table id=TblMH1" + l + " class='table table-condensed table-bordered BoqTable' cellpadding=0 cellspacing=0></table>");
-                                                $("#demo12P" + l).append("<table id=TblMH1P" + l + " class='table table-condensed table-bordered BoqTable' cellpadding=0 cellspacing=0></table>");
-
-                                                $('#TblMH1' + l).append("<thead><tr><th colspan=2 style='width:3.2%!important' class=text-center>Srno</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>UOM</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target/Budget Price</th></tr></thead>")
-                                                $('#TblMH1P' + l).append("<thead><tr><th colspan=2 style='width:3.2%!important' class=text-center>Srno</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>UOM</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target/Budget Price</th></tr></thead>")
-
-                                                pid = data[0].parameters[l].rfqParameterId;
-                                                sheet = data[0].parameters[l].boqsheetName;
-                                                srno = data[0].parameters[l].srno;
-                                                parentid = data[0].parameters[l].rfqParameterParentID
-
-                                                for (var m = l; m < sheetcount; m++) {
-                                                    if (data[0].parameters[m].rfqUomId == "" && data[0].parameters[l].rfqParameterId == data[0].parameters[m].rfqParameterParentID && sheet == data[0].parameters[m].boqsheetName) {//&& data[0].parameters[m].rfQuantity == 0
-                                                        $('#TblMH' + l).append("<tr><td style='width:0.5%!important' class=border-none><button type='button' data-toggle='collapse' data-target='#demo123" + m + "' class='btn iconbtn accordion-toggle ' onclick='fncollapse(mainItem1_2" + l + ")' ><i class='glyphicon glyphicon-plus' id='mainItem1_2" + l + "'></i></button></td><td style='width:1.2%!important' class='text-right'>" + data[0].parameters[l].srno + "</td><td colspan='10'>" + data[0].parameters[l].rfqShortName + "</td></tr>");
-                                                        $('#TblMHP' + l).append("<tr><td style='width:0.5%!important' class=border-none><button type='button' data-toggle='collapse' data-target='#demo123P" + m + "' class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItem1_2P" + l + ")' ><i class='glyphicon glyphicon-plus' id='mainItem1_2P" + l + "'></i></button></td><td style='width:1.2%!important' class='text-right'>" + data[0].parameters[l].srno + "</td><td colspan='10'>" + data[0].parameters[l].rfqShortName + "</td></tr>");
-                                                    }
-                                                    else if (data[0].parameters[l].rfqParameterId == data[0].parameters[m].rfqParameterParentID) {
-                                                        $('#TblMH1' + l).append("<tr><td colspan=2 class=text-right>" + data[0].parameters[m].srno + "</td><td>" + data[0].parameters[m].rfqShortName + "</td><td>" + data[0].parameters[m].rfqUomId + "</td><td>" + thousands_separators(data[0].parameters[m].rfQuantity) + "</td><td>" + thousands_separators(data[0].parameters[m].rfqTargetPrice) + "</td></tr>")
-                                                        $('#TblMH1P' + l).append("<tr><td colspan=2 class=text-right>" + data[0].parameters[m].srno + "</td><td>" + data[0].parameters[m].rfqShortName + "</td><td>" + data[0].parameters[m].rfqUomId + "</td><td>" + thousands_separators(data[0].parameters[m].rfQuantity) + "</td><td>" + thousands_separators(data[0].parameters[m].rfqTargetPrice) + "</td></tr>")
-                                                    }
-                                                }
-                                            }
-                                            else if (data[0].parameters[k].rfqParameterId == data[0].parameters[l].rfqParameterParentID && data[0].parameters[l].rfqUomId != "") {//&& data[0].parameters[l].rfQuantity != 0
-                                                pid = data[0].parameters[l].rfqParameterId;
-                                                sheet = data[0].parameters[l].boqsheetName;
-                                                srno = data[0].parameters[l].srno;
-                                                parentid = data[0].parameters[l].rfqParameterParentID
-                                                $('#TblMH' + data[0].parameters[j].srno + k).append("<tr><td colspan=2 class=text-right>" + srno + "</td><td>" + data[0].parameters[l].rfqShortName + "</td><td>" + data[0].parameters[l].rfqUomId + "</td><td>" + thousands_separators(data[0].parameters[l].rfQuantity) + "</td><td>" + thousands_separators(data[0].parameters[l].rfqTargetPrice) + "</td></tr>")
-                                                $('#TblMHP' + data[0].parameters[j].srno + k).append("<tr><td colspan=2 class=text-right>" + srno + "</td><td>" + data[0].parameters[l].rfqShortName + "</td><td>" + data[0].parameters[l].rfqUomId + "</td><td>" + thousands_separators(data[0].parameters[l].rfQuantity) + "</td><td>" + thousands_separators(data[0].parameters[l].rfqTargetPrice) + "</td></tr>")
-                                            }
-                                            else if (data[0].parameters[k].rfqParameterId == data[0].parameters[l].rfqParameterParentID && data[0].parameters[l].rfqParameterParentID != 0) {
-                                                pid = data[0].parameters[l].rfqParameterId;
-                                                sheet = data[0].parameters[l].boqsheetName;
-                                                srno = data[0].parameters[l].srno;
-                                                parentid = data[0].parameters[l].rfqParameterParentID
-
-
-
-                                                $('#TblMH' + data[0].parameters[j].srno + k).append("<tr><td  style='width:0.5%!important' class=border-none><button type='button' data-toggle='collapse' data-target='#demo12" + l + data[0].parameters[j].srno + "' class='btn accordion-toggle iconbtn' onclick='fncollapse(mainItem_122" + l + j + ")' ><i class='glyphicon glyphicon-plus' id='mainItem_122" + l + j + "'></i></button></td><td style='width:1.2%!important' class='text-right'>" + data[0].parameters[l].srno + "</td><td colspan='10'>" + data[0].parameters[l].rfqShortName + "</td></tr>");
-                                                $('#TblMHP' + data[0].parameters[j].srno + k).append("<tr><td style='width:0.5%!important' class=border-none><button type='button' data-toggle='collapse' data-target='#demo12P" + l + data[0].parameters[j].srno + "' class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItem_122P" + l + j + ")' ><i class='glyphicon glyphicon-plus' id='mainItem_122P" + l + j + "'></i></button></td><td style='width:1.2%!important' class='text-right'>" + data[0].parameters[l].srno + "</td><td colspan='10'>" + data[0].parameters[l].rfqShortName + "</td></tr>");
-
-                                                $('#TblMH' + data[0].parameters[j].srno + k).append("<tr><td colspan=10 class=hiddenRow><div class='accordian-body collapse' id='demo12" + l + data[0].parameters[j].srno + "' style='padding-left:0px!important'></div></tr>");
-                                                $('#TblMHP' + data[0].parameters[j].srno + k).append("<tr><td colspan=10 class=hiddenRow><div class='accordian-body collapse' id='demo12P" + l + data[0].parameters[j].srno + "' style='padding-left:0px!important'></div></tr>");
-
-                                                $("#demo12" + l + data[0].parameters[j].srno).append("<table id=TblMH1" + l + data[0].parameters[j].srno + " class='table table-condensed  table-bordered BoqTable' cellpadding=0 cellspacing=0></table>");
-                                                $("#demo12P" + l + data[0].parameters[j].srno).append("<table id=TblMH1P" + l + data[0].parameters[j].srno + " class='table table-condensed table-bordered BoqTable' cellpadding=0 cellspacing=0></table>");
-
-                                                $('#TblMH1' + l + data[0].parameters[j].srno).append("<thead><tr><th class=text-center colspan=2 style='width:3.2%!important'>Srno</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>UOM</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target/Budget Price</th></tr></thead>")
-                                                $('#TblMH1P' + l + data[0].parameters[j].srno).append("<thead><tr><th  class=text-center colspan=2 style='width:3.2%!important'>Srno</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>UOM</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target/Budget Price</th></tr></thead>")
-                                                for (var m = l; m < sheetcount; m++) {
-                                                    if (data[0].parameters[m].rfqUomId == "" && data[0].parameters[l].rfqParameterId == data[0].parameters[m].rfqParameterParentID && data[0].parameters[l].boqsheetName == data[0].parameters[m].boqsheetName) {//&& data[0].parameters[m].rfQuantity == 0
-
-                                                        $('#TblMH1' + l + data[0].parameters[j].srno).append("<tr><td style='width:0.5%!important' ><button type='button' data-toggle='collapse' data-target='#demo123" + m + "' class='btn accordion-toggle iconbtn' onclick='fncollapse(mainItem122" + l + j + ")' ><i class='glyphicon glyphicon-plus' id='mainItem122" + l + j + "'></i></button></td><td style='width:1.2%!important' class='text-right'>" + data[0].parameters[m].srno + "</td><td colspan='10'>" + data[0].parameters[m].rfqShortName + "</td></tr>");
-                                                        $('#TblMH1P' + l + data[0].parameters[j].srno).append("<tr><td style='width:0.5%!important'><button type='button' data-toggle='collapse'  data-target='#demo123P" + m + "' class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItem122P" + l + j + ")' ><i class='glyphicon glyphicon-plus' id='mainItem122P" + l + j + "'></i></button></td><td style='width:1.2%!important' class='text-right'>" + data[0].parameters[m].srno + "</td><td colspan='10'>" + data[0].parameters[m].rfqShortName + "</td></tr>");
-
-                                                        $('#TblMH1' + l + data[0].parameters[j].srno).append("<tr><td colspan=10 class=hiddenRow><div class='accordian-body collapse' id='demo123" + m + "' style='padding-left:0px!important'></div></tr>");
-                                                        $('#TblMH1P' + l + data[0].parameters[j].srno).append("<tr><td colspan=10 class=hiddenRow><div class='accordian-body collapse' id='demo123P" + m + "' style='padding-left:0px!important'></div></tr>");
-
-
-                                                        $("#demo123" + m).append("<table id=TblMH12" + m + data[0].parameters[k].srno + " class='table table-condensed  table-bordered BoqTable' cellpadding=0 cellspacing=0></table>");
-                                                        $("#demo123P" + m).append("<table id=TblMH12P" + m + data[0].parameters[k].srno + " class='table table-condensed table-bordered BoqTable' cellpadding=0 cellspacing=0></table>");
-
-                                                        $('#TblMH12' + m + data[0].parameters[k].srno).append("<thead><tr><th class=text-center colspan=2 style='width:3.2%!important'>Srno</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>UOM</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target/Budget Price</th></tr></thead>")
-                                                        $('#TblMH12P' + m + data[0].parameters[k].srno).append("<thead><tr><th  class=text-center colspan=2 style='width:3.2%!important'>Srno</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>UOM</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target/Budget Price</th></tr></thead>")
-                                                        for (var n = m; n < sheetcount; n++) {
-                                                            if (data[0].parameters[n].rfqUomId == "" && data[0].parameters[m].rfqParameterId == data[0].parameters[n].rfqParameterParentID && data[0].parameters[m].boqsheetName == data[0].parameters[n].boqsheetName) {//&& data[0].parameters[m].rfQuantity == 0
-                                                                console.log(data[0].parameters[n].srno)
-                                                                $('#TblMH12' + m + data[0].parameters[k].srno).append("<tr><td style='width:0.5%!important' class=border-none><button type='button' data-toggle='collapse' data-target='#demo1234" + n + "' class='btn iconbtn accordion-toggle ' onclick='fncollapse(mainItem1_2_" + m + ")' ><i class='glyphicon glyphicon-plus' id='mainItem1_2_" + m + "'></i></button></td><td style='width:1.2%!important' class='text-right'>" + data[0].parameters[n].srno + "</td><td colspan='10'>" + data[0].parameters[n].rfqShortName + "</td></tr>");
-                                                                $('#TblMH12P' + m + data[0].parameters[k].srno).append("<tr><td style='width:0.5%!important' class=border-none><button type='button' data-toggle='collapse' data-target='#demo1234P" + n + "' class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItem1_2_P" + m + ")' ><i class='glyphicon glyphicon-plus' id='mainItem1_2_P" + m + "'></i></button></td><td style='width:1.2%!important' class='text-right'>" + data[0].parameters[n].srno + "</td><td colspan='10'>" + data[0].parameters[n].rfqShortName + "</td></tr>");
-
-
-                                                                $('#TblMH12' + m + data[0].parameters[k].srno).append("<tr><td colspan=10 class=hiddenRow><div class='accordian-body collapse' id='demo1234" + n + "' style='padding-left:0px!important'></div></tr>");
-                                                                $('#TblMH12P' + m + data[0].parameters[k].srno).append("<tr><td colspan=10 class=hiddenRow><div class='accordian-body collapse' id='demo1234P" + n + "' style='padding-left:0px!important'></div></tr>");
-
-                                                                $("#demo1234" + n).append("<table id=TblMH123" + n + data[0].parameters[m].srno + " class='table table-condensed  table-bordered BoqTable' cellpadding=0 cellspacing=0></table>");
-                                                                $("#demo1234" + n).append("<table id=TblMH123P" + n + data[0].parameters[m].srno + " class='table table-condensed table-bordered BoqTable' cellpadding=0 cellspacing=0></table>");
-
-                                                                $('#TblMH123' + n + data[0].parameters[m].srno).append("<thead><tr><th class=text-center colspan=2 style='width:3.2%!important'>Srno</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>UOM</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target/Budget Price</th></tr></thead>")
-                                                                $('#TblMH123P' + n + data[0].parameters[m].srno).append("<thead><tr><th  class=text-center colspan=2 style='width:3.2%!important'>Srno</th><th style='width:20%!important'>Item Name</th><th style='width:5%!important'>UOM</th><th style='width:5%!important'>Quantity</th><th style='width:20%!important'>Target/Budget Price</th></tr></thead>")
-                                                                for (var o = n; o < sheetcount; o++) {
-                                                                    if (data[0].parameters[o].rfqUomId == "" && data[0].parameters[o].rfqParameterId == data[0].parameters[n].rfqParameterParentID && data[0].parameters[o].boqsheetName == data[0].parameters[n].boqsheetName) {//&& data[0].parameters[m].rfQuantity == 0
-                                                                        console.log(data[0].parameters[o].srno)
-                                                                        $('#TblMH123' + n + data[0].parameters[m].srno).append("<tr><td style='width:0.5%!important' class=border-none><button type='button' data-toggle='collapse' data-target='#demo12345" + n + "' class='btn iconbtn accordion-toggle ' onclick='fncollapse(mainItem1_2_1" + n + ")' ><i class='glyphicon glyphicon-plus' id='mainItem1_2_1" + n + "'></i></button></td><td style='width:1.2%!important' class='text-right'>" + data[0].parameters[o].srno + "</td><td colspan='10'>" + data[0].parameters[o].rfqShortName + "</td></tr>");
-                                                                        $('#TblMH123P' + n + data[0].parameters[m].srno).append("<tr><td style='width:0.5%!important' class=border-none><button type='button' data-toggle='collapse' data-target='#demo12345P" + n + "' class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItem1_2_1_P" + n + ")' ><i class='glyphicon glyphicon-plus' id='mainItem1_2_1_P" + n + "'></i></button></td><td style='width:1.2%!important' class='text-right'>" + data[0].parameters[o].srno + "</td><td colspan='10'>" + data[0].parameters[o].rfqShortName + "</td></tr>");
-                                                                    }
-                                                                    else if (data[0].parameters[o].rfqParameterId == data[0].parameters[n].rfqParameterParentID) {
-
-                                                                        $('#TblMH123' + n + data[0].parameters[m].srno).append("<tr><td colspan=2 class=text-right>" + data[0].parameters[o].srno + "</td><td>" + data[0].parameters[o].rfqShortName + "</td><td>" + data[0].parameters[o].rfqUomId + "</td><td>" + thousands_separators(data[0].parameters[o].rfQuantity) + "</td><td>" + thousands_separators(data[0].parameters[o].rfqTargetPrice) + "</td></tr>")
-                                                                        $('#TblMH123P' + n + data[0].parameters[m].srno).append("<tr><td colspan=2 class=text-right>" + data[0].parameters[o].srno + "</td><td>" + data[0].parameters[o].rfqShortName + "</td><td>" + data[0].parameters[o].rfqUomId + "</td><td>" + thousands_separators(data[0].parameters[o].rfQuantity) + "</td><td>" + thousands_separators(data[0].parameters[o].rfqTargetPrice) + "</td></tr>")
-                                                                    }
-                                                                }
-                                                            }
-                                                            else if (data[0].parameters[m].rfqParameterId == data[0].parameters[n].rfqParameterParentID) {
-                                                                console.log(data[0].parameters[n].srno)
-                                                                $('#TblMH12' + + m + data[0].parameters[k].srno).append("<tr><td colspan=2 class=text-right>" + data[0].parameters[n].srno + "</td><td style='width:36%!important'>" + data[0].parameters[n].rfqShortName + "</td><td style='width:9.5%!important'>" + data[0].parameters[n].rfqUomId + "</td><td>" + thousands_separators(data[0].parameters[n].rfQuantity) + "</td><td>" + thousands_separators(data[0].parameters[n].rfqTargetPrice) + "</td></tr>")
-                                                                $('#TblMH12P' + + m + data[0].parameters[k].srno).append("<tr><td colspan=2 class=text-right>" + data[0].parameters[n].srno + "</td><td style='width:36%!important'>" + data[0].parameters[n].rfqShortName + "</td><td style='width:9.5%!important'>" + data[0].parameters[n].rfqUomId + "</td><td>" + thousands_separators(data[0].parameters[n].rfQuantity) + "</td><td>" + thousands_separators(data[0].parameters[n].rfqTargetPrice) + "</td></tr>")
-                                                            }
-                                                        }
-                                                    }
-                                                    else if (data[0].parameters[l].rfqParameterId == data[0].parameters[m].rfqParameterParentID) {
-                                                        $('#TblMH1' + l + data[0].parameters[j].srno).append("<tr><td colspan=2 class=text-right>" + data[0].parameters[m].srno + "</td><td>" + data[0].parameters[m].rfqShortName + "</td><td>" + data[0].parameters[m].rfqUomId + "</td><td>" + thousands_separators(data[0].parameters[m].rfQuantity) + "</td><td>" + thousands_separators(data[0].parameters[m].rfqTargetPrice) + "</td></tr>")
-                                                        $('#TblMH1P' + l + data[0].parameters[j].srno).append("<tr><td colspan=2 class=text-right>" + data[0].parameters[m].srno + "</td><td>" + data[0].parameters[m].rfqShortName + "</td><td>" + data[0].parameters[m].rfqUomId + "</td><td>" + thousands_separators(data[0].parameters[m].rfQuantity) + "</td><td>" + thousands_separators(data[0].parameters[m].rfqTargetPrice) + "</td></tr>")
-
-
-
-                                                    }
-                                                }
-                                            }
-
-                                        }
-
-                                    }
-
-
-                                }
-
-                            }
-                            else if (data[0].parameters[i].rfqParameterParentID == "0" && data[0].parameters[j].boqsheetName == data[0].parameters[i].boqsheetName) {//&& data[0].parameters[i].rfqParameterParentID == "0"
-                                if (data[0].parameters[i].srno == data[0].parameters[j].srno) {
-
-                                    $("#tblServicesProductboq").append("<tr><td colspan=10 class=hiddenRow><div class='accordian-body collapse' id='demo" + i + data[0].parameters[i].srno + "' style='padding-left:29px!important'></div></tr>");
-                                    $("#tblboqparamprev").append("<tr><td colspan=10 class=hiddenRow><div class='accordian-body collapse' id='demoP" + i + data[0].parameters[i].srno + "' style='padding-left:29px!important'></div></tr>");
-                                }
-                                pid = data[0].parameters[j].rfqParameterId;
-                                sheet = data[0].parameters[j].boqsheetName;
-                                srno = data[0].parameters[j].srno;
-                                parentid = data[0].parameters[j].rfqParameterParentID;
-
-                                $("#demo" + i + data[0].parameters[i].srno).append("<table id=TblMH" + srno + data[0].parameters[j].boqsheetName.split(' ').join('_') + " class='table table-condensed table-bordered BoqTable' cellpadding=0 cellspacing=0></table>");
-                                $("#demoP" + i + data[0].parameters[i].srno).append("<table id=TblMHP" + srno + data[0].parameters[j].boqsheetName.split(' ').join('_') + " class='table table-condensed table-bordered BoqTable' cellpadding=0 cellspacing=0></table>");
-
-                                $('#TblMH' + srno + data[0].parameters[j].boqsheetName.split(' ').join('_')).append("<tbody><tr><td colspan=2 style='width:8.4%!important' class='text-right'>" + srno + " </td><td style='width:36.5%!important'>" + data[0].parameters[j].rfqShortName + "</td><td style='width:9.1%!important'>" + data[0].parameters[j].rfqUomId + "</td><td style='width:9.8%!important'>" + data[0].parameters[j].rfQuantity + "</td><td>" + data[0].parameters[j].rfqTargetPrice + "</td></tr></tbody>")
-                                $('#TblMHP' + srno + data[0].parameters[j].boqsheetName.split(' ').join('_')).append("<tbody><tr><td colspan=2 style='width:8.4%!important'class='text-right'>" + srno + "</td><td style='width:36.5%!important'>" + data[0].parameters[j].rfqShortName + "</td><td style='width:9.1%!important'>" + data[0].parameters[j].rfqUomId + "</td><td style='width:9.8%!important'>" + data[0].parameters[j].rfQuantity + "</td><td>" + data[0].parameters[j].rfqTargetPrice + "</td></tr></tbody>")
-
-                            }
-
-                        }
-                    }
-                }
-            }
-        }
-    }
-    $('#RfqParameterexcelBoq').modal('hide');
-}
-//****** End Boq File Upload
 
 function fetchVendorGroup(categoryFor, vendorId) {
     jQuery.ajax({
@@ -4682,20 +4569,20 @@ function deleteterms(icount) {
 
 
 function FetchSAPPI() {
-    debugger
-    let PIId = $('#txtrfirfqsubject').val()
+
+    let rfqId = parseInt(sessionStorage.getItem('hddnRFQID'))
+    let PIId = $('#txtrfirfqsubject').val();
     let CustomerID = parseInt(sessionStorage.getItem('CustomerID'))
-    console.log(sessionStorage.getItem("APIPath") + "SAPIntegration/FetchSAPPI/?PIId=" + PIId + "&CustomerID=" + CustomerID)
+    console.log(sessionStorage.getItem("APIPath") + "SAPIntegration/FetchSAPPI/?PIId=" + PIId + "&CustomerID=" + CustomerID + "&rfqId=" + rfqId)
     jQuery.ajax({
         //url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchRFQSubjectforReport/?SubjectFor=" + subjectFor + "&Userid=..&CustomerID=" + sessionStorage.getItem('CustomerID'),//UserID =.. for fetch all RFQ
-        url: sessionStorage.getItem("APIPath") + "SAPIntegration/FetchSAPPI/?PIId=" + PIId + "&CustomerID=" + CustomerID,//UserID =.. for fetch all RFQ
+        url: sessionStorage.getItem("APIPath") + "SAPIntegration/FetchSAPPI/?PIId=" + PIId + "&CustomerID=" + CustomerID + "&rfqId=" + rfqId,//UserID =.. for fetch all RFQ
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
 
-            debugger
             $('#RFQPullSAPModal').modal('hide');
             if (data.length > 0) {
                 jQuery("#tblServicesProduct").empty();
@@ -4745,7 +4632,7 @@ function FetchSAPPI() {
             }
         },
         error: function (xhr) {
-            debugger
+
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);

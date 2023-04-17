@@ -1,10 +1,10 @@
 sessionStorage.clear();
 
 //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
-sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
+//sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
 
 
 var Token = '';
@@ -142,8 +142,8 @@ var Login = function () {
 
     function validateUser() {
         //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
-        //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-         sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
+        sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+         //sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
         //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
         var path = window.location.pathname;
         var url = '';
@@ -337,6 +337,8 @@ var Login = function () {
                     sessionStorage.setItem("culturecode", value.cultureCode);
                     //  sessionStorage.setItem("localcode", value.localecode);
                     sessionStorage.setItem("utcoffset", value.utcoffset);
+                    sessionStorage.setItem("BoqUpload", value.BOQUpload);
+                    sessionStorage.setItem("IsSAPModule", value.IsExternalSourceIntegrated);
                     setTimeout(function () {
                         // alert(sessionStorage.getItem("UserType"))
                         if (sessionStorage.getItem("UserType") == "P") {
@@ -603,6 +605,7 @@ function SetSessionItems(lastPart, value) {
     sessionStorage.setItem("utcoffset", value.utcoffset);
     sessionStorage.setItem("isWhatsappOpted", value.isWhatsappOpted);
     sessionStorage.setItem("mobileNo", value.mobileNo);
+    sessionStorage.setItem("BoqUpload", value.BOQUpload);
     setTimeout(function () {
         if (sessionStorage.getItem("UserType") == "P") {
             if ((value.VendorID != '0')) {
@@ -793,14 +796,11 @@ function fetchCity(stateid) {
     });
 }
 
-
-
-
 function VendorRequestSubmit() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     debugger
     let data = {
-        "CustomerID":"0",
+        "CustomerID": 0,
         "UserID": "0",
         "CompanyEmail": $('#txtEmail').val(),
         "AlternateEmailID": $('#txtEmail2').val(),
@@ -826,10 +826,10 @@ function VendorRequestSubmit() {
         "CountryKey": jQuery("#ddlCountry option:selected").val(),
         "RegionKey": jQuery("#ddlState option:selected").val(),
         "Langu": jQuery("#ddllanguage option:selected").val(),
-       
-    }
 
- 
+    }
+    $('#buttoncompanyupdate').removeAttr("disabled", "disabled");
+
 
     jQuery.ajax({
         type: "POST",
@@ -843,6 +843,8 @@ function VendorRequestSubmit() {
         dataType: "json",
         success: function (data) {
             debugger
+            
+            $('#buttoncompanyupdate').attr("disabled", "disabled");
             jQuery.unblockUI();
             if (data.isSuccess == 1) {
                 $('#divsuccvendor').html('')
@@ -850,17 +852,24 @@ function VendorRequestSubmit() {
                 $('#divsuccvendor').show();
                 $('#divsuccvendor').fadeOut(5000);
             }
-           
+
+
         },
         error: function (xhr, status, error) {
-            debugger
-            console.log("error")
+            $('#buttoncompanyupdate').removeAttr("disabled", "disabled");
+            $('#diverrorvendor').html('')
+            $('#diverrorvendor').html(xhr.responseText)
+            $('#diverrorvendor').show();
+            $('#diverrorvendor').fadeOut(5000);
+
             jQuery.unblockUI();
         }
     });
 
 
 }
+
+
 
 
 function extractPan(data) {
@@ -957,10 +966,22 @@ function FormValidate() {
         focusInvalid: false,
         ignore: "",
         rules: {
-
+            
+            
             txtContName: {
                 required: true,                
             },
+            vendormobileno: {
+                required: true,
+                number: true
+            },
+            vendoraddress: {
+                required: true,
+                
+            },
+            ddlpreferredTime: {
+                required: true,
+            }, 
             txtEmail: {
                 required: true,
                 email: true
@@ -982,8 +1003,11 @@ function FormValidate() {
             }, 
             vendorname: {
                 required: true,
-            },
+            }, 
             pincode: {
+                required: true,
+            },
+            ddllanguage: {
                 required: true,
             },
 
@@ -1041,12 +1065,13 @@ function FormValidate() {
 
         },
         errorPlacement: function (error, element) {
-
+            error.insertAfter(element);
         },
         success: function (label) {
         },
         submitHandler: function (form) {
             debugger
+           
             VendorRequestSubmit()
         }
     });

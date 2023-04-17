@@ -206,52 +206,8 @@
                                     <span id="spanerrorvendor"> </span>
                                 </div>
 
-                                <!--<form action="#" id="frmEmailValidate" method="POST">
-                                    <div class="form-body">
-                                        <div class="progress-form hide" id="modalLoader">
-
-                                            <div class="col-md-offset-3 col-md-6">
-                                                <p id="loader-msgparameter">
-
-                                                </p>
-                                                <div class="progress">
-                                                    <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width:100%">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="clearfix"></div>
-
-                                        </div>-->
-
-                                       <!-- <div class="form-group">
-
-                                            <label class="col-md-3 control-label">
-
-                                                Email<span class="required">*</span>
-
-                                            </label>
-
-
-
-                                            <div class="col-lg-3 xyz">
-
-                                                <input type="text" class="form-control" id="txtemailverify" placeholder="Email" autocomplete="off"
-                                                       name="txtemailverify" onkeyup="fnClearformfields()" />
-
-                                            </div>
-
-
-
-                                            <div class="col-lg-1" style="margin-top:4px;">
-
-                                                <button type="submit" class="btn btn-sm btn-primary verifyProceed" id="btnverifyemail" disabled>Proceed</button>
-
-                                            </div>
-
-                                        </div>-->
-                                    <!--</div>
-                                </form>-->
-                                <form action="#" id="submit_form" class="form-horizontal" >
+                              
+                                <form action="#" id="submit_form" class="form-horizontal">
                                     <div class="form-body">
 
                                         <div class="tab-pane" id="tab1">
@@ -302,7 +258,7 @@
                                                                             <div class="form-group">
                                                                                 <div class="col-md-12 ">
                                                                                     <label class="col-md-3 control-label txtalignleft" data-i18n="mobileno">
-                                                                                        Mobile No
+                                                                                        Mobile No<span class="required"> *</span>
                                                                                     </label>
                                                                                     <div class="col-md-3 xyz">
                                                                                         <select id="ddlCountryCd" name="ddlCountryCd" class="form-control">
@@ -338,8 +294,8 @@
                                                                             </div>
                                                                             <div class="col-md-12">
                                                                                 <div class="form-group">
-                                                                                    <label class="control-label col-md-3 txtalignleft" data-i18n="preferredzone">Preferred Time/Zone:</label>
-                                                                                    <div class="col-md-9">
+                                                                                    <label class="control-label col-md-3 txtalignleft" data-i18n="preferredzone">Preferred Time/Zone<span class="required"> *</span></label>
+                                                                                    <div class="col-md-9 xyz">
                                                                                         <select id="ddlpreferredTime" name="ddlpreferredTime" class="form-control">
                                                                                             <option>Select</option>
                                                                                         </select>
@@ -359,7 +315,7 @@
 
                                                                                     </label>
 
-                                                                                    <div class="col-md-9">
+                                                                                    <div class="col-md-9 xyz">
 
                                                                                         <input type="text" class="form-control" placeholder="Enter Name"
                                                                                                id="txtContName2" name="txtContName2" autocomplete="off" />
@@ -380,7 +336,7 @@
                                                                                             <option Value="">Select</option>
                                                                                         </select>
                                                                                     </div>
-                                                                                    <div class="col-md-6">
+                                                                                    <div class="col-md-6 xyz">
                                                                                         <input type="text" class="form-control"
                                                                                                id="vendoraltmobileno" name="vendoraltmobileno" autocomplete="off" maxlength="10" tabindex="1" />
                                                                                     </div>
@@ -397,7 +353,7 @@
 
                                                                                     </label>
 
-                                                                                    <div class="col-md-9">
+                                                                                    <div class="col-md-9 xyz">
 
                                                                                         <input type="text" class="form-control" placeholder="Email"
                                                                                                id="txtEmail2" name="txtEmail2" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
@@ -411,7 +367,7 @@
                                                                         </div>
                                                                     </div>
 
-                                                                    
+
 
 
 
@@ -448,7 +404,7 @@
                                                                         <label class="col-md-2 control-label" data-i18n="country">
                                                                             Country<span class="required"> *</span>
                                                                         </label>
-                                                                        <div class="col-md-4 coun_stat_city_select">
+                                                                        <div class="col-md-4 coun_stat_city_select xyz">
                                                                             <select class="form-control" name="ddlCountry" id="ddlCountry" tabindex="4"></select>
                                                                         </div>
 
@@ -460,7 +416,7 @@
                                                                         <label class="col-md-2 control-label" id="taxlabel">
                                                                             Tax Type <span class="required">*</span>
                                                                         </label>
-                                                                        <div class="col-md-4">
+                                                                        <div class="col-md-4 xyz">
                                                                             <select class="form-control" name="txtTINType" id="txtTINType" tabindex="4">
                                                                             </select>
 
@@ -468,7 +424,7 @@
                                                                         <label class="col-md-2 control-label" id="taxlabel">
                                                                             Tax Type 2
                                                                         </label>
-                                                                        <div class="col-md-4">
+                                                                        <div class="col-md-4 xyz">
                                                                             <select class="form-control" name="txtTINType2" id="txtTINType2" tabindex="4">
                                                                             </select>
 
@@ -480,18 +436,18 @@
                                                                     <div class="col-md-12">
                                                                         <span class="tax-group">
                                                                             <label class="col-md-2 control-label" data-i18n="state">
-                                                                                Tax Id<span class="required"> *</span>
+                                                                                Tax Id<span class="required"> *</span> 
                                                                             </label>
-                                                                            <div class="col-md-4">
+                                                                            <div class="col-md-4 xyz">
                                                                                 <input type="text" class="form-control" id="txtTINNo" name="txtTINNo" autocomplete="off" tabindex="1">
                                                                             </div>
                                                                         </span>
 
                                                                         <span class="pan-group">
                                                                             <label class="col-md-2 control-label ">
-                                                                                Tax Id 2
+                                                                                Tax Id 2 
                                                                             </label>
-                                                                            <div class="col-md-4">
+                                                                            <div class="col-md-4 xyz">
 
                                                                                 <input type="text" class="form-control" id="vendorpanno" name="vendorpanno" autocomplete="off" tabindex="1">
 
@@ -510,9 +466,9 @@
                                                                 <div class="form-group">
                                                                     <div class="col-md-12">
                                                                         <label class="col-md-2 control-label " data-i18n="companyname">
-                                                                            Company Name<span class="required"> *</span>
+                                                                            Company Name<span class="required"> *</span> 
                                                                         </label>
-                                                                        <div class="col-md-4">
+                                                                        <div class="col-md-4 xyz">
 
                                                                             <input type="text" class="form-control" id="vendorname" name="vendorname" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)">
 
@@ -520,7 +476,7 @@
                                                                         <label class="col-md-2 control-label " data-i18n="natureofestablishment">
                                                                             Nature of Establishment
                                                                         </label>
-                                                                        <div class="col-md-4 ">
+                                                                        <div class="col-md-4 xyz">
                                                                             <input type="text" class="form-control" id="ddlNatureEstaiblishment" name="ddlNatureEstaiblishment" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)">
 
 
@@ -532,9 +488,9 @@
                                                                 <div class="form-group">
                                                                     <div class="col-md-12">
                                                                         <label class="col-md-2 control-label " data-i18n="address">
-                                                                            Address
+                                                                            Address <span class="required"> * </span>
                                                                         </label>
-                                                                        <div class="col-md-4">
+                                                                        <div class="col-md-4 xyz">
                                                                             <input type="text" class="form-control"
                                                                                    id="vendoraddress" name="vendoraddress" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
                                                                         </div>
@@ -542,7 +498,7 @@
                                                                         <label class="col-md-2 control-label">
                                                                             PIN Code<span class="required"> *</span>
                                                                         </label>
-                                                                        <div class="col-md-4">
+                                                                        <div class="col-md-4 xyz">
                                                                             <input type="text" class="form-control numberonly"
                                                                                    id="pincode" name="pincode" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" maxlength=9 />
                                                                         </div>
@@ -558,7 +514,7 @@
                                                                         <label class="col-md-2 control-label" data-i18n="state">
                                                                             State<span class="required"> *</span>
                                                                         </label>
-                                                                        <div class="col-md-4 coun_stat_city_select">
+                                                                        <div class="col-md-4 coun_stat_city_select xyz">
                                                                             <select class="form-control" name="ddlState" id="ddlState" tabindex="4"></select>
 
                                                                         </div>
@@ -566,7 +522,7 @@
                                                                         <label class="col-md-2 control-label ">
                                                                             City<span class="required"> *</span>
                                                                         </label>
-                                                                        <div class="col-md-4 coun_stat_city_select">
+                                                                        <div class="col-md-4 coun_stat_city_select xyz">
                                                                             <select class="form-control" name="ddlCity" id="ddlCity" tabindex="4"></select>
                                                                         </div>
 
@@ -578,7 +534,7 @@
                                                                         <label class="col-md-2 control-label" data-i18n="suppliertype">
                                                                             Supplier Type
                                                                         </label>
-                                                                        <div class="col-md-4">
+                                                                        <div class="col-md-4 xyz">
                                                                             <select class="form-control" id="ddlVendorType" name="ddlVendorType">
                                                                                 <option value="0" data-i18n="select">Select</option>
                                                                                 <option value="1" data-i18n="supplyvendor">Supply Vendor</option>
@@ -589,7 +545,7 @@
                                                                         <label class="col-md-2 control-label" data-i18n="language">
                                                                             Language
                                                                         </label>
-                                                                        <div class="col-md-4">
+                                                                        <div class="col-md-4 xyz">
                                                                             <select class="form-control" id="ddllanguage" name="ddllanguage">
                                                                             </select>
                                                                         </div>
@@ -620,16 +576,7 @@
                                                             </div>
 
                                                         </div>
-                                                        <div class="fluid">
-                                                            <div class="col-md-offset-5 col-md-6">
-                                                                <br />
-                                                                <button type="submit" class="btn btn-success" id="buttoncompanyupdate">
-                                                                    Submit
-                                                                </button>
 
-                                                            </div>
-
-                                                        </div>
                                                     </div>
 
                                                 </div>
@@ -641,17 +588,17 @@
                                         </div>
 
                                     </div>
-                                   <!-- <div class="form-actions fluid">
+                                    <div class="form-actions fluid">
                                         <div class="col-md-offset-5 col-md-6">
-                                            <input type="hidden" value="0" id="hdntmpvendorid" />
-                                            <button type="submit" class="btn btn-success hide verifySubmit" id="btnverifysubmit">
-                                                Submit <i class="m-icon-swapright m-icon-white" style="margin-left:5px"></i>
+                                            <br />
+                                            <button type="submit" class="btn btn-success" id="buttoncompanyupdate">
+                                                Submit
                                             </button>
 
                                         </div>
-                                        <div class="clearfix"></div>
+
                                     </div>
--->
+                                  
 
                                 </form>
 
