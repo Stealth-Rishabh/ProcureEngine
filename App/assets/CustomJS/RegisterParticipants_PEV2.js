@@ -73,6 +73,7 @@ jQuery(document).ready(function () {
         var decryptedstring = fndecrypt(param)
         vendoridparam = getUrlVarsURL(decryptedstring)["VendorId"];
         let tmpvendoridparam = parseInt(sessionStorage.getItem('CustomerID'))
+        UpdateActivity(vendoridparam, tmpvendoridparam);
         fnViewDetails(tmpvendoridparam, vendoridparam)
     }
 
@@ -3190,4 +3191,42 @@ function clearexternal() {
 
 
 
+}
+function UpdateActivity(vendId, CustId) {
+    jQuery.ajax({
+
+        // url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RegParticpants_PEV2/",
+        url: sessionStorage.getItem("APIPath") + "VendorLCM/UpdateActivity/?Id=" + vendId + "&CustomerId=" + CustId,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "POST",
+        async: false,
+        data: JSON.stringify(sourcedata),
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+            //debugger
+            //jQuery.unblockUI();
+            //$('#viewalldetails').modal('hide');
+            //$('.alert-success').html('Your  data is posted successfully to SAP...')
+            //$('.alert-success').show();
+            //Metronic.scrollTo($('.alert-success'), -200);
+            //$('.alert-success').fadeOut(10000);
+            //setTimeout(function () { $('.alert-success').html('') }, 1000)
+
+
+
+        },
+        error: function (xhr, status, error) {
+            debugger
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+
+    })
 }
