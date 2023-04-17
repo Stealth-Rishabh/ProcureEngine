@@ -38,6 +38,8 @@ function onloadcalls() {
             $('#ddlCountryCd').select2();
             $('#ddlCountryCdPhone').select2();
             $('#ddlpreferredTime').select2();
+            $('#ddlcurrency').select2();
+            $('#currencyFiscalupdate').select2();
 
             setTimeout(function () {
 
@@ -1665,15 +1667,16 @@ function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingco
 
 //update contact detail
 function updateVendorContactDetails() {
-
+    var encodevendorName = StringEncodingMechanism($('#personname').val());
+    var encodeContactPerson = StringEncodingMechanism($('#personnamealt').val());
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     let data = {
         "VendorID": parseInt(sessionStorage.getItem('VendorId')),
         "EmailID": $('#vendorEmailID').val(),
         "AlternateEmailID": $('#vendorAltEmailID').val(),
-        "VendorName": $('#personname').val(),
-        "ContactPerson": $('#personnamealt').val(),
+        "VendorName": encodevendorName,
+        "ContactPerson": encodeContactPerson,
         "MobileNo": $('#vendormobileno').val(),
         "Phone": $('#vendoraltmobileno').val(),
         "DialingCodeMobile": parseInt($('#ddlCountryCd').val()),

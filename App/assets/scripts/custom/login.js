@@ -1,10 +1,10 @@
 sessionStorage.clear();
 
 //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
-sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
+//sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
 
 
 var Token = '';
@@ -142,8 +142,8 @@ var Login = function () {
 
     function validateUser() {
         //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
-        //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-         sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
+        sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+         //sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
         //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
         var path = window.location.pathname;
         var url = '';
@@ -337,6 +337,8 @@ var Login = function () {
                     sessionStorage.setItem("culturecode", value.cultureCode);
                     //  sessionStorage.setItem("localcode", value.localecode);
                     sessionStorage.setItem("utcoffset", value.utcoffset);
+                    sessionStorage.setItem("BoqUpload", value.BOQUpload);
+                    sessionStorage.setItem("IsSAPModule", value.IsExternalSourceIntegrated);
                     setTimeout(function () {
                         // alert(sessionStorage.getItem("UserType"))
                         if (sessionStorage.getItem("UserType") == "P") {
@@ -603,6 +605,7 @@ function SetSessionItems(lastPart, value) {
     sessionStorage.setItem("utcoffset", value.utcoffset);
     sessionStorage.setItem("isWhatsappOpted", value.isWhatsappOpted);
     sessionStorage.setItem("mobileNo", value.mobileNo);
+    sessionStorage.setItem("BoqUpload", value.BOQUpload);
     setTimeout(function () {
         if (sessionStorage.getItem("UserType") == "P") {
             if ((value.VendorID != '0')) {
