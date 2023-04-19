@@ -329,6 +329,7 @@ function fetchCountry() {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         dataType: "json",
+        async: false,
         success: function (data) {
 
             let lstTZ = JSON.parse(data[0].jsondata);
@@ -988,6 +989,7 @@ function GetCountrySpecificMaster(CountryKey) {
                     $("#ddlState").append("<option value='" + data.stateAndRegion[i].regionKey + "' data-stateid='" + data.stateAndRegion[i].stateID + "'>" + data.stateAndRegion[i].stateName + "</option>");
 
                 }
+                $("#ddlState").val('').trigger("change");
 
 
             }

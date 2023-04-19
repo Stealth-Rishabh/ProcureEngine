@@ -33,7 +33,7 @@ function onloadcalls() {
 
             fetchMasters();
             fetchCountry();
-            
+
             prefferedTimezone();
             $('#ddlCountryCd').select2();
             $('#ddlCountryCdPhone').select2();
@@ -641,53 +641,53 @@ jQuery.validator.addMethod(
             },
 
             *//* txtUdyam: {
-                 required: true,
-             },
-             filemsme: {
-                 required: true
-             },
-             ddlMSMEClass: {
-                 required: true,
-                 notEqualTo: 0
-             }*//*
-        },
-        messages: {
-            ddlMSMEClass: {
-                required: "MSME Class is required."
-            },
-            txtUdyam: {
-                required: "Udyam No. is required."
-            },
-            filemsme: {
-                required: "Udyam certificate is required."
-            }
-        },
-        invalidHandler: function (event, validator) { //display error alert on form submit   
-            errorVendor.hide()
-            successVendor.hide();
-        },
+     required: true,
+ },
+ filemsme: {
+     required: true
+ },
+ ddlMSMEClass: {
+     required: true,
+     notEqualTo: 0
+ }*//*
+},
+messages: {
+ddlMSMEClass: {
+   required: "MSME Class is required."
+},
+txtUdyam: {
+   required: "Udyam No. is required."
+},
+filemsme: {
+   required: "Udyam certificate is required."
+}
+},
+invalidHandler: function (event, validator) { //display error alert on form submit   
+errorVendor.hide()
+successVendor.hide();
+},
 
-        highlight: function (element) { // hightlight error inputs
-            $(element).closest('.xyz').addClass('has-error');
-        },
-        unhighlight: function (element) { // revert the change done by hightlight
-            $(element).closest('.xyz').removeClass('has-error');
-        },
+highlight: function (element) { // hightlight error inputs
+$(element).closest('.xyz').addClass('has-error');
+},
+unhighlight: function (element) { // revert the change done by hightlight
+$(element).closest('.xyz').removeClass('has-error');
+},
 
-        success: function (label) {
-            label.closest('.form-group,.xyz').removeClass('has-error');
-            //label.remove();
-        },
+success: function (label) {
+label.closest('.form-group,.xyz').removeClass('has-error');
+//label.remove();
+},
 
-        //errorPlacement: function (error, element) {
-        //    profileerror.insertAfter(element.closest('.xyz'));
-        //},
+//errorPlacement: function (error, element) {
+//    profileerror.insertAfter(element.closest('.xyz'));
+//},
 
-        submitHandler: function (form) {
+submitHandler: function (form) {
 
-            updateVendor();
-        }
-    });
+updateVendor();
+}
+});
 }*/
 
 //vendor profile.html vendor form
@@ -1535,7 +1535,7 @@ function fetchMyProfileVendor() {
                     addrC = childData[i].address + " " + childData[i].city + " " + childData[i].state + " " + childData[i].country;
 
 
-                    $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + childData[i].stateID + "'\,\'" + parentData.preferredtimezone + "'\,\'" + childData[i].cityId + "'\,\'" + (childData[i].childId ) + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                    $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + childData[i].stateID + "'\,\'" + parentData.preferredtimezone + "'\,\'" + childData[i].cityId + "'\,\'" + (childData[i].childId) + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
                     $('#btnAddAnother').removeClass('hide');
 
                 }
@@ -2178,7 +2178,7 @@ function AddAssociateVendorDetail() {
             profileerror.fadeOut(5000);
             App.scrollTo(profileerror, -200);
             return false;
-           
+
         }
     }
 
@@ -2274,7 +2274,7 @@ function cleanAddChild() {
     $('#txtTINNo').removeAttr('disabled');
     $("#ddlCountry").removeAttr('disabled');
 
-   
+
 }
 
 
@@ -2569,7 +2569,7 @@ $('#ddlState').on('change', function () {
 
 
 function fetchCity(stateid) {
-      debugger
+    debugger
     if (stateid == null) {
         stateid = 0;
     }
@@ -2613,7 +2613,7 @@ function fetchCity(stateid) {
     });
 }
 var formvendorcontact = $('#submit_form_contact');
-var formvendorcompany = $('#submit_form_company'); 
+var formvendorcompany = $('#submit_form_company');
 var formvendorbank = $('#submit_form_bank');
 
 function FormValidateContact() {
@@ -2631,15 +2631,21 @@ function FormValidateContact() {
             },
             vendormobileno: {
                 required: true,
-                number:true
+                number: true
+            },
+            vendoraltmobileno: {
+                number: true
             },
             vendorEmailID: {
                 required: true,
                 email: true
             },
+            vendorAltEmailID: {
+                email: true
+            },
             ddlpreferredTime: {
                 required: true
-            }
+            },
 
 
         },
@@ -2706,10 +2712,10 @@ function FormValidateCompany() {
                 required: true,
             },
             txtTINType: {
-                required: true,                
+                required: true,
             },
             txtTINNo: {
-                required: true,               
+                required: true,
             },
             vendorname: {
                 required: true
@@ -2722,7 +2728,7 @@ function FormValidateCompany() {
             },
             ddlState: {
                 required: true
-            }, 
+            },
             ddlCity: {
                 required: true
             },

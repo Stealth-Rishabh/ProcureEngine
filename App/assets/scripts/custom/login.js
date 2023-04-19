@@ -143,7 +143,7 @@ var Login = function () {
     function validateUser() {
         //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
         sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-         //sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
+        //sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
         //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
         var path = window.location.pathname;
         var url = '';
@@ -411,7 +411,7 @@ var Login = function () {
 
 }();
 function Changeforgotpasswordfn() {
-    debugger;
+
     jQuery.blockUI({ message: '<h5><img src="../../../App/assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var UserType = '';
     var path = window.location.pathname;
@@ -702,7 +702,7 @@ function fetchMenuItemsForSession(urlLast) {
 
 //function open register user
 function fnOpenRegisterUser() {
-    debugger
+
     $('#ddlCountry').select2();
     $('#ddlState').select2();
     $('#ddlCity').select2();
@@ -717,14 +717,14 @@ function fnOpenRegisterUser() {
 
     prefferedTimezone();
 
-   
+
 
 
 }
 
 
 $('#ddlCountry').on('change', function () {
-    debugger
+
     let CountryKey = $(this).val() || "IN";
 
 
@@ -736,7 +736,7 @@ $('#ddlCountry').on('change', function () {
 
 
 $('#ddlState').on('change', function () {
-    debugger
+
     let stateidentity = $('option:selected', this).data('stateid');
     console.log(stateidentity);
 
@@ -798,7 +798,7 @@ function fetchCity(stateid) {
 
 function VendorRequestSubmit() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    debugger
+
     let data = {
         "CustomerID": 0,
         "UserID": "0",
@@ -842,8 +842,8 @@ function VendorRequestSubmit() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-            debugger
-            
+
+
             $('#buttoncompanyupdate').attr("disabled", "disabled");
             jQuery.unblockUI();
             if (data.isSuccess == 1) {
@@ -873,7 +873,7 @@ function VendorRequestSubmit() {
 
 
 function extractPan(data) {
-    debugger
+
     $('#txtTINNo').removeClass("gstvalidicon")
     var reggst = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/
 
@@ -897,7 +897,7 @@ function extractPan(data) {
 }
 
 function ValidateGST(data) {
-    debugger
+
     let GSTNo = data
     console.log(sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo);
     jQuery.ajax({
@@ -906,7 +906,7 @@ function ValidateGST(data) {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            debugger
+
             if (data.status != 'E') {
                 var data = jQuery.parseJSON(data);
                 let panNumber = ""
@@ -942,7 +942,7 @@ function ValidateGST(data) {
 
         },
         error: function (xhr, status, error) {
-            debugger
+
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -958,7 +958,7 @@ function ValidateGST(data) {
 }
 var formvendor = $('#submit_form');
 function FormValidate() {
-    
+
     formvendor.validate({
 
         errorElement: 'span',
@@ -966,10 +966,10 @@ function FormValidate() {
         focusInvalid: false,
         ignore: "",
         rules: {
-            
-            
+
+
             txtContName: {
-                required: true,                
+                required: true,
             },
             vendormobileno: {
                 required: true,
@@ -977,17 +977,17 @@ function FormValidate() {
             },
             vendoraddress: {
                 required: true,
-                
+
             },
             ddlpreferredTime: {
                 required: true,
-            }, 
+            },
             txtEmail: {
                 required: true,
                 email: true
             },
             ddlCountry: {
-                required: true, 
+                required: true,
             },
             ddlState: {
                 required: true,
@@ -997,13 +997,13 @@ function FormValidate() {
             },
             txtTINType: {
                 required: true,
-            }, 
+            },
             txtTINNo: {
                 required: true,
-            }, 
+            },
             vendorname: {
                 required: true,
-            }, 
+            },
             pincode: {
                 required: true,
             },
@@ -1014,8 +1014,8 @@ function FormValidate() {
 
         },
         messages: {
-            
-             txtContName: {
+
+            txtContName: {
                 required: "Please Enter Valid name",
             },
             txtEmail: {
@@ -1070,8 +1070,8 @@ function FormValidate() {
         success: function (label) {
         },
         submitHandler: function (form) {
-            debugger
-           
+
+
             VendorRequestSubmit()
         }
     });
