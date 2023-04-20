@@ -267,7 +267,7 @@ function setCommonData() {
 }
 
 function fetchCountry() {
-    debugger
+
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
@@ -291,7 +291,7 @@ function fetchCountry() {
                     $("#ddlCountryCd").append(jQuery("<option></option>").val(data[i].countryID).html(data[i].dialingCode));
                     $("#ddlCountryCdPhone").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
                 }
-                debugger
+
                 $("#ddlCountry").val('IN').trigger("change");
 
                 $("#ddlCountryCd").val('111');
@@ -308,7 +308,7 @@ function fetchCountry() {
 
         },
         error: function (xhr, status, error) {
-            debugger
+
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 // error401Messagebox(err.Message);
@@ -333,7 +333,7 @@ function fetchCountry() {
         success: function (data) {
 
             let lstTZ = JSON.parse(data[0].jsondata);
-            debugger
+
             jQuery("#ddlpreferredTime").empty();
             jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val("").html("Select"));
             for (var i = 0; i < lstTZ.length; i++) {
@@ -603,7 +603,7 @@ function fetchMasters() {
 
 
 function prefferedTimezone() {
-    debugger
+
 
     jQuery.ajax({
         type: "GET",
@@ -613,7 +613,7 @@ function prefferedTimezone() {
         cache: false,
         dataType: "json",
         success: function (data) {
-            debugger
+
             let lstTZ = JSON.parse(data[0].jsondata);
 
             jQuery("#ddlpreferredTime").empty();
@@ -624,7 +624,7 @@ function prefferedTimezone() {
             }
         },
         error: function (xhr, status, error) {
-            debugger
+
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 //error401Messagebox(err.Message);
@@ -837,6 +837,7 @@ function GetCustomerSpecificMaster(CustId) {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
+        async: false,
         dataType: "json",
         success: function (data) {
 
@@ -911,7 +912,7 @@ function GetCustomerSpecificMaster(CustId) {
 }
 
 function GetCountrySpecificMaster(CountryKey) {
-    debugger
+
     console.log(sessionStorage.getItem("APIPath") + "KDSMaster/GetCountrySpecificMaster/?CountryKey=" + CountryKey)
     jQuery.ajax({
         type: "GET",
@@ -924,7 +925,7 @@ function GetCountrySpecificMaster(CountryKey) {
         async: false,
         success: function (data) {
 
-            debugger
+
 
             //currency
             jQuery("#ddlcurrency").empty();
@@ -1001,7 +1002,7 @@ function GetCountrySpecificMaster(CountryKey) {
 
         },
         error: function (xhr, status, error) {
-            debugger
+
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
