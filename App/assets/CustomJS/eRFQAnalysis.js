@@ -147,8 +147,8 @@ function fetchrfqcomprative() {
             var ShowPrice = 'N'
             var _CurrentDate = new Date();
             if (_rfqBidType == 'Closed') {
-                $("#ddlrfqVersion").empty();
-                $('#ddlrfqVersion').append('<option  value="99" >Final Version</option>');
+                //$("#ddlrfqVersion").empty();
+                //$('#ddlrfqVersion').append('<option  value="99" >Final Version</option>');
                 if (_openQuotes == 'Y') {
                     ShowPrice = 'Y';
                     $('#btnPDF').show()
