@@ -288,8 +288,9 @@ function ReInviteVendorsForRFQ() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     str = str.substring(0, str.length - 1);
     $('#SaveExsist').attr('disabled', 'disabled')
-
+    var _bod = null;
     var EndDT = new Date();
+    let BT = null;
     if ($('#txtextendDate').val() != null && $('#txtextendDate').val() != "") {
         EndDT = $('#txtextendDate').val().replace('-', '');
     }
@@ -302,12 +303,21 @@ function ReInviteVendorsForRFQ() {
     ST = new String(EtTime);
     ST = ST.substring(0, ST.indexOf("GMT"));
     ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
-
+    if ($('#txtbidOpenDate').val() != null && $('#txtbidOpenDate').val() != "") {
+        _bod = $('#txtbidOpenDate').val().replace('-', '');
+        let BOTime = new Date(_bod.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+        BT = new String(BOTime);
+        BT = BT.substring(0, BT.indexOf("GMT"));
+        Bt = BT + 'GMT' + sessionStorage.getItem('utcoffset');
+    }
     var data = {
         "RFQID": parseInt($("#hdnRfqID").val()),
         "VendorIDs": str,
         //"ExtendedDate": new Date($("#txtextendDate").val().replace('-', '')),
         "ExtendedDateST": ST,
+        "BidOpenDtSt": BT,
         "RFQSubject": $("#RFQSubject").html(),
         "UserID": sessionStorage.getItem("UserID"),
         "ReInviteRemarks": $("#txtReInviteRemarks").val(),
