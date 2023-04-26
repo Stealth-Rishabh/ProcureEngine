@@ -2902,7 +2902,7 @@ function GetVendorExternalDetail(vendId, ChildId, CustId) {
             $('#TypeOfRecepient').text(data.typeOfRecepient)
             $('#WitholdingTaxCode').text(data.witholdingTaxCode)
 
-            $('#ReconAcc').val(data.reconAcc)
+            $('#ReconAcc').val(data.reconAcc).trigger('change')
 
 
 
@@ -2976,7 +2976,7 @@ function UpdateExternalSourceFinancer() {
         "VendorAccGrp": jQuery("#VendorAccGrp option:selected").val(),
         "VendorSearchKey": $("#hdnVendorCode").val(),
         "CoCd": jQuery("#CoCd option:selected").val(),
-        "ReconAcc": jQuery("#ReconAcc").val(),
+        "ReconAcc": jQuery("#ReconAcc option:selected").val(),
         "PayTerm": jQuery("#PayTerm").val(),
         "CheckDoubleInvoice": 'Y',
         "WitholdingTaxType": jQuery("#WitholdingTaxType option:selected").val(),
@@ -3057,7 +3057,7 @@ function UpdateExternalSourceUser() {
         "VendorAccGrp": jQuery("#VendorAccGrp option:selected").val(),
         "VendorSearchKey": $("#hdnVendorCode").val(),
         "CoCd": jQuery("#CoCd option:selected").val(),
-        "ReconAcc": jQuery("#ReconAcc").val(),
+        "ReconAcc": jQuery("#ReconAcc option:selected").val(),
         "PayTerm": jQuery("#PayTerm").val(),
         "CheckDoubleInvoice": 'Y',
         "WitholdingTaxType": jQuery("#WitholdingTaxType option:selected").val(),
@@ -3113,7 +3113,10 @@ function UpdateExternalSourceUser() {
                 error401Messagebox(err.Message);
             }
             else {
-                fnErrorMessageText('spanerterr', '');
+                $('#divalerterrsap').html('')
+                $('#divalerterrsap').html(err)
+                $('#divalerterrsap').show();
+                $('#divalerterrsap').fadeOut(5000);
             }
             jQuery.unblockUI();
             return false;
@@ -3127,7 +3130,7 @@ function UpdateExternalSourceUser() {
 
 
 function PostToExternalSource() {
-    debugger
+
     let vendId = parseInt(jQuery("#hdnVendorId").val())
     let CustId = parseInt(sessionStorage.getItem('CustomerID'))
     let ChildId = parseInt($("#hdnChildID").val())
@@ -3160,6 +3163,7 @@ function PostToExternalSource() {
     }
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    debugger
     var sourcedata = {
         "PARTNER": "",
         "VGROUP": jQuery("#VendorAccGrp option:selected").val(),
@@ -3189,7 +3193,7 @@ function PostToExternalSource() {
         "BANKN": $("#bankaccount").text(),
         "BKONT": "",
         "BUKRS": jQuery("#CoCd option:selected").val(),
-        "AKONT": jQuery("#ReconAcc").val(),
+        "AKONT": jQuery("#ReconAcc option:selected").val(),
         "ZTERM": jQuery("#PayTerm").val(),
         "REPRF": 'Y',
         "WITHT": jQuery("#WitholdingTaxType option:selected").val(),
@@ -3199,7 +3203,7 @@ function PostToExternalSource() {
         "EKORG": jQuery("#PORG option:selected").val(),
         "WAERS": "INR",
         "INCO1": jQuery("#Incoterm option:selected").val(),
-        "INCO2_L": jQuery("#Incoterm option:selected").text(),
+        "INCO2_L": jQuery("#Incoterm option:selected").data('incotermdesc'),
         "INCO3_L": "",
         "EKGRP": "",
         "KALSK": jQuery("#SchemaGrp option:selected").val(),
@@ -3212,6 +3216,7 @@ function PostToExternalSource() {
         "MINDK": "",
         "ISEC": "",
         "J_1ICSTNO": "",
+        "MESSAGE": ""
     };
 
 
@@ -3248,13 +3253,16 @@ function PostToExternalSource() {
 
         },
         error: function (xhr, status, error) {
-
+            debugger
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                fnErrorMessageText('spanerterr', 'some error occured , please try again or contact administrator.');
+                $('#divalerterrsap').html('')
+                $('#divalerterrsap').html(err)
+                $('#divalerterrsap').show();
+                $('#divalerterrsap').fadeOut(5000);
             }
             jQuery.unblockUI();
             return false;
@@ -3270,7 +3278,7 @@ function clearexternal() {
     $("#CoCd").val('0').trigger('change');
     $("#PayTerm").val('0').trigger('change');
     $("#WitholdingTaxType").val('0').trigger('change');
-    $("#ReconAcc").val('');
+    $("#ReconAcc").val('').trigger('change');
     $("#TypeOfRecepient").text('');
     $("#SubjectToTds").text('');
     $("#WitholdingTaxCode").text('');
