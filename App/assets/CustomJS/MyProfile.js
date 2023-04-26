@@ -2106,13 +2106,14 @@ function GetFinancialDetail(ChildId) {
         cache: false,
         dataType: "json",
         success: function (childData) {
+            debugger
             if (childData.length > 0) {
                 $('#tblGetFinancialDetail').empty()
                 $('#tblGetFinancialDetail').append("<thead><tr><th class='hide'></th><th>Turn Over</th><th>Financial Year</th></tr></thead><tbody>")
                 for (var i = 0; i < childData.length; i++) {
 
 
-                    $('#tblGetFinancialDetail').append("<tr><td class='hide'>" + childData[i].financialDetailId + "</td><td>" + childData[i].turnover + "</td><td>" + childData[i].financialYearFrom + " - " + childData[i].financialYearTo + "</td></tr>")
+                    $('#tblGetFinancialDetail').append("<tr><td class='hide'>" + childData[i].financialDetailId + "</td><td>" + thousands_separators(childData[i].turnover) + " " + childData[i].currency + "</td><td>" + childData[i].financialYearFrom + " - " + childData[i].financialYearTo + "</td></tr>")
 
 
                 }
@@ -2867,7 +2868,6 @@ function FormValidateBank() {
                 required: true,
                 number: true
             }
-           
         },
         messages: {
 
