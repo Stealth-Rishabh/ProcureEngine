@@ -502,8 +502,8 @@ function fetchVendorDetails() {
 
                 var _bidDatelocale = fnConverToLocalTime(data[0].bidDate);
                 jQuery("label#lblitem1").text(data[0].bidFor);
-                jQuery("#lblbidsubject").text(data[0].bidSubject);
-                jQuery("#lblbidDetails").text(data[0].bidDetails);
+                jQuery("#lblbidsubject").text(StringDecodingMechanism(data[0].bidSubject));
+                jQuery("#lblbidDetails").text(StringDecodingMechanism(data[0].bidDetails));
                 jQuery("#lblbiddate").text(_bidDatelocale);
                 //jQuery("#lblbidtime").text(data[0].bidTime);
                 jQuery("#lblbidtype").text(data[0].bidTypeName);
@@ -921,8 +921,8 @@ function fetchBidHeaderDetails(_bidId) {
                 $('#tblParticipantsVender').show();
                 sessionStorage.setItem('CustomerID', data[0].customerID)
                 jQuery("label#lblitem1").text(data[0].bidFor);
-                jQuery("#lblbidsubject").text(data[0].bidSubject);
-                jQuery("#lblbidDetails").text(data[0].bidDetails);
+                jQuery("#lblbidsubject").text(StringDecodingMechanism(data[0].bidSubject));
+                jQuery("#lblbidDetails").text(StringDecodingMechanism(data[0].bidDetails));
                 jQuery("#lblbiddate").text(_bidDatelocale);
                 //jQuery("#lblbidtime").text(data[0].bidTime);
                 jQuery("#lblbidtype").text(data[0].bidTypeName);

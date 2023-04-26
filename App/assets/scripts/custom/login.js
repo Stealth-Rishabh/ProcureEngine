@@ -1,10 +1,10 @@
 sessionStorage.clear();
 
 //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
-sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
+//sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
 
 
 var Token = '';
@@ -142,8 +142,8 @@ var Login = function () {
 
     function validateUser() {
         //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
-        //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-         sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
+        sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+        //sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
         //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
         var path = window.location.pathname;
         var url = '';
@@ -337,6 +337,8 @@ var Login = function () {
                     sessionStorage.setItem("culturecode", value.cultureCode);
                     //  sessionStorage.setItem("localcode", value.localecode);
                     sessionStorage.setItem("utcoffset", value.utcoffset);
+                    sessionStorage.setItem("BoqUpload", value.BOQUpload);
+                    sessionStorage.setItem("IsSAPModule", value.IsExternalSourceIntegrated);
                     setTimeout(function () {
                         // alert(sessionStorage.getItem("UserType"))
                         if (sessionStorage.getItem("UserType") == "P") {
@@ -409,7 +411,7 @@ var Login = function () {
 
 }();
 function Changeforgotpasswordfn() {
-    debugger;
+
     jQuery.blockUI({ message: '<h5><img src="../../../App/assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var UserType = '';
     var path = window.location.pathname;
@@ -603,6 +605,7 @@ function SetSessionItems(lastPart, value) {
     sessionStorage.setItem("utcoffset", value.utcoffset);
     sessionStorage.setItem("isWhatsappOpted", value.isWhatsappOpted);
     sessionStorage.setItem("mobileNo", value.mobileNo);
+    sessionStorage.setItem("BoqUpload", value.BOQUpload);
     setTimeout(function () {
         if (sessionStorage.getItem("UserType") == "P") {
             if ((value.VendorID != '0')) {
@@ -694,5 +697,382 @@ function fetchMenuItemsForSession(urlLast) {
             bootbox.alert(msg);
         }
 
+    });
+}
+
+//function open register user
+function fnOpenRegisterUser() {
+
+    $('#ddlCountry').select2();
+    $('#ddlState').select2();
+    $('#ddlCity').select2();
+    $('#ddlCountryCd').select2();
+    $('#ddlCountryCdPhone').select2();
+    $('#ddlpreferredTime').select2();
+
+    $('#registerParticipantModal').modal('show')
+    $('#modalLoader').show();
+
+    fetchCountry()
+
+    prefferedTimezone();
+
+
+
+
+}
+
+
+$('#ddlCountry').on('change', function () {
+
+    let CountryKey = $(this).val() || "IN";
+
+
+    GetCountrySpecificMaster(CountryKey)
+
+
+}
+)
+
+
+$('#ddlState').on('change', function () {
+
+    let stateidentity = $('option:selected', this).data('stateid');
+    console.log(stateidentity);
+
+    fetchCity(parseInt(stateidentity));
+});
+
+
+
+
+
+
+
+
+
+function fetchCity(stateid) {
+
+    if (stateid == null) {
+        stateid = 0;
+    }
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/City/?StateID= " + stateid + "&CityID=0",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        async: false,
+        dataType: "json",
+        success: function (data) {
+
+            $("#ddlCity").empty();
+            if (data.length > 0) {
+                $("#ddlCity").append("<option value=0>Select City</option>");
+                for (var i = 0; i < data.length; i++) {
+                    $("#ddlCity").append("<option value=" + data[i].cityID + ">" + data[i].cityName + "</option>");
+                }
+                $("#ddlCity").val('0').trigger("change");
+            }
+            else {
+                $("#ddlCity").append('<tr><td>No city found..</td></tr>');
+            }
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+}
+
+function VendorRequestSubmit() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+
+    let data = {
+        "CustomerID": 0,
+        "UserID": "0",
+        "CompanyEmail": $('#txtEmail').val(),
+        "AlternateEmailID": $('#txtEmail2').val(),
+        "ParticipantName": $('#vendorname').val(),
+        "ContactPerson": $('#txtContName').val(),
+        "MobileNo": $('#vendormobileno').val(),
+        "PhoneNo": $('#vendoraltmobileno').val(),
+        "DialingCode": parseInt($('#ddlCountryCd').val()),
+        "DialingCodePhone": parseInt($('#ddlCountryCdPhone').val()),
+        "PrefferedTZ": parseInt($('#ddlpreferredTime').val()),
+        "Address": $('#vendoraddress').val(),
+        "CityName": jQuery("#ddlCity option:selected").text(),
+        "StateName": jQuery("#ddlState option:selected").text(),
+        "CountryName": jQuery("#ddlCountry option:selected").text(),
+        "ZipCode": $('#pincode').val(),
+        "TaxId": $('#txtTINNo').val(),
+        "TaxIdType": jQuery("#txtTINType option:selected").val(),
+        "TaxId2": $('#vendorpanno').val() || "",
+        "TaxIdType2": jQuery("#txtTINType2 option:selected").val(),
+        "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
+        "StateID": parseInt(jQuery("#ddlState option:selected").data('stateid')),
+        "CountryID": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
+        "CountryKey": jQuery("#ddlCountry option:selected").val(),
+        "RegionKey": jQuery("#ddlState option:selected").val(),
+        "Langu": jQuery("#ddllanguage option:selected").val(),
+
+    }
+    $('#buttoncompanyupdate').removeAttr("disabled", "disabled");
+
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        //url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&UserType=" + sessionStorage.getItem('UserType'),
+        url: APIPath + "VendorLCM/VendorRequestSubmit",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+
+
+            $('#buttoncompanyupdate').attr("disabled", "disabled");
+            jQuery.unblockUI();
+            if (data.isSuccess == 1) {
+                $('#divsuccvendor').html('')
+                $('#divsuccvendor').html('You are successfully registered...')
+                $('#divsuccvendor').show();
+                $('#divsuccvendor').fadeOut(5000);
+            }
+
+
+        },
+        error: function (xhr, status, error) {
+            $('#buttoncompanyupdate').removeAttr("disabled", "disabled");
+            $('#diverrorvendor').html('')
+            $('#diverrorvendor').html(xhr.responseText)
+            $('#diverrorvendor').show();
+            $('#diverrorvendor').fadeOut(5000);
+
+            jQuery.unblockUI();
+        }
+    });
+
+
+}
+
+
+
+
+function extractPan(data) {
+
+    $('#txtTINNo').removeClass("gstvalidicon")
+    var reggst = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/
+
+
+    if (data.value.length === 15) {
+        if (!reggst.test(data.value)) {
+            bootbox.alert('GST Number Format is not valid. please check it');
+            return false;
+        }
+
+        ValidateGST(data.value)
+
+    }
+    else {
+
+        $("#vendorpanno").val("");
+
+        //beforeTaxDisable()
+    }
+
+}
+
+function ValidateGST(data) {
+
+    let GSTNo = data
+    console.log(sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo);
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+
+            if (data.status != 'E') {
+                var data = jQuery.parseJSON(data);
+                let panNumber = ""
+                let legalName = data.legalName
+                let companytype = data.constitution
+
+                console.log(data.gstin);
+                $('#txtTINNo').addClass("gstvalidicon")
+
+
+                panNumber = data.gstin.substring(2, 12);
+                $("#vendorpanno").val(panNumber);
+                $("#vendorpanno").attr("disabled", "disabled");
+                //afterTaxEnable()
+                $("#vendorname").val(legalName);
+                $("#vendorname").attr("disabled", "disabled");
+                $("#ddlNatureEstaiblishment").val(companytype);
+                $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
+                setTimeout(function () {
+                    $('#txtTINNo').removeClass("gstvalidicon");
+                }, 2000);
+            }
+            else {
+                $('.alert-danger').html('No such GST number exist')
+                $('.alert-danger').show();
+                Metronic.scrollTo($('.alert-danger'), -200);
+                $('.alert-danger').fadeOut(5000);
+                $('.alert-danger').html('')
+
+
+            }
+
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+
+    })
+}
+var formvendor = $('#submit_form');
+function FormValidate() {
+
+    formvendor.validate({
+
+        errorElement: 'span',
+        errorClass: 'help-block',
+        focusInvalid: false,
+        ignore: "",
+        rules: {
+
+
+            txtContName: {
+                required: true,
+            },
+            vendormobileno: {
+                required: true,
+                number: true
+            },
+            vendoraddress: {
+                required: true,
+
+            },
+            ddlpreferredTime: {
+                required: true,
+            },
+            txtEmail: {
+                required: true,
+                email: true
+            },
+            ddlCountry: {
+                required: true,
+            },
+            ddlState: {
+                required: true,
+            },
+            ddlCity: {
+                required: true,
+            },
+            txtTINType: {
+                required: true,
+            },
+            txtTINNo: {
+                required: true,
+            },
+            vendorname: {
+                required: true,
+            },
+            pincode: {
+                required: true,
+            },
+            ddllanguage: {
+                required: true,
+            },
+
+
+        },
+        messages: {
+
+            txtContName: {
+                required: "Please Enter Valid name",
+            },
+            txtEmail: {
+                required: "Please Enter Valid EmailID"
+            },
+            ddlCountry: {
+                required: "Please Enter Valid Country"
+            },
+            ddlState: {
+                required: "Please Enter Valid State"
+            },
+            ddlCity: {
+                required: "Please Enter Valid City"
+            },
+            txtTINType: {
+                required: "Please Enter Valid Tax type"
+            },
+            txtTINNo: {
+                required: "Please Enter Valid Tax Tin no"
+            },
+            vendorname: {
+                required: "Please Enter Valid vendorname"
+            },
+            pincode: {
+                required: "Please Enter Valid pincode/zipcode"
+            }
+
+
+        },
+        invalidHandler: function (event, validator) {
+            //errorVendor.show()
+            // successVendor.hide();
+            $('#diverrorvendor').show()
+            $('#divsuccvendor').hide()
+            $('#divsuccvendor').html("")
+            $('#spanerrorvendor').text("Please Enter all required field to proceed");
+            $('#diverrorvendor').fadeOut(6000);
+        },
+
+        highlight: function (element) {
+            $(element).closest('.xyz').addClass('has-error');
+
+        },
+
+        unhighlight: function (element) {
+            $(element).closest('.xyz').removeClass('has-error');
+
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element);
+        },
+        success: function (label) {
+        },
+        submitHandler: function (form) {
+
+
+            VendorRequestSubmit()
+        }
     });
 }
