@@ -1,6 +1,5 @@
 
     jQuery(document).ready(function () {
-        
         Pageloaded()
         var x = isAuthenticated();
     setInterval(function () {Pageloaded()}, 15000);
@@ -31,10 +30,12 @@ var success = $('#successdiv');
 
 success.hide();
 error.hide();
+
 $('#categoryName').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
+
 
 function FormValidate() {
 
@@ -231,9 +232,6 @@ function updateType(rname, status, id) {
                         jQuery('input:checkbox[name=checkboxactive]').attr('checked', false);
                         jQuery('#checkboxactive').parents('span').removeClass('checked');
                     }
-                    
-                  
-  
     }
 
 
@@ -269,7 +267,7 @@ jQuery("#search").keyup(function () {
 
 
 function resetscholership() {
-    $('#categoryName').val('');
+    $('#   ').val('');
     $('#hddnCategoryID').val('0');
     jQuery('input:checkbox[name=checkboxactive]').attr('checked', true);
     jQuery('#checkboxactive').parents('span').addClass('checked');
