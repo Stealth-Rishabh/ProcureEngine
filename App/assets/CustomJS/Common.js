@@ -841,7 +841,16 @@ function GetCustomerSpecificMaster(CustId) {
         dataType: "json",
         success: function (data) {
 
-            //vendor account group
+            //reconcillationaccount
+            jQuery("#ReconAcc").empty();
+            jQuery("#ReconAcc").append(jQuery("<option value=''>Select</option>"));
+            for (var i = 0; i < data.reconAcc.length; i++) {
+                jQuery("#ReconAcc").append(jQuery("<option value='" + data.reconAcc[i].reconAccount + "'>" + data.reconAcc[i].description + " [" + data.reconAcc[i].reconAccount + "]" + "</option>"));
+
+            }
+            $("#ReconAcc").val('').trigger("change");
+
+            //Witholding tax type
             jQuery("#WitholdingTaxType").empty();
             jQuery("#WitholdingTaxType").append(jQuery("<option value='0' data-subjectToTDS='' data-typeOfReceipt='' data-witholdingTaxCode=''>Select</option>"));
             for (var i = 0; i < data.witholdingTax.length; i++) {
@@ -982,12 +991,13 @@ function GetCountrySpecificMaster(CountryKey) {
                 }
                 // afterTaxEnable()
             }
+
             $("#ddlState").empty();
             if (data.stateAndRegion.length > 0) {
 
                 $("#ddlState").append("<option value='' data-stateid=0>Select State</option>");
                 for (var i = 0; i < data.stateAndRegion.length; i++) {
-                    $("#ddlState").append("<option value='" + data.stateAndRegion[i].regionKey + "' data-stateid='" + data.stateAndRegion[i].stateID + "'>" + data.stateAndRegion[i].stateName + "</option>");
+                    $("#ddlState").append("<option value='" + data.stateAndRegion[i].regionKey + "' data-stateid='" + data.stateAndRegion[i].stateID + "'>" + data.stateAndRegion[i].stateName + " [" + data.stateAndRegion[i].regionKey + "]" + "</option>");
 
                 }
                 $("#ddlState").val('').trigger("change");

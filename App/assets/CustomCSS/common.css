@@ -148,6 +148,7 @@ input#file-excelparameter {
     position: fixed;
     top: -120px;
 }
+
 input#file-excelparameterB {
     position: fixed;
     top: -120px;
@@ -158,9 +159,11 @@ input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+
 .hiddenRow {
     padding: 0 !important;
 }
+
 input[type=number] {
     -moz-appearance: textfield;
 }
@@ -626,7 +629,7 @@ tr.header {
 /*@abheedev multilingual*/
 .changeLanguage {
     position: absolute;
-    right: 160px;
+    right: 200px;
     top: 11px;
 }
 
@@ -1083,8 +1086,9 @@ tr.header {
     padding: 12px;
     animation: 0s ease 0s 1 normal none running none !important;
 }
-.colorwhite{
-    color:white !important;
+
+.colorwhite {
+    color: white !important;
 }
 
 .graphwidth {
@@ -1101,33 +1105,34 @@ tr.header {
 /*mobile specific css*/
 
 @media only screen and (max-width:900px) {
-   button{
-       margin-bottom:4px !important;
-   }
+    button {
+        margin-bottom: 4px !important;
+    }
 
-   
+
     div {
         display: block;
         word-wrap: break-word;
         overflow: hidden;
         text-overflow: ellipsis;
-        margin:2px;        
+        margin: 2px;
     }
+
     #divappendstatusbar {
         margin-top: 16px !important;
-        overflow:initial;
+        overflow: initial;
     }
+
     label {
         margin-left: 2%;
         margin-right: 2%;
     }
-    
 }
 
 .gstvalidicon {
     background: url('../../assets/global/img/icons-done.png') no-repeat center center;
     padding-right: 30px;
-    background-size: 25px 25px;    
+    background-size: 25px 25px;
 }
 /*invitevendor*/
 .btn-flex-rgt {
@@ -1163,13 +1168,33 @@ a:active, a:focus {
 
 .headingfont {
     font-weight: 400 !important;
-    font-size:14px !important
+    font-size: 14px !important
 }
 
 .labelcontrol {
     padding-top: 7px !important;
-    padding-left:28px !important;
+    padding-left: 28px !important;
 }
+
 .modal-xxl {
     width: 1100px !important;
+}
+
+.spinner {
+    border: 2px solid #ddd;
+    border-top: 2px solid aqua;
+    border-radius: 50% !important;
+    width: 25px;
+    height: 25px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
