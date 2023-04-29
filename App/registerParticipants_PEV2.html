@@ -394,7 +394,7 @@
                                                                                                 </div>
 
                                                                                             </div>
-                                                                                            <div class="form-group tax-group">
+                                                                                            <div class="form-group tax-group nogsthide">
                                                                                                 <label class="col-md-3 control-label" id="taxlabel">
                                                                                                     Tax Id <span class="required">*</span>
                                                                                                 </label>
@@ -405,7 +405,7 @@
                                                                                                 </div>
 
                                                                                             </div>
-                                                                                            <div class="form-group pan-group">
+                                                                                            <div class="form-group pan-group nogsthide">
                                                                                                 <label class="col-md-3 control-label" id="taxlabel">
                                                                                                     Tax Type 2
                                                                                                 </label>
@@ -416,7 +416,7 @@
                                                                                                 </div>
 
                                                                                             </div>
-                                                                                            <div class="form-group pan-group">
+                                                                                            <div class="form-group pan-group nogsthide">
 
                                                                                                 <label class="col-md-3 control-label">
                                                                                                     Tax Id 2
@@ -464,12 +464,12 @@
                                                                                             </div>
                                                                                             <div class="form-group">
                                                                                                 <label class="col-md-3 control-label">
-                                                                                                    Zip Code <span class="required">*</span>
+                                                                                                    PIN Code <span class="required">*</span>
                                                                                                 </label>
                                                                                                 <div class="col-md-6">
 
                                                                                                     <input type="text" class="form-control" placeholder="Enter Zip Code" id="txtZipCd"
-                                                                                                           name="txtZipCd" maxlength="10" />
+                                                                                                           name="txtZipCd" maxlength="6" />
                                                                                                 </div>
                                                                                             </div>
 
@@ -552,6 +552,7 @@
                                                                                     <!--country/regionkey-->
                                                                                     <input type="hidden" value="Add" id="hdnCountryKey" />
                                                                                     <input type="hidden" value="Add" id="hdnRegionKey" />
+                                                                                    <input type="hidden" value="" id="hdnGRBasedInvoiceLogic" />
 
                                                                                     <div class="clearfix"></div>
 
@@ -1465,7 +1466,8 @@
                                                                                                 </label>
                                                                                                 <div class="col-md-4">
 
-                                                                                                    <input class="form-control" id="ReconAcc" name="ReconAcc" minlength=8 maxlength=8 onkeyup="onlynumeric(this)" />
+                                                                                                    <select class="form-control" id="ReconAcc" name="ReconAcc" required>
+                                                                                                    </select>
                                                                                                 </div>
                                                                                             </div>
                                                                                         </div>
@@ -1477,6 +1479,30 @@
                                                                                                 </label>
                                                                                                 <div class="col-md-4">
                                                                                                     <select class="form-control" id="PayTerm" name="PayTerm" required>
+                                                                                                    </select>
+
+                                                                                                </div>
+                                                                                                <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                    Auth Group <span class="required">*</span>
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <select class="form-control" id="authGrp" name="authGrp">
+                                                                                                    </select>
+
+                                                                                                </div>
+
+
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-md-12">
+
+                                                                                                <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                    GST Vendor Classification  <span class="required">*</span>
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <select class="form-control" id="gstVendClass" name="gstVendClass" required>
                                                                                                     </select>
 
                                                                                                 </div>

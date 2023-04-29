@@ -840,8 +840,43 @@ function GetCustomerSpecificMaster(CustId) {
         async: false,
         dataType: "json",
         success: function (data) {
+            debugger
 
-            //vendor account group
+            //Authentication Group
+            jQuery("#authGrp").empty();
+            jQuery("#authGrp").append(jQuery("<option value=''>Select</option>"));
+            for (var i = 0; i < data.authGrp.length; i++) {
+                jQuery("#authGrp").append(jQuery("<option value='" + data.authGrp[i].authorizationGroup + "'>" + data.authGrp[i].description + " [" + data.authGrp[i].authorizationGroup + "]" + "</option>"));
+
+            }
+            $("#authGrp").val('').trigger("change");
+
+            //GST Vendor Classification
+            jQuery("#gstVendClass").empty();
+            for (var i = 0; i < data.gstVendClass.length; i++) {
+                jQuery("#gstVendClass").append(jQuery("<option value='" + data.gstVendClass[i].gstVendClassification + "'>" + data.gstVendClass[i].description + "</option>"));
+
+            }
+
+            if ($("#txtTINNom").text().trim() == "") {
+                $("#gstVendClass").val('0').trigger("change");
+            }
+            else {
+                $("#gstVendClass").val('').trigger("change");
+            }
+
+
+
+            //reconcillationaccount
+            jQuery("#ReconAcc").empty();
+            jQuery("#ReconAcc").append(jQuery("<option value=''>Select</option>"));
+            for (var i = 0; i < data.reconAcc.length; i++) {
+                jQuery("#ReconAcc").append(jQuery("<option value='" + data.reconAcc[i].reconAccount + "'>" + data.reconAcc[i].description + " [" + data.reconAcc[i].reconAccount + "]" + "</option>"));
+
+            }
+            $("#ReconAcc").val('').trigger("change");
+
+            //Witholding tax type
             jQuery("#WitholdingTaxType").empty();
             jQuery("#WitholdingTaxType").append(jQuery("<option value='0' data-subjectToTDS='' data-typeOfReceipt='' data-witholdingTaxCode=''>Select</option>"));
             for (var i = 0; i < data.witholdingTax.length; i++) {
@@ -951,13 +986,14 @@ function GetCountrySpecificMaster(CountryKey) {
 
 
             jQuery("#txtTINType").empty();
-
             for (var i = 0; i < data.taxTypeMaster.length; i++) {
                 jQuery("#txtTINType").append(jQuery("<option></option>").val(data.taxTypeMaster[i].taxType).html(data.taxTypeMaster[i].description));
             }
 
-
+            $(".nogsthide").show();
             if (CountryKey === "IN") {
+
+                jQuery("#txtTINType").append(jQuery("<option></option>").val('').html("Unregistered"));
                 $("#txtTINNo").attr("onchange", "extractPan(this)");
                 $("#txtPanNo").attr("disabled", "disabled");
                 $("#vendorpanno").attr("disabled", "disabled");
@@ -969,6 +1005,7 @@ function GetCountrySpecificMaster(CountryKey) {
                 $("#txtTINType2").append(jQuery("<option></option>").val("PAN").html("PAN Number"));
             }
             else {
+
                 jQuery("#txtTINType2").empty();
                 $("#txtTINNo").attr("onchange", "");
                 $("#txtPanNo").removeAttr("disabled");
@@ -982,12 +1019,13 @@ function GetCountrySpecificMaster(CountryKey) {
                 }
                 // afterTaxEnable()
             }
+
             $("#ddlState").empty();
             if (data.stateAndRegion.length > 0) {
 
                 $("#ddlState").append("<option value='' data-stateid=0>Select State</option>");
                 for (var i = 0; i < data.stateAndRegion.length; i++) {
-                    $("#ddlState").append("<option value='" + data.stateAndRegion[i].regionKey + "' data-stateid='" + data.stateAndRegion[i].stateID + "'>" + data.stateAndRegion[i].stateName + "</option>");
+                    $("#ddlState").append("<option value='" + data.stateAndRegion[i].regionKey + "' data-stateid='" + data.stateAndRegion[i].stateID + "' data-statename='" + data.stateAndRegion[i].stateName + "'>" + data.stateAndRegion[i].stateName + " [" + data.stateAndRegion[i].regionKey + "]" + "</option>");
 
                 }
                 $("#ddlState").val('').trigger("change");

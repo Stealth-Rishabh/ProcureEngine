@@ -115,6 +115,7 @@ function getSummary(vendorid, version) {
 
 var Vendor;
 function fetchrfqcomprative() {
+
     var x = isAuthenticated();
     var _rfqID = parseInt($('#hdnRfqID').val());
     var _versionNo = parseInt($('#ddlrfqVersion option:selected').val());
@@ -122,16 +123,15 @@ function fetchrfqcomprative() {
     $('#tblRFQComprativeBoq').hide();
     sessionStorage.setItem("RFQVersionId", $("#ddlrfqVersion option:selected").val())
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
     jQuery.ajax({
-        //url: sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFQVersionId=" + $('#ddlrfqVersion option:selected').val(),
-        //url: sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + $('#hdnRfqID').val() + "&RFQVersionId=" + $('#ddlrfqVersion option:selected').val(),
         url: sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + _rfqID + "&RFQVersionId=" + _versionNo,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         async: false,
         contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
+        success: function (Data, status, jqXHR) {
+
+            let data = Data.rData
 
             var str = '';
             var strHead = '';
@@ -144,22 +144,36 @@ function fetchrfqcomprative() {
             var strHeadExcelQ = '';
             var strExcelQ = '';
             var allvendorresponse = 'Y';
-            var ShowPrice = 'N'
+
+            var ShowPrice = Data.showQuotedPrice.showQoutedPrice
+
+            //PR Mapping
+            GetPR2Mapping()
+            debugger
+            if ($("#ddlrfqVersion option:selected").val() == 99 && sessionStorage.getItem("IsSAPModule") == 'Y') {
+
+                $('#btnPRMapping').show()
+
+            }
+            else {
+                $('#btnPRMapping').hide()
+            }
+
             var _CurrentDate = new Date();
             if (_rfqBidType == 'Closed') {
                 //$("#ddlrfqVersion").empty();
                 //$('#ddlrfqVersion').append('<option  value="99" >Final Version</option>');
                 if (_openQuotes == 'Y') {
-                    ShowPrice = 'Y';
+                    // ShowPrice = showQuotedPrice;
                     $('#btnPDF').show()
                 }
                 else {
-                    ShowPrice = 'N';
+                    // ShowPrice = showQuotedPrice;
                     $('#btnPDF').hide()
                 }
             }
             else {
-                ShowPrice = 'Y';
+                // ShowPrice = showQuotedPrice;
                 $('#btnPDF').show()
             }
 
@@ -318,7 +332,7 @@ function fetchrfqcomprative() {
                         minprice = 0;
                         str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td>" + (i + 1) + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + StringDecodingMechanism(data[0].quotesDetails[i].itemDesc) + "</td><td>" + data[0].quotesDetails[i].remarks + "</td><td class='text-right'>" + thousands_separators((data[0].quotesDetails[i].quantity).round(2)) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td class=text-right>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
                         //abheedev bug349 start
-                        strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + StringDecodingMechanism(data[0].quotesDetails[i].itemDesc) + "</td><td>" + thousands_separators((data[0].quotesDetails[i].quantity).round(2)) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
+                        strExcel += "<tr><td>" + (i + 1) + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td>" + StringDecodingMechanism(data[0].quotesDetails[i].itemDesc) + "</td><td>" + thousands_separators((data[0].quotesDetails[i].quantity).round(2)) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + thousands_separators((data[0].quotesDetails[i].targetPrice).round(2)) + "</td>";//ADD CODE HERE
                         //abheedev bug349 end
 
 
@@ -346,45 +360,45 @@ function fetchrfqcomprative() {
 
                                     }
                                     else if (data[0].quotesDetails[j].lowestPrice == "Y" && data[0].quotesDetails[j].highestPrice == "N" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
-                                        strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td>" + thousands_separators((_totalWithoutGst)) + "</td>";
+                                        strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td>" + thousands_separators((_totalWithoutGst).round(2)) + "</td>";
 
                                         //abheedev backlog 335
                                         if (data[0].quotesDetails[j].vendorItemRemarks != "") {
 
 
-                                            str += "<td class='text-right' id=unitrate" + i + x + " style='color: blue!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+                                            str += "<td class='text-right' id=unitrate" + i + x + " style='color: blue!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators((_totalWithoutGst).round(2)) + "</td>";
                                         }
                                         else {
 
-                                            str += "<td class='text-right' id=unitrate" + i + x + " style='color: blue!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+                                            str += "<td class='text-right' id=unitrate" + i + x + " style='color: blue!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators((_totalWithoutGst).round(2)) + "</td>";
 
 
                                         }
                                         //abheedev backlog 335 end
                                     }
                                     else if (data[0].quotesDetails[j].lowestPrice == "N" && data[0].quotesDetails[j].highestPrice == "N" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
-                                        strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
+                                        strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td>" + thousands_separators((_totalWithoutGst).round(2)) + "</td>";
 
                                         //abheedev backlog 335 part 2
                                         if (data[0].quotesDetails[j].vendorItemRemarks != "") {
-                                            str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+                                            str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators((_totalWithoutGst).round(2)) + "</td>";
                                         }
                                         else {
-                                            str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+                                            str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators((_totalWithoutGst).round(2)) + "</td>";
 
                                         }
                                         //abheedev backlog 335 end part 2
                                     }
                                     else if (data[0].quotesDetails[j].lowestPrice == "N" && data[0].quotesDetails[j].highestPrice == "Y" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
-                                        strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
+                                        strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td>" + thousands_separators((_totalWithoutGst).round(2)) + "</td>";
 
                                         //abheedev backlog 335
                                         if (data[0].quotesDetails[j].vendorItemRemarks != "") {
-                                            str += "<td class='text-right' id=unitrate" + i + x + " style='color: red!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+                                            str += "<td class='text-right' id=unitrate" + i + x + " style='color: red!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst.round(2)) + "</td>";
                                         }
                                         else {
 
-                                            str += "<td class='text-right' id=unitrate" + i + x + " style='color: red!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+                                            str += "<td class='text-right' id=unitrate" + i + x + " style='color: red!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators((_totalWithoutGst).round(2)) + "</td>";
 
 
                                         }
@@ -394,20 +408,21 @@ function fetchrfqcomprative() {
 
                                     }
                                     else if (data[0].quotesDetails[j].lowestPrice == "Y" && data[0].quotesDetails[j].highestPrice == "Y" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
-                                        strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
+                                        strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td>" + thousands_separators((_totalWithoutGst).round(2)) + "</td>";
                                         //abheedev backlog 333
                                         if (data[0].quotesDetails[j].vendorItemRemarks != "") {
 
-                                            str += "<td class='text-right' id=unitrate" + i + x + " style='color: blue!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+                                            str += "<td class='text-right' id=unitrate" + i + x + " style='color: blue!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators((_totalWithoutGst).round(2)) + "</td>";
                                         }
                                         else {
 
-                                            str += "<td class='text-right' id=unitrate" + i + x + " style='color: blue!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+                                            str += "<td class='text-right' id=unitrate" + i + x + " style='color: blue!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators((_totalWithoutGst).round(2)) + "</td>";
 
 
                                         }
                                         //abheedev backlog 333
                                     }
+
                                     else if (data[0].quotesDetails[j].unitRate == -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST == -1) {
                                         str += "<td colspan=3  style='color: blue!important; text-align: center;' >Not Invited</td>";
                                         strExcel += "<td colspan=3 >Not Invited </td>";
@@ -432,19 +447,24 @@ function fetchrfqcomprative() {
                             }
 
                         }
-                        totallowestValue = (totallowestValue + (data[0].quotesDetails[i].quantity * data[0].quotesDetails[i].lowestPriceValue)).round(2)
 
-                        if (ShowPrice == 'Y' || totallowestValue == 0) {
-
+                        //abheedev 20/04/23
+                        if (ShowPrice == 'Y') {
+                            totallowestValue = (totallowestValue + (1 * data[0].quotesDetails[i].lowestPriceValue)).round(2)//data[0].quotesDetails[i].quantity
                             str += "<td class=text-right>" + thousands_separators((data[0].quotesDetails[i].lowestPriceValue).round(2)) + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
                             strExcel += "<td >" + thousands_separators((data[0].quotesDetails[i].lowestPriceValue).round(2)) + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td colspan=2>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
                         }
                         else {
-
-                            if (totallowestValue != 0) {
+                            if (data[0].quotesDetails[i].lowestPriceValue == 0) {
+                                totallowestValue = "Not Quoted";
+                                str += "<td class=text-right>Not Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
+                                strExcel += "<td >Not Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td colspan=2>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
+                            }
+                            else {
                                 totallowestValue = "Quoted";
                                 str += "<td class=text-right>Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
                                 strExcel += "<td >Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td colspan=2>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
+
                             }
                         }
                         str += "</tr>"
@@ -454,6 +474,7 @@ function fetchrfqcomprative() {
                     }
 
                 }
+
                 // for calculating total target price
                 let totaltargetprice = 0;
                 let ttpArray = [];
@@ -469,10 +490,11 @@ function fetchrfqcomprative() {
                     }
                 }
                 str += "<tr><td colspan=7 style='text-align:center;'><b>Total</b></td><td colspan=1 style='text-align:center;'><b>" + thousands_separators(totaltargetprice) + "</b></td>";
-                strExcel += "<tr><td colspan=7><b>Total</b></td>";
+                strExcel += "<tr><td colspan=6><b>Total</b></td><td colspan=1 style='text-align:center;'><b>" + thousands_separators(totaltargetprice) + "</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
                     if (data[0].vendorNames[k].seqNo != 0) {
                         if (ShowPrice == 'Y') {
+
                             RFQFetchTotalPriceForReport(data[0].vendorNames[k].vendorID, k)
                             str += "<td id=totBoxinitialwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithoutgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxwithgst" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totBoxTax" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
                             strExcel += "<td id=totBoxinitialwithoutgstExcel" + data[0].vendorNames[k].vendorID + " ></td><td id=totBoxwithoutgstExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totBoxwithgstExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totBoxTaxExcel" + data[0].vendorNames[k].vendorID + "></td>";
@@ -489,8 +511,8 @@ function fetchrfqcomprative() {
 
                 }
                 if (ShowPrice == "Y" || totallowestValue == 0) {
-                    str += "<td class=text-right>" + thousands_separators(totallowestValue) + "</td><td colspan=6>&nbsp;</td></tr>";
-                    strExcel += "<td>" + thousands_separators(totallowestValue) + "</td><td colspan='7'>&nbsp;</td></tr>";
+                    str += "<td class=text-right>" + thousands_separators((totallowestValue).round(2)) + "</td><td colspan=6>&nbsp;</td></tr>";
+                    strExcel += "<td>" + thousands_separators((totallowestValue).round(2)) + "</td><td colspan='7'>&nbsp;</td></tr>";
                 }
                 else {
                     if (totallowestValue != 0) {
@@ -504,6 +526,7 @@ function fetchrfqcomprative() {
 
                 str += "<tr><td colspan=4 style='text-align:center;'><b>Loading Factor</b></td><td colspan=4 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
                 strExcel += "<tr><td colspan=3 ><b>Loading Factor</b></td><td colspan=4 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";
+
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
                     for (var k = 0; k < data[0].loadedFactor.length; k++) {
                         if (data[0].loadedFactor[k].vendorID == data[0].vendorNames[l].vendorID) {
@@ -594,24 +617,36 @@ function fetchrfqcomprative() {
                 str += "<td colspan=7>&nbsp;</td></tr>";
                 strExcel += "<td colspan=8>&nbsp;</td></tr>";
 
-                //abheedev bug 479
+                //abheedev bug 479 
                 str += "<tr><td colspan=8 style='text-align:center;'><b>Package Value where supplier is L1</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
                 strExcel += "<tr><td colspan=7 ><b>Package Value where supplier is L1</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
+
                     if (data[0].vendorNames[k].seqNo != 0) {
                         if (ShowPrice == 'Y') {
+
                             RFQFetchL1Package(data[0].vendorNames[k].vendorID, k)
                             str += "<td>&nbsp;</td><td id=withoutGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=withGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
                             strExcel += "<td>&nbsp;</td><td id=withoutGSTL1RankExcel" + data[0].vendorNames[k].vendorID + "></td><td id=withGSTL1RankExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totL1RankExcel" + data[0].vendorNames[k].vendorID + "></td>";
                         }
                         else {
+                            //code here check here
+
+
                             str += "<td>&nbsp;</td><td id=withoutGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=withGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right>Quoted</td><td id=totL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right>Quoted</td>";
                             strExcel += "<td>&nbsp;</td><td id=withoutGSTL1RankExcel" + data[0].vendorNames[k].vendorID + "></td><td id=withGSTL1RankExcel" + data[0].vendorNames[k].vendorID + ">Quoted</td><td id=totL1RankExcel" + data[0].vendorNames[k].vendorID + ">Quoted</td>";
+
+
+
+
                         }
                     }
                     else {
-                        str += "<td colspan=4>&nbsp;</td>";
-                        strExcel += "<td colspan=4>&nbsp;</td>";
+                        // str += "<td colspan=4>&nbsp;</td>";
+                        // strExcel += "<td colspan=4>&nbsp;</td>";
+                        str += "<td>&nbsp;</td><td id=withoutGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=withGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right>Not Quoted</td><td id=totL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right>Not Quoted</td>";
+                        strExcel += "<td>&nbsp;</td><td id=withoutGSTL1RankExcel" + data[0].vendorNames[k].vendorID + "></td><td id=withGSTL1RankExcel" + data[0].vendorNames[k].vendorID + ">Not Quoted</td><td id=totL1RankExcel" + data[0].vendorNames[k].vendorID + ">Not Quoted</td>";
+
                     }
 
                 }
@@ -1093,10 +1128,12 @@ function fetchrfqcomprative() {
     jQuery.unblockUI();
 
 }
+
 function fetchrfqcomprativeBoq() {
 
     $('#tblRFQComprativeBoq').show();
     $('#tblRFQComprative').hide();
+    $('#btnPRMapping').hide() //to hide boq button
 
     sessionStorage.setItem("RFQVersionId", $("#ddlrfqVersion option:selected").val())
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -1108,7 +1145,10 @@ function fetchrfqcomprativeBoq() {
         type: "GET",
         async: false,
         contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
+        success: function (Data, status, jqXHR) {
+
+            let data = Data.rData
+
 
             var str = '';
             var strHead = '';
@@ -1121,15 +1161,15 @@ function fetchrfqcomprativeBoq() {
             var strHeadExcelQ = '';
             var strExcelQ = '';
             var allvendorresponse = 'Y';
-
+            var ShowPrice = Data.showQuotedPrice.showQoutedPrice
             var _CurrentDate = new Date();
             if (_rfqBidType == 'Closed') {
                 if (_openQuotes == 'Y') {
-                    ShowPrice = 'Y';
+                    //ShowPrice = 'Y';
                     $('#btnPDF').show()
                 }
                 else {
-                    ShowPrice = 'N';
+                    //ShowPrice = 'N';
                     $('#btnPDF').hide()
                 }
 
@@ -1139,6 +1179,8 @@ function fetchrfqcomprativeBoq() {
                 $('#btnPDF').show()
 
             }
+
+
 
             sessionStorage.setItem('ShowPrice', ShowPrice);
             jQuery('#tblRFQComprativeBoq > thead').empty()
@@ -1154,6 +1196,7 @@ function fetchrfqcomprativeBoq() {
             $('#tblRFQComprativeQ > tbody').empty();
             $('#tblRFQComprativetestQ > tbody').empty();
             jQuery("#tblRFQComprativeForExcelQ > tbody").empty();
+
             if (data[0].vendorNames.length > 0) {
                 Vendor = data[0].vendorNames;
                 $('#displayTable').show();
@@ -1179,7 +1222,7 @@ function fetchrfqcomprativeBoq() {
                 strHeadExcel = "<tr><th>ItemCode</th><th>Short Name</th><th>ItemDescription</th><th>Quantity</th><th>UOM</th><th>Target/Budget Price</th>"
 
                 strHeadQ = "<tr  style='background:#f5f5f5; color:light black;'><th>Question</th><th>Our Requirement</th>"
-                strHeadExcelQ = "<tr><th colspan=4>Question</th><th colspan=3>Our Requirement</th>"
+                strHeadExcelQ = "<tr><th colspan=4>Question</th><th colspan=2>Our Requirement</th>"
 
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
 
@@ -1268,11 +1311,15 @@ function fetchrfqcomprativeBoq() {
 
 
 
+
                 var x = 0;
                 var _totalWithoutGst = 0;
+                var sheetname;
+                var sheetcount = 0;
 
+
+                console.log(data[0].quotesDetails)
                 for (var i = 0; i < data[0].noofQuotes[0].noofRFQParameter; i++) {
-
 
                     var flag = 'T';
                     $("#tblRFQComprativetest > tbody > tr").each(function (index) {
@@ -1285,148 +1332,251 @@ function fetchrfqcomprativeBoq() {
 
                     });
                     x = -1;
-                    if (data[0].quotesDetails[i].srno == "1") {
-                        if (flag == 'T') {
+                    minprice = 0;
 
-                            minprice = 0;
-                            totaltargetprice = totaltargetprice + parseFloat(data[0].quotesDetails[i].targetPrice)
-                            str += "<tr><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].boqsheetName + "</td><td>" + StringDecodingMechanism(data[0].quotesDetails[i].itemDesc) + "</td><td>" + data[0].quotesDetails[i].remarks + "</td><td class='text-right'>" + 1 + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td class=text-right>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
-                            strExcel += "<tr><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].boqsheetName + "</td><td>" + StringDecodingMechanism(data[0].quotesDetails[i].itemDesc) + "</td><td>" + thousands_separators((data[0].quotesDetails[i].quantity).round(2)) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
+                    //abheedev boq
 
 
+                    if (data[0].quotesDetails[i].quantity == 0) {
+                        str += "<tr id=" + data[0].quotesDetails[i].boqsheetName + "><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td></td><td>" + data[0].quotesDetails[i].remarks + "</td><td class='text-right'>" + "" + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td class=text-right>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
+                        strExcel += "<tr><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td> </td><td>" + "" + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
 
-                            var _quantity = data[0].quotesDetails[i].quantity;
-                            for (var j = 0; j < data[0].quotesDetails.length; j++) {
 
-                                if ((data[0].quotesDetails[i].rfqParameterId) == (data[0].quotesDetails[j].rfqParameterId) && data[0].quotesDetails[j].srno == "1") {// true that means reflect on next vendor
-                                    x = x + 1;
+                    }
+                    else {
+                        str += "<tr id=" + data[0].quotesDetails[i].boqsheetName + "><td class='hide'>" + data[0].quotesDetails[i].vendorID + "</td><td class='hide'>" + data[0].quotesDetails[i].rfqParameterId + "</td><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td></td><td>" + data[0].quotesDetails[i].remarks + "</td><td class='text-right'>" + data[0].quotesDetails[i].quantity + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td class=text-right>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
+                        strExcel += "<tr><td>" + data[0].quotesDetails[i].rfqItemCode + "</td><td>" + data[0].quotesDetails[i].rfqShortName + "</td><td> </td><td>" + thousands_separators((data[0].quotesDetails[i].quantity).round(2)) + "</td><td>" + data[0].quotesDetails[i].uom + "</td><td>" + data[0].quotesDetails[i].targetPrice + "</td>";//ADD CODE HERE
 
-                                    if (data[0].quotesDetails[j].vendorID == data[0].vendorNames[x].vendorID) {
-                                        _totalWithoutGst = (data[0].quotesDetails[j].rfqVendorPricewithoutGST * 1).round(2);//_quantity
-                                        if (ShowPrice == "N" && data[0].quotesDetails[j].initialQuotewithoutGST != 0) {
-                                            strExcel += "<td>Quoted</td>";
-                                            str += "<td class='VInitialwithoutGST text-right'>Quoted</td>";
+                    }
+
+
+                    if (flag == 'T') {
+
+                        for (var j = 0; j < data[0].quotesDetails.length; j++) {
+
+
+                            if (((data[0].quotesDetails[i].rfqParameterId) == (data[0].quotesDetails[j].rfqParameterId))) {// true that means reflect on next vendor
+
+                                x = x + 1;
+
+                                if (data[0].quotesDetails[j].vendorID == data[0].vendorNames[x].vendorID) {
+
+
+                                    _totalWithoutGst = (data[0].quotesDetails[j].rfqVendorPricewithoutGST * 1).round(2);//_quantity
+                                    if (ShowPrice == "N" && data[0].quotesDetails[j].initialQuotewithoutGST != 0) {
+                                        strExcel += "<td>Quoted</td>";
+                                        str += "<td class='VInitialwithoutGST text-right'>Quoted</td>";
+                                    }
+                                    else {
+                                        strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].initialQuotewithoutGST).round(2)) + "</td>";
+                                        str += "<td class='VInitialwithoutGST text-right'>" + thousands_separators((data[0].quotesDetails[j].initialQuotewithoutGST).round(2)) + "</td>";
+                                    }
+                                    if (ShowPrice == "N" && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
+                                        strExcel += "<td>Quoted</td><td>Quoted</td><td>Quoted</td>";
+                                        str += "<td class='text-right'>Quoted</td><td class='VendorPriceNoTax text-right'>Quoted</td><td class='VendorPriceWithTax  text-right' >Quoted</td>";
+
+                                    }
+
+                                    else if (data[0].quotesDetails[j].lowestPrice == "Y" && data[0].quotesDetails[j].highestPrice == "N" && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
+
+                                        if (data[0].quotesDetails[j].vendorItemRemarks != "") {
+                                            str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td>";
+                                        }
+
+                                        else {
+                                            str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td>";
+
+                                        }
+                                        if (data[0].quotesDetails[j].rfqVendorPricewithGST == 0) {
+
+                                            str += "<td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators((_totalWithoutGst).round(2)) + "</td>"
+
+                                        }
+
+                                        else {
+                                            strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((_totalWithoutGst)) + "</td>";
+
+                                            str += "<td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators((_totalWithoutGst).round(2)) + "</td>";
+
+                                        }
+
+                                    }
+                                    else if (data[0].quotesDetails[j].lowestPrice == "N" && data[0].quotesDetails[j].highestPrice == "N" && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
+
+
+                                        if (data[0].quotesDetails[j].vendorItemRemarks != "") {
+                                            if (data[0].quotesDetails[j].rfqVendorPricewithGST == 0) {
+                                                strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
+
+                                                str += "<td class='text-right' id=unitrate" + j + x + ">" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+
+                                            }
+                                            else {
+                                                strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
+
+
+                                                str += "<td class='text-right' id=unitrate" + j + x + ">" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+
+                                            }
                                         }
                                         else {
-                                            strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].initialQuotewithoutGST).round(2)) + "</td>";
-                                            str += "<td class='VInitialwithoutGST text-right'>" + thousands_separators((data[0].quotesDetails[j].initialQuotewithoutGST).round(2)) + "</td>";
-                                        }
-                                        if (ShowPrice == "N" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
-                                            strExcel += "<td>Quoted</td><td>Quoted</td><td>Quoted</td>";
-                                            str += "<td class='text-right'>Quoted</td><td class='VendorPriceNoTax text-right'>Quoted</td><td class='VendorPriceWithTax  text-right' >Quoted</td>";
+                                            if (data[0].quotesDetails[j].rfqVendorPricewithGST == 0) {
+                                                strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
 
-                                        }
-                                        else if (data[0].quotesDetails[j].lowestPrice == "Y" && data[0].quotesDetails[j].highestPrice == "N" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
-                                            strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td>" + thousands_separators((_totalWithoutGst)) + "</td>";
+                                                str += "<td class='text-right' id=unitrate" + j + x + ">" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
 
-
-                                            if (data[0].quotesDetails[j].vendorItemRemarks != "") {
-                                                str += "<td class='text-right' id=unitrate" + i + x + " style='color: blue!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
                                             }
                                             else {
-                                                str += "<td class='text-right' id=unitrate" + i + x + " style='color: blue!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+                                                strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
+
+                                                str += "<td class='text-right' id=unitrate" + j + x + ">" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+
                                             }
 
                                         }
-                                        else if (data[0].quotesDetails[j].lowestPrice == "N" && data[0].quotesDetails[j].highestPrice == "N" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
-                                            strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
+
+                                    }
+                                    else if (data[0].quotesDetails[j].lowestPrice == "N" && data[0].quotesDetails[j].highestPrice == "Y" && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
 
 
-                                            if (data[0].quotesDetails[j].vendorItemRemarks != "") {
-                                                str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+                                        if (data[0].quotesDetails[j].vendorItemRemarks != "") {
+                                            if (data[0].quotesDetails[j].rfqVendorPricewithGST == 0) {
+                                                strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
+
+                                                str += "<td class='text-right' id=unitrate" + j + x + " style='color: red!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+
                                             }
                                             else {
-                                                str += "<td class='text-right' id=unitrate" + i + x + ">" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+                                                strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
+
+                                                str += "<td class='text-right' id=unitrate" + j + x + " style='color: red!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
 
                                             }
-
-                                        }
-                                        else if (data[0].quotesDetails[j].lowestPrice == "N" && data[0].quotesDetails[j].highestPrice == "Y" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
-                                            strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
-
-
-                                            if (data[0].quotesDetails[j].vendorItemRemarks != "") {
-                                                str += "<td class='text-right' id=unitrate" + i + x + " style='color: red!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
-                                            }
-                                            else {
-
-                                                str += "<td class='text-right' id=unitrate" + i + x + " style='color: red!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
-
-
-                                            }
-
-                                        }
-
-
-                                        else if (data[0].quotesDetails[j].lowestPrice == "Y" && data[0].quotesDetails[j].highestPrice == "Y" && data[0].quotesDetails[j].unitRate != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
-                                            strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
-
-                                            if (data[0].quotesDetails[j].vendorItemRemarks != "") {
-                                                str += "<td class='text-right' id=unitrate" + i + x + " style='color: blue!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
-                                            }
-                                            else {
-
-                                                str += "<td class='text-right' id=unitrate" + i + x + " style='color: blue!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
-                                            }
-
-                                        }
-                                        else if (data[0].quotesDetails[j].unitRate == -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST == -1) {
-                                            str += "<td colspan=3  style='color: blue!important; text-align: center;' >Not Invited</td>";
-                                            strExcel += "<td colspan=3 >Not Invited </td>";
-                                        }
-                                        else if (data[0].quotesDetails[j].unitRate == -2 && data[0].quotesDetails[j].rfqVendorPricewithoutGST == -2) {
-                                            str += "<td colspan=3  style='color: red!important; text-align: center;' >Regretted</td>";
-                                            strExcel += "<td colspan=3 >Regretted </td>";
                                         }
                                         else {
+                                            if (data[0].quotesDetails[j].rfqVendorPricewithGST == 0) {
+                                                strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
 
-                                            str += "<td colspan=3  style='color: red!important; text-align: center;' >Not Quoted</td>";
-                                            strExcel += "<td colspan=3 >Not Quoted </td>";
+                                                str += "<td class='text-right' id=unitrate" + j + x + " style='color: red!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+
+                                            }
+                                            else {
+                                                strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
+
+                                                str += "<td class='text-right' id=unitrate" + j + x + " style='color: red!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+
+                                            }
+
+
 
                                         }
+
+                                    }
+
+
+                                    else if (data[0].quotesDetails[j].lowestPrice == "Y" && data[0].quotesDetails[j].highestPrice == "Y" && data[0].quotesDetails[j].rfqVendorPricewithoutGST != 0 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST != -2) {
+
+                                        if (data[0].quotesDetails[i].vendorItemRemarks != "") {
+                                            if (data[0].quotesDetails[j].rfqVendorPricewithGST == 0) {
+                                                strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
+
+                                                str += "<td class='text-right' id=unitrate" + j + x + " style='color: blue!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+
+                                            }
+                                            else {
+                                                strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
+
+                                                str += "<td class='text-right' id=unitrate" + j + x + " style='color: blue!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "<span class='hovertext' data-hover='" + data[0].quotesDetails[j].vendorItemRemarks + "'><i class='fa fa-info-circle fa-fw' aria-hidden='true'>" + "</i></span></td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+
+
+                                            }
+
+                                        }
+                                        else {
+                                            if (data[0].quotesDetails[j].rfqVendorPricewithGST == 0) {
+                                                strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
+
+                                                str += "<td class='text-right' id=unitrate" + j + x + " style='color: blue!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+
+                                            }
+                                            else {
+                                                strExcel += "<td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td>" + thousands_separators(_totalWithoutGst) + "</td>";
+
+                                                str += "<td class='text-right' id=unitrate" + j + x + " style='color: blue!important;'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithoutGST).round(2)) + "</td><td class='VendorPriceNoTax text-right'>" + thousands_separators((data[0].quotesDetails[j].rfqVendorPricewithGST).round(2)) + "</td><td class='VendorPriceWithTax  text-right' >" + thousands_separators(_totalWithoutGst) + "</td>";
+
+                                            }
+
+                                        }
+
+                                    }
+                                    else if (data[0].quotesDetails[j].unitRate == -1 && data[0].quotesDetails[j].rfqVendorPricewithoutGST == -1) {
+                                        str += "<td colspan=3  style='color: blue!important; text-align: center;' >Not Invited</td>";
+                                        strExcel += "<td colspan=3 >Not Invited </td>";
+                                    }
+                                    else if (data[0].quotesDetails[j].unitRate == -2 && data[0].quotesDetails[j].rfqVendorPricewithoutGST == -2) {
+                                        str += "<td colspan=3  style='color: red!important; text-align: center;' >Regretted</td>";
+                                        strExcel += "<td colspan=3 >Regretted </td>";
+                                    }
+                                    else {
+
+                                        str += "<td colspan=3  style='color: red!important; text-align: center;' >Not Quoted</td>";
+                                        strExcel += "<td colspan=3 >Not Quoted </td>";
 
                                     }
 
                                 }
 
                             }
-                            totallowestValue = (totallowestValue + (1 * data[0].quotesDetails[i].lowestPriceValue)).round(2)//data[0].quotesDetails[i].quantity
-
-                            if (ShowPrice == 'Y' || totallowestValue == 0) {
-
-                                str += "<td class=text-right>" + thousands_separators((data[0].quotesDetails[i].lowestPriceValue).round(2)) + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
-                                strExcel += "<td >" + thousands_separators((data[0].quotesDetails[i].lowestPriceValue).round(2)) + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td colspan=2>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
-                            }
-                            else {
-                                if (totallowestValue != 0) {
-                                    str += "<td class=text-right>Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
-                                    strExcel += "<td >Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td colspan=2>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
-                                }
-                            }
-                            str += "</tr>"
-                            strExcel += "</tr>"
-
-                            jQuery('#tblRFQComprativetest').append(str);
 
                         }
+                        //abheedev 24/04/2023
+
+                        if (ShowPrice == 'Y') {
+                            totallowestValue = (totallowestValue + (1 * data[0].quotesDetails[i].lowestPriceValue)).round(2)//data[0].quotesDetails[i].quantity
+                            str += "<td class=text-right>" + thousands_separators((data[0].quotesDetails[i].lowestPriceValue).round(2)) + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
+                            strExcel += "<td >" + thousands_separators((data[0].quotesDetails[i].lowestPriceValue).round(2)) + "</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td colspan=2>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
+                        }
+                        else {
+                            if (data[0].quotesDetails[i].lowestPriceValue == 0) {
+
+                                str += "<td class=text-right>Not Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
+                                strExcel += "<td >Not Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td colspan=2>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
+                            }
+                            else {
+                                totallowestValue = (totallowestValue + (1 * data[0].quotesDetails[i].lowestPriceValue)).round(2)
+                                str += "<td class=text-right>Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td class=text-right>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
+                                strExcel += "<td >Quoted</td><td>" + data[0].quotesDetails[i].poNo + "</td><td>" + data[0].quotesDetails[i].poDate + "</td><td>" + data[0].quotesDetails[i].poVendorName + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poUnitRate).round(2)) + "</td><td>" + thousands_separators((data[0].quotesDetails[i].poValue).round(2)) + "</td><td colspan=2>" + data[0].quotesDetails[i].rfqDelivery + "</td>";
+
+                            }
+                        }
+                        str += "</tr>"
+                        strExcel += "</tr>"
+
+                        jQuery('#tblRFQComprativetest').append(str);
+
                     }
+                    //}
+                    // }
+
                 }
                 // for calculating total target price
-                /*  let totaltargetprice = 0;
-                  let ttpArray = [];
-                  for (var t = 0; t < data[0].quotesDetails.length; t++) {
-  
-                      let isPresent = ttpArray.includes(data[0].quotesDetails[t].rfqParameterId)
-                      if (!isPresent) {
-                          ttpArray.push(data[0].quotesDetails[t].rfqParameterId);
-                          totaltargetprice = totaltargetprice + data[0].quotesDetails[t].targetPrice;
-                      }
-                      else {
-                          break;
-                      }
-                  }*/
-                str += "<tr><td colspan=7 style='text-align:center;'><b>Total</b></td><td colspan=1 style='text-align:center;'><b>" + thousands_separators(totaltargetprice) + "</b></td>";
-                strExcel += "<tr><td colspan=7><b>Total</b></td>";
+                debugger
+                let totaltargetprice = 0;
+                let ttpArray = [];
+                for (var t = 0; t < data[0].quotesDetails.length; t++) {
+
+                    let isPresent = ttpArray.includes(data[0].quotesDetails[t].rfqParameterId)
+                    if (!isPresent) {
+                        ttpArray.push(data[0].quotesDetails[t].rfqParameterId);
+                        totaltargetprice = totaltargetprice + data[0].quotesDetails[t].targetPrice;
+                    }
+                    else {
+                        break;
+                    }
+                }
+
+                str += "<tr><td colspan=6 style='text-align:center;'><b>Total</b></td><td colspan=1 style='text-align:center;'><b>" + thousands_separators(totaltargetprice) + "</b></td>";
+                strExcel += "<tr><td colspan=5><b>Total</b></td><td colspan=1 style='text-align:center;'><b>" + thousands_separators(totaltargetprice) + "</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
                     if (data[0].vendorNames[k].seqNo != 0) {
                         if (ShowPrice == 'Y') {
@@ -1450,21 +1600,27 @@ function fetchrfqcomprativeBoq() {
                     strExcel += "<td>" + thousands_separators(totallowestValue) + "</td><td colspan='7'>&nbsp;</td></tr>";
                 }
                 else {
+
                     if (totallowestValue != 0) {
                         str += "<td class=text-right>Quoted</td><td colspan=6>&nbsp;</td></tr>";
                         strExcel += "<td>Quoted</td><td colspan=7>&nbsp;</td></tr>";
+                    }
+                    else {
+                        str += "<td class=text-right>Not Quoted</td><td colspan=6>&nbsp;</td></tr>";
+                        strExcel += "<td>Not Quoted</td><td colspan=7>&nbsp;</td></tr>";
                     }
                 }
 
 
 
 
-                str += "<tr><td colspan=4 style='text-align:center;'><b>Loading Factor</b></td><td colspan=4 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
-                strExcel += "<tr><td colspan=3 ><b>Loading Factor</b></td><td colspan=4 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";
+                str += "<tr><td colspan=4 style='text-align:center;'><b>Loading Factor</b></td><td colspan=3 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                strExcel += "<tr><td colspan=3 ><b>Loading Factor</b></td><td colspan=3 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";
+                debugger
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
                     for (var k = 0; k < data[0].loadedFactor.length; k++) {
                         if (data[0].loadedFactor[k].vendorID == data[0].vendorNames[l].vendorID) {
-
+                            debugger
                             var p = thousands_separators((data[0].loadedFactor[k].loadedFactor + data[0].loadedFactor[k].sumwithGST).round(2));
                             if (p != 0) {
                                 if (ShowPrice == 'Y') {
@@ -1489,8 +1645,8 @@ function fetchrfqcomprativeBoq() {
                 strExcel += "<td colspan=8>&nbsp;</td></tr>";
 
 
-                str += "<tr><td colspan=8 style='text-align:center;'><b>Loading Reason</b></td>";
-                strExcel += "<tr><td colspan=7 ><b>Loading Reason</b></td>";
+                str += "<tr><td colspan=7 style='text-align:center;'><b>Loading Reason</b></td>";
+                strExcel += "<tr><td colspan=6 ><b>Loading Reason</b></td>";
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
                     for (var k = 0; k < data[0].loadedFactor.length; k++) {
                         if (data[0].loadedFactor[k].vendorID == data[0].vendorNames[l].vendorID) {
@@ -1514,8 +1670,8 @@ function fetchrfqcomprativeBoq() {
                 strExcel += "<td colspan=8>&nbsp;</td></tr>";
 
 
-                str += "<tr><td colspan=8 style='text-align:center;'><b>Commercial Rank (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
-                strExcel += "<tr><td colspan=7 ><b>Commercial Rank (Without GST)</b></td>";
+                str += "<tr><td colspan=7 style='text-align:center;'><b>Commercial Rank (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                strExcel += "<tr><td colspan=6 ><b>Commercial Rank (Without GST)</b></td>";
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
                     for (var k = 0; k < data[0].lStatus.length; k++) {
 
@@ -1550,24 +1706,39 @@ function fetchrfqcomprativeBoq() {
                 strExcel += "<td colspan=8>&nbsp;</td></tr>";
 
 
-                str += "<tr><td colspan=8 style='text-align:center;'><b>Package Value where supplier is L1</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
-                strExcel += "<tr><td colspan=7 ><b>Package Value where supplier is L1</b></td>";
+                str += "<tr><td colspan=7 style='text-align:center;'><b>Package Value where supplier is L1</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
+                strExcel += "<tr><td colspan=6 ><b>Package Value where supplier is L1</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
+
                     if (data[0].vendorNames[k].seqNo != 0) {
                         if (ShowPrice == 'Y') {
+
                             RFQFetchL1Package(data[0].vendorNames[k].vendorID, k)
                             str += "<td>&nbsp;</td><td id=withoutGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=withGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=totL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td>";
                             strExcel += "<td>&nbsp;</td><td id=withoutGSTL1RankExcel" + data[0].vendorNames[k].vendorID + "></td><td id=withGSTL1RankExcel" + data[0].vendorNames[k].vendorID + "></td><td id=totL1RankExcel" + data[0].vendorNames[k].vendorID + "></td>";
                         }
                         else {
+                            //code here check here
+
+
                             str += "<td>&nbsp;</td><td id=withoutGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=withGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right>Quoted</td><td id=totL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right>Quoted</td>";
                             strExcel += "<td>&nbsp;</td><td id=withoutGSTL1RankExcel" + data[0].vendorNames[k].vendorID + "></td><td id=withGSTL1RankExcel" + data[0].vendorNames[k].vendorID + ">Quoted</td><td id=totL1RankExcel" + data[0].vendorNames[k].vendorID + ">Quoted</td>";
+
+
+
+
                         }
                     }
                     else {
-                        str += "<td colspan=4>&nbsp;</td>";
-                        strExcel += "<td colspan=4>&nbsp;</td>";
+                        // str += "<td colspan=4>&nbsp;</td>";
+                        // strExcel += "<td colspan=4>&nbsp;</td>";
+                        str += "<td>&nbsp;</td><td id=withoutGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right></td><td id=withGSTL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right>Not Quoted</td><td id=totL1Rank" + data[0].vendorNames[k].vendorID + " class=text-right>Not Quoted</td>";
+                        strExcel += "<td>&nbsp;</td><td id=withoutGSTL1RankExcel" + data[0].vendorNames[k].vendorID + "></td><td id=withGSTL1RankExcel" + data[0].vendorNames[k].vendorID + ">Not Quoted</td><td id=totL1RankExcel" + data[0].vendorNames[k].vendorID + ">Not Quoted</td>";
+
                     }
+
+
+
 
                 }
                 str += "<td colspan=7>&nbsp;</td></tr>";
@@ -1668,8 +1839,8 @@ function fetchrfqcomprativeBoq() {
 
 
 
-                str += "<tr><td colspan=8><b>Vendor Remarks :</b></td>";
-                strExcel += "<tr><td colspan=7><b>Vendor Remarks :</b></td>";
+                str += "<tr><td colspan=7><b>Vendor Remarks :</b></td>";
+                strExcel += "<tr><td colspan=6><b>Vendor Remarks :</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
 
                     if (data[0].vendorNames[k].vendorRemarks != "") {
@@ -1708,7 +1879,7 @@ function fetchrfqcomprativeBoq() {
                         if (flag2 == 'T') {
 
                             strQ += "<tr><td>" + data[0].questions[p].question + "</td><td>" + data[0].questions[p].requirement + "</td>";
-                            strExcelQ += "<tr><td colspan=4>" + data[0].questions[p].question + "</td><td colspan=3>" + data[0].questions[p].requirement + "</td>";
+                            strExcelQ += "<tr><td colspan=4>" + data[0].questions[p].question + "</td><td colspan=2>" + data[0].questions[p].requirement + "</td>";
 
                             for (var s = 0; s < data[0].questions.length; s++) {
 
@@ -1750,7 +1921,7 @@ function fetchrfqcomprativeBoq() {
                 }
                 else {
                     strQ += "<tr>";
-                    strExcelQ += " <tr><td colspan=" + 7 + ">&nbsp;</td>";
+                    strExcelQ += " <tr><td colspan=" + 6 + ">&nbsp;</td>";
                     t = 0;
                     for (var k = 1; k <= data[0].vendorNames.length; k++) {
 
@@ -1809,7 +1980,7 @@ function fetchrfqcomprativeBoq() {
 
 
                             strQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td id=techremark" + p + ">" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") + "</td>";
-                            strExcelQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td colspan='6'>" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") + "</td>";
+                            strExcelQ += "<tr><td>" + data[0].approverStatus[p].approverName + "</td><td colspan='5'>" + ((data[0].approverStatus[p].remarks).replaceAll("&lt;", "<")).replaceAll("&gt;", ">") + "</td>";
 
 
 
@@ -1886,7 +2057,7 @@ function fetchrfqcomprativeBoq() {
 
                 if ($("#ddlrfqVersion option:selected").val() != 0) {
                     str += "<tr id='reinvitationTRRem'><td colspan=8><b>Re-Invitation Remarks</b></td>";
-                    strExcel += "<tr><td colspan=7><b>Re-Invitation Remarks</b></td>";
+                    strExcel += "<tr><td colspan=6><b>Re-Invitation Remarks</b></td>";
                     for (var k = 0; k < data[0].vendorNames.length; k++) {
 
                         if (data[0].vendorNames[k].reInvitedRemarks != "") {
@@ -2043,7 +2214,6 @@ function fetchrfqcomprativeBoq() {
     jQuery.unblockUI();
 
 }
-
 var form = $('#RFIRFQREport');
 var formApprover = $('#frmMapApprover');
 var formCommApprover = $('#frmcommMapApprover');
@@ -2396,3 +2566,61 @@ function fnSendActivityToCommercial() {
 function CloseForwardpopup() {
     $('#FwdCommercialApprover').modal('hide')
 }
+
+//for getting PR mapping
+
+function getPRMapping() {
+    debugger
+    let _pi = StringDecodingMechanism(pi)
+    var encrypdata = fnencrypt("RFQID=" + RFQID)
+
+
+    window.open("PRMapping.html?param=" + encrypdata, "_blank")
+
+
+
+
+}
+
+
+function GetPR2Mapping() {
+    debugger
+    let _RFQID = parseInt($('#hdnRfqID').val());
+    let _CustomerID = parseInt(sessionStorage.getItem('CustomerID'))
+
+    console.log(sessionStorage.getItem("APIPath") + "SAPIntegration/GetPR2Mapping/?RFQID=" + _RFQID + '&CustomerID=' + _CustomerID)
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "SAPIntegration/GetPR2Mapping/?RFQID=" + _RFQID + '&CustomerID=' + _CustomerID,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+            debugger
+            if (data.length > 0) {
+
+            }
+        },
+        error: function (xhr, status, error) {
+            debugger
+            var err = xhr.responseText
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+    });
+}
+
+
+
+
+
+
+
