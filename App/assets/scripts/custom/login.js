@@ -337,8 +337,8 @@ var Login = function () {
                     sessionStorage.setItem("culturecode", value.cultureCode);
                     //  sessionStorage.setItem("localcode", value.localecode);
                     sessionStorage.setItem("utcoffset", value.utcoffset);
-                    sessionStorage.setItem("BoqUpload", value.BOQUpload);
-                    sessionStorage.setItem("IsSAPModule", value.IsExternalSourceIntegrated);
+                    sessionStorage.setItem("BoqUpload", value.boqUpload);
+
                     setTimeout(function () {
                         // alert(sessionStorage.getItem("UserType"))
                         if (sessionStorage.getItem("UserType") == "P") {
@@ -605,7 +605,8 @@ function SetSessionItems(lastPart, value) {
     sessionStorage.setItem("utcoffset", value.utcoffset);
     sessionStorage.setItem("isWhatsappOpted", value.isWhatsappOpted);
     sessionStorage.setItem("mobileNo", value.mobileNo);
-    sessionStorage.setItem("BoqUpload", value.BOQUpload);
+    sessionStorage.setItem("BoqUpload", value.boqUpload);
+    sessionStorage.setItem("IsSAPModule", value.isExternalSourceIntegrated);
     setTimeout(function () {
         if (sessionStorage.getItem("UserType") == "P") {
             if ((value.VendorID != '0')) {
@@ -798,36 +799,87 @@ function fetchCity(stateid) {
 
 function VendorRequestSubmit() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    debugger
+    let data = '';
+    let gstfilename = jQuery('#filegst').val().substring(jQuery('#filegst').val().lastIndexOf('\\') + 1)
+    let panfilename = jQuery('#filepan').val().substring(jQuery('#filepan').val().lastIndexOf('\\') + 1)
+    if (jQuery("#txtTINType option:selected").val() == "IN3") {
 
-    let data = {
-        "CustomerID": 0,
-        "UserID": "0",
-        "CompanyEmail": $('#txtEmail').val(),
-        "AlternateEmailID": $('#txtEmail2').val(),
-        "ParticipantName": $('#vendorname').val(),
-        "ContactPerson": $('#txtContName').val(),
-        "MobileNo": $('#vendormobileno').val(),
-        "PhoneNo": $('#vendoraltmobileno').val(),
-        "DialingCode": parseInt($('#ddlCountryCd').val()),
-        "DialingCodePhone": parseInt($('#ddlCountryCdPhone').val()),
-        "PrefferedTZ": parseInt($('#ddlpreferredTime').val()),
-        "Address": $('#vendoraddress').val(),
-        "CityName": jQuery("#ddlCity option:selected").text(),
-        "StateName": jQuery("#ddlState option:selected").text(),
-        "CountryName": jQuery("#ddlCountry option:selected").text(),
-        "ZipCode": $('#pincode').val(),
-        "TaxId": $('#txtTINNo').val(),
-        "TaxIdType": jQuery("#txtTINType option:selected").val(),
-        "TaxId2": $('#vendorpanno').val() || "",
-        "TaxIdType2": jQuery("#txtTINType2 option:selected").val(),
-        "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
-        "StateID": parseInt(jQuery("#ddlState option:selected").data('stateid')),
-        "CountryID": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
-        "CountryKey": jQuery("#ddlCountry option:selected").val(),
-        "RegionKey": jQuery("#ddlState option:selected").val(),
-        "Langu": jQuery("#ddllanguage option:selected").val(),
+        if (gstfilename == "" || panfilename == "") {
+            jQuery("#diverrorvendor").text("please attach GST/PAN Files to proceed...");
+            jQuery("#diverrorvendor").show();
+            jQuery("#diverrorvendor").fadeOut(5000);
 
+            return false;
+
+        }
     }
+    if (jQuery("#txtTINType option:selected").val() == "") {
+        data = {
+            "CustomerID": 0,
+            "UserID": "0",
+            "CompanyEmail": $('#txtEmail').val(),
+            "AlternateEmailID": $('#txtEmail2').val(),
+            "ParticipantName": $('#vendorname').val(),
+            "ContactPerson": $('#txtContName').val(),
+            "MobileNo": $('#vendormobileno').val(),
+            "PhoneNo": $('#vendoraltmobileno').val(),
+            "DialingCode": parseInt($('#ddlCountryCd').val()),
+            "DialingCodePhone": parseInt($('#ddlCountryCdPhone').val()),
+            "PrefferedTZ": parseInt($('#ddlpreferredTime').val()),
+            "Address": $('#vendoraddress').val(),
+            "CityName": jQuery("#ddlCity option:selected").text(),
+            "StateName": jQuery("#ddlState option:selected").data('statename'),
+            "CountryName": jQuery("#ddlCountry option:selected").text(),
+            "ZipCode": $('#pincode').val(),
+            "TaxId": "",
+            "TaxIdType": "",
+            "TaxId2": "",
+            "TaxIdType2": "",
+            "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
+            "StateID": parseInt(jQuery("#ddlState option:selected").data('stateid')),
+            "CountryID": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
+            "CountryKey": jQuery("#ddlCountry option:selected").val(),
+            "RegionKey": jQuery("#ddlState option:selected").val(),
+            "Langu": jQuery("#ddllanguage option:selected").val(),
+            "TaxIdFile": "",
+            "TaxId2File": "",
+        }
+    }
+    else {
+        data = {
+            "CustomerID": 0,
+            "UserID": "0",
+            "CompanyEmail": $('#txtEmail').val(),
+            "AlternateEmailID": $('#txtEmail2').val(),
+            "ParticipantName": $('#vendorname').val(),
+            "ContactPerson": $('#txtContName').val(),
+            "MobileNo": $('#vendormobileno').val(),
+            "PhoneNo": $('#vendoraltmobileno').val(),
+            "DialingCode": parseInt($('#ddlCountryCd').val()),
+            "DialingCodePhone": parseInt($('#ddlCountryCdPhone').val()),
+            "PrefferedTZ": parseInt($('#ddlpreferredTime').val()),
+            "Address": $('#vendoraddress').val(),
+            "CityName": jQuery("#ddlCity option:selected").text(),
+            "StateName": jQuery("#ddlState option:selected").data('statename'),
+            "CountryName": jQuery("#ddlCountry option:selected").text(),
+            "ZipCode": $('#pincode').val(),
+            "TaxId": $('#txtTINNo').val(),
+            "TaxIdType": jQuery("#txtTINType option:selected").val(),
+            "TaxId2": $('#vendorpanno').val() || "",
+            "TaxIdType2": jQuery("#txtTINType2 option:selected").val(),
+            "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
+            "StateID": parseInt(jQuery("#ddlState option:selected").data('stateid')),
+            "CountryID": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
+            "CountryKey": jQuery("#ddlCountry option:selected").val(),
+            "RegionKey": jQuery("#ddlState option:selected").val(),
+            "Langu": jQuery("#ddllanguage option:selected").val(),
+            "TaxIdFile": gstfilename,
+            "TaxId2File": panfilename,
+
+        }
+    }
+
     $('#buttoncompanyupdate').removeAttr("disabled", "disabled");
 
 
@@ -851,7 +903,9 @@ function VendorRequestSubmit() {
                 $('#divsuccvendor').html('You are successfully registered...')
                 $('#divsuccvendor').show();
                 $('#divsuccvendor').fadeOut(5000);
+                setTimeout(function () { location.reload() }, 2000)
             }
+
 
 
         },
@@ -995,17 +1049,13 @@ function FormValidate() {
             ddlCity: {
                 required: true,
             },
-            txtTINType: {
-                required: true,
-            },
-            txtTINNo: {
-                required: true,
-            },
             vendorname: {
                 required: true,
             },
             pincode: {
                 required: true,
+                number: true,
+                maxlength: 6
             },
             ddllanguage: {
                 required: true,
@@ -1029,12 +1079,6 @@ function FormValidate() {
             },
             ddlCity: {
                 required: "Please Enter Valid City"
-            },
-            txtTINType: {
-                required: "Please Enter Valid Tax type"
-            },
-            txtTINNo: {
-                required: "Please Enter Valid Tax Tin no"
             },
             vendorname: {
                 required: "Please Enter Valid vendorname"
@@ -1076,3 +1120,36 @@ function FormValidate() {
         }
     });
 }
+
+
+//unregistered vendor
+
+$('#txtTINType').on('change', function () {
+    debugger
+    let Taxtype = $(this).val();
+    if (Taxtype == "") {
+
+
+        $(".nogsthide").hide();
+        $("#ParticipantName").removeAttr('disabled');
+        $("#ddlNatureEstaiblishment").removeAttr('disabled');
+        $("#txtTINNo").attr("onchange", "");
+        $("#txtPanNo").removeAttr('disabled');
+        $("#vendorpanno").removeAttr('disabled');
+        $("#vendorname").removeAttr('disabled');
+    }
+
+    else {
+
+        $(".nogsthide").show();
+        $("#ParticipantName").attr("disabled", "disabled");
+        $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
+        $("#txtTINNo").attr("onchange", "extractPan(this)");
+        $("#txtPanNo").attr("disabled", "disabled");
+        $("#vendorpanno").attr("disabled", "disabled");
+        $("#vendorname").attr("disabled", "disabled");
+    }
+}
+)
+
+
