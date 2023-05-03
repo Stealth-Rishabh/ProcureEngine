@@ -140,11 +140,20 @@ function postProjectMaster() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-    var data = {
-        "ProjectName": _cleanString,
-        "CustomerID": parseInt(sessionStorage.getItem("CustomerID"))
+    var status = "";
+    if (jQuery("#checkboxactive").is(':checked')) {
+        status = "Y";
     }
+    else {
+        status = "N";
+    }   
 
+    var data = {
+        "id": parseInt($('#hddnprojectID').val()),
+        "ProjectName": _cleanString,
+        "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
+        "IsActive": status, 
+    }
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "ProjectMaster/postProjectMaster",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -157,21 +166,27 @@ function postProjectMaster() {
         contentType: "application/json",
         success: function (data) {
             if (data.isSuccess == '1') {
-                $("#successdiv").html("projectName enter successfully...");
-                $("#successdiv").show();
-                $("#successdiv").fadeOut(3000);
-
-                fetchProjectMaster();
-
+                $("#success").html("ProjectName Enter Successfully...");
+                success.show();
+                success.fadeOut(3000);
+                fetchProjectMaster();             
                 jQuery.unblockUI();
             }
             else if (data.isSuccess == '2') {
-                success.hide();
-                $("#errordiv").html("projectName already exists...");
-                $("#errordiv").show();
-                $("#errordiv").fadeOut(3000);
+                $("#success").html("Updation Successfull...");
+                success.show();
+                success.fadeOut(3000);            
+                fetchProjectMaster();              
                 jQuery.unblockUI();
 
+            }
+
+            else if (data.isSuccess == '3') {
+                success.hide();
+                 $("#errordiv").html("ProjectName Already exists..");
+                error.show();
+                error.fadeOut(3000);
+                jQuery.unblockUI();
             }
 
             setTimeout(function () {
@@ -181,11 +196,11 @@ function postProjectMaster() {
         },
         error: function (xhr, status, error) {
             if (xhr.status == 401) {
-                $("#errordiv").html("projectName  already exists...");
+                $("#errordiv").html("ProjectName Already exists..");
             }
             else {
                 success.hide();
-                $("#errordiv").html("projectName  already exists...");
+                $("#errordiv").html("ProjectName Already exists..");
                 $("#errordiv").show();
                 $("#errordiv").fadeOut(3000);
                 jQuery.unblockUI();
@@ -197,7 +212,6 @@ function postProjectMaster() {
     });
 
     jQuery.unblockUI();
-
 }
 /*
  postProjectMaster end
@@ -216,6 +230,7 @@ function fetchProjectMaster() {
         contentType: "application/json; charset=utf-8",
         url: url,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
         cache: false,
         crossDomain: true,
         processData: true,
@@ -225,11 +240,11 @@ function fetchProjectMaster() {
             jQuery("#projectMasterTable").empty();
             if (data.length > 0) {
 
-                jQuery("#projectMasterTable").append("<thead><th>Project Name</th></thead>");
+                jQuery("#projectMasterTable").append("<thead id='tblheader'><th>Edit</th><th>Project Name</th><th>Status</th></thead>");
 
                 for (var i = 0; i < data.length; i++) {
-
-                    jQuery("#projectMasterTable").append(jQuery('<tbody><tr><td>' + StringDecodingMechanism(data[i].projectName) + '</td></tr><tbody>'));
+                    /*jQuery("#projectMasterTable").append(jQuery('<tbody><tr><td>' + StringDecodingMechanism(data[i].projectName) + '</td></tr><tbody>'));*/
+                    jQuery('<tr><td><button class="btn yellow " onclick="updateType(\'' + data[i].projectName + '\',\'' + data[i].isActive + '\',\'' + data[i].id + '\')"><i class="fa fa-pencil"></i></button></td><td> ' + data[i].projectName + '</td><td>' + data[i].isActive + '</td></tr>').appendTo("#projectMasterTable");
                 }
             }
             else {
@@ -253,8 +268,26 @@ function fetchProjectMaster() {
     });
 
 }
-
-
 /*
  fetchProjectMaster end
 */
+
+/*update type start here*/
+
+function updateType(pname, status,id) {
+                        
+    $('#hddnprojectID').val(id);
+    $('#projectName').val(pname);
+    if (status == 'Active') {
+
+        jQuery('input:checkbox[name=checkboxactive]').attr('checked', true);
+        jQuery('#checkboxactive').parents('span').addClass('checked');
+
+    }
+    else {
+        jQuery('input:checkbox[name=checkboxactive]').attr('checked', false);
+        jQuery('#checkboxactive').parents('span').removeClass('checked');
+    }
+}
+/*update type end here*/
+
