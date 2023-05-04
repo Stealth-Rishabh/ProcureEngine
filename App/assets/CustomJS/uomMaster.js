@@ -109,7 +109,7 @@ function FormValidate() {
         },
         invalidHandler: function (event, validator) { //display error alert on form submit   
             success.hide();
-            jQuery("#error").text("You have some form errors. Please check below.");
+            jQuery("#error").text("Please fill up the require input fields...");
             error.show();
             error.fadeOut(3000);
 
@@ -169,10 +169,20 @@ function uomFuncDetails() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
+    var status = "";
+    if (jQuery("#checkboxactive").is(':checked')) {
+        status = "Y";
+    }
+    else {
+        status = "N";
+    }   
+
     var data = {
+        "id": parseInt($('#hddnUOMpiD').val()),
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),   
         "UOM":        _cleanString1,
-        "UOMID":      _cleanString2,
+        "UOMID": _cleanString2,
+        "IsActive": status
     }
 
     jQuery.ajax({
@@ -187,21 +197,29 @@ function uomFuncDetails() {
         contentType: "application/json",
         success: function (data) {
             if (data.isSuccess == '1') {
-                $("#successdiv").html("uom enter successfully...");
-                $("#successdiv").show();
-                $("#successdiv").fadeOut(3000);
+                $("#success").html("UOM Enter Successfully...");
+                success.show();
+                success.fadeOut(3000);
                 fetchCustomerDetail();
-
                 jQuery.unblockUI();
             }
             else if (data.isSuccess == '2') {
-                success.hide();
-                $("#errordiv").html("uom id already exists...");
-                $("#errordiv").show();
-                $("#errordiv").fadeOut(3000);
+                $("#success").html("Updation Successfull...");
+                success.show();
+                success.fadeOut(3000);
+                fetchCustomerDetail();
                 jQuery.unblockUI();
 
             }
+
+            else if (data.isSuccess == '3') {
+                success.hide();
+                $("#errordiv").html("UOM Already exists...");
+                error.show();
+                error.fadeOut(3000);
+                jQuery.unblockUI();
+            }
+
             setTimeout(function () {
                 window.location.reload();        
             }, 3000);
@@ -209,11 +227,11 @@ function uomFuncDetails() {
         },
         error: function (xhr, status, error) {
             if (xhr.status == 401) {
-                $("#errordiv").html("uom id already exists...");
+                $("#errordiv").html("UOM Already exists...");
             }
             else {
                 success.hide();
-                $("#errordiv").html("uom id already exists...");
+                $("#errordiv").html("UOM Already exists...");
                 $("#errordiv").show();
                 $("#errordiv").fadeOut(3000);
                 jQuery.unblockUI();
@@ -240,6 +258,7 @@ function fetchCustomerDetail() {
         contentType: "application/json; charset=utf-8",
         url: url,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
         cache: false,
         crossDomain: true,  
         processData: true,
@@ -249,11 +268,12 @@ function fetchCustomerDetail() {
             jQuery("#uomPlaceMaster").empty();
 
             if (data.length > 0) {
-                jQuery("#uomPlaceMaster").append("<thead><th>UOM</th><th>UOM ID</th></thead>");
+                jQuery("#uomPlaceMaster").append("<thead id='tblheader'><th>Edit</th><th>UOM</th><th>UOM ID</th><th>Status</th></thead>");
 
                 for (var i = 0; i < data.length; i++) {
+                    /*jQuery("#uomPlaceMaster").append(jQuery('<tbody><tr><td>' + StringDecodingMechanism(data[i].uom) + '</td><td>' + StringDecodingMechanism(data[i].uomid) + '</td></tr><tbody>'));*/
+                    jQuery('<tr><td><button class="btn yellow " onclick="updateType(\'' + data[i].uom + '\',\'' + data[i].uomid + '\',\'' + data[i].isActive + '\',\'' + data[i].id + '\')"><i class="fa fa-pencil"></i></button></td><td> ' + data[i].uom + '</td><td>' + data[i].uomid + '</td><td>' + data[i].isActive + '</td></tr>').appendTo("#uomPlaceMaster");
 
-                    jQuery("#uomPlaceMaster").append(jQuery('<tbody><tr><td>' + StringDecodingMechanism(data[i].uom) + '</td><td>' + StringDecodingMechanism(data[i].uomid) + '</td></tr><tbody>'));
                 }
             }
             else {
@@ -278,5 +298,22 @@ function fetchCustomerDetail() {
 }
 
 
+/*update type start here*/
 
+function updateType(uomname, uomid, status, id) {
+    $('#hddnUOMpiD').val(id);
+    $('#uomName').val(uomname);
+    $('#uomId').val(uomid);
+    if (status == 'Active') {
+
+        jQuery('input:checkbox[name=checkboxactive]').attr('checked', true);
+        jQuery('#checkboxactive').parents('span').addClass('checked');
+
+    }
+    else {
+        jQuery('input:checkbox[name=checkboxactive]').attr('checked', false);
+        jQuery('#checkboxactive').parents('span').removeClass('checked');
+    }
+}
+/*update type end here*/
 
