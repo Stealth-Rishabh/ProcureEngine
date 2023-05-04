@@ -2420,7 +2420,7 @@ function deleteLFrow(rowid) {
 //@anuragdev
 function fetchProjectMaster() {
 
-    var url = sessionStorage.getItem("APIPath") + "ProjectMaster/fetchProjectMasterCust/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=M&MappedBy=" + sessionStorage.getItem('UserID');
+    var url = sessionStorage.getItem("APIPath") + "ProjectMaster/fetchProjectMasterCust/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&status=Y";// + sessionStorage.getItem('UserID') + "&status=Y";
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
