@@ -2437,7 +2437,7 @@ function fetchProjectMaster() {
             jQuery("#txtProjectName").append(jQuery("<option></option>").val("").html("Select Project"));
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
-                    jQuery("#txtProjectName").append(jQuery("<option></option>").html(StringDecodingMechanism(data[i].projectName)));
+                    jQuery("#txtProjectName").append(jQuery("<option></option>").val(data[i].id).html(StringDecodingMechanism(data[i].projectName)));
 
                 }
             }
