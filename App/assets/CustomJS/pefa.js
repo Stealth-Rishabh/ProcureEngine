@@ -602,7 +602,7 @@ function fetchRegisterUser() {
 
         },
         error: function (xhr, status, error) {
-            debugger;
+
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1317,6 +1317,7 @@ function ConfigureBidInsPefaTab1() {
 function ConfigureBidInsPefaTab2() {
 
 
+
     var targetPrice;
     var lastInvoiceprice = 0;
     var mininc = 0; i = 0;
@@ -1342,14 +1343,13 @@ function ConfigureBidInsPefaTab2() {
                 if ($.trim($('#LIPrice' + i).text()) != '') {
                     lastInvoiceprice = removeThousandSeperator($.trim($('#LIPrice' + i).text()));
                 }
-              
-              
-                var _cleanString3 = StringEncodingMechanism($.trim($('#shortname' + i).text()));
-            
+
+                var _cleanString4 = StringEncodingMechanism($.trim($('#shortname' + i).text()));
+
                 tab2Items = {
                     "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
                     //"ItemName": $.trim($('#shortname' + i).html()),
-                    "ItemName": _cleanString3,
+                    "ItemName": _cleanString4,
                     "Targetprice": parseFloat(removeThousandSeperator(targetPrice)),
                     "Quantity": parseFloat(removeThousandSeperator($('#quantity' + i).text())),
                     "MeasurementUnit": $.trim($('#dropuom' + i).text()),
@@ -1388,15 +1388,13 @@ function ConfigureBidInsPefaTab2() {
                 if ($.trim($('#minincrement' + i).text()) != '') {
                     mininc = $.trim($('#minincrement' + i).text())
                 }
-               
-                
-               
-                var _cleanString4 = StringEncodingMechanism($.trim($('#shortname' + i).text()));
-              
+
+                var _cleanString3 = StringEncodingMechanism($.trim($('#shortname' + i).text()));
+
                 tab2Items = {
                     "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
                     //"ItemName": $.trim($('#shortname' + i).html()),
-                    "ItemName": _cleanString4,
+                    "ItemName": _cleanString3,
                     "Targetprice": parseFloat(removeThousandSeperator(targetPrice)),
                     "Quantity": parseFloat(removeThousandSeperator($('#quantity' + i).text())),
                     "MeasurementUnit": $.trim($('#dropuom' + i).text()),
@@ -1416,7 +1414,7 @@ function ConfigureBidInsPefaTab2() {
         }
     }
 
-  
+
     var Tab2data = {
         "ProductDetails": PriceDetails,
         "bidID": parseInt(sessionStorage.getItem('CurrentBidID')),
@@ -1428,7 +1426,7 @@ function ConfigureBidInsPefaTab2() {
     //alert(JSON.stringify(Tab2data))
     console.log(JSON.stringify(Tab2data))
     jQuery.ajax({
-     
+
         type: "POST",
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/ConfigureBidInsPefaTab2/",
@@ -1438,7 +1436,6 @@ function ConfigureBidInsPefaTab2() {
         data: JSON.stringify(Tab2data),
         dataType: "json",
         success: function (data) {
-         
             if (parseInt(data) > 0) {
 
                 return true;
@@ -2816,12 +2813,12 @@ function deleteBidParameter(For) {
 
 }
 var vendorsForAutoComplete;
-function fetchVendorGroup(categoryFor, vendorId) {
+function fetchVendorGroup(categoryFor, childId) {
 
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VendorID=" + vendorId,
+        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&ChildId=" + childId,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
