@@ -166,14 +166,14 @@ function postProjectMaster() {
         contentType: "application/json",
         success: function (data) {
             if (data.isSuccess == '1') {
-                $("#success").html("Successfull...");
+                $("#success").html("ProjectName Enter Successfully...");
                 success.show();
                 success.fadeOut(3000);
                 fetchProjectMaster();             
                 jQuery.unblockUI();
             }
-            else if (data.isSuccess == '1') {
-                $("#success").html("Successfull...");
+            else if (data.isSuccess == '2') {
+                $("#success").html("Updation Successfull...");
                 success.show();
                 success.fadeOut(3000);            
                 fetchProjectMaster();              
@@ -181,7 +181,7 @@ function postProjectMaster() {
 
             }
 
-            else if (data.isSuccess == '0') {
+            else if (data.isSuccess == '3') {
                 success.hide();
                  $("#errordiv").html("ProjectName Already exists..");
                 error.show();
