@@ -40,7 +40,7 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link href="assets/css/panelDesign.css" rel="stylesheet" type="text/css" />
-    
+
     <!-- Page Specific CSS-->
     <link rel="stylesheet" href="assets/CustomCSS/common.css">
 
@@ -85,7 +85,7 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" >
+                <a class="navbar-brand" href="index.html">
                     <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
                 </a>
 
@@ -98,8 +98,10 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
 
-                           <b> <span id="spanUserName"  class="username username-hide-on-mobile">
-                            </span></b><i class="fa fa-angle-down"></i>
+                            <b>
+                                <span id="spanUserName" class="username username-hide-on-mobile">
+                                </span>
+                            </b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -113,7 +115,7 @@
 
     <div class="clearfix">
     </div>
-    <div class="page-container nodisplay" >
+    <div class="page-container nodisplay">
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
                 <ul class="page-sidebar-menu page-sidebar-menu-closed" data-auto-scroll="true" data-slide-speed="200" id="ulMain">
@@ -183,10 +185,10 @@
                                 <form action="#" class="form-horizontal" id="submit_form" method="POST">
                                     <div class="form-wizard">
                                         <div class="form-body">
-                                            <div class="alert alert-success" >
+                                            <div class="alert alert-success">
                                                 <span id="spansuccess1"> </span>
                                             </div>
-                                            <div class="alert alert-danger" >
+                                            <div class="alert alert-danger">
                                                 <span id="spandanger"> </span>
                                             </div>
 
@@ -344,114 +346,6 @@
                                                             </label>
                                                             <div class="col-md-8">
                                                                 <select id="txtProjectName" name="txtProjectName" class="form-control">
-                                                                    <!--
-      <option value="">Select Project</option>
-    <option value="0">1000 Azure Power India Pvt Ltd - Andhra Pradesh</option>
-    <option value="1">1000 Azure Power India Pvt Ltd - Assam</option>
-    <option value="2">1000 Azure Power India Pvt Ltd - Bihar</option>
-    <option value="3">1000 Azure Power India Pvt Ltd - Chandigarh</option>
-    <option value="4">1000 Azure Power India Pvt Ltd - Chhattisgarh</option>
-    <option value="5">1000 Azure Power India Pvt Ltd - Delhi</option>
-    <option value="6">1000 Azure Power India Pvt Ltd - Gujarat</option>
-    <option value="7">1000 Azure Power India Pvt Ltd - Haryana</option>
-    <option value="8">1000 Azure Power India Pvt Ltd - Karnataka</option>
-    <option value="9">1000 Azure Power India Pvt Ltd - Madhya Pradesh</option>
-    <option value="10">1000 Azure Power India Pvt Ltd - Maharashtra</option>
-    <option value="11">1000 Azure Power India Pvt Ltd - Orissa</option>
-    <option value="12">1000 Azure Power India Pvt Ltd - Punjab</option>
-    <option value="13">1000 Azure Power India Pvt Ltd - Rajasthan</option>
-    <option value="14">1000 Azure Power India Pvt Ltd - Tamil Nadu</option>
-    <option value="15">1000 Azure Power India Pvt Ltd - Telangana</option>
-    <option value="16">1000 Azure Power India Pvt Ltd - Uttar Pradesh</option>
-    <option value="17">1000 Azure Power India Pvt Ltd - West Bengal</option>
-    <option value="18">1100 Azure Power (Punjab) Pvt Ltd - Punjab</option>
-    <option value="19">1200 Azure Power Haryana Pvt Ltd - Gujarat</option>
-    <option value="20">1300 Azure Solar Pvt Ltd - Rajasthan</option>
-    <option value="21">1400 Azure Power (Rajasthan) Pvt Ltd - Rajasthan</option>
-    <option value="22">1700 Azure Urja Pvt Ltd - Punjab</option>
-    <option value="23">1800 Azure Surya Pvt Ltd - Uttar Pradesh</option>
-    <option value="24">1900 Azure Power (Karnataka) Pvt Ltd - Karnataka</option>
-    <option value="25">2000 Azure Photovoltaic Pvt Ltd - Karnataka</option>
-    <option value="26">2100 Azure Power Infrastructure Pvt Ltd - Andhra Pradesh</option>
-    <option value="27">2200 Azure Power (Raj) Pvt Ltd - Karnataka</option>
-    <option value="28">2300 Azure Greentech Pvt Ltd - Rajasthan</option>
-    <option value="29">2500 Azure Clean Energy Pvt Ltd - Rajasthan</option>
-    <option value="30">2600 Azure Sunrise Pvt Ltd - Karnataka</option>
-    <option value="31">2800 Azure Sunshine Pvt Ltd - Rajasthan</option>
-    <option value="32">2900 Azure Power Earth Pvt Ltd - Karnataka</option>
-    <option value="33">3000 Azure Power Eris Pvt Ltd - Bihar</option>
-    <option value="34">3100 Azure Power Jupiter Pvt Ltd - Uttar Pradesh</option>
-    <option value="35">3200 Azure Power Makemake Pvt Ltd - Punjab</option>
-    <option value="36">3300 Azure Power Mars Pvt Ltd - Rajasthan</option>
-    <option value="37">3500 Azure Power Pluto Pvt Ltd - Punjab</option>
-    <option value="38">3600 Azure Power Uranus Pvt Ltd - Maharashtra</option>
-    <option value="39">3700 Azure Power Venus Pvt Ltd - Uttar Pradesh</option>
-    <option value="40">3900 Azure Power Thirty Three Pvt Ltd - Gujarat</option>
-    <option value="41">4000 Azure Power Thirty Four Pvt Ltd - Rajasthan</option>
-    <option value="42">4100 Azure Power Thirty Five Pvt Ltd - Maharashtra</option>
-    <option value="43">4200 Azure Power Thirty Six Pvt Ltd - Andhra Pradesh</option>
-    <option value="44">4300 Azure Power Thirty Seven Pvt Ltd - Telangana</option>
-    <option value="45">4500 Azure Power Thirty Nine Pvt Ltd - Delhi</option>
-    <option value="46">4600 Azure Power Forty Pvt Ltd - Assam</option>
-    <option value="47">4700 Azure Power Forty One Pvt Ltd - Rajasthan</option>
-    <option value="48">4800 Azure Power Forty Two Pvt Ltd - Delhi</option>
-    <option value="49">4900 Azure Power Forty Three Pvt Ltd - Rajasthan</option>
-    <option value="50">5700 Azure Power Rooftop Pvt Ltd - Andhra Pradesh</option>
-    <option value="51">5700 Azure Power Rooftop Pvt Ltd - Assam</option>
-    <option value="52">5700 Azure Power Rooftop Pvt Ltd - Bihar</option>
-    <option value="53">5700 Azure Power Rooftop Pvt Ltd - Chandigarh</option>
-    <option value="54">5700 Azure Power Rooftop Pvt Ltd - Chhattisgarh</option>
-    <option value="55">5700 Azure Power Rooftop Pvt Ltd - Delhi</option>
-    <option value="56">5700 Azure Power Rooftop Pvt Ltd - Haryana</option>
-    <option value="57">5700 Azure Power Rooftop Pvt Ltd - Himachal Pradesh</option>
-    <option value="58">5700 Azure Power Rooftop Pvt Ltd - Jammu & Kashmir</option>
-    <option value="59">5700 Azure Power Rooftop Pvt Ltd - Jharkhand</option>
-    <option value="60">5700 Azure Power Rooftop Pvt Ltd - Karnataka</option>
-    <option value="61">5700 Azure Power Rooftop Pvt Ltd - Kerala</option>
-    <option value="62">5700 Azure Power Rooftop Pvt Ltd - Madhya Pradesh</option>
-    <option value="63">5700 Azure Power Rooftop Pvt Ltd - Maharashtra</option>
-    <option value="64">5700 Azure Power Rooftop Pvt Ltd - Orissa</option>
-    <option value="65">5700 Azure Power Rooftop Pvt Ltd - Punjab</option>
-    <option value="66">5700 Azure Power Rooftop Pvt Ltd - Rajasthan</option>
-    <option value="67">5700 Azure Power Rooftop Pvt Ltd - Tamil Nadu</option>
-    <option value="68">5700 Azure Power Rooftop Pvt Ltd - Telangana</option>
-    <option value="69">5700 Azure Power Rooftop Pvt Ltd - Uttar Pradesh</option>
-    <option value="70">5700 Azure Power Rooftop Pvt Ltd - Uttrakhand</option>
-    <option value="71">5700 Azure Power Rooftop Pvt Ltd - West Bengal</option>
-    <option value="72">5800 Azure Power Rooftop (GENCO) Pvt Ltd - Delhi</option>
-    <option value="73">5900 Azure Power Rooftop One Pvt Ltd - Delhi</option>
-    <option value="74">6000 Azure Power Rooftop Two Pvt Ltd - Delhi</option>
-    <option value="75">6100 Azure Power Rooftop Three Pvt Ltd - Delhi</option>
-    <option value="76">6200 Azure Power Rooftop Four Pvt Ltd - Delhi</option>
-    <option value="77">6300 Azure Power Rooftop Five Pvt Ltd - Delhi</option>
-    <option value="78">6400 Azure Power Rooftop Six Pvt Ltd - Delhi</option>
-    <option value="79">6500 Azure Power Rooftop Seven Pvt Ltd - Delhi</option>
-    <option value="80">6600 Azure Power Rooftop Eight Pvt Ltd - Delhi</option>
-    <option value="81">7200 Azure Power Maple Pvt Ltd - Rajasthan</option>
-    <option value="82">7400 Azure Power Fifty One Pvt Ltd - Delhi</option>
-    <option value="83">7500 Azure Power Fifty Two Pvt Ltd - Delhi</option>
-    <option value="84">7600 Azure Power Fifty Three Pvt Ltd - Delhi</option>
-    <option value="85">7700 Azure Power Fifty Four Pvt Ltd - Delhi</option>
-    <option value="86">7900 Azure Power Fifty Six Private Limited - Delhi</option>
-    <option value="87">8000 Azure Power Fifty Seven Private Limited - Delhi</option>
-    <option value="88">8100 Azure Power Fifty Eight Private Limited - Delhi</option>
-    <option value="89">8200 Azure Power Fifty Nine Private Limited - Delhi</option>
-    <option value="90">8300 Azure Power Sixty Private Limited - Delhi</option>
-    <option value="91">8500 Azure Power Sixty Two Private Limited - Delhi</option>
-    <option value="92">8400 Azure Power Sixty One Private Limited - Delhi</option>
-    <option value="93">8600 KOTUMA WIND PARKS PRIVATE Limited - Karnataka</option>
-    <option value="94">7400 Azure Power Fifty One Pvt Ltd - Rajasthan</option>
-    <option value="95">7500 Azure Power Fifty Two Pvt Ltd - Rajasthan</option>
-    <option value="96">8700 Two Wind Energy Private Limited - Karnataka</option>
-    <option value="97">8800 Azure Green Hydrogen Private Limited - Delhi</option>
-    <option value="98">8900 Azure Power Sixty Three Private Limited - Andhra Pradesh</option>
-    <option value="99">9300 Azure Power Sixty Four Private Limited - Rajasthan</option>
-    <option value="100">9000 Azure Energy Transition Private Limited - Delhi</option>
-    <option value="101">9400 Azure Power Sixty Five Private Limited - Delhi</option>
-    <option value="102">9700 Azure Power Sixty Six Private Limited - Delhi</option>
-    -->
-
-
                                                                 </select>
                                                                 <!--<input type="text" id="txtProjectName" name="txtProjectName" autocomplete="off" class="form-control maxLength" maxlength="250" />-->
                                                             </div>
@@ -481,7 +375,7 @@
 
                                                             </div>
                                                             <div class="col-md-1">
-                                                                <a href="javascript:;" onclick="viewallmatrix()" data-toggle="modal"  class="tooltips btn btn-sm btn-success cursorpointer" data-placement="left" data-original-title="Click here to
+                                                                <a href="javascript:;" onclick="viewallmatrix()" data-toggle="modal" class="tooltips btn btn-sm btn-success cursorpointer" data-placement="left" data-original-title="Click here to
                                                                                   View All Matrix">
                                                                     <i class="fa fa-search"></i>
                                                                 </a>
@@ -574,10 +468,10 @@
                                                                             <!--/span-->
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Party to whom Work order is given</label>
+                                                                                    <label class="control-label col-md-3">Proposed Bidder name</label>
                                                                                     <div class="col-md-9">
                                                                                         <textarea id="txtpartordergiven" name="txtpartordergiven" class="MaxLength wysihtml5 form-control"
-                                                                                                  maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Party to whom Work order is given"></textarea>
+                                                                                                  maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Proposed Bidder name"></textarea>
 
                                                                                     </div>
                                                                                 </div>
@@ -650,11 +544,11 @@
                                                                             </div>
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Enquiry not sent to these Vendors (with reasons) </label>
+                                                                                    <label class="control-label col-md-3">Warranty/DLP Clause</label>
                                                                                     <div class="col-md-9">
 
                                                                                         <textarea id="txtenquirynotsent" name="txtenquirynotsent" class="MaxLength wysihtml5 form-control"
-                                                                                                  maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Enquiry not sent to these Eligible Vendors (with reasons) "></textarea>
+                                                                                                  maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Warranty/DLP Clause"></textarea>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -694,7 +588,7 @@
 
                                                                                         <div class="radio-list">
                                                                                             <label class="radio-inline">
-                                                                                                <input type="radio" name="optionenquiryissued" value="ProcurEngine" id="optionenquiryissuedP" checked/> ProcurEngine
+                                                                                                <input type="radio" name="optionenquiryissued" value="ProcurEngine" id="optionenquiryissuedP" checked /> ProcurEngine
                                                                                             </label>
                                                                                             <label class="radio-inline">
                                                                                                 <input type="radio" name="optionenquiryissued" value="Email" id="optionenquiryissuedE" />Email
@@ -772,7 +666,7 @@
                                                                                                 Technically Acceptable
                                                                                             </th>
                                                                                             <th>
-                                                                                                Politically Exposed Person
+                                                                                                Politically Exposed
                                                                                             </th>
                                                                                             <th>
                                                                                                 Quote Validated By SCM
@@ -892,11 +786,11 @@
                                                                             </div>
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Terms (Ex- works/ FOR/ FOB/ CIF) </label>
+                                                                                    <label class="control-label col-md-3">Delivery Terms (Ex- works/ FOB/ CIF/FOR/DAS/SER) </label>
                                                                                     <div class="col-md-9">
 
                                                                                         <textarea id="txtterms" name="txtterms" class="Maxlength wysihtml5 form-control"
-                                                                                                  maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Terms (Ex- works/ FOR/ FOB/ CIF)"></textarea>
+                                                                                                  maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Delivery Terms (Ex- works/ FOB/ CIF/FOR/DAS/SER)"></textarea>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -936,11 +830,11 @@
                                                                             </div>
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Applicable taxes & duties and their applicability </label>
+                                                                                    <label class="control-label col-md-3">Tax Details </label>
                                                                                     <div class="col-md-9">
 
                                                                                         <textarea id="txtapplicabletax" name="txtapplicabletax" class="Maxlength wysihtml5 form-control"
-                                                                                                  maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Applicable taxes & duties and their applicability"></textarea>
+                                                                                                  maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Tax Details"></textarea>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -958,11 +852,11 @@
                                                                             </div>
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Whether CPBG applicable</label>
+                                                                                    <label class="control-label col-md-3">Applicable BG Details</label>
                                                                                     <div class="col-md-9">
 
                                                                                         <textarea id="txtCPBGapplicable" name="txtCPBGapplicable" class="Maxlength wysihtml5 form-control"
-                                                                                                  maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Whether CPBG applicable"></textarea>
+                                                                                                  maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Applicable BG Details"></textarea>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -1020,7 +914,7 @@
                                                                         </div>
                                                                         <div class="inputgroup">
                                                                             <div class="col-md-4">
-                                                                                <span  class="btn blue width300px"><input type="file" id="fileToUpload1" name="fileToUpload1" onchange="checkfilesize(this);" /></span>
+                                                                                <span class="btn blue width300px"><input type="file" id="fileToUpload1" name="fileToUpload1" onchange="checkfilesize(this);" /></span>
                                                                             </div>
                                                                         </div>
 
@@ -1194,12 +1088,12 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
+                                                                <label class="control-label col-md-4 bold txtalignleft ">
 
                                                                     Introduction:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblintroduction" class="control-label txtalignleft" >
+                                                                    <label id="lblintroduction" class="control-label txtalignleft">
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -1207,11 +1101,11 @@
                                                         <div class="col-md-6">
                                                             <div class="form-group">
 
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
+                                                                <label class="control-label col-md-4 bold txtalignleft">
                                                                     Cost Benefit Analysis:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblcostbenfit" class="control-label txtalignleft" >
+                                                                    <label id="lblcostbenfit" class="control-label txtalignleft">
                                                                     </label>
 
                                                                 </div>
@@ -1223,22 +1117,22 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
+                                                                <label class="control-label col-md-4 bold txtalignleft ">
                                                                     Budget Availabilty:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblbudgetavail"  class="control-label txtalignleft ">
+                                                                    <label id="lblbudgetavail" class="control-label txtalignleft ">
                                                                     </label>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
-                                                                    Party to whom Work order is given:
+                                                                <label class="control-label col-md-4 bold txtalignleft">
+                                                                    Proposed Bidder name:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblpartyordergiven"  class="control-label txtalignleft ">
+                                                                    <label id="lblpartyordergiven" class="control-label txtalignleft ">
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -1247,11 +1141,11 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
+                                                                <label class="control-label col-md-4 bold txtalignleft ">
                                                                     Justification for award of contract other than L1 :
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblawardL1" class="control-label txtalignleft " >
+                                                                    <label id="lblawardL1" class="control-label txtalignleft ">
                                                                     </label>
 
                                                                 </div>
@@ -1260,11 +1154,11 @@
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
+                                                                <label class="control-label col-md-4 bold txtalignleft">
                                                                     Justification for Less than 3 Quotes:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lbllessthan3quotes" class="control-label txtalignleft " >
+                                                                    <label id="lbllessthan3quotes" class="control-label txtalignleft ">
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -1274,11 +1168,11 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
+                                                                <label class="control-label col-md-4 bold txtalignleft ">
                                                                     Completion Schedule:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblcompletionsechdule" class="control-label txtalignleft " >
+                                                                    <label id="lblcompletionsechdule" class="control-label txtalignleft ">
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -1286,12 +1180,12 @@
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
+                                                                <label class="control-label col-md-4 bold txtalignleft ">
                                                                     Rational for spliting the order:
                                                                 </label>
                                                                 <div class="col-md-8">
                                                                     <label class="control-label">
-                                                                        <label id="lblrationalspliting" class="control-label txtalignleft " >
+                                                                        <label id="lblrationalspliting" class="control-label txtalignleft ">
 
                                                                         </label>
                                                                     </label>
@@ -1304,11 +1198,11 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
+                                                                <label class="control-label col-md-4 bold txtalignleft ">
                                                                     Rational for issuing RFQ to vendors:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblissuingrfqtovendor" class="control-label txtalignleft " >
+                                                                    <label id="lblissuingrfqtovendor" class="control-label txtalignleft ">
 
                                                                     </label>
                                                                 </div>
@@ -1317,11 +1211,11 @@
 
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
-                                                                    Enquiry not sent to these Vendors (with reasons):
+                                                                <label class="control-label col-md-4 bold txtalignleft">
+                                                                    Warranty/DLP Clause:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblenquirynotsent" class="control-label txtalignleft " >
+                                                                    <label id="lblenquirynotsent" class="control-label txtalignleft ">
 
                                                                     </label>
                                                                 </div>
@@ -1331,11 +1225,11 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
+                                                                <label class="control-label col-md-4 bold txtalignleft ">
                                                                     General Remarks:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblgeneralremarks" class="control-label txtalignleft " >
+                                                                    <label id="lblgeneralremarks" class="control-label txtalignleft ">
 
                                                                     </label>
                                                                 </div>
@@ -1348,11 +1242,11 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
+                                                                <label class="control-label col-md-4 bold txtalignleft ">
                                                                     Enquiry Issued on :
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblenquiryissuedon" class="control-label txtalignleft " >
+                                                                    <label id="lblenquiryissuedon" class="control-label txtalignleft ">
 
                                                                     </label>
                                                                 </div>
@@ -1361,11 +1255,11 @@
 
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
+                                                                <label class="control-label col-md-4 bold txtalignleft ">
                                                                     Enquiry Issued through :
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblenquiryissuedthrough" class="control-label txtalignleft " >
+                                                                    <label id="lblenquiryissuedthrough" class="control-label txtalignleft ">
 
                                                                     </label>
                                                                 </div>
@@ -1382,11 +1276,11 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
+                                                                <label class="control-label col-md-4 bold txtalignleft ">
                                                                     Lowest Price Offer:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lbllowestpriceoffer" class="control-label txtalignleft " >
+                                                                    <label id="lbllowestpriceoffer" class="control-label txtalignleft ">
 
                                                                     </label>
                                                                 </div>
@@ -1395,11 +1289,11 @@
 
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
+                                                                <label class="control-label col-md-4 bold txtalignleft ">
                                                                     Repeat Order :
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblrepeatorder" class="control-label txtalignleft " >
+                                                                    <label id="lblrepeatorder" class="control-label txtalignleft ">
 
                                                                     </label>
                                                                 </div>
@@ -1409,11 +1303,11 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
+                                                                <label class="control-label col-md-4 bold txtalignleft ">
                                                                     Supported enclosure(Please specify):
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblsupportedenclosure" class="control-label txtalignleft " >
+                                                                    <label id="lblsupportedenclosure" class="control-label txtalignleft ">
 
                                                                     </label>
                                                                 </div>
@@ -1422,11 +1316,11 @@
 
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
+                                                                <label class="control-label col-md-4 bold txtalignleft ">
                                                                     Comparatives statement of final  price :
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblfinalprice" class="control-label txtalignleft " >
+                                                                    <label id="lblfinalprice" class="control-label txtalignleft ">
 
                                                                     </label>
                                                                 </div>
@@ -1436,11 +1330,11 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
+                                                                <label class="control-label col-md-4 bold txtalignleft ">
                                                                     Quotations of the parties:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblquotationparties" class="control-label txtalignleft" >
+                                                                    <label id="lblquotationparties" class="control-label txtalignleft">
 
                                                                     </label>
                                                                 </div>
@@ -1453,11 +1347,11 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
+                                                                <label class="control-label col-md-4 bold txtalignleft">
                                                                     Order recommended on (Party):
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblorderrecomparty" class="control-label txtalignleft" >
+                                                                    <label id="lblorderrecomparty" class="control-label txtalignleft">
 
                                                                     </label>
                                                                 </div>
@@ -1465,11 +1359,11 @@
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
+                                                                <label class="control-label col-md-4 bold txtalignleft">
                                                                     Purchase Order/Work Order Value:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblpurchaseorder" class="control-label txtalignleft" >
+                                                                    <label id="lblpurchaseorder" class="control-label txtalignleft">
 
                                                                     </label>
                                                                 </div>
@@ -1480,11 +1374,11 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
+                                                                <label class="control-label col-md-4 bold txtalignleft">
                                                                     Internal Cost Estimate:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblinternalcost" class="control-label txtalignleft" >
+                                                                    <label id="lblinternalcost" class="control-label txtalignleft">
 
                                                                     </label>
                                                                 </div>
@@ -1492,11 +1386,11 @@
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
-                                                                    Terms (Ex- works/ FOR/ FOB/ CIF):
+                                                                <label class="control-label col-md-4 bold txtalignleft">
+                                                                    Delivery Terms (Ex- works/ FOB/ CIF/FOR/DAS/SER):
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblterms" class="control-label txtalignleft " >
+                                                                    <label id="lblterms" class="control-label txtalignleft ">
 
                                                                     </label>
                                                                 </div>
@@ -1507,11 +1401,11 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
+                                                                <label class="control-label col-md-4 bold txtalignleft">
                                                                     Scope of Work:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblscopeofwork" class="control-label txtalignleft " >
+                                                                    <label id="lblscopeofwork" class="control-label txtalignleft ">
 
                                                                     </label>
                                                                 </div>
@@ -1519,11 +1413,11 @@
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
+                                                                <label class="control-label col-md-4 bold txtalignleft ">
                                                                     Deliverables:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lbldeliverables" class="control-label txtalignleft" >
+                                                                    <label id="lbldeliverables" class="control-label txtalignleft">
 
                                                                     </label>
                                                                 </div>
@@ -1534,11 +1428,11 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
+                                                                <label class="control-label col-md-4 bold txtalignleft">
                                                                     Payment terms:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblapymentterms" class="control-label txtalignleft" >
+                                                                    <label id="lblapymentterms" class="control-label txtalignleft">
 
                                                                     </label>
                                                                 </div>
@@ -1546,11 +1440,11 @@
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
-                                                                    Applicable taxes & duties and their applicability:
+                                                                <label class="control-label col-md-4 bold txtalignleft ">
+                                                                    Tax Details:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lbltaxesduties" class="control-label txtalignleft " >
+                                                                    <label id="lbltaxesduties" class="control-label txtalignleft ">
 
                                                                     </label>
                                                                 </div>
@@ -1561,11 +1455,11 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
+                                                                <label class="control-label col-md-4 bold txtalignleft">
                                                                     Whether LD applicable:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblLD" class="control-label txtalignleft " >
+                                                                    <label id="lblLD" class="control-label txtalignleft ">
 
                                                                     </label>
                                                                 </div>
@@ -1573,11 +1467,11 @@
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
-                                                                    Whether CPBG applicable:
+                                                                <label class="control-label col-md-4 bold txtalignleft ">
+                                                                    Applicable BG Details:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblCPBG" class="control-label txtalignleft" >
+                                                                    <label id="lblCPBG" class="control-label txtalignleft">
 
                                                                     </label>
                                                                 </div>
@@ -1588,11 +1482,11 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
+                                                                <label class="control-label col-md-4 bold txtalignleft">
                                                                     PR Details:
                                                                 </label>
                                                                 <div class="col-md-8">
-                                                                    <label id="lblPRDetails" class="control-label txtalignleft " >
+                                                                    <label id="lblPRDetails" class="control-label txtalignleft ">
 
                                                                     </label>
                                                                 </div>
@@ -1622,7 +1516,7 @@
 
                                                                 </div>
                                                             </div>
-                                                            <div class="alert alert-block alert-danger" id="errorApproverdivSeq" >
+                                                            <div class="alert alert-block alert-danger" id="errorApproverdivSeq">
                                                                 <span id="errorApproverSeq"></span>
                                                             </div>
 
@@ -1689,7 +1583,7 @@
                         </div>
                     </div>
                     <div class="table-scrollable">
-                        <div class="scroller scroller400"  data-always-visible="1" data-rail-visible="0">
+                        <div class="scroller scroller400" data-always-visible="1" data-rail-visible="0">
                             <table class="table table-striped table-bordered table-hover" id="tblAllmatrix"></table>
                         </div>
                     </div>
@@ -1712,7 +1606,7 @@
                 </div>
                 <div class="portlet-body form">
 
-                    <div class="modal-body modalbody1" >
+                    <div class="modal-body modalbody1">
 
                         <p class="ppolicy-text">
                             Using this page user can configure bids related to Sea export shipments and invite vendors to participate on specified date and time.<br />
@@ -1791,7 +1685,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-4  control-label paddingtop0px" >IsActive</label>
+                                <label class="col-md-4  control-label paddingtop0px">IsActive</label>
                                 <div class="col-md-8">
                                     <input type="checkbox" name="checkboxactive" id="checkboxactive" class="form-control" checked>
                                 </div>
@@ -1824,7 +1718,7 @@
     <script nonce="ppcreq">
         jQuery(document).ready(function () {
             callPagejs('ckeditor.js,PPCRequest.js');
-           
+
         });
 
     </script>
