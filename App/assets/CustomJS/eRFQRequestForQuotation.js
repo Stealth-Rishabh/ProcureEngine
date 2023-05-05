@@ -2715,7 +2715,7 @@ function FetchUOM(CustomerID) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "UOM/fetchUOMCust/?CustomerID=" + CustomerID,//  fetchUOM
+        url: sessionStorage.getItem("APIPath") + "UOM/fetchUOMCust/?CustomerID=" + CustomerID + "&status=Y",//  fetchUOM
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         dataType: "json",
@@ -3023,7 +3023,7 @@ function fnsubmitRFQ() {
 
 var vCount = 0;
 $("#chkAll").click(function () {
-
+    debugger
     if ($("#chkAll").is(':checked') == true) {
         $('#divvendorlist').find('span#spandynamic').hide();
         $('table#tblvendorlist').closest('.inputgroup').removeClass('has-error');
@@ -3031,6 +3031,7 @@ $("#chkAll").click(function () {
         jQuery('#selectedvendorlistsPrev> tbody').empty()
         vCount = 0;
         $("#tblvendorlist> tbody > tr").each(function (index) {
+            debugger
             $(this).find("span#spanchecked").addClass("checked");
             $('#chkvender' + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true);
             var vendorid = $('#chkvender' + $.trim($(this).find('td:eq(0)').html())).val()
@@ -4350,13 +4351,15 @@ jQuery("#txtSearch").keyup(function () {
 sessionStorage.setItem('hdnVendorID', 0);
 jQuery("#txtSearch").typeahead({
     source: function (query, process) {
+
         var data = allvendorsforautocomplete;
         var vName = '';
         usernames = [];
         map = {};
         var username = "";
         jQuery.each(data, function (i, username) {
-            vName = username.participantName + ' (' + username.companyEmail + ')'
+
+            vName = username.participantName + ' (' + username.companyEmail + ')' + " " + (username.stateName).toUpperCase()
             map[vName] = username;
             usernames.push(vName);
         });
@@ -4365,19 +4368,19 @@ jQuery("#txtSearch").typeahead({
     },
     minLength: 2,
     updater: function (item) {
-
+        debugger
         if (map[item].participantID != "0") {
 
-            vName = map[item].participantName + '(' + map[item].companyEmail + ')';
+            vName = map[item].participantName + '(' + map[item].companyEmail + ')' + " " + (map[item].stateName).toUpperCase();
 
-            jQuery('#tblvendorlist').append("<tr id=vList" + map[item].participantID + " ><td class='hide'>" + map[item].participantID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\)\"; id=\"chkvender" + map[item].participantID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>");
+            jQuery('#tblvendorlist').append("<tr id=vList" + map[item].associatedVendorID + " ><td class='hide'>" + map[item].associatedVendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].associatedVendorID + "'\)\"; id=\"chkvender" + map[item].associatedVendorID + "\" value=" + map[item].associatedVendorID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>");
 
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
-
+                    debugger
                     //** remove from main table if already selected in selected List
-                    if (map[item].participantID == $(this).find("td:eq(0)").text()) {
-                        $('#vList' + map[item].participantID).remove();
+                    if (map[item].associatedVendorID == $(this).find("td:eq(0)").text()) {
+                        $('#vList' + map[item].associatedVendorID).remove();
 
                     }
                     $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true);
@@ -4410,12 +4413,12 @@ function getCategoryWiseVendors(categoryID) {
         dataType: "json",
 
         success: function (data) {
-
+            debugger
             jQuery("#tblvendorlist > tbody").empty();
             var vName = '';
             for (var i = 0; i < data.length; i++) {
-                vName = data[i].vendorName;
-                var str = "<tr id=vList" + data[i].vendorID + "><td class='hide'>" + data[i].vendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\)\"; id=\"chkvender" + data[i].vendorID + "\" value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " </td></tr>";
+                vName = data[i].vendorName + " " + data[i].stateName;
+                var str = "<tr id=vList" + data[i].mappedVendorIdentifier + "><td class='hide'>" + data[i].mappedVendorIdentifier + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].mappedVendorIdentifier + "'\)\"; id=\"chkvender" + data[i].mappedVendorIdentifier + "\" value=" + data[i].mappedVendorIdentifier + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " " + data[i].stateName + " </td></tr>";
                 jQuery('#tblvendorlist > tbody').append(str);
 
             }

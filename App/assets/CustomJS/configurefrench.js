@@ -43,22 +43,22 @@ $("#cancelBidBtn").hide();
 
 $('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
 jQuery(document).ready(function () {
-    $("#txtCeilingPrice,#txtquantitiy,#txtmaxquantitiy,#txtminquantitiy,#txtminimumdecreament,#txtStartingPrice,#txtPriceReductionAmount").inputmask({
-        alias: "decimal",
-        rightAlign: false,
-        groupSeparator: ",",
-        radixPoint: ".",
-        autoGroup: true,
-        integerDigits: 40,
-        digitsOptional: true,
-        allowPlus: false,
-        allowMinus: false,
-        clearMaskOnLostFocus: true,
-        supportsInputType: ["text", "tel", "password"],
-        'removeMaskOnSubmit': true,
-        autoUnmask: true
-
-    });
+    /* $("#txtCeilingPrice,#txtquantitiy,#txtmaxquantitiy,#txtminquantitiy,#txtminimumdecreament,#txtStartingPrice,#txtPriceReductionAmount").inputmask({
+         alias: "decimal",
+         rightAlign: true,
+         groupSeparator: ",",
+         radixPoint: ".",
+         autoGroup: true,
+         integerDigits: 40,
+         digitsOptional: true,
+         allowPlus: false,
+         allowMinus: false,
+         clearMaskOnLostFocus: true,
+         supportsInputType: ["text", "tel", "password"],
+         'removeMaskOnSubmit': true,
+         autoUnmask: true
+ 
+     });*/
 });
 
 var _BidID;
@@ -110,6 +110,7 @@ function CheckmaxQuantity(id) {
     }
 }
 function checkminmax(id) {
+    thousands_separators_input(id)
     $('#spnmaxq').addClass('hide');
     $('#spnminq').addClass('hide');
     $('.maxq').addClass('has-success').removeClass('has-error');
@@ -1737,6 +1738,7 @@ function enableiteminput() {
     $("#delete_or").prop("disabled", false);
 }
 function editvalues(icount) {
+    enableiteminput()
     //sessionStorage.setItem('ClickedEditID', icount.id)
     Metronic.scrollTo($("body"), 200);
     $('#rowid').val(icount)
@@ -1819,7 +1821,7 @@ function FetchUOM(CustomerID) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "UOM/fetchUOMCust/?CustomerID=" + CustomerID,
+        url: sessionStorage.getItem("APIPath") + "UOM/fetchUOMCust/?CustomerID=" + CustomerID + "&status=Y",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         dataType: "json",
