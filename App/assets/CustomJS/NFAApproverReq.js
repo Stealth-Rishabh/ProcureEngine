@@ -395,7 +395,6 @@ function fetchApproverStatus() {
         processData: true,
         dataType: "json",
         success: function (data) {
-
             var status = '';
             var c = 0;
             var ApprovalType = ""
