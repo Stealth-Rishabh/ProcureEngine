@@ -50,6 +50,8 @@ jQuery(document).ready(function () {
         alwaysShow: true
     });
 
+    fetchProjectMaster();
+
 });
 
 function FetchRecomendedVendor() {
@@ -1007,7 +1009,6 @@ function bindPurchaseGroupDDL() {
 
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
-
         if (res.result.length > 0) {
 
             $("#ddlPurchasegroup").empty();
@@ -1719,3 +1720,54 @@ function viewallmatrix() {
     $('#viewAllMatrix').modal('show');
     bindApproverMaster('N');
 }
+
+
+
+/*
+ fetchProjectName start
+ */
+function fetchProjectMaster() {
+    
+    var url = sessionStorage.getItem("APIPath") + "ProjectMaster/fetchProjectMasterCust/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&status=Y";// + sessionStorage.getItem('UserID') + "&status=Y";
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: url,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        processData: true,
+        dataType: "json",
+        success: function (data) {
+            jQuery("#txtProjectName").empty();
+            jQuery("#txtProjectName").append(jQuery("<option></option>").val("").html("Select Project"));
+            if (data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    jQuery("#txtProjectName").append(jQuery("<option></option>").val(data[i].id).html(StringDecodingMechanism(data[i].projectName)));
+
+                }
+            }
+            else {
+                jQuery("#txtProjectName").append(jQuery("<option></option>").val("").html("No information is here..."));
+            }
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spnerror', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+
+    });
+
+}
+/*
+ fetchProjectName end
+ */
