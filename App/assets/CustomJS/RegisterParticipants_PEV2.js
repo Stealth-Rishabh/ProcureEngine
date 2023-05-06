@@ -153,14 +153,12 @@ var FormValidation = function () {
                     required: true
                 },
                 txtZipCd: {
-                    required: true
+                    required: true,
+                    number: true
                 },
                 txtUI: {
                     required: true,
                     email: true
-                },
-                txtTINNo: {
-                    required: true
                 },
                 txtPhoneNo: {
                     required: true,
@@ -223,9 +221,6 @@ var FormValidation = function () {
 
                 txtPanNo: {
                     required: "Please enter pan no"
-                },
-                txtTINNo: {
-                    required: "Please enter gst no"
                 },
                 txtPhoneNo: {
                     required: "Please enter phone no"
@@ -329,6 +324,7 @@ var FormValidation = function () {
 
 
 function RegisterParticipants() {
+    var RegisterParticipants = '';
     $("#btnvendreg").attr("disabled", "disabled")
     var _cleanString = StringEncodingMechanism(jQuery("#ParticipantName").val());
     var _cleanString2 = StringEncodingMechanism((jQuery("#txtAddress").val()).replace(/,/g, ""));
@@ -369,39 +365,90 @@ function RegisterParticipants() {
     }
 
     debugger
-    var RegisterParticipants = {
-        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-        "UserID": sessionStorage.getItem('UserID'),
-        "CompanyEmail": jQuery("#txtcompanyemail").val().trim().toLowerCase(),
-        "AlternateEmailID": $('#txtAlternateeMailID').val(),
-        "ParticipantName": _cleanString,
-        "ContactPerson": encodedcontactperson,
-        "MobileNo": jQuery("#txtMobileNo").val(),
-        "PhoneNo": jQuery("#txtPhoneNo").val(),
-        "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
-        "DialingCodePhone": parseInt(jQuery("#ddlCountryCdPhone option:selected").val()),
-        "IsActive": status,
-        "ActionType": $('#hdnFlagType').val(),
-        "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
-        "ProductCatID": InsertQuery,
-        "ProductCatIDList": ProductCatId,
-        "AssociatedVendorID": parseInt($('#hdnChildID').val()),
-        "Address": _cleanString2,
-        "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
-        "CityName": jQuery("#ddlCity option:selected").text(),
-        "StateID": parseInt(jQuery("#ddlState option:selected").data('stateid')), //parseInt(jQuery("#ddlState option:selected").val()),
-        "StateName": jQuery("#ddlState option:selected").text(),
-        "CountryID": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
-        "CountryName": jQuery("#ddlCountry option:selected").text(),
-        "ZipCode": jQuery("#txtZipCd").val(),
-        "TaxId": jQuery("#txtTINNo").val(),
-        "TaxIdType": jQuery("#txtTINType option:selected").val(),
-        "TaxId2": jQuery("#txtPanNo").val(),
-        "TaxIdType2": jQuery("#txtTINType2 option:selected").val(),
-        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val()),
-        "CountryKey": jQuery("#ddlCountry option:selected").val(),
-        "RegionKey": jQuery("#ddlState option:selected").val(),
-    };
+    if (jQuery("#txtTINType option:selected").val() == "IN3") {
+
+        if (gstfilename == "" || panfilename == "") {
+            jQuery("#divalerterr").text("please attach GST/PAN number to proceed...");
+            $('#divalerterr').show();
+            $('#divalerterr').fadeOut(5000);
+            App.scrollTo($('#divalerterr'), -200);
+            return false;
+
+        }
+    }
+    if (jQuery("#txtTINType option:selected").val() == "") {
+        RegisterParticipants = {
+            "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+            "UserID": sessionStorage.getItem('UserID'),
+            "CompanyEmail": jQuery("#txtcompanyemail").val().trim().toLowerCase(),
+            "AlternateEmailID": $('#txtAlternateeMailID').val(),
+            "ParticipantName": _cleanString,
+            "ContactPerson": encodedcontactperson,
+            "MobileNo": jQuery("#txtMobileNo").val(),
+            "PhoneNo": jQuery("#txtPhoneNo").val(),
+            "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
+            "DialingCodePhone": parseInt(jQuery("#ddlCountryCdPhone option:selected").val()),
+            "IsActive": status,
+            "ActionType": $('#hdnFlagType').val(),
+            "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
+            "ProductCatID": InsertQuery,
+            "ProductCatIDList": ProductCatId,
+            "AssociatedVendorID": parseInt($('#hdnChildID').val()),
+            "Address": _cleanString2,
+            "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
+            "CityName": jQuery("#ddlCity option:selected").text(),
+            "StateID": parseInt(jQuery("#ddlState option:selected").data('stateid')), //parseInt(jQuery("#ddlState option:selected").val()),
+            "StateName": jQuery("#ddlState option:selected").data('statename'),
+            "CountryID": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
+            "CountryName": jQuery("#ddlCountry option:selected").text(),
+            "ZipCode": jQuery("#txtZipCd").val(),
+            "TaxId": "",
+            "TaxIdType": "",
+            "TaxId2": "",
+            "TaxIdType2": "",
+            "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val()),
+            "CountryKey": jQuery("#ddlCountry option:selected").val(),
+            "RegionKey": jQuery("#ddlState option:selected").val(),
+        };
+
+    }
+    else {
+        RegisterParticipants = {
+            "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+            "UserID": sessionStorage.getItem('UserID'),
+            "CompanyEmail": jQuery("#txtcompanyemail").val().trim().toLowerCase(),
+            "AlternateEmailID": $('#txtAlternateeMailID').val(),
+            "ParticipantName": _cleanString,
+            "ContactPerson": encodedcontactperson,
+            "MobileNo": jQuery("#txtMobileNo").val(),
+            "PhoneNo": jQuery("#txtPhoneNo").val(),
+            "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
+            "DialingCodePhone": parseInt(jQuery("#ddlCountryCdPhone option:selected").val()),
+            "IsActive": status,
+            "ActionType": $('#hdnFlagType').val(),
+            "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
+            "ProductCatID": InsertQuery,
+            "ProductCatIDList": ProductCatId,
+            "AssociatedVendorID": parseInt($('#hdnChildID').val()),
+            "Address": _cleanString2,
+            "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
+            "CityName": jQuery("#ddlCity option:selected").text(),
+            "StateID": parseInt(jQuery("#ddlState option:selected").data('stateid')), //parseInt(jQuery("#ddlState option:selected").val()),
+            "StateName": jQuery("#ddlState option:selected").data('statename'),
+            "CountryID": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
+            "CountryName": jQuery("#ddlCountry option:selected").text(),
+            "ZipCode": jQuery("#txtZipCd").val(),
+            "TaxId": jQuery("#txtTINNo").val(),
+            "TaxIdType": jQuery("#txtTINType option:selected").val(),
+            "TaxId2": jQuery("#txtPanNo").val(),
+            "TaxIdType2": jQuery("#txtTINType2 option:selected").val(),
+            "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val()),
+            "CountryKey": jQuery("#ddlCountry option:selected").val(),
+            "RegionKey": jQuery("#ddlState option:selected").val(),
+        };
+
+    }
+
 
     console.log(sessionStorage.getItem("APIPath") + "VendorLCM/VendorRegistrationByUser/");
     jQuery.ajax({
@@ -1534,6 +1581,8 @@ function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingco
     $('#ddlCountryCd').val(dialingcode).trigger('change')
     $('#ddlCountryCdPhone').val(dialingcodephone).trigger('change')
 
+    $('#txtTINType').attr('disabled', 'disabled');
+
 
 
     if (isactive == "Y" || isactive.toLowerCase() == "yes") {
@@ -1594,6 +1643,7 @@ function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingco
         /*jQuery("#ContactName").removeAttr('disabled');*/
         $('#lbl_panmsz').addClass('hide');
     }
+    $('#txtTINType').val(taxIdType).trigger('change')
 }
 
 function ExtendVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid, childid, taxIdType, taxIdType2, city, regionKey, countryKey, Langu, currency) {
@@ -1632,6 +1682,9 @@ function ExtendVendor(vendorid, vname, emailid, dialingcodephone, phone, dialing
     setTimeout(function () {
 
         $('#ddlCity').val(cityid).trigger('change')
+        debugger
+        $('#txtTINType').val(taxIdType).trigger('change')
+        $('#txtTINType2').val(taxIdType2).trigger('change')
     }, 2000);
 
 
@@ -1649,12 +1702,16 @@ function ExtendVendor(vendorid, vname, emailid, dialingcodephone, phone, dialing
 
 
 
+
+
     $('#ParticipantName').attr('disabled', 'disabled');
     $('#txtAddress').attr('disabled', 'disabled');
     $('#txtCity').attr('disabled', 'disabled');
     $('#txtPanNo').attr('disabled', 'disabled');
     $('#txtTINNo').attr('disabled', 'disabled');
     $('#txtPhoneNo').attr('disabled', 'disabled');
+    $('#txtTINType').attr('disabled', 'disabled');
+    $('#txtTINType2').attr('disabled', 'disabled');
     /*$('#txtMobileNo').attr('disabled', 'disabled');*/
     /* $('#txtcompanyemail').attr('disabled', 'disabled');*/
     $('#chkalternatemail').attr('disabled', 'disabled');
@@ -1810,6 +1867,7 @@ function clearAddAnother() {
     $("#ddlCountry").val('IN');
     jQuery("#txtZipCd").val('');
     jQuery("#txtPhoneNo").val('');
+    $('#txtTINType').removeAttr('disabled');
 
     $('.childchkbox').each(function () {
         jQuery(this).closest('span#spancheckedvendorgroup').removeAttr('class');
@@ -2870,25 +2928,23 @@ function GetVendorExternalDetail(vendId, ChildId, CustId) {
                 $("#sapwitholdingtaxaccordion").hide();
             }
 
-
-
-
             if (data.partnerNumber == "") {
                 $("#btnPostToExternalSource").show();
                 $("#UpdateUserByDetail").removeAttr("disabled");
-
             }
             else {
-
                 $("#btnPostToExternalSource").hide();
                 $("#externalsourceid").text(data.partnerNumber);
-
                 $("#UpdateUserByDetail").attr("disabled", "disabled");
-
-
             }
 
+
+
+
+
             $("#hdnSourceId").val(data.sourceId);
+            $("#hdnGRBasedInvoiceLogic").val(data.grBasedInvoiceLogic);
+
 
             $('#CoCd').val(data.coCd).trigger('change')
             $('#PayTerm').val(data.payTerm).trigger('change')
@@ -2903,6 +2959,24 @@ function GetVendorExternalDetail(vendId, ChildId, CustId) {
             $('#WitholdingTaxCode').text(data.witholdingTaxCode)
 
             $('#ReconAcc').val(data.reconAcc).trigger('change')
+
+            $('#authGrp').val(data.authGroup).trigger('change')
+            $('#gstVendClass').val(data.gstVendClass).trigger('change')
+
+
+
+
+
+            // To check required value updated
+            if (jQuery("#authGrp option:selected").val() == "" || jQuery("#WitholdingTaxType option:selected").val() == "0" || $("#CoCd option:selected").val() == "0" || $("#PayTerm option:selected").val() == "0" || $("#PORG option:selected").val() == "0") {
+                $("#btnPostToExternalSource").hide();
+            }
+            else {
+                $("#btnPostToExternalSource").show();
+
+            }
+
+
 
 
 
@@ -2962,7 +3036,7 @@ $('#WitholdingTaxType').on('change', function () {
 
 });
 
-function UpdateExternalSourceFinancer() {
+/*function UpdateExternalSourceFinancer() {
 
 
 
@@ -2978,7 +3052,7 @@ function UpdateExternalSourceFinancer() {
         "CoCd": jQuery("#CoCd option:selected").val(),
         "ReconAcc": jQuery("#ReconAcc option:selected").val(),
         "PayTerm": jQuery("#PayTerm").val(),
-        "CheckDoubleInvoice": 'Y',
+        "CheckDoubleInvoice": 'X',
         "WitholdingTaxType": jQuery("#WitholdingTaxType option:selected").val(),
         "SubjectToTds": jQuery("#WitholdingTaxType option:selected").data('subjecttotds'),
         "TypeOfRecepient": jQuery("#WitholdingTaxType option:selected").data('typeofreceipt'),
@@ -3027,13 +3101,21 @@ function UpdateExternalSourceFinancer() {
 
     })
 
-}
+}*/
 
 function UpdateExternalSourceUser() {
 
     if (jQuery("#WitholdingTaxType option:selected").val() == "0") {
         $('#divalerterrsap').html('')
         $('#divalerterrsap').html('Please select a valid value of Witholding tax to proceed...')
+        $('#divalerterrsap').show();
+        $('#divalerterrsap').fadeOut(5000);
+        return false
+    }
+
+    if (jQuery("#authGrp option:selected").val() == "") {
+        $('#divalerterrsap').html('')
+        $('#divalerterrsap').html('Please select a valid value of Authorization Group to proceed...')
         $('#divalerterrsap').show();
         $('#divalerterrsap').fadeOut(5000);
         return false
@@ -3059,7 +3141,7 @@ function UpdateExternalSourceUser() {
         "CoCd": jQuery("#CoCd option:selected").val(),
         "ReconAcc": jQuery("#ReconAcc option:selected").val(),
         "PayTerm": jQuery("#PayTerm").val(),
-        "CheckDoubleInvoice": 'Y',
+        "CheckDoubleInvoice": 'X',
         "WitholdingTaxType": jQuery("#WitholdingTaxType option:selected").val(),
         "SubjectToTds": jQuery("#SubjectToTds").text() || "",
         "TypeOfRecepient": jQuery("#TypeOfRecepient").text() || "",
@@ -3073,6 +3155,9 @@ function UpdateExternalSourceUser() {
         "PartnerFunction": "",
         "CustomerId": parseInt(sessionStorage.getItem('CustomerID')),
         "SourceId": parseInt($("#hdnSourceId").val()),
+        "AuthGroup": jQuery("#authGrp option:selected").val(),
+        "GstVendClass": jQuery("#gstVendClass option:selected").val()
+
     };
 
     console.log(sessionStorage.getItem("APIPath") + "VendorLCM/UpdateExternalSource/");
@@ -3146,6 +3231,15 @@ function PostToExternalSource() {
         return false
     }
 
+    if (jQuery("#authGrp option:selected").val() == "") {
+        $('#divalerterrsap').html('')
+        $('#divalerterrsap').html('Please select a valid value of Authorization Group to proceed...')
+        $('#divalerterrsap').show();
+        $('#divalerterrsap').fadeOut(5000);
+        return false
+    }
+
+
     if (jQuery("#WitholdingTaxType option:selected").val() == "0") {
         $('#divalerterrsap').html('')
         $('#divalerterrsap').html('Please select a valid value of Witholding tax to proceed...')
@@ -3167,7 +3261,7 @@ function PostToExternalSource() {
     var sourcedata = {
         "PARTNER": "",
         "VGROUP": jQuery("#VendorAccGrp option:selected").val(),
-        "VEN_CLASS": "",
+        "VEN_CLASS": jQuery("#gstVendClass option:selected").val(),
         "KUNNR": "",
         "NAME1": jQuery("#vendorname").text(),
         "NAME2": "",
@@ -3195,7 +3289,7 @@ function PostToExternalSource() {
         "BUKRS": jQuery("#CoCd option:selected").val(),
         "AKONT": jQuery("#ReconAcc option:selected").val(),
         "ZTERM": jQuery("#PayTerm").val(),
-        "REPRF": 'Y',
+        "REPRF": 'X',
         "WITHT": jQuery("#WitholdingTaxType option:selected").val(),
         "WT_SUBJCT": jQuery("#SubjectToTds").text(),
         "QSREC": jQuery("#TypeOfRecepient").text(),
@@ -3216,7 +3310,10 @@ function PostToExternalSource() {
         "MINDK": "",
         "ISEC": "",
         "J_1ICSTNO": "",
-        "MESSAGE": ""
+        "MESSAGE": "",
+        "AUGRP": jQuery("#authGrp option:selected").val(),
+        "WEBRE": $("#hdnGRBasedInvoiceLogic").val()
+
     };
 
 
@@ -3336,3 +3433,54 @@ function UpdateActivity(vendId, CustId) {
 
     })
 }
+
+//unregistered vendor
+
+$('#txtTINType').on('change', function () {
+    debugger
+    let Taxtype = $(this).val();
+    if (Taxtype == "") {
+        $(".nogsthide").hide();
+        $("#ParticipantName").removeAttr('disabled');
+        $("#txtTINNo").attr("onchange", "");
+        /* $("#ParticipantName").removeAttr('disabled');
+         $("#ddlNatureEstaiblishment").removeAttr('disabled');
+         $("#txtTINNo").attr("onchange","");
+         $("#txtPanNo").removeAttr('disabled');
+         $("#vendorpanno").removeAttr('disabled');
+         $("#vendorname").removeAttr('disabled');*/
+    }
+
+    else if (Taxtype == "IN3") {
+
+        $(".nogsthide").show();
+        $("#ParticipantName").attr("disabled", "disabled");
+        $("#txtPanNo").attr("disabled", "disabled");
+
+        $("#txtTINNo").attr("onchange", "extractPan(this)");
+        /*$("#ParticipantName").attr("disabled", "disabled");
+        $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
+        
+        $("#txtPanNo").attr("disabled", "disabled");
+        $("#vendorpanno").attr("disabled", "disabled");
+        $("#vendorname").attr("disabled", "disabled");*/
+    }
+    else {
+
+        $(".nogsthide").show();
+        $("#txtTINNo").attr("onchange", "");
+        $("#ParticipantName").removeAttr("disabled");
+        $("#txtPanNo").removeAttr("disabled");
+        /*$("#ParticipantName").attr("disabled", "disabled");
+        $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
+        $("#txtTINNo").attr("onchange", "extractPan(this)");
+        $("#txtPanNo").attr("disabled", "disabled");
+        $("#vendorpanno").attr("disabled", "disabled");
+        $("#vendorname").attr("disabled", "disabled");*/
+    }
+
+
+
+
+}
+)
