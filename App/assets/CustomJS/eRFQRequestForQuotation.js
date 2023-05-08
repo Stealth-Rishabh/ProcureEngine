@@ -3040,11 +3040,11 @@ $("#chkAll").click(function () {
 
             $(this).find("span#spanchecked").addClass("checked");
             $('#chkvender' + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true);
-            var vendorid = $('#chkvender' + $.trim($(this).find('td:eq(0)').html())).val();
-            var childid = $('#chkvender' + $.trim($(this).find('td:eq(1)').html())).val()
+            var vendorid = parseInt($('#vendorTblId').text());
+            var childid = parseInt($('#childTblId').text());
             var v = vCount;
             vCount = vCount + 1;
-            var vname = $.trim($(this).find('td:eq(2)').html())
+            var vname = $.trim($(this).find('td:eq(3)').html())
             jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + childid + '><td class=hide>' + vendorid + '</td><td class=hide>' + childid + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + childid + ',' + 'chkvender' + v + ',SelecetedVendorPrev' + childid + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
             jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + childid + '><td class=hide>' + vendorid + '</td><td class=hide>' + childid + '</td><td>' + vname + '</td></tr>')
 
@@ -4381,7 +4381,7 @@ jQuery("#txtSearch").typeahead({
 
             vName = map[item].participantName + '(' + map[item].companyEmail + ')' + " " + (map[item].stateName).toUpperCase();
 
-            jQuery('#tblvendorlist').append("<tr id=vList" + map[item].associatedVendorID + "><td class='hide' id='vendorTblId'>" + map[item].participantID + "</td><td class='hide' id='childTblId'>" + map[item].associatedVendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\,\'" + map[item].associatedVendorID + "'\)\"; id=\"chkvender" + map[item].associatedVendorID + "\" value=" + map[item].associatedVendorID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>");
+            jQuery('#tblvendorlist').append("<tr id=vList" + map[item].associatedVendorID + "><td class='hide' id='vendorTblId'>" + map[item].participantID + "</td><td class='hide' id='childTblId'>" + map[item].associatedVendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\,\'" + map[item].associatedVendorID + "'\)\"; id=\"chkvender" + map[item].associatedVendorID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>");
 
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
@@ -4426,7 +4426,7 @@ function getCategoryWiseVendors(categoryID) {
             var vName = '';
             for (var i = 0; i < data.length; i++) {
                 vName = data[i].vendorName + " " + data[i].stateName;
-                var str = "<tr id=vList" + data[i].mappedVendorIdentifier + "><td class='hide'>" + data[i].mappedVendorIdentifier + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].mappedVendorIdentifier + "'\)\"; id=\"chkvender" + data[i].mappedVendorIdentifier + "\" value=" + data[i].mappedVendorIdentifier + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " " + data[i].stateName + " </td></tr>";
+                var str = "<tr id=vList" + data[i].mappedVendorIdentifier + "><td class='hide' id='vendorTblId'>" + data[i].vendorID + "</td><td class='hide' id='childTblId'>" + data[i].mappedVendorIdentifier + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\,\'" + data[i].mappedVendorIdentifier + "'\)\"; id=\"chkvender" + data[i].mappedVendorIdentifier + "\" value=" + data[i].mappedVendorIdentifier + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " " + data[i].stateName + " </td></tr>";
                 jQuery('#tblvendorlist > tbody').append(str);
 
             }
