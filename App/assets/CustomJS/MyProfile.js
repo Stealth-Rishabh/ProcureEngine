@@ -69,6 +69,8 @@ function onloadcalls() {
 var APIPath = sessionStorage.getItem("APIPath");
 var cc = 0;
 function fetchUserDetails() {
+
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var userReqObj = {
         "UserID": sessionStorage.getItem('UserID'),
@@ -168,7 +170,7 @@ function deleterow(trid, rowcount, gid) {
 //vendor myprofile.html
 function fetchVendorDetails() {
 
-    //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var userReqObj = {
         "UserID": sessionStorage.getItem('VendorId'),
         "UserType": sessionStorage.getItem('UserType')
@@ -694,10 +696,10 @@ updateVendor();
 
 function updMobileNo() {
 
-
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    var _cleanString = StringEncodingMechanism($('#vendoraddress').val());
-    var _cleanString1 = StringEncodingMechanism($('#vendorCity').val());
+
+    var _cleanString = StringEncodingMechanism(($('#vendoraddress').val()).replace(/[,|-]/g, " "));
+    var _cleanString1 = StringEncodingMechanism(($('#vendorCity').val()).replace(/[,|-]/g, " "));
     var data = {
         "UserID": sessionStorage.getItem("UserID"),
         "UserType": sessionStorage.getItem('UserType'),
@@ -918,22 +920,22 @@ function updateVendor() {
         success: function (data, status, jqXHR) {
 
             if ($('#filegst').val() != '') {
-                fnUploadFilesonAzure('filegst', gstfilename, 'VR/' + sessionStorage.getItem('VendorId'));
+                fnUploadFilesonAzure('filegst', gstfilename, 'VR/' + $('#hdnChildID').val());
 
             }
 
             if ($('#filepan').val() != '') {
-                fnUploadFilesonAzure('filepan', panfilename, 'VR/' + sessionStorage.getItem('VendorId'));
+                fnUploadFilesonAzure('filepan', panfilename, 'VR/' + $('#hdnChildID').val());
 
             }
 
             if ($('#filemsme').val() != '') {
-                fnUploadFilesonAzure('filemsme', msmefilename, 'VR/' + sessionStorage.getItem('VendorId'));
+                fnUploadFilesonAzure('filemsme', msmefilename, 'VR/' + $('#hdnChildID').val());
 
             }
 
             if ($('#filecheck').val() != '') {
-                fnUploadFilesonAzure('filecheck', checkfilename, 'VR/' + sessionStorage.getItem('VendorId'));
+                fnUploadFilesonAzure('filecheck', checkfilename, 'VR/' + $('#hdnChildID').val());
 
             }
 
@@ -949,6 +951,7 @@ function updateVendor() {
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
+
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -968,7 +971,7 @@ function updateVendor() {
 }
 
 function fetchMsme() {
-    debugger
+
     if (jQuery("#ddlMSME option:selected").val() == 'Y') {
         $('.hideInput').removeClass('hide');
         $('#frmprofilevendornew').validate();
@@ -1452,8 +1455,8 @@ function SendWhatsApp() {
 //myprofile changes based on email
 let VendorId = parseInt(sessionStorage.getItem('VendorId'));
 function fetchMyProfileVendor() {
-
     let customerid = parseInt(sessionStorage.getItem('CustomerID'));
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     jQuery.ajax({
         type: "GET",
@@ -1541,6 +1544,7 @@ function fetchMyProfileVendor() {
                 }
 
             }
+            jQuery.unblockUI();
 
         },
         error: function (xhr, status, error) {
@@ -1570,110 +1574,119 @@ function fetchMyProfileVendor() {
 
 function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile, taxIdType, taxIdType2, city, regionKey, countryKey, Langu, currency) {
 
-    let customerid = parseInt(sessionStorage.getItem('CustomerID'));
-    $("#filegst").hide()
-    $("#filepan").hide()
-
-
-    /* $('.coun_stat_city_select').hide()
-     $('.coun_stat_city').show();*/
-
-
-    $('#childDetailsForm').removeClass('hide')
-    $("#bankaccordion").show()
-    $("#financeaccordion").show()
-    /* $('#ddlCountrylabel').text(country)
-     $('#ddlStatelabel').text(state)
-     $('#ddlCitylabel').text(city)*/
-
-    $('#hdnFlagType').val(buttonname);
-    $('#hdnChildID').val(childid);
-
-    jQuery("#hdnParticipantID").val(vendorid);
-    $("#hdnParticipantCode").val(vendorcode);
-    jQuery("#vendorname").val(vname);
-    jQuery("#vendoraddress").val(StringDecodingMechanism(addr));
-
-    jQuery("#vendorpanno").val(pan);
-
-    jQuery("#txtTINNo").val(gst);
-    jQuery("#txtPhoneNo").val(phone);
-    jQuery("#txtMobileNo").val(mobile);
-    jQuery("#txtcompanyemail").val(emailid);
-    jQuery("#txtAlternateeMailID").val(alternateemailid);
-    jQuery("#pincode").val(zipcode)
-
-    $('#ddlCountry').val(countryKey || "IN").trigger('change')
-
-
-    //company specific
-
-    jQuery("#ddlNatureEstaiblishment").val("Private Limited Company");
-    $('#ddlVendorType').val(supplierType).trigger('change')
-    $('#ddlMSME').val(msmeCheck).trigger('change')
-    $('#ddlMSMEClass').val(msmeType).trigger('change')
-
-    $('#txtUdyam').val(msmeNo)
-    $('#msmeattach').html(msmeFile)
-    $('#gstattach').html(taxIdFile)
-    $('#panattach').html(taxId2File)
-
-    //Bank specific
-    $('#ddPayTerms').val("0").trigger('change')
-    $('#ifsccode').val("")
-    $('#bankname').val("")
-    $('#bankaccount').val("")
-    $('#accountholder').val("")
-    $('#checkattach').html("")
-
-    //finance specific
-
-
-
-
-    $('#ddlCountry').attr('disabled', 'disabled');
-    $('#vendorpanno').attr('disabled', 'disabled');
-    $('#txtTINType').attr('disabled', 'disabled');
-    $('#txtTINNo').removeAttr('disabled');
-
-
-    $('#vendorname').attr('disabled', 'disabled');
-    $('#ddlNatureEstaiblishment').attr('disabled', 'disabled');
-
-    //hide tags
-    $('#bankForm').hide();
-    $('#financeform').hide();
-
-    $('#ddlpreferredTime').val(prefferredTZ).trigger('change') //abheedev 28/11/2022 bug 530
-    GetFinancialDetail(parseInt(childid))
-    GetBankDetail(parseInt(childid), customerid, parseInt(vendorid))
-
-
-
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     setTimeout(function () {
 
-        $('#ddlState').val(regionKey).trigger('change')
-    }, 2000)
+
+        let customerid = parseInt(sessionStorage.getItem('CustomerID'));
+        $("#filegst").hide()
+        $("#filepan").hide()
 
 
-    setTimeout(function () {
-
-        $('#ddlCity').val(cityid).trigger('change')
-    }, 2000)
+        /* $('.coun_stat_city_select').hide()
+         $('.coun_stat_city').show();*/
 
 
-    $('#ddllanguage').val(Langu).trigger('change')
-    $('#ddlcurrency').val(currency).trigger('change')
-    $('#txtTINType').val(taxIdType).trigger('change')
-    $('#txtTINType2').val(taxIdType2).trigger('change')
+        $('#childDetailsForm').removeClass('hide')
+        $("#bankaccordion").show()
+        $("#financeaccordion").show()
+        /* $('#ddlCountrylabel').text(country)
+         $('#ddlStatelabel').text(state)
+         $('#ddlCitylabel').text(city)*/
 
-    showGST()
-    showPAN()
+        $('#hdnFlagType').val(buttonname);
+        $('#hdnChildID').val(childid);
 
-    $('#AddAssociate').addClass('hide');
-    $('#buttoncompanyupdate').show();
+        jQuery("#hdnParticipantID").val(vendorid);
+        $("#hdnParticipantCode").val(vendorcode);
+        jQuery("#vendorname").val(vname);
+        jQuery("#vendoraddress").val(StringDecodingMechanism(addr));
 
+        jQuery("#vendorpanno").val(pan);
+
+        jQuery("#txtTINNo").val(gst);
+        jQuery("#txtPhoneNo").val(phone);
+        jQuery("#txtMobileNo").val(mobile);
+        jQuery("#txtcompanyemail").val(emailid);
+        jQuery("#txtAlternateeMailID").val(alternateemailid);
+        jQuery("#pincode").val(zipcode)
+
+        $('#ddlCountry').val(countryKey || "IN").trigger('change')
+
+
+        //company specific
+
+        jQuery("#ddlNatureEstaiblishment").val("Private Limited Company");
+        $('#ddlVendorType').val(supplierType).trigger('change')
+        $('#ddlMSME').val(msmeCheck).trigger('change')
+        $('#ddlMSMEClass').val(msmeType).trigger('change')
+
+        $('#txtUdyam').val(msmeNo)
+        $('#msmeattach').html(msmeFile)
+        $('#gstattach').html(taxIdFile)
+        $('#panattach').html(taxId2File)
+
+        //Bank specific
+        $('#ddPayTerms').val("0").trigger('change')
+        $('#ifsccode').val("")
+        $('#bankname').val("")
+        $('#bankaccount').val("")
+        $('#accountholder').val("")
+        $('#checkattach').html("")
+
+        //finance specific
+
+
+
+
+        $('#ddlCountry').attr('disabled', 'disabled');
+        $('#vendorpanno').attr('disabled', 'disabled');
+        $('#txtTINType').attr('disabled', 'disabled');
+        $('#txtTINNo').removeAttr('disabled');
+
+
+        $('#vendorname').attr('disabled', 'disabled');
+        $('#ddlNatureEstaiblishment').attr('disabled', 'disabled');
+
+        //hide tags
+        $('#bankForm').hide();
+        $('#financeform').hide();
+
+        $('#ddlpreferredTime').val(prefferredTZ).trigger('change') //abheedev 28/11/2022 bug 530
+        GetFinancialDetail(parseInt(childid))
+        GetBankDetail(parseInt(childid), customerid, parseInt(vendorid))
+
+
+
+
+        setTimeout(function () {
+
+            $('#ddlState').val(regionKey).trigger('change')
+        }, 2000)
+
+
+        setTimeout(function () {
+
+            $('#ddlCity').val(cityid).trigger('change')
+        }, 2000)
+
+
+        $('#ddllanguage').val(Langu).trigger('change')
+        $('#ddlcurrency').val(currency).trigger('change')
+        $('#txtTINType').val(taxIdType).trigger('change')
+        $('#txtTINType2').val(taxIdType2).trigger('change')
+
+        showGST()
+        showPAN()
+
+        $('#AddAssociate').addClass('hide');
+        $('#buttoncompanyupdate').show();
+
+        jQuery.unblockUI();
+
+
+    }, 500);
 
 
 }
@@ -1761,8 +1774,20 @@ function UpdateCompanyDetail() {
         msmefilename = jQuery('#filemsme').val().substring(jQuery('#filemsme').val().lastIndexOf('\\') + 1)
         msmefilename = msmefilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
     }
+    if (jQuery("#txtTINType option:selected").val() == "IN3") {
 
-    let encodedvendoraddress = StringEncodingMechanism($('#vendoraddress').val())
+        if (gstfilename == "" || panfilename == "") {
+            jQuery("#errordiv").text("please attach GST/PAN attach to proceed...");
+            profileerror.show();
+            profileerror.fadeOut(5000);
+            App.scrollTo(profileerror, -200);
+            jQuery.unblockUI();
+            return false;
+
+        }
+    }
+
+    let encodedvendoraddress = StringEncodingMechanism(($('#vendoraddress').val()).replace(/[,|-]/g, " "))
 
     let data = {
         "ChildId": parseInt($('#hdnChildID').val()),
@@ -1806,6 +1831,23 @@ function UpdateCompanyDetail() {
         dataType: "json",
         success: function (data) {
 
+            if ($('#filegst').val() != '') {
+                fnUploadFilesonAzure('filegst', gstfilename, 'VR/' + $('#hdnChildID').val());
+
+            }
+
+            if ($('#filepan').val() != '') {
+                fnUploadFilesonAzure('filepan', panfilename, 'VR/' + $('#hdnChildID').val());
+
+            }
+
+            if ($('#filemsme').val() != '') {
+                fnUploadFilesonAzure('filemsme', msmefilename, 'VR/' + $('#hdnChildID').val());
+
+            }
+
+
+
             profileerror.hide();
             jQuery.unblockUI();
             jQuery("#success").text("Your Company specific details updated successfully..");
@@ -1825,6 +1867,7 @@ function UpdateCompanyDetail() {
             jQuery.unblockUI();
         }
     });
+
 }
 
 
@@ -1897,6 +1940,10 @@ function UpdateBankDetail() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
+            if ($('#filecheck').val() != '') {
+                fnUploadFilesonAzure('filecheck', checkfilename, 'VR/' + $('#hdnChildID').val());
+
+            }
 
             console.log("success")
 
@@ -2114,7 +2161,7 @@ function GetFinancialDetail(ChildId) {
         cache: false,
         dataType: "json",
         success: function (childData) {
-            debugger
+
             if (childData.length > 0) {
                 $('#tblGetFinancialDetail').empty()
                 $('#tblGetFinancialDetail').append("<thead><tr><th class='hide'></th><th>Turn Over</th><th>Financial Year</th></tr></thead><tbody>")
@@ -2152,32 +2199,38 @@ function GetFinancialDetail(ChildId) {
 
 
 function Addanother() {
-    debugger
-    $("#bankaccordion").hide()
-    $("#financeaccordion").hide()
-    $('#hdnFlagType').val("Add");
-    $("#childDetailsForm").removeClass('hide')
-    $("#AddAssociate").removeClass('hide');
-    $("#buttoncompanyupdate").hide()
-    $("#buttonbankupdate").hide()
-    $("#buttonfinancialupdate").hide()
-    $("#tblGetBankDetail").hide()
-    $("#tblGetFinancialDetail").hide()
-    $("#btnAddBank").hide()
-    $("#btnAddFinance").hide()
-    $("#editgst").hide()
-    $("#editpan").hide()
-    $("#bankForm").show()
-    $("#financeform").show()
-    cleanAddChild()
 
-    $("#txtTINNo").attr("onchange", "");
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+
+    setTimeout(function () {
+        $("#bankaccordion").hide()
+        $("#financeaccordion").hide()
+        $('#hdnFlagType').val("Add");
+        $("#childDetailsForm").removeClass('hide')
+        $("#AddAssociate").removeClass('hide');
+        $("#buttoncompanyupdate").hide()
+        $("#buttonbankupdate").hide()
+        $("#buttonfinancialupdate").hide()
+        $("#tblGetBankDetail").hide()
+        $("#tblGetFinancialDetail").hide()
+        $("#btnAddBank").hide()
+        $("#btnAddFinance").hide()
+        $("#editgst").hide()
+        $("#editpan").hide()
+        $("#bankForm").show()
+        $("#financeform").show()
+        cleanAddChild()
+
+        $("#txtTINNo").attr("onchange", "");
+        jQuery.unblockUI()
+    }, 400)
+
 }
 
 
 function AddAssociateVendorDetail() {
 
-    debugger
+
     let data = '';
     if ($('#gstattach').html() !== '') {
         gstfilename = $('#gstattach').html();
@@ -2211,7 +2264,7 @@ function AddAssociateVendorDetail() {
     if (jQuery("#txtTINType option:selected").val() == "IN3") {
 
         if (gstfilename == "" || panfilename == "") {
-            jQuery("#error").text("please attach GST/PAN number to proceed...");
+            jQuery("#errordiv").text("please attach GST/PAN number to proceed...");
             profileerror.show();
             profileerror.fadeOut(5000);
             App.scrollTo(profileerror, -200);
@@ -2220,7 +2273,7 @@ function AddAssociateVendorDetail() {
         }
     }
     let encodedvendoraddress = StringEncodingMechanism($('#vendoraddress').val())
-    debugger
+
     if (jQuery("#txtTINType option:selected").val() == "") {
         data = {
             "Address": encodedvendoraddress,
@@ -2292,7 +2345,22 @@ function AddAssociateVendorDetail() {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            debugger
+
+
+            if ($('#filegst').val() != '') {
+                fnUploadFilesonAzure('filegst', gstfilename, 'VR/' + data.returnId);
+
+            }
+
+            if ($('#filepan').val() != '') {
+                fnUploadFilesonAzure('filepan', panfilename, 'VR/' + data.returnId);
+
+            }
+
+            if ($('#filemsme').val() != '') {
+                fnUploadFilesonAzure('filemsme', msmefilename, 'VR/' + data.returnId);
+
+            }
             profileerror.hide();
             jQuery.unblockUI();
             jQuery("#success").text("Your New Company is added successfully..");
@@ -2303,7 +2371,7 @@ function AddAssociateVendorDetail() {
 
         },
         error: function (xhr, status, error) {
-            debugger
+
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -2557,6 +2625,7 @@ function GetCustomerForBankMapping(vendid, ChildId, bankingId) {
 
 
 function UpdateBankMapping() {
+
     if ($('#mapbankcustomer').val() === '0') {
 
         jQuery("#errordiv1").show();
@@ -2885,7 +2954,7 @@ function FormValidateCompany() {
         },
         submitHandler: function (form) {
 
-            debugger
+
             AddAssociateVendorDetail()
         }
     });
@@ -2968,7 +3037,7 @@ function FormValidateBank() {
 //unregistered vendor
 
 $('#txtTINType').on('change', function () {
-    debugger
+
     let Taxtype = $(this).val();
     if (Taxtype == "") {
 
@@ -2998,5 +3067,12 @@ $('#txtTINType').on('change', function () {
 
 }
 )
+
+let vendorchildId = '';
+function DownloadFile(aID) {
+
+    vendorchildId = $('#hdnChildID').val()
+    fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + vendorchildId);
+}
 
 
