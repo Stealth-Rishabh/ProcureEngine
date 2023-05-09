@@ -11,8 +11,11 @@ var ApprSeqval = [];
 
 var lstActivityData = [];
 var objActivity = {};
-let SOBID = 0
+
+fetchProjectMaster();
+
 if (window.location.search) {
+
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
     idx = parseInt(getUrlVarsURL(decryptedstring)["nfaIdx"]);
@@ -24,6 +27,7 @@ if (window.location.search) {
     else {
         $('#divreverted').addClass('hide')
     }
+
     GetOverviewmasterbyId(idx);
 }
 
@@ -32,6 +36,7 @@ function cancelbid() {
 }
 //$('#cancelNFABtn').attr('onClick', `CancelBidDuringConfig(${idx}, "NFA")`);
 jQuery(document).ready(function () {
+
     $(".thousand").inputmask({
         alias: "decimal",
         rightAlign: false,
@@ -49,7 +54,7 @@ jQuery(document).ready(function () {
         limitReachedClass: "label label-danger",
         alwaysShow: true
     });
-    fetchProjectMaster();
+
 });
 
 function FetchRecomendedVendor() {
@@ -304,7 +309,7 @@ var FormWizard = function () {
 
 
                     if (index == 1) {
-                        debugger
+
                         if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
                             $('#ddlBudget').val('NB');
                         }
@@ -356,7 +361,7 @@ var FormWizard = function () {
                                 BindSaveparams();
                                 BindAttachmentsOfEdit();
 
-                                fetchReguestforQuotationDetails();
+                                //fetchReguestforQuotationDetails();
                             }
                             SaveFirstTabActivity();
                         }
@@ -540,15 +545,15 @@ function bindNFAOverViewMaster() {
 //abheedev backlog 286
 
 function GetOverviewmasterbyId(idx) {
-    debugger
+
     var x = isAuthenticated();
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
-        debugger
+
         if (res.result != null) {
             if (res.result.length > 0) {
-                SOBID = res.result[0].sobId
+
                 let _cleanStringSub = StringDecodingMechanism(res.result[0].nfaSubject);
                 let _cleanStringDet = StringDecodingMechanism(res.result[0].nfaDescription);
                 $("#txtEventref").val(res.result[0].eventReftext);
@@ -579,7 +584,7 @@ function GetOverviewmasterbyId(idx) {
                 else {
                     $(".isProject").show();
                 }
-                $("#txtProjectName").val(res.result[0].projectName);
+
                 $("#ddlBudget").val(res.result[0].budgetStatus);
 
                 //abheedev 16/03/2023
@@ -598,6 +603,8 @@ function GetOverviewmasterbyId(idx) {
                     bindConditionDDL()
                     $("#ddlCondition").val(res.result[0].conditionID).trigger('change');
                 }, 700)
+
+                $("#txtProjectName").val(res.result[0].projectName).trigger('change');
             }
         }
     });
@@ -1036,7 +1043,7 @@ $("#txtProjectName").on("keyup", function () {
 
 //abheedev backlog 286
 function Savedata() {
-    debugger
+
     var x = isAuthenticated();
     var overviewList = [];
     var p_title = $("#txtTitle").val();
@@ -1050,7 +1057,7 @@ function Savedata() {
     var p_Budget = removeThousandSeperator(_budget);
     var p_category = $("#ddlCategory option:selected").val();
     var p_currency = $("#dropCurrency option:selected").val();
-    var p_projectname = $("#txtProjectName").val();
+    var p_projectname = $("#txtProjectName option:selected").val();
     var budgetStatus = $("#ddlBudget option:selected").val();
     var p_eventType = $("#ddlEventType option:selected").val();
     var p_eventID = sessionStorage.getItem("hdnEventrefId");
@@ -1075,8 +1082,8 @@ function Savedata() {
         PurchaseGroup: parseInt($('#ddlPurchasegroup option:selected').val()),
         conditionID: parseInt($("#ddlCondition option:selected").val()),
         CreatedBy: UserID,
-        UpdatedBy: UserID,
-        SOBId: SOBID
+        UpdatedBy: UserID
+
     }
     overviewList.push(model);
 
@@ -1085,8 +1092,7 @@ function Savedata() {
     var GetData = callajaxReturnSuccess(url, "Post", JSON.stringify(overviewList));
 
     GetData.success(function (res) {
-        debugger
-        SOBID = res.sobResult[0].returnId
+
         if (res.result != null) {
 
             if (res.result.length > 0) {
@@ -1106,7 +1112,7 @@ function Savedata() {
 };
 
 function Savetab2Data() {
-    debugger
+
     var x = isAuthenticated();
     var url = "NFA/InsUpdateOverViewParamText?customerId=" + parseInt(CurrentCustomer) + "&NfaIdx=" + parseInt(idx);
 
@@ -1235,7 +1241,7 @@ function Bindtab1DataforPreview() {
     //abheedev bug 385 end
     $("#lblCurrency").text($("#dropCurrency option:selected").text());
     $("#lblCategory").text($("#ddlCategory option:selected").text());
-    $("#lblProjectName").text($("#txtProjectName").val());
+    $("#lblProjectName").text($("#txtProjectName option:selected").text());
     $("#lblbudget").text($("#ddlBudget option:selected").text());
 
     $("#lblPurOrg").text($("#ddlPurchaseOrg option:selected").text());
@@ -1485,7 +1491,7 @@ function BindAttachmentsOfEdit() {
 
 
 function SaveFirstTabActivity() {
-    debugger
+
     var x = isAuthenticated();
     objActivity = {
         FromUserId: UserID,
@@ -1774,7 +1780,7 @@ function fetchReguestforQuotationDetails() {
  fetchProjectName start
  */
 function fetchProjectMaster() {
-
+    debugger
     var url = sessionStorage.getItem("APIPath") + "ProjectMaster/fetchProjectMasterCust/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&status=Y";// + sessionStorage.getItem('UserID') + "&status=Y";
     jQuery.ajax({
         type: "GET",
@@ -1784,8 +1790,10 @@ function fetchProjectMaster() {
         cache: false,
         crossDomain: true,
         processData: true,
+        async: false,
         dataType: "json",
         success: function (data) {
+
             jQuery("#txtProjectName").empty();
             jQuery("#txtProjectName").append(jQuery("<option></option>").val("").html("Select Project"));
             if (data.length > 0) {
