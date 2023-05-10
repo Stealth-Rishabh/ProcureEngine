@@ -182,6 +182,7 @@
             </div>
         </div>
     </div>
+    <!-- added for self registration -->
     <div id="registerParticipantModal" class="modal bs-modal-lg" aria-hidden="true">
         <div class="modal-dialog modal-xxl">
             <div class="row">
@@ -206,7 +207,7 @@
                                     <span id="spanerrorvendor"> </span>
                                 </div>
 
-                              
+
                                 <form action="#" id="submit_form" class="form-horizontal">
                                     <div class="form-body">
 
@@ -414,17 +415,17 @@
                                                                 <div class="form-group">
                                                                     <div class="col-md-12">
                                                                         <label class="col-md-2 control-label" id="taxlabel">
-                                                                            Tax Type <span class="required">*</span>
+                                                                            Tax Type
                                                                         </label>
                                                                         <div class="col-md-4 xyz">
                                                                             <select class="form-control" name="txtTINType" id="txtTINType" tabindex="4">
                                                                             </select>
 
                                                                         </div>
-                                                                        <label class="col-md-2 control-label" id="taxlabel">
+                                                                        <label class="col-md-2 control-label nogsthide" id="taxlabel">
                                                                             Tax Type 2
                                                                         </label>
-                                                                        <div class="col-md-4 xyz">
+                                                                        <div class="col-md-4 xyz nogsthide">
                                                                             <select class="form-control" name="txtTINType2" id="txtTINType2" tabindex="4">
                                                                             </select>
 
@@ -432,11 +433,11 @@
                                                                     </div>
                                                                 </div>
 
-                                                                <div class="form-group">
+                                                                <div class="form-group nogsthide">
                                                                     <div class="col-md-12">
                                                                         <span class="tax-group">
                                                                             <label class="col-md-2 control-label" data-i18n="state">
-                                                                                Tax Id<span class="required"> *</span> 
+                                                                                Tax Id
                                                                             </label>
                                                                             <div class="col-md-4 xyz">
                                                                                 <input type="text" class="form-control" id="txtTINNo" name="txtTINNo" autocomplete="off" tabindex="1">
@@ -445,7 +446,7 @@
 
                                                                         <span class="pan-group">
                                                                             <label class="col-md-2 control-label ">
-                                                                                Tax Id 2 
+                                                                                Tax Id 2
                                                                             </label>
                                                                             <div class="col-md-4 xyz">
 
@@ -461,12 +462,50 @@
                                                                     </div>
                                                                 </div>
 
+                                                                <div class="form-group nogsthide">
+                                                                    <div class="col-md-12">
+                                                                        <label class="control-label col-md-2 control-label">
+                                                                            Attach TAX
+                                                                        </label>
+                                                                        <div class="col-md-4 xyz">
 
+                                                                            <div class="inputgroup">
+                                                                                <div class="att_input">
+                                                                                    <input type="file" class="form-control" tabindex="5" id="filegst" onchange="checkfilesize(this)">
+
+
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                        <label class="control-label col-md-2 control-label">
+                                                                            Attach TaxId 2
+                                                                        </label>
+                                                                        <div class="col-md-4 xyz">
+
+                                                                            <div class="inputgroup">
+                                                                                <div class="att_input">
+                                                                                    <input type="file" class="form-control" tabindex="5" id="filepan" onchange="checkfilesize(this)">
+
+
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+
+
+
+
+
+
+
+                                                                    </div>
+                                                                </div>
 
                                                                 <div class="form-group">
                                                                     <div class="col-md-12">
                                                                         <label class="col-md-2 control-label " data-i18n="companyname">
-                                                                            Company Name<span class="required"> *</span> 
+                                                                            Company Name<span class="required"> *</span>
                                                                         </label>
                                                                         <div class="col-md-4 xyz">
 
@@ -598,7 +637,7 @@
                                         </div>
 
                                     </div>
-                                  
+
 
                                 </form>
 
@@ -619,7 +658,7 @@
     <script type="text/javascript">
         jQuery(document).ajaxStart(jQuery.blockUI({ message: '<h5><img src="./assets/global/img/loading.gif" /> Please Wait...</h5>' })).ajaxStop(jQuery.unblockUI);
         jQuery(document).ready(function () {
-             debugger
+            debugger
             /* let js = [];
              js.push("assets/CustomJS/Auction.js?v=" + Math.random());
              js.push("assets/scripts/custom/login.js?v=" + Math.random());
@@ -629,7 +668,7 @@
              }*/
             Pageloaded()
             setInterval(function () { Pageloaded() }, 15000);
-           
+
             App.init();
             Login.init();
             FormValidate();
