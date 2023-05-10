@@ -1,5 +1,8 @@
 var idx = 0;
+var fromUserID = 0; 
 var allUsers = [];
+var error = $('#errordiv');
+
 $(document).ready(function () {
 
     var path = window.location.pathname;
@@ -395,6 +398,7 @@ function fetchApproverStatus() {
         processData: true,
         dataType: "json",
         success: function (data) {
+            debugger
             var status = '';
             var c = 0;
             var ApprovalType = ""
@@ -404,13 +408,20 @@ function fetchApproverStatus() {
                 var counterColor = 0;
                 var prevseq = '1';
                 for (var i = 0; i < data.length; i++) {
+                   /* if (data[i].statusCode == 0) {
+                        jQuery('#divappendstatusbar').append(`<div class="col-md-2 mt-step-col first popApprove" id="divstatuscolor${i}"><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id="divlevel${i}"></div><div class="mt-step-title font-grey-cascade" id="divapprovername${i}" style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id="divstatus${i}"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id="divPendingDate${i}"></div></div></div></div>`)
+                    }
+                    else if (data[i].statusCode == 20) {
+                        jQuery('#divappendstatusbar').append(`<div class="col-md-2 mt-step-col first popApprove" id="divstatuscolor${i}"><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id="divlevel${i}"></div><div class="mt-step-title font-grey-cascade" id="divapprovername${i}" style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id="divstatus${i}"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id="divPendingDate${i}"></div></div></div></div>`)
+                    }
+                    else {*/
+                        jQuery('#divappendstatusbar').append(`<a href="javascript:;" data-toggle="modal" data-target="#appmodpop" onclick="popapprfunc('${data[i].approverName}','${data[i].approverID}')"><div class="col-md-2 mt-step-col first popApprove" id="divstatuscolor${i}"><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id="divlevel${i}"></div><div class="mt-step-title font-grey-cascade" id="divapprovername${i}" style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id="divstatus${i}"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id="divPendingDate${i}"></div></div></div></div></a>`)
 
-                    jQuery('#divappendstatusbar').append('<div class="col-md-2 mt-step-col first" id=divstatuscolor' + i + '><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id=divlevel' + i + '></div><div class="mt-step-title font-grey-cascade" id=divapprovername' + i + ' style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divstatus' + i + '></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divPendingDate' + i + '></div></div></div></div>')
+                    //}
                     jQuery('#divlevel' + i).text(data[i].approverSeq);
                     jQuery('#divapprovername' + i).text(data[i].approverName);
                     jQuery('#divPendingDate' + i).text(fnConverToLocalTime(data[i].receiptDt));
                     ApprovalType = data[0].approvalType;
-
                     if (data[i].statusCode == 10) {
 
                         counterColor = counterColor + 1;
@@ -428,10 +439,11 @@ function fetchApproverStatus() {
                     if (data[i].statusCode == 0) {
                         counterColor = counterColor + 1;
                         status = 'Delegate'
+                        jQuery('#divstatuscolor' + i).addClass('font-blue')
                         jQuery('#divstatus' + i).text(status);
                         jQuery('#divstatuscolor' + i).addClass('last');
                     }
-                    if (data[i].statusCode == 1) {
+                    if (data[i].statusCode == 1) {  
                         counterColor = counterColor + 1;
                         status = 'N/A'
                         jQuery('#divstatus' + i).text(status);
@@ -596,11 +608,13 @@ var success1 = $('.alert-success', form1);
 var form2 = $('#delegateuser');
 var error2 = $('.alert-danger', form2);
 var success2 = $('.alert-success', form2);
+var form3 = $('#formDelegate');
+var error3 = $('.alert-danger', form3);
+var success3 = $('.alert-success', form3);
 var formrecall = $('#frmadminbuttonsrecall');
 var errorrecall = $('.alert-danger', formrecall);
 var successrecall = $('.alert-success', formrecall);
 function validateAppsubmitData() {
-
 
     form1.validate({
         errorElement: 'span',
@@ -704,6 +718,58 @@ function validateAppsubmitData() {
             DelegateUser();
         }
     });
+
+    form3.validate({
+        errorElement: 'span',
+        errorClass: 'help-block',
+        focusInvalid: false,
+        ignore: "",
+
+        rules: {
+            txtDeligateName: {
+                required: true,
+            },
+            remarkAprv: {
+                required: true,
+            }
+        },
+        messages: {
+            txtDeligateName: {
+                required: "Please select delegate user"
+            },
+
+            remarkAprv: {
+                required: "Please enter your remarks"
+            }
+        },
+
+        invalidHandler: function (event, validator) {
+            success3.hide();
+            error3.show();
+
+        },
+
+        highlight: function (element) {
+            $(element)
+                .closest('.form-group').addClass('has-error');
+        },
+
+        unhighlight: function (element) {
+            $(element)
+                .closest('.form-group').removeClass('has-error');
+        },
+
+        success: function (label) {
+            label
+                .closest('.form-group').removeClass('has-error');
+        },
+
+        submitHandler: function (form) {
+            PostNewApprover();
+        }
+
+    });
+
     formrecall.validate({
         errorElement: 'span',
         errorClass: 'help-block',
@@ -1496,3 +1562,63 @@ function fngeneratePDF() {
     }
 
 }
+    
+
+function popapprfunc(approverName, approverID) {
+    console.log(allUsers)
+    fromUserID = approverID; 
+    jQuery("#fromApproveUser").empty();
+    jQuery('#fromApproveUser').append('<tr><th>Delegate Approver</th></tr>')
+    jQuery('#fromApproveUser').append('<tr><td>' + approverName + '</td></tr>')
+    jQuery("#txtDeligateName").empty();
+    jQuery("#txtDeligateName").append(jQuery("<option></option>").val("").html("Select Project"));
+    if (allUsers.length > 0) {
+        for (var i = 0; i < allUsers.length; i++) {
+            jQuery("#txtDeligateName").append(jQuery("<option></option>").val(allUsers[i].userID).html(StringDecodingMechanism(allUsers[i].userName)));
+
+        }
+    }
+ 
+}
+
+
+function PostNewApprover() {
+    jQuery('.btnhide').attr('disabled', 'disabled')
+    var delegateTOID = $("#txtDeligateName").val();
+    var data = {
+        "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
+        "NFAID": idx,
+        "FromUserId": fromUserID,
+        "Remarks": $("#remarkAprv").val(),
+        "Action": 'Delegate',
+        "DelgateTo": delegateTOID
+    } 
+    console.log(data);
+    if (fromUserID == delegateTOID) {
+        jQuery(".alert-danger").html("Can not delegate to the same approver...");
+        console.log("Can not delegate to the same approver...")
+        $('.btnhide').removeAttr("disabled");
+        return false;
+    } 
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "NFA/NFADelegate",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: JSON.stringify(data),
+        type: "POST",
+        cache: false,
+        crossDomain: true,
+        processData: true,
+        dataType: "json",
+        contentType: "application/json",
+        success: function (data) {
+            console.log(data);
+            setTimeout(function () {
+                window.location.reload();
+            }, 1000);
+        }
+    });
+
+    jQuery.unblockUI();
+}
+
