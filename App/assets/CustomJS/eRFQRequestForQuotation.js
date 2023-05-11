@@ -2886,11 +2886,17 @@ function RFQInviteVendorTab3() {
 
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    var InsertQuery = '';
 
-    $("#selectedvendorlistsPrev> tbody > tr").each(function (index) {
+
+    var Vendorlist = [];
+    $("#selectedvendorlistsPrev> tbody > tr").each(function () {
         if ($.trim($(this).find('td:eq(0)').html()) != 'undefined' && $.trim($(this).find('td:eq(0)').html()) != "" && $.trim($(this).find('td:eq(0)').html()) != null) {
-            InsertQuery = InsertQuery + $.trim($(this).find('td:eq(0)').html()) + ','
+
+            var VendorChildAssociation = {
+                "VendorId": parseInt($.trim($(this).find('td:eq(0)').html())),
+                "ChildId": parseInt($.trim($(this).find('td:eq(1)').html())),
+            }
+            Vendorlist.push(VendorChildAssociation);
         }
         else {
             $('.alert-danger').show();
@@ -2919,7 +2925,7 @@ function RFQInviteVendorTab3() {
     ET = ET.substring(0, ET.indexOf("GMT"));
     ET = ET + 'GMT' + sessionStorage.getItem('utcoffset');
     var Tab3data = {
-        "BidVendors": InsertQuery,
+        "BidVendors": Vendorlist,
         "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
         "UserID": sessionStorage.getItem('UserID'),
         //"subject": jQuery('#txtrfqSubject').val(),
@@ -3023,7 +3029,7 @@ function fnsubmitRFQ() {
 
 var vCount = 0;
 $("#chkAll").click(function () {
-    debugger
+
     if ($("#chkAll").is(':checked') == true) {
         $('#divvendorlist').find('span#spandynamic').hide();
         $('table#tblvendorlist').closest('.inputgroup').removeClass('has-error');
@@ -3031,15 +3037,16 @@ $("#chkAll").click(function () {
         jQuery('#selectedvendorlistsPrev> tbody').empty()
         vCount = 0;
         $("#tblvendorlist> tbody > tr").each(function (index) {
-            debugger
+
             $(this).find("span#spanchecked").addClass("checked");
             $('#chkvender' + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true);
-            var vendorid = $('#chkvender' + $.trim($(this).find('td:eq(0)').html())).val()
+            var vendorid = parseInt($('#vendorTblId').text());
+            var childid = parseInt($('#childTblId').text());
             var v = vCount;
             vCount = vCount + 1;
-            var vname = $.trim($(this).find('td:eq(2)').html())
-            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorid + '><td class=hide>' + vendorid + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorid + ',' + 'chkvender' + v + ',SelecetedVendorPrev' + vendorid + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
-            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorid + '><td class=hide>' + vendorid + '</td><td>' + vname + '</td></tr>')
+            var vname = $.trim($(this).find('td:eq(3)').html())
+            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + childid + '><td class=hide>' + vendorid + '</td><td class=hide>' + childid + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + childid + ',' + 'chkvender' + v + ',SelecetedVendorPrev' + childid + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + childid + '><td class=hide>' + vendorid + '</td><td class=hide>' + childid + '</td><td>' + vname + '</td></tr>')
 
         });
     }
@@ -3064,7 +3071,7 @@ $("#chkAll").click(function () {
 
 });
 
-function Check(event, vname, vendorID) {
+function Check(event, vname, vendorID, childID) {
 
     if ($(event).closest("span#spanchecked").attr('class') == 'checked') {
         $(event).closest("span#spanchecked").removeClass("checked")
@@ -3076,8 +3083,8 @@ function Check(event, vname, vendorID) {
         //var EvID = event.id;
         $(event).prop("disabled", true);
         $(event).closest("span#spanchecked").addClass("checked")
-        jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorID + ',SelecetedVendorPrev' + vendorID + ',' + vendorID + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
-        jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td></tr>')
+        jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + childID + '><td class=hide>' + vendorID + '</td><td class=hide>' + childID + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + childID + ',SelecetedVendorPrev' + childID + ',' + childID + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+        jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + childID + '><td class=hide>' + vendorID + '</td><td class=hide>' + childID + '</td><td>' + vname + '</td></tr>')
         $('#divvendorlist').find('span#spandynamic').hide();
 
         $('table#tblvendorlist').closest('.inputgroup').removeClass('has-error');
@@ -3771,7 +3778,7 @@ function isDate(ExpiryDate) {
     return true;
 }
 function fnSeteRFQparameterTable() {
-    debugger
+
     var rowCount = jQuery('#temptableForExcelDataparameter tr').length;
     if (rowCount > 0) {
         $("#success-excelparameter").hide();
@@ -3869,7 +3876,7 @@ var sCounter = 0;
 var st = true;
 var ErrorMszDuplicate = '';
 function handleFileparameterBoq(e) {
-    debugger
+
     //Get the files from Upload control
     var files = e.target.files;
     var i, f;
@@ -3881,7 +3888,7 @@ function handleFileparameterBoq(e) {
     $("#error-excelparameterB").hide();
     $("#temptableForExcelDataparameter").empty();
     $('#modalLoaderparameterBoq').removeClass('display-none');
-    debugger
+
     //Loop through files
     for (i = 0, f = files[i]; i != files.length; ++i) {
         var reader = new FileReader();
@@ -3903,7 +3910,7 @@ function handleFileparameterBoq(e) {
                 //console.log(roa)
                 //var roa = XLSX.utils.sheet_to_json(workbook.Sheets[sheet1]);
                 if (sheet1 == "Summary") {
-                    debugger
+
                     sheetcount = roa.length;
                     if (totalsheets != sheetcount) {
                         $('#modalLoaderparameterBoq').addClass('display-none');
@@ -3919,12 +3926,12 @@ function handleFileparameterBoq(e) {
                         result = roa;
                         //console.log(st)
                         if (st == true) {
-                            debugger
+
                             printDataparameterBoq(result, sheet1)
                             sCounter = sCounter + 1;
                         }
                         else {
-                            debugger
+
                             $('#modalLoaderparameterBoq').addClass('display-none');
                             return false;
                         }
@@ -3942,7 +3949,7 @@ var numberOnly = /^\d+(?:\.\d{1,3})?$/;
 var srnoonly = /^\d+/;
 
 function printDataparameterBoq(result, sheet) {
-    debugger
+
     var loopcount = result.length; //getting the data length for loop.
     if (loopcount > 0) {
 
@@ -4114,7 +4121,7 @@ function printDataparameterBoq(result, sheet) {
             }
 
         } // for loop ends
-        debugger
+
         var seen = {};
         $('#temptableForExcelDataparameter tr ').each(function (index) {
             var txt = $("td:first-child", $(this)).text();
@@ -4360,6 +4367,7 @@ jQuery("#txtSearch").typeahead({
         jQuery.each(data, function (i, username) {
 
             vName = username.participantName + ' (' + username.companyEmail + ')' + " " + (username.stateName).toUpperCase()
+
             map[vName] = username;
             usernames.push(vName);
         });
@@ -4368,16 +4376,16 @@ jQuery("#txtSearch").typeahead({
     },
     minLength: 2,
     updater: function (item) {
-        debugger
-        if (map[item].participantID != "0") {
+
+        if (map[item].associatedVendorID != "0") {
 
             vName = map[item].participantName + '(' + map[item].companyEmail + ')' + " " + (map[item].stateName).toUpperCase();
 
-            jQuery('#tblvendorlist').append("<tr id=vList" + map[item].associatedVendorID + " ><td class='hide'>" + map[item].associatedVendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].associatedVendorID + "'\)\"; id=\"chkvender" + map[item].associatedVendorID + "\" value=" + map[item].associatedVendorID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>");
+            jQuery('#tblvendorlist').append("<tr id=vList" + map[item].associatedVendorID + "><td class='hide' id='vendorTblId'>" + map[item].participantID + "</td><td class='hide' id='childTblId'>" + map[item].associatedVendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\,\'" + map[item].associatedVendorID + "'\)\"; id=\"chkvender" + map[item].associatedVendorID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>");
 
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
-                    debugger
+
                     //** remove from main table if already selected in selected List
                     if (map[item].associatedVendorID == $(this).find("td:eq(0)").text()) {
                         $('#vList' + map[item].associatedVendorID).remove();
@@ -4413,12 +4421,12 @@ function getCategoryWiseVendors(categoryID) {
         dataType: "json",
 
         success: function (data) {
-            debugger
+
             jQuery("#tblvendorlist > tbody").empty();
             var vName = '';
             for (var i = 0; i < data.length; i++) {
                 vName = data[i].vendorName + " " + data[i].stateName;
-                var str = "<tr id=vList" + data[i].mappedVendorIdentifier + "><td class='hide'>" + data[i].mappedVendorIdentifier + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].mappedVendorIdentifier + "'\)\"; id=\"chkvender" + data[i].mappedVendorIdentifier + "\" value=" + data[i].mappedVendorIdentifier + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " " + data[i].stateName + " </td></tr>";
+                var str = "<tr id=vList" + data[i].mappedVendorIdentifier + "><td class='hide' id='vendorTblId'>" + data[i].vendorID + "</td><td class='hide' id='childTblId'>" + data[i].mappedVendorIdentifier + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\,\'" + data[i].mappedVendorIdentifier + "'\)\"; id=\"chkvender" + data[i].mappedVendorIdentifier + "\" value=" + data[i].mappedVendorIdentifier + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " " + data[i].stateName + " </td></tr>";
                 jQuery('#tblvendorlist > tbody').append(str);
 
             }
@@ -4498,7 +4506,17 @@ function fnfillInstructionExcel() {
         }
     }
     $('#tblUOM').append("<tr><td colspan=2>&nbsp;</td></tr><tr><td colspan=2>&nbsp;</td></tr>")
-    $('#tblUOM').append('<tr><th data-style="Header"  colspan=2>Please ensure Target/Budget Price and Quantity and TAT should be in numbers only.</th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>1. Please ensure Target/Budget Price and Quantity and TAT should be in numbers only.</th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>2. The UOM and quantity fields should not be left blank. </th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>3. You may check the UOM in the instructions.</th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>4. When generating a BOQ, no fields should be left blank.</th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>5. The serial number must be numeric and in synchronized sequence. </th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>6. The spreadsheet must be in Excel workbook format.</th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>7. The UOM and quantity should be entered in the goods for which you want the vendor to quote.</th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>8. Description is a mandatory field.</th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>9.UOM/Quantity should be on child level only.</th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>10.Item service length should be 200 characters only.</th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>11.Item Services is a mandatory field.</th></tr>')
 }
 
 function addMoreTermsCondition() {
@@ -4591,7 +4609,7 @@ function FetchSAPPI() {
 
         },
         error: function (xhr) {
-            debugger
+
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
