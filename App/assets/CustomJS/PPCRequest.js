@@ -611,6 +611,7 @@ function GetOverviewmasterbyId(idx) {
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
+
         if (res.result != null) {
 
             if (res.result.length > 0) {
@@ -621,6 +622,7 @@ function GetOverviewmasterbyId(idx) {
                 $("#ddlEventType").val(res.result[0].eventID);
                 p_eventType = res.result[0].eventID;
                 setTimeout(function () {
+
                     GetEventRefData();
                     CKEDITOR.instances['txtRemark'].setData(res.result[0].remarks);
                     sessionStorage.setItem("hdnEventrefId", res.result[0].eventRefernce);
@@ -645,7 +647,8 @@ function GetOverviewmasterbyId(idx) {
 
 
 
-                $("#txtProjectName option:selected").text(res.result[0].projectName);
+
+
                 if (res.result[0].projectName != null || res.result[0].projectName != "") {
                     projectnamestatus = true;
                 }
@@ -657,22 +660,25 @@ function GetOverviewmasterbyId(idx) {
 
                 setTimeout(function () {
 
+                    $("#txtProjectName").val(res.result[0].projectName).trigger('change');
                     $("#ddlPurchaseOrg").val(res.result[0].purchaseOrg).trigger('change');
+                    $("#ddlCondition").val(res.result[0].conditionID).trigger('change');
                 }, 900)
 
                 setTimeout(function () {
 
 
                     $("#ddlPurchasegroup").val(res.result[0].purchaseGroup).trigger('change');
-                }, 3000)
+                }, 2000)
 
-                $("#ddlCondition").val(res.result[0].conditionID).trigger('change');
+
 
 
             }
         }
     });
     GetData.error(function (res) {
+
         jQuery.unblockUI();
     });
 };
@@ -2437,7 +2443,7 @@ function fetchProjectMaster() {
             jQuery("#txtProjectName").append(jQuery("<option></option>").val("").html("Select Project"));
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
-                    jQuery("#txtProjectName").append(jQuery("<option></option>").val(data[i].id).html(StringDecodingMechanism(data[i].projectName)));
+                    jQuery("#txtProjectName").append(jQuery("<option></option>").val(StringDecodingMechanism(data[i].projectName)).html(StringDecodingMechanism(data[i].projectName)));
 
                 }
             }
@@ -2460,7 +2466,6 @@ function fetchProjectMaster() {
         }
 
     });
-
 
 }
 

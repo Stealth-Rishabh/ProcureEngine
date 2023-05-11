@@ -360,8 +360,7 @@ var FormWizard = function () {
                             if (idx != 0) {
                                 BindSaveparams();
                                 BindAttachmentsOfEdit();
-
-                                //fetchReguestforQuotationDetails();
+                                fetchReguestforQuotationDetails();
                             }
                             SaveFirstTabActivity();
                         }
@@ -553,7 +552,7 @@ function GetOverviewmasterbyId(idx) {
 
         if (res.result != null) {
             if (res.result.length > 0) {
-
+                debugger
                 let _cleanStringSub = StringDecodingMechanism(res.result[0].nfaSubject);
                 let _cleanStringDet = StringDecodingMechanism(res.result[0].nfaDescription);
                 $("#txtEventref").val(res.result[0].eventReftext);
@@ -561,6 +560,7 @@ function GetOverviewmasterbyId(idx) {
                 $("#txtNFADetail").val(_cleanStringDet);
                 $("#ddlEventType").val(res.result[0].eventID);
                 setTimeout(function () {
+                    debugger
                     GetEventRefData();
                     CKEDITOR.instances['txtRemark'].setData(res.result[0].remarks);
                     sessionStorage.setItem("hdnEventrefId", res.result[0].eventRefernce);
@@ -590,21 +590,25 @@ function GetOverviewmasterbyId(idx) {
                 //abheedev 16/03/2023
 
                 setTimeout(function () {
+                    debugger
                     BindPurchaseOrg()
                     $("#ddlPurchaseOrg").val(res.result[0].purchaseOrg).trigger('change');
-                }, 900)
+                }, 500)
                 setTimeout(function () {
+                    debugger
                     bindPurchaseGroupDDL()
                     $("#ddlPurchasegroup").val(res.result[0].purchaseGroup).trigger('change');
-                }, 900)
+                }, 500)
 
 
                 setTimeout(function () {
+                    debugger
                     bindConditionDDL()
                     $("#ddlCondition").val(res.result[0].conditionID).trigger('change');
-                }, 700)
+                    $("#txtProjectName").val(res.result[0].projectName).trigger('change');
+                }, 500)
 
-                $("#txtProjectName").val(res.result[0].projectName).trigger('change');
+
             }
         }
     });
@@ -1057,7 +1061,7 @@ function Savedata() {
     var p_Budget = removeThousandSeperator(_budget);
     var p_category = $("#ddlCategory option:selected").val();
     var p_currency = $("#dropCurrency option:selected").val();
-    var p_projectname = $("#txtProjectName option:selected").val();
+    var p_projectname = $("#txtProjectName option:selected").text();
     var budgetStatus = $("#ddlBudget option:selected").val();
     var p_eventType = $("#ddlEventType option:selected").val();
     var p_eventID = sessionStorage.getItem("hdnEventrefId");
@@ -1750,6 +1754,7 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
+
             let dt = JSON.parse(RFQData[0].jsondata);
             $('#tblvendors').empty();
             if (dt.length > 0) {
@@ -1798,7 +1803,7 @@ function fetchProjectMaster() {
             jQuery("#txtProjectName").append(jQuery("<option></option>").val("").html("Select Project"));
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
-                    jQuery("#txtProjectName").append(jQuery("<option></option>").val(data[i].id).html(StringDecodingMechanism(data[i].projectName)));
+                    jQuery("#txtProjectName").append(jQuery("<option></option>").val(StringDecodingMechanism(data[i].projectName)).html(StringDecodingMechanism(data[i].projectName)));
 
                 }
             }
