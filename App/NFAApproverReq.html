@@ -875,6 +875,9 @@
                                                 <button id="btnraisequery" type="button" class="btn blue" href="#RaiseQuery" onclick="fnRaisequery()" data-toggle="modal">
                                                     Raise Query
                                                 </button>
+                                                <button id="btnaddapprovers" type="button" class="btn yellow-saffron" href="#addNFAApprovers" onclick="fnOpenPopupApprover()">
+                                                    Add Approvers
+                                                </button>
                                                 <button id="btnBack" type="button" class="btn yellow" onclick="Fnback()">
                                                     Close
                                                 </button>
@@ -903,7 +906,9 @@
                                         <button id="btnsubmitquery" type="button" onclick="fnsubmitQueryByCreator()" class="btn green-haze hide">
                                             Submit Query
                                         </button>
-
+                                        <button id="btnaddapprovers" type="button" class="btn yellow-saffron" href="#addNFAApprovers" onclick="fnOpenPopupApprover()">
+                                            Add Approvers
+                                        </button>
                                         <button id="btnCancelbidApp" type="button" class="btn red hide" href="#delegatemodal" data-toggle="modal">
                                             Delegate User
                                         </button>
@@ -1126,9 +1131,6 @@
                     </div>
                 </div>
                 <form id="formDelegate">
-                    <div class="alert alert-block alert-danger" id="errordiv">
-                        <span class="alert-danger"></span>
-                    </div>
                     <div id="appmodpop" class="modal fade bs-modal-md" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-md">
                             <div class="portlet box blue-hoki">
@@ -1141,6 +1143,10 @@
                                     </div>
                                 </div>
                                 <div class="portlet-body form approverFlexDiv" id="approverDetail">
+                                    <div class="alert alert-block alert-danger" id="errordiv">
+                                        <span class="alert-danger"></span>
+                                    </div>
+
                                     <div style="display:flex;">
                                         <div id="fromApproveUser" style="width:25%; margin:20px"></div>
                                         <div class="form-group" style="width: 75%; margin: 20px">
@@ -1171,51 +1177,115 @@
                         </div>
                     </div>
                 </form>
+                <div id="addNFAApprovers" class="modal fade bs-modal-md" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-md">
+                        <div class="row">
+                            <div class="col-md-12"></div>
+                            <div class="portlet box green-haze">
+
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-reorder"></i>Add Approvers
+                                    </div>
+                                    <div class="tools">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                    </div>
+                                </div>
+
+                                <div class="portlet-body form">
+                                    <form action="#" id="frmNFAApprover" class="form-horizontal" role="form">
+                                        <div class="alert alert-danger" id="diverrorapp">
+                                            <span id="spandangerapp"> </span>
+                                        </div>
+
+                                        <div class="form-body">
+                                            <input type="hidden" id="hdnNFAApproverID" value="0" />
+                                            <input type="hidden" id="hdnNFAApproverEmailID" value="0" />
+                                            <input type="hidden" id="hdnNFAApproverusername" value="" />
+
+                                            <div class="row margin-top-20">
+                                                <label class="col-md-3 control-label">
+                                                    Select Approvers
+                                                </label>
+                                                <label class="col-md-7">
+                                                    <input type="text" class="form-control pull-right MaxLength txtInputs" maxlength="100" placeholder="Select Approver" id="txtApproverNFA"
+                                                           data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="txtApproverNFA" />
+                                                </label>
+                                                <div class="col-md-1 ">
+                                                    <button type="button" id="Addbtn1" onclick="addNFAApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <table class="table table-striped table-bordered table-hover" id="tblRFQapprovers"></table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-actions">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-offset-4 col-md-9">
+                                                            <button type="submit" class="btn green" id="btnnfaapproversubmit">Submit</button>
+                                                            <button type="button" class="btn btnapphide yellow-crusta" onclick="fnclosepopupApprovers()" id="btnClose">Close</button>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6"> </div>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
+    </div>
 
-        <script>
-            jQuery(document).ready(function () {
+    <script>
+        jQuery(document).ready(function () {
 
-                callPagejs('NFAApproverReq.js');
-                //handleDateTimepicker();
-                $('[data-toggle="popover"]').popover({})
-                Pageloaded()
-                var x = isAuthenticated();
-                setInterval(function () { Pageloaded() }, 15000);
-                if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                    window.location = sessionStorage.getItem('MainUrl');
+            callPagejs('NFAApproverReq.js');
+            //handleDateTimepicker();
+            $('[data-toggle="popover"]').popover({})
+            Pageloaded()
+            var x = isAuthenticated();
+            setInterval(function () { Pageloaded() }, 15000);
+            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+                window.location = sessionStorage.getItem('MainUrl');
+            }
+            else {
+                if (sessionStorage.getItem("UserType") == "E") {
+                    $('.page-container').show();
                 }
                 else {
-                    if (sessionStorage.getItem("UserType") == "E") {
-                        $('.page-container').show();
-                    }
-                    else {
-                        bootbox.alert("You are not Authorize to view this page", function () {
-                            parent.history.back();
-                            return false;
-                        });
-                    }
+                    bootbox.alert("You are not Authorize to view this page", function () {
+                        parent.history.back();
+                        return false;
+                    });
                 }
-                $(function () {
-                    $('[data-toggle="tooltip"]').tooltip()
-                })
+            }
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
 
 
-                Metronic.init();
-                Layout.init();
-                validateAppsubmitData();
+            Metronic.init();
+            Layout.init();
+            validateAppsubmitData();
 
-                setCommonData();
-                fetchMenuItemsFromSession(1, 58);
+            setCommonData();
+            fetchMenuItemsFromSession(1, 58);
+        });
 
-
-
-
-            });
-
-        </script>
+    </script>
 </body>
 
 </html>
