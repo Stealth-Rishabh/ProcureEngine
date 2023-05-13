@@ -68,7 +68,7 @@
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/CustomJS/Common.js"></script>
-    
+
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
     <div class="page-header navbar navbar-fixed-top">
@@ -808,13 +808,13 @@
                                         Close
                                     </button>
                                     <button id="btnpdf" type="button" class="btn red-mint" onclick="fngeneratePDF()">generate PDF</button>
-                                <button type="button" class="btn blue" onclick="fnDownloadZip()" id="btnDownloadFile">
-                                     Download
-                                 </button>
+                                    <button type="button" class="btn blue" onclick="fnDownloadZip()" id="btnDownloadFile">
+                                        Download
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                     <div id="divRemarksApp" class="col-md-12">
                         <div class="row">
@@ -875,13 +875,16 @@
                                                 <button id="btnraisequery" type="button" class="btn blue" href="#RaiseQuery" onclick="fnRaisequery()" data-toggle="modal">
                                                     Raise Query
                                                 </button>
+                                                <button id="btnaddapprovers" type="button" class="btn yellow-saffron" href="#addNFAApprovers" onclick="fnOpenPopupApprover()">
+                                                    Add Approvers
+                                                </button>
                                                 <button id="btnBack" type="button" class="btn yellow" onclick="Fnback()">
                                                     Close
                                                 </button>
                                                 <button id="btnpdf" type="button" class="btn red-mint" onclick="fngeneratePDF()">generate PDF</button>
-                                                 <button type="button" class="btn blue" onclick="fnDownloadZip()" id="btnDownloadFile">
-                                     Download
-                                    </button>
+                                                <button type="button" class="btn blue" onclick="fnDownloadZip()" id="btnDownloadFile">
+                                                    Download
+                                                </button>
                                             </div>
                                         </div>
                                     </form>
@@ -903,7 +906,9 @@
                                         <button id="btnsubmitquery" type="button" onclick="fnsubmitQueryByCreator()" class="btn green-haze hide">
                                             Submit Query
                                         </button>
-
+                                        <button id="btnaddapprovers" type="button" class="btn yellow-saffron" href="#addNFAApprovers" onclick="fnOpenPopupApprover()">
+                                            Add Approvers
+                                        </button>
                                         <button id="btnCancelbidApp" type="button" class="btn red hide" href="#delegatemodal" data-toggle="modal">
                                             Delegate User
                                         </button>
@@ -1125,6 +1130,124 @@
                         </div>
                     </div>
                 </div>
+                <form id="formDelegate">
+                    <div id="appmodpop" class="modal fade bs-modal-md" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-md">
+                            <div class="portlet box blue-hoki">
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-reorder"></i>Delegate Approver
+                                    </div>
+                                    <div class="tools">
+                                        <button type="button" class="close" id="ModelCloseBtn" data-dismiss="modal" aria-hidden="true"></button>
+                                    </div>
+                                </div>
+                                <div class="portlet-body form approverFlexDiv" id="approverDetail">
+                                    <div class="alert alert-block alert-danger" id="errordiv">
+                                        <span class="alert-danger"></span>
+                                    </div>
+
+                                    <div style="display:flex;">
+                                        <div id="fromApproveUser" style="width:25%; margin:20px"></div>
+                                        <div class="form-group" style="width: 75%; margin: 20px">
+                                            <div class="inputgroup isProject" style="display:flex;">
+                                                <label class="col-md-5 control-label">
+                                                    Deligate To<span class="required"> *</span>
+                                                </label>
+                                                <div class="col-md-12">
+                                                    <select id="txtDeligateName" name="txtDeligateName" class="form-control"> </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="display:flex; align-items:center; gap:10px;margin:20px;">
+                                        <p><label for="remarkAprv">Remarks:</label></p>
+                                        <textarea id="remarkAprv" name="remarkAprv" rows="4" cols="65" style="resize:none;"></textarea>
+                                    </div>
+
+                                    <div style="margin:30px;">
+                                        <div>
+                                            <button type="submit" class="btn btnhide green" style="margin:10px 0px 10px 230px;">
+                                                SUBMIT
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div id="addNFAApprovers" class="modal fade bs-modal-md" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-md">
+                        <div class="row">
+                            <div class="col-md-12"></div>
+                            <div class="portlet box green-haze">
+
+                                <div class="portlet-title">
+                                    <div class="caption">
+                                        <i class="fa fa-reorder"></i>Add Approvers
+                                    </div>
+                                    <div class="tools">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                                    </div>
+                                </div>
+
+                                <div class="portlet-body form">
+                                    <div class="alert alert-success" id="successapp">
+                                        <span id="spansuccessapp"> </span>
+                                    </div>
+                                    <div class="alert alert-danger" id="diverrorapp">
+                                        <span id="spandangerapp"> </span>
+                                    </div>
+                                    <form action="#" id="frmNFAApprover" class="form-horizontal" role="form">
+
+                                        <div class="form-body">
+                                            <input type="hidden" id="hdnNFAApproverID" value="0" />
+                                            <input type="hidden" id="hdnNFAApproverEmailID" value="0" />
+                                            <input type="hidden" id="hdnNFAApproverusername" value="" />
+
+                                            <div class="row">
+                                                <label class="col-md-3 control-label">
+                                                    Select Approvers
+                                                </label>
+                                                <label class="col-md-7">
+                                                    <input type="text" class="form-control pull-right MaxLength txtInputs" maxlength="100" placeholder="Select Approver" id="txtApproverNFA"
+                                                           data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="txtApproverNFA" />
+                                                </label>
+                                                <div class="col-md-1 ">
+                                                    <button type="button" id="Addbtn1" onclick="addNFAApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <table class="table table-striped table-bordered table-hover" id="tblRFQapprovers"></table>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-actions">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="row">
+                                                        <div class="col-md-offset-4 col-md-9">
+                                                            <button type="submit" class="btn green" id="btnnfaapproversubmit">Submit</button>
+                                                            <button type="button" class="btn btnapphide yellow-crusta" onclick="fnclosepopupApprovers()" id="btnClose">Close</button>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6"> </div>
+                                            </div>
+                                        </div>
+                                    </form>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
