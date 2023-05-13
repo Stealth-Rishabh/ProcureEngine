@@ -197,15 +197,22 @@ function uomFuncDetails() {
         contentType: "application/json",
         success: function (data) {
             if (data.isSuccess == '1') {
-                $("#success").html("Successfull...");
+                $("#success").html("UOM Enter Successfully...");
                 success.show();
                 success.fadeOut(3000);
                 fetchCustomerDetail();
                 jQuery.unblockUI();
             }
-            
+            else if (data.isSuccess == '2') {
+                $("#success").html("Updation Successfull...");
+                success.show();
+                success.fadeOut(3000);
+                fetchCustomerDetail();
+                jQuery.unblockUI();
 
-            else if (data.isSuccess == '0') {
+            }
+
+            else if (data.isSuccess == '3') {
                 success.hide();
                 $("#errordiv").html("UOM Already exists...");
                 error.show();
@@ -220,11 +227,11 @@ function uomFuncDetails() {
         },
         error: function (xhr, status, error) {
             if (xhr.status == 401) {
-                $("#errordiv").html("Unauthorized...");
+                $("#errordiv").html("UOM Already exists...");
             }
             else {
                 success.hide();
-                $("#errordiv").html("oops some error occurs...");
+                $("#errordiv").html("UOM Already exists...");
                 $("#errordiv").show();
                 $("#errordiv").fadeOut(3000);
                 jQuery.unblockUI();

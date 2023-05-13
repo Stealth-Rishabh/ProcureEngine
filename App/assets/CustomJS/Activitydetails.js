@@ -3,7 +3,7 @@ var Changepasswordsuccess = $('#successdivChangePassword');
 let isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted')
 Changepassworderror.hide();
 Changepasswordsuccess.hide();
-jQuery(document).ready(function () {   
+jQuery(document).ready(function () {
     Pageloaded()
     sessionStorage.setItem('CurrentBidID', 0);
     sessionStorage.setItem('hddnRFQID', 0);
@@ -29,13 +29,13 @@ jQuery(document).ready(function () {
     App.init();
     Tasks.initDashboardWidget();
 
-     if (sessionStorage.getItem('UserType') == 'E') {
-         fetchMenuItemsFromSession(0, 0);
- 
+    if (sessionStorage.getItem('UserType') == 'E') {
+        fetchMenuItemsFromSession(0, 0);
+
     }
     if (isWhatsappOpted == "false") {
         whatsappAlert()
-    }     
+    }
     fetchDashboardData();
     handleChangePasword();
 });
@@ -236,6 +236,7 @@ function fnArchive(RFQID) {
             if (data == "1") {
                 fetchDashboardData();
             }
+            jQuery.unblockUI();
 
         },
 
@@ -255,6 +256,7 @@ function fetchDashboardData() {
     var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var custId = parseInt(sessionStorage.getItem('CustomerID'));
+    // console.log(custId);
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardData/?CustomerID=" + custId,
@@ -267,6 +269,7 @@ function fetchDashboardData() {
         success: function (BidData) {
 
             if (BidData[0].bidcnt != "") {
+                console.log(BidData);
                 jQuery('#lblTodayBidCount').text(BidData[0].bidcnt[0].todayBid)
                 jQuery('#lblNotForwardedBidCount').text(BidData[0].bidcnt[0].notForwarded)
                 jQuery('#lblForwardedBidCount').text(BidData[0].bidcnt[0].forwarded)
@@ -276,6 +279,12 @@ function fetchDashboardData() {
                 jQuery('#lblNotFwRFQCount').text(BidData[0].rFxcnt[0].notForwardedRFx)
                 jQuery('#lblFwRFQCount').text(BidData[0].rFxcnt[0].forwardedRFx)
                 jQuery('#lblAwRFQCount').text(BidData[0].rFxcnt[0].awardedRFx)
+
+                jQuery('#lblopenNFACount').text(BidData[0].nfAcnt[0].todayNFA)
+                // jQuery('#lblNotFwRFQCount').text(BidData[0].rFxcnt[0].notForwardedNFA)
+                jQuery('#lblFwNFACount').text(BidData[0].nfAcnt[0].forwardedNFA)
+                jQuery('#lblAwNFACount').text(BidData[0].nfAcnt[0].awardedNFA)
+
             }
 
 
@@ -516,6 +525,15 @@ function fetchBidDataDashboard(requesttype) {
     else if (requesttype == 'AwardedRFQ') {
         jQuery('#spanPanelCaption').html("Approved RFx");
     }
+    else if (requesttype == 'TodayNFA') {
+        jQuery('#spanPanelCaption').html("Open NFA");
+    }
+    else if (requesttype == 'ForwardedNFA') {
+        jQuery('#spanPanelCaption').html("Pending NFA");
+    }
+    else if (requesttype == 'AwardedNFA') {
+        jQuery('#spanPanelCaption').html("Approved NFA");
+    }
 
 
     jQuery.ajax({
@@ -730,3 +748,5 @@ function whatsappAlert() {
         }
     });
 }
+
+

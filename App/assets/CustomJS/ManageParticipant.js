@@ -1,5 +1,5 @@
 jQuery(document).ready(function () {
-    
+
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
     }
@@ -260,8 +260,8 @@ function RegisterParticipants() {
 
     var _cleanString = StringEncodingMechanism(jQuery("#ParticipantName").val());
     var _cleanString1 = StringEncodingMechanism(jQuery("#txtAddress").val());
-   
-    
+
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
     if (jQuery('#chkIsActiveparticipant').is(':checked') == true) {
@@ -288,30 +288,30 @@ function RegisterParticipants() {
             jQuery('#divalerterr').css('display', 'none');
         }, 5000);
     }
-  /*  var RegisterParticipants = {
-        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-        "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
-        "ParticipantName": jQuery("#ParticipantName").val(),
-        "Address": jQuery("#txtAddress").val(),
-        "CountryID": parseInt(jQuery("#ddlCountry option:selected").val()),
-        "CountryName": jQuery("#ddlCountry option:selected").text(),
-        "StateID": parseInt(jQuery("#ddlState option:selected").val()),
-        "StateName": jQuery("#ddlState option:selected").text(),
-        "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
-        "CityName": jQuery("#ddlCity option:selected").text(),
-        "PanNo": jQuery("#txtPanNo").val(),
-        "TinNo": jQuery("#txtTINNo").val(),
-        "PhoneNo": jQuery("#txtPhoneNo").val(),
-        "CompanyEmail": jQuery("#txtcompanyemail").val().trim().toLowerCase(),
-        "IsActive": status,
-        "UserID": sessionStorage.getItem('UserID'),
-        "MobileNo": jQuery("#txtMobileNo").val(),
-        "ActionType": $('#hdnFlagType').val(),
-        "ContactPerson": $('#ContactName').val(),
-        "AlternateEmailID": $('#txtAlternateeMailID').val(),
-        "ProductCatID": InsertQuery
-
-    };*/
+    /*  var RegisterParticipants = {
+          "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+          "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
+          "ParticipantName": jQuery("#ParticipantName").val(),
+          "Address": jQuery("#txtAddress").val(),
+          "CountryID": parseInt(jQuery("#ddlCountry option:selected").val()),
+          "CountryName": jQuery("#ddlCountry option:selected").text(),
+          "StateID": parseInt(jQuery("#ddlState option:selected").val()),
+          "StateName": jQuery("#ddlState option:selected").text(),
+          "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
+          "CityName": jQuery("#ddlCity option:selected").text(),
+          "PanNo": jQuery("#txtPanNo").val(),
+          "TinNo": jQuery("#txtTINNo").val(),
+          "PhoneNo": jQuery("#txtPhoneNo").val(),
+          "CompanyEmail": jQuery("#txtcompanyemail").val().trim().toLowerCase(),
+          "IsActive": status,
+          "UserID": sessionStorage.getItem('UserID'),
+          "MobileNo": jQuery("#txtMobileNo").val(),
+          "ActionType": $('#hdnFlagType').val(),
+          "ContactPerson": $('#ContactName').val(),
+          "AlternateEmailID": $('#txtAlternateeMailID').val(),
+          "ProductCatID": InsertQuery
+  
+      };*/
     var RegisterParticipants = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
@@ -353,7 +353,7 @@ function RegisterParticipants() {
 
 
 
-   // alert(JSON.stringify(RegisterParticipants))
+    // alert(JSON.stringify(RegisterParticipants))
     jQuery.ajax({
 
         url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RegParticpants_PEV2/",
@@ -427,21 +427,20 @@ function fetchParticipantsVenderTable() {
         crossDomain: true,
         dataType: "json",
         success: function (Venderdata) {
+            debugger
             jQuery("#tblParticipantsVender > tbody").empty();
             $('#lblTotallength').html("<b>Total Record : </b>" + Venderdata.length)
             if (Venderdata.length > 0) {
                 jQuery.each(Venderdata, function (key, value) {
-                    debugger
                     var str = "";
-                    var addr1 = (value.address).replace(/\n/g, " ").replace(/,/g, '');
-                    
+                    var addr1 = (value.address).replace(/\n/g, " ");
                     var addr2 = (value.cityName).replace(/\n/g, " ");
                     if (value.mapBtnRequired == 'N') {
                         str = "<tr><td style=\"text-align:center;width:10%!important;\">";
 
-                       // str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
+                        // str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
 
-                        str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.dialingCodePhone + "'\,\'" + value.phoneNo + "'\,\'" + value.dialingCode + "'\,\'" + value.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" +  value.zipCode + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
+                        str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.dialingCodePhone + "'\,\'" + value.phoneNo + "'\,\'" + value.dialingCode + "'\,\'" + value.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + value.zipCode + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
                         str += "<td style=\"width:10%!important;\">" + value.createdByName + "</td>";
                         if (value.actionType == "EditVendor") {
                             str += "<td style=\"width:10%!important;\">No</td>";
@@ -481,12 +480,7 @@ function fetchParticipantsVenderTable() {
     });
 }
 
-
-
 function EditVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone, dialingcode, mobile, addr1, addr2, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, cityid) {
-    debugger
-    
-
     $('#hdnFlagType').val(buttonname)
     jQuery("#hdnParticipantID").val(vendorid)
     $("#hdnParticipantCode").val(vendorcode)
@@ -525,12 +519,13 @@ function EditVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone,
 
 }
 
-function fetchMapCategory(categoryFor, vendorId) {
+function fetchMapCategory(categoryFor, childId) {
 
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + jQuery("#ULCustomers").val() + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VendorID=" + vendorId,
+        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + jQuery("#ULCustomers").val() + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&ChildId=" + childId,
+
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
@@ -618,7 +613,7 @@ jQuery("#txtSearch").keyup(function () {
     _this = this;
     // Show only matching TR, hide rest of them
     jQuery.each($("#tblParticipantsVender tbody").find("tr"), function () {
-        console.log($(this).text());
+        //console.log($(this).text());
         if (jQuery(this).text().toLowerCase().indexOf(jQuery(_this).val().toLowerCase()) == -1)
             jQuery(this).hide();
         else
@@ -673,7 +668,7 @@ function fetchCountry() {
         data: "{}",
         cache: false,
         async: false,
-      
+
         dataType: "json",
         success: function (data) {
             $("#ddlCountry").empty();
@@ -720,7 +715,7 @@ function fetchCountry() {
             let lstTZ = JSON.parse(data[0].jsondata);
 
             jQuery("#ddlpreferredTime").empty();
-             jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val("").html("Select"));
+            jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val("").html("Select"));
             for (var i = 0; i < lstTZ.length; i++) {
 
                 jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val(lstTZ[i].id).html(lstTZ[i].localeName));
