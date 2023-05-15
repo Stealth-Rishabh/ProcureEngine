@@ -3,6 +3,7 @@
  * For a full list of MSAL.js configuration parameters, visit:
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/configuration.md 
  */
+
 const msalConfig = {
     auth: {
         clientId: "90dbc2c3-5ed2-4bfe-9a81-d33d180291d7",
@@ -56,9 +57,8 @@ myMSALObj.handleRedirectPromise()
         console.error(error);
     });
 
-
-
 function handleResponse(response) {
+
     if (sessionStorage.getItem("IsSSOAuth") == "Y") {
         if (response !== null) {
             username = response.account.username;
@@ -69,6 +69,7 @@ function handleResponse(response) {
         }
     }
 }
+
 function passTokenToApi() {
 
     getTokenRedirect(tokenRequest)
@@ -121,7 +122,7 @@ function selectAccount() {
 //Check JWT Validity
 
 
-async function isAuthenticated() {
+function isAuthenticated() {
 
     var token = sessionStorage.getItem("Token");
     var refreshToken = sessionStorage.getItem("RefreshToken");
@@ -131,7 +132,6 @@ async function isAuthenticated() {
         "RefreshToken": refreshToken
 
     }
-    
     if (sessionStorage.getItem("IsSSOAuth") == "N") {
         var urlAc = sessionStorage.getItem("APIPath") + "Token/refresh";
         try {
@@ -165,11 +165,11 @@ async function isAuthenticated() {
         }
     }
     else {
-        await myMSALObj.handleRedirectPromise()
+        myMSALObj.handleRedirectPromise()
             .then(handleResponse)
             .catch(error => {
                 console.error(error);
-                return false;
+                return true;
             });
 
     }

@@ -1,10 +1,11 @@
 var Changepassworderror = $('#errordivChangePassword');
 var Changepasswordsuccess = $('#successdivChangePassword');
-let isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted')
 Changepassworderror.hide();
 Changepasswordsuccess.hide();
 jQuery(document).ready(function () {
+
     Pageloaded()
+    var x = isAuthenticated();
     sessionStorage.setItem('CurrentBidID', 0);
     sessionStorage.setItem('hddnRFQID', 0);
     sessionStorage.setItem('CurrentRFIID', 0);
@@ -31,11 +32,8 @@ jQuery(document).ready(function () {
 
     if (sessionStorage.getItem('UserType') == 'E') {
         fetchMenuItemsFromSession(0, 0);
+    }
 
-    }
-    if (isWhatsappOpted == "false") {
-        whatsappAlert()
-    }
     fetchDashboardData();
     handleChangePasword();
 });
@@ -104,7 +102,6 @@ function handleChangePasword() {
 
 }
 function ChangePassword() {
-    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var isSubmit = true;
     var successMsg = "";
@@ -122,6 +119,7 @@ function ChangePassword() {
         }
     }
     if (isSubmit) {
+        var x = isAuthenticated();
         var data = {
             //"EmailID": sessionStorage.getItem("EmailID"),
             "OldPassword": $("#oPassword").val(),
@@ -219,7 +217,6 @@ function fnConfirmArchive(RFQID) {
 
 }
 function fnArchive(RFQID) {
-    var x = isAuthenticated();
     var Data = {
         "RFQID": parseInt(RFQID),
         "UserID": sessionStorage.getItem('UserID'),
@@ -236,7 +233,6 @@ function fnArchive(RFQID) {
             if (data == "1") {
                 fetchDashboardData();
             }
-            jQuery.unblockUI();
 
         },
 
@@ -253,10 +249,9 @@ function fnArchive(RFQID) {
 
 
 function fetchDashboardData() {
-    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var x = isAuthenticated();
     var custId = parseInt(sessionStorage.getItem('CustomerID'));
-    // console.log(custId);
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardData/?CustomerID=" + custId,
@@ -269,7 +264,6 @@ function fetchDashboardData() {
         success: function (BidData) {
 
             if (BidData[0].bidcnt != "") {
-                console.log(BidData);
                 jQuery('#lblTodayBidCount').text(BidData[0].bidcnt[0].todayBid)
                 jQuery('#lblNotForwardedBidCount').text(BidData[0].bidcnt[0].notForwarded)
                 jQuery('#lblForwardedBidCount').text(BidData[0].bidcnt[0].forwarded)
@@ -281,10 +275,8 @@ function fetchDashboardData() {
                 jQuery('#lblAwRFQCount').text(BidData[0].rFxcnt[0].awardedRFx)
 
                 jQuery('#lblopenNFACount').text(BidData[0].nfAcnt[0].todayNFA)
-                // jQuery('#lblNotFwRFQCount').text(BidData[0].rFxcnt[0].notForwardedNFA)
                 jQuery('#lblFwNFACount').text(BidData[0].nfAcnt[0].forwardedNFA)
                 jQuery('#lblAwNFACount').text(BidData[0].nfAcnt[0].awardedNFA)
-
             }
 
 
@@ -502,8 +494,9 @@ function fetchDashboardData() {
     });
 }
 function fetchBidDataDashboard(requesttype) {
-    var x = isAuthenticated();
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var x = isAuthenticated();
     if (requesttype == 'Today') {
         jQuery('#spanPanelCaption').html("Open Bids");
     } else if (requesttype == 'Not Forwarded') {
@@ -724,29 +717,3 @@ jQuery("#searchPendingBids").keyup(function () {
 
     });
 });
-
-function whatsappAlert() {
-
-    bootbox.dialog({
-        title: "Now get alerts on WhatsApp!",
-        message: "We'll send you important updates and notifications on Whatsapp",
-        buttons: {
-            ok: {
-                label: "Yes, opt in",
-                className: "btn-success",
-                callback: function () {
-
-                }
-            },
-            cancel: {
-                label: "Ignore",
-                className: "btn-danger",
-                callback: function () {
-
-                }
-            }
-        }
-    });
-}
-
-
