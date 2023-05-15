@@ -17,9 +17,9 @@
         }
     }
 
-    
+
     App.init();
-    setCommonData();  
+    setCommonData();
     fetchMenuItemsFromSession(19, 32);
     FormValidate();
     fetchCustomerDetail();
@@ -96,7 +96,7 @@ function FormValidate() {
             uomId: {
                 required: true
             }
-          
+
         },
         messages: {
             uomName: {
@@ -175,12 +175,12 @@ function uomFuncDetails() {
     }
     else {
         status = "N";
-    }   
+    }
 
     var data = {
         "id": parseInt($('#hddnUOMpiD').val()),
-        "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),   
-        "UOM":        _cleanString1,
+        "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
+        "UOM": _cleanString1,
         "UOMID": _cleanString2,
         "IsActive": status
     }
@@ -197,22 +197,15 @@ function uomFuncDetails() {
         contentType: "application/json",
         success: function (data) {
             if (data.isSuccess == '1') {
-                $("#success").html("UOM Enter Successfully...");
+                $("#success").html("Successfull...");
                 success.show();
                 success.fadeOut(3000);
                 fetchCustomerDetail();
                 jQuery.unblockUI();
             }
-            else if (data.isSuccess == '2') {
-                $("#success").html("Updation Successfull...");
-                success.show();
-                success.fadeOut(3000);
-                fetchCustomerDetail();
-                jQuery.unblockUI();
 
-            }
 
-            else if (data.isSuccess == '3') {
+            else if (data.isSuccess == '0') {
                 success.hide();
                 $("#errordiv").html("UOM Already exists...");
                 error.show();
@@ -221,17 +214,17 @@ function uomFuncDetails() {
             }
 
             setTimeout(function () {
-                window.location.reload();        
+                window.location.reload();
             }, 3000);
 
         },
         error: function (xhr, status, error) {
             if (xhr.status == 401) {
-                $("#errordiv").html("UOM Already exists...");
+                $("#errordiv").html("Unauthorized...");
             }
             else {
                 success.hide();
-                $("#errordiv").html("UOM Already exists...");
+                $("#errordiv").html("oops some error occurs...");
                 $("#errordiv").show();
                 $("#errordiv").fadeOut(3000);
                 jQuery.unblockUI();
@@ -260,9 +253,9 @@ function fetchCustomerDetail() {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
-        crossDomain: true,  
+        crossDomain: true,
         processData: true,
-        dataType: "json",   
+        dataType: "json",
         success: function (data) {
             jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
             jQuery("#uomPlaceMaster").empty();

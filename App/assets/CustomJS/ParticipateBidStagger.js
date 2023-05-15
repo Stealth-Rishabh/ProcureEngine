@@ -1,7 +1,6 @@
 jQuery(document).ready(function () {
 
     Pageloaded()
-    var x = isAuthenticated();
     $('ul#chatList').slimScroll({
         height: '250px'
     });
@@ -321,6 +320,31 @@ connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame',
 });
 connection.on("refreshRAQuotes", function (data) {
     fetchBidSummaryVendorproduct();
+});
+connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
+
+    console.log(rdataJson)
+    //console.log(connectionId)
+    let data = JSON.parse(rdataJson)
+
+    if (data[0].VendorID == "0") {
+        $('#hddnadminConnection').val(connectionId)
+        if (flag == false) {
+            $('#adminconn').removeClass('badge-success').addClass('badge-danger')
+            $('#admstatus').text("Buyer Offline")
+            $('#chatbtn').addClass('hide')
+            $('#txtChatMsg').addClass('hide')
+        }
+        else {
+            $('#adminconn').removeClass('badge-danger').addClass('badge-success')
+            $('#admstatus').text("Buyer Online")
+            $('#chatbtn').removeClass('hide')
+            $('#txtChatMsg').removeClass('hide')
+        }
+
+    }
+
+
 });
 connection.on("refreshBidStatusAfterPause", function (data) {
     fetchBidTime();
@@ -651,6 +675,9 @@ function fetchBidTime() {
         }
     });
 }
+function openForm() {
+    fetchUserChats(sessionStorage.getItem("UserID"), "T");//T stands for both single & Broadcast
+}
 function sendChatMsgs() {
     var _cleanString = StringEncodingMechanism($("#txtChatMsg").val());
     var data = {
@@ -658,7 +685,8 @@ function sendChatMsgs() {
         "fromID": sessionStorage.getItem("UserID"),
         "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
         "msgType": 'S',
-        "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : ''
+        "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : '',
+        "fromconnectionID": $('#hddnadminConnection').val()
 
     }
     $("#chatList").append('<div class="post in">'
@@ -787,9 +815,9 @@ function fninsupdQuotesS(index) {
             "isPrePricing": "N"
 
         }
-        //alert(JSON.stringify(QuoteProduct))
+        alert(JSON.stringify(QuoteProduct))
         $('#hdnselectedindex').val(index);
-        connection.invoke("RefreshBidParticipation", JSON.stringify(QuoteProduct), parseInt(sessionStorage.getItem("BidID"))).catch(function (err) {
+        connection.invoke("RefreshBidParticipation", JSON.stringify(QuoteProduct)).catch(function (err) {
             return console.error(err.toString());
         });
         $('#txtquote' + index).val('');

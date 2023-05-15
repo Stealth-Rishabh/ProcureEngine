@@ -1,7 +1,6 @@
 jQuery(document).ready(function () {
 
     Pageloaded()
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
@@ -81,6 +80,31 @@ connection.on("disconnectSR", function (connectionId) {
 });
 connection.on("refreshFAQuotes", function () {
     fetchBidSummaryVendorFrench();
+});
+connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
+
+    console.log(rdataJson)
+    //console.log(connectionId)
+    let data = JSON.parse(rdataJson)
+
+    if (data[0].VendorID == "0") {
+        $('#hddnadminConnection').val(connectionId)
+        if (flag == false) {
+            $('#adminconn').removeClass('badge-success').addClass('badge-danger')
+            $('#admstatus').text("Buyer Offline")
+            $('#chatbtn').addClass('hide')
+            $('#txtChatMsg').addClass('hide')
+        }
+        else {
+            $('#adminconn').removeClass('badge-danger').addClass('badge-success')
+            $('#admstatus').text("Buyer Online")
+            $('#chatbtn').removeClass('hide')
+            $('#txtChatMsg').removeClass('hide')
+        }
+
+    }
+
+
 });
 connection.on("refreshColumnStatusFF", function (data) {
     // var JsonMsz = JSON.parse(data[0]);
@@ -287,7 +311,9 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
     //  }
     //$(".pulsate-regular").css('animation', 'none');
 });
-
+function openForm() {
+    fetchUserChats(sessionStorage.getItem("UserID"), "T");//T stands for both single & Broadcast
+}
 function sendChatMsgs() {
     if ($("#txtChatMsg").val() != '' && $("#txtChatMsg").val() != null) {
         var _cleanString = StringEncodingMechanism($("#txtChatMsg").val());
@@ -296,7 +322,8 @@ function sendChatMsgs() {
             "fromID": sessionStorage.getItem("UserID"),
             "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
             "msgType": 'S',
-            "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : ''
+            "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : '',
+            "fromconnectionID": $('#hddnadminConnection').val()
 
         }
         $("#chatList").append('<div class="post in">'
@@ -691,12 +718,14 @@ function InsUpdQuoteFrench(rowID) {
     }
 
     var valdiff = (parseFloat(removeThousandSeperator(jQuery("#txtquote" + i).val())) - parseFloat(removeThousandSeperator(jQuery("#H1Price" + i).text()))).toFixed(2)
-    if ((removeThousandSeperator($('#txtquantity' + i).val()) == 0) || (!/^[0-9]+(\.[0-9]{1,2})?$/.test(removeThousandSeperator($('#txtquote' + i).val())))) {
+    if ((removeThousandSeperator($('#txtquantity' + i).val()) == 0) || (!/^[0-9]+$/.test(removeThousandSeperator($('#txtquantity' + i).val())))) {
+
         $('#spanquan' + i).removeClass('hide')
-        $('#spanquan' + i).text('Amount is required in number only')
+        $('#spanquan' + i).text('quantity is required in number only')
         return false
     }
-    else if ((removeThousandSeperator($('#txtquote' + i).val()) == 0) || (!/^[0-9]+(\.[0-9]{1,2})?$/.test(removeThousandSeperator($('#txtquote' + i).val())))) {
+    else if ((removeThousandSeperator($('#txtquote' + i).val()) == 0) || (!/^[0-9]+$/.test(removeThousandSeperator($('#txtquote' + i).val())))) {
+
         $('#spanamount' + i).removeClass('hide')
         $('#spanamount' + i).text('Amount is required in number only')
         return false
@@ -751,7 +780,7 @@ function InsUpdQuoteFrench(rowID) {
         }
         //alert(JSON.stringify(QuoteProduct))
         $('#hdnselectedindex').val(i);
-        connection.invoke("RefreshBidParticipationFF", JSON.stringify(QuoteProduct), parseInt(sessionStorage.getItem("BidID"))).catch(function (err) {
+        connection.invoke("RefreshBidParticipationFF", JSON.stringify(QuoteProduct)).catch(function (err) {
             return console.error(err.toString());
         });
         $('#txtquote' + i).val('')

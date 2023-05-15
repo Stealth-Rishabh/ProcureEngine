@@ -1,6 +1,5 @@
 jQuery(document).ready(function () {
     Pageloaded()
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -69,11 +68,11 @@ var successModal = $('#successdiv1');
 var _vendorDetail;
 
 var form = $('#submit_form');
-var FormWizard = function() {
+var FormWizard = function () {
 
     return {
 
-        init: function() {
+        init: function () {
 
             if (!jQuery().bootstrapWizard) {
 
@@ -118,7 +117,7 @@ var FormWizard = function() {
                         required: true
                     },
                     txtattachdescription: {
-                        required: function(element) {
+                        required: function (element) {
                             if ($('#file2').val() != '') {
                                 return true
                             } else {
@@ -156,7 +155,7 @@ var FormWizard = function() {
 
                 },
 
-                errorPlacement: function(error, element) {
+                errorPlacement: function (error, element) {
                     if ((element).attr('name') == 'txtRFXdeadline') {
                         error.insertAfter('.date-picker');
                     }
@@ -166,10 +165,10 @@ var FormWizard = function() {
 
                 },
 
-                invalidHandler: function(event, validator) {
+                invalidHandler: function (event, validator) {
                 },
 
-                highlight: function(element) {
+                highlight: function (element) {
                     $(element).closest('.col-md-3').removeClass('has-success').addClass('has-error');
                     $(element).closest('.col-md-9').removeClass('has-success').addClass('has-error');
                     $(element).closest('.col-md-4').removeClass('has-success').addClass('has-error');
@@ -178,7 +177,7 @@ var FormWizard = function() {
 
                 },
 
-                unhighlight: function(element) {
+                unhighlight: function (element) {
 
                     $(element).closest('.col-md-3').removeClass('has-error');
                     $(element).closest('.col-md-9').removeClass('has-error');
@@ -188,17 +187,17 @@ var FormWizard = function() {
 
                 },
 
-                success: function(label) {
+                success: function (label) {
 
 
                 },
-                submitHandler: function(form) {
+                submitHandler: function (form) {
                 }
             });
 
-            var displayConfirm = function() {
+            var displayConfirm = function () {
 
-                $('#tab4 .form-control-static', form).each(function() {
+                $('#tab4 .form-control-static', form).each(function () {
 
                     var input = $('[name="' + $(this).attr("data-display") + '"]', form);
 
@@ -224,7 +223,7 @@ var FormWizard = function() {
 
                         var payment = [];
 
-                        $('[name="payment[]"]:checked').each(function() {
+                        $('[name="payment[]"]:checked').each(function () {
 
                             payment.push($(this).attr('data-title'));
 
@@ -238,7 +237,7 @@ var FormWizard = function() {
 
             }
 
-            var handleTitle = function(tab, navigation, index) {
+            var handleTitle = function (tab, navigation, index) {
 
                 var total = navigation.find('li').length;
 
@@ -275,7 +274,7 @@ var FormWizard = function() {
 
                 }
 
-                
+
                 if (current >= total) {
 
                     $('#form_wizard_1').find('.button-next').hide();
@@ -306,13 +305,13 @@ var FormWizard = function() {
 
                 'previousSelector': '.button-previous',
 
-                onTabClick: function(tab, navigation, index, clickedIndex) {
+                onTabClick: function (tab, navigation, index, clickedIndex) {
 
                     return false;
 
                 },
 
-                onNext: function(tab, navigation, index) {
+                onNext: function (tab, navigation, index) {
 
                     success.hide();
 
@@ -336,16 +335,16 @@ var FormWizard = function() {
                         else {
                             RFXConfigureTab2();
                             getRFXQuestionsForPreview();
-                            
+
                         }
 
-                    } 
+                    }
 
                     handleTitle(tab, navigation, index);
 
                 },
 
-                onPrevious: function(tab, navigation, index) {
+                onPrevious: function (tab, navigation, index) {
 
                     success.hide();
 
@@ -355,7 +354,7 @@ var FormWizard = function() {
 
                 },
 
-                onTabShow: function(tab, navigation, index) {
+                onTabShow: function (tab, navigation, index) {
 
                     var total = navigation.find('li').length;
 
@@ -377,18 +376,18 @@ var FormWizard = function() {
             $('#form_wizard_1').find('.button-submit').hide();
             $('#form_wizard_1').find('#submit_vendors').hide();
 
-            $('#form_wizard_1 #submit_vendors').click(function() {
+            $('#form_wizard_1 #submit_vendors').click(function () {
 
-                if ($('#selectedvendorlists >tbody >tr').length == 0) {                    
-                   
+                if ($('#selectedvendorlists >tbody >tr').length == 0) {
+
                     ValidateVendor()
-                 }
+                }
 
-                 else {
-                
-                $('#BidPreviewDiv').show();
-                $('#form_wizard_1').hide();
-             }
+                else {
+
+                    $('#BidPreviewDiv').show();
+                    $('#form_wizard_1').hide();
+                }
 
             }).hide();
 
@@ -400,10 +399,10 @@ var FormWizard = function() {
 
     };
 
-} ();
+}();
 
-function fileUploader(RFXID,fileObj) {
-   
+function fileUploader(RFXID, fileObj) {
+
     console.log("fileUploader ==> ", fileObj)
 
     var formData = new window.FormData();
@@ -413,7 +412,7 @@ function fileUploader(RFXID,fileObj) {
     formData.append("AttachmentFor", 'RFX');
     formData.append("BidID", RFXID);
     formData.append("VendorID", '');
-    
+
 
     $.ajax({
 
@@ -430,27 +429,27 @@ function fileUploader(RFXID,fileObj) {
         error: function () {
 
             bootbox.alert("Attachment error.");
-            
+
         }
-    
+
     });
 
 }
 
 function fetchRFXDetails() {
-    
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    var replaced ='', _selectedCat=new Array();
+    var replaced = '', _selectedCat = new Array();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RFXMaster/fetchRFXPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFXID=" + sessionStorage.getItem('CurrentRFXID') ,
+        url: sessionStorage.getItem("APIPath") + "RFXMaster/fetchRFXPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&RFXID=" + sessionStorage.getItem('CurrentRFXID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-        
+
             jQuery('#tblServicesProduct').empty();
             jQuery('#tblTempVendorslist').empty();
             jQuery('#txtRFXSubject').val(StringDecodingMechanism(BidData[0].rfxMaster[0].rfxSubject))
@@ -460,7 +459,7 @@ function fetchRFXDetails() {
             jQuery('#txtReferenceDetails').val(BidData[0].rfxMaster[0].rfxReference)
             $("#cancelBidBtn").show();
             // jQuery('#attach-file').attr('href', 'PortalDocs/RFX/' + sessionStorage.getItem('CurrentRFXID') + '/' + replaced).html(BidData[0].rfxMaster[0].rfxAttachment)
-          
+
             if (BidData[0].rfxAttachment.length > 0) {
                 $("#tblAttachmentsElem").empty();
                 for (var i = 0; i < BidData[0].rfxAttachment.length; i++) {
@@ -473,13 +472,13 @@ function fetchRFXDetails() {
                         '<div class="col-md-3">' +
                         '<input type="file" class="form-control"  tabindex="4" onchange="checkfilesize(this)" />' +
                         '<span class="help-block" style=float:left;><a id=attach-file' + (i + 1) + ' href="javascript:;" onclick="DownloadFile(this)"   style="text-decoration: none !important;">' + BidData[0].rfxAttachment[i].rfxAttachment + '</a></span>' +
-                       
+
                         '</div>' +
                         '<div class="col-md-2" style=" padding-left:0px !important; ">' +
                         '<a href="javascript:void(0);" class="btn blue" onclick="addMoreAttachment()"><i class="fa fa-plus"></i></a>' +
                         '</div>' +
                         '</div></li>'
-                        );
+                    );
                 }
             }
 
@@ -492,7 +491,7 @@ function fetchRFXDetails() {
                 //    $("#ddlCategoryMultiple").select2('val', _selectedCat);
                 //}, 1000);
             }
-               
+
         },
         error: function (xhr, status, error) {
 
@@ -515,25 +514,25 @@ function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'RFI/' + sessionStorage.getItem('CurrentRFXID'));
 }
 function fetchRFXQuestions(applicableFor) {
- 
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var seqCount = 1;
-   
+
     jQuery.ajax({
 
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        
+
         url: sessionStorage.getItem("APIPath") + "VQMaster/RFIFetchQuestion/?applicableFor=" + applicableFor + "&customerId=" + sessionStorage.getItem('CustomerID'),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         dataType: "json",
-        success: function(data) {
+        success: function (data) {
             jQuery("#accordion1").empty();
-            
+
             var QuestionCategoryID = '';
             for (var i = 0; i < data.length; i++) {
-               
+
                 if (QuestionCategoryID != data[i].questionCategoryID) {
                     $('#accordion1').append('<div class="panel panel-default"><div class="panel-heading"><h4 class="panel-title"><a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href=#collapse' + i + '>' + data[i].questionCategory + '</a></h4></div><div id=collapse' + i + ' class="panel-collapse collapse" seqNo=' + seqCount + '><div class="panel-body"><div class=row><div class=col-lg-11><div class="input-icon" id=searchbox' + i + '><i class="fa fa-search"></i><input type="text" id=search' + i + ' placeholder="Search..." class="form-control" onkeyup="Searchquestion(\'search' + i + '\',\'tblRFXquestions' + i + '\')" /></div></div><div class=col-lg-1><a href="#addNewQuest" class="btn blue" data-toggle="modal" onclick="setCategory(\'' + data[i].questionCategoryID + '\',\'' + data[i].questionCategory + '\')" > Add New</a></div></div><div class=clearfix></div><br/><table class="table table-striped table-bordered table-hover" id=tblRFXquestions' + i + '><thead><tr><th><input type=checkbox id=chkall' + i + ' onclick=clickallchkbox(\'chkall' + i + '\',\'tblRFXquestions' + i + '\') /></th><th>Questions</th><th>Sub Category</th><th>Validation</th><th>Attachment</th></tr></thead></table></div></div>');
                     QuestionCategoryID = data[i].questionCategoryID;
@@ -586,7 +585,7 @@ function fetchRFXDetailsForTab2(applicableFor) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-          
+
             jQuery("#accordion1").empty();
             var QuestionsubCategoryID = '';
             var QuestionCategoryID = '';
@@ -639,19 +638,19 @@ function RFXConfigureTab1() {
     var _cleanString2 = StringEncodingMechanism(jQuery("#txtRFXdescription").val());
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    var AttachementFileName = '',queryAttachment="", queryCategories="";
+    var AttachementFileName = '', queryAttachment = "", queryCategories = "";
     if (($('#attach-file').html() != '') && ($('#file2').val() == '')) {
-        
+
         AttachementFileName = $.trim(jQuery('#attach-file').html());
     } else {
-        
+
         AttachementFileName = ''//jQuery('#file2').val().substring(jQuery('#file2').val().lastIndexOf('\\') + 1);
     }
 
     var _categories = $("#ddlCategoryMultiple option:selected").val();
-     queryCategories += " insert into PE.RFXProductCat(RFXID,CategoryID)values(" +
-            '##RFXID##' + "," + _categories + ")";
-    
+    queryCategories += " insert into PE.RFXProductCat(RFXID,CategoryID)values(" +
+        '##RFXID##' + "," + _categories + ")";
+
 
     $("#tblAttachmentsElem> li").each(function (index) {
         if (($('#attach-file' + (index + 1)).html() != '') && ($(this).find('input[type=file]').val() == '')) {
@@ -664,13 +663,13 @@ function RFXConfigureTab1() {
 
         if (AttachementFileName != '') {
             queryAttachment += " insert into PE.RFXAttachment(RFXID,RFXAttachment,RFXAttachmentDescription)values(" +
-            '##RFXID##' + ",'" + AttachementFileName + "','" + $.trim($(this).find('input[type=text]').val()) + "')";
+                '##RFXID##' + ",'" + AttachementFileName + "','" + $.trim($(this).find('input[type=text]').val()) + "')";
         }
-        
-        
+
+
     });
 
-  
+
     var Tab1Data = {
         "RFXID": parseInt(sessionStorage.getItem('CurrentRFXID')),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
@@ -679,7 +678,7 @@ function RFXConfigureTab1() {
         "RFXDeadline": jQuery('#txtRFXdeadline').val(),
         //"RFXDescription": jQuery("#txtRFXdescription").val(),
         "RFXDescription": _cleanString2,
-        "RFXAttachmentDescription": 'NA',  
+        "RFXAttachmentDescription": 'NA',
         "RFXAttachment": 'NA',
         "UserId": sessionStorage.getItem('UserID'),
         "AttachmentQuery": queryAttachment,
@@ -694,7 +693,7 @@ function RFXConfigureTab1() {
         type: "POST",
 
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RFXMaster/RFXConfigureTab1",      
+        url: sessionStorage.getItem("APIPath") + "RFXMaster/RFXConfigureTab1",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         crossDomain: true,
 
@@ -705,7 +704,7 @@ function RFXConfigureTab1() {
         dataType: "json",
 
         success: function (data) {
-           sessionStorage.setItem('CurrentRFXID', data[0].rfxid);
+            sessionStorage.setItem('CurrentRFXID', data[0].rfxid);
             $("#tblAttachmentsElem> li").each(function (index) {
                 //** Upload Files on Azure PortalDocs folder
 
@@ -717,8 +716,8 @@ function RFXConfigureTab1() {
                 }
 
             });
-           
-            
+
+
         },
         error: function (xhr, status, error) {
 
@@ -742,23 +741,23 @@ function ValidateQuestions() {
     var Status = "false";
 
     $('.childchkbox').each(function () {
-        if (this.checked) {            
+        if (this.checked) {
             Status = "true";
-        }      
-    });    
+        }
+    });
     if (Status == "false") {
         $('#spandanger').html('Please select questions for RFX.!')
         error.show();
         Metronic.scrollTo(error, -200)
-        error.fadeOut(5000)       
+        error.fadeOut(5000)
         Status = "false";
     }
     return Status;
-    
+
 }
 
 function RFXConfigureTab2() {
-   
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var InsertQuery = '';
     var UsID = sessionStorage.getItem('UserID')
@@ -775,11 +774,11 @@ function RFXConfigureTab2() {
         InsertQuery = 'Insert into PE.RFXQuestionMapping(RFXId,CustomerID,QuestionID,MappedBy,MappedOn)' + InsertQuery;
         InsertQuery = InsertQuery.substring(0, InsertQuery.length - 11);
     }
-   
+
     var Tab2Data = {
 
         "RFXID": parseInt(sessionStorage.getItem('CurrentRFXID')),
-        "CustomerID": parseInt( sessionStorage.getItem('CustomerID')),
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserId": sessionStorage.getItem('UserID'),
         "RFXQuestionMapping": InsertQuery
 
@@ -798,7 +797,7 @@ function RFXConfigureTab2() {
         dataType: "json",
         success: function (data) {
             return true;
-           
+
         },
         error: function (xhr, status, error) {
 
@@ -806,7 +805,7 @@ function RFXConfigureTab2() {
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
-            else{
+            else {
                 $('#form_wizard_1').bootstrapWizard('previous');
                 $('.button-submit').hide()
                 $('#submit_vendors').hide()
@@ -815,11 +814,11 @@ function RFXConfigureTab2() {
                 $('#spandanger').html('Server error please try again.!')
                 error.fadeOut(3000)
             }
-            
+
             return false;
             jQuery.unblockUI();
         }
-       
+
 
     });
     jQuery.unblockUI();
@@ -828,86 +827,86 @@ function RFXConfigureTab2() {
 function fetchTempVendors() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-            
-        
-        jQuery.ajax({
 
-            type: "GET",
 
-            contentType: "application/json; charset=utf-8",
+    jQuery.ajax({
 
-            url: sessionStorage.getItem("APIPath") + "RFXMaster/RFXFetchTempVendorsTab3/?RFXID=" + sessionStorage.getItem('CurrentRFXID'),
-            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-            cache: false,
+        type: "GET",
 
-            dataType: "json",
+        contentType: "application/json; charset=utf-8",
 
-            success: function (data) {
+        url: sessionStorage.getItem("APIPath") + "RFXMaster/RFXFetchTempVendorsTab3/?RFXID=" + sessionStorage.getItem('CurrentRFXID'),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+
+        dataType: "json",
+
+        success: function (data) {
 
             jQuery("#tblTempVendorslist").empty();
-            
-                    
-                if (data.length > 0) {
-                    jQuery('#tblTempVendorslist').append('<thead><tr style="background: gray; color: #FFF;"><th>Company</th><th>Email</th><th>Mobile No</th><th>Contact Person</th><th>Actions</th></tr></thead>')
-                    
-                        
-                    for (var i = 0; i < data.length; i++) {
 
-                        jQuery('#tblTempVendorslist').append("<tr><td>" + data[i].companyName + "</td><td>" + data[i].emailId + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].contactPerson + "</td><td><button type=button class='btn default btn-xs blue' onclick='editTempCompany(\"" + data[i].rowid + "\",\"" + data[i].companyName + "\",\"" + data[i].emailId + "\",\"" + data[i].mobileNo + "\",\"" + data[i].contactPerson + "\")'><i class='fa fa-edit' style='margin-top: 0px !important;'></i> Modify</button><button type=button class='btn default btn-xs red' onclick='deleteRFXTempVendors(\"" + data[i].rowid + "\")'><i class='fa fa-times' style='margin-top: 0px !important;'></i> Delete</button></td></tr>");
-                        
 
-                    }
-                } else {
+            if (data.length > 0) {
+                jQuery('#tblTempVendorslist').append('<thead><tr style="background: gray; color: #FFF;"><th>Company</th><th>Email</th><th>Mobile No</th><th>Contact Person</th><th>Actions</th></tr></thead>')
+
+
+                for (var i = 0; i < data.length; i++) {
+
+                    jQuery('#tblTempVendorslist').append("<tr><td>" + data[i].companyName + "</td><td>" + data[i].emailId + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].contactPerson + "</td><td><button type=button class='btn default btn-xs blue' onclick='editTempCompany(\"" + data[i].rowid + "\",\"" + data[i].companyName + "\",\"" + data[i].emailId + "\",\"" + data[i].mobileNo + "\",\"" + data[i].contactPerson + "\")'><i class='fa fa-edit' style='margin-top: 0px !important;'></i> Modify</button><button type=button class='btn default btn-xs red' onclick='deleteRFXTempVendors(\"" + data[i].rowid + "\")'><i class='fa fa-times' style='margin-top: 0px !important;'></i> Delete</button></td></tr>");
+
+
+                }
+            } else {
                 jQuery('#tblTempVendorslist').append('<tbody><tr class=display-none><td>No Vendors For RFX</td></tr></tbody>')
-                
-                }
-                    
 
-            },
-            error: function (xhr, status, error) {
-
-                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-                if (xhr.status == 401) {
-                    error401Messagebox(err.Message);
-                }
-                else {
-                    fnErrorMessageText('spandanger', 'submit_form');
-                }
-                return false;
-                jQuery.unblockUI();
             }
 
-        });
-       jQuery.unblockUI();
 
-   }
+        },
+        error: function (xhr, status, error) {
 
-   function checkForDuplicateVendor() {
-       var EmailID = '';
-       var count = 0;
-       
-       $("#tblTempVendorslist tr:gt(1)").each(function() {
-           EmailID = $.trim($(this).find('td:eq(1)').html())
-         
-           if (EmailID == $('#txtemailId').val().trim()) {
-               count = count + 1
-             }
-       });
-  
-       if (count > 1) {
-           success.hide();
-           $('#spandanger').html('Vendor already exists.')
-           error.show();
-           Metronic.scrollTo(success, -200);
-           error.fadeOut(5000);
-           
-       } else {
-            
-            AddTempvendors()
-       }                          
-       
-   }
- 
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', 'submit_form');
+            }
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+    jQuery.unblockUI();
+
+}
+
+function checkForDuplicateVendor() {
+    var EmailID = '';
+    var count = 0;
+
+    $("#tblTempVendorslist tr:gt(1)").each(function () {
+        EmailID = $.trim($(this).find('td:eq(1)').html())
+
+        if (EmailID == $('#txtemailId').val().trim()) {
+            count = count + 1
+        }
+    });
+
+    if (count > 1) {
+        success.hide();
+        $('#spandanger').html('Vendor already exists.')
+        error.show();
+        Metronic.scrollTo(success, -200);
+        error.fadeOut(5000);
+
+    } else {
+
+        AddTempvendors()
+    }
+
+}
+
 function editTempCompany(RowID, CompanyName, EmailId, MobileNo, ContactPerson) {
     $('#add_comp').text('Modify');
     $('#updateField').val(RowID)
@@ -915,16 +914,16 @@ function editTempCompany(RowID, CompanyName, EmailId, MobileNo, ContactPerson) {
     $('#txtemailId').val(EmailId);
     $('#txtmobileNo').val(MobileNo);
     $('#txtcontactPerson').val(ContactPerson);
-    
+
 }
 
 function deleteRFXTempVendors(RowID) {
- 
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var data = {
-        'RFXID':parseInt(sessionStorage.getItem('CurrentRFXID')),
-        'RowID':RowID
+        'RFXID': parseInt(sessionStorage.getItem('CurrentRFXID')),
+        'RowID': RowID
     };
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "RFXMaster/DeleteTempVendors/",
@@ -935,13 +934,13 @@ function deleteRFXTempVendors(RowID) {
         success: function (data) {
 
             if (data[0].outmsg == "1") {
-                $('.alert-danger').hide(); 
+                $('.alert-danger').hide();
                 $('#spansuccess1').html('Vendor Record Deleted.!!');
                 $(".alert-success").show();
                 $(".alert-success").fadeOut(5000);
                 fetchTempVendors();
                 Metronic.scrollTo($(".alert-success"), -200);
-                
+
             }
             else {
                 $('.alert-success').hide();
@@ -949,7 +948,7 @@ function deleteRFXTempVendors(RowID) {
                 $(".alert-danger").show();
                 $(".alert-danger").fadeOut(5000);
                 Metronic.scrollTo($(".alert-danger"), -200);
-               
+
             }
         },
         error: function (xhr, status, error) {
@@ -968,16 +967,15 @@ function deleteRFXTempVendors(RowID) {
     jQuery.unblockUI();
 }
 
-function clickallchkbox(chkID, tblID)
-{
+function clickallchkbox(chkID, tblID) {
     var tableID = tblID;
     if ($('#' + chkID).is(':checked')) { // check select status
-       
+
         $('#' + chkID).closest('table').find(":checkbox").prop("checked", true);
     }
-    else  {        
+    else {
         $('#' + chkID).closest('table').find(":checkbox").prop("checked", false);
-    }    
+    }
 }
 
 function Searchquestion(inputID, tblID) {
@@ -1017,7 +1015,7 @@ function FormValidate() {
             ddlquestCategory: {
                 required: true
             },
-            
+
             txtQuestiondescription: {
                 required: true
             }
@@ -1039,8 +1037,8 @@ function FormValidate() {
 
         },
         invalidHandler: function (event, validator) { //display error alert on form submit           
-             successModal.hide()
-             $('#errormsg').html('You have some errors. Please check below.!');
+            successModal.hide()
+            $('#errormsg').html('You have some errors. Please check below.!');
             errorModal.show();
             errorModal.fadeOut(5000);
 
@@ -1120,7 +1118,7 @@ function FormValidate() {
 
 }
 
-function setCategory(CategoryID,CategoryDesc) {
+function setCategory(CategoryID, CategoryDesc) {
     $('#ddlquestCategory').val(CategoryDesc);
     $('#hdnquestCatID').val(CategoryID);
     $('#txtQuestCategory').val(CategoryDesc)
@@ -1137,10 +1135,10 @@ function fetchqsubcategoryForAuto(questcategoryID) {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         dataType: "json",
-        success: function(data) {
-                    
+        success: function (data) {
+
             sessionStorage.setItem('hdnquestionSubCatgry', JSON.stringify(data));
-           
+
 
         },
         error: function (xhr, status, error) {
@@ -1169,7 +1167,7 @@ function fetchQuestionSubCategory(questcategoryID) {
         cache: false,
         dataType: "json",
         success: function (data) {
-           
+
             $('#tblsubcategory').empty();
             if (data.length > 0) {
                 $('#searchsubcat').show();
@@ -1239,7 +1237,7 @@ jQuery("#txtsubCategory").typeahead({
     minLength: 2,
     updater: function (item) {
         if (map[item].questionSubCategoryID != "0") {
-             sessionStorage.setItem('hdnSubCategoryID', map[item].questionSubCategoryID);
+            sessionStorage.setItem('hdnSubCategoryID', map[item].questionSubCategoryID);
         }
         else {
             gritternotification('Please select Sub Category properly!!!');
@@ -1272,7 +1270,7 @@ function InsUpdQuestionSubcategory() {
         "customerId": parseInt(sessionStorage.getItem('CustomerID'))
 
     }
-  
+
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "RFIQuestionMaster/InsUpdQuestionSubCategory",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1284,8 +1282,8 @@ function InsUpdQuestionSubcategory() {
         dataType: "json",
         contentType: "application/json",
         success: function (data) {
-            
-            if (data == "1") {               
+
+            if (data == "1") {
                 errorModal.hide();
                 $("#successmsg").html("Transaction Successful.");
                 successModal.show();
@@ -1331,11 +1329,11 @@ function editSubcategory(RowID) {
     if (rowid.find('td:eq(2)').text() == 'Y') {
         jQuery('input:checkbox[name=checkboxactive]').attr('checked', true);
         jQuery('#checkboxactive').parents('span').addClass('checked');
-        
+
     } else {
-    jQuery('input:checkbox[name=checkboxactive]').attr('checked', false);
-    jQuery('#checkboxactive').parents('span').removeClass('checked');
-       
+        jQuery('input:checkbox[name=checkboxactive]').attr('checked', false);
+        jQuery('#checkboxactive').parents('span').removeClass('checked');
+
     }
 
 
@@ -1411,19 +1409,19 @@ function insupdRFXQuestionMaster() {
         dataType: "json",
         contentType: "application/json",
         success: function (data) {
-          
-            if (data == "1") {                
+
+            if (data == "1") {
                 errorModal.hide();
                 $("#successmsg").html("Transaction Successful.");
-                successModal.show();                
+                successModal.show();
                 successModal.fadeOut(5000);
                 if (typeof getUrlVarsURL(decryptedstring)["RFXID"] == 'undefined') {
-                     fetchRFXQuestions('RFI');
-                } else { 
-                    
+                    fetchRFXQuestions('RFI');
+                } else {
+
                     fetchRFXDetailsForTab2('RFI');
                 }
-                
+
             }
             else if (data == '2') {
                 errorModal.hide();
@@ -1446,7 +1444,7 @@ function insupdRFXQuestionMaster() {
             return false;
             jQuery.unblockUI();
         }
-        
+
     });
     resetRFXQuestionmaster();
     jQuery.unblockUI();
@@ -1455,7 +1453,7 @@ function insupdRFXQuestionMaster() {
 }
 function resetRFXQuestionmaster() {
     $('#submitbtnmaster').text('Submit');
-    sessionStorage.setItem('hdnSubCategoryID', '0');    
+    sessionStorage.setItem('hdnSubCategoryID', '0');
     $('#ddlmandatory').val('');
     $('#txtsubCategory').val('')
     $('#txtQuestiondescription').val('')
@@ -1470,7 +1468,7 @@ $('#addNewQuest').on('hidden.bs.modal', function () {
     $('#NewSubcategory').hide();
     resetRFXQuestionmaster();
     resetSubcategory()
-    
+
     $("#addnewQuestionmaster").validate().resetForm();
 
 });
@@ -1507,8 +1505,8 @@ jQuery("#searchPop-up").keyup(function () {
 // For Bid Preview
 
 function fetchRFXDetailsForPreview() {
-   
-    var AttachementFileName = '',_productCat, _txtCategories=[];
+
+    var AttachementFileName = '', _productCat, _txtCategories = [];
 
     jQuery('#txtRFXSubjectPrev').html($('#txtRFXSubject').val())
     jQuery('#txtRFXdeadlinePrev').html($('#txtRFXdeadline').val())
@@ -1518,40 +1516,40 @@ function fetchRFXDetailsForPreview() {
     for (var i = 0; i < _productCat[0].selectedOptions.length; i++) {
         _txtCategories += _productCat[0].selectedOptions[i].label + ', ';
     }
-    
+
     _txtCategories = _txtCategories.substring(0, _txtCategories.length - 2);
     jQuery("#productCatPrev").html(_txtCategories);
-                                               
+
     var ptTbl = '';
     $("#tblAttachmentsElemPrev").empty();
     $("#tblAttachmentsElem> li").each(function (index) {
         if (($('#attach-file' + (index + 1)).html() != '') && ($(this).find('input[type=file]').val() == '')) {
             ptTbl = $(this);
             $("#tblAttachmentsElemPrev").append('<li><div class="col-md-8" style=padding-left:0px;>' +
-                 '<p class="form-control-static">' + ptTbl.find('input[type=text]').val() + '</p>' +
+                '<p class="form-control-static">' + ptTbl.find('input[type=text]').val() + '</p>' +
                 '</div>' +
                 '<div class="col-md-4">' +
                 '<p class="form-control-static"><a id=RFIFilePrev' + (index + 1) + ' href="javascript:;" onclick="DownloadFile(this)" style="text-decoration: none !important;">' + $('#attach-file' + (index + 1)).html() + '</a></p>' +
                 '</div></li>');
-           
-            
+
+
         } else {
             ptTbl = $(this);
             AttachementFileName = $(this).find('input[type=file]').val().split('\\').pop();
             $("#tblAttachmentsElemPrev").append('<li><div class="col-md-8" style=padding-left:0px;>' +
-                 '<p class="form-control-static">' + ptTbl.find('input[type=text]').val() + '</p>' +
+                '<p class="form-control-static">' + ptTbl.find('input[type=text]').val() + '</p>' +
                 '</div>' +
                 '<div class="col-md-4">' +
                 '<p class="form-control-static"><a id=RFIFilePrev' + (index + 1) + '  href="javascript:;" onclick="DownloadFile(this)" style="text-decoration: none !important;">' + AttachementFileName + '</a></p>' +
                 '</div></li>');
 
         }
-        
+
     });
 
 }
 
-$('#back_prev_btn').click(function() {
+$('#back_prev_btn').click(function () {
     $('#BidPreviewDiv').hide();
     $('#form_wizard_1').show();
 });
@@ -1562,10 +1560,10 @@ function getRFXQuestionsForPreview() {
     var i = 0;
     var _pannel_head = '';
     $('#wrap_scrollerPrev').empty();
-    $('.childchkbox:checked').each(function(index) {
-    
+    $('.childchkbox:checked').each(function (index) {
 
-    switch ($(this).closest('.panel-collapse').attr('seqNo')) {
+
+        switch ($(this).closest('.panel-collapse').attr('seqNo')) {
             case '1':
                 _pannel_head = 'Technical Capabilities'
                 break;
@@ -1587,13 +1585,13 @@ function getRFXQuestionsForPreview() {
             $('#wrap_scrollerPrev').append('<div class="panel panel-default"><div class="panel-heading"><h3 class="panel-title">' + _pannel_head + '</h3></div><div class="panel-body"><table class="table table-bordered" id=Prev_pannel' + i + '><thead><th>Question</th><th>Sub Category</th><th>Validation</th><th>Attachment</th></thead><tbody></tbody></table></div></div>')
             panelheadID = $(this).closest('.panel-collapse').attr('id');
         }
-        
+
         if (panelheadID == $(this).closest('.panel-collapse').attr('id')) {
-            
+
             $('#Prev_pannel' + i + ' > tbody').append('<tr><td>' + $('td:eq(1)', $(this).parents('tr')).html() + '</td><td>' + $('td:eq(2)', $(this).parents('tr')).html() + '</td><td>' + $('td:eq(3)', $(this).parents('tr')).html() + '</td><td>' + $('td:eq(4)', $(this).parents('tr')).html() + '</td></tr></table>')
 
         }
-        
+
     });
 
 
@@ -1602,36 +1600,36 @@ function getRFXQuestionsForPreview() {
 function getVendorsForPreview() {
 
     jQuery("#tblTempVendorslistPrev").empty();
-    
+
     jQuery('#tblTempVendorslistPrev').append('<thead><tr style="background: gray; color: #FFF;"><th>Company</th><th>Email</th><th>Mobile No</th><th>Contact Person</th></tr></thead>')
     for (var i = 0; i < jQuery('#tblTempVendorslist > tbody > tr').length; i++) {
         jQuery('#tblTempVendorslistPrev').append("<tr><td>" + jQuery('#tblTempVendorslist > tbody > tr:eq(' + i + ')').find('td:eq(0)').html() + "</td><td>" + jQuery('#tblTempVendorslist > tbody > tr:eq(' + i + ')').find('td:eq(1)').html() + "</td><td>" + jQuery('#tblTempVendorslist > tbody > tr:eq(' + i + ')').find('td:eq(2)').html() + "</td><td>" + jQuery('#tblTempVendorslist > tbody > tr:eq(' + i + ')').find('td:eq(3)').html() + "</td></tr>");
-     }
+    }
 }
 
 var _count = 0;
 function addMoreAttachment() {
-    _count = ($("#tblAttachmentsElem > li").length+1);
+    _count = ($("#tblAttachmentsElem > li").length + 1);
     console.log("count ==> ", _count);
     $("#tblAttachmentsElem").append('<li><div class="inputgroup">' +
-        '<label class="control-label col-md-3">Attachment</label>'+
-        '<div class="col-md-4">'+
-        '<input type="text" class="form-control" placeholder="Attachment Description" id="txtattachdescription" tabindex="5" name="txtattachdescription" autocomplete="off" />'+
-        '</div>'+
-        '<div class="col-md-3">'+
+        '<label class="control-label col-md-3">Attachment</label>' +
+        '<div class="col-md-4">' +
+        '<input type="text" class="form-control" placeholder="Attachment Description" id="txtattachdescription" tabindex="5" name="txtattachdescription" autocomplete="off" />' +
+        '</div>' +
+        '<div class="col-md-3">' +
         '<input type="file" class="form-control"  tabindex="4" onchange="checkfilesizeMultiple(this)" />' +
-        '<span class="help-block"><a id=attach-file'+_count+' href="javascript:;" style="text-decoration: none !important;"></a></span>'+
-        '</div>'+
-        '<div class="col-md-2" style=" padding-left:0px !important; ">'+
-        '<a href="javascript:void(0);" class="btn blue" onclick="addMoreAttachment()"><i class="fa fa-plus"></i></a>'+
-        '</div>'+
+        '<span class="help-block"><a id=attach-file' + _count + ' href="javascript:;" style="text-decoration: none !important;"></a></span>' +
+        '</div>' +
+        '<div class="col-md-2" style=" padding-left:0px !important; ">' +
+        '<a href="javascript:void(0);" class="btn blue" onclick="addMoreAttachment()"><i class="fa fa-plus"></i></a>' +
+        '</div>' +
         '</div></li>'
-        );
+    );
 }
 
 
 function fetchVendorDetail() {
-  
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
@@ -1659,7 +1657,7 @@ function fetchVendorDetail() {
         }
     });
     jQuery.unblockUI();
-    
+
 }
 
 jQuery("#txtcompany").typeahead({
@@ -1691,7 +1689,7 @@ function fetchCategorymaster() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=M&MappedBy=" + sessionStorage.getItem('UserID') + "&VendorID=0",
+        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=M&MappedBy=" + sessionStorage.getItem('UserID') + "&ChildId=0",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
@@ -1721,20 +1719,20 @@ function fetchCategorymaster() {
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
-            else{
+            else {
                 alert("error");
-            } 
+            }
             return false;
             jQuery.unblockUI();
         }
-        
+
     });
 }
 
 function ajaxFileDelete(closeBtn, filePath) {
-    console.log("vicky ==> ", closeBtn,", filePAth ==> ",  filePath)
+    console.log("vicky ==> ", closeBtn, ", filePAth ==> ", filePath)
     jQuery(document).ajaxStart(jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" /> Please Wait...</h5>' })).ajaxStop(jQuery.unblockUI);
-  
+
     var formData = new window.FormData();
     formData.append("Path", filePath);
 
@@ -1753,9 +1751,9 @@ function ajaxFileDelete(closeBtn, filePath) {
         type: 'POST',
 
         success: function (data) {
-           
+
             fileDeletefromdb(closeBtn, filePath);
-           
+
         },
 
         error: function () {
@@ -1776,7 +1774,7 @@ function ajaxFileDelete(closeBtn, filePath) {
 function fileDeletefromdb(closeBtn, filepath) {
 
     closeBtn.remove();
-   
+
     var BidData = {
 
         "BidId": 0,
@@ -1810,7 +1808,7 @@ function fileDeletefromdb(closeBtn, filepath) {
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
-           
+
             return false;
             jQuery.unblockUI();
         }
@@ -1820,7 +1818,7 @@ function fileDeletefromdb(closeBtn, filepath) {
 
 
 function getCategoryWiseVendors(categoryID) {
-   
+
     jQuery.ajax({
 
         type: "GET",
@@ -1834,16 +1832,16 @@ function getCategoryWiseVendors(categoryID) {
         dataType: "json",
 
         success: function (data) {
-          
+
             $("#tblvendorlist > tbody").empty();
             var vName = '';
             for (var i = 0; i < data.length; i++) {
                 vName = data[i].vendorName;
-                var str = "<tr><td class='hide'>" + data[i].vendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\,\'" + data[i].emailid + "'\)\"; id=\"chkvender" + data[i].vendorID + "\" value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " </td><td class='hide'>"+data[i].emailid+"</td></tr>";
+                var str = "<tr><td class='hide'>" + data[i].vendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\,\'" + data[i].emailid + "'\)\"; id=\"chkvender" + data[i].vendorID + "\" value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " </td><td class='hide'>" + data[i].emailid + "</td></tr>";
                 $('#tblvendorlist > tbody').append(str);
 
             }
-           
+
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
                     console.log("vendID > ", $.trim($(this).find('td:eq(0)').html()))
@@ -1859,7 +1857,7 @@ function getCategoryWiseVendors(categoryID) {
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
-          
+
             return false;
             jQuery.unblockUI();
         }
@@ -2017,7 +2015,7 @@ function Check(event, vname, vendorID, emailId) {
         $(event).prop("disabled", true);
         $(event).closest("span#spanchecked").addClass("checked")
         jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorID + ',' + EvID + ',SelecetedVendorPrev' + vendorID + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
-        jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td class=hide>'+emailId+'</td></tr>')
+        jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td class=hide>' + emailId + '</td></tr>')
         $('#divvendorlist').find('span#spandynamic').hide();
 
         $('table#tblvendorlist').closest('.inputgroup').removeClass('has-error');
@@ -2037,15 +2035,15 @@ function Check(event, vname, vendorID, emailId) {
 
 function RFXSubmitTempVendors() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    
+
     var InsertQuery = '';
-    $("#selectedvendorlistsPrev> tbody > tr").each(function(index) {
+    $("#selectedvendorlistsPrev> tbody > tr").each(function (index) {
         InsertQuery = InsertQuery + " Insert into PE.VQRFIVendorDetails(VQRFIId,EmailId,VendorId,LinkURL,DeadlineDT,RFIVQStatus,EntryDT,Version) values('RFI-" + sessionStorage.getItem('CurrentRFXID') + "','" + $.trim($(this).find('td:eq(2)').html()) + "'," + $.trim($(this).find('td:eq(0)').html()) + ",'RFXVendor.html?RFIID=" + sessionStorage.getItem('CurrentRFXID') + "',CONVERT(DATE,'" + $("#txtRFXdeadline").val() + "',103),'N',getDate(),0) ";
     });
     if (InsertQuery == '') {
         InsertQuery = "Print 1";
     }
-   
+
     var TempVendors = {
         "VendorDetails": InsertQuery,
         "RFXID": parseInt(sessionStorage.getItem('CurrentRFXID'))
@@ -2057,9 +2055,9 @@ function RFXSubmitTempVendors() {
         type: "POST",
         contentType: "application/json",
         success: function (data) {
-           
+
             if (data[0].outMsg == "1") {
-               
+
                 $('#BidPreviewDiv').show();
                 $('#form_wizard_1').hide();
 
@@ -2079,7 +2077,7 @@ function RFXSubmitTempVendors() {
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
-            
+
             return false;
             jQuery.unblockUI();
         }
@@ -2090,10 +2088,10 @@ function RFXSubmitTempVendors() {
 function RFXInsUpdConfigurationSubmit() {
     var _cleanString5 = StringEncodingMechanism($("#txtRFXSubject").val());
     var _cleanString6 = StringEncodingMechanism($('#txtRFXdescription').val());
-  
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (form.valid() == true) {
-        
+
         var TempCompany = {
             'RFXID': parseInt(sessionStorage.getItem('CurrentRFXID')),
             //'SubjectRFX': $("#txtRFXSubject").val(),
@@ -2103,9 +2101,9 @@ function RFXInsUpdConfigurationSubmit() {
             'RFXDescription': _cleanString6,
             'RFXDeadline': $('#txtRFXdeadline').val(),
             'UserId': sessionStorage.getItem('UserID')
-            
+
         };
-      
+
         jQuery.ajax({
 
             type: "POST",
@@ -2122,14 +2120,14 @@ function RFXInsUpdConfigurationSubmit() {
 
                 jQuery.unblockUI();
                 //if (data[0].outMsg == '1') {
-                    bootbox.alert("RFI submitted successfully.", function () {
-                        window.location = sessionStorage.getItem("HomePage")
-                        return false;
-                    });   
+                bootbox.alert("RFI submitted successfully.", function () {
+                    window.location = sessionStorage.getItem("HomePage")
+                    return false;
+                });
 
                 //}
-                
-                
+
+
             },
             error: function (xhr, status, error) {
 

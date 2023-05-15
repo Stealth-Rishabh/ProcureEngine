@@ -1391,7 +1391,7 @@ $('input[name="whatsappAlert"]').change(function () {
                 SendWhatsApp()
                 sessionStorage.setItem('isWhatsappOpted', 'Y');
                 isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted');
-                console.log(isWhatsappOpted);
+
             },
             error: function (error) {
                 console.error("Error sending WhatsApp message:", error);
@@ -1409,7 +1409,7 @@ $('input[name="whatsappAlert"]').change(function () {
             success: function (data) {
                 sessionStorage.setItem('isWhatsappOpted', 'N');
                 isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted');
-                console.log(isWhatsappOpted);
+
             },
             error: function (error) {
                 console.error("Error sending WhatsApp message:", error);
@@ -1492,8 +1492,8 @@ function fetchMyProfileVendor() {
 
 
             let isactiveUser = parentData.isActive;
-            $("#personname").val(StringDecodingMechanism(parentData.vendorName))
-            $("#personnamealt").val(StringDecodingMechanism(parentData.contactPerson))
+            $("#personname").val(StringDecodingMechanism(parentData.contactPerson))
+            $("#personnamealt").val(StringDecodingMechanism(parentData.vendorName))
 
             $("#vendormobileno").val(parentData.mobileNo)
             $("#vendoraltmobileno").val(parentData.phone)
@@ -1697,8 +1697,8 @@ function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingco
 
 //update contact detail
 function updateVendorContactDetails() {
-    var encodevendorName = StringEncodingMechanism($('#personname').val());
-    var encodeContactPerson = StringEncodingMechanism($('#personnamealt').val());
+    var encodevendorName = StringEncodingMechanism($('#personnamealt').val());
+    var encodeContactPerson = StringEncodingMechanism($('#personname').val());
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     let data = {
@@ -1740,7 +1740,7 @@ function updateVendorContactDetails() {
         },
         error: function (xhr, status, error) {
 
-            console.log("error")
+
             jQuery.unblockUI();
         }
     });
@@ -1817,7 +1817,7 @@ function UpdateCompanyDetail() {
         "Currency": jQuery("#ddlcurrency option:selected").val(),
     }
 
-    console.log(APIPath + "VendorLCM/UpdateCompanyDetail/?Id=" + VendorId)
+
 
     jQuery.ajax({
         type: "POST",
@@ -1927,7 +1927,7 @@ function UpdateBankDetail() {
     }
 
 
-    console.log(APIPath + "VendorLCM/UpdateBankDetail/?ActionType=" + ActionType)
+
 
     jQuery.ajax({
         type: "POST",
@@ -1945,7 +1945,7 @@ function UpdateBankDetail() {
 
             }
 
-            console.log("success")
+
 
             profileerror.hide();
             jQuery.unblockUI();
@@ -1972,7 +1972,6 @@ function UpdateBankDetail() {
 
 function GetBankDetail(ChildId, CustId, vendorid) {
 
-    console.log(sessionStorage.getItem("APIPath") + "VendorLCM/GetBankDetail/?ChildId=" + ChildId + "&CustomerId=" + CustId)
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -2105,7 +2104,6 @@ function UpdateFinancialDetail() {
         "Currency": jQuery("#currencyFiscalupdate option:selected").val(),
     }
 
-    console.log(APIPath + "VendorLCM/UpdateFinancialDetail/?Id=" + VendorId + "&ActionType=Add")
 
     jQuery.ajax({
         type: "POST",
@@ -2119,7 +2117,7 @@ function UpdateFinancialDetail() {
         dataType: "json",
         success: function (data) {
 
-            console.log("success")
+
             if (data.isSuccess == "2") {
                 jQuery("#error").text("Turnover for the said financial year already updated..");
                 profileerror.show();
@@ -2151,7 +2149,7 @@ function UpdateFinancialDetail() {
 
 function GetFinancialDetail(ChildId) {
 
-    console.log(sessionStorage.getItem("APIPath") + "VendorLCM/GetFinancialDetail/?Id=" + VendorId + "&ChildId=" + ChildId)
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -2336,7 +2334,7 @@ function AddAssociateVendorDetail() {
         }
     }
 
-    console.log(sessionStorage.getItem("APIPath") + "VendorLCM/AddAssociateVendorDetail/?Id=" + VendorId)
+
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "VendorLCM/AddAssociateVendorDetail/?Id=" + VendorId,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -2454,34 +2452,12 @@ function extractPan(data) {
     }
 
 }
-//to validate tax for other countries
-/*function validateTaxInternational(data) {
 
-    // Get the value of the minlength attribute
-    var minLengthValue = $('#txtTINNo').attr('minlength');
-
-    // Get the value of the maxlength attribute
-    var maxLengthValue = $('#txtTINNo').attr('maxlength');
-
-    // Print the values to the console
-    console.log('minlength value: ' + minLengthValue);
-    console.log('maxlength value: ' + maxLengthValue);
-
-    if (data.value.length >= minLengthValue && data.value.length <= maxLengthValue) {
-        afterTaxEnable()
-    }
-    else if (data.value.length <= maxLengthValue) {
-
-        beforeTaxDisable()
-
-    }
-
-}*/
 
 function ValidateGST(data) {
 
     let GSTNo = data
-    console.log(sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo);
+
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -2495,7 +2471,7 @@ function ValidateGST(data) {
                 let legalName = data.legalName
                 let companytype = data.constitution
 
-                console.log(data.gstin);
+
                 $('#txtTINNo').addClass("gstvalidicon")
 
 
@@ -2585,7 +2561,7 @@ function GetCustomerForBankMapping(vendid, ChildId, bankingId) {
     $('#hdnBankingId').val(bankingId)
     $('#hdnChildID').val(ChildId)
 
-    console.log(sessionStorage.getItem("APIPath") + "VendorLCM/GetCustomerForBankMapping/?Id=" + vendid + "&ChildId=" + ChildId)
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -2648,7 +2624,6 @@ function UpdateBankMapping() {
         "CustomerId": parseInt($('#mapbankcustomer').val()),
     }
 
-    console.log(APIPath + "VendorLCM/UpdateBankMapping/?Id=" + VendorId + "&ActionType=Add")
 
     jQuery.ajax({
         type: "POST",
@@ -2689,7 +2664,6 @@ function UpdateBankMapping() {
         },
         error: function (xhr, status, error) {
 
-            console.log("error")
             jQuery.unblockUI();
         }
     });
@@ -2720,7 +2694,6 @@ $('#ddlCountry').on('change', function () {
 $('#ddlState').on('change', function () {
 
     let stateidentity = $('option:selected', this).data('stateid');
-    console.log(stateidentity);
 
     fetchCity(parseInt(stateidentity));
 });
