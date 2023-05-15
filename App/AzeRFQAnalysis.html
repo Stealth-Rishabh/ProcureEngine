@@ -75,8 +75,6 @@
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
     <script src="assets/CustomJS/Common.js"></script>
-
-
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
     <div class="page-header navbar navbar-fixed-top">
@@ -938,7 +936,6 @@
                                     </span>
                                 </div>
                                 <div id="daterr"></div>
-
                             </div>
                         </div>
                         <div class="form-group">
@@ -1222,7 +1219,6 @@
         jQuery(document).ready(function () {
             callPagejs('eRFQCommon.js,AzeRFQAnalysis.js');
             Pageloaded()
-            var x = isAuthenticated();
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
                 bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {

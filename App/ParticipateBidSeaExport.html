@@ -97,7 +97,7 @@
                         <div class="pulsate-regular padding12px">
                             <a href="javascript:void(0);" class="dropdown-toggle" title="Chat">
 
-                                <i class="fa fa-wechat wechatcolor"></i>
+                                <i class="fa fa-wechat wechatcolor" onclick="openForm()"></i>
                             </a>
                         </div>
                     </li>
@@ -149,7 +149,8 @@
                                             </label>
                                         </b>
                                         <input type="hidden" id="hdnDuration" />
-                                        <input type="hidden" id="hddnadminConnection" value="0" />
+                                        <input type="hidden" id="hddnadminConnection" value="" />
+                                        <input type="hidden" id="hddnvendorConnection" value="0" />
                                     </p>&nbsp;
 
                                     <label class="control-label bold hide labelstyle4" id="pleft5mins">
@@ -327,6 +328,7 @@
                                         <span id="spansuccess1">Data saved sucessfully. </span>
                                     </div>
                                     <div class="form-body">
+                                        <!--  <input id="hdnval" type="hidden" value="0" />-->
                                         <input id="hdnval" type="hidden" value="0" />
                                         <input id="hdnTimeItem" type="hidden" value="0" />
                                         <input id="hdnnoofextension" type="hidden" value="0" />
@@ -361,8 +363,10 @@
                         <li class="active">
                             <a href="javascript:;" data-target="#quick_sidebar_tab_1" data-toggle="tab">
                                 Messages
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="badge badge-empty badge-danger" id="adminconn"><span>&nbsp; &nbsp;&nbsp;&nbsp;<span class="font-blue bold" id="admstatus">Buyer Offline</span>
 
                             </a>
+
                         </li>
 
                     </ul>
@@ -451,17 +455,14 @@
             fetchVendorDetails()
 
         });
+        jQuery(document).ready(function () {
+            callPagejs('ParticipateBidSeaExport.js');
 
-         jQuery(document).ready(function () {
-             callPagejs('ParticipateBidSeaExport.js');
-
-         });
-
-
+        });
 
     </script>
-    
-    
+
+
     <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

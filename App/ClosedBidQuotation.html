@@ -741,7 +741,7 @@
                                                                         </div>
                                                                         <div class="inputgroup">
                                                                             <div class="col-md-6">
-                                                                                <input type="text" class="form-control" id="txtquestions" maxlength="200" name="txtquestions" placeholder="Enter Technical Reuirement" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                <input type="text" class="form-control" id="txtquestions" maxlength="200" name="txtquestions" placeholder="Enter Technical Requirement" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
                                                                             </div>
                                                                             <div class="col-md-3">
                                                                                 <input type="text" class="form-control" id="txtreq" name="txtreq" maxlength="200" placeholder="Desired Response" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
@@ -1012,7 +1012,7 @@
                                             <div class="col-md-12">
                                                 <div class="display-none" id="wrap_scrollerPrev">
                                                     <table class=" table table-striped table-bordered table-hover" id="tblRFQPrev"></table>
-                                                    <table class="table table-condensed table table-striped table-bordered table-hover display-none" cellpadding="0" cellspacing="0" id="tblboqparamprev">
+                                                    <table class="table table-condensed table table-striped table-bordered table-hover display-none" cellpadding="0" cellspacing="0" id="tblServicesProductboqp">
                                                     </table>
                                                 </div>
                                             </div>
@@ -1303,14 +1303,9 @@
                                                         <li>Remarks</li>
                                                         <li>Quantity</li>
                                                         <li>UOM</li>
+                                                        <li>Delivery location</li>
 
-                                                        <li>TAT</li>
-                                                        <li>DeliveryLocation</li>
-                                                        <li>PoNo</li>
-                                                        <li>PoVendorName</li>
-                                                        <li>UnitRate</li>
-                                                        <li>PoDate (MM/DD/YYYY)</li>
-                                                        <li>PoValue</li>
+
                                                     </ul>
                                                     <div class='clearfix'></div>
                                                     <br />
@@ -1327,10 +1322,17 @@
                                                     <br />
                                                 </div>
                                             </div>
-                                            3. Please ensure <b>Target/Budget</b> Price and Quantity and TAT should be in numbers only. <br />
-                                            4. <b>SrNo</b> should be running number only or It should not be in alphabetically form ex.(a/b/c). <br />
-                                            5. <b>UOM/Quantity</b> should be on child level only. <br />
-                                            6. <b>Item service</b> length should be <b>200</b> characters only.
+                                            3. Please ensure <b>Target/Budget Price</b> and <b>Quantity</b> should be in numbers only.<br />
+                                            4. <b>UOM/Quantity</b> should be on child level item only.<br />
+                                            5. <b>Item service</b>length should be 200 characters only.<br />
+                                            6. The <b>UOM</b> and <b>quantity</b> fields should not be left blank in the child level item field .  <br />
+                                            7. You may check the <b>UOM</b> in the instructions page. <br />
+                                            8. While creating a <b>BOQ sheet</b>, no fields should be left <b>blank</b>.<br />
+                                            9. The <b>serial number</b> must be in a <b>numeric</b> and <b>synchronized</b> sequence manner. <br />
+                                            10.The <b>BOQ spreadsheet</b> must be in <b>Excel workbook format</b>(.xlsx). <br />
+                                            11.<b>Serial Number</b>,<b>Item Service</b> and <b>Description</b> is a mandatory field. <br />
+                                            12.Please do not change the <b>formating</b> of <b>BOQ file</b>. <br />
+                                            13.<b>Description</b> length should be <b>200</b> characters only.
                                         </span>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover display-none" id="temptableForExcelDataparameterBOQ"></table>
@@ -1368,8 +1370,36 @@
                 </tr>
             </thead>
         </table>
+        <table id="tbleRFQdetailsBoq" class="table table-striped table-bordered table-hover hide">
+            <thead>
+                <tr id="TrheadBoq">
+
+                    <th data-style="Mandatory">SrNo</th>
+                    <th data-style="NonMandatory">ItemCode</th>
+                    <th data-style="Mandatory">ItemService</th>
+                    <th data-style="Mandatory">Description</th>
+                    <th data-style="NonMandatory">TargetPrice</th>
+                    <th data-style="NonMandatory">Remarks</th>
+                    <th data-style="Mandatory">Quantity</th>
+                    <th data-style="Mandatory">UOM</th>
+                    <th data-style="Mandatory">DeliveryLocation</th>
+
+                </tr>
+            </thead>
+        </table>
 
         <table class="table table-bordered" id="tblUOM"></table>
+        <table class="table table-bordered" id="tblBoqSummary">
+            <thead>
+                <tr>
+                    <th data-style="Mandatory">SrNo</th>
+                    <th data-style="Mandatory">Item</th>
+                    <th data-style="Mandatory">Sheetname</th>
+
+
+                </tr>
+            </thead>
+        </table>
 
     </div>
     <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">

@@ -53,8 +53,6 @@
     <script src="assets/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
     <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
     <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
     <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
     <script src="assets/plugins/jquery.cokie.min.js" type="text/javascript"></script>
@@ -66,9 +64,9 @@
     <script src="assets/plugins/jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN PAGE LEVEL SCRIPTS -->
-
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
     <script src="assets/scripts/core/app.js" type="text/javascript"></script>
-
     <script src="assets/scripts/custom/tasks.js" type="text/javascript"></script>
     <!-- END PAGE LEVEL SCRIPTS -->
 
@@ -212,10 +210,7 @@
                                             <td class="fontSize"> Open RFx </td>
                                             <td class="fontSizeCount" id="lblopenRFQCount">0</td>
                                         </tr>
-                                        <tr class="fetchRFxDataDashboard" onclick="fetchBidDataDashboard('TodayNFA')">
-                                            <td class="fontSize">Open NFA </td>
-                                            <td class="fontSizeCount" id="lblopenNFACount">0</td>
-                                        </tr>
+
                                     </table>
 
                                 </div>
@@ -242,6 +237,10 @@
                                         <tr class="fetchRFxDataDashboard" onclick="fetchBidDataDashboard('Not ForwardedRFQ')">
                                             <td class="fontSize"> Not Forwarded RFx </td>
                                             <td class="fontSizeCount" id="lblNotFwRFQCount">0</td>
+                                        </tr>
+                                        <tr class="fetchRFxDataDashboard" onclick="fetchBidDataDashboard('TodayNFA')">
+                                            <td class="fontSize">Pending NFA </td>
+                                            <td class="fontSizeCount" id="lblopenNFACount">0</td>
                                         </tr>
                                     </table>
                                 </div>
@@ -551,13 +550,8 @@
             </div>
         </div>
     </div>
-    <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
-    <!-- BEGIN CORE PLUGINS -->
-
-
 
     <script nonce="approvalcoalexport">
-
         jQuery(document).ready(function () {
             callPagejs('Activitydetails.js');
         });
