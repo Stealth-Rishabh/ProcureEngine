@@ -1,4 +1,7 @@
-﻿jQuery(document).ready(function () {
+﻿let RFQID;
+let CUSTOMERID;
+
+jQuery(document).ready(function () {
     //FROM HTML
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -21,15 +24,18 @@
     fetchBidType();// for serach vendor
     FormValidatePR()
     numberonly()
-    //abheedev 25/11/2022
-
-
+    debugger
+    var param = getUrlVars()["param"]
+    var decryptedstring = fndecrypt(param)
+    RFQID = getUrlVarsURL(decryptedstring)["RFQID"]
+    CUSTOMERID = getUrlVarsURL(decryptedstring)["CustomerID"]
+    GetPR2Mapping()
 });
 
 
 
 function searchPIForm() {
-    
+
     $("#submit_form_prmapping").removeClass('hide')
 }
 //adding pr details
@@ -37,10 +43,10 @@ function searchPIForm() {
 function AddPRDetail() {
     if ($("#tblpinumber").text() == "") {
         $("#tblpinumber").text($("#txtpinumber").val());
-    }   
- 
+    }
+
     $("#PRMapTable").removeClass('hide')
-    $("#PRMapTable").append('<tr><td></td><td>' + $("#txtrfqpr option:selected").text() + '</td><td>' + $("#txtprnumber option:selected").text() + '</td><td>' + $("#txtlineitem option:selected").text() + '</td><td>' + $("#txtmaterialcode option:selected").text() + '</td><td>' + $("#txtshortname option:selected").text() + '</td><td>' + $("#txtratenfa option:selected").text() + '</td><td>' + $("#txtquantity option:selected").text() + '</td><td>' + 'vendor a value' + '</td><td>' + 'vendor b value' + '</td></tr>');    
+    $("#PRMapTable").append('<tr><td></td><td>' + $("#txtrfqpr option:selected").text() + '</td><td>' + $("#txtprnumber option:selected").text() + '</td><td>' + $("#txtlineitem option:selected").text() + '</td><td>' + $("#txtmaterialcode option:selected").text() + '</td><td>' + $("#txtshortname option:selected").text() + '</td><td>' + $("#txtratenfa option:selected").text() + '</td><td>' + $("#txtquantity option:selected").text() + '</td><td>' + 'vendor a value' + '</td><td>' + 'vendor b value' + '</td></tr>');
 }
 
 //form validation for PR Form
@@ -75,22 +81,11 @@ function FormValidatePR() {
             txtquantity: {
                 required: true,
             }
-            
+
         },
         messages: {
 
-            accountholder: {
-                required: "Please Enter Valid account holder",
-            },
-            ifsccode: {
-                required: "Please Enter Valid IFSC code",
-            },
-            bankname: {
-                required: "Please Enter Valid Bank name",
-            },
-            bankaccount: {
-                required: "Please Enter Valid Bank account",
-            }
+
 
         },
         invalidHandler: function (event, validator) {
@@ -122,5 +117,72 @@ function FormValidatePR() {
 
             AddPRDetail()
         }
+    });
+}
+
+
+
+function GetPR2Mapping() {
+
+    let _RFQID = parseInt(RFQID);
+    let _CustomerID = parseInt(CUSTOMERID)
+
+    console.log(sessionStorage.getItem("APIPath") + "SAPIntegration/GetPR2Mapping/?RFQID=" + _RFQID + '&CustomerID=' + _CustomerID)
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "SAPIntegration/GetPR2Mapping/?RFQID=" + _RFQID + '&CustomerID=' + _CustomerID,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+            debugger
+            let strtbl = "";
+            let strtblH = "";
+            //tablehead
+            strtblH += `<thead><tr><th>PI Number</th><th id='tblpinumber'></th><th>RFQ ID</th><th class='bold'>${RFQID}</th><th></th><th></th><th></th>`;
+            for (var i = 0; i < data.associatedVendors.length; i++) {
+
+                strtblH += '<th></th>';
+            }
+            strtblH += '</tr>';
+            strtblH += '<tr><th></th><th>RFQ/PR1 Line item number</th><th>PR Number</th><th>Line Item of requisition</th><th>Material Code</th> <th>Shortname</th><th>Quantity</th>';
+            for (i = 0; i < data.associatedVendors.length; i++) {
+
+                strtblH += '<th>' + data.associatedVendors[i].vendorName + '</th>';
+            }
+
+            strtblH += '</tr></thead>';
+            $("#PRMapTable").append(strtblH);
+            $("#tblpinumber").text(data.resultToReturn[0].banfn);
+
+            //tablebody
+            for (i = 0; i < data.resultToReturn.length; i++) {
+                strtbl += '<tbody><tr><td></td><td>' + data.resultToReturn[i].bnfpo + '</td><td>' + data.resultToReturn[i].bednr + '</td><td>' + data.resultToReturn[i].bnfpo + '</td><td>' + data.resultToReturn[i].matnr + '</td><td>' + data.resultToReturn[i].txZ01 + '</td><td>' + data.resultToReturn[i].menge + '</td>';
+                for (i = 0; i < data.associatedVendors.length; i++) {
+
+                    strtbl += '<td>' + "<input class='form-control'/>" + '</td>'
+                }
+                strtbl += '</tr></tbody>'
+                $("#PRMapTable").append(strtbl);
+            }
+            $("#PRMapTable").removeClass('hide')
+
+
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
     });
 }

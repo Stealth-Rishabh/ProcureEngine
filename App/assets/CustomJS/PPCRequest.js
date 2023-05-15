@@ -582,6 +582,7 @@ function FetchCurrency(CurrencyID) {
     });
 
 }
+
 function bindNFAOverViewMaster() {
     var x = isAuthenticated();
     var url = "NFA/GetNFAOverViews?CustomerID=" + parseInt(CurrentCustomer) + "&userid=" + UserID;

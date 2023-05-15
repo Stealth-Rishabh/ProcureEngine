@@ -79,8 +79,8 @@ function fetchrfqcomprative(RFQID) {
         type: "GET",
         async: false,
         contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
-
+        success: function (Data, status, jqXHR) {
+            let data = Data.rData
             var str = '';
             var strHead = '';
 
@@ -1506,7 +1506,7 @@ function saveAspdf() {
     // pdf.rect(10, 20, 150, 75);
     pdf.addHTML(document.body, options, function () {
         pdf.save('ComprativeAnalysis.pdf');
-        // window.close();
+        window.close();
 
     });
 

@@ -104,19 +104,21 @@ connection.on("refreshRAQuotes", function (data) {
 });
 connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
 
-    console.log(rdataJson)
-    //console.log(connectionId)
-    let data = JSON.parse(rdataJson)
 
+    let data = JSON.parse(rdataJson)
     if (data[0].VendorID == "0") {
         $('#hddnadminConnection').val(connectionId)
         if (flag == false) {
             $('#adminconn').removeClass('badge-success').addClass('badge-danger')
             $('#admstatus').text("Buyer Offline")
+            $('#chatbtn').addClass('hide')
+            $('#txtChatMsg').addClass('hide')
         }
         else {
             $('#adminconn').removeClass('badge-danger').addClass('badge-success')
             $('#admstatus').text("Buyer Online")
+            $('#chatbtn').removeClass('hide')
+            $('#txtChatMsg').removeClass('hide')
         }
 
     }
@@ -181,30 +183,16 @@ connection.on("refreshColumnStatus", function (data) {
                             display = document.querySelector('#lblTimeLeft');
 
                             startTimer(data[0].timeLeft, display);
-
-
-
                             $("#initialquote" + i).html(data[0].initialQuotedPrice == '0' ? '' : thousands_separators(data[0].initialQuotedPrice))
-
                             $("#iqquote" + i).html(data[0].initialQuotedPrice == '0' ? '' : thousands_separators(data[0].initialQuotedPrice))
-
-
-
-
-
                             $("#lastQuote" + i).html(data[0].lowestQuotedPrice == '0' ? '' : thousands_separators(data[0].lowestQuotedPrice))
                             $("#totalbidvalue" + i).html(TotalBidValue % 1 != 0 ? thousands_separators(TotalBidValue) : thousands_separators(TotalBidValue))
-
-
                             $("#lblstatus" + i).html(data[0].vendorRank)
 
                             var L1Quote = data[0].l1Quote == '0' ? '' : thousands_separators(data[0].l1Quote)
 
 
                             $("#L1Price" + i).html(L1Quote)
-
-
-
                             if (data[0].vendorRank == 'L1') {
 
                                 jQuery('#lblstatus' + i).css('color', 'Blue');
@@ -441,11 +429,8 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
         + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
 
         + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + new Date().toLocaleTimeString() + '</span>'
-
         + '<span class="body" style="color: #c3c3c3;">' + chat.ChatMsg + '</span>'
-
         + '</div>'
-
         + '</div>');
 
     //  }
@@ -456,10 +441,9 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
 
 
 function openForm() {
-    fetchUserChats(sessionStorage.getItem("UserID"), "S");
+    fetchUserChats(sessionStorage.getItem("UserID"), "T");//T stands for both single & Broadcast
 }
 function sendChatMsgs() {
-    debugger
     if ($("#txtChatMsg").val() != '' && $("#txtChatMsg").val() != null) {
         var _cleanString = StringEncodingMechanism($("#txtChatMsg").val());
 
@@ -473,7 +457,7 @@ function sendChatMsgs() {
             "fromconnectionID": $('#hddnadminConnection').val()
 
         }
-        console.log($('#hddnadminConnection').val())
+
         $("#chatList").append('<div class="post in">'
 
             + '<div class="message">'
@@ -1248,11 +1232,7 @@ function InsUpdQuoteSeaExport(index) {
 
     else if (jQuery("#L1Price" + index).text() != "" && jQuery("#L1Price" + index).text() != "0" && BidForID == "83" && valdiff < parseFloat(Amount) && $('#decon' + index).text() == "A") {
 
-        console.log(jQuery("#L1Price" + index).text())
 
-        console.log(valdiff)
-
-        console.log(Amount)
 
         $('#spanamount' + index).removeClass('hide')
 
@@ -1304,30 +1284,24 @@ function InsUpdQuoteSeaExport(index) {
 
     else {
 
-
-
         insertquery = $('#seid' + index).html() + '~' + removeThousandSeperator($('#txtquote' + index).val());
 
         var QuoteProduct = {
 
             "VendorID": vendorID,
             "BidID": parseInt(sessionStorage.getItem("BidID")),
-            "insertQuery": insertquery,
-            "EnteredBy": vendorID,
+            //   "insertQuery": insertquery,
+            //    "EnteredBy": vendorID,
             "Quote": parseFloat(removeThousandSeperator($('#txtquote' + index).val())),
             "SEID": parseInt($('#seid' + index).html()),
             "AdvFactor": parseFloat($("#hdnAdvFactor").val()),
-            "ForRFQ": "N",
+            //  "ForRFQ": "N",
             "extendTime": parseInt($('#hdnval').val()),
             "BidClosingType": "A",
             "isPrePricing": "N"
-
         }
-
+        console.log(JSON.stringify(QuoteProduct));
         $('#hdnselectedindex').val(index);
-
-        console.log(JSON.stringify(QuoteProduct))
-
         connection.invoke("RefreshBidParticipation", JSON.stringify(QuoteProduct)).catch(function (err) {
 
             return console.error(err.toString());
@@ -1448,7 +1422,7 @@ function closeBidAir() {
 
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            console.log(data)
+
             if (data == '1') {
 
                 bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
@@ -1542,7 +1516,7 @@ function fetchBidTime() {
 
         success: function (data, status, jqXHR) {
 
-            console.log("Time Left:" + data[0].timeLeft)
+
             if (data.length > 0) {
 
                 if (BidForID == 81 || BidForID == 83) {

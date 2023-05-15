@@ -1,7 +1,6 @@
 jQuery(document).ready(function () {
 
     Pageloaded()
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
@@ -25,13 +24,9 @@ jQuery(document).ready(function () {
     fetchRFIRFQSubjectforReport('RFQ')
 
     formvalidate();
-   
+
     fetchRegisterUser();
 });
-
-//var _rfqBidType = sessionStorage.getItem("RFQBIDType");
-//var _openQuotes = sessionStorage.getItem("OpenQuotes");
-
 if (window.location.search) {
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
@@ -67,7 +62,7 @@ function getSummary(vendorid, version) {
 }
 var Vendor;
 function fetchrfqcomprative() {
-   
+
 
     sessionStorage.setItem("RFQVersionId", $("#ddlrfqVersion option:selected").val())
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -80,8 +75,10 @@ function fetchrfqcomprative() {
         type: "GET",
         async: false,
         contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
-           
+        success: function (Data, status, jqXHR) {
+            let data = Data.rData
+            let ShowPrice = Data.showQuotedPrice.showQoutedPrice
+
             var str = '';
             var strHead = '';
             var strHeadExcel = '';
@@ -110,31 +107,31 @@ function fetchrfqcomprative() {
             jQuery("#tblRFQComprativeForExcelQ > tbody").empty();
 
             // ShowPrice = data[0].ShowPrice[0].ShowQuotedPrice;
-           // var ShowPrice = 'N'
+            // var ShowPrice = 'N'
             var _CurrentDate = new Date();
-            ShowPrice = 'Y';
+            // ShowPrice = 'Y';
             $('#btnPDF').show()
 
-           /* var _RFQOpenDate = new Date(bidopeningdate.replace('-', ''));
-
-            if (_rfqBidType != 'Open') {
-                if (bidopeningdate != null || bidopeningdate != '') {
-                    if (_RFQOpenDate <= _CurrentDate) {
-                        ShowPrice = 'Y';
-                        $('#btnPDF').show()
-                    }
-                }
-                else {
-                    ShowPrice = 'N';
-                    $('#btnPDF').hide()
-                }
-            }
-            else {
-                ShowPrice = 'Y';
-                $('#btnPDF').show()
-
-            }
-*/            // sessionStorage.setItem('ShowPrice', '');
+            /* var _RFQOpenDate = new Date(bidopeningdate.replace('-', ''));
+ 
+             if (_rfqBidType != 'Open') {
+                 if (bidopeningdate != null || bidopeningdate != '') {
+                     if (_RFQOpenDate <= _CurrentDate) {
+                         ShowPrice = 'Y';
+                         $('#btnPDF').show()
+                     }
+                 }
+                 else {
+                     ShowPrice = 'N';
+                     $('#btnPDF').hide()
+                 }
+             }
+             else {
+                 ShowPrice = 'Y';
+                 $('#btnPDF').show()
+ 
+             }
+ */            // sessionStorage.setItem('ShowPrice', '');
             sessionStorage.setItem('ShowPrice', ShowPrice);
 
             if (data[0].vendorNames.length > 0) {
@@ -871,6 +868,7 @@ function fetchrfqcomprative() {
             }
         },
         error: function (xhr, status, error) {
+
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
