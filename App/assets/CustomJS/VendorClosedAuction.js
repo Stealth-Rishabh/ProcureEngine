@@ -4,7 +4,7 @@ var BIDID = getUrlVarsURL(decryptedstring)["BidID"];
 //FROM HTML
 jQuery(document).ready(function () {
     Pageloaded()
-    var x = isAuthenticated();
+
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
@@ -293,13 +293,13 @@ function fetchBidSummaryVendorproductFF() {
             if (data.length > 0) {
 
                 jQuery("#tblParticipantsService").empty()
-                jQuery("#tblParticipantsService").append("<thead> <tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product</th><th>Total Quantity</th><th>UOM</th><th>Last Quote</th><th>Bidded Quantity*</th><th>Allocated Quantity</th></thead>");
+                jQuery("#tblParticipantsService").append("<thead> <tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product</th><th>Total Quantity</th><th>UOM</th><th>Last Quote</th><th>Bidded Quantity*</th></thead>");
                 for (var i = 0; i < data.length; i++) {
 
 
                     var MqQuote = data[i].mqQuotedPrice == '0' ? '' : data[i].mqQuotedPrice;
 
-                    $("#tblParticipantsService").append("<tr><td>" + (i + 1) + "</td><td class=hide id=FRID" + i + ">" + data[i].frid + "</td><td>" + data[i].shortName + "</td><td class='text-center'>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=lastQuote" + i + " class='text-center' ></td><td class='text-center' id=txtquantity" + i + " ></td><td  class='text-center bold' id=allocatedQuan" + i + " >" + thousands_separators(data[i].allocatedQuantity) + "</td></tr>");
+                    $("#tblParticipantsService").append("<tr><td>" + (i + 1) + "</td><td class=hide id=FRID" + i + ">" + data[i].frid + "</td><td>" + data[i].shortName + "</td><td class='text-center'>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id=lastQuote" + i + " class='text-center' ></td><td class='text-center' id=txtquantity" + i + " ></td></tr>");
                     jQuery('#allocatedQuan' + i).css('color', 'Red');
                     $("#lastQuote" + i).html(data[i].mqQuotedPrice == '0' ? '' : thousands_separators(MqQuote))
 
@@ -659,7 +659,7 @@ function linegraphsforItems(itemId) {
 
             if (data[0].submissionTime.length > 0) {
 
-                for (var x = 0; x < data[0].submissionTime.length; x++) {                    
+                for (var x = 0; x < data[0].submissionTime.length; x++) {
                     graphtime.push(keepTimeOnly(data[0].submissionTime[x].subTime));
                 }
 

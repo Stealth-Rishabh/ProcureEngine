@@ -327,7 +327,7 @@ function RegisterParticipants() {
     var RegisterParticipants = '';
     $("#btnvendreg").attr("disabled", "disabled")
     var _cleanString = StringEncodingMechanism(jQuery("#ParticipantName").val());
-    var _cleanString2 = StringEncodingMechanism((jQuery("#txtAddress").val()).replace(/,/g, ""));
+    var _cleanString2 = StringEncodingMechanism((jQuery("#txtAddress").val()).replace(/[,|-]/g, " "));
 
     var encodedcontactperson = StringEncodingMechanism(jQuery("#ContactName").val());
 
@@ -365,17 +365,7 @@ function RegisterParticipants() {
     }
 
     debugger
-    if (jQuery("#txtTINType option:selected").val() == "IN3") {
 
-        if (gstfilename == "" || panfilename == "") {
-            jQuery("#divalerterr").text("please attach GST/PAN number to proceed...");
-            $('#divalerterr').show();
-            $('#divalerterr').fadeOut(5000);
-            App.scrollTo($('#divalerterr'), -200);
-            return false;
-
-        }
-    }
     if (jQuery("#txtTINType option:selected").val() == "") {
         RegisterParticipants = {
             "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
@@ -449,7 +439,7 @@ function RegisterParticipants() {
 
     }
 
-
+    debugger
     console.log(sessionStorage.getItem("APIPath") + "VendorLCM/VendorRegistrationByUser/");
     jQuery.ajax({
 
@@ -988,13 +978,13 @@ $('#chkalternatemail').on('click', function (e) {//ifChanged
 })
 
 var vendorsForAutoComplete;
-function fetchMapCategory(categoryFor, vendorId) {
+function fetchMapCategory(categoryFor, childId) {
 
 
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VendorID=" + vendorId,
+        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&ChildId=" + childId,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
@@ -1682,7 +1672,7 @@ function ExtendVendor(vendorid, vname, emailid, dialingcodephone, phone, dialing
     setTimeout(function () {
 
         $('#ddlCity').val(cityid).trigger('change')
-        debugger
+
         $('#txtTINType').val(taxIdType).trigger('change')
         $('#txtTINType2').val(taxIdType2).trigger('change')
     }, 2000);
@@ -1772,7 +1762,7 @@ function ExtendParticipants() {
         data: JSON.stringify(RegisterParticipants),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+            debugger
             if (data.isSuccess == '1') {
                 $("#hdnParticipantID").val(data.participantID)
                 $('#divalertsucess').slideDown('show');
@@ -2114,7 +2104,7 @@ function fetchCity(stateid) {
 
 function DownloadFile(aID) {
 
-    fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + _vendorId);
+    fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + jQuery("#hdnChildID").val());
 }
 
 
@@ -2264,7 +2254,7 @@ function extractPan(data) {
 }*/
 
 function ValidateGST(data) {
-
+    debugger
     let GSTNo = data
     console.log(sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo);
     jQuery.ajax({
@@ -2273,26 +2263,34 @@ function ValidateGST(data) {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+            debugger
             if (status != 'E') {
+                if (data.status != 'E') {
+                    var data = jQuery.parseJSON(data);
+                    let panNumber = ""
+                    let legalName = data.legalName
 
-                var data = jQuery.parseJSON(data);
-                let panNumber = ""
-                let legalName = data.legalName
-
-                console.log(data.gstin);
-                $('#txtTINNo').addClass("gstvalidicon")
+                    console.log(data.gstin);
+                    $('#txtTINNo').addClass("gstvalidicon")
 
 
-                panNumber = data.gstin.substring(2, 12);
-                $("#txtPanNo").val(panNumber);
-                $("#txtPanNo").attr("disabled", "disabled");
-                afterTaxEnable()
-                $("#ParticipantName").val(legalName);
-                $("#ParticipantName").attr("disabled", "disabled");
-                setTimeout(function () {
-                    $('#txtTINNo').removeClass("gstvalidicon");
-                }, 2000);
+                    panNumber = data.gstin.substring(2, 12);
+                    $("#txtPanNo").val(panNumber);
+                    $("#txtPanNo").attr("disabled", "disabled");
+                    afterTaxEnable()
+                    $("#ParticipantName").val(legalName);
+                    $("#ParticipantName").attr("disabled", "disabled");
+                    setTimeout(function () {
+                        $('#txtTINNo').removeClass("gstvalidicon");
+                    }, 2000);
+                }
+                else {
+                    $('.alert-danger').html('Some error occured')
+                    $('.alert-danger').show();
+                    Metronic.scrollTo($('.alert-danger'), -200);
+                    $('.alert-danger').fadeOut(5000);
+                    $('.alert-danger').html('')
+                }
             }
             else {
                 $('.alert-danger').html('No such GST number exist')
@@ -2502,7 +2500,7 @@ function fetchVendorRegistrationDetails(custid, vendId) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-            debugger
+
             /* if (!data.isVendorPresent) {
                  $("#hdnFlagType").val("New")
                  $('#divVendorForm').removeClass('hide')
@@ -2602,120 +2600,129 @@ function fetchVendorRegistrationDetails(custid, vendId) {
 }
 
 function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, country, state, prefferredTZ, city, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile, taxIdType, taxIdType2, regionKey, countryKey, Langu, currency) {
-    clearexternal()
-    $('#childDetailsForm').removeClass('hide')
-    $("#bankaccordion").show()
-    $("#financeaccordion").show()
-    $('#ddlCountrym').text(country)
-    $('#ddlStatem').text(state)
-    $('#ddlCitym').text(city)
-    $('#txtTINTypemodal').text(taxIdType)
-    $('#txtTINTypemodal2').text(taxIdType2)
+
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    setTimeout(function () {
+
+        clearexternal()
+        $('#childDetailsForm').removeClass('hide')
+        $("#bankaccordion").show()
+        $("#financeaccordion").show()
+        $('#ddlCountrym').text(country)
+        $('#ddlStatem').text(state)
+        $('#ddlCitym').text(city)
+        $('#txtTINTypemodal').text(taxIdType)
+        $('#txtTINTypemodal2').text(taxIdType2)
 
 
-    $('#ddllanguagemodal').text(Langu)
-    $('#ddlcurrencymodal').text(currency)
+        $('#ddllanguagemodal').text(Langu)
+        $('#ddlcurrencymodal').text(currency)
 
 
-    $('#hdnCountryKey').val(countryKey)
-    $('#hdnRegionKey').val(regionKey)
-
-
-
-
-    jQuery("#vendorname").text(vname);
-    jQuery("#vendoraddress").text(decodeURIComponent(addr));
-
-    jQuery("#vendorpanno").text(pan);
-
-    jQuery("#txtTINNom").text(gst);
-    jQuery("#txtPhoneNo").text(phone);
-    jQuery("#txtMobileNo").text(mobile);
-    jQuery("#txtcompanyemail").text(emailid);
-    jQuery("#txtAlternateeMailID").text(alternateemailid);
-    jQuery("#pincode").text(zipcode)
-
-
-    $('.radio').find('span').removeClass('checked');
-
-    //@abheedev
-
-
-    //company specific
-    jQuery("#ddlNatureEstaiblishment").text("Private Limited Company");
-    $('#ddlVendorType').val(supplierType).trigger('change')
-    if (supplierType == "1") {
-        $('#ddlVendorType').text("Supply Vendor")
-    }
-    else if (supplierType == "2") {
-        $('#ddlVendorType').text("Service Vendor")
-    }
-    else if (supplierType == "3") {
-        $('#ddlVendorType').text("Both")
-    }
-    else {
-        $('#ddlVendorType').text("")
-    }
-    if (msmeCheck == "Y") {
-        $('#ddlMSME').text("Yes")
-    }
-    else if (msmeCheck == "N") {
-        $('#ddlMSME').text("No")
-    }
-    else {
-        $('#ddlMSME').text("")
-    }
-
-    // $('#ddlMSMEClass').val(msmeType).trigger('change')
-    // $('#txtUdyam').val(msmeNo)
-    // $('#msmeattach').html(msmeFile)
-    $('#gstattach').html(taxIdFile)
-    $('#panattach').html(taxId2File)
-
-    //Bank specific
-    /* $('#ddPayTerms').val("0").trigger('change')
-     $('#ifsccode').val("")
-     $('#bankname').val("")
-     $('#bankaccount').val("")
-     $('#accountholder').val("")
-     $('#checkattach').html("")*/
-
-    //finance specific
+        $('#hdnCountryKey').val(countryKey)
+        $('#hdnRegionKey').val(regionKey)
 
 
 
 
-    $('#txtTINNo').attr('disabled', 'disabled');
-    $('#ddlCountry').attr('disabled', 'disabled');
-    $('#vendorpanno').attr('disabled', 'disabled');
+        jQuery("#vendorname").text(vname);
+        jQuery("#vendoraddress").text(decodeURIComponent(addr));
 
-    $('#vendorname').attr('disabled', 'disabled');
-    $('#ddlNatureEstaiblishment').attr('disabled', 'disabled');
+        jQuery("#vendorpanno").text(pan);
 
-    //hide tags
-    $('#bankForm').hide();
-    $('#financeform').hide();
-    $("#txtTINNo").removeAttr("onchange");
-    jQuery("#hdnChildID").val(childid)
-    jQuery("#hdnVendorId").val(vendorid)
+        jQuery("#txtTINNom").text(gst);
+        jQuery("#txtPhoneNo").text(phone);
+        jQuery("#txtMobileNo").text(mobile);
+        jQuery("#txtcompanyemail").text(emailid);
+        jQuery("#txtAlternateeMailID").text(alternateemailid);
+        jQuery("#pincode").text(zipcode)
 
 
-    GetFinancialDetail(parseInt(childid), parseInt(vendorid))
-    GetBankDetail(parseInt(childid), customerid)
+        $('.radio').find('span').removeClass('checked');
 
-    GetCustomerSpecificMaster(customerid) //function defined in common.js
-    GetCountrySpecificMaster(countryKey)  //function defined in common.js
+        //@abheedev
 
-    if (isSapIntegrated == 'Y') {
-        jQuery("#sapuseraccordion").show()
-        GetVendorExternalDetail(parseInt(vendorid), parseInt(childid), customerid)
 
-    }
-    else {
-        jQuery("#sapuseraccordion").hide()
-    }
+        //company specific
+        jQuery("#ddlNatureEstaiblishment").text("Private Limited Company");
+        $('#ddlVendorType').val(supplierType).trigger('change')
+        if (supplierType == "1") {
+            $('#ddlVendorType').text("Supply Vendor")
+        }
+        else if (supplierType == "2") {
+            $('#ddlVendorType').text("Service Vendor")
+        }
+        else if (supplierType == "3") {
+            $('#ddlVendorType').text("Both")
+        }
+        else {
+            $('#ddlVendorType').text("")
+        }
+        if (msmeCheck == "Y") {
+            $('#ddlMSME').text("Yes")
+        }
+        else if (msmeCheck == "N") {
+            $('#ddlMSME').text("No")
+        }
+        else {
+            $('#ddlMSME').text("")
+        }
 
-    debugger
+        // $('#ddlMSMEClass').val(msmeType).trigger('change')
+        // $('#txtUdyam').val(msmeNo)
+        // $('#msmeattach').html(msmeFile)
+        $('#gstattach').html(taxIdFile)
+        $('#panattach').html(taxId2File)
+
+        //Bank specific
+        /* $('#ddPayTerms').val("0").trigger('change')
+         $('#ifsccode').val("")
+         $('#bankname').val("")
+         $('#bankaccount').val("")
+         $('#accountholder').val("")
+         $('#checkattach').html("")*/
+
+        //finance specific
+
+
+
+
+        $('#txtTINNo').attr('disabled', 'disabled');
+        $('#ddlCountry').attr('disabled', 'disabled');
+        $('#vendorpanno').attr('disabled', 'disabled');
+
+        $('#vendorname').attr('disabled', 'disabled');
+        $('#ddlNatureEstaiblishment').attr('disabled', 'disabled');
+
+        //hide tags
+        $('#bankForm').hide();
+        $('#financeform').hide();
+        $("#txtTINNo").removeAttr("onchange");
+        jQuery("#hdnChildID").val(childid)
+        jQuery("#hdnVendorId").val(vendorid)
+
+
+        GetFinancialDetail(parseInt(childid), parseInt(vendorid))
+        GetBankDetail(parseInt(childid), customerid)
+
+        GetCustomerSpecificMaster(customerid) //function defined in common.js
+        GetCountrySpecificMaster(countryKey)  //function defined in common.js
+
+        if (isSapIntegrated == 'Y') {
+            jQuery("#sapuseraccordion").show()
+            GetVendorExternalDetail(parseInt(vendorid), parseInt(childid), customerid)
+
+        }
+        else {
+            jQuery("#sapuseraccordion").hide()
+        }
+
+
+        jQuery.unblockUI()
+
+
+    }, 500)
+
 
 }
 
@@ -2802,7 +2809,7 @@ function GetFinancialDetail(ChildId, VendId) {
                 for (var i = 0; i < childData.length; i++) {
 
 
-                    $('#tblGetFinancialDetail').append("<tr><td class='hide'></td><td>" + childData[i].financialYearFrom + " - " + childData[i].financialYearTo + "</td><td>" + childData[i].turnover + "</td></tr>")
+                    $('#tblGetFinancialDetail').append("<tr><td class='hide'></td><td>" + childData[i].financialYearFrom + " - " + childData[i].financialYearTo + "</td><td>" + thousands_separators(childData[i].turnover) + " " + childData[i].currency + "</td></tr>")
 
 
                 }
@@ -2899,7 +2906,7 @@ function GetVendorExternalDetail(vendId, ChildId, CustId) {
         dataType: "json",
         success: function (data) {
 
-            debugger
+
             if (!data) {
                 jQuery("#hdnExternalActionTypeUser").val("Add");
                 jQuery("#hdnExternalActionTypeFinancer").val("Add");
@@ -3171,7 +3178,7 @@ function UpdateExternalSourceUser() {
         data: JSON.stringify(sourcedata),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            debugger
+
             $("#UpdateUserByDetail").attr("disabled", "disabled");
             jQuery.unblockUI();
 
@@ -3334,7 +3341,6 @@ function PostToExternalSource() {
             jQuery.unblockUI();
 
 
-
             $('#divalertsucesssap').html('')
             $('#divalertsucesssap').html('Your  data is posted successfully to SAP...')
             $('#divalertsucesssap').show();
@@ -3437,7 +3443,7 @@ function UpdateActivity(vendId, CustId) {
 //unregistered vendor
 
 $('#txtTINType').on('change', function () {
-    debugger
+
     let Taxtype = $(this).val();
     if (Taxtype == "") {
         $(".nogsthide").hide();
