@@ -11,6 +11,23 @@ var Token = '';
 var APIPath = sessionStorage.getItem("APIPath");
 fetchMapCategory('M', 0);
 
+jQuery(document).ready(function () {
+
+    if (window.location.search) {
+        var param = getUrlVars()["EmailId"]
+
+        $('#txtEmail').val(param)
+        $('#txtEmail').attr("disabled", "disabled");
+        fnOpenRegisterUser()
+
+    }
+    else {
+        $('#txtEmail').removeAttr("disabled")
+    }
+
+})
+
+
 var Login = function () {
 
     var handleLogin = function () {
@@ -141,6 +158,7 @@ var Login = function () {
     }
 
     function validateUser() {
+        debugger
         //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
         sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
         //sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
@@ -225,6 +243,7 @@ var Login = function () {
 
         }
         else {
+            debugger
             var userPass = fnencrypt(jQuery("#password").val().trim());
             //var encryptedString = CryptoJS.AES.encrypt(userPass, "8080808080808080").toString();
             //var encryptedString = toUTF8Array(userPass);
@@ -497,7 +516,7 @@ function fetchMapCategory(categoryFor, vendorId) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: APIPath + "ProductandServiceCategory/fetchProductCategory/?CustomerID=1&For=" + categoryFor + "&MappedBy=..&VendorID=0",
+        url: APIPath + "ProductandServiceCategory/fetchProductCategory/?CustomerID=1&For=" + categoryFor + "&MappedBy=..&ChildId=0",
         // beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
@@ -799,7 +818,7 @@ function fetchCity(stateid) {
 
 function VendorRequestSubmit() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    debugger
+
     let data = '';
     let gstfilename = jQuery('#filegst').val().substring(jQuery('#filegst').val().lastIndexOf('\\') + 1)
     let panfilename = jQuery('#filepan').val().substring(jQuery('#filepan').val().lastIndexOf('\\') + 1)
@@ -880,7 +899,7 @@ function VendorRequestSubmit() {
         }
     }
 
-    $('#buttoncompanyupdate').removeAttr("disabled", "disabled");
+    $('#buttoncompanyupdate').removeAttr("disabled");
 
 
     jQuery.ajax({
@@ -894,6 +913,19 @@ function VendorRequestSubmit() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
+
+
+            if ($('#filegst').val() != '') {
+                fnUploadFilesonAzure('filegst', gstfilename, data.childId);
+
+            }
+
+            if ($('#filepan').val() != '') {
+                fnUploadFilesonAzure('filepan', panfilename, 'VR/' + data.childId);
+
+            }
+
+
 
 
             $('#buttoncompanyupdate').attr("disabled", "disabled");
@@ -910,6 +942,7 @@ function VendorRequestSubmit() {
 
         },
         error: function (xhr, status, error) {
+
             $('#buttoncompanyupdate').removeAttr("disabled", "disabled");
             $('#diverrorvendor').html('')
             $('#diverrorvendor').html(xhr.responseText)
@@ -1125,7 +1158,7 @@ function FormValidate() {
 //unregistered vendor
 
 $('#txtTINType').on('change', function () {
-    debugger
+
     let Taxtype = $(this).val();
     if (Taxtype == "") {
 
