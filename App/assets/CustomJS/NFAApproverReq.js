@@ -1,11 +1,21 @@
 var idx = 0;
-var fromUserID = 0;
+var fromUserID = 0; 
 var allUsers = [];
 var allApprovalUser = [];
 var error = $('#errordiv');
-var rowApp = 0;
-var rowRFQApp = 0;
 error.hide();
+var successD = $('#successdivD');
+successD.hide();
+var successAdd = $('#successapp');
+successAdd.hide();
+
+var rowApp = 0;
+
+var rowRFQApp = 0;
+
+var userType = "";
+var loginUser = "";
+
 
 $(document).ready(function () {
 
@@ -24,7 +34,7 @@ $(document).ready(function () {
     }
 
     if (idx != null) {
-        if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 29) {// || sessionStorage.getItem('CustomerID') == 29
+        if (sessionStorage.getItem('CustomerID') == 32) {// || sessionStorage.getItem('CustomerID') == 29
             $('#divNFADetails').hide();
             $('#divPPCDetails').show();
             Bindtab2DataforPreview();
@@ -41,6 +51,9 @@ $(document).ready(function () {
         fetchApproverStatus();
         GetQuestions();
 
+         
+
+        debugger
         if (IsApp == 'N' && FwdTo != 'Admin') {
             jQuery("#divRemarksForward").show();
 
@@ -64,7 +77,7 @@ $(document).ready(function () {
             jQuery("#divRemarksApp").show();
             jQuery("#frmdivremarksapprover").show();
             $('#frmadminbutton').hide()
-
+            //$('#btnwithdraw').show()
         }
 
     }
@@ -119,71 +132,27 @@ function Bindtab2DataforPreview() {
                     $('#tblvendorsprev').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th><th>TPI</th></tr></thead>");
                     for (i = 0; i < data[0].biddingVendor.length; i++) {
 
-                        if ((data[0].biddingVendor[i].quotationReceived).trim() == "Y") {
-
-                            QR = "Yes";
-                        }
-                        else if ((data[0].biddingVendor[i].quotationReceived).trim() == "NA") {
-
-                            QR = "NA";
-                        }
-                        else {
-
-                            QR = "No";
-                        }
-                        if ((data[0].biddingVendor[i].tpi).trim() == "Y") {
-
+                        if (data[0].biddingVendor[i].tpi == "Y") {
                             TPI = "Yes";
                         }
-                        else if ((data[0].biddingVendor[i].tpi).trim() == "NA") {
-
+                        else if (data[0].biddingVendor[i].tpi == "NA") {
                             TPI = "NA";
                         }
-
                         else {
-
                             TPI = "No";
                         }
-                        if ((data[0].biddingVendor[i].texhnicallyAcceptable).trim() == "Y") {
-
-                            TA = "Yes";
-                        }
-                        else if ((data[0].biddingVendor[i].texhnicallyAcceptable).trim() == "NA") {
-
-                            TA = "NA";
-
-                        }
-                        else {
-
-                            TA = "No";
-                        }
-                        if ((data[0].biddingVendor[i].politicallyExposed).trim() == "Y") {
-
-                            PE = "Yes";
-                        }
-                        else if ((data[0].biddingVendor[i].politicallyExposed).trim() == "NA") {
-
-                            PE = "NA";
-
-                        }
-                        else {
-
-                            PE = "No";
-                        }
-                        if ((data[0].biddingVendor[i].quotedValidatedSCM).trim() == "Y") {
-
+                        if (data[0].biddingVendor[i].quotedValidatedSCM == "Y") {
                             validatescm = "Yes";
                         }
-                        else if ((data[0].biddingVendor[i].quotedValidatedSCM).trim() == "NA") {
-
+                        else if (data[0].biddingVendor[i].quotedValidatedSCM == "NA") {
                             validatescm = "NA";
                         }
                         else {
-
                             validatescm = "No";
                         }
+
                         //**** Prev vendor Details Start
-                        $('#tblvendorsprev').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + ">" + QR + "</td><td id=TDTechAccep" + i + ">" + TA + "</td><td id=TDpolexp" + i + ">" + PE + "</td><td id=TDvalidatescm" + i + ">" + validatescm + "</td><td id=TPI" + i + ">" + TPI + "</td></tr>")
+                        $('#tblvendorsprev').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + ">" + (data[0].biddingVendor[i].quotationReceived == 'Y' ? 'Yes' : 'No') + "</td><td id=TDTechAccep" + i + ">" + (data[0].biddingVendor[i].texhnicallyAcceptable == 'Y' ? 'Yes' : 'No') + "</td><td id=TDpolexp" + i + ">" + (data[0].biddingVendor[i].politicallyExposed == 'Y' ? 'Yes' : 'No') + "</td><td id=TDvalidatescm" + i + ">" + validatescm + "</td><td id=TPI" + i + ">" + TPI + "</td></tr>")
                         //**** Prev vendor Details end
 
                     }
@@ -256,16 +225,20 @@ function fetchRegisterUser() {
 //abheedev bug 385
 //abheedev backlog 471
 var nfaid = 0;
+var createdById = 0;
 function GetOverviewmasterbyId(idx) {
     var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
+    debugger    
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
+        console.log("data",res)
         if (res.result != null) {
+          //  console.log(res);
             nfaid = res.result[0].nfaID
             if (res.result.length > 0) {
-
+                createdById = res.result[0].createdById 
                 if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 29) {
                     if (res.result[0].nfaCategory == "2") {
                         $(".clsHide").hide();
@@ -446,7 +419,7 @@ function fetchApproverStatus() {
         processData: true,
         dataType: "json",
         success: function (data) {
-            allApprovalUser = data;
+            debugger
             var status = '';
             var c = 0;
             var ApprovalType = ""
@@ -456,19 +429,16 @@ function fetchApproverStatus() {
                 var counterColor = 0;
                 var prevseq = '1';
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i].statusCode == 0) {
-                        jQuery('#divappendstatusbar').append(`<div class="col-md-2 mt-step-col first popApprove" id="divstatuscolor${i}"><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;color:#8e44ad !important;border-color: #8e44ad !important;" id="divlevel${i}"></div><div class="mt-step-title font-grey-cascade" style="font-size:smaller ;color:#8e44ad !important;" id="divapprovername${i}"></div><div style="font-size:x-small;color:#8e44ad !important;" class="mt-step-content font-grey-cascade" id="divstatus${i}"></div><div style="font-size:x-small; color:#8e44ad !important;" class="mt-step-content font-grey-cascade" id="divPendingDate${i}"></div></div></div></div>`)
+                   /* if (data[i].statusCode == 0) {
+                        jQuery('#divappendstatusbar').append(`<div class="col-md-2 mt-step-col first popApprove" id="divstatuscolor${i}"><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id="divlevel${i}"></div><div class="mt-step-title font-grey-cascade" id="divapprovername${i}" style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id="divstatus${i}"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id="divPendingDate${i}"></div></div></div></div>`)
                     }
                     else if (data[i].statusCode == 20) {
-                        jQuery('#divappendstatusbar').append(`<div class="col-md-2 mt-step-col first popApprove" id="divstatuscolor${i}"><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;color:#00FF00 !important;border-color: #00FF00 !important;" id="divlevel${i}"></div><div class="mt-step-title font-grey-cascade" style="font-size:smaller ;color:#00FF00 !important;" id="divapprovername${i}"></div><div style="font-size:x-small;color:#00FF00 !important;" class="mt-step-content font-grey-cascade" id="divstatus${i}"></div><div style="font-size:x-small; color:#00FF00 !important;" class="mt-step-content font-grey-cascade" id="divPendingDate${i}"></div></div></div></div>`)
+                        jQuery('#divappendstatusbar').append(`<div class="col-md-2 mt-step-col first popApprove" id="divstatuscolor${i}"><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id="divlevel${i}"></div><div class="mt-step-title font-grey-cascade" id="divapprovername${i}" style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id="divstatus${i}"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id="divPendingDate${i}"></div></div></div></div>`)
                     }
-
-                    else {
+                    else {*/
                         jQuery('#divappendstatusbar').append(`<a href="javascript:;" data-toggle="modal" data-target="#appmodpop" onclick="popapprfunc('${data[i].approverName}','${data[i].approverID}')"><div class="col-md-2 mt-step-col first popApprove" id="divstatuscolor${i}"><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id="divlevel${i}"></div><div class="mt-step-title font-grey-cascade" id="divapprovername${i}" style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id="divstatus${i}"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id="divPendingDate${i}"></div></div></div></div></a>`)
 
-                    }
-
-                    jQuery('#divappendstatusbar').append('<div class="col-md-2 mt-step-col first" id=divstatuscolor' + i + '><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id=divlevel' + i + '></div><div class="mt-step-title font-grey-cascade" id=divapprovername' + i + ' style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divstatus' + i + '></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divPendingDate' + i + '></div></div></div></div>')
+                    //}
                     jQuery('#divlevel' + i).text(data[i].approverSeq);
                     jQuery('#divapprovername' + i).text(data[i].approverName);
                     jQuery('#divPendingDate' + i).text(fnConverToLocalTime(data[i].receiptDt));
@@ -659,12 +629,10 @@ var success1 = $('.alert-success', form1);
 var form2 = $('#delegateuser');
 var error2 = $('.alert-danger', form2);
 var success2 = $('.alert-success', form2);
-var form3 = $('#formDelegate');
-var error3 = $('.alert-danger', form3);
-var success3 = $('.alert-success', form3);
 var formrecall = $('#frmadminbuttonsrecall');
 var errorrecall = $('.alert-danger', formrecall);
 var successrecall = $('.alert-success', formrecall);
+
 var formaddcommapprover = $('#frmNFAApprover');
 var errorapp = $('.alert-danger', formaddcommapprover);
 var successapp = $('.alert-success', formaddcommapprover);
@@ -774,57 +742,6 @@ function validateAppsubmitData() {
             DelegateUser();
         }
     });
-    form3.validate({
-        errorElement: 'span',
-        errorClass: 'help-block',
-        focusInvalid: false,
-        ignore: "",
-
-        rules: {
-            txtDeligateName: {
-                required: true,
-            },
-            remarkAprv: {
-                required: true,
-            }
-        },
-        messages: {
-            txtDeligateName: {
-                required: "Please select delegate user"
-            },
-
-            remarkAprv: {
-                required: "Please enter your remarks"
-            }
-        },
-
-        invalidHandler: function (event, validator) {
-            success3.hide();
-            error3.show();
-
-        },
-
-        highlight: function (element) {
-            $(element)
-                .closest('.form-group').addClass('has-error');
-        },
-
-        unhighlight: function (element) {
-            $(element)
-                .closest('.form-group').removeClass('has-error');
-        },
-
-        success: function (label) {
-            label
-                .closest('.form-group').removeClass('has-error');
-        },
-
-        submitHandler: function (form) {
-            PostNewApprover();
-        }
-
-    });
-
     formrecall.validate({
         errorElement: 'span',
         errorClass: 'help-block',
@@ -864,6 +781,7 @@ function validateAppsubmitData() {
             fnRecall();
         }
     });
+
 
     formaddcommapprover.validate({
         errorElement: 'span',
@@ -916,6 +834,7 @@ function validateAppsubmitData() {
 
         }
     });
+
 
 }
 function ApprovalApp() {
@@ -1669,27 +1588,11 @@ function fngeneratePDF() {
     }
 
 }
-
-
-
-
-/*add delegate*/
+    
 
 function popapprfunc(approverName, approverID) {
-
-    if (allApprovalUser.length > 0) {
-        rowRFQApp = allApprovalUser.length;
-        for (let i = 0; i < allApprovalUser.length; i++) {
-            if (allApprovalUser[i].statusCode > 0) {
-                filteredUsers = [...filteredUsers, allApprovalUser[i]];
-            }
-        }
-        console.log(filteredUsers);
-        //  fnGetApprovers(filteredUsers);*/
-    }
-
     console.log(allUsers)
-    fromUserID = approverID;
+    fromUserID = approverID; 
     jQuery("#fromApproveUser").empty();
     jQuery('#fromApproveUser').append('<tr><th>Delegate Approver</th></tr>')
     jQuery('#fromApproveUser').append('<tr><td>' + approverName + '</td></tr>')
@@ -1701,12 +1604,11 @@ function popapprfunc(approverName, approverID) {
 
         }
     }
-
+ 
 }
 
 
 function PostNewApprover() {
-    var status = "true";
     jQuery('.btnhide').attr('disabled', 'disabled')
     var delegateTOID = $("#txtDeligateName").val();
     var data = {
@@ -1716,32 +1618,14 @@ function PostNewApprover() {
         "Remarks": $("#remarkAprv").val(),
         "Action": 'Delegate',
         "DelgateTo": delegateTOID
-    }
-    console.log(filteredUsers);
-    if (filteredUsers.length > 0) {
-        rowRFQApp = filteredUsers.length;
-        for (let i = 0; i < filteredUsers.length; i++) {
-            if (filteredUsers[i].approverID == delegateTOID && filteredUsers[i].approvalType == 'A') {
-                status = "false"
-            }
-        }
-
-    }
-
-    console.log(status);
+    } 
+    console.log(data);
     if (fromUserID == delegateTOID) {
-        jQuery("#errordiv").text("Can not delegate to the same approver...");
-        error.show();
-        error.fadeOut(3000);
+        jQuery(".alert-danger").html("Can not delegate to the same approver...");
+        console.log("Can not delegate to the same approver...")
         $('.btnhide').removeAttr("disabled");
         return false;
-    } else if (status == 'false') {
-        jQuery("#errordiv").text("Can't give approval permission to the already approver..");
-        error.show();
-        error.fadeOut(3000);
-        $('.btnhide').removeAttr("disabled");
-        return false;
-    }
+    } 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "NFA/NFADelegate",
@@ -1764,363 +1648,3 @@ function PostNewApprover() {
     jQuery.unblockUI();
 }
 
-
-/*Add Approver bijendra singh */
-var hideError = $('#diverrorapp');
-hideError.hide();
-
-function fnOpenPopupApprovers() {
-    fetchRegisterUser();
-    console.log(allUsers);
-
-}
-let filteredUsers = [];
-function fnOpenPopupApprover() {
-
-    if (allApprovalUser.length > 0) {
-        rowRFQApp = allApprovalUser.length;
-        for (let i = 0; i < allApprovalUser.length; i++) {
-            if (allApprovalUser[i].statusCode > 0) {
-                filteredUsers = [...filteredUsers, allApprovalUser[i]];
-            }
-        }
-        console.log(filteredUsers);
-        //  fnGetApprovers(filteredUsers);*/
-
-
-    }
-
-
-    $('#addNFAApprovers').modal('show')
-
-}
-
-
-function fnGetApprovers(data) {
-
-    if (data.length > 0) {
-        var str = "";
-        jQuery("#tblRFQapprovers").empty();
-        if (data.length > 0) {
-            for (var i = 0; i < data.length; i++) {
-
-                var Apptype = "";
-                rowRFQApp = rowRFQApp + 1;
-                if (data[i].approvalType == "P") {
-
-                    Apptype = 'Approver';
-                }
-                else {
-                    Apptype = 'Observer';
-                }
-
-                if (!jQuery("#tblRFQapprovers thead").length) {
-                    jQuery("#tblRFQapprovers").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-                    jQuery("#tblRFQapprovers").append('<tr id=trAppid' + rowRFQApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteRFQApprow(trAppid' + rowRFQApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + data[i].approverName + '</td><td>' + data[i].approverEmaiID + '</td><td>' + rowRFQApp + '</td><td class=hide>' + data[i].approverID + '</td></tr>');
-                }
-                else {
-                    jQuery("#tblRFQapprovers").append('<tr id=trAppid' + rowRFQApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteRFQApprow(trAppid' + rowRFQApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + data[i].approverName + '</td><td>' + data[i].approverEmaiID + '</td><td>' + rowRFQApp + '</td><td class=hide>' + data[i].approverID + '</td></tr>');
-                }
-
-
-
-                if (jQuery('#tblapprovers tr').length == 1) {
-                    jQuery('#btnnfaapproversubmit').attr("disabled", "disabled");
-                }
-                else {
-                    jQuery('#btnnfaapproversubmit').removeAttr("disabled");
-                }
-                console.log(Apptype);
-            }
-
-            if (jQuery('#tblapprovers tr').length <= 1) {
-                jQuery('#btnnfaapproversubmit').attr("disabled", "disabled");
-            }
-            else {
-                jQuery('#btnnfaapproversubmit').removeAttr("disabled");
-            }
-
-        }
-        else {
-
-        }
-
-    }
-
-}
-
-
-
-
-$("#addNFAApprovers").on("hidden.bs.modal", function () {
-    jQuery("#txtApproverNFA").val('')
-    $('#hdnNFAApproverEmailID').val('0')
-    $('#hdnNFAApproverID').val('0')
-    $('#hdnNFAApproverusername').val('')
-});
-jQuery("#txtApprover").keyup(function () {
-    $('#hdnApproverID').val('0')
-    $('#hdnAppEmailIDID').val('')
-
-});
-
-jQuery("#txtApproverNFA").typeahead({
-    source: function (query, process) {
-        var data = allUsers;
-        usernames = [];
-        map = {};
-        var username = "";
-        jQuery.each(data, function (i, username) {
-            map[username.userName] = username;
-            usernames.push(username.userName);
-        });
-
-        process(usernames);
-
-    },
-    minLength: 2,
-    updater: function (item) {
-
-        if (map[item].userID != "0") {
-            sessionStorage.setItem('hdnApproverid', map[item].userID);
-            $('#hdnNFAApproverID').val(map[item].userID)
-            $('#hdnNFAApproverEmailID').val(map[item].emailID)
-
-        }
-        else {
-            gritternotification('Please select Approver  properly!!!');
-        }
-
-        return item;
-    }
-
-});
-
-
-
-function addNFAApprovers_test() {
-    var status = "true"; var Apptype = ''
-    //  jQuery("#tblRFQapprovers").empty();
-    $("#tblapprovers tr:gt(0)").each(function () {
-        var this_row = $(this);
-        if ($.trim(this_row.find('td:eq(0)').html()) == $('#hdnApproverID').val()) {
-            status = "false"
-        }
-    });
-
-    if ($('#hdnApproverID').val() == "0" || jQuery("#txtApprover").val() == "") {
-        jQuery("#diverrorapp").text("Please Select Approver Properly");
-        hideError.show();
-        hideError.fadeOut(3000);
-        jQuery("#txtApprover").val('')
-        jQuery("#hdnApproverID").val('0')
-        return false;
-    }
-    else {
-        rowApp = rowApp + 1;
-        if ($('#drp_isAppObs').val() == "A") {
-
-            Apptype = 'Approver';
-        }
-        else {
-            Apptype = 'Observer';
-        }
-
-        if (!jQuery("#tblapprovers thead").length) {
-            jQuery("#tblapprovers").append("<thead><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:30%!important'>Role</th></thead>");
-            jQuery("#tblapprovers").append('<tr id=trAppid' + rowApp + '><td class=hide>' + $('#hdnNFAApproverID').val() + '</td><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + jQuery("#txtApproverNFA").val() + '</td><td>' + $('#hdnNFAApproverEmailID').val() + '</td><td>' + Apptype + '</td><td class=hide>' + $('#drp_isAppObs').val() + '</td></tr>');
-        }
-        else {
-            jQuery("#tblapprovers").append('<tr id=trAppid' + rowApp + '><td class=hide>' + $('#hdnNFAApproverID').val() + '</td><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppid' + rowApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + jQuery("#txtApproverNFA").val() + '</td><td>' + $('#hdnNFAApproverEmailID').val() + '</td><td>' + Apptype + '</td><td class=hide>' + $('#drp_isAppObs').val() + '</td></tr>');
-        }
-
-        if (jQuery('#tblapprovers tr').length == 1) {
-            jQuery('#btnnfaapproversubmit').attr("disabled", "disabled");
-        }
-        else {
-            jQuery('#btnnfaapproversubmit').removeAttr("disabled");
-        }
-        jQuery("#txtApproverNFA").val('')
-        jQuery("#drp_isAppObs").val('A')
-        jQuery("#hdnApproverID").val('0')
-
-    }
-}
-
-
-
-function deleteApprow(approwid) {
-    rowApp = rowApp - 1;
-    $('#' + approwid.id).remove()
-
-    if (jQuery('#tblapprovers tr').length == 1) {
-        jQuery('#btnnfaapproversubmit').attr("disabled", "disabled");
-    }
-    else {
-        jQuery('#btnnfaapproversubmit').removeAttr("disabled");
-    }
-}
-
-function CloseForwardpopup() {
-    $('#addNFAApprovers').modal('hide')
-}
-
-
-function fnclosepopupApprovers() {
-    $('#addNFAApprovers').modal('hide')
-}
-
-function addNFAApprovers() {
-    //debugger
-    var status = "true";
-    var UserID = jQuery("#hdnNFAApproverID").val();
-    var UserName = jQuery("#txtApproverNFA").val();
-    var EmailID = jQuery("#hdnNFAApproverEmailID").val();
-    //console.log(UserID);
-
-
-    $("#tblRFQapprovers tr:gt(0)").each(function () {
-        var this_row = $(this);
-
-        if ($.trim(this_row.find('td:eq(4)').html()) == $('#hdnNFAApproverID').val()) {
-            status = "false"
-        }
-    });
-
-    if (filteredUsers.length > 0) {
-        rowRFQApp = filteredUsers.length;
-        for (let i = 0; i < filteredUsers.length; i++) {
-            if (filteredUsers[i].approverName == UserName) {
-                console.log(UserName);
-                console.log(filteredUsers[i].approverName);
-                jQuery("#diverrorapp").text("Approver is already added for this NFA.");
-                hideError.show();
-                hideError.fadeOut(3000);
-                status = "false"
-            }
-        }
-
-    }
-
-    if ($('#hdnNFAApproverID').val() == "0" || jQuery("#txtApproverNFA").val() == "") {
-        jQuery("#diverrorapp").text("Approver not selected. Please press + Button after selecting Approver");
-        hideError.show();
-        hideError.fadeOut(3000);
-
-        return false;
-    }
-    else if (status == "false") {
-        jQuery("#diverrorapp").text("Approver is already mapped for this NFA.");
-        hideError.show();
-        hideError.fadeOut(3000);
-        jQuery("#txtApproverNFA").val('')
-        jQuery("#hdnNFAApproverID").val('0')
-        return false;
-    }
-    else {
-        rowRFQApp = rowRFQApp + 1;
-        if (!jQuery("#tblRFQapprovers thead").length) {
-            jQuery("#tblRFQapprovers").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-            jQuery("#tblRFQapprovers").append('<tr id=trAppid' + rowRFQApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteRFQApprow(trAppid' + rowRFQApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowRFQApp + '</td><td class=hide>' + UserID + '</td></tr>');
-        }
-        else {
-            jQuery("#tblRFQapprovers").append('<tr id=trAppid' + rowRFQApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteRFQApprow(trAppid' + rowRFQApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowRFQApp + '</td><td class=hide>' + UserID + '</td></tr>');
-        }
-        jQuery("#txtApproverNFA").val('')
-        jQuery("#hdnNFAApproverID").val('0')
-    }
-    jQuery('#btnnfaapproversubmit').removeAttr("disabled");
-}
-
-function deleteRFQApprow(rowid) {
-    rowRFQApp = rowRFQApp - 1;
-    $('#' + rowid.id).remove();
-    var rowCount = jQuery('#tblRFQapprovers tr').length;
-    var i = 1;
-    if (rowCount > 1) {
-        $("#tblRFQapprovers tr:gt(0)").each(function () {
-            var this_row = $(this);
-            $.trim(this_row.find('td:eq(3)').html(i));
-            i++;
-        });
-        jQuery('#btnnfaapproversubmit').removeAttr("disabled");
-    }
-    else {
-
-        jQuery('#btnnfaapproversubmit').attr("disabled", "disabled");
-    }
-}
-
-
-
-function PostAddApprover() {
-
-    var ApproverSeqData = [];
-    debugger
-    jQuery('.btnapphide').attr('disabled', 'disabled')
-    var approvers = '';
-    var rowCount = jQuery('#tblRFQapprovers tr').length;
-    if (rowCount > 1) {
-        /* $("#tblRFQapprovers tr:gt(0)").each(function () {
-             var this_row = $(this);
-             approvers = approvers + $.trim(this_row.find('td:eq(4)').html()) + '~' + $.trim(this_row.find('td:eq(3)').html()) + '#';
- 
-         })*/
-
-        var NBv_idx = 0;
-
-        var NBrowCount = jQuery('#tblRFQapprovers >tbody>tr').length;
-
-        if (NBrowCount >= 1) {
-            // $("#tblRFQapprovers tr:gt(0)").each(function () {
-            $("#tblRFQapprovers> tbody > tr").each(function (index) {
-                var this_Nb_row = $(this);
-
-                objData = {
-                    nfaId: parseInt(idx),
-                    apprId: parseInt(this_Nb_row.find('td:eq(4)').html()),
-                    custId: parseInt(sessionStorage.getItem("CustomerID")),
-                    userID: this_Nb_row.find('td:eq(4)').html(),
-                    apprName: this_Nb_row.find('td:eq(1)').html(),
-                    apprEmail: this_Nb_row.find('td:eq(2)').html(),
-                    apprSeq: parseInt(this_Nb_row.find('td:eq(3)').html()),
-                    apprStatus: "P",
-                    budgetType: "WB"
-                };
-
-                ApproverSeqData.push(objData);
-
-            });
-        }
-        // SaveApproverSeqData(ApproverSeqData);
-
-    }
-    console.log(ApproverSeqData);
-    /*
-    var data = {
-        "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
-        "NFAID": idx,
-        "QueryNFAApprovers": approvers,
-        "CreatedBy": sessionStorage.getItem('UserID'),
-    }*/
-    //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
-    var x = isAuthenticated();
-    var url = "NFA/AddNFAApprovers?NFAID=" + idx;
-
-    debugger;
-    //alert(JSON.stringify(objSeqData))
-    var callAPI = callajaxReturnSuccess(url, "Post", JSON.stringify(ApproverSeqData));
-    callAPI.success(function (res) {
-        console.log(res);
-    });
-
-    callAPI.error(function (error) {
-        console.log(error);
-    });
-
-}
-
-
-
-/**END adding Approval   */

@@ -891,8 +891,6 @@
                                 </div>
                             </div>
                             <form id="frmadminbutton" style="display:none;" class="col-md-12">
-
-
                                 <div class="form-group">
 
                                     <div class="col-md-offset-4 col-md-12 margin-top-10">
@@ -1146,13 +1144,15 @@
                                     <div class="alert alert-block alert-danger" id="errordiv">
                                         <span class="alert-danger"></span>
                                     </div>
-
+                                    <div class="alert alert-success success-block" id="successdivD" >
+                                        <span class="alert-success"></span>
+                                    </div>
                                     <div style="display:flex;">
-                                        <div id="fromApproveUser" style="width:25%; margin:20px"></div>
-                                        <div class="form-group" style="width: 75%; margin: 20px">
+                                        <div id="fromApproveUser" style="width:24%; margin:20px"></div>
+                                        <div class="form-group" style="width: 76%; margin: 20px">
                                             <div class="inputgroup isProject" style="display:flex;">
                                                 <label class="col-md-5 control-label">
-                                                    Deligate To<span class="required"> *</span>
+                                                    Delegate To<span class="required"> *</span>
                                                 </label>
                                                 <div class="col-md-12">
                                                     <select id="txtDeligateName" name="txtDeligateName" class="form-control"> </select>
@@ -1193,17 +1193,20 @@
                                 </div>
 
                                 <div class="portlet-body form">
+                                    <div class="alert alert-success" id="successapp">
+                                        <span id="spansuccessapp"> </span>
+                                    </div>
+                                    <div class="alert alert-danger" id="diverrorapp">
+                                        <span id="spandangerapp"> </span>
+                                    </div>
                                     <form action="#" id="frmNFAApprover" class="form-horizontal" role="form">
-                                        <div class="alert alert-danger" id="diverrorapp">
-                                            <span id="spandangerapp"> </span>
-                                        </div>
 
                                         <div class="form-body">
                                             <input type="hidden" id="hdnNFAApproverID" value="0" />
                                             <input type="hidden" id="hdnNFAApproverEmailID" value="0" />
                                             <input type="hidden" id="hdnNFAApproverusername" value="" />
 
-                                            <div class="row margin-top-20">
+                                            <div class="row">
                                                 <label class="col-md-3 control-label">
                                                     Select Approvers
                                                 </label>
@@ -1228,7 +1231,7 @@
                                                     <div class="row">
                                                         <div class="col-md-offset-4 col-md-9">
                                                             <button type="submit" class="btn green" id="btnnfaapproversubmit">Submit</button>
-                                                            <button type="button" class="btn btnapphide yellow-crusta" onclick="fnclosepopupApprovers()" id="btnClose">Close</button>
+                                                            <button type="button" class="btn yellow-crusta" onclick="fnclosepopupApprovers()" id="btnClose">Close</button>
 
                                                         </div>
                                                     </div>
@@ -1244,50 +1247,52 @@
                         </div>
                     </div>
                 </div>
+
+            </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        jQuery(document).ready(function () {
+        <script>
+            jQuery(document).ready(function () {
 
-            callPagejs('NFAApproverReq.js');
-            //handleDateTimepicker();
-            $('[data-toggle="popover"]').popover({})
-            Pageloaded()
-            setInterval(function () { Pageloaded() }, 15000);
-            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                window.location = sessionStorage.getItem('MainUrl');
-            }
-            else {
-                if (sessionStorage.getItem("UserType") == "E") {
-                    $('.page-container').show();
+                callPagejs('NFAApproverReq.js');
+                //handleDateTimepicker();
+                $('[data-toggle="popover"]').popover({})
+                Pageloaded()
+                var x = isAuthenticated();
+                setInterval(function () { Pageloaded() }, 15000);
+                if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+                    window.location = sessionStorage.getItem('MainUrl');
                 }
                 else {
-                    bootbox.alert("You are not Authorize to view this page", function () {
-                        parent.history.back();
-                        return false;
-                    });
+                    if (sessionStorage.getItem("UserType") == "E") {
+                        $('.page-container').show();
+                    }
+                    else {
+                        bootbox.alert("You are not Authorize to view this page", function () {
+                            parent.history.back();
+                            return false;
+                        });
+                    }
                 }
-            }
-            $(function () {
-                $('[data-toggle="tooltip"]').tooltip()
-            })
+                $(function () {
+                    $('[data-toggle="tooltip"]').tooltip()
+                })
 
 
-            Metronic.init();
-            Layout.init();
-            validateAppsubmitData();
+                Metronic.init();
+                Layout.init();
+                validateAppsubmitData();
 
-            setCommonData();
-            fetchMenuItemsFromSession(1, 58);
-
-
+                setCommonData();
+                fetchMenuItemsFromSession(1, 58);
 
 
-        });
 
-    </script>
+
+            });
+
+        </script>
 </body>
 
 </html>
