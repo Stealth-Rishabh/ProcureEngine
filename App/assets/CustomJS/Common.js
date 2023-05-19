@@ -840,7 +840,6 @@ function GetCustomerSpecificMaster(CustId) {
         async: false,
         dataType: "json",
         success: function (data) {
-            debugger
 
             //Authentication Group
             jQuery("#authGrp").empty();

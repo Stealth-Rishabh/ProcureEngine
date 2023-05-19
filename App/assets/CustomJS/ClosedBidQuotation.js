@@ -26,6 +26,28 @@ jQuery(document).ready(function () {
     }
     Metronic.init();
     Layout.init();
+
+    FormWizard.init();
+    ComponentsPickers.init();
+    setCommonData();
+    fnGetTermsCondition();
+    fetchMenuItemsFromSession(1, 24);
+
+    FetchCurrency('0');
+
+    FetchUOM(sessionStorage.getItem("CustomerID"));
+
+    fetchRegisterUser('1');
+    fetchVendorGroup('M', 0);
+    fetchParticipantsVender();// fetch all vendors for advance search
+
+    document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
+        document.getElementById('file-excelparameter').click();
+    });
+    document.getElementById('browseBtnExcelParameterB').addEventListener('click', function () {
+        document.getElementById('file-excelparameterB').click();
+    });
+
     if (window.location.search) {
         var param = getUrlVars()["param"]
         var decryptedstring = fndecrypt(param)
@@ -49,29 +71,9 @@ jQuery(document).ready(function () {
         fnGetApprovers();
         GetQuestions();
         fetchReguestforQuotationDetails();
-        fetchRFIParameteronload();
+
 
     }
-    FormWizard.init();
-    ComponentsPickers.init();
-    setCommonData();
-    fnGetTermsCondition();
-    fetchMenuItemsFromSession(1, 24);
-
-    FetchCurrency('0');
-
-    FetchUOM(sessionStorage.getItem("CustomerID"));
-
-    fetchRegisterUser('1');
-    fetchVendorGroup('M', 0);
-    fetchParticipantsVender();// fetch all vendors for advance search
-
-    document.getElementById('browseBtnExcelParameter').addEventListener('click', function () {
-        document.getElementById('file-excelparameter').click();
-    });
-    document.getElementById('browseBtnExcelParameterB').addEventListener('click', function () {
-        document.getElementById('file-excelparameterB').click();
-    });
 });
 function fncollapse(id) {
 
@@ -100,6 +102,7 @@ function fncheckboq() {
         $('#boqbtnexcel').show();
         $('#btnexcel').hide();
         $('#tblServicesProduct').hide();
+
         $('#tblServicesProductboq').show();
         $('#add_or').hide();
         $('#btnclear').hide();
@@ -109,7 +112,7 @@ function fncheckboq() {
     }
 }
 setTimeout(function () {
-    $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
+    // $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
     $('#txtConversionRate').val(1);
     fnfillInstructionExcel();
 }, 2000);
@@ -196,11 +199,12 @@ var FormWizard = function () {
                 rules: {
 
                     //First Tab
+
                     txtrfqSubject: {
                         required: true
                     },
                     txtenddatettime: {
-                        required: true
+                        required: true,
 
                     },
                     txtrfqdescription: {
@@ -472,27 +476,19 @@ var FormWizard = function () {
                     error.hide();
                     if (index == 1) {
 
-                        //var StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
-                        //var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
-                        //var CurDateonly = new Date(currentdate.toDateString())
-                        //var StartDTdateonly = new Date(StartDT.toDateString())
-                        //var BidOpenDate = new Date($('#txtbidopendatetime').val().replace('-', ''));
+                        var StartDT = new Date($('#txtstartdatettime').val().replace('-', ''));
+                        var EndDT = new Date($('#txtenddatettime').val().replace('-', ''));
+                        var CurDateonly = new Date(currentdate.toDateString())
+                        var StartDTdateonly = new Date(StartDT.toDateString())
+                        var BidOpenDate = new Date($('#txtbidopendatetime').val().replace('-', ''));
                         if (form.valid() == false) {
                             return false;
 
                         }
-                        else if (form.valid() == true) {
-
-                            if ($('#txtstartdatettime').val() != "" && $('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() != undefined) {
-                                Dateandtimevalidate($('#txtstartdatettime').val(), 'startdt');
-                            }
-                            else {
-                                Dateandtimevalidate($('#txtenddatettime').val(), 'enddt');
-                            }
 
 
-                        }
-                        /*else if ($('#txtenddatettime').val() == '') {
+
+                        else if ($('#txtenddatettime').val() == '') {
                             $('.alert-danger').show();
                             $('#txtenddatettime').closest('.inputgroup').addClass('has-error');
                             $('#spandanger').html('Please Enter RFQ END Date');
@@ -518,6 +514,7 @@ var FormWizard = function () {
                             $('.alert-danger').fadeOut(7000);
                             $('#txtenddatettime').val('')
                             return false;
+
                         }
                         else if (EndDT < currentdate) {
                             $('.alert-danger').show();
@@ -554,10 +551,21 @@ var FormWizard = function () {
                             $('#txtbidopendatetime').val('')
                             return false;
                         }
+                        else if (form.valid() == true) {
+
+                            if ($('#txtstartdatettime').val() != "" && $('#txtstartdatettime').val() != null && $('#txtstartdatettime').val() != undefined) {
+                                Dateandtimevalidate($('#txtstartdatettime').val(), 'startdt');
+                            }
+                            else {
+                                Dateandtimevalidate($('#txtenddatettime').val(), 'enddt');
+                            }
+
+
+                        }
                         else {
                             InsUpdRFQDEtailTab1()
 
-                        }*/
+                        }
 
                     }
                     else if (index == 2) {
@@ -747,6 +755,7 @@ function Dateandtimevalidate(dttime, forDT) {
         return false;
         
     }*/
+
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -770,7 +779,7 @@ function Dateandtimevalidate(dttime, forDT) {
             }
             else {
                 isvalidEndDt = data;
-                debugger;
+
                 //** End Date is Valid
                 if (data == "1") {
                     if ($('#txtbidopendatetime').val() != null && $('#txtbidopendatetime').val() != '') {
@@ -901,7 +910,10 @@ function Dateandtimevalidate(dttime, forDT) {
                 error401Messagebox(err.Message);
             }
             else {
+
+
                 bootbox.alert("you have some error.Please try agian.");
+
             }
             jQuery.unblockUI();
             return false;
@@ -1194,7 +1206,7 @@ function InsUpdRFQDEtailTab2() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            debugger
+           
             jQuery("#tblTermsCondition").empty();
             jQuery("#tbltermsconditionprev").empty();
             if (data.length > 0) {
@@ -1415,7 +1427,7 @@ function CheckTerms(event, ID) {
 
 }
 /*function fnsavetermscondition(isbuttonclick) {
-    debugger
+   
     var checkedValue = '2~I~#';
     var checkedOtherTerms = ''; isOtherTerms = "Y";
     $("#tblTermsCondition> tbody > tr").each(function (index) {
@@ -1514,6 +1526,7 @@ function fnsavetermscondition(isbuttonclick) {
         $('.alert-danger').fadeOut(7000)
         return false;
     }
+
     else if (checkedValue != '' && isOtherTerms == "Y") {
         var Attachments = {
             "RFQId": parseInt(sessionStorage.getItem('hddnRFQID')),
@@ -3023,6 +3036,7 @@ function FetchCurrency(CurrencyID) {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
 
         cache: false,
+        async: false,
 
         dataType: "json",
 
@@ -3059,11 +3073,15 @@ function FetchCurrency(CurrencyID) {
 function RFQInviteVendorTab3() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-    var InsertQuery = '';
-
-    $("#selectedvendorlistsPrev> tbody > tr").each(function (index) {
+    var Vendorlist = [];
+    $("#selectedvendorlistsPrev> tbody > tr").each(function () {
         if ($.trim($(this).find('td:eq(0)').html()) != 'undefined' && $.trim($(this).find('td:eq(0)').html()) != "" && $.trim($(this).find('td:eq(0)').html()) != null) {
-            InsertQuery = InsertQuery + $.trim($(this).find('td:eq(0)').html()) + ','
+
+            var VendorChildAssociation = {
+                "VendorId": parseInt($.trim($(this).find('td:eq(0)').html())),
+                "ChildId": parseInt($.trim($(this).find('td:eq(1)').html())),
+            }
+            Vendorlist.push(VendorChildAssociation);
         }
         else {
             $('.alert-danger').show();
@@ -3092,7 +3110,7 @@ function RFQInviteVendorTab3() {
     ET = ET + 'GMT' + sessionStorage.getItem('utcoffset');
 
     var Tab3data = {
-        "BidVendors": InsertQuery,
+        "BidVendors": Vendorlist,
         "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
         "UserID": sessionStorage.getItem('UserID'),
         //"subject": jQuery('#txtrfqSubject').val(),
@@ -3204,14 +3222,16 @@ $("#chkAll").click(function () {
         jQuery('#selectedvendorlistsPrev> tbody').empty()
         vCount = 0;
         $("#tblvendorlist> tbody > tr").each(function (index) {
+
             $(this).find("span#spanchecked").addClass("checked");
             $('#chkvender' + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true);
-            var vendorid = $('#chkvender' + $.trim($(this).find('td:eq(0)').html())).val()
+            var vendorid = parseInt($('#vendorTblId').text());
+            var childid = parseInt($('#childTblId').text());
             var v = vCount;
             vCount = vCount + 1;
-            var vname = $.trim($(this).find('td:eq(2)').html())
-            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorid + '><td class=hide>' + vendorid + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorid + ',' + 'chkvender' + v + ',SelecetedVendorPrev' + vendorid + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
-            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorid + '><td class=hide>' + vendorid + '</td><td>' + vname + '</td></tr>')
+            var vname = $.trim($(this).find('td:eq(3)').html())
+            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + childid + '><td class=hide>' + vendorid + '</td><td class=hide>' + childid + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + childid + ',' + 'chkvender' + v + ',SelecetedVendorPrev' + childid + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + childid + '><td class=hide>' + vendorid + '</td><td class=hide>' + childid + '</td><td>' + vname + '</td></tr>')
 
         });
     }
@@ -3236,7 +3256,7 @@ $("#chkAll").click(function () {
 
 });
 
-function Check(event, vname, vendorID) {
+function Check(event, vname, vendorID, childID) {
 
     if ($(event).closest("span#spanchecked").attr('class') == 'checked') {
         $(event).closest("span#spanchecked").removeClass("checked")
@@ -3248,8 +3268,8 @@ function Check(event, vname, vendorID) {
         //var EvID = event.id;
         $(event).prop("disabled", true);
         $(event).closest("span#spanchecked").addClass("checked")
-        jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorID + ',SelecetedVendorPrev' + vendorID + ',' + vendorID + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
-        jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td></tr>')
+        jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + childID + '><td class=hide>' + vendorID + '</td><td class=hide>' + childID + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + childID + ',SelecetedVendorPrev' + childID + ',' + childID + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+        jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + childID + '><td class=hide>' + vendorID + '</td><td class=hide>' + childID + '</td><td>' + vname + '</td></tr>')
         $('#divvendorlist').find('span#spandynamic').hide();
 
         $('table#tblvendorlist').closest('.inputgroup').removeClass('has-error');
@@ -3265,6 +3285,7 @@ function Check(event, vname, vendorID) {
     }
 
 }
+
 
 function removevendor(trid, trprevid, vid) {
 
@@ -3336,6 +3357,7 @@ function fetchReguestforQuotationDetails() {
         type: "GET",
         cache: false,
         crossDomain: true,
+        async: false,
         dataType: "json",
         success: function (RFQData) {
 
@@ -3349,7 +3371,7 @@ function fetchReguestforQuotationDetails() {
             let _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
             sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
             jQuery('#txtrfqSubject').val(_cleanStringSub)
-            setTimeout(function () { $('#dropCurrency').val(RFQData[0].general[0].rfqCurrencyId).attr("selected", "selected"); }, 1000)
+            $('#dropCurrency').val(RFQData[0].general[0].rfqCurrencyId).trigger('change')
             jQuery('#txtrfqdescription').val(_cleanStringDesc)
 
             jQuery('#txtConversionRate').val(RFQData[0].general[0].rfqConversionRate);
@@ -3403,8 +3425,8 @@ function fetchReguestforQuotationDetails() {
 
                 for (var i = 0; i < RFQData[0].vendors.length; i++) {
                     vCount = vCount + 1;
-                    jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + RFQData[0].vendors[i].vendorId + '><td class=hide>' + RFQData[0].vendors[i].vendorId + '</td><td>' + RFQData[0].vendors[i].vendorName + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + RFQData[0].vendors[i].vendorId + ',SelecetedVendorPrev' + RFQData[0].vendors[i].vendorId + ',' + RFQData[0].vendors[i].vendorId + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
-                    jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + RFQData[0].vendors[i].vendorId + '><td class=hide>' + RFQData[0].vendors[i].vendorId + '</td><td>' + RFQData[0].vendors[i].vendorName + '</td></tr>')
+                    jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + RFQData[0].vendors[i].childId + '><td class=hide>' + RFQData[0].vendors[i].vendorId + '</td><td class=hide>' + RFQData[0].vendors[i].childId + '</td><td>' + RFQData[0].vendors[i].vendorName + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + RFQData[0].vendors[i].childId + ',SelecetedVendorPrev' + RFQData[0].vendors[i].childId + ',' + RFQData[0].vendors[i].childId + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+                    jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + RFQData[0].vendors[i].childId + '><td class=hide>' + RFQData[0].vendors[i].vendorId + '</td><td class=hide>' + RFQData[0].vendors[i].childId + '</td><td>' + RFQData[0].vendors[i].vendorName + '</td></tr>')
 
                 }
 
@@ -3624,6 +3646,7 @@ function handleFileparameter(e) {
             var workbook = XLSX.read(data, { type: 'binary' });
 
             var sheet_name_list = workbook.SheetNames;
+
             sheet_name_list.forEach(function (y) { /* iterate through sheets */
                 //Convert the cell value to Json
                 var sheet1 = workbook.SheetNames[0];
@@ -4038,61 +4061,78 @@ var sCounter = 0;
 var st = true;
 var ErrorMszDuplicate = '';
 function handleFileparameterBoq(e) {
+    setTimeout(function () {
+        //Get the files from Upload control
+        var files = e.target.files;
+        var i, f;
+        sheetcount = 0;
+        sCounter = 1;
+        st = true;
+        ErrorMszDuplicate = '';
+        $("#success-excelparameterB").hide();
+        $("#error-excelparameterB").hide();
+        $("#temptableForExcelDataparameter").empty();
+        $('#modalLoaderparameterBoq').removeClass('display-none');
+        //Loop through files
+        for (i = 0, f = files[i]; i != files.length; ++i) {
+            var reader = new FileReader();
+            var name = f.name;
+            reader.onload = function (e) {
+                var data = e.target.result;
 
-    //Get the files from Upload control
-    var files = e.target.files;
-    var i, f;
-    sheetcount = 0;
-    sCounter = 1;
-    st = true;
-    ErrorMszDuplicate = '';
-    $("#success-excelparameterB").hide();
-    $("#error-excelparameterB").hide();
-    $("#temptableForExcelDataparameter").empty();
-    $('#modalLoaderparameterBoq').removeClass('display-none');
-    //Loop through files
-    for (i = 0, f = files[i]; i != files.length; ++i) {
-        var reader = new FileReader();
-        var name = f.name;
-        reader.onload = function (e) {
-            var data = e.target.result;
+                var result;
+                var workbook = XLSX.read(data, { type: 'binary' });
 
-            var result;
-            var workbook = XLSX.read(data, { type: 'binary' });
+                var sheet_name_list = workbook.SheetNames;
+                var totalsheets = workbook.SheetNames.length - 2;
 
-            var sheet_name_list = workbook.SheetNames;
+                sheet_name_list.forEach(function (y) { /* iterate through sheets */
+                    //Convert the cell value to Json
 
-            sheet_name_list.forEach(function (y) { /* iterate through sheets */
-                //Convert the cell value to Json
-
-                var sheet1 = y;//workbook.SheetNames[y];
-                var roa = XLSX.utils.sheet_to_json(workbook.Sheets[y]);
-                //console.log(roa)
-                //var roa = XLSX.utils.sheet_to_json(workbook.Sheets[sheet1]);
-                if (sheet1 == "Summary") {
-                    sheetcount = roa.length;
-                }
-                if (sheet1 != "Summary" && sheet1 != "Instructions") {
-                    // console.log(sheet1)
-                    if (roa.length > 0) {
-                        result = roa;
-                        //console.log(st)
-                        if (st == true) {
-                            printDataparameterBoq(result, sheet1)
-                            sCounter = sCounter + 1;
-                        }
-                        else {
+                    var sheet1 = y;//workbook.SheetNames[y];
+                    var roa = XLSX.utils.sheet_to_json(workbook.Sheets[y]);
+                    //console.log(roa)
+                    //var roa = XLSX.utils.sheet_to_json(workbook.Sheets[sheet1]);
+                    if (sheet1 == "Summary") {
+                        sheetcount = roa.length;
+                        if (totalsheets != sheetcount) {
                             $('#modalLoaderparameterBoq').addClass('display-none');
-                            return false;
+                            $("#error-excelparameterB").html('Some Sheets are missing please check...');
+                            $("#error-excelparameterB").show();
+                            $("#error-excelparameterB").fadeOut(2000);
+                            $("#file-excelparameterB").val('');
+                            return false
                         }
                     }
-                }
-            });
-            //Get the first column first cell value
-            //printDataparameterBoq(result)
-        };
-        reader.readAsArrayBuffer(f);
-    }
+                    if (sheet1 != "Summary" && sheet1 != "Instructions") {
+                        // console.log(sheet1)
+                        if (roa.length > 0) {
+                            result = roa;
+                            //console.log(st)
+                            if (st == true) {
+
+                                printDataparameterBoq(result, sheet1)
+                                sCounter = sCounter + 1;
+                            }
+                            else {
+                                $('#modalLoaderparameterBoq').addClass('display-none');
+                                return false;
+                            }
+                        }
+                    }
+                });
+                //Get the first column first cell value
+                //printDataparameterBoq(result)
+            };
+            reader.readAsArrayBuffer(f);
+        }
+        $('#modalLoaderparameterBoq').addClass('display-none');
+
+
+
+
+    }, 1000)
+
 }
 
 var numberOnly = /^\d+(?:\.\d{1,3})?$/;
@@ -4122,69 +4162,39 @@ function printDataparameterBoq(result, sheet) {
                 itemcode = $.trim(result[i].ItemCode);
 
             }
-            /* if ($.trim(result[i].TAT) == '') {
-                TAT = 0;
-            }
-            else {
-                TAT = $.trim(result[i].TAT);
-            }
-            if ($.trim(result[i].UnitRate) == '') {
-                unitrate = 0;
-            }
-            else {
-                unitrate = $.trim(result[i].UnitRate);
-            }
-            if ($.trim(result[i].PoValue) == '') {
-                povalue = 0;
-            }
-            else {
-                povalue = $.trim(result[i].PoValue);
-            }
-            if ($.trim(result[i].TargetPrice) == '') {
-                targetPrice = 0;
-            }
-            else {
-                targetPrice = $.trim(result[i].TargetPrice);
-            }
-            if ($.trim(result[i].PoDate) != '') {
-                podate = $.trim(result[i].PoDate);
-            }
-            if ($.trim(result[i].PoNo) != '') {
-                pono = $.trim(result[i].PoNo);
-            }
-            if ($.trim(result[i].PoVendorName) != '') {
-                povendorname = $.trim(result[i].PoVendorName);
-
-            }*/
 
 
             //console.log(sheet + "====>" + $.trim(result[i].Srno))
-            if (!$.trim(result[i].Srno).match(srnoonly) && $.trim(result[i].Srno) != "" && $.trim(result[i].Srno) != undefined) {
+            if (!$.trim(result[i].SrNo).match(srnoonly) && $.trim(result[i].SrNo) != "" && $.trim(result[i].SrNo) != undefined) {
+
+                $("#error-excelparameterB").html('Srno should be in numbers of <b>' + sheet + '</b> of line no ' + (i + 2) + '. Please fill and upload the file again.');
                 $("#error-excelparameterB").show();
-                $("#errspan-excelparameterB").html('Srno should be in numbers of <b>' + sheet + '</b> of line no ' + (i + 2) + '. Please fill and upload the file again.');
                 $("#file-excelparameterB").val('');
                 st = false;
                 return false;
             }
-            else if ($.trim(result[i].ItemService) != "undefined" && $.trim(result[i].ItemService) == '' && $.trim(result[i].ItemService).length > 200) {
+            else if ($.trim(result[i].ItemService) == undefined || $.trim(result[i].ItemService) == '' || $.trim(result[i].ItemService).length > 200) {
                 console.log("service " + result[i].ItemService)
+
+                $("#error-excelparameterB").html('Item/Service can not be blank or length should be 200 characters of <b>' + sheet + '</b> of line no ' + (i + 1) + '. Please fill and upload the file again.');
                 $("#error-excelparameterB").show();
-                $("#errspan-excelparameterB").html('Item/Service can not be blank or length should be 200 characters of <b>' + sheet + '</b> of line no ' + (i + 1) + '. Please fill and upload the file again.');
                 $("#file-excelparameterB").val('');
                 st = false;
                 return false;
             }
             else if ($.trim(result[i].ItemCode).length > 50) {
+
+                $("#error-excelparameterB").html('Item Code length should be 50 characters of <b>' + sheet + '</b> of line no ' + (i + 1) + '. Please fill and upload the file again.');
                 $("#error-excelparameterB").show();
-                $("#errspan-excelparameterB").html('Item Code length should be 50 characters of <b>' + sheet + '</b> of line no ' + (i + 1) + '. Please fill and upload the file again.');
                 $("#file-excelparameterB").val('');
                 st = false;
                 return false;
             }
 
             else if ($.trim(result[i].Remarks) != '' && $.trim(result[i].Remarks).length > 200) {
+
+                $("#error-excelparameterB").html('Remarks length should be 200 characters of <b>' + sheet + '</b> of line no ' + (i + 1) + '. Please fill and upload the file again.');
                 $("#error-excelparameterB").show();
-                $("#errspan-excelparameterB").html('Remarks length should be 200 characters of <b>' + sheet + '</b> of line no ' + (i + 1) + '. Please fill and upload the file again.');
                 $("#file-excelparameterB").val('');
                 st = false;
                 return false;
@@ -4205,8 +4215,9 @@ function printDataparameterBoq(result, sheet) {
              }*/
             else if (!$.trim(result[i].Quantity).match(numberOnly) && quan != 0) {
 
+
+                $("#error-excelparameterB").html('Quantity should be in numbers or upto 3 decimal places of <b>' + sheet + '</b> of line no ' + (i + 1) + '. Please fill and upload the file again.');
                 $("#error-excelparameterB").show();
-                $("#errspan-excelparameterB").html('Quantity should be in numbers or upto 3 decimal places of <b>' + sheet + '</b> of line no ' + (i + 1) + '. Please fill and upload the file again.');
                 $("#file-excelparameterB").val('');
                 st = false;
                 return false;
@@ -4258,8 +4269,9 @@ function printDataparameterBoq(result, sheet) {
             }*/
             else if (targetPrice != '' && (!targetPrice.match(numberOnly))) {
 
+
+                $("#error-excelparameterB").html('Target/Budget Price should be in numbers or upto 3 decimal places only of <b>' + sheet + '</b> of line no ' + (i + 1) + '.');
                 $("#error-excelparameterB").show();
-                $("#errspan-excelparameterB").html('Target/Budget Price should be in numbers or upto 3 decimal places only of <b>' + sheet + '</b> of line no ' + (i + 1) + '.');
                 $("#file-excelparameterB").val('');
                 st = false;
                 return false;
@@ -4320,12 +4332,13 @@ function printDataparameterBoq(result, sheet) {
              }
     
          });*/
+
         if (excelCorrectB == "Y" && sCounter == sheetcount) {
             $("#error-excelparameterB").hide();
-            $("#success-excelparameterB").show();
+
             $('#btnsforYesNoboq').show()
             $("#succspan-excelparameterB").html('<p>Excel file is found ok.Do you want to upload ?\n This will clean your existing Data.</p>\n <p style="color:red"><b>Special characters like -\',\", #,&,~  shall be removed from the text during upload. Please check your text accordingly.</b></p>');
-            //$("#file-excelparameterB").val('');
+            $("#success-excelparameterB").show();
             excelCorrectB = '';
             if (st == 'false') {
                 $("#error-excelparameterB").show();
@@ -4337,12 +4350,16 @@ function printDataparameterBoq(result, sheet) {
         //fninsBoqfile();
     }
     else {
+
+        $("#error-excelparameterB").html('No Items Found in Excel');
         $("#error-excelparameterB").show();
-        $("#errspan-excelparameterB").html('No Items Found in Excel');
     }
 }
 
 function fninsBoqfile() {
+
+
+    $('#btnsY').attr('disabled', 'disabled');
     var formData = new FormData();
     formData.append('file', $('#file-excelparameterB')[0].files[0]);
     formData.append('foldername', "eRFQ/" + sessionStorage.getItem('hddnRFQID') + "/BOQ");
@@ -4373,6 +4390,7 @@ function fninsBoqfile() {
 
                 jQuery.unblockUI();
             }
+            $('#btnsY').removeAttr('disabled')
             return;
         },
         error: function (xhr, status, error) {
@@ -4385,7 +4403,9 @@ function fninsBoqfile() {
                 fnErrorMessageText('spandanger', 'form_wizard_1');
             }
             jQuery.unblockUI();
+            $('#btnsY').removeAttr('disabled')
             return false;
+
 
         }
     });
@@ -4648,13 +4668,16 @@ jQuery("#txtSearch").keyup(function () {
 sessionStorage.setItem('hdnVendorID', 0);
 jQuery("#txtSearch").typeahead({
     source: function (query, process) {
+
         var data = allvendorsforautocomplete;
         var vName = '';
         usernames = [];
         map = {};
         var username = "";
         jQuery.each(data, function (i, username) {
-            vName = username.participantName + ' (' + username.companyEmail + ')'
+
+            vName = username.participantName + ' (' + username.companyEmail + ')' + " " + (username.stateName).toUpperCase()
+
             map[vName] = username;
             usernames.push(vName);
         });
@@ -4664,20 +4687,18 @@ jQuery("#txtSearch").typeahead({
     minLength: 2,
     updater: function (item) {
 
-        if (map[item].participantID != "0") {
+        if (map[item].associatedVendorID != "0") {
 
-            //sessionStorage.setItem('hdnVendorID', map[item].participantID);
-            vName = map[item].participantName + '(' + map[item].companyEmail + ')';
+            vName = map[item].participantName + '(' + map[item].companyEmail + ')' + " " + (map[item].stateName).toUpperCase();
 
-            jQuery('#tblvendorlist').append("<tr id=vList" + map[item].participantID + " ><td class='hide'>" + map[item].participantID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\)\"; id=\"chkvender" + map[item].participantID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>");
+            jQuery('#tblvendorlist').append("<tr id=vList" + map[item].associatedVendorID + "><td class='hide' id='vendorTblId'>" + map[item].participantID + "</td><td class='hide' id='childTblId'>" + map[item].associatedVendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\,\'" + map[item].associatedVendorID + "'\)\"; id=\"chkvender" + map[item].associatedVendorID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>");
 
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
-                    // console.log("vendID > ", $.trim($(this).find('td:eq(0)').html()))
 
                     //** remove from main table if already selected in selected List
-                    if (map[item].participantID == $(this).find("td:eq(0)").text()) {
-                        $('#vList' + map[item].participantID).remove();
+                    if (map[item].associatedVendorID == $(this).find("td:eq(0)").text()) {
+                        $('#vList' + map[item].associatedVendorID).remove();
 
                     }
                     $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true);
@@ -4700,7 +4721,6 @@ function getCategoryWiseVendors(categoryID) {
     jQuery.ajax({
 
         type: "GET",
-
         contentType: "application/json; charset=utf-8",
 
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/FetchVendorCategoryWise/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&CategoryID=" + categoryID,
@@ -4715,8 +4735,8 @@ function getCategoryWiseVendors(categoryID) {
             jQuery("#tblvendorlist > tbody").empty();
             var vName = '';
             for (var i = 0; i < data.length; i++) {
-                vName = data[i].vendorName;
-                var str = "<tr id=vList" + data[i].vendorID + "><td class='hide'>" + data[i].vendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\)\"; id=\"chkvender" + data[i].vendorID + "\" value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " </td></tr>";
+                vName = data[i].vendorName + " " + data[i].stateName;
+                var str = "<tr id=vList" + data[i].mappedVendorIdentifier + "><td class='hide' id='vendorTblId'>" + data[i].vendorID + "</td><td class='hide' id='childTblId'>" + data[i].mappedVendorIdentifier + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\,\'" + data[i].mappedVendorIdentifier + "'\)\"; id=\"chkvender" + data[i].mappedVendorIdentifier + "\" value=" + data[i].mappedVendorIdentifier + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " " + data[i].stateName + " </td></tr>";
                 jQuery('#tblvendorlist > tbody').append(str);
 
             }
@@ -4781,7 +4801,18 @@ function fnfillInstructionExcel() {
         }
     }
     $('#tblUOM').append("<tr><td colspan=2>&nbsp;</td></tr><tr><td colspan=2>&nbsp;</td></tr>")
-    $('#tblUOM').append('<tr><th data-style="Header"  colspan=2>Please ensure Target price and Quantity and TAT should be in numbers only.</th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>1. Please ensure Target/Budget Price and Quantity should be in numbers only.</th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>2. UOM/Quantity should be on child level item only. </th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>3. Item service length should be 200 characters only.</th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>4.The UOM and quantity fields should not be left blank in the child level item filed .</th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>5. You may check the UOM in the instructions page. </th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>6. While creating a BOQ sheet, no fields should be left blank.</th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>7. The serial number must be in a numeric and synchronized sequence manner.</th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>8. The BOQ spreadsheet must be in Excel workbook format(.xlsx).</th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>9. Serial Number,Item Service and Description is a mandatory field.</th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>10.Please do not change the formating of BOQ file.</th></tr>')
+    $('#tblUOM').append('<tr><th data-style="Header"  colspan=10>11.Description length should be 200 characters only.</th></tr>')
+
 }
 function cancelbid() {
     CancelBidDuringConfig(_RFQid, 'eRFQ');
@@ -4818,3 +4849,18 @@ function deleteterms(icount) {
     $('#tr' + icount).remove();
     $('#trTermsprev' + icount).remove();
 }
+
+$("#btndownloadTemplateB").click(function (e) {
+
+
+    var dt = new Date();
+    var day = dt.getDate();
+    var month = dt.getMonth() + 1;
+    var year = dt.getFullYear();
+    var hour = dt.getHours();
+    var mins = dt.getMinutes();
+    var postfix = day + "." + month + "." + year + "_" + hour + "." + mins;
+    tableToExcelMultipleWorkSheet(['tblBoqSummary', 'tbleRFQdetailsBoq', 'tblUOM'], ['Summary', 'Sheetname', 'Instructions'], 'eRFQBOQXLTemplate -' + postfix + '.xls')
+
+
+});

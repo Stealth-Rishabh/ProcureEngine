@@ -4,7 +4,6 @@ var cc = 0;
 //FROM HTML
 jQuery(document).ready(function () {
     Pageloaded()
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -25,7 +24,7 @@ jQuery(document).ready(function () {
     fetchMenuItemsFromSession(9, 14);
     setCommonData();
     FormValidation.init();
-    fetchRoleMaster();   
+    fetchRoleMaster();
     fetchRegisterUser();
     BindPurchaseOrg();
     fetchCountry()
@@ -175,7 +174,6 @@ function BindPurchaseOrg() {
 
 
 function RegisterUser() {
-    debugger
     var _cleanString = StringEncodingMechanism(jQuery("#txtUsername").val());
     var _cleanString2 = StringEncodingMechanism(jQuery('#txtdesignation').val());
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -203,7 +201,7 @@ function RegisterUser() {
         })
     }
 
- 
+
     var RegisterUser = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": parseInt(jQuery("#hdnUserID").val()),
@@ -220,7 +218,6 @@ function RegisterUser() {
         "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val()),
         "purOrg": purOrg
     };
-    alert(JSON.stringify(RegisterUser))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "RegisterUser/RegisterUser/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -228,7 +225,7 @@ function RegisterUser() {
         data: JSON.stringify(RegisterUser),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-          
+
             if (data.isSuccess == 'Y') {
                 jQuery('#divalerterror').hide();
                 App.scrollTo($('#divalertsucess'), -200);
@@ -269,6 +266,7 @@ function RegisterUser() {
 
 
 function fetchRegisterUser() {
+
     var data = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
@@ -285,21 +283,22 @@ function fetchRegisterUser() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-            debugger
+
             jQuery("#tblRegisterUsers > tbody").empty();
             if (data.length > 0) {
-                jQuery.each(data, function (key, value) {  
+                jQuery.each(data, function (key, value) {
                     // var str = "<tr><td style=\"display:none;\">" + value.userID + "</td><td>" + value.userName + "</td><td>" + "+<span id='usercode'>" + value.dialingCode + "</span>" + " " + "<span id='username'>" + value.mobileNO + "</span>" + "</td><td>" + value.emailID + "</td><td>" + value.designation + "</td><td>" + value.roleName + "</td><td>" + value.isActive + "</td><td style=\"display:none;\">" + value.roleID + "</td>";
                     var str = "<tr><td style='display:none;'>" + value.userID + "</td><td>" + value.userName + "</td><td>" + "<span id='usercode" + value.userID + "'>" + value.dialingCodePreFix + "</span>" + " " + " <span id='username" + value.userID + "' > " + value.mobileNO + "</span>" + "</td ><td>" + value.emailID + "</td><td>" + value.designation + "</td><td>" + value.roleName + "</td><td>" + value.isActive + "</td><td style='display:none;'>" + value.roleID + "</td>";
                     str += "<td>" + value.localeName + "</td><td style=\"text-align:right\">";
                     str += "<a href=\"#\"  onclick=\"EditUser(this)\" class=\"btn default btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;&nbsp;";
-                    str += "</td><td style=\"display:none;\">" + value.prefferedTZ + "</td><td class='hide'>" + value.dialingCode +"</td></tr>";                    
+                    str += "</td><td style=\"display:none;\">" + value.prefferedTZ + "</td><td class='hide'>" + value.dialingCode + "</td></tr>";
                     jQuery('#tblRegisterUsers > tbody').append(str);
                 });
             }
             else {
                 jQuery('#tblRegisterUsers > tbody').append("<tr><td colspan='8' style='text-align: center; color:red;'>No User found</td></tr>");
             }
+            jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
 
@@ -320,13 +319,13 @@ function fetchRegisterUser() {
     }, 2000);
 }
 let ddlCountryCd;
-function EditUser(ctrl) {     
+function EditUser(ctrl) {
     ddlCountryCd = jQuery(ctrl).closest('tr').find("td:last-child").html()
-    if (ddlCountryCd =="0") {
-        ddlCountryCd =="111";
+    if (ddlCountryCd == '0') {
+        ddlCountryCd = '111';
     }
     jQuery("#txtUsername").val(StringDecodingMechanism(jQuery(ctrl).closest('tr').find("td").eq(1).html()));
-    jQuery("#txtUsername").closest('.form-group').removeClass('has-error').find('span').hide();   
+    jQuery("#txtUsername").closest('.form-group').removeClass('has-error').find('span').hide();
     jQuery("#txtmobilno").val(jQuery(ctrl).closest('tr').find("td:nth-child(3) span:nth-child(2)").html());
     jQuery("#txtmobilno").closest('.form-group').removeClass('has-error').find('span').hide();
     jQuery("#txtemail").val(jQuery(ctrl).closest('tr').find("td").eq(3).html());
@@ -342,6 +341,7 @@ function EditUser(ctrl) {
     $('#ddlCountryCd').select2();
     $("#ddlCountryCd").val(ddlCountryCd).trigger("change");
     if (isActivie == 'Yes') {
+
         jQuery('#chkIsActive').attr('checked', true);
         jQuery('#chkIsActive').closest('span').attr('class', 'checked');
     }
@@ -354,6 +354,9 @@ function EditUser(ctrl) {
     var UserID = jQuery(ctrl).closest('tr').find("td").eq(0).html();
     $('#hdnUserID').val(UserID);
     fetchUserDetails(UserID);
+
+
+
 
 }
 
@@ -422,7 +425,7 @@ function fetchRoleMaster() {
     });
 }
 
-function clearform() {   
+function clearform() {
     jQuery("#txtUsername").val('');
     jQuery("#txtemail").val('');
     $("#ddlCountryCd").val("111").trigger("change");
@@ -466,7 +469,7 @@ var FormValidation = function () {
                 txtmobilno: {
                     required: true,
                     minlength: 10,
-                    maxlength: 10                   
+                    maxlength: 10
                 },
                 txtemail: {
                     required: true,

@@ -119,8 +119,8 @@ function formValidate() {
         },
 
         submitHandler: function (form) {
-            error.hide();          
-            postProjectMaster();    
+            error.hide();
+            postProjectMaster();
         }
     });
 
@@ -146,13 +146,13 @@ function postProjectMaster() {
     }
     else {
         status = "N";
-    }   
+    }
 
     var data = {
         "id": parseInt($('#hddnprojectID').val()),
         "ProjectName": _cleanString,
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
-        "IsActive": status, 
+        "IsActive": status,
     }
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "ProjectMaster/postProjectMaster",
@@ -166,24 +166,16 @@ function postProjectMaster() {
         contentType: "application/json",
         success: function (data) {
             if (data.isSuccess == '1') {
-                $("#success").html("ProjectName Enter Successfully...");
+                $("#success").html("Successfull...");
                 success.show();
                 success.fadeOut(3000);
-                fetchProjectMaster();             
+                fetchProjectMaster();
                 jQuery.unblockUI();
             }
-            else if (data.isSuccess == '2') {
-                $("#success").html("Updation Successfull...");
-                success.show();
-                success.fadeOut(3000);            
-                fetchProjectMaster();              
-                jQuery.unblockUI();
 
-            }
-
-            else if (data.isSuccess == '3') {
+            else if (data.isSuccess == '0') {
                 success.hide();
-                 $("#errordiv").html("ProjectName Already exists..");
+                $("#errordiv").html("ProjectName Already exists..");
                 error.show();
                 error.fadeOut(3000);
                 jQuery.unblockUI();
@@ -196,11 +188,11 @@ function postProjectMaster() {
         },
         error: function (xhr, status, error) {
             if (xhr.status == 401) {
-                $("#errordiv").html("ProjectName Already exists..");
+                $("#errordiv").html("Unauthorized...");
             }
             else {
                 success.hide();
-                $("#errordiv").html("ProjectName Already exists..");
+                $("#errordiv").html("oops some error occurs...");
                 $("#errordiv").show();
                 $("#errordiv").fadeOut(3000);
                 jQuery.unblockUI();
@@ -236,7 +228,7 @@ function fetchProjectMaster() {
         processData: true,
         dataType: "json",
         success: function (data) {
-        jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
+            jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
             jQuery("#projectMasterTable").empty();
             if (data.length > 0) {
 
@@ -274,8 +266,8 @@ function fetchProjectMaster() {
 
 /*update type start here*/
 
-function updateType(pname, status,id) {
-                        
+function updateType(pname, status, id) {
+
     $('#hddnprojectID').val(id);
     $('#projectName').val(pname);
     if (status == 'Active') {

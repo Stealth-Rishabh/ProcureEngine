@@ -1,4 +1,5 @@
 jQuery(document).ready(function () {
+
     $('.thousandseparated').inputmask();
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
@@ -304,7 +305,7 @@ function FormValidate() {
     });
 }
 function fetchUserBids() {
-
+    var url1 = APIPath + "ResetInviteVendor/fetchBidsAuto/?UserID=A&BidID=0&CustomerID=" + sessionStorage.getItem('CustomerID');
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
@@ -317,6 +318,7 @@ function fetchUserBids() {
         success: function (data) {
 
             if (data.length > 0) {
+
                 //sessionStorage.setItem('hdnAllBids', JSON.stringify(data));
                 hdnAllBids = JSON.stringify(data);
             }
@@ -354,16 +356,18 @@ jQuery("#txtbid").typeahead({
     source: function (query, process) {
         //var data = sessionStorage.getItem('hdnAllBids');
         var data = hdnAllBids;
-        usernames = [];
-        map = {};
-        var username = "";
-        jQuery.each(jQuery.parseJSON(data), function (i, username) {
-            map[username.bidSubject] = username;
-            usernames.push(username.bidSubject);
-        });
+        if (data.length > 0) {
 
-        process(usernames);
+            usernames = [];
+            map = {};
+            var username = "";
+            jQuery.each(jQuery.parseJSON(data), function (i, username) {
+                map[username.bidSubject] = username;
+                usernames.push(username.bidSubject);
+            });
 
+            process(usernames);
+        }
     },
     minLength: 2,
     updater: function (item) {
@@ -382,6 +386,7 @@ jQuery("#txtbid").typeahead({
                 connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
                     console.log("connection started")
                 }).catch(function (err) {
+
                     console.log(err.toString())
                     bootbox.alert("You are not connected to the Bid.Please contact to administrator.")
                 });
@@ -1173,7 +1178,7 @@ function sendremainderstoparicipants() {
             }
 
         });
-        
+
         var data = {
             "QueryString": checkedValue,
             "BidId": parseInt(sessionStorage.getItem("hdnbid")),
@@ -2486,13 +2491,12 @@ function fnupdateStaggerReopendatetime() {
         "BidID": parseInt(jQuery('#ddlbid').val()),
         "BidTypeID": parseInt(sessionStorage.getItem('hdnbidtypeid')),
         "SeID": 0,
-        //"BidDate": dtst,
         "BidDateST": ST,
         "Action": $('#ddlBidStatus option:selected').text(),//"Open",
         "UserID": sessionStorage.getItem('UserID')
     }
 
-    //console.log(JSON.stringify(Data))
+    console.log(JSON.stringify(Data))
     connection.invoke("PauseStagger", JSON.stringify(Data)).catch(function (err) {
         return console.error(err.toString());
 
@@ -2530,10 +2534,11 @@ function fnGetPauseHistory() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
+
             $("#tblbidpauseHistory").empty()
             if (data.length > 0) {
                 $('#divpausehitory').removeClass('hide');
-                debugger
+
                 $("#tblbidpauseHistory").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Paused Item</th><th>Pause Date Time</th><th>Re Open Date Time</th><th>Balance Duration (mins)</th></thead>");
                 for (var i = 0; i < data.length; i++) {
                     var bidPauseDate = fnConverToLocalTime(data[i].bidPauseDate);
@@ -5228,5 +5233,5 @@ $("#btndownloadTemplate").click(function (e) {
 
 function preventSubmit(event) {
     event.preventDefault(); // prevent default form submission behavior
-    
+
 }
