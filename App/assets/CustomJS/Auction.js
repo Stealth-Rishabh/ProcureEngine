@@ -107,8 +107,9 @@ function gritternotification(msz) {
     return false;
 }
 function calltoaster(msz, title, type) {
+
     $(".toast-success").remove();
-     // toastr.clear()
+    // toastr.clear()
     var options = {
         tapToDismiss: false,
         "closeButton": true,
@@ -123,7 +124,7 @@ function calltoaster(msz, title, type) {
 
     }
     if (type == 'success') {
-        toastr.success('New Message', 'You have a new message.', options);
+        toastr.success(decodeURIComponent(msz), 'New Message', options);
 
     } else if (type == 'error') {
         toastr.error(decodeURIComponent(msz), 'Error');
@@ -283,7 +284,7 @@ jQuery("#txtSearch").keyup(function () {
 $('#logOut_btn').click(function () {
     $(this).attr('href', sessionStorage.getItem('MainUrl'))
 });
-//abheedev bug 605 16/12/2022
+
 function checkfilesize(fileid) {
 
     var ftype = $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
@@ -395,7 +396,7 @@ function thousands_separators_NonMadCol(ele) {
     ele.value = res;
 }
 
-
+//coal auction NaN error 23/03/2023 abheedev
 function thousands_separators_input(ele) {
     var valArr, val = ele.value;
     let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
@@ -413,7 +414,6 @@ function thousands_separators_input(ele) {
     ele.value = val;
 }
 
-
 /*function thousands_separators_input(ele) {
 
     var valArr, val = ele.value;
@@ -428,9 +428,8 @@ function thousands_separators_input(ele) {
         val = valArr.join('.');
     }
     ele.value = val;
-}*/
-
-
+}
+*/
 
 function removeZero(ele) {
 
@@ -549,16 +548,15 @@ function replaceQuoutesFromString(ele) {
     str = ele.value;
     str = str.replace(/'/g, '');
     str = str.replace(/"/g, '');
-   
+
     str = str.replace(/#/g, '');
     //str = str.replace(/&/g, '');
-  
 
     str = str.replace(/~/g, '');
     str = str.replace(/`/g, '');
     str = str.replace(/</g, '');
     str = str.replace(/>/g, '');
-   // str = str.replace(/_/g, '');
+    // str = str.replace(/_/g, ''); for email
     str = str.replace(/^/g, '');
     ele.value = str;
     //return val;
@@ -571,12 +569,12 @@ function replaceQuoutesFromStringFromExcel(ele) {
         str = ele.replace(/'/g, '');
         str = ele.replace(/"/g, '');
         str = ele.replace(/#/g, '');
-        str = ele.replace(/&/g, '');
+        // str = ele.replace(/&/g, '');
         str = ele.replace(/~/g, '');
         str = ele.replace(/`/g, '');
         str = ele.replace(/</g, '');
         str = ele.replace(/>/g, '');
-       // str = ele.replace(/_/g, '');
+        // str = ele.replace(/_/g, ''); for email
         str = ele.replace(/^/g, '');
     }
 
@@ -590,16 +588,15 @@ function replaceQuoutesFromText(ele) {
     str = ele.value;
     str = str.replace(/'/g, '');
     str = str.replace(/"/g, '');
-    //@abheedev bug368 start
+
     str = str.replace(/#/g, '');
-    //  str = str.replace(/&/g, '');
-    //@abheedev bug368 end
+
 
     str = str.replace(/~/g, '');
     str = str.replace(/`/g, '');
     str = str.replace(/</g, '');
     str = str.replace(/>/g, '');
-   // str = str.replace(/_/g, '');
+    // str = str.replace(/_/g, ''); for email
     str = str.replace(/,/g, '');
     str = str.replace(/^/g, '');
     ele.value = str;
@@ -622,13 +619,14 @@ function openChatDiv(name, email, vendorId, connectionid, userid, contactperson)
     $("#hddnVendorId").val(vendorId);
     $("#hddnVendorConnection").val(connectionid);
     fetchUserChats(vendorId, 'S');
+
     if (connectionid == '') {
-        $('#chatbtn').addClass('hide')
-        $('#txtChatMsg').addClass('hide')
+        $('#chatbtn').hide()
+        $('#txtChatMsg').hide()
     }
     else {
-        $('#chatbtn').removeClass('hide')
-        $('#txtChatMsg').removeClass('hide')
+        $('#chatbtn').show()
+        $('#txtChatMsg').show()
 
     }
 }
@@ -977,7 +975,7 @@ function fnDownloadAttachments(filename, foldername) {
         crossDomain: true,
         success: function (data) {
 
-            //abheedev bug 353 start line 894 to 922.
+
             if (data.indexOf('<?xml') != -1) //if file is xml then give error
             {
 
@@ -1245,7 +1243,7 @@ function validateEmail(email) {
 var allvendorsforautocomplete;
 
 function fetchParticipantsVender() {
-    debugger
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1255,7 +1253,7 @@ function fetchParticipantsVender() {
         crossDomain: true,
         dataType: "json",
         success: function (Venderdata) {
-            debugger
+
             if (Venderdata.length > 0) {
                 allvendorsforautocomplete = Venderdata;
 
@@ -1405,12 +1403,13 @@ function fetchBidType() {
 
 }
 
-function fnfetchCatVendors() { 
-  
+
+function fnfetchCatVendors() {
+
     let data = {
         "ProductCatIDList": JSON.parse(sessionStorage.getItem("hdnCategoryGrpID")),
-        "VendorID": parseInt(sessionStorage.getItem('hdnVendorID')),
-        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
+        "VendorID": sessionStorage.getItem('hdnVendorID'),
+        "CustomerID": sessionStorage.getItem('CustomerID')
     }
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     // alert(sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchCategoryVendorForAdvSearch_PEV2/?CategoryID=" + sessionStorage.getItem("hdnCategoryGrpID") + "&VendorID=" + sessionStorage.getItem('hdnVendorID') + "&CustomerID=" + sessionStorage.getItem('CustomerID'))
@@ -1418,12 +1417,12 @@ function fnfetchCatVendors() {
         url: sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchCategoryVendorForAdvSearch_PEV2/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "POST",
-        async: false,                      
+        async: false,
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
-        crossDomain:true,
+        crossDomain: true,
         success: function (data) {
-           
+
             $('#div_table').removeClass('hide');
             $('#tbldetails').empty();
             if (data.length) {
@@ -1440,7 +1439,7 @@ function fnfetchCatVendors() {
                 jQuery.unblockUI();
                 return false;
             }
-            jQuery.unblockUI(); 
+            jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
 
@@ -1454,9 +1453,9 @@ function fnfetchCatVendors() {
                 $('#spanerterrserach').text('Please Select Category to Proceed')
             }
             jQuery.unblockUI();
-            return false;           
+            return false;
         }
-       
+
     })
 
     setTimeout(function () {
@@ -1464,6 +1463,59 @@ function fnfetchCatVendors() {
     }, 5000);
     clearsearchmodal();
 }
+
+/*function fnfetchCatVendors() {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    // alert(sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchCategoryVendorForAdvSearch_PEV2/?CategoryID=" + sessionStorage.getItem("hdnCategoryGrpID") + "&VendorID=" + sessionStorage.getItem('hdnVendorID') + "&CustomerID=" + sessionStorage.getItem('CustomerID'))
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchCategoryVendorForAdvSearch_PEV2/?CategoryID=" + sessionStorage.getItem("hdnCategoryGrpID") + "&VendorID=" + sessionStorage.getItem('hdnVendorID') + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data) {
+            $('#div_table').removeClass('hide');
+            $('#tbldetails').empty();
+            if (data.length) {
+                $('#tbldetails').append("<thead><tr><th>Vendor Code</th><th>Category</th><th>Vendor</th><th>Mobile</th><th>EmailID</th></tr></thead><tbody>")
+                for (var i = 0; i < data.length; i++) {
+                    $('#tbldetails').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].categoryName + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td></tr>");
+                }
+            }
+            else {
+                jQuery('#divalerterrsearch').slideDown('show');
+                $('#spanerterrserach').text('No data found')
+                $('#div_table').addClass('hide');
+                // App.scrollTo(jQuery('#divalerterrsearch'), -200);
+
+                return false;
+            }
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                jQuery('#divalerterrsearch').slideDown('show');
+                $('#div_table').addClass('hide');
+                $('#spanerterrserach').text('You have error .Please try again')
+            }
+            return false;
+            jQuery.unblockUI();
+        }
+
+    })
+
+    setTimeout(function () {
+        jQuery('#divalerterrsearch').css('display', 'none');
+    }, 5000);
+    clearsearchmodal();
+}*/
 $('#Advancesearch').on("hidden.bs.modal", function () {
     clearsearchmodal();
     $('#div_table').addClass('hide');
@@ -1637,6 +1689,7 @@ var tableToExcelMultipleSheetwithoutColor = (function () {
     }
 })();
 var tableToExcelMultipleWorkSheet = (function () {
+
     var uri = 'data:application/vnd.ms-excel;base64,'
         , tmplWorkbookXML = '<?xml version="1.0" encoding="windows-1252"?><?mso-application progid="Excel.Sheet"?>'
             + '   <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"  xmlns:html="http://www.w3.org/TR/REC-html40">'
@@ -1692,12 +1745,14 @@ var tableToExcelMultipleWorkSheet = (function () {
         , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
         , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
     return function (tables, wsnames, wbname, appname) {
+
         var ctx = "";
         var workbookXML = "";
         var worksheetsXML = "";
         var rowsXML = "";
 
         for (var i = 0; i < tables.length; i++) {
+
             if (!tables[i].nodeType) tables[i] = document.getElementById(tables[i]);
             for (var j = 0; j < tables[i].rows.length; j++) {
                 rowsXML += '<Row>'
@@ -1871,7 +1926,7 @@ var tablesToExcel = (function () {
         document.body.removeChild(link);
     }
 })();
-//abheedev bug 443 start
+
 function checkExcelUpload(fileid) {
 
     var ftype = $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
@@ -1893,8 +1948,7 @@ function checkExcelUpload(fileid) {
             return false
     }
 }
-//abheedev bug 443 end
-//htmlencode
+
 function StringEncodingMechanism(maliciousText) {
     var returnStr = maliciousText;
     returnStr = returnStr.replaceAll('&', '&amp;');
@@ -2013,7 +2067,7 @@ function checkPasswordValidation(value) {
     }
 
 
-    const isValidLength = /^.{6,15}$/;
+    const isValidLength = /^.{6,8}$/;
     if (!isValidLength.test(value)) {
         return "Password must be 6-8 Characters Long.";
     }
@@ -2122,7 +2176,7 @@ function localeseperator(ele) {
     return str;
 }
 
-//abheedev changes to date-time formating on 06/02/2023
+
 function fnConverToLocalTime(dttime) {
     let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
     if (dttime != null) {
@@ -2149,7 +2203,7 @@ function fnConverToLocalTime(dttime) {
     }
 }
 
-//date format change by abheedev on 06/02/2023
+
 function fnConverToShortDT(dttime) {
     let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
     if (dttime != null) {

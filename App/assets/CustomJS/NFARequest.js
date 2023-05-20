@@ -557,7 +557,7 @@ function GetOverviewmasterbyId(idx) {
 
         if (res.result != null) {
             if (res.result.length > 0) {
-               
+                debugger
                 let _cleanStringSub = StringDecodingMechanism(res.result[0].nfaSubject);
                 let _cleanStringDet = StringDecodingMechanism(res.result[0].nfaDescription);
                 $("#txtEventref").val(res.result[0].eventReftext);
@@ -565,7 +565,7 @@ function GetOverviewmasterbyId(idx) {
                 $("#txtNFADetail").val(_cleanStringDet);
                 $("#ddlEventType").val(res.result[0].eventID);
                 setTimeout(function () {
-                  
+                    debugger
                     GetEventRefData();
                     CKEDITOR.instances['txtRemark'].setData(res.result[0].remarks);
                     sessionStorage.setItem("hdnEventrefId", res.result[0].eventRefernce);
@@ -595,19 +595,19 @@ function GetOverviewmasterbyId(idx) {
                 //abheedev 16/03/2023
 
                 setTimeout(function () {
-                  
+                    debugger
                     BindPurchaseOrg()
                     $("#ddlPurchaseOrg").val(res.result[0].purchaseOrg).trigger('change');
                 }, 500)
                 setTimeout(function () {
-                 
+                    debugger
                     bindPurchaseGroupDDL()
                     $("#ddlPurchasegroup").val(res.result[0].purchaseGroup).trigger('change');
                 }, 500)
 
 
                 setTimeout(function () {
-                  
+                    debugger
                     bindConditionDDL()
                     $("#ddlCondition").val(res.result[0].conditionID).trigger('change');
                     $("#txtProjectName").val(res.result[0].projectName).trigger('change');
@@ -947,6 +947,8 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor, srno) {
 
     });
 }
+
+
 
 
 jQuery("#txtDetails").keyup(function () {
@@ -1788,7 +1790,7 @@ function fetchReguestforQuotationDetails() {
  fetchProjectName start
  */
 function fetchProjectMaster() {
-   
+    debugger
     var url = sessionStorage.getItem("APIPath") + "ProjectMaster/fetchProjectMasterCust/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&status=Y";// + sessionStorage.getItem('UserID') + "&status=Y";
     jQuery.ajax({
         type: "GET",

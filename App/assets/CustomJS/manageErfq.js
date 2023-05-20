@@ -407,7 +407,6 @@ function FormValidate() {
 
 }
 function InsUpdRFQDEtailTab1() {
-
     var _cleanString = StringEncodingMechanism(jQuery("#RFQSubject").text());
     var _cleanString2 = StringEncodingMechanism(jQuery("#RFQDescription").text());
 
@@ -539,6 +538,7 @@ function fetchReguestforQuotationDetails(RFQID) {
             else {
                 $('#ctrladdapprovers').removeClass('hide')
             }
+
             var RFQopenDate = "Not Set";
             var _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
             var _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
@@ -670,6 +670,7 @@ function fetchReguestforQuotationDetails(RFQID) {
                     else {
                         approvertype = "Technical";
                         jQuery('#lbltechnicalApproval').append(jQuery('<option selected></option>').val(RFQData[0].approvers[i].adminSrNo).html(RFQData[0].approvers[i].userName))
+
 
                     }
                     str = "<tr><td>" + RFQData[0].approvers[i].userName + "</td>";
@@ -1237,6 +1238,7 @@ function addmoreattachments() {
 }
 
 function UpdateRFQOPenDateAfterClose() {
+
     var BidOpenDate = new Date($('#txtbidopendatetime').val().replace('-', ''));
     var CurDateonly = new Date();
     var EndDate = new Date(jQuery('#RFQEndDate').text().replace('-', ''));
@@ -1248,8 +1250,7 @@ function UpdateRFQOPenDateAfterClose() {
         $('.alert-danger').fadeOut(7000);
         return false;
     }
-    //else if (isBidDTValid == "1" || BidOpenDate < EndDate) { //else if (BidOpenDate < CurDateonly || BidOpenDate < EndDate) {
-    else if (BidOpenDate < EndDate) {
+    else if (isBidDTValid == "0" || BidOpenDate < EndDate) { //else if (BidOpenDate < CurDateonly || BidOpenDate < EndDate) {
         $('.alert-danger').show();
         $('.alert-danger').html('RFQ Open Date cannot be smaller that the End Date or Current Date');
         Metronic.scrollTo($(".alert-danger"), -200);
@@ -1281,7 +1282,6 @@ function UpdateRFQOPenDateAfterClose() {
             data: JSON.stringify(DateData),
             dataType: "json",
             success: function (data) {
-                debugger;
                 if (data == '1') {
                     fetchReguestforQuotationDetails(sessionStorage.getItem('hdnrfqid'))
                     $('.alert-success').show();
@@ -2000,6 +2000,8 @@ function invitevendors() {
         return false;
 
     }
+
+
     if (EndDate < CurDateonly) {
         error1.show();
         $('#spandanger').html('Vendor cannnot be added after event is ended');
@@ -2009,6 +2011,7 @@ function invitevendors() {
         gritternotification('Vendor cannnot be added after event is ended');
         return false;
     }
+
     else {
         var checkedValue = '';
         var temp = new Array();
@@ -2069,7 +2072,6 @@ function invitevendors() {
 var isBidDTValid = "1";
 var isenddate = "1";
 function Dateandtimevalidate(StartDT, istocheck) {
-
     var StartDT = StartDT.replace('-', '');
     let StTime =
         new Date(StartDT.toLocaleString("en", {
@@ -2130,8 +2132,7 @@ function Dateandtimevalidate(StartDT, istocheck) {
             }
 
         },
-        error: function () {
-
+        error: function (xhr, status, error) {
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -2178,7 +2179,6 @@ function ExtendDuration() {
         data: JSON.stringify(RFQData),
         dataType: "json",
         success: function (data) {
-            debugger;
             if (data == '1') {
                 $('#deadlineModal').text($("#txtextendDate").val())
 
@@ -2210,13 +2210,8 @@ function ExtendDuration() {
                         break;
 
                 }
-                /*$('.alert-danger').show();
-                $('#spandanger').html(msg);
-                Metronic.scrollTo($(".alert-danger"), -200);
-                $('.alert-danger').fadeOut(7000);
-                return false;*/
                 $('.alert-danger').show();
-                $('.alert-danger').html(msg);
+                $('#spandanger').html(msg);
                 Metronic.scrollTo($(".alert-danger"), -200);
                 $('.alert-danger').fadeOut(7000);
                 return false;

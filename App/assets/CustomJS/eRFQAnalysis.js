@@ -130,7 +130,7 @@ function fetchrfqcomprative() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (Data, status, jqXHR) {
-
+            debugger
             let data = Data.rData
 
             var str = '';
@@ -146,13 +146,16 @@ function fetchrfqcomprative() {
             var allvendorresponse = 'Y';
 
             var ShowPrice = Data.showQuotedPrice.showQoutedPrice
-
+            //GetPR2Mapping()
             //PR Mapping
-            GetPR2Mapping()
-            debugger
-            if ($("#ddlrfqVersion option:selected").val() == 99 && sessionStorage.getItem("IsSAPModule") == 'Y') {
+
+
+            if ($("#ddlrfqVersion option:selected").val() == 99 && sessionStorage.getItem("IsSAPModule") == 'Y' && isPRmapped) {
+
 
                 $('#btnPRMapping').show()
+                $('#btnPRMapping').attr("onclick", `getPRMapping(${$('#hdnRfqID').val()},${sessionStorage.getItem('CustomerID')})`)
+
 
             }
             else {
@@ -1110,7 +1113,7 @@ function fetchrfqcomprative() {
             }
         },
         error: function (xhr, status, error) {
-
+            debugger
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1130,7 +1133,7 @@ function fetchrfqcomprative() {
 }
 
 function fetchrfqcomprativeBoq() {
-
+    debugger
     $('#tblRFQComprativeBoq').show();
     $('#tblRFQComprative').hide();
     $('#btnPRMapping').hide() //to hide boq button
@@ -1146,7 +1149,7 @@ function fetchrfqcomprativeBoq() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (Data, status, jqXHR) {
-
+            debugger
             let data = Data.rData
 
 
@@ -1560,7 +1563,7 @@ function fetchrfqcomprativeBoq() {
 
                 }
                 // for calculating total target price
-                debugger
+
                 let totaltargetprice = 0;
                 let ttpArray = [];
                 for (var t = 0; t < data[0].quotesDetails.length; t++) {
@@ -1616,11 +1619,11 @@ function fetchrfqcomprativeBoq() {
 
                 str += "<tr><td colspan=4 style='text-align:center;'><b>Loading Factor</b></td><td colspan=3 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";// <td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td>
                 strExcel += "<tr><td colspan=3 ><b>Loading Factor</b></td><td colspan=3 style='text-align:center;'><b>Loaded Price (Without GST)</b></td>";
-                debugger
+
                 for (var l = 0; l < data[0].vendorNames.length; l++) {
                     for (var k = 0; k < data[0].loadedFactor.length; k++) {
                         if (data[0].loadedFactor[k].vendorID == data[0].vendorNames[l].vendorID) {
-                            debugger
+
                             var p = thousands_separators((data[0].loadedFactor[k].loadedFactor + data[0].loadedFactor[k].sumwithGST).round(2));
                             if (p != 0) {
                                 if (ShowPrice == 'Y') {
@@ -2569,10 +2572,12 @@ function CloseForwardpopup() {
 
 //for getting PR mapping
 
-function getPRMapping() {
-    debugger
-    let _pi = StringDecodingMechanism(pi)
-    var encrypdata = fnencrypt("RFQID=" + RFQID)
+
+
+function getPRMapping(RFQID, CustomerID) {
+
+    // let _pi = StringDecodingMechanism(pi)
+    var encrypdata = fnencrypt("RFQID=" + RFQID + "&CustomerID=" + CustomerID)
 
 
     window.open("PRMapping.html?param=" + encrypdata, "_blank")
@@ -2582,9 +2587,9 @@ function getPRMapping() {
 
 }
 
-
+let isPRmapped = false;
 function GetPR2Mapping() {
-    debugger
+
     let _RFQID = parseInt($('#hdnRfqID').val());
     let _CustomerID = parseInt(sessionStorage.getItem('CustomerID'))
 
@@ -2596,13 +2601,18 @@ function GetPR2Mapping() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            debugger
-            if (data.length > 0) {
 
+
+            if (status == "nocontent") {
+                isPRmapped = false;
+                return false;
+            }
+            else {
+                isPRmapped = true
+                return true;
             }
         },
         error: function (xhr, status, error) {
-            debugger
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
