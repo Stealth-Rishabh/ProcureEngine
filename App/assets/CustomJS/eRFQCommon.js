@@ -1040,6 +1040,9 @@ jQuery("#txtApprover").typeahead({
     }
 
 });
+
+
+//commerical approval
 jQuery("#txtApproverRFQ").keyup(function () {
     $('#hdnRFQApproverID').val('0')
     $('#hdnRFQApproverEmailID').val('')
@@ -1129,6 +1132,7 @@ function addRFQApprovers() {
     //bug 478
     jQuery('#btnrfqapproversubmit').removeAttr("disabled");
 }
+
 function deleteRFQApprow(rowid) {
     rowRFQApp = rowRFQApp - 1;
     $('#' + rowid.id).remove();
@@ -1147,6 +1151,8 @@ function deleteRFQApprow(rowid) {
         jQuery('#btnrfqapproversubmit').attr("disabled", "disabled");
     }
 }
+
+
 function MapRFQapprover(Type) {
     var RFQID = 0;
     if (Type == "Report") {
@@ -1235,6 +1241,8 @@ function MapRFQapprover(Type) {
 
     });
 }
+
+
 $("#addapprovers").on("hidden.bs.modal", function () {
     jQuery("#txtApproverRFQ").val('')
     $('#hdnRFQApproverEmailID').val('0')
@@ -1318,6 +1326,8 @@ function fnGetRFQApprovers(Type) {
 
     })
 }
+
+
 function fnOpenPopupApprover(Type) {
 
     fnGetRFQApprovers(Type);
@@ -1726,3 +1736,213 @@ function updateLoadingFactor() {
     editrow = "";
 
 }
+
+//technical approver Anurag
+function fnOpenPopupTechApprover(Type) {
+
+    fnGetRFQApprovers(Type);
+    if (Type == "Report") {
+        $('#FwdTechnicalApprover').modal('hide')
+        setTimeout(function () {
+            $('#addtechnicalapprovers').modal('show')
+        }, 500)
+    }
+    else {
+        fetchRegisterUser()
+        $('#addtechnicalapprovers').modal('show')
+    }
+
+}
+function fnclosepopupTechnicalApprovers(Type) {
+    if (Type == "Report") {
+        $('#addtechnicalapprovers').modal('hide')
+        setTimeout(function () {
+            $('#FwdTechnicalApprover').modal('show')
+        }, 500)
+    }
+    else {
+        $('#addtechnicalapprovers').modal('hide')
+    }
+}
+
+jQuery("#txtTechincalApproverRFQ").keyup(function () {
+    $('#hdnRFQTechApproverID').val('0')
+    $('#hdnRFQTechApproverEmailID').val('')
+    $('#hdnRFQTechApproverusername').val('')
+});
+
+jQuery("#txtTechincalApproverRFQ").keyup(function () {
+    sessionStorage.setItem('hdnRFQTechApproverID', '0');
+
+});
+sessionStorage.setItem('hdnRFQTechApproverID', 0);
+
+jQuery("#txtTechincalApproverRFQ").typeahead({
+    source: function (query, process) {
+        var data = allUsers;
+        usernames = [];
+        map = {};
+        var username = "";
+        jQuery.each(data, function (i, username) {
+            map[username.userName] = username;
+            usernames.push(username.userName);
+        });
+
+        process(usernames);
+
+    },
+    minLength: 2,
+    updater: function (item) {
+        if (map[item].userID != "0") {
+            sessionStorage.setItem('hdnRFQTechApproverID', map[item].userID);
+            $('#hdnRFQTechApproverID').val(map[item].userID)
+            $('#hdnRFQTechApproverEmailID').val(map[item].emailID)
+            $('#hdnRFQTechApproverusername').val(map[item].userName)
+        }
+        else {
+            gritternotification('Please select Technical Approver Properly!!!');
+        }
+
+        return item;
+    }
+
+});
+
+//selecting approval type
+function fnTocheckAproverMapp() {
+    jQuery("#txtApprover").val('')
+    sessionStorage.setItem('hdnApproverid', '0');
+    if ($('#drp_TechnicalApp').val() == "RFQ" || $('#drp_TechnicalApp').val() == "AfterRFQ") {
+        $('#ddlapprovertype').val('T');
+        $('#ddlapprovertype').removeAttr('disabled');
+
+    }
+    else {
+        $('#ddlapprovertype').val('C');
+        $('#ddlapprovertype').attr('disabled', 'disabled');
+        if (jQuery("#tblapproverstech thead").length) {
+            bootbox.dialog({
+                message: "By changing Technical Approval as Not Required,  Technical Approvers would be delete. Do you want to continue?",
+                // title: "Custom title",
+                buttons: {
+                    confirm: {
+                        label: "Yes",
+                        className: "btn-success",
+                        callback: function () {
+                            $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
+                            deleteTechnicalApprovers();
+                        }
+                    },
+                    cancel: {
+                        label: "No",
+                        className: "btn-warning",
+                        callback: function () {
+                            $('#drp_TechnicalApp').val('')
+                            //$('#form_wizard_1').bootstrapWizard('previous');
+                        }
+                    }
+                }
+            });
+        }
+    }
+}
+
+//adding technical approver in the table
+var TechApp = 0;
+var TechAppsrno = 0;
+
+
+function addRFQTechnicalApprovers() {
+    var num = 0;
+    var maxinum = 0;
+    var status = "true";
+    var UserID = sessionStorage.getItem('hdnRFQTechApproverID');
+    var UserName = jQuery("#txtTechincalApproverRFQ").val();
+    var Email = jQuery("#hdnRFQTechApproverEmailID").val();
+ 
+    if (UserID == "0" || jQuery("#txtTechincalApproverRFQ").val() == "") {
+        $('.alert-danger').show();
+        $('#spandanger').html('Approver not selected. Please press + Button after selecting Approver');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        return false;
+    }
+    else {
+        {
+
+            TechAppsrno = TechAppsrno + 1;
+            num = 0;
+            maxinum = 0;
+            $("#tblRFQtechnicalapprovers >tbody>tr").each(function () {
+
+                var this_rowtech = $(this);
+                num = (this_rowtech.closest('tr').attr('id')).substring(11, (this_rowtech.closest('tr').attr('id')).length)
+
+                if (parseInt(num) > parseInt(maxinum)) {
+                    maxinum = num;
+                }
+            });
+
+            TechApp = parseInt(maxinum) + 1;
+            jQuery("#tblRFQtechnicalapprovers").removeClass('hide')
+            if (!jQuery("#tblRFQtechnicalapprovers thead").length) {
+                jQuery("#tblRFQtechnicalapprovers").append("<thead><tr><th colspan=5  style='text-align:center;' class='bold' >Technical Approver(s)</th></tr><tr><th style='width:5%!important'></th><th class='bold' style='width:60%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th><th class='bold' style='width:5%!important'>Show Price</th></tr></thead>");
+                jQuery("#tblRFQtechnicalapprovers").append('<tr id=trAppidtech' + TechApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppidtech' + TechApp +',\'T\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName +'('+ Email+ ')</td><td></td><td class=hide>' + UserID + '</td><td><div class=\"checker\" id=\'uniform-chkbidTypestech\' ><span  id=\'spancheckedtech\' ><input type=\'checkbox\'   id=\'chkshowp' + UserID + '\'  style=\'cursor:pointer\' name=\'chkshowP\' onclick="Checktechapp(this,' + TechApp + ')" /></span></div></td></tr>'); /*class=checked*/
+            }
+            else {
+                jQuery("#tblRFQtechnicalapprovers").append('<tr id=trAppidtech' + TechApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(trAppidtech' + TechApp +',\'T\')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '(' + Email + ')</td><td></td><td class=hide>' + UserID + '</td><td><div class=\"checker\" id=\'uniform-chkbidTypestech\' ><span  id=\'spancheckedtech\' ><input type=\'checkbox\'   id=\'chkshowp' + UserID + '\'  style=\'cursor:pointer\' name=\'chkshowP\' onclick="Checktechapp(this,' + TechApp + ')" /></span></div></td></tr>');
+            }
+
+            $('#tdshowp' + TechApp).text('No');
+            var rowcount = jQuery('#tblRFQtechnicalapprovers >tbody>tr').length;
+
+            if (rowcount >= 1) {
+                $("#tblRFQtechnicalapprovers tr:gt(0)").each(function (index) {
+                    var this_row = $(this);
+                    $.trim(this_row.find('td:eq(2)').html(index));
+                });
+            }
+         } 
+        }
+    jQuery("#txtTechincalApproverRFQ").val('');
+    sessionStorage.setItem('hdnRFQTechApproverID', '0')
+}
+
+
+//deleting approval from the table
+function deleteApprow(rowid) {
+    var i = 1;
+    $('#' + rowid.id).remove();
+
+    TechAppsrno = TechAppsrno - 1;
+    var rowCount = jQuery('#tblRFQtechnicalapprovers >tbody> tr').length;
+        if (rowCount >= 1) {
+            i = 0;
+            $("#tblRFQtechnicalapprovers tr:gt(0)").each(function () {
+                var this_row = $(this);
+                $.trim(this_row.find('td:eq(2)').html(i));
+                i++;
+            });
+        }
+}
+
+//checking for show price
+function Checktechapp(event, rowid) {
+
+    if ($(event).closest("span#spancheckedtech").attr('class') == 'checked') {
+        $(event).closest("span#spancheckedtech").removeClass("checked")
+        $(event).removeAttr('checked')
+        $('#tdshowp' + rowid).html('No')
+    }
+
+    else {
+
+        $(event).closest("span#spancheckedtech").addClass("checked")
+        $(event).attr('checked', 'checked')
+        $('#tdshowp' + rowid).html('Yes')
+    }
+
+}
+
+
+//technical approver by Anurag 

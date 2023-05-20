@@ -55,6 +55,11 @@ jQuery(document).ready(function () {
         alwaysShow: true
     });
 
+    jQuery('#MatrixExportToExcel').click(function () {
+        tableToExcel(['tblAllmatrix'], ['NFAMatrixDetails'], 'NFAMatrix.xls')
+
+    });
+
 });
 
 function FetchRecomendedVendor() {

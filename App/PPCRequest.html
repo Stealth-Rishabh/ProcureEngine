@@ -332,6 +332,7 @@
                                                             </label>
                                                             <div class="col-md-3">
                                                                 <select id="ddlCategory" name="ddlCategory" class="form-control">
+                                                                    <option value="">Please Select</option>
                                                                     <option value="0">Project</option>
                                                                     <option value="1">Project O&M</option>
                                                                     <option value="2">Other</option>
@@ -1725,11 +1726,6 @@
     <script nonce="ppcreq">
         jQuery(document).ready(function () {
             callPagejs('ckeditor.js,PPCRequest.js');
-
-            jQuery('#MatrixExportToExcel').click(function () {
-                tableToExcel(['tblAllmatrix'], ['NFAMatrixDetails'], 'NFAMatrix.xls')
-
-            });
         });
 
     </script>

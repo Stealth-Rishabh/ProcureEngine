@@ -22,6 +22,11 @@ jQuery(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
 
+    jQuery('#MatrixExportToExcel').click(function () {
+        tableToExcel(['tblAllmatrix'], ['NFAMatrixDetails'], 'NFAMatrix.xls')
+
+    });
+
     fetchProjectMaster()
     Metronic.init();
     Layout.init();

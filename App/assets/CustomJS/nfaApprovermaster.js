@@ -21,6 +21,10 @@ jQuery(document).ready(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
 
+    jQuery('#MatrixMasterExportToExcel').click(function () {
+        tableToExcel(['tblAllmatrix'], ['NFAMasterMatrixDetails'], 'NFAMatrix.xls')
+
+    });
 
     Metronic.init();
     Layout.init();
@@ -323,13 +327,15 @@ function BindPurchaseOrg() {
 };
 
 function bindPurchaseGroupDDL() {
+   
     var x = isAuthenticated();
     var url = "NFA/GetPurchaseGroupByID?CustomerId=" + parseInt(CurrentCustomer) + "&OrgId=" + $('#ddlPurchaseOrg option:selected').val();
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
-
+    debugger
     GetNFAPARAM.success(function (res) {
         $("#ddlPurchasegroup").empty();
         $('#ddlPurchasegroup').append('<option value="0">Select</option>');
+        debugger
         if (res.result.length > 0) {
             $.each(res.result, function (key, value) {
                 $('#ddlPurchasegroup').append('<option value=' + value.idx + '>' + value.groupName + '</option>');
