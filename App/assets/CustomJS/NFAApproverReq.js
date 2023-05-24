@@ -25,6 +25,9 @@ $(document).ready(function () {
     }
 
     if (idx != null) {
+        sessionStorage.setItem('EventId', idx);
+        sessionStorage.setItem('EventType', 'NFAApp');
+        
         if (sessionStorage.getItem('CustomerID') == 32) {// || sessionStorage.getItem('CustomerID') == 29
             $('#divNFADetails').hide();
             $('#divPPCDetails').show();
@@ -1824,7 +1827,8 @@ jQuery("#txtApproverNFA").typeahead({
 
 function addNFAApprovers_test() {
     var status = "true"; var Apptype = ''
-    //  jQuery("#tblRFQapprovers").empty();
+  //  jQuery("#tblRFQapprovers").empty();
+   
     $("#tblapprovers tr:gt(0)").each(function () {
         var this_row = $(this);
         if ($.trim(this_row.find('td:eq(0)').html()) == $('#hdnApproverID').val()) {
@@ -1902,7 +1906,16 @@ function addNFAApprovers() {
     var UserName = jQuery("#txtApproverNFA").val();
     var EmailID = jQuery("#hdnNFAApproverEmailID").val();
     //console.log(UserID);
-     
+    //alert($('#txtApproverSqn').val());
+    if ($('#txtApproverSqn').val() == "0" || jQuery("#txtApproverSqn").val() == "") {
+        $('.alert-danger').show();
+        $('#spandangerapp').html('Input Approver Sequence');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000); 
+        jQuery("#txtApproverSqn").val('')
+        return false;
+
+    }
 
     $("#tblRFQapprovers tr:gt(0)").each(function () {
         var this_row = $(this);
@@ -1944,17 +1957,18 @@ function addNFAApprovers() {
         jQuery("#hdnNFAApproverID").val('0')
         return false;
     }
-    else {
+    else { 
         rowRFQApp = rowRFQApp + 1;
         if (!jQuery("#tblRFQapprovers thead").length) {
             jQuery("#tblRFQapprovers").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-            jQuery("#tblRFQapprovers").append('<tr id=trAppid' + rowRFQApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteRFQApprow(trAppid' + rowRFQApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowRFQApp + '</td><td class=hide>' + UserID + '</td></tr>');
+            jQuery("#tblRFQapprovers").append('<tr id=trAppid' + rowRFQApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteRFQApprow(trAppid' + rowRFQApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + $('#txtApproverSqn').val() + '</td><td class=hide>' + UserID + '</td></tr>');
         }
         else {
-            jQuery("#tblRFQapprovers").append('<tr id=trAppid' + rowRFQApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteRFQApprow(trAppid' + rowRFQApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowRFQApp + '</td><td class=hide>' + UserID + '</td></tr>');
+            jQuery("#tblRFQapprovers").append('<tr id=trAppid' + rowRFQApp + '><td><button class="btn  btn-xs btn-danger" onclick="deleteRFQApprow(trAppid' + rowRFQApp + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + $('#txtApproverSqn').val() + '</td><td class=hide>' + UserID + '</td></tr>');
         }
         jQuery("#txtApproverNFA").val('')
         jQuery("#hdnNFAApproverID").val('0')
+        $('#txtApproverSqn').val('');
     } 
     jQuery('#btnnfaapproversubmit').removeAttr("disabled");
 }
