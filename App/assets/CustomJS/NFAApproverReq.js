@@ -2054,6 +2054,9 @@ function PostAddApprover() {
     var callAPI = callajaxReturnSuccess(url, "Post", JSON.stringify(ApproverSeqData));
     callAPI.success(function (res) {
         console.log(res);
+            setTimeout(function () {
+                window.location.reload();
+            }, 1000);
         });
 
     callAPI.error(function (error) {
