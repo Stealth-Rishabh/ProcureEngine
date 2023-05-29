@@ -23,8 +23,9 @@ jQuery(document).ready(function () {
     })
 
     jQuery('#MatrixExportToExcel').click(function () {
-        tableToExcel(['tblAllmatrix'], ['NFAMatrixDetails'], 'NFAMatrix.xls')
+        downloadNFAMatrixPPC()
 
+        //tableToExcel(['tblAllmatrix'], ['NFAMatrixDetails'], 'NFAMatrix.xls')
     });
 
     fetchProjectMaster()
@@ -2473,5 +2474,61 @@ function fetchProjectMaster() {
     });
 
 }
+
+
+/*
+ downloadNFAMatrix starts anurag
+ */
+function downloadNFAMatrixPPC() {
+    debugger
+    var x = isAuthenticated();
+    var url = sessionStorage.getItem("APIPath") + "NFA/downloadNFAMatrix/";
+    var Tab1Data = {
+
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": encodeURIComponent(sessionStorage.getItem("UserID"))
+
+    };
+    $(".loaderC").removeClass("hide");
+    setTimeout(function () {
+        fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(Tab1Data),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'NFAMatirx.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+
+                bootbox.alert("File downloaded Successfully.", function () {
+                    $("#MatrixExportToExcel").removeAttr("disabled");
+                    return true;
+                });
+                console.log(a)
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                setTimeout(function () {
+                    $(".loaderC").addClass("hide");
+                }, 500);
+            });
+
+    }, 500)
+}
+
+/*
+ downloadNFAMatrix end
+*/
 
 
