@@ -343,19 +343,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!--
-       <div class="form-group">
-        <div class="inputgroup isProject">
-            <label class="col-md-3 control-label">
-                Project Name<span class="required"> *</span>
-            </label>
-            <div class="col-md-8">
-                <input type="text" id="txtProjectName" name="txtProjectName" autocomplete="off" class="form-control MaxLength" maxlength="250" onkeyup="replaceQuoutesFromString(this)" />
-            </div>
-        </div>
-    </div>
-    -->
-
                                                     <div class="form-group">
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
@@ -426,13 +413,66 @@
                                                     </div>
 
                                                     <div class="panel-group accordion" id="acc_TC">
+
+
+
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
                                                                 <h4 class="panel-title">
-                                                                    <a class="accordion-toggle notextdeco" data-toggle="collapse" data-parent="#acc_TC" href='#collapse2'>Responses</a>
+                                                                    <a class="accordion-toggle notextdeco" data-toggle="collapse" data-parent="#acc_TC" href='#collapse2'>Bidding Details</a>
                                                                 </h4>
                                                             </div>
                                                             <div id=collapse2 class="panel-collapse collapse in">
+                                                                <div class="panel-body">
+
+                                                                    <div class="col-md-12 text-right">
+                                                                        <button class="btn btn-xs btn-primary tooltips " type="button" id="btnAddAnother" data-placement="top" data-original-title="Click here to add another vendor" onclick="addSOBVendor()">
+                                                                            <i class="fa fa-plus-circle"></i> Add Another
+                                                                        </button>
+                                                                    </div>
+
+                                                                    <div class='form-group' id="PriceType">
+                                                                        <label class="col-md-2 control-label bold">
+                                                                            Preffered Type
+                                                                        </label>
+                                                                        <div class="col-md-2">
+                                                                            <select class="form-control" id="ddlPriceType" name="ddlPriceType">
+                                                                                <option value="">Select</option>
+                                                                                <option value="V">Value</option>
+                                                                                <option value="P">Percentage</option>
+                                                                            </select>
+                                                                        </div>
+
+                                                                    </div>
+
+
+                                                                    <div class="col-md-12">
+                                                                        <div class="col-md-1">
+                                                                            &nbsp;
+
+                                                                        </div>
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-10">
+                                                                                <table class="table table-striped table-bordered table-hover" id="tblvendors"></table>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading">
+                                                                <h4 class="panel-title">
+                                                                    <a class="accordion-toggle notextdeco" data-toggle="collapse" data-parent="#acc_TC" href='#collapse1'>Responses</a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id=collapse1 class="panel-collapse collapse in">
                                                                 <div class="panel-body">
 
                                                                     <div class="col-md-12">
@@ -481,6 +521,7 @@
                                                             </div>
 
                                                         </div>
+
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
                                                                 <h4 class="panel-title">
@@ -533,7 +574,6 @@
 
                                                             </div>
                                                         </div>
-
 
                                                     </div>
 
@@ -675,6 +715,34 @@
                                                     <h4 class="form-section">NFA Details</h4>
                                                     <div class="row">
                                                         <div class="col-md-12">
+                                                            <div class='form-group hide' id='PriceTypeP'>
+                                                                <label class="col-md-2 control-label bold">
+                                                                    Preffered Type
+                                                                </label>
+                                                                <div class="col-md-2">
+                                                                    <select class="form-control" id="ddlPriceTypeP" name="ddlPriceTypeP">
+                                                                        <option value="">Select</option>
+                                                                        <option value="V">Value</option>
+                                                                        <option value="P">Percentage</option>
+                                                                    </select>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                <div class="col-md-9">
+                                                                    <table id="tblvendorsP" class="table table-striped table-bordered table-hover">
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
                                                             <div class="form-group">
                                                                 <div class="col-md-9">
                                                                     <table id="tblOBpreview" class="table table-striped table-bordered table-hover">
@@ -790,7 +858,6 @@
 
 
                 </div>
-        
             </div>
         </div>
     </div>
@@ -944,6 +1011,7 @@
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip()
             })
+
 
 
             Metronic.init();
