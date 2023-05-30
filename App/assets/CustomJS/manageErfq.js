@@ -180,65 +180,6 @@ function formValidation() {
         }
     });
 
-    //form validation for technical approver
-    var formaddtechapprover = $('#frmRFQTechnicalApprover');
-    var errorapp = $('.alert-danger', formaddtechapprover);
-    var successapp = $('.alert-success', formaddtechapprover);
-    formaddtechapprover.validate({
-        errorElement: 'span',
-        errorClass: 'help-block',
-        focusInvalid: false,
-        ignore: "",
-
-        rules: {
-
-        },
-        messages: {
-
-        },
-
-        invalidHandler: function (event, validator) { //display error alert on form submit              
-        },
-
-        highlight: function (element) { // hightlight error inputs
-            $(element)
-                .closest('.col-md-10').addClass('has-error'); // set error class to the control group
-        },
-
-        unhighlight: function (element) { // revert the change done by hightlight
-            $(element)
-                .closest('.col-md-10').removeClass('has-error'); // set error class to the control group
-        },
-
-        success: function (label) {
-            label
-                .closest('.col-md-10').removeClass('has-error'); // set success class to the control group
-        },
-
-        submitHandler: function (form) {
-            if (sessionStorage.getItem('hdnRFQTechApproverID') != "0" && jQuery("#txtTechincalApproverRFQ").val() != "") {
-
-                $('.alert-danger').show();
-                $('#spandangerapp').html('Approver not selected. Please press + Button after selecting Approver');
-                Metronic.scrollTo($(".alert-danger"), -200);
-                $('.alert-danger').fadeOut(3000);
-                return false;
-            }
-            else if ($('#tblRFQtechnicalapprovers >tbody >tr').length == 0) {
-                $('.alert-danger').show();
-                $('#spandangerapp').html('Please Map Approver.');
-                $('.alert-danger').fadeOut(3000);
-                return false;
-
-            }
-            else {
-                MapRFQTechapprover('manage');
-            }
-
-
-        }
-    });
-
 }
 
 function fetchRFIRFQSubjectforReport() {
@@ -590,7 +531,9 @@ function fetchReguestforQuotationDetails(RFQID) {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (RFQData) {
+        success: function (Data) {
+            let RFQData = Data.rData
+
             if (sessionStorage.getItem('CustomerID') == "32") {
                 $('#ctrladdapprovers').addClass('hide')
             }
