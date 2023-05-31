@@ -3,9 +3,19 @@ var fromUserID = 0;
 var allUsers = [];
 var allApprovalUser = [];
 var error = $('#errordiv');
-var rowApp = 0;
-var rowRFQApp = 0;
 error.hide();
+var successD = $('#successdivD');
+successD.hide();
+var successAdd = $('#successapp');
+successAdd.hide();
+
+var rowApp = 0;
+
+var rowRFQApp = 0;
+
+var userType = "";
+var loginUser = "";
+
 
 $(document).ready(function () {
 
@@ -24,7 +34,7 @@ $(document).ready(function () {
     }
 
     if (idx != null) {
-        if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 29) {// || sessionStorage.getItem('CustomerID') == 29
+        if (sessionStorage.getItem('CustomerID') == 32) {// || sessionStorage.getItem('CustomerID') == 29
             $('#divNFADetails').hide();
             $('#divPPCDetails').show();
             Bindtab2DataforPreview();
@@ -41,6 +51,9 @@ $(document).ready(function () {
         fetchApproverStatus();
         GetQuestions();
 
+
+
+        debugger
         if (IsApp == 'N' && FwdTo != 'Admin') {
             jQuery("#divRemarksForward").show();
 
@@ -64,7 +77,7 @@ $(document).ready(function () {
             jQuery("#divRemarksApp").show();
             jQuery("#frmdivremarksapprover").show();
             $('#frmadminbutton').hide()
-
+            //$('#btnwithdraw').show()
         }
 
     }
@@ -119,71 +132,27 @@ function Bindtab2DataforPreview() {
                     $('#tblvendorsprev').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th><th>TPI</th></tr></thead>");
                     for (i = 0; i < data[0].biddingVendor.length; i++) {
 
-                        if ((data[0].biddingVendor[i].quotationReceived).trim() == "Y") {
-
-                            QR = "Yes";
-                        }
-                        else if ((data[0].biddingVendor[i].quotationReceived).trim() == "NA") {
-
-                            QR = "NA";
-                        }
-                        else {
-
-                            QR = "No";
-                        }
-                        if ((data[0].biddingVendor[i].tpi).trim() == "Y") {
-
+                        if (data[0].biddingVendor[i].tpi == "Y") {
                             TPI = "Yes";
                         }
-                        else if ((data[0].biddingVendor[i].tpi).trim() == "NA") {
-
+                        else if (data[0].biddingVendor[i].tpi == "NA") {
                             TPI = "NA";
                         }
-
                         else {
-
                             TPI = "No";
                         }
-                        if ((data[0].biddingVendor[i].texhnicallyAcceptable).trim() == "Y") {
-
-                            TA = "Yes";
-                        }
-                        else if ((data[0].biddingVendor[i].texhnicallyAcceptable).trim() == "NA") {
-
-                            TA = "NA";
-
-                        }
-                        else {
-
-                            TA = "No";
-                        }
-                        if ((data[0].biddingVendor[i].politicallyExposed).trim() == "Y") {
-
-                            PE = "Yes";
-                        }
-                        else if ((data[0].biddingVendor[i].politicallyExposed).trim() == "NA") {
-
-                            PE = "NA";
-
-                        }
-                        else {
-
-                            PE = "No";
-                        }
-                        if ((data[0].biddingVendor[i].quotedValidatedSCM).trim() == "Y") {
-
+                        if (data[0].biddingVendor[i].quotedValidatedSCM == "Y") {
                             validatescm = "Yes";
                         }
-                        else if ((data[0].biddingVendor[i].quotedValidatedSCM).trim() == "NA") {
-
+                        else if (data[0].biddingVendor[i].quotedValidatedSCM == "NA") {
                             validatescm = "NA";
                         }
                         else {
-
                             validatescm = "No";
                         }
+
                         //**** Prev vendor Details Start
-                        $('#tblvendorsprev').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + ">" + QR + "</td><td id=TDTechAccep" + i + ">" + TA + "</td><td id=TDpolexp" + i + ">" + PE + "</td><td id=TDvalidatescm" + i + ">" + validatescm + "</td><td id=TPI" + i + ">" + TPI + "</td></tr>")
+                        $('#tblvendorsprev').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + ">" + (data[0].biddingVendor[i].quotationReceived == 'Y' ? 'Yes' : 'No') + "</td><td id=TDTechAccep" + i + ">" + (data[0].biddingVendor[i].texhnicallyAcceptable == 'Y' ? 'Yes' : 'No') + "</td><td id=TDpolexp" + i + ">" + (data[0].biddingVendor[i].politicallyExposed == 'Y' ? 'Yes' : 'No') + "</td><td id=TDvalidatescm" + i + ">" + validatescm + "</td><td id=TPI" + i + ">" + TPI + "</td></tr>")
                         //**** Prev vendor Details end
 
                     }
@@ -256,16 +225,20 @@ function fetchRegisterUser() {
 //abheedev bug 385
 //abheedev backlog 471
 var nfaid = 0;
+var createdById = 0;
 function GetOverviewmasterbyId(idx) {
     var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
+    debugger
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
+        console.log("data", res)
         if (res.result != null) {
+            //  console.log(res);
             nfaid = res.result[0].nfaID
             if (res.result.length > 0) {
-
+                createdById = res.result[0].createdById
                 if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 29) {
                     if (res.result[0].nfaCategory == "2") {
                         $(".clsHide").hide();
@@ -467,13 +440,10 @@ function fetchApproverStatus() {
                         jQuery('#divappendstatusbar').append(`<a href="javascript:;" data-toggle="modal" data-target="#appmodpop" onclick="popapprfunc('${data[i].approverName}','${data[i].approverID}')"><div class="col-md-2 mt-step-col first popApprove" id="divstatuscolor${i}"><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id="divlevel${i}"></div><div class="mt-step-title font-grey-cascade" id="divapprovername${i}" style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id="divstatus${i}"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id="divPendingDate${i}"></div></div></div></div></a>`)
 
                     }
-
-                    jQuery('#divappendstatusbar').append('<div class="col-md-2 mt-step-col first" id=divstatuscolor' + i + '><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id=divlevel' + i + '></div><div class="mt-step-title font-grey-cascade" id=divapprovername' + i + ' style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divstatus' + i + '></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divPendingDate' + i + '></div></div></div></div>')
                     jQuery('#divlevel' + i).text(data[i].approverSeq);
                     jQuery('#divapprovername' + i).text(data[i].approverName);
                     jQuery('#divPendingDate' + i).text(fnConverToLocalTime(data[i].receiptDt));
                     ApprovalType = data[0].approvalType;
-
                     if (data[i].statusCode == 10) {
 
                         counterColor = counterColor + 1;
@@ -491,6 +461,7 @@ function fetchApproverStatus() {
                     if (data[i].statusCode == 0) {
                         counterColor = counterColor + 1;
                         status = 'Delegate'
+                        jQuery('#divstatuscolor' + i).addClass('font-blue')
                         jQuery('#divstatus' + i).text(status);
                         jQuery('#divstatuscolor' + i).addClass('last');
                     }
@@ -665,12 +636,12 @@ var success3 = $('.alert-success', form3);
 var formrecall = $('#frmadminbuttonsrecall');
 var errorrecall = $('.alert-danger', formrecall);
 var successrecall = $('.alert-success', formrecall);
+
 var formaddcommapprover = $('#frmNFAApprover');
 var errorapp = $('.alert-danger', formaddcommapprover);
 var successapp = $('.alert-success', formaddcommapprover);
 
 function validateAppsubmitData() {
-
 
     form1.validate({
         errorElement: 'span',
@@ -774,6 +745,7 @@ function validateAppsubmitData() {
             DelegateUser();
         }
     });
+
     form3.validate({
         errorElement: 'span',
         errorClass: 'help-block',
@@ -865,6 +837,7 @@ function validateAppsubmitData() {
         }
     });
 
+
     formaddcommapprover.validate({
         errorElement: 'span',
         errorClass: 'help-block',
@@ -916,6 +889,7 @@ function validateAppsubmitData() {
 
         }
     });
+
 
 }
 function ApprovalApp() {
@@ -1671,11 +1645,16 @@ function fngeneratePDF() {
 }
 
 
-
-
 /*add delegate*/
 
 function popapprfunc(approverName, approverID) {
+
+    userType = sessionStorage.getItem("roleName");
+    loginUser = sessionStorage.getItem("getUId");
+
+    console.log("userType :", userType);
+    console.log("loginUser :", loginUser)
+
 
     if (allApprovalUser.length > 0) {
         rowRFQApp = allApprovalUser.length;
@@ -1684,11 +1663,11 @@ function popapprfunc(approverName, approverID) {
                 filteredUsers = [...filteredUsers, allApprovalUser[i]];
             }
         }
-        console.log(filteredUsers);
+        console.log("all filter users: ", filteredUsers);
         //  fnGetApprovers(filteredUsers);*/
     }
 
-    console.log(allUsers)
+    console.log("allUsers : ", allUsers)
     fromUserID = approverID;
     jQuery("#fromApproveUser").empty();
     jQuery('#fromApproveUser').append('<tr><th>Delegate Approver</th></tr>')
@@ -1702,8 +1681,7 @@ function popapprfunc(approverName, approverID) {
         }
     }
 
-}
-
+};
 
 function PostNewApprover() {
     var status = "true";
@@ -1715,7 +1693,8 @@ function PostNewApprover() {
         "FromUserId": fromUserID,
         "Remarks": $("#remarkAprv").val(),
         "Action": 'Delegate',
-        "DelgateTo": delegateTOID
+        "DelgateTo": delegateTOID,
+        "CreatedBy": parseInt(sessionStorage.getItem("CustomerID"))
     }
     console.log(filteredUsers);
     if (filteredUsers.length > 0) {
@@ -1728,7 +1707,32 @@ function PostNewApprover() {
 
     }
 
+    console.log(userType);
+    console.log(loginUser);
+
+    var validate = "false";
+
+    if (userType == 'Administrator' || 'Admin') { //if user
+        validate = "true";
+        console.log("Admin can delegate to anyone");
+    }
+    else if (loginUser == createdById && (userType != 'Admin' || userType != 'Administrator')) {
+        validate = "true";
+        console.log("loginUser or creater can delegate to anyone");
+    }
+    else if (loginUser == fromUserID && (userType != 'Admin' || userType != 'Administrator')) {
+        validate = "true";
+        console.log("loginuser can delegate to itself");
+    }
+
+    if (validate == "false") {
+        alert("No Right to Delegate");
+        return false;
+    }
+
+
     console.log(status);
+
     if (fromUserID == delegateTOID) {
         jQuery("#errordiv").text("Can not delegate to the same approver...");
         error.show();
@@ -1754,10 +1758,27 @@ function PostNewApprover() {
         dataType: "json",
         contentType: "application/json",
         success: function (data) {
+            jQuery("#successdivD").html("Delegation Successfull...");
+            successD.show();
+            successD.fadeOut(3000);
             console.log(data);
             setTimeout(function () {
                 window.location.reload();
-            }, 1000);
+            }, 3000);
+        },
+        error: function (xhr, status, error) {
+            if (xhr.status == 401) {
+                $("#errordiv").html("Unauthorized..");
+            }
+            else {
+                success.hide();
+                $("#errordiv").html("Delegation Failed..");
+                $("#errordiv").show();
+                $("#errordiv").fadeOut(3000);
+                jQuery.unblockUI();
+            }
+            jQuery.unblockUI();
+            return false;
         }
     });
 
@@ -2113,6 +2134,12 @@ function PostAddApprover() {
     var callAPI = callajaxReturnSuccess(url, "Post", JSON.stringify(ApproverSeqData));
     callAPI.success(function (res) {
         console.log(res);
+        jQuery("#successapp").text("Approver Add Successfull...");
+        successAdd.show();
+        successAdd.fadeOut(3000);
+        setTimeout(function () {
+            window.location.reload();
+        }, 3000);
     });
 
     callAPI.error(function (error) {

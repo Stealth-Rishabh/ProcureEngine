@@ -1584,19 +1584,21 @@
                         </div>
                     </div>
                     <div class="table-scrollable">
-                        <div class="scroller scroller400" data-always-visible="1" data-rail-visible="0">
+                        <div class="loaderC hide">
+                            <div class="spinner center-block"></div>
+                            <div class="row text-center">Please wait while file is downloading...</div>
+                        </div>
+                        <div class="scroller scroller400" data-always-visible="1" data-rail-visible="0" style="display: flex;flex-direction: column;justify-content: space-between;">
                             <table class="table table-striped table-bordered table-hover" id="tblAllmatrix"></table>
-                            <div class="form-actions fluid padding105px" style="margin-top:100px;">
-                                <div class="col-md-offset-3 col-md-6 txtaligncentre">
-                                    <button id="btnExportToExcel" type="button" class="btn green forbtnpause">
-                                        Export To Excel
-                                    </button>
-                                </div>
-                            </div>
                         </div>
                     </div>
-
-
+                    <div class="form-actions fluid padding105px">
+                        <div class="col-md-offset-3 col-md-6 txtaligncentre">
+                            <button id="MatrixExportToExcel" type="button" class="btn green forbtnpause">
+                                Export To Excel
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1726,12 +1728,6 @@
     <script nonce="ppcreq">
         jQuery(document).ready(function () {
             callPagejs('ckeditor.js,PPCRequest.js');
-
-            jQuery('#btnExportToExcel').click(function () {
-                tableToExcel(['tblAllmatrix'], ['NFAMatrixDetails'], 'NFAMatrix.xls')
-
-            });
-
         });
 
     </script>
