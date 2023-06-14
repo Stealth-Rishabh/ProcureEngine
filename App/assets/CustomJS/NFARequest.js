@@ -6,11 +6,15 @@ var NFAOverviewDetails = [];
 var idx = 0;
 var isReverted = 'N';
 var ApproverCtr = 0;
+let SOBID = 0
 
 var ApprSeqval = [];
 
 var lstActivityData = [];
 var objActivity = {};
+
+fetchProjectMaster();
+fetchParticipantsVender();
 
 if (window.location.search) {
 
@@ -52,13 +56,13 @@ jQuery(document).ready(function () {
         limitReachedClass: "label label-danger",
         alwaysShow: true
     });
-
     jQuery('#MatrixExportToExcel').click(function () {
+
         downloadNFAMatrix()
-        //tableToExcel(['tblAllmatrix'], ['NFAMatrixDetails'], 'NFAMatrix.xls')
+        // tableToExcel(['tblAllmatrix'], ['NFAMatrixDetails'], 'NFAMatrix.xls')
+
     });
 
-    fetchProjectMaster();
 
 });
 
@@ -365,7 +369,23 @@ var FormWizard = function () {
                             if (idx != 0) {
                                 BindSaveparams();
                                 BindAttachmentsOfEdit();
-                                fetchReguestforQuotationDetails();
+
+                                if ($('#ddlEventType').val() == "1") {
+                                    if (SOBID != 0) {
+                                        GetSOBAllocation()
+                                    }
+                                    else {
+
+                                        fetchReguestforQuotationDetails();
+                                    }
+                                }
+                                else {
+                                    $('#PriceType').hide()
+
+                                }
+
+
+                                /*setTimeout(function(){GetSOBAllocation()},500)*/
                             }
                             SaveFirstTabActivity();
                         }
@@ -375,6 +395,12 @@ var FormWizard = function () {
                     else if (index == 2) {
 
                         form.validate();
+                        if ($('#ddlEventType').val() == "1") {
+                            if (checkSum() == false) {
+                                form.valid() = false
+                            }
+                        }
+
 
                         // abheedev backlog 286 start
                         $('.paramremark').rules('add', {
@@ -382,6 +408,7 @@ var FormWizard = function () {
                             maxlength: 10000
 
                         });
+
                         if ($('#tblNFAOverviewParam >tbody >tr').length == 0) {
                             $('#errorSeq').html('You have Some error. Please Check Below!')
                             $('#errordivSeq').show();
@@ -400,11 +427,17 @@ var FormWizard = function () {
                         }
 
                         if (flag == "T") {
-
+                            if ($('#ddlEventType').val() == "1") {
+                                allocateSOB()
+                            }
                             Savetab2Data();
                             SaveAttechmentinDB();
                             BindAttachmentsOfEdit();
                             Bindtab3Data();
+                            if ($('#ddlEventType').val() == "1") {
+                                GetSOBAllocation()
+                            }
+
                         }
                     }
 
@@ -548,6 +581,8 @@ function bindNFAOverViewMaster() {
 };
 //abheedev backlog 286
 
+
+
 function GetOverviewmasterbyId(idx) {
 
     var x = isAuthenticated();
@@ -557,15 +592,17 @@ function GetOverviewmasterbyId(idx) {
 
         if (res.result != null) {
             if (res.result.length > 0) {
-                debugger
+
                 let _cleanStringSub = StringDecodingMechanism(res.result[0].nfaSubject);
                 let _cleanStringDet = StringDecodingMechanism(res.result[0].nfaDescription);
+                SOBID = res.result[0].sobId || 0;
+
                 $("#txtEventref").val(res.result[0].eventReftext);
                 $("#txtTitle").val(_cleanStringSub);
                 $("#txtNFADetail").val(_cleanStringDet);
                 $("#ddlEventType").val(res.result[0].eventID);
                 setTimeout(function () {
-                    debugger
+
                     GetEventRefData();
                     CKEDITOR.instances['txtRemark'].setData(res.result[0].remarks);
                     sessionStorage.setItem("hdnEventrefId", res.result[0].eventRefernce);
@@ -595,19 +632,19 @@ function GetOverviewmasterbyId(idx) {
                 //abheedev 16/03/2023
 
                 setTimeout(function () {
-                    debugger
+
                     BindPurchaseOrg()
                     $("#ddlPurchaseOrg").val(res.result[0].purchaseOrg).trigger('change');
                 }, 500)
                 setTimeout(function () {
-                    debugger
+
                     bindPurchaseGroupDDL()
                     $("#ddlPurchasegroup").val(res.result[0].purchaseGroup).trigger('change');
                 }, 500)
 
 
                 setTimeout(function () {
-                    debugger
+
                     bindConditionDDL()
                     $("#ddlCondition").val(res.result[0].conditionID).trigger('change');
                     $("#txtProjectName").val(res.result[0].projectName).trigger('change');
@@ -732,7 +769,7 @@ function fnaddQuestion() {
 }
 
 function fnApproversNBQuery(rownum, question) {
-
+    debugger
     if (jQuery("#ddlNFAParam").val() == "0" || jQuery("#ddlNFAParam").val() == "") {
         $('#errordivSeq').show();
         $('#errorSeq').html('Response not selected. Please press + Button after selecting Response');
@@ -1064,6 +1101,7 @@ function Savedata() {
         _budget = $("#txtBudget").val();
     }
     var p_Budget = removeThousandSeperator(_budget);
+    debugger
     var p_category = $("#ddlCategory option:selected").val();
     var p_currency = $("#dropCurrency option:selected").val();
     var p_projectname = $("#txtProjectName option:selected").text();
@@ -1107,6 +1145,7 @@ function Savedata() {
             if (res.result.length > 0) {
 
                 idx = res.result[0].nfaID;
+                sessionStorage.setItem('hdnNFAID', idx);
 
             }
         }
@@ -1178,12 +1217,13 @@ function GetNfaOverviewParams() {
     })
 }
 function BindSaveparams() {
+    debugger
     var x = isAuthenticated();
     var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx) + "&For=nfrequest&Purchaseorg=" + $('#ddlPurchaseOrg option:selected').val();
 
     var ParamData = callajaxReturnSuccess(url, "Get", {})
     ParamData.success(function (res) {
-
+        debugger
         if (res != null) {
 
             $("#tblNFAOverviewParam").empty();
@@ -1746,6 +1786,7 @@ function viewallmatrix() {
     bindApproverMaster('N');
 }
 
+
 function fetchReguestforQuotationDetails() {
 
     var x = isAuthenticated();
@@ -1759,19 +1800,23 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
+            $('#PriceType').show()
+
 
             let dt = JSON.parse(RFQData[0].jsondata);
             $('#tblvendors').empty();
             if (dt.length > 0) {
-                $('#tblvendors').append("<thead><tr><th></th><th>Enquiry issued To</th><th style='width:10%!important;'>Rank</th><th style='width:10%!important;'>Price</th><th style='width:20%!important;'></th></tr></thead>");
+                $('#tblvendors').append("<thead><tr><th></th><th>Enquiry issued To</th><th style='width:10%!important;'>Rank</th><th style='width:10%!important;'>Price</th><th style='width:20%!important;'>Allocation</th></tr></thead>");
                 for (i = 0; i < dt.length; i++) {
                     //$('#tblvendors').append("<tr><td class=hide id=TDVID" + i + ">" +dt[i].VendorID + "</td><td>" + dt[i].Vendorname + "</td><td id=TDRank" + i + "> " + dt[i].Status + " </td><td id=TDPrice" + i + "> " + dt[i].Price + "</td><td id=TDSOB" + i + "> Quantity/ Percentage of Value</td> <td id=TDSOBValue" + i + "> Quantity/ Percentage of Value</td> </tr>")
-                    $('#tblvendors').append("<tr><td class=hide id=TDVID" + i + ">" + dt[i].VendorID + "</td><td> <input type='checkbox' id='checkv'" + i + " style='width:16px !important; height:16px !important' class='form-control'/></td><td>" + dt[i].Vendorname + "</td><td id=TDRank" + i + "> " + dt[i].Status + " </td><td id=TDPrice" + i + "> " + dt[i].Price + "</td><td id=TDSOBValue" + i + "> <input class='form-control' /></td> </tr>")
+                    // $('#tblvendors').append("<tr><td class=hide id=TDVID" + i + ">" +dt[i].VendorID + "</td><td> <input type='checkbox' id='checkv'"+i+" style='width:16px !important; height:16px !important' class='form-control'/></td><td>" + dt[i].Vendorname + "</td><td id=TDRank" + i + "> " + dt[i].Status + " </td><td id=TDPrice" + i + "> " + dt[i].Price + "</td><td class='TDSOBValue' onkeyup='checkSum()' id=TDSOBValue" + i + "> <input class='form-control' /></td> </tr>")
+                    $('#tblvendors').append("<tr><td class=hide id=TDParticipant" + i + ">Y</td><td class=hide id=TDCID" + i + ">" + 0 + "</td><td class=hide id=TDVID" + i + ">" + dt[i].VendorID + "</td><td> <input type='checkbox' id='checkv" + i + "' style='width:16px !important; height:16px !important' class='form-control'/></td><td id=Vendorname" + i + ">" + dt[i].Vendorname + "</td><td id=TDRank" + i + "> " + dt[i].Status + " </td><td id=TDPrice" + i + ">" + dt[i].Price + "</td><td class='TDSOBValue' onkeyup='checkSum()' id=TDSOBValue" + i + "> <input class='form-control' /></td></tr>")
                 }
                 $('#tblvendors').append("</tbody>");
             }
         },
         error: function (xhr, status, error) {
+
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1790,7 +1835,7 @@ function fetchReguestforQuotationDetails() {
  fetchProjectName start
  */
 function fetchProjectMaster() {
-    debugger
+
     var url = sessionStorage.getItem("APIPath") + "ProjectMaster/fetchProjectMasterCust/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&status=Y";// + sessionStorage.getItem('UserID') + "&status=Y";
     jQuery.ajax({
         type: "GET",
@@ -1836,6 +1881,314 @@ function fetchProjectMaster() {
 /*
  fetchProjectName end
  */
+
+//SOB Changes
+
+function allocateSOB() {
+    debugger
+
+    let SOBDetailsArray = []
+    let i = ''
+
+    $('#tblvendors tbody tr').each(function (i) {
+        debugger
+        let price = 0
+        if ($(`#checkv${i}`).is(':checked')) {
+            debugger
+            if ($(`#TDPrice${i} input`).val()) {
+                price = parseInt($(`#TDPrice${i} input`).val());
+            }
+            else {
+                price = parseInt($(`#TDPrice${i}`).text())
+            }
+
+            let SOBDetailsunit = {
+                "VendorId": parseInt($(`#TDVID${i}`).text()),
+                "AssociatedVendorId": parseInt($(`#TDCID${i}`).text()),
+                "Allocation": parseInt($(`#TDSOBValue${i} input`).val()) || 0,
+                "HasParticipated": $(`#TDParticipant${i}`).text(),
+                "EventRank": $(`#TDRank${i}`).text(),
+                "VendorName": $(`#Vendorname${i}`).text() || $(`#Vendorname${i}`).val(),
+                "Price": price
+            }
+
+            SOBDetailsArray.push(SOBDetailsunit);
+        }
+    })
+    debugger
+
+    let data = {
+        "SOBId": parseInt(SOBID),
+        "NFAId": parseInt(sessionStorage.getItem("hdnNFAID")),
+        "EventType": $('#ddlEventType option:selected').val(),
+        "EventId": parseInt(sessionStorage.getItem('hdnEventrefId')),
+        "SOBOn": $('#ddlPriceType').val(),
+        "CustomerId": parseInt(sessionStorage.getItem("CustomerID")),
+        "Amount": parseInt(removeThousandSeperator($('#txtAmountFrom').val())),
+        "Budget": parseInt(removeThousandSeperator($('#txtBudget').val())),
+        "Currency": 'INR',
+        "SOBDetails": SOBDetailsArray,
+
+    }
+
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "PRMapping/AllocateSOB",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "POST",
+        data: JSON.stringify(data),
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+            debugger
+            if (data.returnId == 0) {
+
+                $('.alert-danger').show();
+                $('#errorSeq').html(data.message);
+                Metronic.scrollTo($(".alert-danger"), -200);
+                $('.alert-danger').fadeOut(7000);
+
+                form.valid() = false
+
+
+            }
+            else {
+                SOBID = data.returnId
+            }
+
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText;//eval("(" + + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+    })
+
+
+}
+
+let CustID = parseInt(sessionStorage.getItem("CustomerID"));
+
+function GetSOBAllocation() {
+    debugger
+    jQuery.ajax({
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "PRMapping/GetSOBAllocation/?CustomerId=" + CustID + "&SOBId=" + SOBID,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data) {
+            debugger
+
+            $('#PriceType').show()
+            $('#PriceTypeP').show()
+            $('#ddlPriceType').val(data.sobOn).trigger('change');
+            $('#ddlPriceTypeP').val(data.sobOn).trigger('change');
+
+            $('#tblvendors').empty();
+            $('#tblvendorsP').empty();
+
+            if (data.sobDetails.length > 0) {
+                $('#tblvendors').append("<thead><tr><th></th><th>Enquiry issued To</th><th style='width:10%!important;'>Rank</th><th style='width:10%!important;'>Price</th><th style='width:20%!important;'>Allocation</th></tr></thead>");
+                $('#tblvendorsP').append("<thead><tr><th></th><th>Enquiry issued To</th><th style='width:10%!important;'>Rank</th><th style='width:10%!important;'>Price</th><th style='width:20%!important;'>Allocation</th></tr></thead>");
+
+                for (i = 0; i < data.sobDetails.length; i++) {
+                    $('#tblvendors').append("<tr><td class=hide id=TDParticipant" + i + ">" + data.sobDetails[i].hasParticipated + "</td><td class=hide id=TDCID" + i + ">" + data.sobDetails[i].associatedVendorId + "</td><td class=hide id=TDVID" + i + ">" + data.sobDetails[i].vendorId + "</td><td><input type='checkbox' id='checkv" + i + "' style='width:16px !important; height:16px !important' class='form-control' checked/></td><td id=Vendorname" + i + ">" + data.sobDetails[i].vendorName + "</td><td id=TDRank" + i + ">" + data.sobDetails[i].eventRank + "</td><td id=TDPrice" + i + "> " + data.sobDetails[i].price + "</td><td class='TDSOBValue' onkeyup='checkSum()'  id=TDSOBValue" + i + "> <input class='form-control' value=" + data.sobDetails[i].allocation + " /></td></tr>")
+
+                    $('#tblvendorsP').append("<tr><td class=hide id=TDParticipant" + i + ">" + data.sobDetails[i].hasParticipated + "</td><td class=hide id=TDCID" + i + ">" + data.sobDetails[i].associatedVendorId + "</td><td class=hide id=TDVID" + i + ">" + data.sobDetails[i].vendorId + "</td><td></td><td id=Vendorname" + i + ">" + data.sobDetails[i].vendorName + "</td><td id=TDRank" + i + ">" + data.sobDetails[i].eventRank + "</td><td id=TDPrice" + i + "> " + data.sobDetails[i].price + "</td><td class='TDSOBValue' onkeyup='checkSum()'  id=TDSOBValue" + i + "> <input class='form-control' value=" + data.sobDetails[i].allocation + " disabled/></td></tr>")
+
+                }
+                $('#tblvendors').append("</tbody>");
+                $('#tblvendorsP').append("</tbody>");
+            }
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+    });
+
+}
+
+
+
+
+
+
+function addSOBVendor() {
+
+    let i = $('#tblvendors tbody tr').length
+
+    $('#tblvendors tbody').append(`<tr><td class=hide id=TDParticipant${i}>N<td class=hide id=TDCID${i}></td><td class=hide id=TDVID${i}>new vendor${i}</td><td> <input type='checkbox' id='checkv${i}' style='width:16px !important; height:16px !important' class='form-control'/></td><td ><input class='form-control vendorsearch' id='Vendorname${i}'  onkeyup='fnclearcss(${i})'/></td><td id=TDRank${i}>NA</td><td id=TDPrice${i}><input class='form-control' value=${0} /></td><td class='TDSOBValue' onkeyup='checkSum()' id=TDSOBValue${i}> <input class='form-control' /></td> </tr>`);
+
+    fetchVendorAutoComplete(i)
+
+}
+
+
+function checkSum() {
+
+    if ($('#ddlPriceType').val() == "P") {
+        return checkPercentSum()
+    }
+
+    else if ($('#ddlPriceType').val() == "V") {
+        return checkValueSum()
+    }
+    else {
+
+
+
+        $('.alert-danger').show();
+        $('#errorSeq').html('Please select your preffered type for allocation to proceed');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        return false;
+
+
+    }
+
+}
+
+
+
+function checkPercentSum() {
+
+    var sum = 0;
+    $('#tblvendors tbody tr').each(function (j) {
+
+
+        sum += parseFloat($('#TDSOBValue' + j + ' input').val()) || 0;
+    });
+
+    if (sum > 100) {
+        $('#errorSeq').html('Please check sum of value is greater than 100 %');
+        $('.alert-danger').show();
+
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        return false;
+
+    }
+    else {
+        return true
+    }
+}
+
+
+function checkValueSum() {
+
+    var sum = 0;
+    $('#tblvendors tbody tr').each(function (j) {
+
+        sum += parseFloat($('#TDSOBValue' + j + ' input').val()) || 0;
+    });
+
+    if (sum > parseFloat(removeThousandSeperator($('#txtAmountFrom').val()))) {
+        $('#errorSeq').html('Please check sum of value is greater than allocated Amount');
+        $('.alert-danger').show();
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        return false;
+
+    }
+    else {
+        return true
+    }
+}
+
+
+var vendorid = 0;
+let childid = 0
+function fetchVendorAutoComplete(index) {
+
+    var returnitem = '';
+    $('#TDVID' + index).text('0');
+    jQuery(".vendorsearch").typeahead({
+        source: function (query, process) {
+
+            var data = allvendorsforautocomplete;
+            var vName = '';
+            usernames = [];
+            map = {};
+            var username = "";
+            jQuery.each(data, function (i, username) {
+                vName = username.participantName + ' (' + username.companyEmail + ')'
+                map[vName] = username;
+                usernames.push(vName);
+            });
+            process(usernames);
+
+        },
+        minLength: 2,
+        updater: function (item) {
+
+            var status = "true";
+            if (map[item].participantID != "0") {
+                vendorid = map[item].participantID
+                childid = map[item].associatedVendorID
+                var arr = $("#tblvendors>tbody>tr");
+                $.each(arr, function (i, item) {
+
+                    var currIndex = $("#tblvendors >tbody>tr").eq(i);
+
+                    var matchText = currIndex.find("td:eq(2)").text();
+                    $(this).nextAll().each(function (i, inItem) {
+                        if (matchText == vendorid) {
+                            status = 'false';
+                            return false;
+                        }
+                    });
+                });
+
+                if (status == 'false') {
+
+                    $('#TDVID' + index).text('0')
+                    $('#errordivSeq').html('Vendor is already added.');
+                    $('#errordivSeq').show();
+                    Metronic.scrollTo($(".alert-danger"), -200);
+                    $('.alert-danger').fadeOut(7000);
+                    vendorid = 0;
+                }
+                else {
+                    $('#TDVID' + index).text(vendorid)
+                    $('#TDCID' + index).text(childid)
+                    returnitem = item;
+                }
+
+            }
+            else {
+                $('#TDVID' + index).text('0')
+                gritternotification('Please select Vendor!!!');
+
+            }
+
+
+            return returnitem;
+        }
+    });
+}
+
+function fnclearcss(index) {
+    $('#TDVID' + index).css("border", "1px solid #e5e5e5");
+}
+
 
 
 /*

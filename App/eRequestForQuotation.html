@@ -70,9 +70,8 @@
     <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
 
-    <!--for react
+    <!--for react-->
     <script defer="defer" src="assets/build/static/js/main.0285f372.js"></script>
-        -->
 
 
 
@@ -247,6 +246,10 @@
                                                     <span id="spandanger"> </span>
                                                 </div>
                                                 <div class="tab-pane active" id="tab1">
+
+
+
+
                                                     <div class="form-group">
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
@@ -291,6 +294,8 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+
+
                                                         <div class="inputgroup">
                                                             <label class="control-label col-md-2">
                                                                 End Date/Time<span class="required"> *</span>
@@ -612,7 +617,7 @@
                                                             <div class="col-md-offset-9 col-md-5" id="btnrowid">
                                                                 <input type="hidden" id="rowid" />
                                                                 <input type="hidden" id="validattachmentSize" />
-                                                                <button type="button" class="btn btn-success" data-toggle="modal" href="#RFQPullSAPModal" id="RFQPullSAP">Pull Indent</button>
+                                                                <button type="button" class="btn btn-success" data-toggle="modal" href="#RFQPullSAPModal" id="RFQPullSAP">Pull SAP Data</button>
                                                                 <button type="button" class="btn btn-info display-none" data-toggle="modal" href="#RfqParameterexcelBoq" id="boqbtnexcel">Boq Excel Upload</button>
                                                                 <span id="spninfoboq" class="hovertext display-none" data-hover="click Excel button to upload BoQ File">
                                                                     <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
@@ -1138,9 +1143,22 @@
                             <div class="form-group">
                                 <div class="Controlgroup col-md-12">
                                     <label class="col-md-3 control-label" id="lblsbjct">
-                                        Select Indent
+                                        Source
                                     </label>
-                                    <div class="col-md-6 paddingleft7px">
+                                    <div class="col-md-3">
+                                        <div class="radio-list">
+                                            <label class="radio-inline">
+                                                <input type="radio" id="pullPI" name="pullP" value="I" class="form-control" checked> Indent
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" id="pullPR" name="pullP" value="R" class="form-control"> PR
+                                            </label>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-md-3 paddingleft7px">
                                         <input type="hidden" id="hdnRfiRfqID" value='0' />
 
                                         <input type="text" class="form-control" id="txtrfirfqsubject"

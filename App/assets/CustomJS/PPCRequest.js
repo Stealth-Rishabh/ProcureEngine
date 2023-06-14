@@ -1,6 +1,7 @@
 let projectnamestatus = false;
 jQuery(document).ready(function () {
 
+
     $('[data-toggle="popover"]').popover({})
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
@@ -24,8 +25,8 @@ jQuery(document).ready(function () {
 
     jQuery('#MatrixExportToExcel').click(function () {
         downloadNFAMatrixPPC()
+        //  tableToExcel(['tblAllmatrix'], ['NFAMatrixDetails'], 'NFAMatrix.xls')
 
-        //tableToExcel(['tblAllmatrix'], ['NFAMatrixDetails'], 'NFAMatrix.xls')
     });
 
     fetchProjectMaster()
@@ -1060,6 +1061,7 @@ function Savedata() {
     if ($("#txtBudget").val() != '') {
         _budget = removeThousandSeperator($("#txtBudget").val());
     }
+    debugger
     var p_Budget = removeThousandSeperator(_budget);
     var p_category = $("#ddlCategory option:selected").val();
     var p_currency = $("#dropCurrency option:selected").val();
@@ -1130,6 +1132,7 @@ function Bindtab1DataforPreview() {
     $("#lblbudgetamount").text($("#txtBudget").val().toLocaleString(sessionStorage.getItem("culturecode")));
     //abheedev bug 385 end
     $("#lblCurrency").text($("#dropCurrency option:selected").text());
+
     $("#lblCategory").text($("#ddlCategory option:selected").text());
     $("#lblProjectName").text($("#txtProjectName option:selected").text());
     $("#lblbudget").text($("#ddlBudget option:selected").text());
@@ -1585,7 +1588,9 @@ function fetchReguestforQuotationDetails() {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (RFQData) {
+        success: function (Data) {
+
+            let RFQData = Data.rData
 
             $('#tblvendors').empty();
 
@@ -2530,5 +2535,7 @@ function downloadNFAMatrixPPC() {
 /*
  downloadNFAMatrix end
 */
+
+
 
 
