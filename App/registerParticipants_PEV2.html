@@ -22,13 +22,14 @@
     <link href="assets/global/plugins/gritter/css/jquery.gritter.css" rel="stylesheet" type="text/css" />
     <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
           rel="stylesheet" type="text/css" />
-
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
     <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
     <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
     <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
     <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/clockface/css/clockface.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker3.css" />
@@ -48,6 +49,7 @@
 
     <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
     <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/ui-blockui.js"></script>
     <script src="assets/plugins/jquery.cokie.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
     <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
@@ -59,6 +61,9 @@
     <script type="text/javascript" src="assets/plugins/jquery-validation/dist/additional-methods.min.js"></script>
     <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
     <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/global/scripts/datatable.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN PAGE LEVEL STYLES -->
     <script src="assets/global/scripts/metronic.js" type="text/javascript"></script> <!--abheedev bug 353 line added-->
@@ -71,8 +76,8 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" >
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage"/>
+                <a class="navbar-brand" href="index.html">
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
                 </a>
 
             </div>
@@ -150,7 +155,9 @@
                         <li><a href="javascript:;">Register Participants </a></li>
                     </ul>
                     <div class="page-toolbar">
+                        <!--invite vendor-->
                         <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
+                            <button onclick="routeToInviteVendor()" type="button" class="tooltips btn btn-xs btn-success" data-placement="left" data-original-title="Click to Invite Vendors"><i class="fa fa-plus-circle"></i> Invite</button>
                             <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help</a>
                         </div>
                     </div>
@@ -175,255 +182,473 @@
                                     </div>
                                 </div>
                                 <div class="portlet-body form">
+
                                     <!-- BEGIN FORM-->
                                     <form action="#" id="entryForm" class="form-horizontal">
                                         <div id="divalertsucess" class="alert alert-success divalertstyle">
                                             <span id="spansuccess1">Data saved sucessfully. </span>
                                         </div>
-                                        <div id="divalerterr" class="alert alert-danger divalertstyle" >
+                                        <div id="divalerterr" class="alert alert-danger divalertstyle">
                                             <span id="spanerterr">This email address is already registerd with another company. </span>
                                         </div>
                                         <div class="form-body">
                                             <div class="form-group">
                                                 <label class="col-md-3 control-label">
-                                                    Unique Identification No<span class="required">*</span>
+                                                    Unique Identification <span class="required">*</span>
                                                 </label>
                                                 <div class="col-lg-3">
                                                     <select class="form-control input-circle" id="ddlUI" onchange="fnchangeplaceholder()">
-                                                        <option value="ServiceTaxNo">GST No</option>
-                                                        <option value="VendorCode">PE Vendor Code</option>
-
+                                                        <option value="EmailID">Email Id</option>
                                                     </select>
                                                 </div>
                                                 <div class="col-lg-3">
-                                                    <input type="text" class="form-control input-circle" id="txtUI" placeholder="GST No" autocomplete="off"
-                                                           maxlength="15" minlength="15" name="txtUI" onkeyup="replaceQuoutesFromString(this)" />
+                                                    <input type="text" class="form-control input-circle" id="txtUI" placeholder="Email Id" autocomplete="off"
+                                                           name="txtUI" />
                                                 </div>
 
-                                                <div class="col-lg-1 margintop4px" >
+                                                <div class="col-lg-1 margintop4px">
                                                     <button type="button" class="btn btn-sm btn-primary" id="btnvendor" onclick="validatePanNumber(this)">Proceed</button>
                                                 </div>
                                             </div>
-                                            <div class="form-group hide" id="div_tableVendor">
-                                                <div class="col-lg-12">
 
-
-                                                    <div class="table-scrollable">
-                                                        <table class="table table-striped table-bordered table-hover" id="tblVendorFoundDetails"></table>
-
-                                                    </div>
-                                                    <div class="clearfix">&nbsp;</div>
-                                                    <div class="col-md-6 txtalignleft">
-                                                        <button class="btn btn-xs default tooltips " type="button" id="btnAddAnother" data-placement="top" data-original-title="Click here to add another entry if desired details are not covered above" onclick="AddVendor()">
-                                                            Add Another
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
-                                        <div id="divVendorForm" class="hide">
-                                            <div class="form-body">
-                                                <div class="col-md-8">
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            Company Name <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
-                                                            <input type="text" class="form-control" placeholder="Enter Company Name" id="ParticipantName"
-                                                                   data-provide="typeahead" autocomplete="off" name="ParticipantName" onkeyup="replaceQuoutesFromString(this)" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            Contact Person <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
-                                                            <input type="text" class="form-control" placeholder="Enter Contact Person Name" id="ContactName"
-                                                                   data-provide="typeahead" autocomplete="off" name="ContactName" onkeyup="replaceQuoutesFromString(this)" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            Address <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
-                                                            <textarea class="form-control" placeholder="Enter Company Address" id="txtAddress"
-                                                                      name="txtAddress" onkeyup="replaceQuoutesFromString(this)"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            Country <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
-                                                            <select class="form-control" name="ddlCountry" id="ddlCountry" onchange="fetchState()" tabindex="4"></select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            State <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
-                                                            <select class="form-control" name="ddlState" id="ddlState" onchange="fetchCity()" tabindex="4"></select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            City <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
+                                        <div class="portlet-body form acordion_tabs">
+                                            <div class="page-container mt-0 nodisplay">
 
-                                                            <select class="form-control" name="ddlCity" id="ddlCity" tabindex="4"></select>
-                                                        </div>
+                                                <form class="form-horizontal" role="form" id="frmprofilevendornew">
+                                                    <div>
+                                                        <input type="hidden" id="totalcontactpercent" name="totalcontactpercent" />
+                                                        <input type="hidden" id="totalcompanypercent" name="totalcompanypercent" />
+                                                        <input type="hidden" id="totalaccountpercent" name="totalaccountpercent" />
+                                                        <input type="hidden" id="totalbusinesspercent" name="totalbusinesspercent" />
+                                                        <input type="hidden" id="totaltabspercent" name="totaltabspercent" />
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            Zip Code <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
+                                                    <div class="form-body">
 
-                                                            <input type="text" class="form-control" placeholder="Enter Zip Code" id="txtZipCd"
-                                                                   name="txtZipCd" maxlength="10" />
-                                                        </div>
-                                                    </div>
+                                                        <div class="tab-pane hide" id="divVendorForm">
+                                                            <div class="panel-group accordion" id="accordion1">
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading">
+                                                                        <h6 class="panel-title">
+                                                                            <a class="accordion-toggle active total-tab notextdeco headingfont" data-toggle="collapse" data-parent="#accordion1" href="#collapse2">
+                                                                                <span data-i18n="contactdetails"> Contact details </span>
 
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            PAN No. <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
-                                                            <input type="text" class="form-control" placeholder="Enter PAN No." id="txtPanNo"
-                                                                   name="txtPanNo" maxlength="10" />
-                                                        </div>
-                                                    </div>
-                                                    <!--abheedev 24/11/2022-->
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            Mobile No <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-2">
-                                                            <select id="ddlCountryCd" name="ddlCountryCd" class="form-control">
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-md-7 reqcls">
-                                                            <input type="text" class="form-control" placeholder="Enter Mobile No." id="txtMobileNo" name="txtMobileNo" minlength="10" maxlength="10">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            GST No. <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
-                                                            <input type="text" class="form-control" placeholder="Enter GST No." id="txtTINNo"
-                                                                   maxlength="15" name="txtTINNo">
-                                                        </div>
-                                                    </div>
-                                                    <!--abheedev 24/11/2022-->
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            Company Phone <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-2">
-                                                            <select id="ddlCountryCdPhone" name="ddlCountryCdPhone" class="form-control">
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-md-7 reqcls">
-                                                            <input type="text" class="form-control" placeholder="Enter Company Phone No." id="txtPhoneNo"
-                                                                   name="txtPhoneNo" minlength="10" maxlength="10">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            Company Email <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-3">
-                                                            <input type="text" class="form-control" placeholder="Enter Company E-Mail." id="txtcompanyemail"
-                                                                   name="txtcompanyemail">
-                                                        </div>
-                                                        <label class="control-label col-md-2">Alternate Email</label>
+                                                                                <div class="outer_wrap">
+                                                                                    <span class="progress-value" id="contactspan" name="contactspan"></span>
+                                                                                    <div class="cs_chart" id="contact_chart" data-percent=""></div>
+                                                                                </div>
+                                                                            </a>
+                                                                        </h6>
 
-                                                        <div class=" col-md-1 checkbox-list">
-                                                            <label class="checkbox-inline">
-                                                                <input type="checkbox" class="icheck" data-checkbox="icheckbox_minimal-blue" id="chkalternatemail" name="chkalternatemail" />
-                                                            </label>
-                                                        </div>
+                                                                    </div>
+                                                                    <div id="collapse2" class="panel-collapse collapse noheight" seqno="3">
+                                                                        <div class="panel-body">
+                                                                            <div class="row" id="tab1check">
+                                                                                <div id="divVendorContactForm" class="hide">
+                                                                                    <div class="form-body">
+                                                                                        <div class="col-md-12">
 
-                                                        <div class="col-md-3">
-                                                            <input type="text"  placeholder="Enter Alternamte E-Mail." name="txtAlternateeMailID" id="txtAlternateeMailID" class="form-control txtalignleft" disabled />
+                                                                                            <div class="form-group">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    Contact Person <span class="required">*</span>
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <input type="text" class="form-control" placeholder="Enter Contact Person Name" id="ContactName"
+                                                                                                           data-provide="typeahead" autocomplete="off" name="ContactName" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                </div>
+                                                                                            </div>
 
-                                                        </div>
 
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            Preferred Time/Zone<span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-5">
-                                                            <select id="ddlpreferredTime" name="ddlpreferredTime" class="form-control">
-                                                                <option Value="">Select</option>
-                                                            </select>
-                                                        </div>
-                                                        <label class="col-md-2 control-label">
-                                                            IsActive
-                                                        </label>
-                                                        <div class="col-md-1 checkbox-list">
-                                                            <label class="checkbox-inline">
-                                                                <input type="checkbox" id="chkIsActiveparticipant" checked="checked" name="chkIsActiveparticipant" />
-                                                            </label>
-                                                        </div>
 
-                                                    </div>
+                                                                                            <div class="form-group">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    Mobile No <span class="required">*</span>
+                                                                                                </label>
+                                                                                                <div class="col-md-1">
+                                                                                                    <select id="ddlCountryCd" name="ddlCountryCd" class="form-control">
+                                                                                                    </select>
+                                                                                                </div>
+                                                                                                <div class="col-md-3 reqcls">
+                                                                                                    <input type="text" class="form-control" placeholder="Enter Mobile No." id="txtMobileNo" name="txtMobileNo" minlength="10" maxlength="10">
+                                                                                                </div>
+                                                                                            </div>
 
-                                                    <div class="form-group col-md-12 hide" id="lbl_panmsz">
-                                                        <label class="col-md-3 control-label">
-                                                            &nbsp;
-                                                        </label>
-                                                        <label class="control-label"><span class="required">*:</span> &nbsp;<span class="font-red"> This vendor works with mulitple customers on ProcurEngine. For any modfication, please write to: <b>info@agileapt.com.</b></span></label>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4">
-                                                    <div class="portlet box blue-hoki">
-                                                        <div class="portlet-title">
-                                                            <div class="caption">
-                                                                <i class="fa fa-reorder"></i>Tag Items/Services
-                                                            </div>
-                                                            <div class="tools">
-                                                                <a href="javascript:;" class="collapse"></a>
 
-                                                            </div>
-                                                        </div>
-                                                        <div class="portlet-body">
-                                                            <div class="input-icon">
-                                                                <i class="fa fa-search"></i>
-                                                                <input type="text" id="txtSearchCategory" placeholder="Search Place ..." class="form-control  input-circle" />
-                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    User Email <span class="required">*</span>
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <input type="text" class="form-control" placeholder="Enter Your E-Mail." id="txtcompanyemail"
+                                                                                                           name="txtcompanyemail" disabled>
+                                                                                                </div>
 
-                                                            <div class="scroller scroller250"  data-always-visible="0" data-rail-visible1="0">
-                                                                <div class="table-scrollable">
-                                                                    <table class="table table-striped table-bordered table-hover" id="tblCategoryMaster"></table>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label class="control-label col-md-3">Alternate Email</label>
+
+                                                                                                <div class="col-md-4">
+                                                                                                    <input type="text" placeholder="Enter Alternamte E-Mail." name="txtAlternateeMailID" id="txtAlternateeMailID" class="form-control txtalignleft" />
+
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    Preferred Time/Zone<span class="required">*</span>
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <select id="ddlpreferredTime" name="ddlpreferredTime" class="form-control">
+                                                                                                        <option Value="">Select</option>
+                                                                                                    </select>
+                                                                                                </div>
+                                                                                                <label class="col-md-2 control-label">
+                                                                                                    Active
+                                                                                                </label>
+                                                                                                <div class="col-md-1 checkbox-list">
+                                                                                                    <label class="checkbox-inline">
+                                                                                                        <input type="checkbox" id="chkIsActiveparticipant" checked="checked" name="chkIsActiveparticipant" />
+                                                                                                    </label>
+                                                                                                </div>
+
+                                                                                            </div>
+
+
+
+                                                                                            <div class="form-group col-md-12 hide" id="lbl_panmsz">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    &nbsp;
+                                                                                                </label>
+                                                                                                <label class="control-label"><span class="required">*:</span> &nbsp;<span class="font-red"> This vendor works with mulitple customers on ProcurEngine. For any modfication, please write to: <b>info@agileapt.com.</b></span></label>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="clearfix"></div>
+
+                                                                                    </div>
+                                                                                    <input type="hidden" value="0" id="hdnParticipantID" />
+                                                                                    <input type="hidden" value="0" id="hdnParticipantCode" />
+                                                                                    <input type="hidden" value="0" id="hdnFlagType" />
+                                                                                    <div class="clearfix"></div>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
+
+                                                                <div class="panel panel-default">
+                                                                    <div class="panel-heading">
+                                                                        <h6 class="panel-title">
+                                                                            <a class="accordion-toggle collapsed total-tab headingfont" data-toggle="collapse" data-parent="#accordion1" href="#collapse0">
+
+                                                                                <span data-i18n="companydetails">Companies Details</span>
+
+
+                                                                                <div class="outer_wrap">
+                                                                                    <span class="progress-value" id="companyspan" name="companyspan"></span>
+                                                                                    <div class="cs_chart" id="company_chart" data-percent=""></div>
+                                                                                </div>
+                                                                                <i class="fa fa-chevron-down pull-right"></i>
+                                                                            </a>
+
+                                                                        </h6>
+
+
+                                                                    </div>
+                                                                    <div id="collapse0" class="panel-collapse collapse">
+                                                                        <div class="panel-body">
+
+
+                                                                            <div class="form-group hide" id="div_tableVendor">
+
+                                                                                <div class="col-lg-12">
+
+
+                                                                                    <div class="table-scrollable">
+                                                                                        <table class="table table-striped table-bordered table-hover" id="tblVendorFoundDetails"></table>
+
+                                                                                    </div>
+                                                                                    <div class="clearfix">&nbsp;</div>
+                                                                                    <div class="clearfix">&nbsp;</div>
+                                                                                    <div class="col-md-6 txtalignleft">
+                                                                                        <button class="btn btn-xs default tooltips " type="button" id="btnAddAnother" data-placement="top" data-original-title="Click here to add another entry if desired details are not covered above" onclick="AddVendor()">
+                                                                                            Add Another
+                                                                                        </button>
+                                                                                    </div>
+
+
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="row" id="tab1check">
+                                                                                <div id="divVendorCompaniesForm" class="hide">
+                                                                                    <div class="form-group" id="showapproval">
+                                                                                        <label class="col-md-10 control-label">
+
+                                                                                        </label>
+                                                                                        <div class="col-md-2">
+
+                                                                                            <button type="button" class="btn btn-sm btn-primary" id="Userapprovebtn" onclick="">Approve</button>
+                                                                                            <button type="button" class="btn btn-sm btn-danger" id="Userrejectbtn" onclick="">Reject</button>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-body">
+                                                                                        <div class="col-md-8">
+                                                                                            <div class="form-group">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    Country <span class="required">*</span>
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+                                                                                                    <select class="form-control" name="ddlCountry" id="ddlCountry" tabindex="4"></select>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div class="form-group tax-group">
+                                                                                                <label class="col-md-3 control-label" id="taxlabel">
+                                                                                                    Tax Type
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+                                                                                                    <select class="form-control" name="txtTINType" id="txtTINType" tabindex="4">
+                                                                                                    </select>
+
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                            <div class="form-group tax-group nogsthide">
+                                                                                                <label class="col-md-3 control-label" id="taxlabel">
+                                                                                                    Tax Id <span class="required">*</span>
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+                                                                                                    <input type="text" class="form-control" placeholder="Enter Tax No." id="txtTINNo" name="txtTINNo" maxlength="15" autocomplete="off" />
+
+
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                            <div class="form-group pan-group nopanhide">
+                                                                                                <label class="col-md-3 control-label" id="taxlabel">
+                                                                                                    Tax Type 2
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+                                                                                                    <select class="form-control" name="txtTINType2" id="txtTINType2" tabindex="4">
+                                                                                                    </select>
+
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                            <div class="form-group pan-group nopanhide">
+
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    Tax Id 2 <span class="required">*</span>
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+                                                                                                    <input type="text" class="form-control" placeholder="Enter Tax Id 2 No." id="txtPanNo" name="txtPanNo" maxlength="15" />
+
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    Company Name <span class="required">*</span>
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+                                                                                                    <input type="text" class="form-control" placeholder="Enter Company Name" id="ParticipantName"
+                                                                                                           data-provide="typeahead" autocomplete="off" name="ParticipantName" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div class="form-group nogsthide">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    Trade Name
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+                                                                                                    <input type="text" class="form-control" placeholder="Enter Trade Name" id="TradeName"
+                                                                                                           data-provide="typeahead" autocomplete="off" name="TradeName" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div class="form-group newgsthide">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    GSTN Status
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+                                                                                                    <input type="text" class="form-control" id="gstnStatus"
+                                                                                                           autocomplete="off" name="gstnStatus" onkeyup="replaceQuoutesFromString(this)" disabled />
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div class="form-group newgsthide">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    E-Invoice Status
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+                                                                                                    <input type="text" class="form-control" id="eInvoiceStatus"
+                                                                                                           autocomplete="off" name="eInvoiceStatus" onkeyup="replaceQuoutesFromString(this)" disabled />
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div class="form-group newgsthide">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    Taxpayer Type
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+                                                                                                    <input type="text" class="form-control" id="taxpayerType"
+                                                                                                           autocomplete="off" name="taxpayerType" onkeyup="replaceQuoutesFromString(this)" disabled />
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+
+
+                                                                                            <div class="form-group">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    Address <span class="required">*</span>
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+                                                                                                    <textarea class="form-control" placeholder="Enter Company Address" id="txtAddress"
+                                                                                                              name="txtAddress" onkeyup="replaceQuoutesFromString(this)"></textarea>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    State <span class="required">*</span>
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+                                                                                                    <select class="form-control" name="ddlState" id="ddlState" tabindex="4"></select>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    City <span class="required">*</span>
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+
+                                                                                                    <select class="form-control" name="ddlCity" id="ddlCity" tabindex="4"></select>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    PIN Code <span class="required">*</span>
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+
+                                                                                                    <input type="text" class="form-control" placeholder="Enter Zip Code" id="txtZipCd"
+                                                                                                           name="txtZipCd" maxlength="6" />
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+
+                                                                                            <div class="form-group">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    Company Phone <span class="required">*</span>
+                                                                                                </label>
+                                                                                                <div class="col-md-2">
+                                                                                                    <select id="ddlCountryCdPhone" name="ddlCountryCdPhone" class="form-control">
+                                                                                                    </select>
+                                                                                                </div>
+                                                                                                <div class="col-md-4 reqcls">
+                                                                                                    <input type="text" class="form-control" placeholder="Enter Company Phone No." id="txtPhoneNo"
+                                                                                                           name="txtPhoneNo" minlength="10" maxlength="10">
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <!--   <div class="form-group">
+
+                                                                                                   <label class="col-md-3 control-label">
+                                                                                                       Active
+                                                                                                   </label>
+                                                                                                   <div class="col-md-1 checkbox-list">
+                                                                                                       <label class="checkbox-inline">
+                                                                                                           <input type="checkbox" id="chkIsActiveparticipant" checked="checked" name="chkIsActiveparticipant" />
+                                                                                                       </label>
+                                                                                                   </div>
+
+                                                                                               </div>-->
+
+                                                                                            <div class="form-group col-md-12 hide" id="lbl_panmsz">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    &nbsp;
+                                                                                                </label>
+                                                                                                <label class="control-label"><span class="required">*:</span> &nbsp;<span class="font-red"> This vendor works with mulitple customers on ProcurEngine. For any modfication, please write to: <b>info@agileapt.com.</b></span></label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-4">
+                                                                                            <div class="portlet box blue-hoki">
+                                                                                                <div class="portlet-title">
+                                                                                                    <div class="caption">
+                                                                                                        <i class="fa fa-reorder"></i>Tag Items/Services
+                                                                                                    </div>
+                                                                                                    <div class="tools">
+                                                                                                        <a href="javascript:;" class="collapse"></a>
+
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="portlet-body">
+                                                                                                    <div class="input-icon">
+                                                                                                        <i class="fa fa-search"></i>
+                                                                                                        <input type="text" id="txtSearchCategory" placeholder="Search Place ..." class="form-control  input-circle" />
+                                                                                                    </div>
+
+                                                                                                    <div class="scroller scroller250" data-always-visible="0" data-rail-visible1="0">
+                                                                                                        <div class="table-scrollable">
+                                                                                                            <table class="table table-striped table-bordered table-hover" id="tblCategoryMaster"></table>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="clearfix"></div>
+
+                                                                                    </div>
+                                                                                    <input type="hidden" value="0" id="hdnParticipantID" />
+                                                                                    <input type="hidden" value="0" id="hdnParticipantCode" />
+                                                                                    <input type="hidden" value="0" id="hdnFlagType" />
+                                                                                    <input type="hidden" value="" id="hdnChildID" />
+                                                                                    <input type="hidden" value="" id="hdnVendorCode" />
+
+                                                                                    <input type="hidden" value="" id="hdnVendorId" />
+                                                                                    <input type="hidden" value="Add" id="hdnExternalActionTypeFinancer" />
+                                                                                    <input type="hidden" value="Add" id="hdnExternalActionTypeUser" />
+                                                                                    <input type="hidden" value="Add" id="hdnSourceId" />
+                                                                                    <!--country/regionkey-->
+                                                                                    <input type="hidden" value="Add" id="hdnCountryKey" />
+                                                                                    <input type="hidden" value="Add" id="hdnRegionKey" />
+                                                                                    <input type="hidden" value="" id="hdnGRBasedInvoiceLogic" />
+
+                                                                                    <div class="clearfix"></div>
+
+                                                                                </div>
+                                                                                <div class="fluid hide" id="divVendorFormbtn">
+                                                                                    <div class="col-md-offset-5 col-md-6">
+                                                                                        <button type="submit" class="btn yellow" id="btnvendreg">
+                                                                                            Submit
+                                                                                        </button>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+                                                                </div>
+
+
+
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="clearfix"></div>
 
-                                            </div>
-                                            <input type="hidden" value="0" id="hdnParticipantID" />
-                                            <input type="hidden" value="0" id="hdnParticipantCode" />
-                                            <input type="hidden" value="0" id="hdnFlagType" />
-                                            <div class="clearfix"></div>
-                                            <div class="form-actions padding5px" >
-                                                <div class="col-md-offset-3 col-md-6 txtaligncentre">
-                                                    <button type="submit" id="btnsumbit" class="btn yellow reload">
-                                                        Submit
-                                                    </button>
-                                                    <button class="btn blue tooltips display-none" type="button" id="btnExport" data-placement="top" data-original-title="Export to Excel">
-                                                        Export
-                                                    </button>
-                                                </div>
+
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
+
                                         <div class="row" id="displayTable">
                                             <div class="col-md-12">
 
@@ -453,33 +678,54 @@
                                                                     <table class="table table-striped table-bordered table-hover" id="tblParticipantsVender">
                                                                         <thead>
                                                                             <tr>
-                                                                                <th class="width10" >Action</th>
-                                                                                <th class="width10" >Created By</th>
-                                                                                <th class="width10" >Extended</th>
+                                                                                <th class="width10">Action</th>
+                                                                                <th class="width10">Created By</th>
+                                                                                <th class="width10">Extended</th>
+                                                                                <th class="width10">
+                                                                                    Trade Name
+                                                                                </th>
 
-                                                                                <th class="width10" >
+                                                                                <th style="display:none;">
+                                                                                    row <!--datatable-->
+                                                                                </th>
+                                                                                <th class="width10">
                                                                                     Company Name
                                                                                 </th>
-                                                                                <th class="width10" >
+                                                                                <th class="width10">
                                                                                     Contact Person
                                                                                 </th>
-                                                                                <th class="width10" >Address</th>
-                                                                                <th class="width10" >City</th>
-                                                                                <th class="width10" >Pan No</th>
-                                                                                <th class="width10" >GST No</th>
-                                                                                <th class="width10" >Mobile No</th>
-                                                                                <th class="width10" >Phone No</th>
+                                                                                <th class="width10">
+                                                                                    Vendor Code
+                                                                                </th>
+                                                                                <th class="width10">Address</th>
+                                                                                <th class="width10">City</th>
+                                                                                <th class="width10">Pan No</th>
+                                                                                <th class="width10">GST No</th>
+                                                                                <th class="width10">Mobile No</th>
+                                                                                <th class="width10">Phone No</th>
 
-                                                                                <th class="width10" >E-Mail</th>
-                                                                                <th class="width10" >Alternate E-Mail</th>
-                                                                                <th class="width5" >Is Active</th>
+                                                                                <th class="width10">E-Mail</th>
+                                                                                <th class="width10">Alternate E-Mail</th>
+                                                                                <th class="width5">Is Active</th>
 
                                                                             </tr>
                                                                         </thead>
                                                                         <tbody></tbody>
                                                                     </table>
                                                                 </div>
+                                                                <div class="pagination-section" id="MainDivPagination">
+                                                                    <nav aria-label="Page navigation example">
+                                                                        <ul class="pagination" id="paginationId">
+                                                                            <li class="page-item prev" id="page_numbers"><a class="page-link" href="#">Previous</a></li>
+                                                                            <li><ul id="paginationid1" class="pagination" name="paginationid1"></ul></li>
+
+                                                                            <li class="page-item next" id="nextPagination"><a class="page-link" href="#">Next</a></li>
+                                                                        </ul>
+                                                                    </nav>
+                                                                </div>
+
                                                             </div>
+
                                                         </div>
                                                         <div class="tab-pane " id="tab_1">
                                                             <div class="col-md-12">
@@ -489,22 +735,22 @@
                                                                     <table class="table table-striped table-bordered table-hover" id="tblParticipantsparked">
                                                                         <thead>
                                                                             <tr>
-                                                                                <th class="width10" >Action</th>
-                                                                                <th class="width10" >
+                                                                                <th class="width10">Action</th>
+                                                                                <th class="width10">
                                                                                     Company Name
                                                                                 </th>
-                                                                                <th class="width10" >
+                                                                                <th class="width10">
                                                                                     Contact Person
                                                                                 </th>
-                                                                                <th class="width10" >Address</th>
-                                                                                <th class="width5" >City</th>
-                                                                                <th class="width10" >Pan No</th>
-                                                                                <th class="width10" >GST No</th>
-                                                                                <th class="width10" >Mobile No</th>
-                                                                                <th class="width10" >Phone No</th>
+                                                                                <th class="width10">Address</th>
+                                                                                <th class="width5">City</th>
+                                                                                <th class="width10">Pan No</th>
+                                                                                <th class="width10">GST No</th>
+                                                                                <th class="width10">Mobile No</th>
+                                                                                <th class="width10">Phone No</th>
 
-                                                                                <th class="width10" >E-Mail</th>
-                                                                                <th class="width10" >Alternate E-Mail</th>
+                                                                                <th class="width10">E-Mail</th>
+                                                                                <th class="width10">Alternate E-Mail</th>
 
                                                                             </tr>
                                                                         </thead>
@@ -521,7 +767,7 @@
                                         </div>
                                         <br /><br />
                                         <div class="table-scrollabe">
-                                            <a id="dlink"  class="linkstyle1"></a>
+                                            <a id="dlink" class="linkstyle1"></a>
                                             <table class="table table-striped table-bordered table-hover display-none" id="tblParticipantsExport"></table>
                                         </div>
                                     </form>
@@ -590,34 +836,27 @@
 
                             <div class="portlet-body form">
                                 <form action="#" id="ChangePasswordfrm" class="form-horizontal" role="form">
-                                    <div id="divalertSerach" class="alert alert-success" >
-                                        <span id="spansuccess1serach"></span>
-                                    </div>
-                                    <div id="divalerterrsearch" class="alert alert-danger" >
-                                        <span id="spanerterrserach"></span>
-                                    </div>
+
                                     <div class="form-body">
                                         <div class="form-group">
 
                                             <div class="col-lg-4">
                                                 <div class="input-icon">
-                                                    <i class="fa fa-search"></i>
-                                                    <input type="text" class="form-control input-circle" placeholder="Search By Category" autocomplete="off" id="txtsearchcat" name="txtsearchcat" onkeyup="replaceQuoutesFromString(this)"/>
-
+                                                    <select class="form-control input-circle" name="txtsearchcat" id="txtsearchcat" tabindex="4" multiple></select>
                                                 </div>
                                             </div>
 
                                             <div class="col-lg-4">
                                                 <div class="input-icon">
-                                                    <i class="fa fa-search"></i>
-                                                    <input type="text" class="form-control input-circle" placeholder="Search By Vendor" autocomplete="off" id="txtsearchvendor" name="txtsearchvendor" onkeyup="replaceQuoutesFromString(this)"/>
-
+                                                    <select class="form-control input-circle" data-placeholder="Search Vendor Name" name="txtsearchvendor" id="txtsearchvendor" tabindex="4">
+                                                        <option></option>
+                                                    </select>
                                                 </div>
                                             </div>
 
 
-                                            <div class="col-lg-1 col-lg-offset-2 margintop4px" >
-                                                <button type="button" class="btn btn-sm btn-primary" id="btnvendor" onclick="fnfetchCatVendors()">Go</button>
+                                            <div class="col-lg-1 col-lg-offset-2 margintop4px">
+                                                <button type="button" class="btn btn-sm btn-primary" id="btnvendor" onclick="fetchAdvanceSearch()">Go</button>
                                             </div>
                                         </div>
 
@@ -630,7 +869,7 @@
                                                     <i class="fa fa-search"></i>
                                                     <input type="text" id="txtSearchalldetails" placeholder="Search ..." class="form-control  input-circle" />
                                                 </div>
-                                                <div class="scroller scroller400"  data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                                                <div class="scroller scroller400" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
                                                     <div class="table-scrollable">
                                                         <table class="table table-striped table-bordered table-hover" id="tbldetails"></table>
                                                     </div>
@@ -697,7 +936,7 @@
                 </div>
             </div>
             <div id="viewalldetails" class="modal fade bs-modal-lg" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
+                <div class="modal-dialog modal-xxl">
                     <div class="col-md-12">
                         <div class="portlet box blue-hoki" id="form_wizard_1">
                             <div class="portlet-title">
@@ -706,7 +945,7 @@
                                 </div>
                                 <div class="tools">
                                     <label class="control-label bold txtalignleft">
-                                        VendorCode :&nbsp;<span id=spnvendorcode></span>
+                                        Vendor ID :&nbsp;<span id=spnvendorcode></span>
 
                                     </label>
                                     &nbsp; <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -716,480 +955,779 @@
                             <div class="portlet-body form">
                                 <form action="#" class="form-horizontal" id="submit_form" method="POST">
                                     <div class="form-body">
-                                        <div class="alert alert-danger display-hide" id="errordiv">
-                                            <button class="close" data-close="alert"></button>
-                                            <span id="errormsg"></span>
-                                        </div>
 
-                                        <div class="alert alert-success display-hide" id="successdiv">
-                                            <button class="close" data-close="alert"></button>
-                                            <span id="successmsg"></span>
-
-                                        </div>
                                         <div class="tab-pane" id="tab1">
-                                            <div class="panel-group accordion" id="accordion1">
+                                            <div class="panel-group accordion" id="accordionmodal1">
+
+
                                                 <div class="panel panel-default">
                                                     <div class="panel-heading">
                                                         <h4 class="panel-title">
-                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#collapse2">Contact details</a>
+                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordionmodal1" href="#collapsem1">Contact Details</a>
                                                         </h4>
                                                     </div>
-                                                    <div id="collapse2" class="panel-collapse collapse noheight" seqno="3" >
+                                                    <div id="collapsem1" class="panel-collapse collapse noheight" seqno="5">
                                                         <div class="panel-body">
-                                                            <div class="row">
-                                                                <div class="col-lg-12">
+                                                            <div class="row" id="tab1check">
+                                                                <div class="col-md-12">
                                                                     <div class="row">
                                                                         <div class="col-md-6">
-                                                                            <h4 class="text-capitalize text-center headstyle1">Primary Contact Detail</h4>
+                                                                            <h4 class="text-capitalize text-center headstyle1" data-i18n="primarycontactdetail">Primary Contact Detail</h4>
                                                                             <div class="form-group">
-                                                                                <div class="col-lg-12">
-                                                                                    <label class="col-md-4 control-label txtalignleft" >
-                                                                                        Name :
+                                                                                <div class="col-md-12">
+                                                                                    <label class="col-md-3 control-label txtalignleft" data-i18n="name">
+                                                                                        Name
                                                                                     </label>
-                                                                                    <div class="col-md-8">
-                                                                                        <label class="control-label txtalignleft" id="primaryname" name="primaryname">
-                                                                                        </label>
+                                                                                    <div class="col-md-9 xyz">
+                                                                                        <label type="text" class="control-label txtalignleft"
+                                                                                               id="personname" name="personname" autocomplete="off" tabindex="1" />
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
 
                                                                             <div class="form-group">
-                                                                                <div class="col-lg-12">
-                                                                                    <label class="col-md-4 control-label txtalignleft">
-                                                                                        Mobile No :
+                                                                                <div class="col-md-12 ">
+                                                                                    <label class="col-md-3 control-label txtalignleft" data-i18n="mobileno">
+                                                                                        Mobile No
                                                                                     </label>
-                                                                                    <div class="col-md-8">
-                                                                                        <label class="control-label txtalignleft" id="primarymobile" name="primarymobile">
-                                                                                        </label>
+                                                                                    <div class="col-md-2 xyz">
+                                                                                        <label id="ddlCountryCdm" name="ddlCountryCdm" class="control-label"></label>
+                                                                                    </div>
+                                                                                    <div class="col-md-7 xyz">
+                                                                                        <label type="text" class="control-label"
+                                                                                               id="vendormobileno" name="vendormobileno" tabindex="1"></label>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
 
                                                                             <div class="form-group">
-                                                                                <div class="col-lg-12">
-                                                                                    <label class="col-md-4 control-label txtalignleft">
-                                                                                        Email ID :
+                                                                                <div class="col-md-12">
+                                                                                    <label class="col-md-3 control-label txtalignleft" data-i18n="emailid">
+                                                                                        Email ID
                                                                                     </label>
-                                                                                    <div class="col-md-8">
-                                                                                        <label class="control-label txtalignleft"  id="primaryemail" name="primaryemail">
-                                                                                        </label>
+                                                                                    <div class="col-md-9 ">
+
+                                                                                        <label class="control-label" id="vendorEmailID" name="vendorEmailID" tabindex="1"></label>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
+
                                                                         </div>
                                                                         <div class="col-md-6">
-                                                                            <h4 class="text-capitalize text-center headstyle1">Alternate Contact Detail</h4>
+                                                                            <h4 class="text-capitalize text-center headstyle1" data-i18n="alternatecontactdetail">Alternate Contact Detail</h4>
                                                                             <div class="form-group">
-                                                                                <div class="col-lg-12">
-                                                                                    <label class="col-md-4 control-label txtalignleft" >
-                                                                                        Name :
-                                                                                    </label>
-                                                                                    <div class="col-md-8">
-                                                                                        <label class="control-label txtalignleft"  id="altname" name="altname">
-                                                                                        </label>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="form-group">
-                                                                                <div class="col-lg-12">
-                                                                                    <label class="col-md-4 control-label txtalignleft" >
-                                                                                        Mobile No :
-                                                                                    </label>
-                                                                                    <div class="col-md-8">
-                                                                                        <label class="control-label txtalignleft" id="altmobile" name="altmobile">
-                                                                                        </label>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="form-group">
-                                                                                <div class="col-lg-12">
-                                                                                    <label class="col-md-3 control-label txtalignleft">
-                                                                                        Email ID :
+                                                                                <div class="col-md-12">
+                                                                                    <label class="col-md-3 control-label txtalignleft" data-i18n="name">
+                                                                                        Name
                                                                                     </label>
                                                                                     <div class="col-md-9">
-                                                                                        <label class="control-label txtalignleft" id="altemail" name="altemail">
-                                                                                        </label>
+                                                                                        <label class="control-label"
+                                                                                               id="personnamealt" name="personnamealt" tabindex="1" />
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
 
-                                                <div class="panel panel-default">
-                                                    <div class="panel-heading">
-                                                        <h4 class="panel-title">
-                                                            <a class="accordion-toggle collapsed" id="companydetails" data-toggle="collapse" data-parent="#accordion1" href="#collapse0">Company Details </a>
-                                                        </h4>
-                                                    </div>
-                                                    <div id="collapse0" class="panel-collapse collapse">
-                                                        <div class="panel-body">
-                                                            <div class="row">
-                                                                <div class="form-group">
-                                                                    <div class="col-lg-12">
-                                                                        <label class="col-md-4 control-label txtalignleft">
-                                                                            Nature of Establishment :
-                                                                        </label>
-                                                                        <div class="col-md-3">
-                                                                            <label class=" control-label txtalignleft"  id="natureofest" name="natureofest"> </label>
-                                                                        </div>
-                                                                        <label class="col-md-3 control-label txtalignleft">
-                                                                            Vendor Type :
-                                                                        </label>
-                                                                        <div class="col-md-2">
-                                                                            <label class="control-label txtalignleft" id="vendortype" name="vendortype"></label>
-                                                                        </div>
+                                                                            <div class="form-group">
+                                                                                <div class="col-md-12">
+                                                                                    <label class="col-md-3 control-label txtalignleft" data-i18n="mobileno">
+                                                                                        Mobile No
+                                                                                    </label>
+                                                                                    <div class="col-md-2">
 
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <div class="col-lg-12">
-                                                                        <label class="col-md-4 control-label txtalignleft">
-                                                                            Tag Items/Services :
-                                                                        </label>
-                                                                        <div class="col-md-8">
-                                                                            <label class="control-label txtalignleft"  id="ddlTypeofproduct" name="ddlTypeofproduct">
-                                                                            </label>
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <div class="col-lg-12">
-                                                                        <label class="col-md-4 control-label txtalignleft">
-                                                                            Product :
-                                                                        </label>
-                                                                        <div class="col-md-8">
-                                                                            <label class="control-label txtalignleft" id="product"  name="product">
-                                                                            </label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <div class="col-lg-12">
-                                                                        <label class="col-md-4 control-label txtalignleft">
-                                                                            Company Name :
-                                                                        </label>
-                                                                        <div class="col-md-3">
-                                                                            <label class="control-label txtalignleft" id="companyname"  name="companyname"> </label>
-                                                                        </div>
-                                                                        <label class="col-md-2 control-label txtalignleft" >
-                                                                            Address :
-                                                                        </label>
-                                                                        <div class="col-md-3">
-                                                                            <label class="control-label labelstyle11" id="address"  name="address"></label>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <div class="col-lg-12">
-
-                                                                        <label class="col-md-4 control-label txtalignleft">
-                                                                            Country :
-                                                                        </label>
-
-                                                                        <div class="col-md-3">
-                                                                            <label class="control-label txtalignleft" id="country" name="country" >
-                                                                            </label>
-                                                                        </div>
-
-
-
-                                                                        <label class="col-md-2 control-label txtalignleft">
-                                                                            State :
-                                                                        </label>
-                                                                        <div class="col-md-3">
-                                                                            <label class="control-label txtalignleft" id="state" name="state">
-                                                                            </label>
-
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <div class="col-lg-12">
-                                                                        <label class="col-md-4 control-label txtalignleft">
-                                                                            City :
-                                                                        </label>
-                                                                        <div class="col-md-3">
-                                                                            <label class="control-label txtalignleft" id="city" name="city">
-                                                                            </label>
-                                                                        </div>
-
-
-                                                                        <label class="col-md-2 control-label txtalignleft">
-                                                                            PIN Code :
-                                                                        </label>
-                                                                        <div class="col-md-3">
-                                                                            <label class="control-label txtalignleft" id="pincode" name="pincode">
-                                                                            </label>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="panel panel-default">
-                                                    <div class="panel-heading">
-                                                        <h4 class="panel-title">
-                                                            <a class="accordion-toggle collapsed" id="accounting" data-toggle="collapse" data-parent="#accordion1" href="#collapse1">Accounting Details</a>
-                                                        </h4>
-                                                    </div>
-                                                    <div id="collapse1" class="panel-collapse collapse noheight" seqno="2" >
-                                                        <div class="panel-body">
-                                                            <div class="row">
-                                                                <div class="form-group">
-                                                                    <div class="col-lg-12">
-                                                                        <label class="col-md-4 control-label txtalignleft">
-                                                                            GST Vendor Class :
-                                                                        </label>
-                                                                        <div class="col-md-2">
-                                                                            <label class="control-label txtalignleft" id="gstvendorclass" name="gstvendorclass"> </label>
-                                                                        </div>
-
-
-                                                                        <label class="col-md-3 control-label txtalignleft" >
-                                                                            GST No :
-                                                                        </label>
-                                                                        <div class="col-md-3">
-                                                                            <label class="control-label" id="gstno" name="gstno"></label>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <div class="col-lg-12">
-                                                                        <label class="col-md-4 control-label txtalignleft">
-                                                                            Attached GST REG 06GST certificate :
-                                                                        </label>
-                                                                        <div class="col-md-2">
-                                                                            <span class="help-block">
-                                                                                <a href="javascript:;" onclick="DownloadFile(this)" id="gstattach" class="txtleftnone" >
-                                                                                </a>
-                                                                            </span>
-                                                                        </div>
-
-
-                                                                        <label class="col-md-3 control-label txtalignleft" >
-                                                                            Attached Cancelled Check :
-                                                                        </label>
-                                                                        <div class="col-md-3">
-                                                                            <span class="help-block"><a href="javascript:;" onclick="DownloadFile(this)" id="checkattach" class="txtleftnone" ></a></span>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <div class="col-lg-12">
-                                                                        <label class="col-md-4 control-label txtalignleft">
-                                                                            PAN :
-                                                                        </label>
-                                                                        <div class="col-md-2">
-                                                                            <label class="control-label" id="panno" name="panno">
-                                                                            </label>
-                                                                        </div>
-
-
-                                                                        <label class="col-md-3 control-label txtalignleft">
-                                                                            Attached PAN :
-                                                                        </label>
-                                                                        <div class="col-md-3">
-                                                                            <span class="help-block"><a href="javascript:;" onclick="DownloadFile(this)" id="panattach"  class="txtleftnone" ></a></span>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <div class="col-lg-12">
-                                                                        <label class="col-md-4 control-label txtalignleft">
-                                                                            Type of TDS :
-                                                                        </label>
-                                                                        <div class="col-md-2">
-                                                                            <label class="control-label" id="TDStype" name="TDStype">
-                                                                            </label>
-                                                                        </div>
-
-
-                                                                        <label class="col-md-3 control-label txtalignleft" >
-                                                                            TAN No :
-                                                                        </label>
-                                                                        <div class="col-md-3">
-                                                                            <label class="control-label" id="tanno" name="tanno">
-                                                                            </label>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <div class="col-lg-12">
-                                                                        <label class="col-md-4 control-label txtalignleft" >
-                                                                            Payment Terms :
-                                                                        </label>
-                                                                        <div class="col-md-2">
-                                                                            <label class="control-label" id="paymentterms" name="paymentterms">
-                                                                            </label>
-                                                                        </div>
-                                                                        <label class="col-md-3 control-label txtalignleft">
-                                                                            Name of Bank :
-                                                                        </label>
-                                                                        <div class="col-md-3">
-                                                                            <label class="control-label" id="bankname" name="bankname">
-                                                                            </label>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <div class="col-lg-12">
-                                                                        <label class="col-md-4 control-label txtalignleft">
-                                                                            Bank A/c No :
-                                                                        </label>
-                                                                        <div class="col-md-2">
-                                                                            <label class="control-label" id="bankaccountno" name="bankaccountno">
-                                                                            </label>
-                                                                        </div>
-
-
-                                                                        <label class="col-md-3 control-label txtalignleft">
-                                                                            IFSC Code :
-                                                                        </label>
-                                                                        <div class="col-md-3">
-                                                                            <label class="control-label" id="ifsccode" name="ifsccode">
-                                                                            </label>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <div class="col-lg-12">
-                                                                        <label class="col-md-4 control-label txtalignleft">
-                                                                            Account Holder Name :
-                                                                        </label>
-                                                                        <div class="col-md-8">
-                                                                            <label class="control-label" id="accountholdername" name="accountholdername">
-                                                                            </label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="panel panel-default">
-                                                    <div class="panel-heading">
-                                                        <h4 class="panel-title">
-                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#collapse3">Business Detail</a>
-                                                        </h4>
-                                                    </div>
-                                                    <div id="collapse3" class="panel-collapse collapse noheight" seqno="4" >
-                                                        <div class="panel-body">
-                                                            <div class="row">
-                                                                <div class="form-group">
-                                                                    <div class="col-lg-12">
-
-                                                                        <label class="col-md-3 control-label txtalignleft" >
-                                                                            MSME :
-                                                                        </label>
-                                                                        <div class="col-md-3">
-                                                                            <label class="control-label" id="msme" name="msme">
-                                                                            </label>
-                                                                        </div>
-
-
-                                                                        <div class="hideInput hide">
-                                                                            <label class="col-md-3 control-label txtalignleft">
-                                                                                MSME Class :
-                                                                            </label>
-                                                                            <div class="col-md-3">
-                                                                                <label class="control-label" id="msmeclass" name="msmeclass">
-                                                                                </label>
+                                                                                        <label id="ddlCountryAltCd" name="ddlCountryAltCd" class="control-label"></label>
+                                                                                    </div>
+                                                                                    <div class="col-md-7">
+                                                                                        <label class="control-label"
+                                                                                               id="vendoraltmobileno" name="vendoraltmobileno" tabindex="1"></label>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
 
-                                                                <div class="form-group hideInput hide">
-                                                                    <div class="col-lg-12">
-                                                                        <label class="col-md-3 control-label txtalignleft" >
-                                                                            MSME Udyam No. :
-                                                                        </label>
-                                                                        <div class="col-md-3">
-                                                                            <label class="control-label" id="msmeno" name="msmeno">
-                                                                            </label>
-                                                                        </div>
+                                                                            <div class="form-group">
+                                                                                <div class="col-md-12">
+                                                                                    <label class="col-md-3 control-label txtalignleft" data-i18n="emailid">
+                                                                                        Email ID
+                                                                                    </label>
+                                                                                    <div class="col-md-9">
+                                                                                        <label class="control-label"
+                                                                                               id="vendorAltEmailID" name="vendorAltEmailID"></label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-12">
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label col-md-3 txtalignleft" data-i18n="preferredzone">Preferred Zone:</label>
+                                                                                    <div class="col-md-9">
+                                                                                        <select id="ddlpreferredTimem" name="ddlpreferredTimem" class="form-control" disabled>
+                                                                                            <option Value="">Select</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
 
-
-                                                                        <label class="col-md-3 control-label txtalignleft" >
-                                                                            Attached MSME Udyam certificate :
-                                                                        </label>
-                                                                        <div class="col-md-3">
-                                                                            <span class="help-block"><a href="javascript:;" onclick="DownloadFile(this)" id="msmeattach" class="txtleftnone"></a></span>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-
-                                                                <div class="form-group">
-                                                                    <div class="col-lg-12">
-                                                                        <label class="col-md-3 control-label txtalignleft" >
-                                                                            Last FY Turn Over :
-                                                                        </label>
-                                                                        <div class="col-md-3">
-                                                                            <label class="control-label" id="lastFY" name="lastFY">
-                                                                            </label>
-                                                                        </div>
-
-
-                                                                        <label class="col-md-3 control-label txtalignleft">
-                                                                            Last FY Turn Over Year :
-                                                                        </label>
-                                                                        <div class="col-md-3">
-                                                                            <label class="control-label" id="txtLastFiscalyear" name="txtLastFiscalyear">
-                                                                            </label>
                                                                         </div>
 
                                                                     </div>
                                                                 </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
-                                                                <div class="form-group">
-                                                                    <div class="col-lg-12">
-                                                                        <label class="col-md-3 control-label txtalignleft" >
-                                                                            2nd Last FY Turn Over :
-                                                                        </label>
-                                                                        <div class="col-md-3">
-                                                                            <label class="control-label" id="seclastFY" name="seclastFY">
-                                                                            </label>
+                                                <div class="panel panel-default">
+                                                    <div class="panel-heading">
+                                                        <h4 class="panel-title">
+                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordionmodal1" href="#collapsem2">Companies Details</a>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="collapsem2" class="panel-collapse collapse noheight" seqno="6">
+                                                        <div class="panel-body">
+                                                            <div class="panel-group accordion" id="accordion2">
+
+                                                                <div class="table-scrollable">
+                                                                    <table class="table table-striped table-bordered table-hover" id="tblCompaniesFoundDetails"></table>
+
+                                                                </div>
+                                                                <div class="clearfix"></div>
+                                                                <!--child form details-->
+                                                                <div id="childDetailsForm" class="hide">
+                                                                    <div class="panel panel-default">
+                                                                        <div class="panel-heading">
+                                                                            <h4 class="panel-title">
+                                                                                <a class="accordion-toggle active total-tab headingfont" data-toggle="collapse" data-parent="#accordion2" href="#collapse4">
+                                                                                    <span data-i18n="companydetails">Company Details</span>
+                                                                                    <div class="outer_wrap">
+                                                                                        <span class="progress-value" id="companyspan" name="companyspan"></span>
+                                                                                        <div class="cs_chart" id="company_chart" data-percent=""></div>
+                                                                                    </div>
+                                                                                </a>
+                                                                            </h4>
                                                                         </div>
-                                                                        <label class="col-md-3 control-label txtalignleft">
-                                                                            2nd Last FY TurnOver Year :
-                                                                        </label>
-                                                                        <div class="col-md-3">
-                                                                            <label class="control-label" id="SecondLastTurnoverYear" name="SecondLastTurnoverYear">
-                                                                            </label>
+                                                                        <div id="collapse4" class="panel-collapse active">
+                                                                            <div class="panel-body">
+
+                                                                                <div class="row">
+
+                                                                                    <div class="form-group col-md-12" id="showapprovalM">
+                                                                                        <label class="col-md-10 control-label">
+
+                                                                                        </label>
+                                                                                        <div class="col-md-2">
+
+                                                                                            <button type="button" class="btn btn-sm btn-primary" id="UserapprovebtnM" onclick="">Approve</button>
+                                                                                            <button type="button" class="btn btn-sm btn-danger" id="UserrejectbtnM" onclick="">Reject</button>
+
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="form-group">
+                                                                                        <div class="col-md-12">
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="country">
+                                                                                                Country
+                                                                                            </label>
+                                                                                            <div class="col-md-4 labelcontrol">
+                                                                                                <div class="text-left" name="ddlCountrym" id="ddlCountrym" tabindex="4"></div>
+                                                                                            </div>
+
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <div class="col-md-12">
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="country">
+                                                                                                Tax Type:
+                                                                                            </label>
+                                                                                            <div class="col-md-4 labelcontrol">
+                                                                                                <div class="text-left" name="txtTINTypemodal" id="txtTINTypemodal" tabindex="4"></div>
+                                                                                            </div>
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="country">
+                                                                                                Tax Type 2:
+                                                                                            </label>
+                                                                                            <div class="col-md-4 labelcontrol">
+                                                                                                <div class="text-left" name="txtTINTypemodal2" id="txtTINTypemodal2" tabindex="4"></div>
+                                                                                            </div>
+
+
+                                                                                        </div>
+                                                                                    </div>
+
+
+
+
+
+                                                                                    <div class="form-group">
+                                                                                        <div class="col-md-12">
+                                                                                            <span class="tax-group">
+                                                                                                <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                    GST No.
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <label type="text" class="control-label" id="txtTINNom" name="txtTINNom"></label>
+                                                                                                </div>
+                                                                                            </span>
+
+
+
+                                                                                            <label class="control-label col-md-2 txtalignleft">
+                                                                                                Attach TAX
+                                                                                            </label>
+                                                                                            <div class="col-md-4">
+
+                                                                                                <div class="inputgroup">
+                                                                                                    <div class="att_input">
+
+                                                                                                        <span class="help-block uploadedfile">
+
+                                                                                                            <a href="javascript:;" id="gstattach" onclick="DownloadFile(this)" class="txtleftnone"></a>
+                                                                                                        </span>
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                            </div>
+
+
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="form-group" id="pangroup">
+                                                                                        <div class="col-md-12">
+                                                                                            <span class="pan-group">
+                                                                                                <label class="col-md-2 control-label txtalignleft">
+                                                                                                    PAN No.
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+
+                                                                                                    <label type="text" class="control-label" id="vendorpanno" name="vendorpanno"></label>
+
+                                                                                                </div>
+
+                                                                                            </span>
+                                                                                            <label class="col-md-2 control-label txtalignleft">
+                                                                                                Attach PAN
+                                                                                            </label>
+                                                                                            <div class="col-md-4">
+                                                                                                <div class="inputgroup">
+                                                                                                    <div class="att_input">
+
+                                                                                                        <span class="help-block uploadedfile"> <a href="javascript:;" id="panattach" onclick="DownloadFile(this)" class="txtleftnone"></a></span>
+                                                                                                    </div>
+                                                                                                </div>
+
+
+                                                                                            </div>
+
+
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="form-group">
+                                                                                        <div class="col-md-12">
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="companyname">
+                                                                                                Company Name
+                                                                                            </label>
+                                                                                            <div class="col-md-4">
+
+                                                                                                <label class="control-label txtalignleft" id="vendorname" name="vendorname"></label>
+
+                                                                                            </div>
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="natureofestablishment">
+                                                                                                Nature of Establishment
+                                                                                            </label>
+                                                                                            <div class="col-md-4 ">
+                                                                                                <label class="control-label" id="ddlNatureEstaiblishment" name="ddlNatureEstaiblishment"></label>
+
+
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="form-group">
+                                                                                        <div class="col-md-12">
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="companyname">
+
+                                                                                                Trade Name
+                                                                                            </label>
+                                                                                            <div class="col-md-4">
+
+                                                                                                <label class="control-label txtalignleft" id="tradenamem" name="tradenamem"></label>
+
+                                                                                            </div>
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="natureofestablishment">
+                                                                                                GSTN Status
+                                                                                            </label>
+                                                                                            <div class="col-md-4 ">
+                                                                                                <label class="control-labe" id="gstnstatusm" name="gstnstatusm"></label>
+
+
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="form-group">
+                                                                                        <div class="col-md-12">
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="einvoicestatusm">
+                                                                                                E-invoice Status
+                                                                                            </label>
+                                                                                            <div class="col-md-4">
+
+                                                                                                <label class="control-label txtalignleft" id="einvoicestatusm" name="einvoicestatusm"></label>
+
+                                                                                            </div>
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="taxpayertypem">
+                                                                                                Taxpayer Type
+                                                                                            </label>
+                                                                                            <div class="col-md-4 ">
+                                                                                                <label class="control-labe" id="taxpayertypem" name="taxpayertypem"></label>
+
+
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="form-group">
+                                                                                        <div class="col-md-12">
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="address">
+                                                                                                Address
+                                                                                            </label>
+                                                                                            <div class="col-md-4">
+                                                                                                <label class="control-label txtalignleft" id="vendoraddress" name="vendoraddress" />
+                                                                                            </div>
+
+                                                                                            <label class="col-md-2 control-label txtalignleft">
+                                                                                                PIN Code
+                                                                                            </label>
+                                                                                            <div class="col-md-4">
+                                                                                                <label class="control-label numberonly" id="pincode" name="pincode"></label>
+
+                                                                                            </div>
+
+
+
+                                                                                        </div>
+                                                                                    </div>
+
+
+                                                                                    <div class="form-group">
+                                                                                        <div class="col-md-12">
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                State
+                                                                                            </label>
+                                                                                            <div class="col-md-4">
+                                                                                                <label class="control-label" name="ddlStatem" id="ddlStatem"></label>
+                                                                                            </div>
+                                                                                            <label class="col-md-2 control-label txtalignleft">
+                                                                                                City
+                                                                                            </label>
+                                                                                            <div class="col-md-4">
+                                                                                                <label class="control-label" name="ddlCitym" id="ddlCitym"></label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="form-group">
+                                                                                        <div class="col-md-12">
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="suppliertype">
+                                                                                                Supplier Type
+                                                                                            </label>
+                                                                                            <div class="col-md-4">
+                                                                                                <label class="control-label" name="ddlVendorType" id="ddlVendorType"></label>
+                                                                                            </div>
+                                                                                            <div class="inputgroup">
+                                                                                                <label class="col-md-2 control-label txtalignleft">
+                                                                                                    MSME
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <label class="control-label" name="ddlMSME" id="ddlMSME"></label>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <div class="col-md-12">
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="suppliertype">
+                                                                                                Language
+                                                                                            </label>
+                                                                                            <div class="col-md-4">
+                                                                                                <label class="control-label" name="ddllanguagemodal" id="ddllanguagemodal"></label>
+                                                                                            </div>
+                                                                                            <div class="inputgroup">
+                                                                                                <label class="col-md-2 control-label txtalignleft">
+                                                                                                    Currency
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <label class="control-label" name="ddlcurrencymodal" id="ddlcurrencymodal"></label>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+
+                                                                            </div>
+
                                                                         </div>
 
-                                                                        <input type="hidden" id="hdnvendorCode" name="hdnvendorCode" />
+                                                                        <div class="panel panel-default" id="bankaccordion">
+                                                                            <div class="panel-heading">
+                                                                                <h4 class="panel-title">
+                                                                                    <a class="accordion-toggle  total-tab headingfont" data-toggle="collapse" data-parent="#accordion2" href="#collapse1">
+                                                                                        Bank Details
+                                                                                        <div class="outer_wrap">
+                                                                                            <span class="progress-value" id="accountspan" name="accountspan"></span>
+                                                                                            <div class="cs_chart" id="account_chart" data-percent=""></div>
+                                                                                        </div>
+                                                                                    </a>
+                                                                                </h4>
+
+                                                                            </div>
+                                                                            <div id="collapse1" class="panel-collapse collapse" seqno="2">
+                                                                                <div class="panel-body">
+
+                                                                                    <div>
+                                                                                        <table class="table table-striped table-bordered table-hover" id="tblGetBankDetail"></table>
+
+                                                                                    </div>
+                                                                                    <div class="row" id="bankForm">
+
+                                                                                        <div class="form-group hide">
+                                                                                            <div class="col-md-12">
+                                                                                                <label class="col-md-2 control-label txtalignleft">
+                                                                                                    Bank Country key
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <label class="control-label" name="bankCountryKey" id="bankCountryKey"></label>
+
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                        </div>
+
+
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-md-12">
+                                                                                                <label class="col-md-2 control-label txtalignleft">
+                                                                                                    IFSC Code
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+                                                                                                    <label class="control-label" name="ifsccode" id="ifsccode"></label>
+
+                                                                                                </div>
+                                                                                                <label class="col-md-2 control-label txtalignleft">
+                                                                                                    Name of Bank
+                                                                                                </label>
+                                                                                                <div class="col-md-4 ">
+                                                                                                    <label class="control-label" name="bankname" id="bankname"></label>
+
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+
+
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-md-12">
+                                                                                                <label class="col-md-2 control-label txtalignleft">
+                                                                                                    Bank A/c No
+                                                                                                </label>
+                                                                                                <div class="col-md-4 ">
+                                                                                                    <label class="control-label" name="bankaccount" id="bankaccount"></label>
+
+                                                                                                </div>
+
+                                                                                                <label class="col-md-2 control-label txtalignleft">
+                                                                                                    Account Holder Name
+                                                                                                </label>
+                                                                                                <div class="col-md-4 ">
+                                                                                                    <label class="control-label" name="accountholder" id="accountholder"></label>
+
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-md-12">
+                                                                                                <label class="col-md-2 control-label txtalignleft">
+                                                                                                    Attach Cancelled Cheque
+                                                                                                </label>
+                                                                                                <div class="col-md-4">
+
+                                                                                                    <div class="inputgroup">
+                                                                                                        <div class="att_input">
+
+
+
+                                                                                                            <span class="help-block uploadedfile"><a href="javascript:;" onclick="DownloadFile(this)" id="checkattach" class="txtleftnone"></a></span>
+                                                                                                        </div>
+                                                                                                    </div>
+
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="panel panel-default" id="financeaccordion">
+                                                                                <div class="panel-heading">
+                                                                                    <h4 class="panel-title">
+                                                                                        <a class="accordion-toggle total-tab collapsed headingfont" data-toggle="collapse" data-parent="#accordion2" href="#collapse3">
+                                                                                            Financial Detail
+                                                                                            <div class="outer_wrap">
+                                                                                                <span class="progress-value" id="businessspan" name="businessspan"></span>
+                                                                                                <div class="cs_chart" id="business_chart" data-percent=""></div>
+                                                                                            </div>
+                                                                                        </a>
+                                                                                    </h4>
+                                                                                </div>
+                                                                                <div id="collapse3" class="panel-collapse collapse" seqno="4">
+                                                                                    <div class="panel-body">
+
+
+                                                                                        <div>
+                                                                                            <table class="table table-striped table-bordered table-hover" id="tblGetFinancialDetail"></table>
+
+                                                                                        </div>
+                                                                                        <div class="clearfix">&nbsp;</div>
+
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+
+
+
+
+                                                                            <div class="panel panel-default" id="sapuseraccordion">
+                                                                                <div class="panel-heading">
+                                                                                    <h4 class="panel-title">
+                                                                                        <a class="accordion-toggle active total-tab headingfont" data-toggle="collapse" data-parent="#accordion2" href="#collapse5">
+                                                                                            <span data-i18n="companydetails"> Supplier Details</span>
+                                                                                            <div class="outer_wrap">
+                                                                                                <span class="progress-value" id="companyspan" name="companyspan"></span>
+                                                                                                <div class="cs_chart" id="company_chart" data-percent=""></div>
+                                                                                            </div>
+                                                                                        </a>
+                                                                                    </h4>
+                                                                                </div>
+                                                                                <div id="collapse5" class="panel-collapse collapse">
+                                                                                    <div class="panel-body">
+
+
+                                                                                        <div id="divalertsucesssap" class="alert alert-success divalertstyle">
+                                                                                            <span id="spansuccess1"></span>
+                                                                                        </div>
+                                                                                        <div id="divalerterrsap" class="alert alert-danger divalertstyle">
+                                                                                            <span id="spanerterr"> </span>
+                                                                                        </div>
+                                                                                        <div class="col-md-12 text-right">
+                                                                                            <button class="btn btn-xs btn-primary tooltips " type="button" id="btnPostToExternalSource" data-placement="top" data-original-title="Click here to post to SAP" onclick="PostToExternalSource()">
+                                                                                                <i class="fa fa-plus-circle"></i> Post to External Source
+                                                                                            </button>
+                                                                                        </div>
+                                                                                        <div class="clearfix"></div>
+
+
+
+                                                                                        <div class="row">
+
+                                                                                            <div class="form-group">
+                                                                                                <div class="col-md-12">
+
+                                                                                                    <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                        Partner No SAP
+                                                                                                    </label>
+                                                                                                    <div class="col-md-4">
+
+                                                                                                        <label class="control-label" id="externalsourceid" name="externalsourceid" autocomplete="off" tabindex="1"></label>
+                                                                                                    </div>
+
+
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+                                                                                            <div class="form-group">
+                                                                                                <div class="col-md-12">
+
+                                                                                                    <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                        Vendor Account Group <span class="required">*</span>
+                                                                                                    </label>
+                                                                                                    <div class="col-md-4">
+                                                                                                        <select class="form-control" id="VendorAccGrp" name="VendorAccGrp">
+                                                                                                        </select>
+
+                                                                                                    </div>
+
+                                                                                                    <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                        Purchase ORG <span class="required">*</span>
+                                                                                                    </label>
+                                                                                                    <div class="col-md-4">
+                                                                                                        <select class="form-control" id="PORG" name="PORG">
+                                                                                                        </select>
+
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div class="form-group">
+                                                                                                <div class="col-md-12">
+
+                                                                                                    <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                        Inco terms <span class="required">*</span>
+                                                                                                    </label>
+                                                                                                    <div class="col-md-4">
+                                                                                                        <select class="form-control" id="Incoterm" name="Incoterm">
+                                                                                                        </select>
+
+                                                                                                    </div>
+                                                                                                    <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                        Schema Group
+                                                                                                    </label>
+                                                                                                    <div class="col-md-4">
+                                                                                                        <select class="form-control" id="SchemaGrp" name="SchemaGrp">
+                                                                                                        </select>
+
+                                                                                                    </div>
+
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <div class="col-md-12">
+
+                                                                                                    <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                        Company Code  <span class="required">*</span>
+                                                                                                    </label>
+                                                                                                    <div class="col-md-4">
+                                                                                                        <select class="form-control" id="CoCd" name="CoCd">
+                                                                                                        </select>
+
+                                                                                                    </div>
+
+                                                                                                    <label class="col-md-2 control-label txtalignleft" data-i18n="recon">
+                                                                                                        Reconcilation Account
+                                                                                                    </label>
+                                                                                                    <div class="col-md-4">
+
+                                                                                                        <select class="form-control" id="ReconAcc" name="ReconAcc" required>
+                                                                                                        </select>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <div class="col-md-12">
+
+                                                                                                    <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                        Payment Term  <span class="required">*</span>
+                                                                                                    </label>
+                                                                                                    <div class="col-md-4">
+                                                                                                        <select class="form-control" id="PayTerm" name="PayTerm" required>
+                                                                                                        </select>
+
+                                                                                                    </div>
+                                                                                                    <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                        Auth Group <span class="required">*</span>
+                                                                                                    </label>
+                                                                                                    <div class="col-md-4">
+                                                                                                        <select class="form-control" id="authGrp" name="authGrp">
+                                                                                                        </select>
+
+                                                                                                    </div>
+
+
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div class="form-group">
+                                                                                                <div class="col-md-12">
+
+                                                                                                    <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                        GST Vendor Classification  <span class="required">*</span>
+                                                                                                    </label>
+                                                                                                    <div class="col-md-4">
+                                                                                                        <select class="form-control" id="gstVendClass" name="gstVendClass" required>
+                                                                                                        </select>
+
+                                                                                                    </div>
+                                                                                                    <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                        Witholding Tax <span class="required">*</span>
+                                                                                                    </label>
+                                                                                                    <div class="col-md-4">
+                                                                                                        <select class="form-control" id="WitholdingTaxType" name="WitholdingTaxType">
+                                                                                                        </select>
+
+                                                                                                    </div>
+
+
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div class="form-group">
+                                                                                                <div class="col-md-12">
+
+
+
+                                                                                                    <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                        Tax Deduction Source
+                                                                                                    </label>
+                                                                                                    <div class="col-md-4">
+                                                                                                        <label class="control-label" name="SubjectToTds" id="SubjectToTds"></label>
+
+                                                                                                    </div>
+                                                                                                    <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                        Recipient Type
+                                                                                                    </label>
+                                                                                                    <div class="col-md-4">
+                                                                                                        <label class="control-label" name="TypeOfRecepient" id="TypeOfRecepient"></label>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div class="form-group">
+                                                                                                <div class="col-md-12">
+
+
+                                                                                                    <label class="col-md-2 control-label txtalignleft" data-i18n="state">
+                                                                                                        Witholding Tax Code
+                                                                                                    </label>
+                                                                                                    <div class="col-md-4">
+
+                                                                                                        <label class="control-label" name="WitholdingTaxCode" id="WitholdingTaxCode"></label>
+                                                                                                    </div>
+
+
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+                                                                                            <div class="fluid">
+                                                                                                <div class="col-md-offset-5 col-md-6">
+                                                                                                    <br />
+                                                                                                    <input type="button" class="btn btn-success" id="UpdateUserByDetail" onclick="UpdateExternalSourceUser()" value="Update Supplier Details">
+
+
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                        </div>
+
+
+
+                                                                                    </div>
+
+                                                                                </div>
+
+                                                                            </div>
+
+
+                                                                        </div>
+
+
+
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -1198,7 +1736,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
                                 </form>
                             </div>
                         </div>
@@ -1210,65 +1747,17 @@
 
         </div>
     </div>
-   
+
     <script type="text/javascript" nonce="pev3">
 
         jQuery(document).ready(function () {
-          
+
             callPagejs('RegisterParticipants_PEV2.js');
-            //if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-            //    window.location = sessionStorage.getItem('MainUrl');
-            //}
-            //else {
-            //    if (sessionStorage.getItem("UserType") == "E") {
-            //        $('.page-container').show();
-            //    }
-            //    else {
-            //        bootbox.alert("You are not Authorize to view this page", function () {
-            //            parent.history.back();
-            //            return false;
-            //        });
-            //    }
-            //}
-           
-            //App.init();
-            //setCommonData();
-            //fetchMenuItemsFromSession(9, 10);
-            //FormValidation.init();
 
-            //fetchParticipantsVenderTable();
-            //fetchMapCategory('M', 0);
-
-            //fetchBidType();// for serach vendor
-            //clearform();
-            //fetchCountry();
-            ////abheedev 25/11/2022
-            //$('#ddlCountry').select2({
-            //    searchInputPlaceholder: "Search Country",
-            //})
-            //$('#ddlCountryCd').select2({
-            //    searchInputPlaceholder: "Dialing Code",
-            //    //allowClear: true
-            //});
-
-            //$('#ddlCountryCdPhone').select2({
-            //    searchInputPlaceholder: "Dialing Code",
-            //    // allowClear: true
-            //});
-
-            //$('#ddlState').select2({
-            //    searchInputPlaceholder: "Search State",
-            //    allowClear: true
-            //}).on('change', function () { $(this).valid(); });
-            //$('#ddlCity').select2({
-            //    searchInputPlaceholder: "Search City",
-            //    allowClear: true
-            //}).on('change', function () { $(this).valid(); });
-            //$('#ddlpreferredTime').select2().on('change', function () { $(this).valid(); });
         });
     </script>
 
-   
+
     <!-- END JAVASCRIPTS -->
 
 </body>
