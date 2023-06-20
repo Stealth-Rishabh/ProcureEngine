@@ -1095,12 +1095,14 @@ function fetchReguestforQuotationDetails() {
 
             sessionStorage.setItem('CustomerID', RFQData[0].general[0].customerID)
             if (RFQData[0].general.length) {
+                let _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
+                let _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
                 sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
-                jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
+                jQuery('#RFQSubject').text(_cleanStringSub)
                 sessionStorage.setItem('hdnRFQBidType', RFQData[0].general[0].rfqBidType)
                 _RFQBidType = RFQData[0].general[0].rfqBidType
 
-                jQuery('#RFQDescription').html(RFQData[0].general[0].rfqDescription)
+                jQuery('#RFQDescription').html(_cleanStringDesc)
                 $('#Currency').html(RFQData[0].general[0].currencyNm)
                 $('#txtcurrency').val(RFQData[0].general[0].currencyNm)
                 jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate);

@@ -542,7 +542,8 @@ function fetchReguestforQuotationDetailseRFQ() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-
+            let _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
+            let _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
             sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
             sessionStorage.setItem('CustomerID', RFQData[0].general[0].customerID)
             jQuery('.rfqtc').show();
@@ -553,10 +554,10 @@ function fetchReguestforQuotationDetailseRFQ() {
             $('#btnContinue').attr("disabled", true);
 
 
-            jQuery('#RFQSubject').text(RFQData[0].general[0].rfqSubject)
+            jQuery('#RFQSubject').text(_cleanStringSub)
 
             $('#Currency').html(RFQData[0].general[0].currencyNm)
-            jQuery('#RFQDescription').text(RFQData[0].general[0].rfqDescription)
+            jQuery('#RFQDescription').text(_cleanStringDesc)
 
             jQuery('#rfqstartdate').text(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
             jQuery('#rfqenddate').text(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))

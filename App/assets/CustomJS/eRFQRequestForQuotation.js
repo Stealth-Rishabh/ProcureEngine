@@ -1,3 +1,4 @@
+let _RFQid;
 jQuery(document).ready(function () {
 
     var date = new Date();
@@ -22,7 +23,7 @@ jQuery(document).ready(function () {
     }
     Metronic.init();
     Layout.init();
-    var _RFQid;
+    
     if (window.location.search) {
         var param = getUrlVars()["param"]
         var decryptedstring = fndecrypt(param)
@@ -2552,11 +2553,13 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (RFQData) {
-           
+       
+            let _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
+            let _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
             sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
-            jQuery('#txtrfqSubject').val(RFQData[0].general[0].rfqSubject)
+            jQuery('#txtrfqSubject').val(_cleanStringSub)
             setTimeout(function () { $('#dropCurrency').val(RFQData[0].general[0].rfqCurrencyId).attr("selected", "selected"); }, 1000)
-            jQuery('#txtrfqdescription').val(RFQData[0].general[0].rfqDescription)
+            jQuery('#txtrfqdescription').val(_cleanStringDesc)
 
             jQuery('#txtConversionRate').val(RFQData[0].general[0].rfqConversionRate);
             jQuery('#drp_TechnicalApp').val(RFQData[0].general[0].technicalApproval);
