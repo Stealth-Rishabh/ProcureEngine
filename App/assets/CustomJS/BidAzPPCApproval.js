@@ -14,7 +14,8 @@
         tableToExcel(['tbldetails', 'tblBidSummary', 'tblremarksawared'], ['BidDetails', 'Bid Summary', 'Approval History'], 'BidSummary')
     }
             });
-    Pageloaded()
+        Pageloaded()
+        
     setInterval(function () {Pageloaded()}, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
@@ -124,6 +125,7 @@ jQuery(document).ready(function () {
 });
 
 function fetchAzPPcFormDetails() {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     jQuery.ajax({
@@ -334,6 +336,7 @@ function validateAppsubmitData() {
     });
 }
 function ApprovalRejectPPCApp() {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var Approvers = {
@@ -347,7 +350,7 @@ function ApprovalRejectPPCApp() {
         "Remarks": jQuery("#txtRemarksApp").val()
     }
     //alert(JSON.stringify(approvalbyapp))
-    console.log(JSON.stringify(Approvers))
+ //   console.log(JSON.stringify(Approvers))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "Azure/ins_BidPPCApproval",

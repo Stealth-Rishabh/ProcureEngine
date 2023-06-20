@@ -1,6 +1,7 @@
 jQuery(document).ready(function () {
    
     Pageloaded()
+    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
@@ -169,6 +170,7 @@ function confirmCloningBid(BidId,BidSubject,BidDetails,BidDate,SrNo) {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
+                    $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                     clone(BidId)
                 }
             },
@@ -301,6 +303,7 @@ function msgForClonedBid(bidId, bidTypeId) {
                     label: "Yes",
                     className: "btn-success",
                     callback: function () {
+                        $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                         window.location = urlLink;
                     }
                 },

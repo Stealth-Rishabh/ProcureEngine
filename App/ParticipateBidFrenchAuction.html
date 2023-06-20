@@ -48,6 +48,8 @@
     <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
     <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
     <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
@@ -67,18 +69,17 @@
     <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
-    <script src="assets/CustomJS/Common.js"></script>
-
+    <script src="assets/CustomJS/Common.js" type="text/javascript"></script>
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed page-full-width">
 
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="#" >
+                <a class="navbar-brand" href="#">
                     <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
                 </a>
-               
+
             </div>
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
@@ -89,14 +90,14 @@
                                 <span id="spanUserName"
                                       class="username username-hide-on-mobile"></span>
                             </b>
-                           
+
                         </a>
-                        
+
                     </li>
                     <li class="dropdown dropdown-quick-sidebar-toggler">
-                        <div class="pulsate-regular padding12px" >
+                        <div class="pulsate-regular padding12px">
                             <a href="javascript:void(0);" class="dropdown-toggle" title="Chat" onclick="openForm()">
-                                <i class="fa fa-wechat wechatcolor" ></i>
+                                <i class="fa fa-wechat wechatcolor"></i>
                             </a>
                         </div>
                     </li>
@@ -160,12 +161,12 @@
                                         <input type="hidden" id="hddnadminConnection" value="0" />
                                     </p>&nbsp;
 
-                                    <label class="control-label bold hide labelstyle4" id="pleft5mins" >
+                                    <label class="control-label bold hide labelstyle4" id="pleft5mins">
                                         Only 5 mins Left!!
                                     </label>
 
                                     &nbsp;&nbsp;
-                                    <label class="control-label bold labelstyle9" >
+                                    <label class="control-label bold labelstyle9">
                                         Time left (HH:MM:SS):
                                     </label>
 
@@ -197,7 +198,7 @@
                                                 <label class="col-md-1 control-label">
                                                     Bid Subject:
                                                 </label>
-                                                <label id="lblbidsubject"  class="col-md-11 control-label txtleftbold">
+                                                <label id="lblbidsubject" class="col-md-11 control-label txtleftbold">
                                                 </label>
                                             </div>
                                         </div>
@@ -208,10 +209,10 @@
                                                 <label class=" col-md-1 control-label">
                                                     Bid Details:
                                                 </label>
-                                             
-                                                <label id="lblbidDetails"  class=" col-md-11 control-label txtalignjustify">
+
+                                                <label id="lblbidDetails" class=" col-md-11 control-label txtalignjustify">
                                                 </label>
-                                             
+
                                             </div>
                                         </div>
                                     </div>
@@ -347,31 +348,31 @@
                     <li class="active">
                         <a href="javascript:;" data-target="#quick_sidebar_tab_1" data-toggle="tab">
                             Messages
-                            
+
                         </a>
                     </li>
-                    
+
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active page-quick-sidebar-chat" id="quick_sidebar_tab_1">
                         <div class="page-quick-sidebar-item2">
                             <div class="page-quick-sidebar-chat-user">
-                              
 
-                                <div class="scroller scroller490" >
+
+                                <div class="scroller scroller490">
                                     <div class="page-quick-sidebar-chat-user-messages" id="chatList">
                                     </div>
                                 </div>
                                 <div class="page-quick-sidebar-chat-user-form divchatstyle">
-                                  
+
                                     <textarea class="form-control" type="text"
                                               placeholder="Type a message here..."
                                               id="txtChatMsg" name="txtChatMsg" onkeyup="replaceQuoutesFromString(this)"></textarea>
-                                  
+
                                     <button type="button" id="chatbtn" class="btn green btn-block" onclick="sendChatMsgs();">
                                         <i class="fa fa-check icon-white"></i> Send
                                     </button>
-                                   
+
                                 </div>
                             </div>
                         </div>
@@ -430,12 +431,14 @@
     <script nonce="pE90">
         $(window).focus(function (e) {
             fetchVendorDetails()
-            
+
         });
         jQuery(document).ready(function () {
-            callPagejs('ParticipateBidFrenchAuction.js');           
+            callPagejs('ParticipateBidFrenchAuction.js');
         });
     </script>
+    <script src="assets/CustomJS/Common.js" type="text/javascript"></script>
+    
     <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

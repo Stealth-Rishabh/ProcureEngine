@@ -32,7 +32,6 @@
     <link rel="shortcut icon" href="../favicon.ico" />
     <!-- Page Specific CSS-->
     <link rel="stylesheet" href="assets/CustomCSS/ParticipateBid.css">
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
@@ -46,13 +45,14 @@
     <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
     <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
     <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
     <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
-
     <script src="assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
     <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
     <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
@@ -61,18 +61,18 @@
     <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
-    <script src="assets/CustomJS/Common.js"></script>
+    <script src="assets/CustomJS/Common.js" type="text/javascript"></script>
 
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
-   
+
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="#" >
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage"/>
+                <a class="navbar-brand" href="#">
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
                 </a>
-              
+
             </div>
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
@@ -83,15 +83,15 @@
                                 <span id="spanUserName"
                                       class="username username-hide-on-mobile"></span>
                             </b>
-                            
+
                         </a>
-                       
+
                     </li>
 
                     <li class="dropdown dropdown-quick-sidebar-toggler">
-                        <div class="pulsate-regular padding12px" >
+                        <div class="pulsate-regular" style="padding: 12px; animation: 0s ease 0s 1 normal none running none;">
                             <a href="javascript:void(0);" class="dropdown-toggle" title="Chat" onclick="openForm()">
-                                <i class="fa fa-wechat wechatcolor" ></i>
+                                <i class="fa fa-wechat wechatcolor" style="color:#ffb848;"></i>
                             </a>
                         </div>
                     </li>
@@ -123,7 +123,7 @@
                         <li id="LiISsurrogate" class="hide">Surrogate</li>
                     </ul>
 
-                 
+
                 </div>
                 <!-- END PAGE HEADER-->
                 <!-- BEGIN PAGE CONTENT-->
@@ -145,10 +145,10 @@
                                         <input type="hidden" id="hdnDuration" />
                                         <input type="hidden" id="hddnadminConnection" value="0" />
                                     </p>&nbsp;
-                                    <label class="control-label bold hide labelstyle4" id="pleft5mins" >
+                                    <label class="control-label bold hide labelstyle4" id="pleft5mins">
                                         Only 5 mins Left!!
                                     </label>&nbsp;&nbsp;
-                                    <label class="control-label bold font17px" >
+                                    <label class="control-label bold font17px">
                                         Time left (HH:MM:SS):
                                     </label>
 
@@ -171,7 +171,7 @@
                             </div>
 
                             <div class="portlet-body form" id="content">
-                                <div class="alert alert-block alert-danger" id="errorOpenbid" >
+                                <div class="alert alert-block alert-danger" id="errorOpenbid">
                                     <span id="error"></span>
                                 </div>
                                 <div class="form-body">
@@ -181,7 +181,7 @@
                                                 <label class="col-md-1 control-label">
                                                     Bid Subject:
                                                 </label>
-                                                <label id="lblbidsubject"  class="col-md-10 control-label txtleftbold">
+                                                <label id="lblbidsubject" class="col-md-10 control-label txtleftbold">
                                                 </label>
                                             </div>
                                         </div>
@@ -193,7 +193,7 @@
                                                     Bid Details:
                                                 </label>
                                                 <!-- <div class="col-md-10"> -->
-                                                <label id="lblbidDetails"  class=" col-md-11 control-label txtalignjustify">
+                                                <label id="lblbidDetails" class=" col-md-11 control-label txtalignjustify">
                                                 </label>
                                                 <!-- </div> -->
                                             </div>
@@ -354,7 +354,8 @@
                                 <div class="page-quick-sidebar-chat-user">
 
 
-                                    <div class="scroller scroller490" >
+                                    <div class="scroller scroller490" style="overflow: hidden; width: auto; height: 440px;">
+
                                         <div class="page-quick-sidebar-chat-user-messages" id="chatList">
                                         </div>
                                     </div>
@@ -367,7 +368,7 @@
                                         <button type="button" id="chatbtn" class="btn green btn-block" onclick="sendChatMsgs();">
                                             <i class="fa fa-check icon-white"></i> Send
                                         </button>
-                                      
+
                                     </div>
                                 </div>
                             </div>
@@ -392,7 +393,7 @@
                     </div>
                     <div class="portlet-body form">
 
-                        <div class="modal-body modalbody2" >
+                        <div class="modal-body modalbody2">
                             <p class="ppolicy-text"><b></b></p>
                             <p class="ppolicy-text"><b></b></p>
                             <p class="ppolicy-text"><b></b></p>
@@ -427,13 +428,15 @@
         <script nonce="pE90">
             $(window).focus(function (e) {
                 fetchVendorDetails()
-               
+
             });
             jQuery(document).ready(function () {
                 callPagejs('ParticipateBidCoalExport.js');
-               
+
             });
         </script>
+
+
         <!-- END JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

@@ -64,7 +64,6 @@ body {
     overflow-x: hidden;
     overflow-wrap: break-word;
 }
-
 /* abheedev bug 373 end */
 
 .valign-center-th  thead tr th {
@@ -106,11 +105,9 @@ body {
 .text-left {
     text-align: left !important;
 }
-
 .custom_textarea .cke_contents {
     height: 120px !important;
 }
-
 body.cke_editable.cke_editable_themed.cke_contents_ltr {
     cursor: text;
     cursor: text;
@@ -119,7 +116,6 @@ body.cke_editable.cke_editable_themed.cke_contents_ltr {
     margin: 0;
     padding: 0 10px;
 }
-
 .cke_editable {
     font-size: 13px;
     line-height: 1.6em;
@@ -127,7 +123,6 @@ body.cke_editable.cke_editable_themed.cke_contents_ltr {
     margin: 0;
     padding: 0 10px;
 }
-
 .margin-top-10 {
-    margin-top: 10px;
+    margin-top:10px;
 }

@@ -1,4 +1,4 @@
-﻿var WBList = {};
+var WBList = {};
 var OBList = [];
 var NBList = [];
 var WbSR = 0;
@@ -135,7 +135,6 @@ function validateApproverMaster() {
         $("#ddlApproveltype").css("border-color", "");
         v_approverType = false;
     }
-    debugger;
     if ($("#txtAmountFrom").val() == "") {
         $("#txtAmountFrom").css("border-color", "red");
         amountfrom = true;
@@ -173,6 +172,7 @@ function validateApproverMaster() {
 
 };
 function SaveApproverMaster() {
+    var x = isAuthenticated();
     var p_orgId = $("#ddlPurchaseOrg option:selected").val();
     var p_groupId = $("#ddlPurchasegroup option:selected").val();
     var p_approvaltype = $("#ddlApproveltype option:selected").val();
@@ -349,10 +349,10 @@ function validateNBADD() {
 }
 
 function AddWBApprovers() {
+    var x = isAuthenticated();
     if (validateWBADD()) {
         return false;
     }
-    debugger;
     ++WbSR;
     var ApproverID = $("#ddlWBApprover option:selected").val();
     var ApproverName = $("#ddlWBApprover option:selected").text();
@@ -381,10 +381,10 @@ function AddWBApprovers() {
     })
 };
 function AddOBApprovers() {
+    var x = isAuthenticated();
     if (validateOBADD()) {
         return false;
     }
-    debugger;
     ++ObSR;
     var ApproverID = $("#ddlOBApprover option:selected").val();
     var ApproverName = $("#ddlOBApprover option:selected").text();
@@ -413,10 +413,10 @@ function AddOBApprovers() {
     })
 };
 function AddNBApprovers() {
+    var x = isAuthenticated();
     if (validateNBADD()) {
         return false;
     }
-    debugger;
     ++NbSR;
     var ApproverID = $("#ddlNBApprover option:selected").val();
     var ApproverName = $("#ddlNBApprover option:selected").text();
@@ -561,7 +561,7 @@ function onEditClick(idx, checked) {
     jQuery.unblockUI();
 };
 function SaveUpdateData() {
-
+    var x = isAuthenticated();
     var url = "NFA/InsertUpdatePurchaseOrg";
     var idx = $("#hdnmodelOrgID").val();
     var Name = $("#txtmodelPurchaseOrg").val();

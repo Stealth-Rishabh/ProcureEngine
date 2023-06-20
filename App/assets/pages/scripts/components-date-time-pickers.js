@@ -143,9 +143,6 @@ var ComponentsDateTimePickers = function () {
             return;
         }
 
-
-
-
         $(".form_datetime").datetimepicker({
             autoclose: true,
             isRTL: App.isRTL(),

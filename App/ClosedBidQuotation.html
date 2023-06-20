@@ -40,6 +40,7 @@
     <link rel="shortcut icon" href="../favicon.ico" />
     <!-- Page Specific CSS-->
     <link rel="stylesheet" href="assets/CustomCSS/common.css">
+    <link rel="stylesheet" href="assets/CustomCSS/erfq.css">
 
     <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
@@ -83,8 +84,8 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" >
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage"/>
+                <a class="navbar-brand" href="index.html">
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
                 </a>
 
             </div>
@@ -112,7 +113,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container nodisplay" >
+    <div class="page-container nodisplay">
         <!-- BEGIN SIDEBAR -->
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
@@ -158,7 +159,7 @@
                             </i>
                         </li>
                         <li><a href="#">Configuration</a> <i class="fa fa-angle-right"></i></li>
-                        <li><a href="#">Request For Quotation (Close-Bid)</a> </li>
+                        <li><a href="#">Request For Quotation (Sealed-Bid)</a> </li>
                     </ul>
                     <div class="page-toolbar">
                         <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
@@ -173,11 +174,11 @@
                         <div class="portlet box blue-hoki" id="form_wizard_1">
                             <div class="portlet-title">
                                 <div class="caption">
-                                    <i class="fa fa-gift"></i>Request For Quotation (Close-Bid)
+                                    <i class="fa fa-gift"></i>Request For Quotation (Sealed-Bid)
                                 </div>
                                 <div class="tools hidden-xs">
 
-                                    <button class="btn btn-sm btn-success" id="cancelBidBtn" onclick="CancelBidDuringConfig()">Cancel</button>
+                                    <button class="btn btn-sm btn-success" id="cancelBidBtn" onclick="cancelbid()">Cancel</button>
                                     <a href="javascript:;" class="collapse"></a>
                                 </div>
                             </div>
@@ -218,7 +219,7 @@
                                                 <div class="alert alert-success">
                                                     <span id="spansuccess1"> </span>
                                                 </div>
-                                                <div class="alert alert-danger" >
+                                                <div class="alert alert-danger">
                                                     <span id="spandanger"> </span>
                                                 </div>
                                                 <div class="tab-pane active" id="tab1">
@@ -319,24 +320,21 @@
                                                             <label class="control-label col-md-3">
                                                                 Term & Condition<span class="required"> *</span>
                                                             </label>
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-4">
                                                                 <input type="file" class="form-control" id="file1" name="file1" tabindex='6' onchange="checkfilesize(this)" />
                                                                 <a href="javascript:;" id="attach-file" class="notextdecoFleft" onclick="DownloadFile(this)"></a> &nbsp;
-                                                                <span class="display-none closebutton2"  id="closebtn" onclick="ajaxFileDelete('icon1', 'file1', 'attach-file', 'eRFQTerms', 'attach-file','0')">
+                                                                <span class="display-none closebutton2" id="closebtn" onclick="ajaxFileDelete('icon1', 'file1', 'attach-file', 'eRFQTerms', 'attach-file','0')">
                                                                     <i class='fa fa-times-circle-o' id='icon1'></i>
                                                                 </span>
                                                             </div>
                                                         </div>
 
                                                         <div class="inputgroup">
-                                                            <!--<label class="control-label col-md-2">
+                                                            <label class="control-label col-md-2">
                                                                 Technical Approval
-                                                            </label>-->
-                                                            <label class="col-md-3 control-label">
-                                                                Bid Open Date/Time
                                                             </label>
                                                             <div class="col-md-3">
-                                                                <!--<select class="form-control" id="drp_TechnicalApp" name="drp_TechnicalApp" onchange="fnTocheckAproverMapp()">
+                                                                <select class="form-control" id="drp_TechnicalApp" name="drp_TechnicalApp" onchange="fnTocheckAproverMapp()">
                                                                     <option value="">Select</option>
                                                                     <option value="NA" selected>Not Required</option>
                                                                     <option value="RFQ">With individual RFQ Response</option>
@@ -344,19 +342,13 @@
 
 
 
-                                                                </select>-->
-                                                                <div class="input-group date form_datetime form_datetime bs-datetime ">
-                                                                    <input type="text" size="16" class="form-control" id="txtbidopendatetime" name="txtbidopendatetime" placeholder="If required" autocomplete="off" readonly>
-                                                                    <span class="input-group-btn">
-                                                                        <button class="btn default date-set" type="button" id="btncal">
-                                                                            <i class="fa fa-calendar"></i>
-                                                                        </button>
-                                                                    </span>
-                                                                </div>
+                                                                </select>
                                                             </div>
+
                                                         </div>
 
                                                     </div>
+
                                                     <div class="form-group">
                                                         <div class="inputgroup">
                                                             <label class="control-label col-md-3">
@@ -366,7 +358,7 @@
                                                                 <select class="form-control" id="ddlapprovertype" name="ddlapprovertype" disabled>
                                                                     <option value="">Select Approver Type</option>
                                                                     <option value="C" selected>Commercial</option>
-                                                                    <!--<option value="T">Technical</option>-->
+                                                                    <option value="T">Technical</option>
 
 
                                                                 </select>
@@ -406,168 +398,216 @@
                                                         </div>
 
                                                     </div>
-
-                                                </div>
-                                                <div class="tab-pane" id="tab2">
                                                     <div class="form-group">
-
-                                                        <label class="control-label col-md-2">
-                                                            Item/Service Name  <span class="required">
-                                                                *
-                                                            </span>
+                                                        <label class="col-md-3 control-label">
+                                                            Bid Open Date/Time
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <input type="text" class="form-control" id="txtshortname" name="txtshortname"
-                                                                   autocomplete="off" onkeyup="replaceQuoutesFromString(this)" maxlength="200" />
 
-                                                        </div>
-
-                                                        <label class="control-label col-md-2">
-                                                            Item Code  <span class="required">
-
-                                                            </span>
-                                                        </label>
-                                                        <div class="col-md-4">
-                                                            <input type="text" class="form-control" id="txtItemCode" name="txtItemCode"
-                                                                   autocomplete="off" onkeyup="replaceQuoutesFromString(this)" maxlength="50" />
-
-                                                        </div>
-
-                                                    </div>
-
-
-                                                    <div class="form-group">
-
-                                                        <label class="control-label col-md-2">
-                                                            Description<span class="required"> *</span>
-                                                        </label>
-                                                        <div class="col-md-10 xyz">
-                                                            <textarea id="txtbiddescriptionP" name="txtbiddescriptionP" class="wysihtml5 form-control"
-                                                                      rows="2" onkeyup="replaceQuoutesFromString(this)" maxlength="2000"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-2">
-                                                            Remarks
-                                                        </label>
-                                                        <div class="col-md-4">
-                                                            <input type="text" id="txtItemRemarks" name="txtItemRemarks"
-                                                                   class="form-control" maxlength="200" onkeyup="replaceQuoutesFromString(this)" autocomplete="off" />
-
-                                                        </div>
-                                                        <label class="control-label col-md-2">
-                                                            Quantity  <span class="required">
-                                                                *
-                                                            </span>
-                                                        </label>
-                                                        <div class="col-md-2 xyz">
-                                                            <input type="tel" class="form-control thousandseparated" id="txtquantitiy" name="txtquantitiy" number="true" autocomplete="off" />
-
-
-                                                        </div>
-                                                        <div class="col-md-2 xyz">
-
-                                                            <input type="text" class="form-control" placeholder="Select UOM" id="txtUOM"
-                                                                   data-provide="typeahead" autocomplete="off" name="txtUOM" />
-                                                        </div>
-
-                                                        <input type="hidden" value="" id="dropuom" />
-
-
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="control-label  col-md-2">
-                                                            Target Price
-                                                        </label>
-                                                        <div class="col-md-4 xyz">
-                                                            <input type="tel" class="form-control text-right" id="txttargetprice"
-                                                                   name="txttargetprice" autocomplete="off" onkeyup="thousands_separators_input(this)" />
-
-                                                        </div>
-                                                        <label class="control-label  col-md-2">
-                                                            Turn around time (In Days)
-                                                        </label>
-                                                        <div class="col-md-4 xyz">
-                                                            <input type="text" id="txttat" maxlength="4" name="txttat" class="form-control" autocomplete="off" placeholder="Turn around time (In Days)" />
-                                                        </div>
-
-                                                    </div>
-
-
-
-                                                    <div class="form-group">
-                                                        <label class="control-label col-md-2">
-                                                            Delivery Location <span class="required">* </span>
-                                                        </label>
-                                                        <div class="col-md-4 xyz">
-                                                            <input type="text" class="form-control" maxlength="100" id="txtedelivery" name="txtedelivery" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
-                                                        </div>
-
-                                                    </div>
-                                                    <h4 class="form-section">Last PO Details (Optional)</h4>
-
-                                                    <div class="col-md-12">
-
-                                                        <div class="col-md-3 xyz">
-
-                                                            <label class="control-label">PO Number</label>
-                                                            <input type="text" id="txtPono" autocomplete="off" name="txtPono" class="form-control" placeholder="PO Number" maxlength="20" onkeyup="replaceQuoutesFromString(this)">
-
-
-                                                        </div>
-                                                        <div class="col-md-3 xyz">
-
-                                                            <label class="control-label">Vendor Name</label>
-                                                            <input type="text" maxlength="100" id="txtvendorname" name="txtvendorname" autocomplete="off" class="form-control" placeholder="Vendor Name" onkeyup="replaceQuoutesFromString(this)">
-
-
-                                                        </div>
-
-                                                        <div class="col-md-2 xyz">
-
-                                                            <label class="control-label">Unit Rate</label>
-
-                                                            <input type="tel" id="txtunitrate" name="txtunitrate" class="form-control text-right" placeholder="Unit Rate" autocomplete="off" onkeyup="thousands_separators_input(this)" />
-
-
-                                                        </div>
-
-                                                        <div class="col-md-2 xyz">
-
-                                                            <label class="control-label">PO Date</label>
-                                                            <div class="input-group date date-picker" data-date-format="mm/dd/yyyy"
-                                                                 data-date-end-date="0d">
+                                                            <div class="input-group date form_datetime form_datetime bs-datetime ">
+                                                                <input type="text" size="16" class="form-control" id="txtbidopendatetime" name="txtbidopendatetime" placeholder="If required" autocomplete="off" readonly>
                                                                 <span class="input-group-btn">
-                                                                    <button class="btn default" id="btncal" tabindex='0' type="button">
+                                                                    <button class="btn default date-set" type="button" id="btncal">
                                                                         <i class="fa fa-calendar"></i>
                                                                     </button>
                                                                 </span>
-                                                                <input type="text" id="txtPODate" name="txtPODate" class="form-control" tabindex='2' readonly>
-                                                                <div id="daterr"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group display-none" id="divBoqUpload">
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                BOQ/BOM Required
+                                                            </label>
+                                                            <div class="col-md-1 control-label">
+                                                                <input name="chkboq" id="chkboq" type="checkbox" class="icheck" data-checkbox="icheckbox_minimal-blue" onclick="fncheckboq()" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane" id="tab2">
+                                                    <div id="divnonBoqForm">
+                                                        <div class="form-group">
+                                                            <!--bug 52 start-->
+                                                            <label class="control-label col-md-2">
+                                                                Item/Service Name
+                                                                <span class="hovertext" data-hover="please add short name for the respective item">
+                                                                    <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                                                                </span>
+
+                                                                <span class="required">
+                                                                    *
+                                                                </span>
+                                                            </label>
+                                                            <!--bug 52 end-->
+                                                            <div class="col-md-3">
+                                                                <input type="text" class="form-control" id="txtshortname" name="txtshortname"
+                                                                       autocomplete="off" onkeyup="replaceQuoutesFromString(this)" maxlength="200" />
                                                             </div>
 
 
+                                                            <label class="control-label col-md-2">
+                                                                Item Code  <span class="required">
+
+                                                                </span>
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <input type="text" class="form-control" id="txtItemCode" name="txtItemCode"
+                                                                       autocomplete="off" onkeyup="replaceQuoutesFromString(this)" maxlength="50" />
+
+                                                            </div>
+
                                                         </div>
-                                                        <!--/span-->
-                                                        <div class="col-md-2 xyz">
 
-                                                            <label class="control-label">PO Value</label>
 
-                                                            <input type="tel" id="txtpovalue" name="txtpovalue" class="form-control text-right" placeholder="PO Value" onkeyup="thousands_separators_input(this)" autocomplete="off" /> <!---->
+                                                        <div class="form-group">
+                                                            <!--bug 52 start-->
+                                                            <label class="control-label col-md-2">
+                                                                Description
+                                                                <span class="hovertext" data-hover="please provide the bid description of the Item/Service">
+                                                                    <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                                                                </span>
+                                                                <span class="required"> *</span>
+
+                                                            </label>
+                                                            <!--bug 52 end-->
+                                                            <div class="col-md-10 xyz">
+                                                                <textarea id="txtbiddescriptionP" name="txtbiddescriptionP" class="wysihtml5 form-control"
+                                                                          rows="2" onkeyup="replaceQuoutesFromString(this)" maxlength="2000"></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2">
+                                                                Remarks
+                                                            </label>
+                                                            <div class="col-md-4">
+                                                                <input type="text" id="txtItemRemarks" name="txtItemRemarks"
+                                                                       class="form-control" maxlength="200" onkeyup="replaceQuoutesFromString(this)" autocomplete="off" />
+
+                                                            </div>
+                                                            <label class="control-label col-md-2">
+                                                                Quantity  <span class="required">
+                                                                    *
+                                                                </span>
+                                                            </label>
+                                                            <div class="col-md-2 xyz">
+                                                                <input type="tel" class="form-control" id="txtquantitiy" name="txtquantitiy" autocomplete="off" onkeyup="localecommaseperator(this)" />
+
+
+                                                            </div>
+                                                            <div class="col-md-2 xyz">
+
+                                                                <input type="text" class="form-control" placeholder="Select UOM" id="txtUOM"
+                                                                       data-provide="typeahead" autocomplete="off" name="txtUOM" />
+                                                            </div>
+
+                                                            <input type="hidden" value="" id="dropuom" />
 
 
                                                         </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label  col-md-2">
+                                                                Target/Budget Price
+                                                            </label>
+                                                            <div class="col-md-4 xyz">
+                                                                <input type="tel" class="form-control text-right" id="txttargetprice"
+                                                                       name="txttargetprice" autocomplete="off" onkeyup="localecommaseperator(this)" />
+
+                                                            </div>
+                                                            <label class="control-label  col-md-2">
+                                                                Turn around time (In Days)
+                                                            </label>
+                                                            <div class="col-md-4 xyz">
+                                                                <input type="text" id="txttat" maxlength="4" name="txttat" class="form-control" autocomplete="off" placeholder="Turn around time (In Days)" />
+                                                            </div>
+
+                                                        </div>
+
+
+
+                                                        <div class="form-group">
+                                                            <label class="control-label col-md-2">
+                                                                Delivery Location <span class="required">* </span>
+                                                            </label>
+                                                            <div class="col-md-4 xyz">
+                                                                <input type="text" class="form-control" maxlength="100" id="txtedelivery" name="txtedelivery" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
+                                                            </div>
+
+                                                        </div>
+                                                        <h4 class="form-section">Last PO Details (Optional)</h4>
+
+                                                        <div class="col-md-12">
+
+                                                            <div class="col-md-3 xyz">
+
+                                                                <label class="control-label">PO Number</label>
+                                                                <input type="text" id="txtPono" autocomplete="off" name="txtPono" class="form-control" placeholder="PO Number" maxlength="20" onkeyup="replaceQuoutesFromString(this)" />
+
+
+                                                            </div>
+                                                            <div class="col-md-3 xyz">
+
+                                                                <label class="control-label">Vendor Name</label>
+                                                                <input type="text" maxlength="100" id="txtvendorname" name="txtvendorname" autocomplete="off" class="form-control" placeholder="Vendor Name" onkeyup="replaceQuoutesFromString(this)" />
+
+
+                                                            </div>
+
+                                                            <div class="col-md-2 xyz">
+
+                                                                <label class="control-label">Unit Rate</label>
+
+                                                                <input type="tel" id="txtunitrate" name="txtunitrate" class="form-control text-right" placeholder="Unit Rate" autocomplete="off" onkeyup="thousands_separators_input(this)" />
+
+
+                                                            </div>
+
+                                                            <div class="col-md-2 xyz">
+
+                                                                <label class="control-label">PO Date</label>
+                                                                <div class="input-group date date-picker" data-date-format="mm/dd/yyyy"
+                                                                     data-date-end-date="0d">
+                                                                    <span class="input-group-btn">
+                                                                        <button class="btn default" id="btncal" tabindex='0' type="button">
+                                                                            <i class="fa fa-calendar"></i>
+                                                                        </button>
+                                                                    </span>
+                                                                    <input type="text" id="txtPODate" name="txtPODate" class="form-control" tabindex='2' readonly />
+                                                                    <div id="daterr"></div>
+                                                                </div>
+
+
+                                                            </div>
+                                                            <!--/span-->
+                                                            <div class="col-md-2 xyz">
+
+                                                                <label class="control-label">PO Value</label>
+
+                                                                <input type="tel" id="txtpovalue" name="txtpovalue" class="form-control text-right" placeholder="PO Value" onkeyup="thousands_separators_input(this)" autocomplete="off" /> <!---->
+
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="form-group"></div>
                                                     </div>
-                                                    <div class="form-group"></div>
-                                                    <div class="form-actions noborderbackground" >
+                                                    <div class="form-actions noborderbackground">
                                                         <div class="row">
                                                             <div class="col-md-offset-9 col-md-4">
                                                                 <input type="hidden" id="rowid" />
                                                                 <input type="hidden" id="validattachmentSize" />
-                                                                <button type="button" class="btn btn-danger" data-toggle="modal" href="#RfqParameterexcel">Excel Upload</button>
+                                                                <button type="button" class="btn btn-info display-none" data-toggle="modal" href="#RfqParameterexcelBoq" id="boqbtnexcel">Boq Excel Upload</button>
+                                                                <span id="spninfoboq" class="hovertext display-none" data-hover="click Excel button to upload BoQ File">
+                                                                    <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                                                                </span>
+                                                                <button type="button" class="btn btn-danger" data-toggle="modal" href="#RfqParameterexcel" id="btnexcel">Excel Upload</button>
                                                                 <button type="button" class="btn btn-primary" id="add_or" onclick="InsUpdProductSevices()">Add</button>
-                                                                <button type="button" class="btn yellow" onclick="resetfun()">Clear</button>
-
+                                                                <button type="button" class="btn yellow" onclick="resetfun()" id="btnclear">Clear</button>
+                                                                <!--bug 52 start-->
+                                                                <span id="spninfononboq" class="hovertext" data-hover="click add button once u have submitted all required details">
+                                                                    <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
+                                                                </span>
+                                                                <!--bug 52 end-->
                                                             </div>
                                                         </div>
 
@@ -575,6 +615,9 @@
                                                     <div class="table-scrollable">
 
                                                         <table class="table table-striped table-bordered table-hover" id="tblServicesProduct"></table>
+                                                        <table class="table table-condensed table-bordered display-none" cellpadding="0" cellspacing="0" id="tblServicesProductboq">
+                                                        </table>
+
                                                     </div>
 
                                                 </div>
@@ -583,7 +626,7 @@
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
                                                                 <h4 class="panel-title">
-                                                                    <a class="accordion-toggle collapsed notextdeco" data-toggle="collapse" data-parent="#acc_TC" href='#collapse1' >Commercial Terms</a>
+                                                                    <a class="accordion-toggle collapsed notextdeco" data-toggle="collapse" data-parent="#acc_TC" href='#collapse1'>Commercial Terms</a>
                                                                 </h4>
                                                             </div>
                                                             <div id=collapse1 class="panel-collapse collapse">
@@ -612,7 +655,12 @@
                                                                                 <input type="button" id="btnS" value="Save" class="btn btn-primary" onclick="fnsavetermscondition('Y')" />
                                                                             </div>
                                                                         </div>
-
+                                                                        <label class="addmorebutton">
+                                                                            <a href="javascript:;" class="btn btn-primary" onclick="addMoreTermsCondition()">
+                                                                                Add more <i class="m-icon-swapright m-icon-white">
+                                                                                </i>
+                                                                            </a>
+                                                                        </label>
 
 
                                                                     </div>
@@ -646,7 +694,7 @@
                                                                         </div>
                                                                         <div class="inputgroup">
                                                                             <div class="col-md-4">
-                                                                                <span  class="btn blue width390px"><input type="file" id="fileToUpload1" name="fileToUpload1" onchange="checkfilesize(this);" /></span>
+                                                                                <span class="btn blue width390px"><input type="file" id="fileToUpload1" name="fileToUpload1" onchange="checkfilesize(this);" /></span>
                                                                             </div>
                                                                         </div>
 
@@ -679,7 +727,7 @@
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
                                                                 <h4 class="panel-title">
-                                                                    <a class="accordion-toggle collapsed notextdeco" data-toggle="collapse" data-parent="#acc_TC" href='#collapse2' >Questions</a>
+                                                                    <a class="accordion-toggle collapsed notextdeco" data-toggle="collapse" data-parent="#acc_TC" href='#collapse2'>Technical Requirement</a>
                                                                 </h4>
                                                             </div>
                                                             <div id=collapse2 class="panel-collapse collapse">
@@ -693,10 +741,10 @@
                                                                         </div>
                                                                         <div class="inputgroup">
                                                                             <div class="col-md-6">
-                                                                                <input type="text" class="form-control" id="txtquestions" maxlength="200" name="txtquestions" placeholder="Enter Question" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                <input type="text" class="form-control" id="txtquestions" maxlength="200" name="txtquestions" placeholder="Enter Technical Requirement" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
                                                                             </div>
                                                                             <div class="col-md-3">
-                                                                                <input type="text" class="form-control" id="txtreq" name="txtreq" maxlength="200" placeholder="Your Requirement" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                <input type="text" class="form-control" id="txtreq" name="txtreq" maxlength="200" placeholder="Desired Response" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
                                                                             </div>
                                                                         </div>
 
@@ -749,10 +797,10 @@
                                                                     </div>
 
                                                                 </div>
-                                                                <div class="scroller scroller300"  data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                                                                <div class="scroller scroller300" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                                                                     <!--#a1b2bd-->
                                                                     <div id="divvendorlist" class="portlet-body flip-scroll table-scrollable">
-                                                                        <table  id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content width100">
+                                                                        <table id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content width100">
                                                                             <thead class="flip-content">
                                                                                 <tr>
                                                                                     <th width="20%">
@@ -917,7 +965,7 @@
 
                                                 <label class="control-label col-md-4">Term & Condition:</label>
                                                 <div class="col-md-8">
-                                                    <a class="form-control-static notextdeco" href="javascript:;" id="filepthtermsPrev"  onclick="DownloadFile(this)">
+                                                    <a class="form-control-static notextdeco" href="javascript:;" id="filepthtermsPrev" onclick="DownloadFile(this)">
                                                     </a>
                                                 </div>
 
@@ -946,7 +994,7 @@
                                         </div>
                                         <h3 class="form-section">Approvers</h3>
                                         <div class="row">
-                                            <div class="col-md-3">
+                                            <div class="col-md-6">
                                                 <div class="display-none" id="wrap_scrollerPrevApp">
                                                     <table class=" table table-striped table-bordered table-hover" id="tblapproversPrev"></table>
                                                 </div>
@@ -964,6 +1012,8 @@
                                             <div class="col-md-12">
                                                 <div class="display-none" id="wrap_scrollerPrev">
                                                     <table class=" table table-striped table-bordered table-hover" id="tblRFQPrev"></table>
+                                                    <table class="table table-condensed table table-striped table-bordered table-hover display-none" cellpadding="0" cellspacing="0" id="tblServicesProductboqp">
+                                                    </table>
                                                 </div>
                                             </div>
                                         </div>
@@ -1039,7 +1089,7 @@
         </div>
     </div>
     <div class="page-footer">
-        <div class="page-footer colorfff" >
+        <div class="page-footer colorfff">
             2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
         </div>
         <div class="scroll-to-top">
@@ -1158,10 +1208,134 @@
                                                     <br />
                                                 </div>
                                             </div>
-                                            3. Please ensure Target price and Quantity and TAT should be in numbers only.
+                                            3. Please ensure Target/Budget Price and Quantity and TAT should be in numbers only.
                                         </span>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover display-none" id="temptableForExcelDataparameter"></table>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="RfqParameterexcelBoq" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Upload Parameter using excel file
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+
+                    <form action="#" id="uploadexcelrfqBoq" class="form-horizontal" role="form">
+                        <div class="form-body">
+                            <div class="progress-form display-none" id="modalLoaderparameterBoq">
+
+                                <div class="col-md-offset-3 col-md-6">
+                                    <p id="loader-msgparameterBoq">
+                                        Processing. Please Wait...!
+                                    </p>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-striped active width100" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <button type="button" class="btn green-haze tooltips" data-placement="bottom" id="btndownloadTemplateB" data-original-title="Download Data Template"><i class="fa fa-file-excel-o"></i></button>
+                                        <input type="file" id="file-excelparameterB" name="file-excelparameterB" onchange="checkExcelUpload(this);" />
+                                        <button type="button" class="btn btn-primary" id="browseBtnExcelParameterB">Browse</button>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span class="pull-right"><a href="javascript:;" id="btninstructionexcelparameterBoq">Instructions</a></span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div><br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alert alert-danger display-hide" id="error-excelparameterB">
+                                        <button class="close" data-close="alert"></button>
+                                        <span id="errspan-excelparameterB"></span>
+                                    </div>
+                                    <div class="alert alert-success display-hide" id="success-excelparameterB">
+                                        <button class="close" data-close="alert"></button>
+                                        <span id="succspan-excelparameterB" class="text-center"></span><br />
+                                        <div class="col-md-12 col-md-offset-5" id="btnsforYesNoB">
+
+                                            <button class="btn green" type="button" onclick="fninsBoqfile()">Yes</button>
+                                            <button class="btn yellow" type="button" onclick="fnNoExcelUploadB()">No</button>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    <div class="alert alert-success display-hide" id="instructionsDivParameterBoq">
+                                        <button class="close" data-close="alert"></button>
+                                        <span id="instructionSpanParameterBoq" class="text-center">
+                                            <div class="col-md-12">
+                                                <div class="col-md-6">
+                                                    <label class="col-md-12 text-left">
+                                                        1. Open excel sheet and write follwing columns in first row:
+                                                    </label>
+                                                    <br /><br />
+                                                    <!--abheedev bug 479-->
+                                                    <ul class='no-padding col-md-6 text-left'>
+                                                        <li>Srno</li>
+                                                        <li>ItemCode</li>
+                                                        <li>ItemService</li>
+                                                        <li>Description</li>
+                                                        <li>TargetPrice</li>
+                                                        <li>Remarks</li>
+                                                        <li>Quantity</li>
+                                                        <li>UOM</li>
+                                                        <li>Delivery location</li>
+
+
+                                                    </ul>
+                                                    <div class='clearfix'></div>
+                                                    <br />
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label class="col-md-12 text-left">
+                                                        2. Please enter <b>UOM</b> from given below:
+                                                    </label><br /><br />
+                                                    <div class="scroller scrolruom" data-always-visible="1" data-rail-visible="0" id="scrolrUOM">
+                                                        <div id="ULUOM_instructionsBoq"></div>
+                                                    </div>
+
+                                                    <div class='clearfix'></div>
+                                                    <br />
+                                                </div>
+                                            </div>
+                                            3. Please ensure <b>Target/Budget Price</b> and <b>Quantity</b> should be in numbers only.<br />
+                                            4. <b>UOM/Quantity</b> should be on child level item only.<br />
+                                            5. <b>Item service</b>length should be 200 characters only.<br />
+                                            6. The <b>UOM</b> and <b>quantity</b> fields should not be left blank in the child level item field .  <br />
+                                            7. You may check the <b>UOM</b> in the instructions page. <br />
+                                            8. While creating a <b>BOQ sheet</b>, no fields should be left <b>blank</b>.<br />
+                                            9. The <b>serial number</b> must be in a <b>numeric</b> and <b>synchronized</b> sequence manner. <br />
+                                            10.The <b>BOQ spreadsheet</b> must be in <b>Excel workbook format</b>(.xlsx). <br />
+                                            11.<b>Serial Number</b>,<b>Item Service</b> and <b>Description</b> is a mandatory field. <br />
+                                            12.Please do not change the <b>formating</b> of <b>BOQ file</b>. <br />
+                                            13.<b>Description</b> length should be <b>200</b> characters only.
+                                        </span>
+                                    </div>
+                                    <table class="table table-striped table-bordered table-hover display-none" id="temptableForExcelDataparameterBOQ"></table>
                                 </div>
                             </div>
 
@@ -1196,8 +1370,36 @@
                 </tr>
             </thead>
         </table>
+        <table id="tbleRFQdetailsBoq" class="table table-striped table-bordered table-hover hide">
+            <thead>
+                <tr id="TrheadBoq">
+
+                    <th data-style="Mandatory">SrNo</th>
+                    <th data-style="NonMandatory">ItemCode</th>
+                    <th data-style="Mandatory">ItemService</th>
+                    <th data-style="Mandatory">Description</th>
+                    <th data-style="NonMandatory">TargetPrice</th>
+                    <th data-style="NonMandatory">Remarks</th>
+                    <th data-style="Mandatory">Quantity</th>
+                    <th data-style="Mandatory">UOM</th>
+                    <th data-style="Mandatory">DeliveryLocation</th>
+
+                </tr>
+            </thead>
+        </table>
 
         <table class="table table-bordered" id="tblUOM"></table>
+        <table class="table table-bordered" id="tblBoqSummary">
+            <thead>
+                <tr>
+                    <th data-style="Mandatory">SrNo</th>
+                    <th data-style="Mandatory">Item</th>
+                    <th data-style="Mandatory">Sheetname</th>
+
+
+                </tr>
+            </thead>
+        </table>
 
     </div>
     <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
@@ -1243,7 +1445,7 @@
                             <p class="ppolicy-text"><b>Step-2: "RFQ Parameters"–</b>In this step user needs to fill item/product details against which vendors will be quoting prices/rates. Individual columns with their relevance are given below.</p>
                             <ul>
                                 <li><b>Short Name: </b>Specify short name of product/services, which would be visible at the time of bid participation.</li>
-                                <li><b>Target Price: </b>Unit price, which we expect to reach as a result of RFQ process, this is a non-mandatory field.</li>
+                                <li><b>Target/Budget Price: </b>Unit price, which we expect to reach as a result of RFQ process, this is a non-mandatory field.</li>
                                 <li><b>Quantity: </b>Specify number of units required.</li>
                                 <li><b>UOM: </b>Select unit of measurement like number, kg, liter etc.</li>
                                 <li><b>Description: </b>Detailed information about the product/services.</li>
@@ -1283,10 +1485,10 @@
 
                     <div class="portlet-body form">
                         <form action="#" id="ChangePasswordfrm" class="form-horizontal" role="form">
-                            <div id="divalertSerach" class="alert alert-success divalertstyle" >
+                            <div id="divalertSerach" class="alert alert-success divalertstyle">
                                 <span id="spansuccess1serach"></span>
                             </div>
-                            <div id="divalerterrsearch" class="alert alert-danger divalertstyle" >
+                            <div id="divalerterrsearch" class="alert alert-danger divalertstyle">
                                 <span id="spanerterrserach"></span>
                             </div>
                             <div class="form-body">
@@ -1295,7 +1497,7 @@
                                     <div class="col-lg-4">
                                         <div class="input-icon">
                                             <i class="fa fa-search"></i>
-                                            <input type="text" class="form-control input-circle" placeholder="Search By Category" autocomplete="off" id="txtsearchcat" name="txtsearchcat" onkeyup="replaceQuoutesFromString(this)"/>
+                                            <input type="text" class="form-control input-circle" placeholder="Search By Category" autocomplete="off" id="txtsearchcat" name="txtsearchcat" onkeyup="replaceQuoutesFromString(this)" />
 
                                         </div>
                                     </div>
@@ -1303,7 +1505,7 @@
                                     <div class="col-lg-4">
                                         <div class="input-icon">
                                             <i class="fa fa-search"></i>
-                                            <input type="text" class="form-control input-circle" placeholder="Search By Vendor" autocomplete="off" id="txtsearchvendor" name="txtsearchvendor" onkeyup="replaceQuoutesFromString(this)"/>
+                                            <input type="text" class="form-control input-circle" placeholder="Search By Vendor" autocomplete="off" id="txtsearchvendor" name="txtsearchvendor" onkeyup="replaceQuoutesFromString(this)" />
 
                                         </div>
                                     </div>
@@ -1323,7 +1525,7 @@
                                             <i class="fa fa-search"></i>
                                             <input type="text" id="txtSearchalldetails" placeholder="Search ..." class="form-control  input-circle" />
                                         </div>
-                                        <div class="scroller scroller400"  data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                                        <div class="scroller scroller400" data-always-visible="1" data-rail-visible="1" data-rail-color="lightseagreen" data-handle-color="red">
                                             <div class="table-scrollable">
                                                 <table class="table table-striped table-bordered table-hover" id="tbldetails"></table>
                                             </div>
@@ -1346,9 +1548,9 @@
 
         jQuery(document).ready(function () {
             callPagejs('Moment.js,ClosedBidQuotation.js');
-            
+
         });
-       
+
 
     </script>
 </body>

@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Sourcing Portal</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="Cache-Control: no-cache, no-store, must-revalidate" />;
+    <meta content="" name="description" />
+    <meta content="" name="author" />
+    <!--Google Fonts-->
+    <link rel="stylesheet" href="assets/CustomCSS/googlefont.css">
+    <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          type="text/css" />
+    <link href="assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet"
+          type="text/css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/clockface/css/clockface.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker3.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
+    <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
+    <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
+          rel="stylesheet" type="text/css" />
+
+    <link href="assets/global/css/components-md.css" rel="stylesheet" />
+    <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
+    <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
+    <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet"
+          type="text/css" />
+
+    <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
+
+    <link rel="shortcut icon" href="../favicon.ico" />
+    <!-- Page Specific CSS-->
+    <link rel="stylesheet" href="assets/CustomCSS/common.css">
+    <link rel="stylesheet" href="assets/CustomCSS/eRFQApproverAnalysis.css">
+
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+
+    <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/quick-sidebar.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/aes.js"></script>
+
+    <script src="assets/scripts/jquery.floatThead.js"></script>
+    <script src="assets/CustomJS/TypeaHead.js"></script>
+    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+    <script src="assets/CustomJS/Common.js"></script>
+
+
+</head>
+<body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
+    <div class="page-header navbar navbar-fixed-top">
+        <div class="page-header-inner">
+            <div class="page-logo">
+                <a class="navbar-brand" href="index.html">
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
+                </a>
+                <div class="menu-toggler sidebar-toggler hide">
+                </div>
+            </div>
+            <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+            </a>
+            <div class="top-menu">
+                <ul class="nav navbar-nav pull-right">
+                    <li class="dropdown dropdown-user">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                           data-hover="dropdown" data-close-others="true">
+                            <b>
+                                <span id="spanUserName" class="username username-hide-on-mobile">
+                                </span>
+                            </b><i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
+                            <li><a href="javascript:;" id="logOut_btn"><i class="fa fa-key"></i>Log Out </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix">
+    </div>
+    <div class="page-container nodisplay">
+        <div class="page-sidebar-wrapper">
+            <div class="page-sidebar navbar-collapse collapse">
+                <ul class="page-sidebar-menu page-sidebar-menu-closed" data-auto-scroll="true" data-slide-speed="200" id="ulMain">
+                    <li class="sidebar-toggler-wrapper">
+                        <div class="sidebar-toggler">
+                        </div>
+                    </li>
+                    <br />
+                </ul>
+            </div>
+        </div>
+        <div class="page-content-wrapper">
+            <div class="page-content">
+                <div class="page-bar">
+                    <ul class="page-breadcrumb">
+                        <li>
+                            <i class="fa fa-home"></i><a href="index.html">Home</a> <i class="fa fa-angle-right">
+                            </i>
+                        </li>
+                        <li><a href="javascript:;">Reports</a> <i class="fa fa-angle-right"></i></li>
+                        <li><a href="javascript:;">RFQ Comparative Analysis</a> </li>
+                    </ul>
+                </div>
+                <!-- END PAGE HEADER-->
+                <!-- BEGIN PAGE CONTENT-->
+                <!--Bug 479 abheedev-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="portlet box green-haze">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    <i class="fa fa-reorder"></i> RFQ Comparative Analysis
+                                </div>
+                                <div class="tools">
+                                    <a id="showHide" href="javascript:;" class="collapse"></a>
+                                </div>
+                            </div>
+                            <div id="entryForm" class="portlet-body form">
+                                <form action="#" class="form-horizontal" id="RFIRFQREport">
+                                    <div class="alert alert-danger display-hide text-center">
+                                        <span id="error"></span>
+                                    </div>
+                                    <div class="alert alert-success display-hide">
+                                        <span id="success"></span>
+                                    </div>
+                                    <div class="form-body">
+
+                                        <div class="form-group">
+                                            <div class="Controlgroup col-md-12">
+                                                <label class="col-md-3 control-label" id="lblsbjct">
+                                                    Select RFQ
+                                                </label>
+                                                <div class="col-md-8 paddingleft7px">
+                                                    <input type="hidden" id="hdnRfqID" value='0' />
+
+                                                    <input type="text" class="form-control margin0auto" id="txtrfirfqsubject"
+                                                           name="txtrfirfqsubject"
+                                                           data-provide="typeahead" autocomplete="off" maxlength="120"
+                                                           placeholder="Subject" onkeyup="replaceQuoutesFromString(this)" />
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label class="col-md-3 control-label" id="Label1">
+                                                    Select RFQ Version
+                                                </label>
+                                                <div class="col-md-3 marginleft5px">
+                                                    <select class="form-control marginleftneg11px" id="ddlrfqVersion" name="ddlrfqVersion"></select>
+                                                </div>
+                                                <div class="col-md-5 txtalignleft">
+                                                    <button type="submit" id="btnrfirfq" class="btn yellow"> Go</button>
+                                                    <button onclick="downloadexcel()" class="btn blue tooltips display-none" type="button" id="btnExport" data-placement="left" data-original-title="Export to Excel">
+                                                        Export
+                                                    </button>
+                                                    <button class="btn green tooltips display-none" type="button" id="btnPDF" data-placement="left" data-original-title="Export to PDF">
+                                                        PDF
+                                                    </button>
+                                                    <input type="hidden" id="hdnUserID" />
+                                                    <button type="button" class="btn red display-none" id="cancl_btn">
+                                                        Cancel RFQ
+                                                    </button>
+                                                    <button type="button" class="btn blue display-none" onclick="fnDownloadZip()" id="btnDownloadFile">
+                                                        Download
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="portlet-body display-none" id="displayTable">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        RFQ Subject:
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <label id="RFQSubject" class="control-label txtalignleft">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+
+                                                    <label class="control-label col-md-4">
+                                                        Ref No.:
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <label id="refno" class="control-label txtalignleft">
+                                                        </label>
+
+                                                    </div>
+                                                    <input type="hidden" id="texttblid" value="" />
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        RFQ Configured By:
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <label id="lblrfqconfigby" class="control-label txtalignleft">
+
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+
+                                                    <label class="control-label col-md-4">
+                                                        RFQ Start Date:
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <label id="RFQStartDate" class="control-label txtalignleft">
+                                                        </label>
+
+                                                    </div>
+                                                    <input type="hidden" id="texttblid" value="" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        Currency:
+                                                    </label>
+                                                    <div class="col-md-1">
+                                                        <label id="Currency" class="control-label txtalignleft">
+                                                        </label>
+
+                                                    </div>
+                                                    <label class="control-label col-md-3 txtalignleft">
+                                                        Conversion Rate:
+                                                    </label>
+                                                    <div class="col-md-1">
+                                                        <label id="ConversionRate" class="control-label txtalignleft">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        RFQ Deadline:
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <label id="RFQDeadline" class="control-label txtalignleft">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        Term &amp; Condition:
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <label class="control-label">
+                                                            <a href="javascript:;" id="TermCondition" onclick="DownloadFile(this)" class="txtleftnone">
+
+                                                            </a>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-md-6" id="div_bidopendate">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-4">
+                                                        Bid Open Date/Time:
+                                                    </label>
+                                                    <div class="col-md-8">
+                                                        <label id="lblrfqopendate" class="control-label txtalignleft">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="control-label col-md-2">
+                                                        RFQ Description:
+                                                    </label>
+                                                    <div class="col-md-10">
+                                                        <label id="RFQDescription" class="control-label txtalignleft">
+                                                        </label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-element-step hide" id="div_statusbar">
+                                            <div class="row step-no-background step-line container" id="divappendstatusbar">
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md-12 display-none" id="displayComparativetabs">
+                            <div class="tabbable-line boxless tabbable-reversed">
+                                <ul class="nav nav-tabs">
+                                    <li class="active">
+                                        <a href="#tab_0" data-toggle="tab"> Commercial Comparison </a>
+                                    </li>
+                                    <li>
+                                        <a href="#tab_1" data-toggle="tab"> Technical Comparison </a>
+                                    </li>
+                                    <li>
+                                        <a href="#tab_2" data-toggle="tab">RFQ Attachments </a>
+                                    </li>
+
+
+                                    <l1 class="pull-right"><a href="#FwdCommercialApprover" class="btn  blue hide" id="btn_commercial" data-toggle="modal" data-backdrop="static" data-keyboard="false"> Commercial Approval</a></l1>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tab_0">
+                                        <div class="table-scrollable">
+                                            <table id="tbldetails" class="table table-striped table-bordered table-hover hide">
+                                                <thead>
+                                                    <tr>
+                                                        <th>RFQ Subject</th>
+                                                        <th>Description</th>
+                                                        <th>Currency</th>
+                                                        <th>Conversion Rate</th>
+                                                        <th>RFQ Deadline</th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                            <table class="table table-striped table-bordered table-hover display-none" id="tblRFQComprative">
+                                                <thead></thead>
+                                            </table>
+                                            <table class="table table-striped table-bordered table-hover display-none" id="tblRFQComprativeBoq">
+                                                <thead>
+                                                    <tr style="background: #f5f5f5; color:light black;"><th class="hide">&nbsp;</th><th>SrNo</th><th>Short Name</th><th>Quantity</th><th>UOM</th><th>Target Price</th><th colspan="4" style="text-align:center;"><a onclick="getSummary('6269','0')" href="javascript:;" style="color:#2474f6; text-decoration:underline;">Vendor A (Person A,M:5555555555)</a></th><th colspan="4" style="text-align:center;"><a onclick="getSummary('6270','0')" href="javascript:;" style="color:#2474f6; text-decoration:underline;">Vendor B (Vendor B,M:9985456854)</a></th><th>Delivery Location</th></tr>
+                                                    <tr style="background: #f5f5f5; color:light black;"><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th colspan="4" style="text-align:center;">Submission Time:28 Nov 2022, 11:37</th><th colspan="4" style="text-align:center;">Submission Time:28 Nov 2022, 11:38</th><th>&nbsp;</th></tr>
+                                                    <tr style="background: #f5f5f5; color:light black;">
+
+                                                        <th>&nbsp;</th>
+                                                        <th>&nbsp;</th>
+                                                        <th>&nbsp;</th>
+                                                        <th>&nbsp;</th>
+                                                        <th>&nbsp;</th>
+                                                        <th>
+                                                            Unit Price  - R0<br>
+                                                            (Without GST)
+                                                        </th>
+                                                        <th>
+                                                            Unit Price<br>
+                                                            (Without GST)
+                                                        </th>
+                                                        <th>
+                                                            Unit Price (With<br>
+                                                            GST)
+                                                        </th>
+                                                        <th>
+                                                            Amount<br>
+                                                            (Exc. GST)
+                                                        </th>
+                                                        <th>
+                                                            Unit Price  - R0<br>
+                                                            (Without GST)
+                                                        </th>
+                                                        <th>
+                                                            Unit Price<br>
+                                                            (Without GST)
+                                                        </th>
+                                                        <th>
+                                                            Unit Price (With<br>
+                                                            GST)
+                                                        </th>
+                                                        <th>
+                                                            Amount<br>
+                                                            (Exc. GST)
+                                                        </th>
+
+
+                                                        <th>&nbsp;</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                    <tr>
+                                                        <td data-toggle="collapse" data-target="#demo12" class="accordion-toggle"><button type="button" class="btn btn-default btn-xs" onclick="fncollapse('hvbcicon')"><span class="glyphicon glyphicon-plus" id="hvbcicon"></span></button></td>
+                                                        <td><b>HVAC</b></td>
+                                                        <td></td>
+                                                        <td>Number</td>
+                                                        <td>75,000</td>
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                        <td>Delhi</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="14" class="hiddenRow">
+                                                            <div class="accordian-body collapse" id="demo12">
+                                                                <table class="table table-condensed table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td data-toggle="collapse" class="accordion-toggle" data-target="#demo120" style="width:1%!important"><button type="button" class="btn btn-default btn-xs" onclick="fncollapse('highsideicon')"><span class="glyphicon glyphicon-plus" id="highsideicon"></span></button> HIGH SIDE AIR CONDITIONING WORKS</td>
+
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td colspan="9" class="hiddenRow">
+                                                                                <div class="accordian-body collapse" id="demo120" style="padding-left:20px!important">
+                                                                                    <table class="table table-condensed table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0">
+                                                                                        <thead>
+                                                                                            <tr>
+                                                                                                <th style="width:20%!important">Item Name</th>
+                                                                                                <th style="width:5%!important" class="hide">UOM</th>
+                                                                                                <th style="width:5%!important">Quantity</th>
+                                                                                                <th style="width:10%!important">Currency</th>
+                                                                                                <th style="width:20%!important">Target Price</th>
+                                                                                                <th style="width:20%!important">Last Invoice Price</th>
+                                                                                                <th style="width:20%!important" class="hide">Location</th>
+
+
+                                                                                            </tr>
+
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                            <tr>
+                                                                                                <td>CTI APPROVED COOLING TOWER: </td>
+                                                                                                <td class="hide">Number</td>
+                                                                                                <td></td>
+                                                                                                <td>INR</td>
+                                                                                                <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
+                                                                                                <td>61,000</td>
+                                                                                                <td>0</td>
+                                                                                                <td class="hide">New delhi</td>
+
+
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <!-- <td style="width:1%!important"><button class="btn btn-default btn-xs" onclick="fncollapse('pumpseticon')"><span class="glyphicon glyphicon-plus" id="pumpseticon"></span></button></td>-->
+                                                                                                <td data-toggle="collapse" class="accordion-toggle" data-target="#demo1217" style="width:15%!important" colspan="10">
+                                                                                                    <button type="button" class="btn btn-default btn-xs" onclick="fncollapse('pumpseticon')"><span class="glyphicon glyphicon-plus" id="pumpseticon"></span></button> PUMPSETS:(VERTICAL INLINE / BACK PULLOUT)
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td colspan="9" class="hiddenRow">
+                                                                                                    <div class="accordian-body collapse" id="demo1217" style="padding-left:20px!important">
+                                                                                                        <table class="table table-condensed table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0">
+                                                                                                            <thead>
+                                                                                                                <tr>
+                                                                                                                    <th style="width:20%!important">Item Name</th>
+                                                                                                                    <th style="width:5%!important" class="hide">UOM</th>
+                                                                                                                    <th style="width:5%!important">Quantity</th>
+                                                                                                                    <th style="width:10%!important">Currency</th>
+                                                                                                                    <th style="width:20%!important">Target Price</th>
+                                                                                                                    <th style="width:20%!important">Last Invoice Price</th>
+                                                                                                                    <th style="width:20%!important" class="hide">Location</th>
+
+                                                                                                                </tr>
+
+                                                                                                            </thead>
+                                                                                                            <tbody>
+                                                                                                                <tr>
+                                                                                                                    <td>Primary Chilled Water Pumps with DOL/Star-Delta (cost of starter will be part of  panel) </td>
+                                                                                                                    <td class="hide">Number</td>
+                                                                                                                    <td>10</td>
+                                                                                                                    <td>INR</td>
+                                                                                                                    <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
+                                                                                                                    <td>1,000</td>
+                                                                                                                    <td>0</td>
+                                                                                                                    <td class="hide">New delhi</td>
+
+
+                                                                                                                </tr>
+                                                                                                                <tr>
+                                                                                                                    <td>Secondary Chilled Water Pumps with VFD (cost of VFD will be part of  micro processor controller) </td>
+                                                                                                                    <td class="hide">Number</td>
+                                                                                                                    <td>10</td>
+                                                                                                                    <td>INR</td>
+                                                                                                                    <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
+                                                                                                                    <td>2,000</td>
+                                                                                                                    <td>0</td>
+
+                                                                                                                    <td class="hide">New delhi</td>
+
+
+                                                                                                                </tr>
+                                                                                                                <tr>
+                                                                                                                    <td>Condenser Water Pumps with VFD (cost of VFD will be part of  panel) </td>
+                                                                                                                    <td class="hide">Number</td>
+                                                                                                                    <td>10</td>
+                                                                                                                    <td>INR</td>
+                                                                                                                    <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
+                                                                                                                    <td>3,000</td>
+                                                                                                                    <td>0</td>
+
+                                                                                                                    <td class="hide">New delhi</td>
+
+
+                                                                                                                </tr>
+                                                                                                            </tbody>
+                                                                                                        </table>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <!-- <td style="width:1%!important"><button class="btn btn-default btn-xs" onclick="fncollapse('doubleicon')"><span class="glyphicon glyphicon-plus" id="doubleicon"></span></button></td>-->
+                                                                                                <td data-toggle="collapse" class="accordion-toggle" data-target="#demo122" style="width:15%!important" colspan="10"><button type="button" class="btn btn-default btn-xs" onclick="fncollapse('doubleicon')"><span class="glyphicon glyphicon-plus" id="doubleicon"></span></button> DOUBLE SKIN CABINET TYPE AIR HANDLING UNITS WITH EC FANS </td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td colspan="9" class="hiddenRow">
+                                                                                                    <div class="accordian-body collapse" id="demo122" style="padding-left:15px!important">
+                                                                                                        <table class="table table-condensed table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0">
+                                                                                                            <thead>
+                                                                                                                <tr>
+                                                                                                                    <th style="width:20%!important">Item Name</th>
+                                                                                                                    <th style="width:5%!important" class="hide">UOM</th>
+                                                                                                                    <th style="width:5%!important">Quantity</th>
+                                                                                                                    <th style="width:10%!important">Currency</th>
+                                                                                                                    <th style="width:20%!important">Target Price</th>
+                                                                                                                    <th style="width:20%!important">Last Invoice Price</th>
+                                                                                                                    <th style="width:20%!important" class="hide">Location</th>
+
+                                                                                                                </tr>
+
+                                                                                                            </thead>
+                                                                                                            <tbody>
+                                                                                                                <tr>
+                                                                                                                    <td>AHU - Type 1 Serving Main Electrical Room</td>
+                                                                                                                    <td class="hide">Number</td>
+                                                                                                                    <td>10</td>
+                                                                                                                    <td>INR</td>
+                                                                                                                    <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
+                                                                                                                    <td>100</td>
+                                                                                                                    <td>10</td>
+
+                                                                                                                    <td class="hide">New delhi</td>
+
+
+                                                                                                                </tr>
+                                                                                                            </tbody>
+                                                                                                        </table>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            <tr>
+
+                                                                                                <td>AIR SEPEARATOR</td>
+                                                                                                <td class="hide">Number</td>
+                                                                                                <td>10</td>
+                                                                                                <td class="fit">INR</td>
+                                                                                                <td>1,400</td>
+                                                                                                <td>100</td>
+
+                                                                                                <td class="hide">Delhi</td>
+
+                                                                                            </tr>
+
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td data-toggle="collapse" data-target="#demo1" class="accordion-toggle"><button type="button" class="btn btn-default btn-xs" onclick="fncollapse('cpuicon')"><span class="glyphicon glyphicon-plus" id="cpuicon"></span></button></td>
+                                                        <td><b>Electrical</b></td>
+                                                        <td></td>
+                                                        <td>Number</td>
+                                                        <td>16,000</td>
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                        <td>Banglore</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td colspan="14" class="hiddenRow">
+                                                            <div class="accordian-body collapse" id="demo1" style="padding-left:15px!important">
+                                                                <table class="table table-condensed table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0">
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td data-toggle="collapse" class="accordion-toggle" data-target="#demo10"><button type="button" class="btn btn-default btn-xs" onclick="fncollapse('mothericon')"><span class="glyphicon glyphicon-plus" id="mothericon"></span></button> HT Panel Supply</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td colspan="9" class="hiddenRow">
+                                                                                <div class="accordian-body collapse" id="demo10" style="padding-left:15px!important">
+                                                                                    <table class="table table-condensed table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0">
+
+                                                                                        <tbody>
+                                                                                            <tr>
+                                                                                                <td data-toggle="collapse" class="accordion-toggle" data-target="#demo100"><button type="button" class="btn btn-default btn-xs" onclick="fncollapse('htpanelicon')"><span class="glyphicon glyphicon-plus" id="htpanelicon"></span></button> HT Panel</td>
+
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td colspan="9" class="hiddenRow">
+                                                                                                    <div class="accordian-body collapse" id="demo100" style="padding-left:15px!important">
+                                                                                                        <table class="table table-condensed table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0">
+                                                                                                            <thead>
+                                                                                                                <tr>
+                                                                                                                    <th style="width:20%!important">Item Name</th>
+                                                                                                                    <th style="width:5%!important" class="hide">UOM</th>
+                                                                                                                    <th style="width:5%!important">Quantity</th>
+                                                                                                                    <th style="width:10%!important">Currency</th>
+                                                                                                                    <th style="width:20%!important">Target Price</th>
+                                                                                                                    <th style="width:20%!important">Last Invoice Price</th>
+                                                                                                                    <th style="width:20%!important" class="hide">Location</th>
+
+                                                                                                                </tr>
+
+                                                                                                            </thead>
+                                                                                                            <tbody>
+                                                                                                                <tr>
+                                                                                                                    <td>11 KV 630A - Ring Main Unit -3 Module Outdoor (Full DAS) </td>
+                                                                                                                    <td class="hide">Number</td>
+                                                                                                                    <td>10</td>
+                                                                                                                    <td>INR</td>
+                                                                                                                    <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
+                                                                                                                    <td>1,400</td>
+                                                                                                                    <td>100</td>
+
+                                                                                                                    <td class="hide">New delhi</td>
+
+
+                                                                                                                </tr>
+                                                                                                                <tr>
+                                                                                                                    <td>11KV HT Metering Cubicle (Relavent CT & PT ratings will be considered against power sanction letter From BESCOM) PT shall be drawout type</td>
+                                                                                                                    <td class="hide">Number</td>
+                                                                                                                    <td>10</td>
+                                                                                                                    <td>INR</td>
+                                                                                                                    <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
+                                                                                                                    <td>1,200</td>
+                                                                                                                    <td>10</td>
+
+                                                                                                                    <td class="hide">CP</td>
+
+
+                                                                                                                </tr>
+                                                                                                                <tr>
+                                                                                                                    <td>11 kV - 3 Module HT Panel - Outdoor</td>
+                                                                                                                    <td class="hide">Number</td>
+                                                                                                                    <td>10</td>
+                                                                                                                    <td>INR</td>
+                                                                                                                    <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
+                                                                                                                    <td>1,0000</td>
+                                                                                                                    <td>0</td>
+                                                                                                                    <td class="hide">Nehru Place</td>
+
+
+                                                                                                                </tr>
+                                                                                                            </tbody>
+                                                                                                        </table>
+
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td data-toggle="collapse" class="accordion-toggle" data-target="#demo1019"><button type="button" class="btn btn-default btn-xs" onclick="fncollapse('Transsuppicon')"><span class="glyphicon glyphicon-plus" id="Transsuppicon"></span></button> Transformer supply</td>
+
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td colspan="9" class="hiddenRow">
+                                                                                <div class="accordian-body collapse" id="demo1019" style="padding-left:20px!important">
+                                                                                    <table class="table table-condensed table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0">
+                                                                                        <thead>
+                                                                                            <tr>
+                                                                                                <th style="width:20%!important">Item Name</th>
+                                                                                                <th style="width:5%!important" class="hide">UOM</th>
+                                                                                                <th style="width:5%!important">Quantity</th>
+                                                                                                <th style="width:10%!important">Currency</th>
+                                                                                                <th style="width:20%!important">Target Price</th>
+                                                                                                <th style="width:20%!important">Last Invoice Price</th>
+                                                                                                <th style="width:20%!important" class="hide">Location</th>
+
+                                                                                            </tr>
+
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                            <tr>
+                                                                                                <td>2500 kVA  - 11/0.415KV -Outdoor Type</td>
+                                                                                                <td class="hide">Number</td>
+                                                                                                <td>10</td>
+                                                                                                <td>INR</td>
+                                                                                                <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
+                                                                                                <td>1,0000</td>
+                                                                                                <td>0</td>
+
+                                                                                                <td class="hide">New delhi</td>
+
+
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <!-- <td style="width:1%!important"><button class="btn btn-default btn-xs" onclick="fncollapse('typetesticon')"><span class="glyphicon glyphicon-plus" id="typetesticon"></span></button></td>-->
+                                                                                                <td data-toggle="collapse" class="accordion-toggle" data-target="#demo102" style="width:15%!important" colspan="10"> <button type="button" class="btn btn-default btn-xs" onclick="fncollapse('typetesticon')"><span class="glyphicon glyphicon-plus" id="typetesticon"></span></button> Type Tests - For One Transformer</td>
+                                                                                            </tr>
+                                                                                            <tr>
+                                                                                                <td colspan="9" class="hiddenRow">
+                                                                                                    <div class="accordian-body collapse" id="demo102" style="padding-left:15px!important">
+                                                                                                        <table class="table table-condensed table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0">
+                                                                                                            <thead>
+                                                                                                                <tr>
+                                                                                                                    <th style="width:20%!important">Item Name</th>
+                                                                                                                    <th style="width:5%!important" class="hide">UOM</th>
+                                                                                                                    <th style="width:5%!important">Quantity</th>
+                                                                                                                    <th style="width:10%!important">Currency</th>
+                                                                                                                    <th style="width:20%!important">Target Price</th>
+                                                                                                                    <th style="width:20%!important">Last Invoice Price</th>
+                                                                                                                    <th style="width:20%!important" class="hide">Location</th>
+
+                                                                                                                </tr>
+
+                                                                                                            </thead>
+                                                                                                            <tbody>
+                                                                                                                <tr>
+                                                                                                                    <td>Temperature Rise Test </td>
+                                                                                                                    <td class="hide">Number</td>
+                                                                                                                    <td>10</td>
+                                                                                                                    <td>INR</td>
+                                                                                                                    <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
+                                                                                                                    <td>1,8000</td>
+                                                                                                                    <td>2,000</td>
+
+
+                                                                                                                    <td class="hide">New delhi</td>
+
+
+                                                                                                                </tr>
+                                                                                                                <tr>
+                                                                                                                    <td>Lightning Impulse Test</td>
+                                                                                                                    <td class="hide">Number</td>
+                                                                                                                    <td>10</td>
+                                                                                                                    <td>INR</td>
+                                                                                                                    <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
+                                                                                                                    <td>1,8000</td>
+                                                                                                                    <td>2,000</td>
+
+                                                                                                                    <td class="hide">New delhi</td>
+
+                                                                                                                </tr>
+                                                                                                                <tr>
+                                                                                                                    <td>Partial-discharge measuremen</td>
+                                                                                                                    <td class="hide">Number</td>
+                                                                                                                    <td>10</td>
+                                                                                                                    <td>INR</td>
+                                                                                                                    <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
+                                                                                                                    <td>1,8000</td>
+                                                                                                                    <td>2,000</td>
+
+                                                                                                                    <td class="hide">New delhi</td>
+
+
+                                                                                                                </tr>
+                                                                                                            </tbody>
+                                                                                                        </table>
+                                                                                                    </div>
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+
+                                                                                </div>
+                                                                            </td>
+                                                                        </tr>
+
+
+                                                                    </tbody>
+                                                                </table>
+
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+
+
+
+                                                    <!--<tr><td class="hide">6269</td><td>1</td><td class="hide">2033</td><td></td><td>Scrap 1</td><td class="text-right">2</td><td>Kilogram</td><td class="text-right">50000</td><td class="VInitialwithoutGST text-right">15,000</td><td class="text-right" id="unitrate00" style="color: blue!important;">15,000<span class="hovertext" data-hover="Vendor A"><i class="fa fa-info-circle fa-fw" aria-hidden="true"></i></span></td><td class="VendorPriceNoTax text-right">17,250</td><td class="VendorPriceWithTax  text-right">30,000</td><td class="VInitialwithoutGST text-right">18,000</td><td class="text-right" id="unitrate01" style="color: red!important;">18,000</td><td class="VendorPriceNoTax text-right">18,000</td><td class="VendorPriceWithTax  text-right">36,000</td><td>SANASWADI,TAL-SHIRUR, DIST-PUNE</td></tr><tr><td class="hide">6269</td><td>2</td><td class="hide">2034</td><td></td><td>1000-SCRAP-SS TURNING</td><td class="text-right">3</td><td>Kilogram</td><td class="text-right">25000</td><td class="VInitialwithoutGST text-right">20,000</td><td class="text-right" id="unitrate10" style="color: blue!important;">20,000<span class="hovertext" data-hover="Vendor A"><i class="fa fa-info-circle fa-fw" aria-hidden="true"></i></span></td><td class="VendorPriceNoTax text-right">23,000</td><td class="VendorPriceWithTax  text-right">60,000</td><td class="VInitialwithoutGST text-right">26,000</td><td class="text-right" id="unitrate11" style="color: red!important;">26,000</td><td class="VendorPriceNoTax text-right">26,000</td><td class="VendorPriceWithTax  text-right">78,000</td><td>SANASWADI,TAL-SHIRUR, DIST-PUNE</td></tr><tr><td class="hide">6269</td><td>3</td><td class="hide">2035</td><td></td><td>1000-SCRAP-MS</td><td class="text-right">4</td><td>Kilogram</td><td class="text-right">30000</td><td class="VInitialwithoutGST text-right">21,000</td><td class="text-right" id="unitrate20" style="color: blue!important;">21,000<span class="hovertext" data-hover="Vendor A"><i class="fa fa-info-circle fa-fw" aria-hidden="true"></i></span></td><td class="VendorPriceNoTax text-right">24,150</td><td class="VendorPriceWithTax  text-right">84,000</td><td class="VInitialwithoutGST text-right">23,500</td><td class="text-right" id="unitrate21" style="color: red!important;">23,500</td><td class="VendorPriceNoTax text-right">23,500</td><td class="VendorPriceWithTax  text-right">94,000</td><td>SANASWADI,TAL-SHIRUR, DIST-PUNE</td></tr>-->
+                                                    <tr><td colspan="5" style="text-align:center;"><b>Total</b></td><td id="totBoxinitialwithoutgst6269" class="text-right"></td><td id="totBoxwithoutgst6269" class="text-right">1,74,000 &nbsp;<a class="lambdafactor hide" style="cursor:pointer" onclick="editwithgstlambdafactor(174000,0,6269)"><i class="fa fa-pencil"></i></a></td><td id="totBoxwithgst6269" class="text-right">2,00,100</td><td id="totBoxTax6269" class="text-right">1,74,000</td><td id="totBoxinitialwithoutgst6270" class="text-right"></td><td id="totBoxwithoutgst6270" class="text-right">2,08,000 &nbsp;<a class="lambdafactor hide" style="cursor:pointer" onclick="editwithgstlambdafactor(208000,1,6270)"><i class="fa fa-pencil"></i></a></td><td id="totBoxwithgst6270" class="text-right">2,08,000</td><td id="totBoxTax6270" class="text-right">2,08,000</td><td class="text-right"></td></tr>
+                                                    <tr><td colspan="2" style="text-align:center;"><b>Loading Factor</b></td><td colspan="3" style="text-align:center;"><b>Loaded Price (Without GST)</b></td><td style="text-align:right;" id="LFactor6269">0</td><td id="LoadingF6269" style="text-align:right;">1,74,000</td><td>&nbsp;</td><td>&nbsp;</td><td style="text-align:right;" id="LFactor6270">0</td><td id="LoadingF6270" style="text-align:right;">2,08,000</td><td colspan="3">&nbsp;</td></tr>
+
+                                                    <tr><td colspan="5" style="text-align:center;"><b>Loading Reason</b></td><td colspan="4">&nbsp;</td><td colspan="5">&nbsp;</td></tr>
+                                                    <tr><td colspan="5" style="text-align:center;"><b>Commercial Rank (Without GST)</b></td><td colspan="4" style="text-align:center;color: blue!important;">L1</td><td colspan="4" style="text-align:center;color: blue!important;">L2</td><td>&nbsp;</td></tr>
+                                                    <tr><td colspan="5" style="text-align:center;"><b>Package Value where supplier is L1</b></td><td>&nbsp;</td><td id="withoutGSTL1Rank6269" class="text-right">1,74,000</td><td id="withGSTL1Rank6269" class="text-right">2,00,100</td><td id="totL1Rank6269" class="text-right">1,74,000</td><td>&nbsp;</td><td id="withoutGSTL1Rank6270" class="text-right">0</td><td id="withGSTL1Rank6270" class="text-right">0</td><td id="totL1Rank6270" class="text-right">0</td><td>&nbsp;</td></tr>
+                                                    <tr><td colspan="10">&nbsp;</td></tr>
+                                                    <tr style="background: #f5f5f5; color:light black;"><td><b>SrNo</b></td><td colspan="4"><b>Other Commercial Terms</b></td><td colspan="4" style="text-align:center;"><a onclick="getSummary('6269','0')" style="color:#2474f6; text-decoration:underline;"><b>Vendor A<b></b></b></a></td><td colspan="4" style="text-align:center;"><a onclick="getSummary('6270','0')" style="color:#2474f6; text-decoration:underline;"><b>Vendor B<b></b></b></a></td><td><b>Our Requirement</b></td></tr>
+                                                    <tr><td>1</td><td colspan="4">Offer Validity</td><td colspan="4">Vendor A</td><td colspan="4">okay</td><td colspan="7"></td> </tr>
+                                                    <tr><td>2</td><td colspan="4">Bank Guarantee (ABG/PBG)</td><td colspan="4">Vendor A</td><td colspan="4">None</td><td colspan="7"></td> </tr>
+                                                    <tr><td>3</td><td colspan="4">null</td><td colspan="4">Vendor A</td><td colspan="4">Required</td><td colspan="7"></td> </tr>
+                                                    <tr><td colspan="5"><b>Vendor Remarks :</b></td><td colspan="4" class="text-left">Vendor AVendor A</td><td colspan="4">&nbsp;</td><td colspan="7">&nbsp;</td> </tr>
+                                                    <tr id="reinvitationTRRem"><td colspan="5"><b>Re-Invitation Remarks</b></td><td colspan="4" class="text-center">Not Invited</td><td colspan="4" class="text-center">Not Invited</td><td colspan="7">&nbsp;</td> </tr>
+                                                </tbody>
+                                            </table>
+                                            <br />
+                                            <table class="table table-striped table-bordered table-hover hide" id="tblCommercialApproval">
+                                                <thead></thead>
+                                            </table>
+                                            <!--abheedev bug 274-->
+                                            <div id="table_wrapper">
+                                                <table id="tbldetailsExcel" class="table table-striped table-bordered table-hover hide" border="1">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>RFQ Subject</th>
+                                                            <th>Event ID</th>
+
+                                                            <th>Currency</th>
+                                                            <th>Conversion Rate</th>
+                                                            <th>RFQ Start Date</th>
+                                                            <th>RFQ Deadline</th>
+                                                            <th>RFQ Description</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+
+
+                                                <table class="table table-striped table-bordered table-hover hide" border="1" id="tblRFQComprativeForExcel">
+                                                    <thead></thead>
+                                                </table>
+                                                <table class="table table-striped table-bordered table-hover hide" border="1" id="tblRFQComprativeForExcelQ">
+                                                    <thead></thead>
+                                                </table>
+                                                <table class="table table-striped table-bordered table-hover nodisplay" id="tblCommercialApprovalprev" border="1">
+                                                    <thead></thead>
+                                                </table>
+                                            </div>
+                                            <table class="table table-striped table-bordered table-hover display-none" id="tblRFQComprativetest"></table>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-offset-5 col-md-2">
+                                                <a href='javascript:;' class="btn green" id="btn-reInvite" onclick="checkForSelectedVendors()">Submit</a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab_1">
+                                        <div class="table-scrollable">
+
+                                            <table class="table table-striped table-bordered table-hover" id="tblRFQComprativeQ">
+                                                <thead></thead>
+                                            </table>
+
+                                            <table class="table table-striped table-bordered table-hover display-none" id="tblRFQComprativetestQ"></table>
+
+
+                                        </div>
+
+
+                                    </div>
+                                    <div class="tab-pane" id="tab_2">
+                                        <div class="table-scrollable">
+
+                                            <table class="table table-striped table-bordered table-hover" id="tblAttachments">
+                                                <thead></thead>
+                                            </table>
+
+
+
+
+                                        </div>
+
+
+                                    </div>
+
+
+
+                                    <div class="tab-pane" id="tab_4">
+                                        <div class="table-scrollable">
+
+                                            <table class="table table-striped table-bordered table-hover" id="editTableLoadingFactor">
+                                                <thead></thead>
+                                            </table>
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-10">
+                            <div class="display-none" id="displayVendorTable">
+
+
+                                <div class="table-scrollable">
+                                    <table class="table table-striped table-bordered table-hover" id="tblVendorSummary">
+                                        <thead>
+                                            <tr>
+                                                <th>Vendor Name</th>
+                                                <th>Status</th>
+                                                <th>Response Date & Time</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Help
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="modal-body modalbody2">
+                        <p class="ppolicy-text">
+                            The purpose of RFI/RFQ report is to see the details of RFI/RFQ responses received from vendors using our sourcing portal.
+                            The report can be taken out using one or many filtration parameters.
+                            The filter parameters are Report for (RFI/RFQ), Vendor Name, Subject, from/to dates.
+                        </p>
+                        <p class="ppolicy-text">
+                            Click on go button will display the result in grid having RFI/RFQ Reference No., Deadline Date, Vendor Name and Subject.
+
+                        </p>
+                        <p class="ppolicy-text">Clicking RFI/RFQ Reference No. will open a screen showing detailed information of RFI/RFQ.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="modalreInviteDate" class="modal fade " tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog ">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="alert alert-danger display-hide text-center" id="error_deaddate">
+                        <span id="errorinviteversion"></span>
+                    </div>
+                    <form action="#" class="form-horizontal" id="frmReInvite">
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                RFQ Deadline:
+                            </label>
+                            <div class="col-md-8">
+
+                                <div class="input-group date form_datetime form_datetime bs-datetime">
+                                    <input type="text" size="16" class="form-control" id="txtextendDate" name="txtextendDate" autocomplete="off" readonly>
+                                    <span class="input-group-btn">
+                                        <button class="btn default date-set" type="button">
+                                            <i class="fa fa-calendar"></i>
+                                        </button>
+                                    </span>
+                                </div>
+
+                                <div id="daterr"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
+                                Remarks:
+                            </label>
+                            <div class="col-md-8">
+
+                                <textarea id="txtReInviteRemarks" name="txtReInviteRemarks" class="form-control" rows="4" tabindex='2'></textarea>
+                            </div>
+                        </div>
+                        <div class="form-actions fluid">
+                            <div class="col-md-offset-3 col-md-6 txtaligncentre">
+                                <button id="SaveExsist" type="submit" class="btn green">
+                                    Submit
+                                </button>
+                                <button id="resetfrmReInvite" type="reset" class="btn yellow" data-dismiss="modal">
+                                    Cancel
+                                </button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </form>
+
+
+
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+    <div id="modalcancelremarks" class="modal fade " tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog ">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i> Cancellation Reason
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <form action="#" class="form-horizontal" id="frmRemarksCancel">
+                        <div class="form-body">
+                            <div class="alert alert-danger" id="msgErrorL1">
+                                <span id="spnerror"> </span>
+                            </div>
+                            <div class="alert alert-success" id="msgSuccessL1">
+                                <span id=""> </span>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-2">
+                                    Remarks:
+                                </label>
+                                <div class="col-md-10">
+
+                                    <textarea id="txtRemarks" name="txtRemarks" class="form-control" rows="4" tabindex='2'></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions fluid">
+                            <div class="col-md-offset-3 col-md-6 txtaligncentre">
+                                <button id="SaveExsist" type="submit" class="btn green">
+                                    Submit
+                                </button>
+                                <button id="btnclose" type="reset" class="btn yellow" data-dismiss="modal">
+                                    Cancel
+                                </button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </form>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-footer">
+        <div class="page-footer-inner">
+            2016 &copy; <a href="http://www.agileapt.com" target="_blank">AgileApt Solutions Pvt. Ltd.</a>
+        </div>
+        <div class="scroll-to-top">
+            <i class="icon-arrow-up"></i>
+        </div>
+
+    </div>
+    <div id="editloadingfactor" class="modal fade  bs-modal-md" tabindex="-1" aria-hidden="true">
+        <!--abheedev loading factor start-->
+        <div class="modal-dialog modal-md width800px">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Edit Loading Factor
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-body">
+                            <div class="alert alert-danger" id="msgErrorL1">
+                                <span id=""> </span>
+                            </div>
+                            <div class="alert alert-success" id="msgSuccessL1">
+                                <span id=""> </span>
+                            </div>
+
+                            <div class="row">
+
+                                <input type="hidden" value="0" id="hdngstprice" />
+                                <input type="hidden" value="0" id="hdnvendorid" />
+
+                                <div class="col-md-12">
+
+                                    <!--abheedev bug 462 start-->
+
+                                    <div class="col-md-4 xyz">
+                                        <label class="control-label">
+                                            <b> Reason of Loading Factor</b>
+                                        </label>
+
+                                        <input type="text" class="form-control " id="txtloadingfactorreason" name="txtloadingfactorreason" maxlength="200" autocomplete="off" />
+
+                                    </div>
+
+                                    <div class="col-md-3 xyz">
+                                        <label class="control-label">
+                                            <b> Loading Factor Type</b>
+                                        </label>
+
+                                        <select class="form-control" id="ddlLFType">
+                                            <!--   <option value="">Select All</option>-->
+                                            <option value="A" id="optA">Absolute</option>
+                                            <option value="P">Percentage</option>
+                                            <!--  <option value="3" id="opPauseval" class="hide">PAUSE</option>-->
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3 xyz">
+                                        <label class="control-label">
+                                            <b> Loading Factor<span class="required"> *</span></b>
+                                        </label>
+
+                                        <input type="text" class="form-control" id="txtloadingfactor" name="txtloadingfactor" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" autocomplete="off" /><!--onkeyup="thousands_separators_input(this)"-->
+
+                                    </div>
+
+
+                                    <div class="col-md-2 xyz margin30pxauto ">
+                                        <button type="button" id="Addbtn1" onclick="addLoadingFactor()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                        <!-- abheedev bug 462-->
+                                        <button type="button" id="Editbtn1" onclick="updateLoadingFactor()" class="btn btn-primary nodisplay">Modify</button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <div class="table-scrollable">
+                                        <!--abheedev bug 462-->
+                                        <table id="tblLoadingFactor" class="table table-striped table-bordered table-hover"></table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="row">
+                                            <div class="col-md-offset-11 col-md-9">
+                                                <!--abheedev bug 462-->
+                                                <button type="button" class="btn yellow bgcolor1" onclick="updloadingfactor()"> Submit</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--abheedev loading factor end-->
+    <div id="FwdCommercialApprover" class="modal fade  bs-modal-md" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Forward To Commercial Approver
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <form class="form-horizontal" role="form" id="frmcommMapApprover">
+                        <div class="form-body">
+                            <div class="alert alert-danger" id="msgErrorcommApp">
+                                <span id=""> </span>
+                            </div>
+                            <div class="alert alert-success" id="msgSuccesscommApp">
+                                <span id=""> </span>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-md-3">
+                                    Remarks:
+                                </label>
+                                <div class="col-md-9">
+
+                                    <textarea id="txtfwdToCommApproverrem" name="txtfwdToCommApproverrem" class="form-control" rows="4" tabindex='2' onkeyup="replaceQuoutesFromString(this)"></textarea>
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-offset-4 col-md-12">
+                                            <button type="submit" class="btn green"> Submit</button>
+                                            <button id="brnaddapprovers" type="button" class="btn yellow-saffron" onclick="fnOpenPopupApprover('Report')">
+                                                Add Approvers &nbsp;<i class="fa fa-user"></i>
+                                            </button>
+                                            <button id="btnbackAdmin" type="button" class="btn yellow" onclick="CloseForwardpopup()">
+                                                Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="MapTechnicalApprover" class="modal fade  bs-modal-lg" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog  modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Map Technical Approver
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <form class="form-horizontal" role="form" id="frmMapApprover">
+                        <div class="form-body">
+                            <div class="alert alert-danger" id="msgErrorApp">
+                                <span id=""> </span>
+                            </div>
+                            <div class="alert alert-success" id="msgSuccessApp">
+                                <span id=""> </span>
+                            </div>
+
+                            <div class="form-group">
+                                <input id="hdnApproverID" value="0" type="hidden" />
+                                <input id="hdnAppEmailIDID" value="0" type="hidden" />
+                                <div class="col-md-12">
+                                    <label class="control-label col-md-2">
+                                        Approver<span class="required"> *</span>
+                                    </label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control pull-right" placeholder="Select Approver" id="txtApprover"
+                                               data-provide="typeahead" autocomplete="off" name="txtApprover" />
+                                    </div>
+                                    <label class="control-label col-md-3">
+                                        Show Quoted Price<span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-2">
+                                        <select class="form-control" id="drp_ShowPrice" name="drp_ShowPrice">
+                                            <option value="N">No</option>
+                                            <option value="Y">Yes</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1 pull-right">
+                                        <button type="button" id="Addbtn1" onclick="addApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group" id="divapprover">
+                                <div class="col-md-12">
+                                    <table class="table table-striped table-bordered table-hover" id="tblapprovers"></table>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-offset-8 col-md-9">
+                                            <button type="button" class="btn green" id="btnTechSubmit" disabled onclick="MapApprover()"> Submit for Technical Approval</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="addapprovers" class="modal fade bs-modal-md" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="row">
+                <div class="col-md-12"></div>
+                <div class="portlet box green-haze">
+
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-reorder"></i>Add Approvers
+                        </div>
+                        <div class="tools">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body form">
+                        <div class="alert alert-success" id="successapp">
+                            <span id="spansuccessapp"> </span>
+                        </div>
+                        <div class="alert alert-danger" id="diverrorapp">
+                            <span id="spandangerapp"> </span>
+                        </div>
+                        <form action="#" id="frmRFQApprover" class="form-horizontal" role="form">
+
+                            <div class="form-body">
+                                <input type="hidden" id="hdnRFQApproverID" value="0" />
+                                <input type="hidden" id="hdnRFQApproverEmailID" value="0" />
+                                <input type="hidden" id="hdnRFQApproverusername" value="0" />
+
+                                <div class="row">
+                                    <label class="col-md-3 control-label">
+                                        Select Approvers
+                                    </label>
+                                    <label class="col-md-7">
+                                        <input type="text" class="form-control pull-right" placeholder="Select Approver" id="txtApproverRFQ"
+                                               data-provide="typeahead" autocomplete="off" name="txtApproverRFQ" />
+                                    </label>
+                                    <div class="col-md-1 ">
+                                        <button type="button" id="Addbtn1" onclick="addRFQApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-striped table-bordered table-hover" id="tblRFQapprovers"></table>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-offset-4 col-md-9">
+                                                <button type="submit" class="btn green" id="btnrfqapproversubmit">Submit</button>
+                                                <button type="button" class="btn yellow-crusta" onclick="fnclosepopupApprovers('Report')" id="btnClose">Close</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6"> </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script nonce='erfqanna'>
+
+        jQuery(document).ready(function () {
+            callPagejs('eRFQCommon.js,eRFQAnalysis.js');
+
+        });
+        function fncollapse(id) {
+            $('#' + id).toggleClass("glyphicon-plus glyphicon-minus")
+        }
+    </script>
+    <!-- END JAVASCRIPTS -->
+</body>
+
+<!-- END BODY -->
+</html>

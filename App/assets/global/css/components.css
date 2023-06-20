@@ -858,7 +858,7 @@ Bootstrap Alerts
 
 .alert-danger {
   background-color: #f2dede;
-  border-color: #ebccd1;
+  border-color: #F4364C;
   color: #a94442;
 }
 .alert-danger hr {
@@ -2301,7 +2301,7 @@ label {
   color: #a94442;
 }
 .has-error .form-control {
-  border-color: #ebccd1;
+  border-color: #F4364C;
   -webkit-box-shadow: none;
   box-shadow: none;
 }
@@ -2312,7 +2312,7 @@ label {
 }
 .has-error .input-group-addon {
   color: #a94442;
-  border-color: #ebccd1;
+  border-color: #F4364C;
   background-color: #f2dede;
 }
 .has-error .form-control-feedback {
@@ -3034,18 +3034,18 @@ Customized Bootstrap Panels
 }
 
 .panel-danger {
-  border-color: #ebccd1;
+  border-color: #F4364C;
 }
 .panel-danger > .panel-heading {
   color: #a94442;
   background-color: #f2dede;
-  border-color: #ebccd1;
+  border-color: #F4364C;
 }
 .panel-danger > .panel-heading + .panel-collapse .panel-body {
-  border-top-color: #ebccd1;
+  border-top-color: #F4364C;
 }
 .panel-danger > .panel-footer + .panel-collapse .panel-body {
-  border-bottom-color: #ebccd1;
+  border-bottom-color: #F4364C;
 }
 
 /***
@@ -10886,26 +10886,35 @@ Transparent Button
    overflow-y: auto;
  
  }
- .mt-0{
-    margin-top:0 !important;
+.mt-0 {
+    margin-top: 0 !important;
 }
+
 .acordion_tabs .accordion .panel .panel-title .accordion-toggle {
     display: flex;
     align-items: center;
     padding: 3px 15px;
 }
+
 .acordion_tabs .outer_wrap {
     margin-left: auto;
     display: flex;
     align-items: center;
 }
-.acordion_tabs .outer_wrap .cs_chart {
-    line-height: 0;
-    margin-left:10px;
-}
+
+    .acordion_tabs .outer_wrap .cs_chart {
+        line-height: 0;
+        margin-left: 10px;
+    }
+
 .cs_progress_color {
     background-color: #e25010;
 }
+
+.top__spacing {
+    height: 34px;
+}
+
 .error_mess {
     color: red;
     margin-top: 0px;

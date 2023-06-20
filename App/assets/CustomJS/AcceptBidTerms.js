@@ -1,4 +1,4 @@
-﻿jQuery('#chkIsAccepted').click(function () {
+jQuery('#chkIsAccepted').click(function () {
     if (jQuery('#chkIsAccepted').is(':checked') == true) {
         $('#btnContinue').attr("disabled", false);
     }
@@ -38,6 +38,7 @@ function acceptterms() {
     }
 }
 function acceptBidTerms() {
+    var x = isAuthenticated();
 	var vendorID = 0;
     if (sessionStorage.getItem('ContactEmailID') == 'null' || sessionStorage.getItem('ContactEmailID') == '') {
         vendorID = sessionStorage.getItem('UserID');
@@ -51,7 +52,7 @@ function acceptBidTerms() {
         "VendorID": vendorID,
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     };
-   alert(JSON.stringify(acceptTerms))
+ 
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BidTermsConditions/AcceptBidTerms/",
         type: "POST",
@@ -71,7 +72,7 @@ function acceptBidTerms() {
 }
 
 function acceptBidTermsRFIRFQ() {
-   
+    var x = isAuthenticated();
     var vendorID = 0;
     
         vendorID = sessionStorage.getItem('VendorId');

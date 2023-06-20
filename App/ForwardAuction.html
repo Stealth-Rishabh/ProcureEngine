@@ -1,8 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
+      <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -812,7 +813,7 @@
                             <li><b>Contract duration: </b>Enter the time frame of the contract signed.</li>
                             <li><b>Dispatch Location: </b>Name of the location where item/services need to be delivered.</li>
                             <li><b>Ceiling/MIN. Price: </b>Enter the MIN price for bid above which vendors will not be able to quote.</li>
-                            <li><b>Mask from vendor: </b>By checking this Bid start price will not be visible to vendors.</li>
+                            <li><b>Mask from vendor: </b>By checking this Start Unit Price will not be visible to vendors.</li>
                             <li><b>Increament on: </b>You can define the increament in price would be based on Amount or percentage.</li>
                         </ul><br />
                         <p class="ppolicy-text"><b>Step-3: "Invite Participants"–</b>User can select participants whom he wants to send invite to participate in bid. User can search from the list by typing participants name in search text box or he can check select all in case he wants to invite all available vendors.</p>
@@ -857,7 +858,7 @@
     <script src="assets/CustomJS/ForwardAuction.js" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function () {
-		 Pageloaded()
+            Pageloaded()
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
                  window.location = sessionStorage.getItem('MainUrl');

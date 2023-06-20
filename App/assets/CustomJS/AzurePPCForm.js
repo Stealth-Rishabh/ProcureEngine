@@ -40,7 +40,7 @@ $('.maxlength').maxlength({
 });
 
 function fetchReguestforQuotationDetails() {
-
+    var x = isAuthenticated();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
@@ -217,7 +217,7 @@ function frmAzurePPCForm() {
                             label: "Yes",
                             className: "btn-success",
                             callback: function () {
-
+                                $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                                 if ($('#hdnPPCID').val() == "0") {
                                     // fnSendActivitytoCommercialForPPCApp();
                                     var encrypdataAZ = fnencrypt("RFQID=" + RFQID + "&RFQSubject=" + RFQSubject)
@@ -248,7 +248,7 @@ function frmAzurePPCForm() {
                             label: "Yes",
                             className: "btn-success",
                             callback: function () {
-
+                                $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                                 window.close();
 
                             }

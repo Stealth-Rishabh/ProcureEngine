@@ -29,7 +29,7 @@
     fetchBidType();// for serach vendor
     FetchUOM(sessionStorage.getItem("CustomerID"));
     BindNoExtensions('txtBidExtension');
- 
+
     setTimeout(function () {
         $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
         $('#txtConversionRate').val(1);
@@ -43,22 +43,22 @@ $("#cancelBidBtn").hide();
 
 $('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
 jQuery(document).ready(function () {
-    $("#txtCeilingPrice,#txtquantitiy,#txtmaxquantitiy,#txtminquantitiy,#txtminimumdecreament,#txtStartingPrice,#txtPriceReductionAmount").inputmask({
-        alias: "decimal",
-        rightAlign: false,
-        groupSeparator: ",",
-        radixPoint: ".",
-        autoGroup: true,
-        integerDigits: 40,
-        digitsOptional: true,
-        allowPlus: false,
-        allowMinus: false,
-        clearMaskOnLostFocus: true,
-        supportsInputType: ["text", "tel", "password"],
-        'removeMaskOnSubmit': true,
-        autoUnmask: true
-
-    });
+    /* $("#txtCeilingPrice,#txtquantitiy,#txtmaxquantitiy,#txtminquantitiy,#txtminimumdecreament,#txtStartingPrice,#txtPriceReductionAmount").inputmask({
+         alias: "decimal",
+         rightAlign: true,
+         groupSeparator: ",",
+         radixPoint: ".",
+         autoGroup: true,
+         integerDigits: 40,
+         digitsOptional: true,
+         allowPlus: false,
+         allowMinus: false,
+         clearMaskOnLostFocus: true,
+         supportsInputType: ["text", "tel", "password"],
+         'removeMaskOnSubmit': true,
+         autoUnmask: true
+ 
+     });*/
 });
 
 var _BidID;
@@ -74,7 +74,7 @@ if (window.location.search) {
     }
     else {
         sessionStorage.setItem('CurrentBidID', _BidID)
-       
+
         fetchFrenchBidDetails();
         sessionStorage.setItem('_savedDraft', 'Y')
     }
@@ -110,6 +110,7 @@ function CheckmaxQuantity(id) {
     }
 }
 function checkminmax(id) {
+    thousands_separators_input(id)
     $('#spnmaxq').addClass('hide');
     $('#spnminq').addClass('hide');
     $('.maxq').addClass('has-success').removeClass('has-error');
@@ -451,13 +452,13 @@ function FetchCurrency(CurrencyID) {
 }
 var vCount = 0;
 function Check(event, vname, vendorID) {
-   
+
     if ($(event).closest("span#spanchecked").attr('class') == 'checked') {
         $(event).closest("span#spanchecked").removeClass("checked")
 
     }
     else {
-       
+
         vCount = vCount + 1;
         //var EvID = event.id;
         $(event).prop("disabled", true);
@@ -480,7 +481,7 @@ function Check(event, vname, vendorID) {
 }
 
 function removevendor(trid, trprevid, vid) {
-   
+
     vCount = vCount - 1;
     $('#' + trid.id).remove()
     $('#' + trprevid.id).remove()
@@ -506,7 +507,7 @@ function removevendor(trid, trprevid, vid) {
 
 var status;
 function ValidateVendor() {
-  
+
     status = "false";
     var i = 0;
 
@@ -530,7 +531,7 @@ function ValidateVendor() {
 }
 
 $("#chkAll").click(function () {
-   
+
     if ($("#chkAll").is(':checked') == true) {
         $('#divvendorlist').find('span#spandynamic').hide();
         $('table#tblvendorlist').closest('.inputgroup').removeClass('has-error');
@@ -538,7 +539,7 @@ $("#chkAll").click(function () {
         jQuery('#selectedvendorlistsPrev> tbody').empty()
         vCount = 0;
         $("#tblvendorlist> tbody > tr").each(function (index) {
-           
+
             $(this).find("span#spanchecked").addClass("checked");
             $('#chkvender' + vCount).prop("disabled", true);
             var vendorid = $('#chkvender' + vCount).val()
@@ -552,7 +553,7 @@ $("#chkAll").click(function () {
     }
     else {
         $("#tblvendorlist> tbody > tr").each(function (index) {
-           
+
             $(this).find("span#spanchecked").removeClass("checked");
             vCount = 0;
             $('input[name="chkvender"]').prop('disabled', false);
@@ -603,7 +604,7 @@ function fetchRegisterUser() {
 
         },
         error: function (xhr, status, error) {
-    
+
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -635,7 +636,10 @@ jQuery.validator.addMethod(
     //"Value cannot be {0}"
     "This field is required."
 );
+$.validator.addMethod("numberWithComma", function (value, element) {
 
+    return this.optional(element) || /^(\d+(,\d{2})*(,\d{3})*(\.\d{1,2})?|\d+(\.\d{1,2})?)$/.test(value);
+}, "Please enter a valid number with a comma separator");
 var FormWizard = function () {
 
     return {
@@ -664,7 +668,7 @@ var FormWizard = function () {
                         required: true,
                         minlength: 1,
                         maxlength: 3,
-                        number: true,
+                        numberWithComma: true,
                         notEqualTo: 0
                     },
 
@@ -682,7 +686,7 @@ var FormWizard = function () {
 
                     txtConversionRate: {
                         required: true,
-                        number: true,
+                        numberWithComma: true,
                         minlength: 1,
                         maxlength: 7//3
                     },
@@ -710,7 +714,7 @@ var FormWizard = function () {
                         required: true
                     },
                     txtquantitiy: {
-                        number: true,
+                        numberWithComma: true,
                         required: true,
                         notEqualTo: 0
                     },
@@ -722,35 +726,35 @@ var FormWizard = function () {
                     },
                     txtminquantitiy: {
                         required: true,
-                        number: true,
+                        numberWithComma: true,
                         // notEqualTo: 0
                     },
                     txtmaxquantitiy: {
                         required: true,
-                        number: true,
+                        numberWithComma: true,
                         notEqualTo: 0
                     },
                     txtCeilingPrice: {
                         required: true,
-                        number: true,
+                        numberWithComma: true,
                         notEqualTo: 0
                     },
                     txtedelivery: {
 
                     },
                     txtminimumdecreament: {
-                        number: true,
+                        numberWithComma: true,
                         notEqualTo: 0
                     },
                     drpdecreamenton: {
 
                     },
                     txttargetprice: {
-                        number: true,
+                        numberWithComma: true,
                         maxlength: 10
                     },
                     txtlastinvoiceprice: {
-                        number: true,
+                        numberWithComma: true,
                         maxlength: 10
                     }
                 },
@@ -922,7 +926,7 @@ var FormWizard = function () {
                         }
 
                     } else if (index == 2) {
-                     
+
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
                             $('#spandanger').html('please Configure Bid parameters..')
                             $('.alert-danger').show();
@@ -1042,13 +1046,20 @@ function ConfigureBidInsfrenchTab1() {
 
             var this_row = $(this);
             approvers = approvers + $.trim(this_row.find('td:eq(4)').html()) + '~' + $.trim(this_row.find('td:eq(3)').html()) + '#';
-
         })
     }
     var StartDT = new Date();
     if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
-        StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+        StartDT = $('#txtbidDate').val().replace('-', '');
     }
+    let StTime =
+        new Date(StartDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
 
 
     var Tab1Data = {
@@ -1057,13 +1068,11 @@ function ConfigureBidInsfrenchTab1() {
         "BidTypeID": 9,
         "BidForID": parseInt($("#ddlAuctiontype option:selected").val()),
         "BidDuration": parseInt(bidDuration),
-        //"BidSubject": jQuery("#txtBidSubject").val(),
         "BidSubject": _cleanString,
         //"BidDescription": jQuery("#txtbiddescription").val(),
         "BidDescription": _cleanString2,
-        "BidDate": StartDT,
-        //"BidDate": jQuery("#txtbidDate").val(),
-        //"BidTime": jQuery("#txtbidTime").val(),
+        //"BidDate": StartDT,
+        "BidDateSt": ST,
         "CurrencyID": parseInt(jQuery("#dropCurrency option:selected").val()),
         "ConversionRate": parseFloat(jQuery("#txtConversionRate").val()),
         "TermsConditions": TermsConditionFileName,
@@ -1127,8 +1136,8 @@ function ConfigureBidInsfrenchTab1() {
 }
 
 function ConfigureBidInsfrenchTab2() {
-   
-  
+
+
     var targetPrice;
     var lastInvoiceprice = 0, i = 0;
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -1179,7 +1188,7 @@ function ConfigureBidInsfrenchTab2() {
 
     };
 
-  
+
     jQuery.ajax({
 
         type: "POST",
@@ -1191,7 +1200,7 @@ function ConfigureBidInsfrenchTab2() {
         data: JSON.stringify(Tab2data),
         dataType: "json",
         success: function (data) {
-           
+
             if (parseInt(data) > 0) {
                 return true;
             }
@@ -1220,7 +1229,7 @@ function ConfigureBidInsfrenchTab2() {
     jQuery.unblockUI();
 }
 function ConfigureFrenchVendorsave() {
-   
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var InsertQuery = '';
     $("#selectedvendorlistsPrev> tbody > tr").each(function (index) {
@@ -1422,7 +1431,7 @@ $('#addapprovers').on("hidden.bs.modal", function () {
     $('#frmapproverbody').addClass('hide')
     $('#txtpreApproverBid').val('')
     sessionStorage.setItem('hdnpreApproverid', '0');
-   
+
     fetchFrenchBidDetails();
 })
 function fnclosepopupApprovers() {
@@ -1449,6 +1458,7 @@ $("#txtbidDate").change(function () {
 
 
 function InsUpdProductSevices() {
+
     //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />Please Wait...</h5>' });
     if (form.valid() == true) {
         var st = "true"
@@ -1482,7 +1492,7 @@ function InsUpdProductSevices() {
             }
             else if (parseInt(removeThousandSeperator($('#txtminimumdecreament').val())) > parseInt(removeThousandSeperator($('#txtCeilingPrice').val()))) {
                 error.show();
-                $('#spandanger').html('Minimum Increment should be less than Bid start price.');
+                $('#spandanger').html('Minimum Increment should be less than Start Unit Price.');
                 Metronic.scrollTo(error, -200);
                 error.fadeOut(3000);
                 return false;
@@ -1498,7 +1508,7 @@ function InsUpdProductSevices() {
             }
             else if (parseInt($('#txtminimumdecreament').val()) > parseFloat(20 * (removeThousandSeperator($('#txtCeilingPrice').val())) / 100) && $("#drpdecreamenton option:selected").val() == "A") {
                 error.show();
-                $('#spandanger').html('Minimum Increment should be less than 20% of Bid Start Price.');
+                $('#spandanger').html('Minimum Increment should be less than 20% of Start Unit Price.');
                 Metronic.scrollTo(error, -200);
                 error.fadeOut(3000);
                 return false;
@@ -1562,7 +1572,7 @@ function InsUpdProductSevices() {
 
             if (parseInt(removeThousandSeperator($('#txtminimumdecreament').val())) > parseInt(removeThousandSeperator($('#txtCeilingPrice').val()))) {
                 error.show();
-                $('#spandanger').html('Minimum increment should be less than Bid start price.');
+                $('#spandanger').html('Minimum increment should be less than Start Unit Price.');
                 Metronic.scrollTo(error, -200);
                 error.fadeOut(3000);
                 return false;
@@ -1578,7 +1588,7 @@ function InsUpdProductSevices() {
             }
             else if (parseInt($('#txtminimumdecreament').val()) > parseFloat(20 * (removeThousandSeperator($('#txtCeilingPrice').val())) / 100) && $("#drpdecreamenton option:selected").val() == "A") {
                 error.show();
-                $('#spandanger').html('Minimum Increament should be less than 20% of Bid Start Price.');
+                $('#spandanger').html('Minimum Increament should be less than 20% of Start Unit Price.');
                 Metronic.scrollTo(error, -200);
                 error.fadeOut(3000);
                 return false;
@@ -1611,7 +1621,7 @@ function InsUpdProductSevices() {
                         Metronic.scrollTo(error, -200);
                         error.fadeOut(3000);
                         jQuery.unblockUI();
-                        // resetfun();
+
                         return false;
                     }
                     else {
@@ -1637,64 +1647,98 @@ var PriceDetails = [];
 var rowAppItems = 0, rowAppItemsrno = 0;
 
 function ParametersQuery() {
-    if (jQuery("#tblServicesProduct >tbody >tr ").length >= 1) {
-        $('#spandanger').html('You can not add more than one item for French Auction.');
-        //$(".alert-danger").find("span").html('').html('You can not add more than one item for Dutch Auction.')
-        Metronic.scrollTo(error, -200);
-        $(".alert-danger").show();
-        $(".alert-danger").fadeOut(5000);
-        resetfun();
-        return false;
-    } else {
-        var num = 0, i = 0;
-        var maxinum = -1;
-        $("#tblServicesProduct tr:gt(0)").each(function () {
-            var this_row = $(this);
+    var num = 0, i = 0;
+    var maxinum = -1;
+    $("#tblServicesProduct tr:gt(0)").each(function () {
+        var this_row = $(this);
 
-            num = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
-            if (parseInt(num) > parseInt(maxinum)) {
-                maxinum = num;
-            }
-        });
+        num = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
+        if (parseInt(num) > parseInt(maxinum)) {
+            maxinum = num;
+        }
+    });
 
-        i = parseInt(maxinum) + 1;
-        var status = "";
-        var status = $('#checkmaskvendor option:selected').val();
-        // var ShowHlPrice = $('#showhlprice option:selected').val();
-        //var ShowStartPrice = $('#showstartprice option:selected').val();
+    i = parseInt(maxinum) + 1;
+    var status = "";
+    var status = $('#checkmaskvendor option:selected').val();
+    // var ShowHlPrice = $('#showhlprice option:selected').val();
+    //var ShowStartPrice = $('#showstartprice option:selected').val();
 
-        if ($("#txttargetprice").val() == null || $("#txttargetprice").val() == '') {
-            $("#txttargetprice").val('0')
-        }
-        if ($("#txtlastinvoiceprice").val() == null || $("#txtlastinvoiceprice").val() == '') {
-            $("#txtlastinvoiceprice").val('0')
-        }
-        if (!jQuery("#tblServicesProduct thead").length) {
-
-            jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:100px;'></th><th>S No</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>Min.Offered Quantity</th><th>Max.Offered Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
-            jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><button type="button" class="btn btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemname' + i + ' >' + $('#txtshortname').val() + '</td><td id=TP' + i + ' >' + $('#txttargetprice').val() + '</td><td id=quantity' + i + ' >' + $('#txtquantitiy').val() + '</td><td id=minquantity' + i + ' >' + $('#txtminquantitiy').val() + '</td><td id=maxquantity' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOM' + i + '>' + $('#dropuom').val() + '</td><td id=BSP' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendor' + i + '>' + status + '</td><td id=mininc' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=incon' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconval' + i + '>' + $("#drpdecreamenton").val() + '</td><td id=LIP' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhl' + i + '>' + $('#showhlprice').val() + '</td><td id=showstart' + i + '>' + $('#showstartprice').val() + '</td></tr>');
-        }
-        else {
-            jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><button type="button" class="btn  btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemname' + i + ' >' + $('#txtshortname').val() + '</td><td id=TP' + i + ' >' + $('#txttargetprice').val() + '</td><td id=quantity' + i + ' >' + $('#txtquantitiy').val() + '</td><td id=minquantity' + i + ' >' + $('#txtminquantitiy').val() + '</td><td id=maxquantity' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOM' + i + '>' + $('#dropuom').val() + '</td><td id=BSP' + i + ' >' + $('#txtCeilingPrice').val() + '</td><td id=maskvendor' + i + ' >' + status + '</td><td id=mininc' + i + ' >' + $('#txtminimumdecreament').val() + '</td><td id=incon' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconval' + i + '>' + $("#drpdecreamenton").val() + '</td><td id=LIP' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhl' + i + '>' + $('#showhlprice').val() + '</td><td id=showstart' + i + '>' + $('#showstartprice').val() + '</td></tr>');
-        }
-        $('#wrap_scroller').show();
-        if (!jQuery("#tblServicesProductPrev thead").length) {
-            jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>Min.Offered Quantity</th><th>Max.Offered Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
-            jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemnameprev' + i + '>' + $('#txtshortname').val() + '</td><td id=TPrev' + i + '>' + $('#txttargetprice').val() + '</td><td id=quantityprev' + i + '>' + $('#txtquantitiy').val() + '</td><td id=minquantityprev' + i + '>' + $('#txtminquantitiy').val() + '</td><td id=maxquantityprev' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOMprev' + i + '>' + $('#dropuom').val() + '</td><td id=BSPprev' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td id=minincprev' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=inconprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td id=inconvalprev' + i + ' class=hide>' + $("#drpdecreamenton").val() + '</td><td id=LIPprev' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhlprev' + i + '>' + $('#showhlprice').val() + '</td><td id=showstartprev' + i + '>' + $('#showstartprice').val() + '</td></tr>');
-        }
-        else {
-            jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemnameprev' + i + '>' + $('#txtshortname').val() + '</td><td id=TPprev' + i + '>' + $('#txttargetprice').val() + '</td><td id=quantityprev' + i + '>' + $('#txtquantitiy').val() + '</td><td id=minquantityprev' + i + '>' + $('#txtminquantitiy').val() + '</td><td id=maxquantityprev' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOMprev' + i + '>' + $('#dropuom').val() + '</td><td id=BSPprev' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td id=minincprev' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=inconprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td id=inconvalprev' + i + ' class=hide>' + $("#drpdecreamenton").val() + '</td><td id=LIPprev' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhlprev' + i + '>' + $('#showhlprice').val() + '</td><td id=showstartprev' + i + '>' + $('#showstartprice').val() + '</td></tr>');
-        }
-        $('#wrap_scrollerPrev').show();
-        rowAppItems = rowAppItems + 1;
-        rowAppItemsrno = rowAppItemsrno + 1;
-        resetfun()
-
+    if ($("#txttargetprice").val() == null || $("#txttargetprice").val() == '') {
+        $("#txttargetprice").val('0')
     }
+    if ($("#txtlastinvoiceprice").val() == null || $("#txtlastinvoiceprice").val() == '') {
+        $("#txtlastinvoiceprice").val('0')
+    }
+    if (!jQuery("#tblServicesProduct thead").length) {
+
+        jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:100px;'></th><th>S No</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>Min.Offered Quantity</th><th>Max.Offered Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
+        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><button type="button" class="btn btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemname' + i + ' >' + $('#txtshortname').val() + '</td><td id=TP' + i + ' >' + $('#txttargetprice').val() + '</td><td id=quantity' + i + ' >' + $('#txtquantitiy').val() + '</td><td id=minquantity' + i + ' >' + $('#txtminquantitiy').val() + '</td><td id=maxquantity' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOM' + i + '>' + $('#dropuom').val() + '</td><td id=BSP' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendor' + i + '>' + status + '</td><td id=mininc' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=incon' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconval' + i + '>' + $("#drpdecreamenton").val() + '</td><td id=LIP' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhl' + i + '>' + $('#showhlprice').val() + '</td><td id=showstart' + i + '>' + $('#showstartprice').val() + '</td></tr>');
+    }
+    else {
+        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><button type="button" class="btn  btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemname' + i + ' >' + $('#txtshortname').val() + '</td><td id=TP' + i + ' >' + $('#txttargetprice').val() + '</td><td id=quantity' + i + ' >' + $('#txtquantitiy').val() + '</td><td id=minquantity' + i + ' >' + $('#txtminquantitiy').val() + '</td><td id=maxquantity' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOM' + i + '>' + $('#dropuom').val() + '</td><td id=BSP' + i + ' >' + $('#txtCeilingPrice').val() + '</td><td id=maskvendor' + i + ' >' + status + '</td><td id=mininc' + i + ' >' + $('#txtminimumdecreament').val() + '</td><td id=incon' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconval' + i + '>' + $("#drpdecreamenton").val() + '</td><td id=LIP' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhl' + i + '>' + $('#showhlprice').val() + '</td><td id=showstart' + i + '>' + $('#showstartprice').val() + '</td></tr>');
+    }
+    $('#wrap_scroller').show();
+    if (!jQuery("#tblServicesProductPrev thead").length) {
+        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>Min.Offered Quantity</th><th>Max.Offered Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
+        jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemnameprev' + i + '>' + $('#txtshortname').val() + '</td><td id=TPrev' + i + '>' + $('#txttargetprice').val() + '</td><td id=quantityprev' + i + '>' + $('#txtquantitiy').val() + '</td><td id=minquantityprev' + i + '>' + $('#txtminquantitiy').val() + '</td><td id=maxquantityprev' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOMprev' + i + '>' + $('#dropuom').val() + '</td><td id=BSPprev' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td id=minincprev' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=inconprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td id=inconvalprev' + i + ' class=hide>' + $("#drpdecreamenton").val() + '</td><td id=LIPprev' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhlprev' + i + '>' + $('#showhlprice').val() + '</td><td id=showstartprev' + i + '>' + $('#showstartprice').val() + '</td></tr>');
+    }
+    else {
+        jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemnameprev' + i + '>' + $('#txtshortname').val() + '</td><td id=TPprev' + i + '>' + $('#txttargetprice').val() + '</td><td id=quantityprev' + i + '>' + $('#txtquantitiy').val() + '</td><td id=minquantityprev' + i + '>' + $('#txtminquantitiy').val() + '</td><td id=maxquantityprev' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOMprev' + i + '>' + $('#dropuom').val() + '</td><td id=BSPprev' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td id=minincprev' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=inconprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td id=inconvalprev' + i + ' class=hide>' + $("#drpdecreamenton").val() + '</td><td id=LIPprev' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhlprev' + i + '>' + $('#showhlprice').val() + '</td><td id=showstartprev' + i + '>' + $('#showstartprice').val() + '</td></tr>');
+    }
+
+    $('#wrap_scrollerPrev').show();
+    rowAppItems = rowAppItems + 1;
+    rowAppItemsrno = rowAppItemsrno + 1;
+    resetfun()
+    disableiteminput()
+    $('#spansuccess1').html('Item successfully added and you cannot add more than one item for French Auction.');
+    $(".alert-success").show();
+    $(".alert-success").fadeOut(5000);
+
+
+
     jQuery.unblockUI();
 }
+function disableiteminput() {
 
+    $("#txtshortname").prop("disabled", true);
+    $("#txtItemCode").prop("disabled", true);
+    $("#txttargetprice").prop("disabled", true);
+    $("#txtquantitiy").prop("disabled", true);
+    $("#txtlastinvoiceprice").prop("disabled", true);
+    $("#txtminquantitiy").prop("disabled", true);
+    $("#txtmaxquantitiy").prop("disabled", true);
+    $("#txtUOM").prop("disabled", true);
+    $("#txtCeilingPrice").prop("disabled", true);
+    $("#txtminimumdecreament").prop("disabled", true);
+    $("#drpdecreamenton").prop("disabled", true);
+    $("#showhlprice").prop("disabled", true);
+    $("#showstartprice").prop("disabled", true);
+    $("#add_or").prop("disabled", true);
+    $("#delete_or").prop("disabled", true);
+
+}
+function enableiteminput() {
+
+    $("#txtshortname").prop("disabled", false);
+    $("#txtItemCode").prop("disabled", false);
+    $("#txttargetprice").prop("disabled", false);
+    $("#txtquantitiy").prop("disabled", false);
+    $("#txtlastinvoiceprice").prop("disabled", false);
+    $("#txtminquantitiy").prop("disabled", false);
+    $("#txtmaxquantitiy").prop("disabled", false);
+    $("#txtUOM").prop("disabled", false);
+    $("#txtCeilingPrice").prop("disabled", false);
+    $("#txtminimumdecreament").prop("disabled", false);
+    $("#drpdecreamenton").prop("disabled", false);
+    $("#showhlprice").prop("disabled", false);
+    $("#showstartprice").prop("disabled", false);
+    $("#add_or").prop("disabled", false);
+    $("#delete_or").prop("disabled", false);
+}
 function editvalues(icount) {
+    enableiteminput()
     //sessionStorage.setItem('ClickedEditID', icount.id)
     Metronic.scrollTo($("body"), 200);
     $('#rowid').val(icount)
@@ -1723,6 +1767,8 @@ function editvalues(icount) {
 
 }
 function deleterow(rowid, rowidPrev) {
+
+    enableiteminput()
     $('#' + rowid.id).remove();
     $('#' + rowidPrev.id).remove();
     rowAppItems = rowAppItems - 1;
@@ -1740,6 +1786,8 @@ function deleterow(rowid, rowidPrev) {
             $.trim(this_row.find('td:eq(0)').html(i));
             i++;
         });
+
+
     }
 }
 function resetfun() {
@@ -1773,7 +1821,7 @@ function FetchUOM(CustomerID) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "UOM/fetchUOMCust/?CustomerID=" + CustomerID,
+        url: sessionStorage.getItem("APIPath") + "UOM/fetchUOMCust/?CustomerID=" + CustomerID + "&status=Y",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         dataType: "json",
@@ -1876,7 +1924,7 @@ jQuery("#txtSearch").keyup(function () {
 });
 var _bidType;
 function fetchFrenchBidDetails() {
-   
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchFrenchConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + sessionStorage.getItem('CurrentBidID'),
@@ -1887,7 +1935,7 @@ function fetchFrenchBidDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-            
+
             var str = '';
             var strp = '';
             var dtst = (fnConverToLocalTime(BidData[0].bidDetails[0].bidDate))
@@ -1913,7 +1961,7 @@ function fetchFrenchBidDetails() {
                 required: true,
                 minlength: 1,
                 maxlength: 3,
-                number: true
+                numberWithComma: true
             });
             if (BidData[0].bidDetails[0].bidForID == 81) {
                 $('#showhlprice').attr('disabled', false).val("N");
@@ -1987,8 +2035,8 @@ function fetchFrenchBidDetails() {
 
                 $('#wrap_scroller').show();
                 $('#wrap_scrollerPrev').show();
-                jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:150px !important;'></th><th>Item Code</th><th>Item/Name</th><th>Target Price</th><th>Quantity</th><th>Min. Offered Quantity</th><th>Max. Offered Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
-                jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th>Item Code</th><th>Item/Name</th><th>Target Price</th><th>Quantity</th><th>Min. Offered Quantity</th><th>Max. Offered Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
+                jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:150px !important;'></th><th>Item Code</th><th>Item/Name</th><th>Target Price</th><th>Quantity</th><th>Min. Offered Quantity</th><th>Max. Offered Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
+                jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th>Item Code</th><th>Item/Name</th><th>Target Price</th><th>Quantity</th><th>Min. Offered Quantity</th><th>Max. Offered Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
                 for (var i = 0; i < BidData[0].bidFrenchDetails.length; i++) {
 
                     var decrementon = ''
@@ -2004,9 +2052,9 @@ function fetchFrenchBidDetails() {
                 rowAppItemsrno = rowAppItemsrno + 1;
             }
             if (BidData[0].bidVendorDetails.length > 0) {
-              
+
                 for (var i = 0; i < BidData[0].bidVendorDetails.length; i++) {
-                  
+
                     vCount = vCount + 1;
                     jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + ',SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + ',' + BidData[0].bidVendorDetails[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
                     jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td></tr>')
@@ -2017,7 +2065,11 @@ function fetchFrenchBidDetails() {
                 jQuery('#selectedvendorlistsPrev').show()
 
             }
-           
+            if (jQuery("#tblServicesProduct >tbody >tr ").length >= 1) {
+                resetfun();
+                disableiteminput();
+            }
+
 
         },
         error: function (xhr, status, error) {
@@ -2129,12 +2181,24 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor) {
 }
 function Dateandtimevalidate(indexNo) {
     var StartDT = new Date();
+
     if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
-        StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+        //StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+        StartDT = $('#txtbidDate').val().replace('-', '');
 
     }
+
+    let StTime =
+        new Date(StartDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+
     var Tab1Data = {
-        "BidDate": StartDT
+        "BidDate": ST
     }
     //alert(JSON.stringify(Tab1Data));
     jQuery.ajax({
@@ -2278,12 +2342,12 @@ function hideshowDuration() {
 }
 
 var vendorsForAutoComplete;
-function fetchVendorGroup(categoryFor, vendorId) {
+function fetchVendorGroup(categoryFor, childId) {
 
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VendorID=" + vendorId,
+        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&ChildId=" + childId,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
@@ -2359,7 +2423,7 @@ jQuery("#txtSearch").typeahead({
         map = {};
         var username = "";
         jQuery.each(data, function (i, username) {
-            vName = username.participantName + ' (' + username.companyEmail + ')'
+            vName = username.participantName + ' (' + username.companyEmail + ')' + " " + (username.stateName).toUpperCase()
             map[vName] = username;
             usernames.push(vName);
         });
@@ -2369,18 +2433,22 @@ jQuery("#txtSearch").typeahead({
     },
     minLength: 2,
     updater: function (item) {
-        if (map[item].participantID != "0") {
+        if (map[item].associatedVendorID != "0") {
+            // sessionStorage.setItem('hdnVendorID', map[item].participantID);
+            //jQuery("#tblvendorlist > tbody").empty();
 
-            vName = map[item].participantName + '(' + map[item].companyEmail + ')';
 
-            var str = "<tr id=vList" + map[item].participantID + "><td class='hide'>" + map[item].participantID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\)\"; id=\"chkvender" + map[item].participantID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>";
+            vName = map[item].participantName + ' (' + map[item].companyEmail + ')' + " " + (map[item].stateName).toUpperCase()
+
+
+            var str = "<tr id=vList" + map[item].associatedVendorID + "><td class='hide'>" + map[item].associatedVendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].associatedVendorID + "'\)\"; id=\"chkvender" + map[item].associatedVendorID + "\" value=" + map[item].associatedVendorID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>";
             jQuery('#tblvendorlist > tbody').append(str);
-           
+
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
                     //** remove from main table if already selected in selected List
-                    if (map[item].participantID == $(this).find("td:eq(0)").text()) {
-                        $('#vList' + map[item].participantID).remove();
+                    if (map[item].associatedVendorID == $(this).find("td:eq(0)").text()) {
+                        $('#vList' + map[item].associatedVendorID).remove();
 
                     }
                     $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true);
@@ -2409,17 +2477,17 @@ function getCategoryWiseVendors(categoryID) {
         cache: false,
         dataType: "json",
         success: function (data) {
-
+            debugger
             jQuery("#tblvendorlist > tbody").empty();
             var vName = '';
             for (var i = 0; i < data.length; i++) {
-                vName = data[i].vendorName;
-                var str = "<tr id=vList" + data[i].vendorID + " ><td class='hide'>" + data[i].vendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\)\"; id=\"chkvender" + data[i].vendorID + "\" value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " </td></tr>";
+                vName = data[i].vendorName + " " + data[i].stateName;
+                var str = "<tr id=vList" + data[i].mappedVendorIdentifier + " ><td class='hide'>" + data[i].mappedVendorIdentifier + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].mappedVendorIdentifier + "'\)\"; id=\"chkvender" + data[i].mappedVendorIdentifier + "\" value=" + data[i].mappedVendorIdentifier + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " " + data[i].stateName + "</td></tr>";
 
                 jQuery('#tblvendorlist > tbody').append(str);
 
             }
-           
+
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
 
@@ -2444,6 +2512,7 @@ function getCategoryWiseVendors(categoryID) {
         }
 
     });
+
 
 }
 

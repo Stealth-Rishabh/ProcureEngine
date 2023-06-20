@@ -1,7 +1,6 @@
 jQuery(document).ready(function () {
 
     Pageloaded();
-
     $('ul#chatList').slimScroll({
         height: '250px'
     });
@@ -70,6 +69,31 @@ connection.onclose(error => {
         return false;
     });
 });
+connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
+
+    //console.log(rdataJson)
+    //console.log(connectionId)
+    let data = JSON.parse(rdataJson)
+
+    if (data[0].VendorID == "0") {
+        $('#hddnadminConnection').val(connectionId)
+        if (flag == false) {
+            $('#adminconn').removeClass('badge-success').addClass('badge-danger')
+            $('#admstatus').text("Buyer Offline")
+            $('#chatbtn').addClass('hide')
+            $('#txtChatMsg').addClass('hide')
+        }
+        else {
+            $('#adminconn').removeClass('badge-danger').addClass('badge-success')
+            $('#admstatus').text("Buyer Online")
+            $('#chatbtn').removeClass('hide')
+            $('#txtChatMsg').removeClass('hide')
+        }
+
+    }
+
+
+});
 connection.on("disconnectSR", function (connectionId) {
     bootbox.alert("You are connect to bid with multiple devices...disconnecting.", function () {
         connection.stop();
@@ -115,6 +139,8 @@ connection.on("refreshColumnStatusCoal", function (data) {
 
                 if (data.length > 0) {
                     for (var i = 0; i < data.length; i++) {
+                        let TotalBidValue = '';
+                        TotalBidValue = removeThousandSeperator(parseFloat(removeThousandSeperator(data[i].quantity))) * parseFloat(removeThousandSeperator(data[i].lqQuotedPrice));
 
                         if (data[i].noOfExtension >= 1) {
 
@@ -135,6 +161,9 @@ connection.on("refreshColumnStatusCoal", function (data) {
                         $("#initialquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(data[i].iqQuotedPrice))
                         $("#iqquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(data[i].iqQuotedPrice))
                         $("#lastQuote" + i).html(data[i].lqQuotedPrice == '0' ? '' : thousands_separators(data[i].lqQuotedPrice))
+
+                        $("#totalbidvalue" + i).html(TotalBidValue % 1 != 0 ? thousands_separators(TotalBidValue) : thousands_separators(TotalBidValue))
+
                         $("#lblstatus" + i).html(data[i].loQuotedPrice)
                         $("#L1Price" + i).html(thousands_separators(data[i].l1Quote))
 
@@ -258,31 +287,35 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
     //$(".pulsate-regular").css('animation', 'none');
 });
 
-
+function openForm() {
+    fetchUserChats(sessionStorage.getItem("UserID"), "T");//T stands for both single & Broadcast
+}
 function sendChatMsgs() {
+    if ($("#txtChatMsg").val() != '' && $("#txtChatMsg").val() != null) {
+        var data = {
+            "ChatMsg": $("#txtChatMsg").val(),
+            "fromID": sessionStorage.getItem("UserID"),
+            "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
+            "msgType": 'S',
+            "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : '',
+            "fromconnectionID": $('#hddnadminConnection').val()
 
-    var data = {
-        "ChatMsg": $("#txtChatMsg").val(),
-        "fromID": sessionStorage.getItem("UserID"),
-        "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
-        "msgType": 'S',
-        "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : ''
+        }
+        $("#chatList").append('<div class="post in">'
+            + '<div class="message">'
+            + '<span class="arrow"></span>'
+            + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
+            + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;"></span>'//time
+            + '<span class="body" style="color: #c3c3c3;">' + $("#txtChatMsg").val() + '</span>'
+            + '</div>'
+            + '</div>');
 
+        connection.invoke("SendMessage", JSON.stringify(data), $('#hddnadminConnection').val()).catch(function (err) {
+            return console.error(err.toString());
+
+        });
+        $("#txtChatMsg").val('')
     }
-    $("#chatList").append('<div class="post in">'
-        + '<div class="message">'
-        + '<span class="arrow"></span>'
-        + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
-        + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;"></span>'//time
-        + '<span class="body" style="color: #c3c3c3;">' + $("#txtChatMsg").val() + '</span>'
-        + '</div>'
-        + '</div>');
-
-    connection.invoke("SendMessage", JSON.stringify(data), $('#hddnadminConnection').val()).catch(function (err) {
-        return console.error(err.toString());
-
-    });
-    $("#txtChatMsg").val('')
 }
 
 /////****** Chat END*****************/////
@@ -387,15 +420,14 @@ function fetchBidSummaryVendorproduct() {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (data, status, jqXHR) {
-
-
+        success: function (data, status, jqXHR) {           
             if (data.length > 0) {
+                let TotalBidValue = '';
                 if (_isBidStarted == false) {
                     $('#tblParticipantsService').hide();
                     $('#tblParticipantsServiceBeforeStartBid').show();
                     jQuery("#tblParticipantsServiceBeforeStartBid").empty()
-                    jQuery("#tblParticipantsServiceBeforeStartBid").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th class=hide id='bidStartPrice'>Bid start price</th><th class=hide>Target Price</th><th class=hide>Minimum Decrement</th><th class=hide>Initial Quote</th><th class=hide>Current Quote</th><th class=hide> Status </th><th class=hide>Enter your Bid*</th><th class=hide>Action</th><th>Remarks</th></thead>");
+                    jQuery("#tblParticipantsServiceBeforeStartBid").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th class=hide id='bidStartPrice'>Start Unit Price</th><th class=hide>Target Price</th><th class=hide>Minimum Decrement</th><th class=hide>Initial Quote</th><th class=hide>Current Quote</th><th class=hide> Status </th><th class=hide>Enter your Bid*</th><th class=hide>Action</th><th>Remarks</th></thead>");
 
                     for (var i = 0; i < data.length; i++) {
                         jQuery("#tblParticipantsServiceBeforeStartBid").append("<tr><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=coalid" + i + ">" + data[i].coalID + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td class=hide id=ceilingprice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide>" + data[i].minimumDecreament + " " + decreamentOn + "</td><td class=hide id=initialquote" + i + ">" + IQuote + "</td><td class=hide id=lastQuote" + i + ">" + LqQuote + "</td><td class=hide id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td class=hide > <label   id=txtquote" + i + " name=txtquote" + i + " /> </td><td class=hide ><button type='button' id=AllItembtn" + i + " class='btn btn-warning' onclick=InsUpdQuoteSeaExport(" + i + ")>Submit</button><br/><span id=spanmszA" + i + " style=color:#a94442></span><span id=spanamount" + i + "   style=color:#a94442; display:inline-block; width:150px></span></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td>" + data[i].remarks + "</td></tr>");
@@ -414,11 +446,12 @@ function fetchBidSummaryVendorproduct() {
                             var IQuote = data[i].iqQuotedPrice == '0' ? '' : data[i].iqQuotedPrice;
                             var LqQuote = data[i].lqQuotedPrice == '0' ? '' : data[i].lqQuotedPrice;
                             var decreamentOn = data[i].decreamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
+                            TotalBidValue = parseFloat(data[i].quantity) * parseFloat(data[i].lqQuotedPrice);
 
 
                             jQuery("#Coalitems").append('<table class="table table-bordered" id=tblParticipantsService' + i + ' ></table><div id=collapse class="panel-collapse"><div class="panel-body" style="margin-top:-10px!important;" ><div class="col-md-12"><table class="table" id=itemquotes' + i + '></table></div>');
-                            jQuery("#tblParticipantsService" + i).append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th>GST %</th><th id='bidStartPrice'>Bid start price</th><th>Target Price</th><th>Minimum Decrement</th><th>Initial Quote</th><th>Current Quote</th><th>L1 Quote</th><th> Status </th></thead>");
-                            jQuery("#tblParticipantsService" + i).append("<tr><td> " + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=coalid" + i + ">" + data[i].coalID + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td>" + data[i].gst + "</td><td id=ceilingprice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " </td><td id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + "</td><td>" + thousands_separators(data[i].minimumDecreament) + " </td><td id=initialquote" + i + "></td><td id=lastQuote" + i + " class='bold' style='color:Blue;'></td><td  id=L1Price" + i + ">" + thousands_separators(data[i].l1Quote) + "</td><td id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td class=hide id=chkMaskL1Price" + i + ">" + data[i].maskL1Price + "</td></tr>");
+                            jQuery("#tblParticipantsService" + i).append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th>GST %</th><th id='bidStartPrice'>Start Unit Price</th><th>Target Price</th><th>Minimum Decrement</th><th>Initial Quote</th><th>Current Quote</th><th>L1 Quote</th><th> Status </th><th>Bid Value</th></thead>");
+                            jQuery("#tblParticipantsService" + i).append("<tr><td> " + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=coalid" + i + ">" + data[i].coalID + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td>" + data[i].gst + "</td><td id=ceilingprice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " </td><td id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + "</td><td>" + thousands_separators(data[i].minimumDecreament) + " </td><td id=initialquote" + i + "></td><td id=lastQuote" + i + " class='bold' style='color:Blue;'></td><td  id=L1Price" + i + ">" + thousands_separators(data[i].l1Quote) + "</td><td id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td class=hide id=chkMaskL1Price" + i + ">" + data[i].maskL1Price + "</td><td id=totalbidvalue" + i + ">" + thousands_separators(TotalBidValue) + "</td></tr>");
 
                             $('#itemquotes' + i).append('<tr id=trquotes' + i + '><td><label class="control-label text-left" style="width:120px!important;">Offered Quantity</label></td><td> <input type="number" onkeyup="CheckQCondition(this,' + data[i].quantity + ',' + i + ')" class="form-control" id=delquan' + i + ' name=delquan' + i + ' placeholder="Offered Quantity" autocomplete="off" maxlength="8" value=' + data[i].offeredQuan + ' /><span id=spanmszQ' + i + ' style=color:#a94442></span></td>');
                             $('#trquotes' + i).append('<td><label class="control-label text-left">Cess</label></td><td> <input type="number" class="form-control threedecimal" onkeyup=onkeyCess(' + i + ') id=cess' + i + ' name=cess' + i + ' value=' + data[i].cess + ' placeholder="Cess per MT" autocomplete="off"  /><span id=spanmszC' + i + ' style=color:#a94442></span></td>');
@@ -428,7 +461,7 @@ function fetchBidSummaryVendorproduct() {
 
                             $("#lastQuote" + i).html(data[i].lqQuotedPrice == '0' ? '' : thousands_separators(data[i].lqQuotedPrice))
                             $("#initialquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(data[i].iqQuotedPrice))
-
+                            $("#totalbidvalue" + i).html(TotalBidValue % 1 != 0 ? thousands_separators(TotalBidValue) : thousands_separators(TotalBidValue))
                             $('#spanamount' + i).addClass('hide spanclass');
                             $('#spanmszA' + i).addClass('hide spanclass');
 
@@ -475,13 +508,9 @@ function fetchBidSummaryVendorproduct() {
                                 });
                             }
                             count = count + 1;
-
                         }
-
                     }
-
                 }
-
             }
             else {
                 jQuery("#tblParticipantsService").append("<tr><td>Nothing Participation</td></tr>")
@@ -521,6 +550,7 @@ function onkeyCess(index) {
     }
 
     if (parseFloat($('#landedp' + index).val()) > 0 && parseFloat($('#ncv' + index).val()) > 0) {
+        
         var price = (parseFloat($('#landedp' + index).val()) + parseFloat(cess)) / parseFloat($('#ncv' + index).val());
         // $('#txtquote' + index).val(price.round(3));
         //  $('#txtquote' + index).innerHTML=(price.round(3));
@@ -735,7 +765,7 @@ function InsUpdQuoteSeaExport(index) {
     if (parseFloat(removeThousandSeperator($('#ceilingprice' + index).text())) < parseFloat($('#txtquote' + index).html())) {
 
         $('#spanamount' + index).removeClass('hide')
-        $('#spanamount' + index).text('Amount should be less than Bid start price')
+        $('#spanamount' + index).text('Amount should be less than Start Unit Price')
         return false
     }
     else if (parseFloat(value) <= parseFloat(Amount) && $('#decon' + index).text() == "A" && value != 0 && BidForID == "81") {
@@ -782,7 +812,7 @@ function InsUpdQuoteSeaExport(index) {
         //alert(JSON.stringify(QuoteProduct))
         // console.log(JSON.stringify(QuoteProduct))
         $('#hdnselectedindex').val(index);
-        connection.invoke("RefreshBidParticipationCoal", JSON.stringify(QuoteProduct), parseInt(sessionStorage.getItem("BidID"))).catch(function (err) {
+        connection.invoke("RefreshBidParticipationCoal", JSON.stringify(QuoteProduct)).catch(function (err) {
             return console.error(err.toString());
         });
 
@@ -992,3 +1022,10 @@ function startTimerBeforeBidStart(duration, display) {
     }, 1000);
 
 }
+///** on enter submit form
+$("#txtChatMsg").keypress(function (e) {
+    if (e.which == 13) {
+        sendChatMsgs();
+
+    }
+})

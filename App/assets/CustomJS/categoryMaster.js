@@ -1,7 +1,7 @@
 
     jQuery(document).ready(function () {
-        
-    Pageloaded()
+        Pageloaded()
+        var x = isAuthenticated();
     setInterval(function () {Pageloaded()}, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -30,10 +30,12 @@ var success = $('#successdiv');
 
 success.hide();
 error.hide();
+
 $('#categoryName').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
 });
+
 
 function FormValidate() {
 
@@ -176,7 +178,7 @@ function insupdCategorymaster() {
         jQuery.ajax({
             type: "GET",
             contentType: "application/json; charset=utf-8",
-            url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=M&MappedBy=" + sessionStorage.getItem('UserID') + "&VendorID=0",
+            url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=M&MappedBy=" + sessionStorage.getItem('UserID') + "&ChildID=0",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             data: "{}",
             cache: false,
@@ -230,9 +232,6 @@ function updateType(rname, status, id) {
                         jQuery('input:checkbox[name=checkboxactive]').attr('checked', false);
                         jQuery('#checkboxactive').parents('span').removeClass('checked');
                     }
-                    
-                  
-  
     }
 
 
@@ -268,7 +267,7 @@ jQuery("#search").keyup(function () {
 
 
 function resetscholership() {
-    $('#categoryName').val('');
+    $('#   ').val('');
     $('#hddnCategoryID').val('0');
     jQuery('input:checkbox[name=checkboxactive]').attr('checked', true);
     jQuery('#checkboxactive').parents('span').addClass('checked');

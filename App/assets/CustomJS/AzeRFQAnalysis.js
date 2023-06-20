@@ -24,7 +24,7 @@ jQuery(document).ready(function () {
     fetchRFIRFQSubjectforReport('RFQ')
 
     formvalidate();
-    fetchMenuItemsFromSession(7, 47);
+
     fetchRegisterUser();
 });
 if (window.location.search) {
@@ -75,7 +75,9 @@ function fetchrfqcomprative() {
         type: "GET",
         async: false,
         contentType: "application/json; charset=utf-8",
-        success: function (data, status, jqXHR) {
+        success: function (Data, status, jqXHR) {
+            let data = Data.rData
+            let ShowPrice = Data.showQuotedPrice.showQoutedPrice
 
             var str = '';
             var strHead = '';
@@ -105,29 +107,31 @@ function fetchrfqcomprative() {
             jQuery("#tblRFQComprativeForExcelQ > tbody").empty();
 
             // ShowPrice = data[0].ShowPrice[0].ShowQuotedPrice;
-            var ShowPrice = 'N'
+            // var ShowPrice = 'N'
             var _CurrentDate = new Date();
+            // ShowPrice = 'Y';
+            $('#btnPDF').show()
 
-            var _RFQOpenDate = new Date(bidopeningdate.replace('-', ''));
-
-            if (_rfqBidType != 'Open') {
-                if (bidopeningdate != null || bidopeningdate != '') {
-                    if (_RFQOpenDate <= _CurrentDate) {
-                        ShowPrice = 'Y';
-                        $('#btnPDF').show()
-                    }
-                }
-                else {
-                    ShowPrice = 'N';
-                    $('#btnPDF').hide()
-                }
-            }
-            else {
-                ShowPrice = 'Y';
-                $('#btnPDF').show()
-
-            }
-            // sessionStorage.setItem('ShowPrice', '');
+            /* var _RFQOpenDate = new Date(bidopeningdate.replace('-', ''));
+ 
+             if (_rfqBidType != 'Open') {
+                 if (bidopeningdate != null || bidopeningdate != '') {
+                     if (_RFQOpenDate <= _CurrentDate) {
+                         ShowPrice = 'Y';
+                         $('#btnPDF').show()
+                     }
+                 }
+                 else {
+                     ShowPrice = 'N';
+                     $('#btnPDF').hide()
+                 }
+             }
+             else {
+                 ShowPrice = 'Y';
+                 $('#btnPDF').show()
+ 
+             }
+ */            // sessionStorage.setItem('ShowPrice', '');
             sessionStorage.setItem('ShowPrice', ShowPrice);
 
             if (data[0].vendorNames.length > 0) {
@@ -1006,7 +1010,8 @@ function formvalidate() {
 
         },
         submitHandler: function (form) {
-            ReInviteVendorsForRFQ();
+            Dateandtimevalidate();
+            //ReInviteVendorsForRFQ();
         }
 
     });

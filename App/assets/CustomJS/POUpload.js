@@ -1,5 +1,5 @@
 ﻿jQuery(document).ready(function () {
-   
+
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -230,7 +230,7 @@ function ParametersQuery() {
 
     }
     resetfun()
-   
+
 }
 
 function editvalues(icount) {
@@ -275,7 +275,7 @@ function insPoDetails() {
     else {
 
         var rowCount = jQuery('#tblServicesProduct>tbody> tr').length;
-        
+
         if (rowCount >= 0) {
             $("#tblServicesProduct tr:gt(0)").each(function (index) {
                 var this_row = $(this);
@@ -297,20 +297,20 @@ function insPoDetails() {
                 PriceDetails.push(items)
             })
         }
-        
+
         //481
-       debugger
+        debugger
         rowCount = jQuery('#tblapprovers>tbody> tr').length;
         var ccEmails = "";
-       
-      
+
+
         if (rowCount >= 0) {
             $("#tblapprovers tr:gt(0)").each(function (index) {
-              
+
                 var this_row = $(this);
-               
+
                 index = (this_row.closest('tr').attr('id')).substring(7, (this_row.closest('tr').attr('id')).length)
-                
+
                 ccEmails = ccEmails + $.trim($("#email" + index).text()) + ";";
                 items = {
                     "ObserverID": parseInt($("#userid" + index).text()),
@@ -321,7 +321,7 @@ function insPoDetails() {
             })
         }
         debugger;
-        
+
 
         var Tab2data = {
             "PriceDetails": PriceDetails,
@@ -337,7 +337,7 @@ function insPoDetails() {
         };
 
 
-        
+
         jQuery.ajax({
 
             type: "POST",
@@ -509,7 +509,7 @@ function addAttachments() {
             "POAttachment": attchname,
             "UserID": sessionStorage.getItem('UserID'),
             "POHeaderID": parseInt($('#hdnPOHeader').val()),
-           // "POAttachmentDescription": $('#AttachDescription1').val()
+            // "POAttachmentDescription": $('#AttachDescription1').val()
             "POAttachmentDescription": _cleanString2
         }
         // alert(JSON.stringify(Attachments))
@@ -1118,6 +1118,7 @@ function CancelPO() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
+                    $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
                     cnPO()
                 }
             },
@@ -1233,11 +1234,11 @@ function FetchRecomendedVendor() {
 
 }
 var vendorsForAutoComplete = ''
-function fetchVendorGroup(categoryFor, vendorId) {
+function fetchVendorGroup(categoryFor, childId) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VendorID=" + vendorId,
+        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&ChildId=" + childId,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
@@ -1381,7 +1382,7 @@ jQuery("#txtApprover").keyup(function () {
 });
 jQuery("#txtApprover").typeahead({
     source: function (query, process) {
-       
+
         var data = allUsers;
         usernames = [];
         map = {};
@@ -1474,10 +1475,10 @@ function fnApproversQuery(EmailID, UserID, UserName) {
         }
 
 
-        
+
         var rowcount = jQuery('#tblapprovers >tbody>tr').length;
-        
-        
+
+
     }
 }
 function deleteApprow(IDcount) {
@@ -1503,5 +1504,5 @@ function deleteApprow(IDcount) {
         });
     }
 
-    
+
 }

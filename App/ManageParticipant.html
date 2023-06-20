@@ -33,6 +33,7 @@
 
     <!-- Page Specific CSS-->
     <link rel="stylesheet" href="assets/CustomCSS/common.css">
+
     <script src="assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
     <script src="assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
     <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
@@ -51,7 +52,9 @@
     <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN PAGE LEVEL STYLES -->
-    <script src="assets/CustomJS/aes.js"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/scripts/core/app.js"></script>
     <script src="assets/CustomJS/Common.js"></script>
@@ -61,8 +64,8 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" >
-                    <img src="assets/img/mmlogo.png" alt="logo" id="logoimage"/>
+                <a class="navbar-brand" href="index.html">
+                    <img src="assets/img/mmlogo.png" alt="logo" id="logoimage" />
                 </a>
 
             </div>
@@ -171,283 +174,422 @@
                                 </div>
                                 <div class="portlet-body form">
                                     <!-- BEGIN FORM-->
-                                    <form action="#" id="entryForm" class="form-horizontal">
-                                        <div id="divalertsucess" class="alert alert-success divalertstyle" >
+                                    <form action="#" id="divvendordetails" class="form-horizontal">
+                                        <div id="divalertsucess" class="alert alert-success divalertstyle">
                                             <span id="spansuccess1">Data saved sucessfully. </span>
                                         </div>
                                         <div id="divalerterr" class="alert alert-danger divalertstyle">
                                             <span id="spanerterr">This email address is already registerd with another company. </span>
                                         </div>
-                                        <div id="divVendorForm" class="hide">
-                                            <div class="form-body">
-                                                <div class="col-md-8">
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            Company Name <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
-                                                            <input type="text" class="form-control" placeholder="Enter Company Name" id="ParticipantName"
-                                                                   data-provide="typeahead" autocomplete="off" name="ParticipantName" onkeyup="replaceQuoutesFromString(this)" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            Contact Person <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
-                                                            <input type="text" class="form-control" placeholder="Enter Contact Person Name" id="ContactName"
-                                                                   data-provide="typeahead" autocomplete="off" name="ContactName" onkeyup="replaceQuoutesFromString(this)" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            Address <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
-                                                            <textarea class="form-control" placeholder="Enter Company Address" id="txtAddress"
-                                                                      name="txtAddress" onkeyup="replaceQuoutesFromString(this)"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            Country <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
-                                                            <select class="form-control" name="ddlCountry" id="ddlCountry" onchange="fetchState()" tabindex="4"></select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            State <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
-                                                            <select class="form-control" name="ddlState" id="ddlState" onchange="fetchCity()" tabindex="4"></select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            City <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
-                                                            <!--<input type="text" class="form-control" placeholder="Enter City Name" id="txtCity"
-                                                            name="txtCity" onkeyup="replaceQuoutesFromString(this)" />-->
-                                                            <select class="form-control" name="ddlCity" id="ddlCity" tabindex="4"></select>
-                                                        </div>
-                                                    </div>
+                                        <div class="form-body">
 
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            Zip Code <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
+                                            <div class="tab-pane hide" id="divVendorForm">
+                                                <div class="panel-group accordion" id="accordion1">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <h6 class="panel-title">
+                                                                <a class="accordion-toggle active total-tab notextdeco headingfont" data-toggle="collapse" data-parent="#accordion1" href="#collapse2">
+                                                                    <span data-i18n="contactdetails"> Contact details </span>
 
-                                                            <input type="text" class="form-control" placeholder="Enter Zip Code" id="txtZipCd"
-                                                                   name="txtZipCd" maxlength="10" />
+                                                                    <div class="outer_wrap">
+                                                                        <span class="progress-value" id="contactspan" name="contactspan"></span>
+                                                                        <div class="cs_chart" id="contact_chart" data-percent=""></div>
+                                                                    </div>
+                                                                </a>
+                                                            </h6>
+
                                                         </div>
-                                                    </div>
+                                                        <div id="collapse2" class="panel-collapse collapse noheight" seqno="3">
+                                                            <div class="panel-body">
+                                                                <div class="row" id="tab1check">
+                                                                    <div id="divVendorContactForm">
+                                                                        <div class="form-body">
+                                                                            <div class="col-md-12">
+
+                                                                                <div class="form-group">
+                                                                                    <label class="col-md-3 control-label">
+                                                                                        Contact Person <span class="required">*</span>
+                                                                                    </label>
+                                                                                    <div class="col-md-4">
+                                                                                        <input type="text" class="form-control" placeholder="Enter Contact Person Name" id="ContactName"
+                                                                                               data-provide="typeahead" autocomplete="off" name="ContactName" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                    </div>
+                                                                                </div>
 
 
 
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            PAN No. <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
-                                                            <input type="text" class="form-control" placeholder="Enter PAN No." id="txtPanNo"
-                                                                   name="txtPanNo" maxlength="10" />
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            Mobile No <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-2">
-                                                            <select id="ddlCountryCd" name="ddlCountryCd" class="form-control">
-                                                                <option Value="">Select</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-md-7">
-                                                            <input type="text" class="form-control" placeholder="Enter Mobile No." id="txtMobileNo"
-                                                                   name="txtMobileNo">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            GST No. <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-9">
-                                                            <input type="text" class="form-control" placeholder="Enter GST No." id="txtTINNo"
-                                                                   maxlength="15" name="txtTINNo">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            Company Phone <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-2">
-                                                            <select id="ddlCountryCdPhone" name="ddlCountryCdPhone" class="form-control">
-                                                                <option Value="">Select</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-md-7">
-                                                            <input type="text" class="form-control" placeholder="Enter Company Phone No." id="txtPhoneNo"
-                                                                   name="txtPhoneNo">
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            Company Email <span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-3">
-                                                            <input type="text" class="form-control" placeholder="Enter Company E-Mail." id="txtcompanyemail"
-                                                                   name="txtcompanyemail" onkeyup="replaceQuoutesFromString(this)">
-                                                        </div>
-                                                        <label class="control-label col-md-2">Alternate Email</label>
-
-                                                        <div class=" col-md-1 checkbox-list">
-                                                            <label class="checkbox-inline">
-                                                                <input type="checkbox" class="icheck" data-checkbox="icheckbox_minimal-blue" id="chkalternatemail" name="chkalternatemail" />
-                                                            </label>
-                                                        </div>
-
-                                                        <div class="col-md-3">
-                                                            <input type="text"  placeholder="Enter Alternamte E-Mail." name="txtAlternateeMailID" id="txtAlternateeMailID" class="form-control txtalignleft" disabled onkeyup="replaceQuoutesFromString(this)"/>
-
-                                                        </div>
-                                                    </div>
+                                                                                <div class="form-group">
+                                                                                    <label class="col-md-3 control-label">
+                                                                                        Mobile No <span class="required">*</span>
+                                                                                    </label>
+                                                                                    <div class="col-md-1">
+                                                                                        <select id="ddlCountryCd" name="ddlCountryCd" class="form-control">
+                                                                                        </select>
+                                                                                    </div>
+                                                                                    <div class="col-md-3 reqcls">
+                                                                                        <input type="text" class="form-control" placeholder="Enter Mobile No." id="txtMobileNo" name="txtMobileNo" minlength="10" maxlength="10">
+                                                                                    </div>
+                                                                                </div>
 
 
-                                                    <div class="form-group">
-                                                        <label class="col-md-3 control-label">
-                                                            Preferred Time/Zone<span class="required">*</span>
-                                                        </label>
-                                                        <div class="col-md-3">
-                                                            <select id="ddlpreferredTime" name="ddlpreferredTime" class="form-control">
-                                                                <option Value="">Select</option>
-                                                            </select>
-                                                        </div>
-                                                        <label class="col-md-2 control-label">
-                                                            IsActive
-                                                        </label>
-                                                        <div class="col-md-1 checkbox-list">
-                                                            <label class="checkbox-inline">
-                                                                <input type="checkbox" id="chkIsActiveparticipant" checked="checked" name="chkIsActiveparticipant" />
-                                                            </label>
-                                                        </div>
+                                                                                <div class="form-group">
+                                                                                    <label class="col-md-3 control-label">
+                                                                                        User Email <span class="required">*</span>
+                                                                                    </label>
+                                                                                    <div class="col-md-4">
+                                                                                        <input type="text" class="form-control" placeholder="Enter Your E-Mail." id="txtcompanyemail"
+                                                                                               name="txtcompanyemail" disabled>
+                                                                                    </div>
 
-                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label col-md-3">Alternate Email</label>
 
+                                                                                    <div class="col-md-4">
+                                                                                        <input type="text" placeholder="Enter Alternamte E-Mail." name="txtAlternateeMailID" id="txtAlternateeMailID" class="form-control txtalignleft" />
 
+                                                                                    </div>
 
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label class="col-md-3 control-label">
+                                                                                        Preferred Time/Zone<span class="required">*</span>
+                                                                                    </label>
+                                                                                    <div class="col-md-4">
+                                                                                        <select id="ddlpreferredTime" name="ddlpreferredTime" class="form-control">
+                                                                                            <option Value="">Select</option>
+                                                                                        </select>
+                                                                                    </div>
+                                                                                    <label class="col-md-2 control-label">
+                                                                                        Active
+                                                                                    </label>
+                                                                                    <div class="col-md-1 checkbox-list">
+                                                                                        <label class="checkbox-inline">
+                                                                                            <input type="checkbox" id="chkIsActiveparticipant" checked="checked" name="chkIsActiveparticipant" />
+                                                                                        </label>
+                                                                                    </div>
 
-                                                    <!--                                                    <div class="form-group hide">
-                                                        <label class="col-md-3 control-label">
-                                                            IsActive
-                                                        </label>
-                                                        <div class="col-md-9 checkbox-list">
-                                                            <label class="checkbox-inline">
-                                                                <input type="checkbox" id="chkIsActiveparticipant" checked="checked" name="chkIsActiveparticipant" />
-                                                            </label>
-                                                        </div>
-                                                    </div> -->
+                                                                                </div>
 
-                                                    <div class="form-group col-md-12 hide" id="lbl_panmsz">
-                                                        <label class="col-md-3 control-label">
-                                                            &nbsp;
-                                                        </label>
-                                                        <label class="control-label"><span class="required">*:</span> &nbsp;<span class="font-red"> This vendor works with mulitple customers on ProcurEngine. For any modfication, please write to: <b>info@agileapt.com.</b></span></label>
-                                                    </div>
-                                                </div>
+                                                                                <div class="form-group col-md-12 hide" id="lbl_panmsz">
+                                                                                    <label class="col-md-3 control-label">
+                                                                                        &nbsp;
+                                                                                    </label>
+                                                                                    <label class="control-label"><span class="required">*:</span> &nbsp;<span class="font-red"> This vendor works with mulitple customers on ProcurEngine. For any modfication, please write to: <b>info@agileapt.com.</b></span></label>
+                                                                                </div>
+                                                                            </div>
 
-                                                <div class="col-md-4">
-                                                    <div class="portlet box blue-hoki">
-                                                        <div class="portlet-title">
-                                                            <div class="caption">
-                                                                <i class="fa fa-reorder"></i>Tag Items/Services
-                                                            </div>
-                                                            <div class="tools">
-                                                                <a href="javascript:;" class="collapse"></a>
+                                                                            <div class="clearfix"></div>
 
-                                                            </div>
-                                                        </div>
-                                                        <div class="portlet-body">
-                                                            <div class="input-icon">
-                                                                <i class="fa fa-search"></i>
-                                                                <input type="text" id="txtSearchCategory" placeholder="Search Place ..." class="form-control  input-circle" />
-                                                            </div>
+                                                                        </div>
+                                                                        <input type="hidden" value="0" id="hdnParticipantID" />
+                                                                        <input type="hidden" value="0" id="hdnParticipantCode" />
+                                                                        <input type="hidden" value="0" id="hdnFlagType" />
+                                                                        <div class="clearfix"></div>
 
-                                                            <div class="scroller scroller250"  data-always-visible="1" data-rail-visible1="1">
-                                                                <div class="table-scrollable">
-                                                                    <table class="table table-striped table-bordered table-hover" id="tblCategoryMaster"></table>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="clearfix"></div>
 
-                                            </div>
-                                            <input type="hidden" value="0" id="hdnParticipantID" />
-                                            <input type="hidden" value="0" id="hdnParticipantCode" />
-                                            <input type="hidden" value="0" id="hdnFlagType" />
-                                            <div class="clearfix"></div>
-                                            <div class="form-actions padding5px">
+                                                    <div class="panel panel-default">
+                                                        <div class="panel-heading">
+                                                            <h6 class="panel-title">
+                                                                <a class="accordion-toggle collapsed total-tab headingfont" data-toggle="collapse" data-parent="#accordion1" href="#collapse0">
 
-                                                <div class="col-md-offset-3 col-md-6 txtaligncentre" >
-                                                    <button type="submit" id="btnsumbit" class="btn yellow reload">
-                                                        Submit
-                                                    </button>
-                                                    <button class="btn blue tooltips display-none" type="button" id="btnExport" data-placement="top" data-original-title="Export to Excel">
-                                                        Export
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="portlet-body " id="displayTable">
-                                            <div class="form-body">
-                                                <div class="form-group">
-                                                    <div class="col-md-12">
-                                                        <input type="text" class="form-control" placeholder="Search" id="txtSearch" name="txtSearch" onkeyup="replaceQuoutesFromString(this)">
+                                                                    <span data-i18n="companydetails">Companies Details</span>
 
-                                                        <div class="table-scrollable">
-                                                            <table class="table table-striped table-bordered table-hover" id="tblParticipantsVender">
-                                                                <thead>
-                                                                    <tr>
-                                                                        <th class="width10">Action</th>
-                                                                        <th class="width10">Created By</th>
-                                                                        <th class="width10">Extended</th>
 
-                                                                        <th class="width10">
-                                                                            Company Name
-                                                                        </th>
-                                                                        <th class="width10">
-                                                                            Contact Person
-                                                                        </th>
-                                                                        <th class="width10">Address</th>
-                                                                        <th class="width5">City</th>
-                                                                        <th class="width10">Pan No</th>
-                                                                        <th class="width10">GST No</th>
-                                                                        <th class="width10">Mobile No</th>
-                                                                        <th class="width10">Phone No</th>
-                                                                        <th class="width10">E-Mail</th>
-                                                                        <th class="width10">Alternate E-Mail</th>
+                                                                    <div class="outer_wrap">
+                                                                        <span class="progress-value" id="companyspan" name="companyspan"></span>
+                                                                        <div class="cs_chart" id="company_chart" data-percent=""></div>
+                                                                        <i class="fa fa-chevron-down pull-right" style="margin-top:-14px !important;"></i>
+                                                                    </div>
 
-                                                                    </tr>
-                                                                </thead>
-                                                                <tbody></tbody>
-                                                            </table>
+                                                                </a>
+
+                                                            </h6>
+
+
                                                         </div>
+                                                        <div id="collapse0" class="panel-collapse collapse">
+                                                            <div class="panel-body">
+
+
+                                                                <div class="form-group hide" id="div_tableVendor">
+
+                                                                    <div class="col-lg-12">
+
+
+                                                                        <div class="table-scrollable">
+                                                                            <table class="table table-striped table-bordered table-hover" id="tblVendorFoundDetails"></table>
+
+                                                                        </div>
+                                                                        <div class="clearfix">&nbsp;</div>
+                                                                        <div class="clearfix">&nbsp;</div>
+                                                                        <div class="col-md-6 txtalignleft">
+                                                                            <button class="btn btn-xs default tooltips " type="button" id="btnAddAnother" data-placement="top" data-original-title="Click here to add another entry if desired details are not covered above" onclick="AddVendor()">
+                                                                                Add Another
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row" id="tab1check">
+                                                                    <div id="divVendorCompaniesForm">
+                                                                        <div class="form-body">
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group">
+                                                                                    <label class="col-md-3 control-label">
+                                                                                        Country <span class="required">*</span>
+                                                                                    </label>
+                                                                                    <div class="col-md-6">
+                                                                                        <select class="form-control" name="ddlCountry" id="ddlCountry" tabindex="4"></select>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="form-group tax-group">
+                                                                                    <label class="col-md-3 control-label" id="taxlabel">
+                                                                                        Tax Type
+                                                                                    </label>
+                                                                                    <div class="col-md-6">
+                                                                                        <select class="form-control" name="txtTINType" id="txtTINType" tabindex="4">
+                                                                                        </select>
+
+                                                                                    </div>
+
+                                                                                </div>
+                                                                                <div class="form-group tax-group nogsthide">
+                                                                                    <label class="col-md-3 control-label" id="taxlabel">
+                                                                                        Tax Id <span class="required">*</span>
+                                                                                    </label>
+                                                                                    <div class="col-md-6">
+                                                                                        <input type="text" class="form-control" placeholder="Enter Tax No." id="txtTINNo" name="txtTINNo" maxlength="15" autocomplete="off" />
+
+
+                                                                                    </div>
+
+                                                                                </div>
+                                                                                <div class="form-group pan-group nogsthide">
+                                                                                    <label class="col-md-3 control-label" id="taxlabel">
+                                                                                        Tax Type 2
+                                                                                    </label>
+                                                                                    <div class="col-md-6">
+                                                                                        <select class="form-control" name="txtTINType2" id="txtTINType2" tabindex="4">
+                                                                                        </select>
+
+                                                                                    </div>
+
+                                                                                </div>
+                                                                                <div class="form-group pan-group nogsthide">
+
+                                                                                    <label class="col-md-3 control-label">
+                                                                                        Tax Id 2 <span class="required">*</span>
+                                                                                    </label>
+                                                                                    <div class="col-md-6">
+                                                                                        <input type="text" class="form-control" placeholder="Enter Tax Id 2 No." id="txtPanNo" name="txtPanNo" maxlength="10" />
+
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label class="col-md-3 control-label">
+                                                                                        Company Name <span class="required">*</span>
+                                                                                    </label>
+                                                                                    <div class="col-md-6">
+                                                                                        <input type="text" class="form-control" placeholder="Enter Company Name" id="ParticipantName"
+                                                                                               data-provide="typeahead" autocomplete="off" name="ParticipantName" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="form-group">
+                                                                                    <label class="col-md-3 control-label">
+                                                                                        Address <span class="required">*</span>
+                                                                                    </label>
+                                                                                    <div class="col-md-6">
+                                                                                        <textarea class="form-control" placeholder="Enter Company Address" id="txtAddress"
+                                                                                                  name="txtAddress" onkeyup="replaceQuoutesFromString(this)"></textarea>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label class="col-md-3 control-label">
+                                                                                        State <span class="required">*</span>
+                                                                                    </label>
+                                                                                    <div class="col-md-6">
+                                                                                        <select class="form-control" name="ddlState" id="ddlState" tabindex="4"></select>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label class="col-md-3 control-label">
+                                                                                        City <span class="required">*</span>
+                                                                                    </label>
+                                                                                    <div class="col-md-6">
+
+                                                                                        <select class="form-control" name="ddlCity" id="ddlCity" tabindex="4"></select>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label class="col-md-3 control-label">
+                                                                                        PIN Code <span class="required">*</span>
+                                                                                    </label>
+                                                                                    <div class="col-md-6">
+
+                                                                                        <input type="text" class="form-control" placeholder="Enter Zip Code" id="txtZipCd"
+                                                                                               name="txtZipCd" maxlength="6" />
+                                                                                    </div>
+                                                                                </div>
+
+
+
+
+                                                                                <div class="form-group">
+                                                                                    <label class="col-md-3 control-label">
+                                                                                        Company Phone <span class="required">*</span>
+                                                                                    </label>
+                                                                                    <div class="col-md-2">
+                                                                                        <select id="ddlCountryCdPhone" name="ddlCountryCdPhone" class="form-control">
+                                                                                        </select>
+                                                                                    </div>
+                                                                                    <div class="col-md-4 reqcls">
+                                                                                        <input type="text" class="form-control" placeholder="Enter Company Phone No." id="txtPhoneNo"
+                                                                                               name="txtPhoneNo" minlength="10" maxlength="10">
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <!--<div class="form-group">
+
+                                                                                    <label class="col-md-3 control-label">
+                                                                                        Active
+                                                                                    </label>
+                                                                                    <div class="col-md-1 checkbox-list">
+                                                                                        <label class="checkbox-inline">
+                                                                                            <input type="checkbox" id="chkIsActiveparticipant" checked="checked" name="chkIsActiveparticipant" />
+                                                                                        </label>
+                                                                                    </div>
+
+                                                                                </div>-->
+
+                                                                                <div class="form-group col-md-12 hide" id="lbl_panmsz">
+                                                                                    <label class="col-md-3 control-label">
+                                                                                        &nbsp;
+                                                                                    </label>
+                                                                                    <label class="control-label"><span class="required">*:</span> &nbsp;<span class="font-red"> This vendor works with mulitple customers on ProcurEngine. For any modfication, please write to: <b>info@agileapt.com.</b></span></label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-4">
+                                                                                <div class="portlet box blue-hoki">
+                                                                                    <div class="portlet-title">
+                                                                                        <div class="caption">
+                                                                                            <i class="fa fa-reorder"></i>Tag Items/Services
+                                                                                        </div>
+                                                                                        <div class="tools">
+                                                                                            <a href="javascript:;" class="collapse"></a>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="portlet-body">
+                                                                                        <div class="input-icon">
+                                                                                            <i class="fa fa-search"></i>
+                                                                                            <input type="text" id="txtSearchCategory" placeholder="Search Place ..." class="form-control  input-circle" />
+                                                                                        </div>
+
+                                                                                        <div class="scroller scroller250" data-always-visible="0" data-rail-visible1="0">
+                                                                                            <div class="table-scrollable">
+                                                                                                <table class="table table-striped table-bordered table-hover" id="tblCategoryMaster"></table>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="clearfix"></div>
+
+                                                                        </div>
+                                                                        <input type="hidden" value="0" id="hdnParticipantID" />
+                                                                        <input type="hidden" value="0" id="hdnParticipantCode" />
+                                                                        <input type="hidden" value="0" id="hdnFlagType" />
+                                                                        <input type="hidden" value="" id="hdnChildID" />
+                                                                        <input type="hidden" value="" id="hdnVendorCode" />
+
+                                                                        <input type="hidden" value="" id="hdnVendorId" />
+                                                                        <input type="hidden" value="Add" id="hdnExternalActionTypeFinancer" />
+                                                                        <input type="hidden" value="Add" id="hdnExternalActionTypeUser" />
+                                                                        <input type="hidden" value="Add" id="hdnSourceId" />
+                                                                        <!--country/regionkey-->
+                                                                        <input type="hidden" value="Add" id="hdnCountryKey" />
+                                                                        <input type="hidden" value="Add" id="hdnRegionKey" />
+                                                                        <input type="hidden" value="" id="hdnGRBasedInvoiceLogic" />
+
+                                                                        <div class="clearfix"></div>
+
+                                                                    </div>
+                                                                    <div class="fluid " id="divVendorFormbtn">
+                                                                        <div class="col-md-offset-5 col-md-6">
+                                                                            <button type="submit" class="btn yellow" id="btnvendreg">
+                                                                                Submit
+                                                                            </button>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
                                                     </div>
+
+
+
                                                 </div>
                                             </div>
-                                            <br /><br />
-                                            <div class="table-scrollabe">
-                                                <a id="dlink" class="nodisplay"></a>
-                                                <table class="table table-striped table-bordered table-hover display-none" id="tblParticipantsExport"></table>
-                                            </div>
+
+
                                         </div>
                                     </form>
                                     <!-- END FORM-->
+                                    <div class="row" id="displayTable">
+                                        <div class="form-body">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <input type="text" class="form-control" placeholder="Search" id="txtSearch" name="txtSearch" onkeyup="replaceQuoutesFromString(this)">
+
+                                                    <div class="table-scrollable">
+                                                        <table class="table table-striped table-bordered table-hover" id="tblParticipantsVender">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="width10">Action</th>
+                                                                    <th class="width10">Created By</th>
+                                                                    <th class="width10">Extended</th>
+
+                                                                    <th class="width10">
+                                                                        Company Name
+                                                                    </th>
+                                                                    <th class="width10">
+                                                                        Contact Person
+                                                                    </th>
+                                                                    <th class="width10">Address</th>
+                                                                    <th class="width5">City</th>
+                                                                    <th class="width10">Pan No</th>
+                                                                    <th class="width10">GST No</th>
+                                                                    <th class="width10">Mobile No</th>
+                                                                    <th class="width10">Phone No</th>
+                                                                    <th class="width10">E-Mail</th>
+                                                                    <th class="width10">Alternate E-Mail</th>
+
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody></tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br /><br />
+                                        <div class="table-scrollabe">
+                                            <a id="dlink" class="nodisplay"></a>
+                                            <table class="table table-striped table-bordered table-hover display-none" id="tblParticipantsExport"></table>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -479,7 +621,7 @@
                         </div>
                         <div class="portlet-body form">
 
-                            <div class="modal-body modalbody2" >
+                            <div class="modal-body modalbody2">
                                 <p class="ppolicy-text">
                                     Using this screen admin can register vendors and their representatives for the several type of bid like Air shipments, Domestic shipments, Sea shipments, Product & Services and Warehouse rentals.
 
@@ -504,10 +646,10 @@
 
         jQuery(document).ready(function () {
             callPagejs('ManageParticipant.js');
-                   });
+        });
     </script>
 
-   
+
     <!-- END JAVASCRIPTS -->
 </body>
 </html>

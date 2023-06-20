@@ -51,7 +51,7 @@ body {
 }
 
 .date-picker {
-    z-index: 1151 !important;
+    z-index: 2 !important;
 }
 
 #divalertSerach {
@@ -149,10 +149,19 @@ input#file-excelparameter {
     top: -120px;
 }
 
+input#file-excelparameterB {
+    position: fixed;
+    top: -120px;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+.hiddenRow {
+    padding: 0 !important;
 }
 
 input[type=number] {
@@ -189,7 +198,7 @@ input[type=number] {
         padding: 5px 5px;
         transition: opacity 1s ease-in-out;
         position: absolute;
-        z-index: 2;
+        z-index: 3 !important;
         right: 100%;
         bottom: 110%;
     }
@@ -198,6 +207,36 @@ input[type=number] {
         opacity: .9;
         visibility: visible;
     }
+
+.hovertextLeft {
+    position: relative;
+    text-decoration: none !important;
+}
+
+    .hovertextLeft:before {
+        content: attr(data-hover);
+        visibility: hidden;
+        opacity: 0;
+        width: 200px;
+        opacity: .9;
+        color: rgb(6, 6, 6);
+        background-color: #dfba49;
+        text-align: center;
+        border-radius: 5px;
+        padding: 5px 5px;
+        transition: opacity 1s ease-in-out;
+        position: absolute;
+        z-index: 2;
+        left: 80%;
+        bottom: 50%;
+    }
+
+    .hovertextLeft:hover:before {
+        opacity: .9;
+        visibility: visible;
+    }
+
+
 
 /*abhhedev bug 52 end*/
 
@@ -260,6 +299,7 @@ input[type=number] {
 .marginleftneg11px {
     margin-left: -11px !important
 }
+
 .marginright10px {
     margin-right: 10px !important
 }
@@ -279,6 +319,7 @@ input[type=number] {
 .margintop1px {
     margin-top: 1px !important
 }
+
 .margintopneg1px {
     margin-top: -1px !important
 }
@@ -494,6 +535,7 @@ input[type=number] {
 .padding105px {
     padding: 10px 5px;
 }
+
 .padding66px {
     padding: 6px 6px;
 }
@@ -521,7 +563,7 @@ tr.header {
 }
 /*.thead {
     position: -webkit-sticky;*/ /* Safari */
-    /*position: sticky;
+/*position: sticky;
     z-index: 1;
     top: 0;
     border: 2px solid darkgrey;
@@ -587,7 +629,7 @@ tr.header {
 /*@abheedev multilingual*/
 .changeLanguage {
     position: absolute;
-    right: 160px;
+    right: 200px;
     top: 11px;
 }
 
@@ -599,7 +641,7 @@ tr.header {
 }
 
 .noheight {
-    height: 0px ;
+    height: 0px;
 }
 
 .margintop4px {
@@ -789,6 +831,14 @@ tr.header {
     width: 10% !important;
 }
 
+.width9 {
+    width: 9% !important;
+}
+
+.width17 {
+    width: 17.67% !important;
+}
+
 .width5px {
     width: 5px !important;
 }
@@ -857,20 +907,23 @@ tr.header {
     width: auto;
     float: left;
 }
+
 .widthautoright {
     width: auto;
     float: right;
 }
+
 .width100collaspe {
     width: 100%;
     border-collapse: collapse;
 }
+
 .width63collaspe {
     width: 63%;
     border-collapse: collapse;
 }
-.collaspenone
-{
+
+.collaspenone {
     border-collapse: collapse;
     display: none;
 }
@@ -963,6 +1016,7 @@ tr.header {
 .bgcolor2 {
     background-color: #67809f !important
 }
+
 .bgcolor3 {
     background: #44b6ae !important;
 }
@@ -1032,4 +1086,116 @@ tr.header {
 .pulsateregular {
     padding: 12px;
     animation: 0s ease 0s 1 normal none running none !important;
+}
+
+.colorwhite {
+    color: white !important;
+}
+
+.graphwidth {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    background-color: white;
+}
+
+
+
+/*mobile specific css*/
+
+@media only screen and (max-width:900px) {
+    button {
+        margin-bottom: 4px !important;
+    }
+
+
+    div {
+        display: block;
+        word-wrap: break-word;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin: 2px;
+    }
+
+    #divappendstatusbar {
+        margin-top: 16px !important;
+        overflow: initial;
+    }
+
+    label {
+        margin-left: 2%;
+        margin-right: 2%;
+    }
+}
+
+.gstvalidicon {
+    background: url('../../assets/global/img/icons-done.png') no-repeat center center;
+    padding-right: 30px;
+    background-size: 25px 25px;
+}
+/*invitevendor*/
+.btn-flex-rgt {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px
+}
+
+
+
+
+.panel-default > .panel-heading .glyphicon-chevron-down:before {
+    content: "\e114";
+}
+
+.panel-default > .panel-heading .glyphicon-chevron-up:before {
+    content: "\e113";
+}
+
+.panel-default > .panel-heading .collapsed .glyphicon-chevron-down:before {
+    content: "\e114";
+}
+
+.panel-default > .panel-heading .collapsed .glyphicon-chevron-up:before {
+    content: "\e113";
+}
+
+a:active, a:focus {
+    outline: 0 !important;
+    border: none !important;
+    text-decoration: none !important;
+}
+
+.headingfont {
+    font-weight: 400 !important;
+    font-size: 14px !important
+}
+
+.labelcontrol {
+    padding-top: 7px !important;
+    padding-left: 28px !important;
+}
+
+.modal-xxl {
+    width: 1100px !important;
+}
+
+.spinner {
+    border: 2px solid #ddd;
+    border-top: 2px solid aqua;
+    border-radius: 50% !important;
+    width: 25px;
+    height: 25px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }

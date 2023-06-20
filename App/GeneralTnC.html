@@ -6,6 +6,7 @@
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
+      <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport" />
     <meta content="" name="description" />
@@ -382,7 +383,8 @@
     <script src="assets/CustomJS/Activitydetails.js" type="text/javascript"></script>
     <script>
         jQuery(document).ready(function () {
-        Pageloaded()
+            Pageloaded()
+            var x = isAuthenticated();
         fetchTermsConditionsText()
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {

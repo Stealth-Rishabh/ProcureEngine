@@ -1,7 +1,7 @@
 jQuery(document).ready(function () {
-   
-    Pageloaded()
 
+    Pageloaded()
+    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
@@ -169,7 +169,7 @@ function fetchSeaExportDetails(bidid) {
                 if (BidData[0].bidDetails[0].bidForID == 81 || BidData[0].bidDetails[0].bidForID == 83) {
 
 
-                    jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:20%!important;'>Item Code</th><th>Item/Service</th><th class=hide>Description</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Hide Target Price</th><th>Minimum Decrement</th><th>Decrement On</th><th class=hide>Last InvoicePrice</th><th class='itemclass'>Bid Duration (in minutes)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                    jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:20%!important;'>Item Code</th><th>Item/Service</th><th class=hide>Description</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Hide Target Price</th><th>Minimum Decrement</th><th>Decrement On</th><th class=hide>Last InvoicePrice</th><th class='itemclass'>Bid Duration (in minutes)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
                     for (var i = 0; i < BidData[0].bidSeaExportDetails.length; i++) {
 
                         var decrementon = ''
@@ -194,7 +194,7 @@ function fetchSeaExportDetails(bidid) {
                 }
                 else {
 
-                    jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:20%!important;'>Item Code</th><th>Item/Service</th><th>Remarks</th><th>Target Price</th><th>Hide Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Floor/ Min. Price</th><th>Price Decrement Amount</th><th> Price Decrement Frequency</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
+                    jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:20%!important;'>Item Code</th><th>Item/Service</th><th>Remarks</th><th>Target Price</th><th>Hide Target Price</th><th>Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Floor/ Min. Price</th><th>Price Decrement Amount</th><th> Price Decrement Frequency</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
                     for (var i = 0; i < BidData[0].bidSeaExportDetails.length; i++) {
 
                         jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td style="width:20%!important;" id=itemcodeprev' + i + '>' + BidData[0].bidSeaExportDetails[i].itemCode + '</td><td id=destinationportprev' + i + '>' + BidData[0].bidSeaExportDetails[i].destinationPort + '</td><td id=remarksprev' + i + '>' + BidData[0].bidSeaExportDetails[i].remarks + '</td><td class=text-right id=TPprev' + i + '>' + thousands_separators(BidData[0].bidSeaExportDetails[i].targetprice) + '</td><td id=maskvendor' + i + ' >' + BidData[0].bidSeaExportDetails[i].maskVendor + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators(BidData[0].bidSeaExportDetails[i].quantity) + '</td><td id=uomprev' + i + '>' + BidData[0].bidSeaExportDetails[i].uom + '</td><td class=text-right id=CPprev' + i + '>' + thousands_separators(BidData[0].bidSeaExportDetails[i].ceilingPrice) + '</td><td id=floorpriceprev' + i + ' class=text-right >' + thousands_separators(BidData[0].bidSeaExportDetails[i].startingPrice) + '</td><td class=text-right id=pricedecreamentprev' + i + '>' + thousands_separators(BidData[0].bidSeaExportDetails[i].priceDecreamentAmount) + '</td><td class="text-right" id=pricedecreamentfeqprev' + i + '>' + BidData[0].bidSeaExportDetails[i].priceDecreamentFrequency + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators(BidData[0].bidSeaExportDetails[i].poUnitRate) + '</td><td id=ponoprev' + i + '>' + BidData[0].bidSeaExportDetails[i].poNo + '</td><td id=povendornameprev' + i + ' >' + BidData[0].bidSeaExportDetails[i].poVendorName + '</td><td  id=podateprev' + i + '>' + BidData[0].bidSeaExportDetails[i].poDate + '</td><td class=text-right id=povalueprev' + i + '>' + thousands_separators(BidData[0].bidSeaExportDetails[i].poValue) + '</td></tr>');
@@ -310,7 +310,7 @@ function fetchScrapSalesBidDetails(bidid) {
 
                 if (BidData[0].bidDetails[0].bidForID == 81 || BidData[0].bidDetails[0].bidForID == 83) {
 
-                    jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Name</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
+                    jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>Item/Name</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
                     for (var i = 0; i < BidData[0].bidScrapSalesDetails.length; i++) {
 
 
@@ -441,8 +441,26 @@ var FormValidation = function () {
 
             submitHandler: function (form) {
 
-                var BidDate = new Date($('#txtbidDate').val().replace('-', ''));
-                Dateandtimevalidate(BidDate);
+                //var BidDate = new Date($('#txtbidDate').val().replace('-', ''));
+                var BidDate = new Date();
+
+                if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
+                    //StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+                    BidDate = $('#txtbidDate').val().replace('-', '');
+
+                }
+
+                let StTime =
+                    new Date(BidDate.toLocaleString("en", {
+                        timeZone: sessionStorage.getItem('preferredtimezone')
+                    }));
+
+                ST = new String(StTime);
+                ST = ST.substring(0, ST.indexOf("GMT"));
+                ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+
+
+                Dateandtimevalidate(ST);
                 //if (isLastPreApprover == "Y") {
                 //if (BidDate < new Date()) {
                 //    bootbox.alert("Date and Time should not be less than current date and time.");
@@ -653,8 +671,7 @@ function FetchRecomendedVendor(bidid) {
                 $("#lblLastcomments").text(data[0].remarks);
 
             }
-
-            else {
+        else {
                 $('#divRemarksApp').removeClass('col-md-6');
                 $('#divRemarksApp').addClass('col-md-12');
             }

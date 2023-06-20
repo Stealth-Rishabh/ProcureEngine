@@ -1,5 +1,5 @@
 ﻿jQuery(document).ready(function () {
-   
+
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -107,8 +107,10 @@ function insupdconditionmaster() {
         "conditionName": $('#conditionName').val(),
         "IsActive": status,
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
-        "conditionSr": $('#conditionSr').val()
+        "conditionSr": $('#conditionSr').val(),
+        "createdBy": sessionStorage.getItem('UserID')
     }
+
     //alert(JSON.stringify(data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "NFA/InsUpdConditionMaster",
@@ -121,6 +123,7 @@ function insupdconditionmaster() {
         dataType: "json",
         contentType: "application/json",
         success: function (data) {
+
             if (data == '1') {
                 $("#success").html("Transaction Successfull...");
                 success.show();
@@ -146,6 +149,7 @@ function insupdconditionmaster() {
             resetform();
         },
         error: function (xhr, status, error) {
+
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
