@@ -1,10 +1,10 @@
 // Create the main myMSALObj instance
 // configuration parameters are located at authConfig.js
-
+debugger;
 const myMSALObj = new msal.PublicClientApplication(msalConfig);
 
 let username = "";
-sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/')
+sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/')
 myMSALObj.handleRedirectPromise()
     .then(handleResponse)
     .catch(error => {
@@ -133,7 +133,7 @@ function passTokenToApi() {
         });
 
 }
-function fnGetUserBasicDetails() {
+/*function fnGetUserBasicDetails() {
 
         jQuery.ajax({
             type: "GET",
@@ -272,4 +272,4 @@ function fnGetUserBasicDetails() {
             }
 
         });
-    }
+    }*/

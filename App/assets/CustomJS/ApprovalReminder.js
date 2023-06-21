@@ -1,5 +1,4 @@
 jQuery(document).ready(function () {
-    var x = isAuthenticated();
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -437,7 +436,6 @@ function ValidateVendor() {
     return status;
 }
 function fnCloseBids() {
-    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (ValidateVendor() == 'false') {
         jQuery.unblockUI();

@@ -1,4 +1,4 @@
-﻿jQuery(document).ready(function () {
+jQuery(document).ready(function () {
 
     Pageloaded()
 
@@ -43,22 +43,22 @@ $("#cancelBidBtn").hide();
 
 $('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
 jQuery(document).ready(function () {
-    /* $("#txtCeilingPrice,#txtquantitiy,#txtmaxquantitiy,#txtminquantitiy,#txtminimumdecreament,#txtStartingPrice,#txtPriceReductionAmount").inputmask({
-         alias: "decimal",
-         rightAlign: true,
-         groupSeparator: ",",
-         radixPoint: ".",
-         autoGroup: true,
-         integerDigits: 40,
-         digitsOptional: true,
-         allowPlus: false,
-         allowMinus: false,
-         clearMaskOnLostFocus: true,
-         supportsInputType: ["text", "tel", "password"],
-         'removeMaskOnSubmit': true,
-         autoUnmask: true
- 
-     });*/
+   /* $("#txtCeilingPrice,#txtquantitiy,#txtmaxquantitiy,#txtminquantitiy,#txtminimumdecreament,#txtStartingPrice,#txtPriceReductionAmount").inputmask({
+        alias: "decimal",
+        rightAlign: true,
+        groupSeparator: ",",
+        radixPoint: ".",
+        autoGroup: true,
+        integerDigits: 40,
+        digitsOptional: true,
+        allowPlus: false,
+        allowMinus: false,
+        clearMaskOnLostFocus: true,
+        supportsInputType: ["text", "tel", "password"],
+        'removeMaskOnSubmit': true,
+        autoUnmask: true
+
+    });*/
 });
 
 var _BidID;
@@ -926,7 +926,7 @@ var FormWizard = function () {
                         }
 
                     } else if (index == 2) {
-
+                      
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
                             $('#spandanger').html('please Configure Bid parameters..')
                             $('.alert-danger').show();
@@ -1458,7 +1458,7 @@ $("#txtbidDate").change(function () {
 
 
 function InsUpdProductSevices() {
-
+    
     //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />Please Wait...</h5>' });
     if (form.valid() == true) {
         var st = "true"
@@ -1621,7 +1621,7 @@ function InsUpdProductSevices() {
                         Metronic.scrollTo(error, -200);
                         error.fadeOut(3000);
                         jQuery.unblockUI();
-
+                       
                         return false;
                     }
                     else {
@@ -1647,61 +1647,61 @@ var PriceDetails = [];
 var rowAppItems = 0, rowAppItemsrno = 0;
 
 function ParametersQuery() {
-    var num = 0, i = 0;
-    var maxinum = -1;
-    $("#tblServicesProduct tr:gt(0)").each(function () {
-        var this_row = $(this);
+        var num = 0, i = 0;
+        var maxinum = -1;
+        $("#tblServicesProduct tr:gt(0)").each(function () {
+            var this_row = $(this);
 
-        num = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
-        if (parseInt(num) > parseInt(maxinum)) {
-            maxinum = num;
+            num = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxinum)) {
+                maxinum = num;
+            }
+        });
+
+        i = parseInt(maxinum) + 1;
+        var status = "";
+        var status = $('#checkmaskvendor option:selected').val();
+        // var ShowHlPrice = $('#showhlprice option:selected').val();
+        //var ShowStartPrice = $('#showstartprice option:selected').val();
+
+        if ($("#txttargetprice").val() == null || $("#txttargetprice").val() == '') {
+            $("#txttargetprice").val('0')
         }
-    });
+        if ($("#txtlastinvoiceprice").val() == null || $("#txtlastinvoiceprice").val() == '') {
+            $("#txtlastinvoiceprice").val('0')
+        }
+        if (!jQuery("#tblServicesProduct thead").length) {
 
-    i = parseInt(maxinum) + 1;
-    var status = "";
-    var status = $('#checkmaskvendor option:selected').val();
-    // var ShowHlPrice = $('#showhlprice option:selected').val();
-    //var ShowStartPrice = $('#showstartprice option:selected').val();
+            jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:100px;'></th><th>S No</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>Min.Offered Quantity</th><th>Max.Offered Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
+            jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><button type="button" class="btn btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemname' + i + ' >' + $('#txtshortname').val() + '</td><td id=TP' + i + ' >' + $('#txttargetprice').val() + '</td><td id=quantity' + i + ' >' + $('#txtquantitiy').val() + '</td><td id=minquantity' + i + ' >' + $('#txtminquantitiy').val() + '</td><td id=maxquantity' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOM' + i + '>' + $('#dropuom').val() + '</td><td id=BSP' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendor' + i + '>' + status + '</td><td id=mininc' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=incon' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconval' + i + '>' + $("#drpdecreamenton").val() + '</td><td id=LIP' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhl' + i + '>' + $('#showhlprice').val() + '</td><td id=showstart' + i + '>' + $('#showstartprice').val() + '</td></tr>');
+        }
+        else {
+            jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><button type="button" class="btn  btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemname' + i + ' >' + $('#txtshortname').val() + '</td><td id=TP' + i + ' >' + $('#txttargetprice').val() + '</td><td id=quantity' + i + ' >' + $('#txtquantitiy').val() + '</td><td id=minquantity' + i + ' >' + $('#txtminquantitiy').val() + '</td><td id=maxquantity' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOM' + i + '>' + $('#dropuom').val() + '</td><td id=BSP' + i + ' >' + $('#txtCeilingPrice').val() + '</td><td id=maskvendor' + i + ' >' + status + '</td><td id=mininc' + i + ' >' + $('#txtminimumdecreament').val() + '</td><td id=incon' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconval' + i + '>' + $("#drpdecreamenton").val() + '</td><td id=LIP' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhl' + i + '>' + $('#showhlprice').val() + '</td><td id=showstart' + i + '>' + $('#showstartprice').val() + '</td></tr>');
+        }
+        $('#wrap_scroller').show();
+        if (!jQuery("#tblServicesProductPrev thead").length) {
+            jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>Min.Offered Quantity</th><th>Max.Offered Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
+            jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemnameprev' + i + '>' + $('#txtshortname').val() + '</td><td id=TPrev' + i + '>' + $('#txttargetprice').val() + '</td><td id=quantityprev' + i + '>' + $('#txtquantitiy').val() + '</td><td id=minquantityprev' + i + '>' + $('#txtminquantitiy').val() + '</td><td id=maxquantityprev' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOMprev' + i + '>' + $('#dropuom').val() + '</td><td id=BSPprev' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td id=minincprev' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=inconprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td id=inconvalprev' + i + ' class=hide>' + $("#drpdecreamenton").val() + '</td><td id=LIPprev' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhlprev' + i + '>' + $('#showhlprice').val() + '</td><td id=showstartprev' + i + '>' + $('#showstartprice').val() + '</td></tr>');
+        }
+        else {
+            jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemnameprev' + i + '>' + $('#txtshortname').val() + '</td><td id=TPprev' + i + '>' + $('#txttargetprice').val() + '</td><td id=quantityprev' + i + '>' + $('#txtquantitiy').val() + '</td><td id=minquantityprev' + i + '>' + $('#txtminquantitiy').val() + '</td><td id=maxquantityprev' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOMprev' + i + '>' + $('#dropuom').val() + '</td><td id=BSPprev' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td id=minincprev' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=inconprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td id=inconvalprev' + i + ' class=hide>' + $("#drpdecreamenton").val() + '</td><td id=LIPprev' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhlprev' + i + '>' + $('#showhlprice').val() + '</td><td id=showstartprev' + i + '>' + $('#showstartprice').val() + '</td></tr>');
+         }
+      
+        $('#wrap_scrollerPrev').show();
+        rowAppItems = rowAppItems + 1;
+        rowAppItemsrno = rowAppItemsrno + 1;
+        resetfun()
+        disableiteminput()        
+        $('#spansuccess1').html('Item successfully added and you cannot add more than one item for French Auction.');              
+        $(".alert-success").show();
+        $(".alert-success").fadeOut(5000);
+      
 
-    if ($("#txttargetprice").val() == null || $("#txttargetprice").val() == '') {
-        $("#txttargetprice").val('0')
-    }
-    if ($("#txtlastinvoiceprice").val() == null || $("#txtlastinvoiceprice").val() == '') {
-        $("#txtlastinvoiceprice").val('0')
-    }
-    if (!jQuery("#tblServicesProduct thead").length) {
-
-        jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:100px;'></th><th>S No</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>Min.Offered Quantity</th><th>Max.Offered Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
-        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><button type="button" class="btn btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemname' + i + ' >' + $('#txtshortname').val() + '</td><td id=TP' + i + ' >' + $('#txttargetprice').val() + '</td><td id=quantity' + i + ' >' + $('#txtquantitiy').val() + '</td><td id=minquantity' + i + ' >' + $('#txtminquantitiy').val() + '</td><td id=maxquantity' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOM' + i + '>' + $('#dropuom').val() + '</td><td id=BSP' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendor' + i + '>' + status + '</td><td id=mininc' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=incon' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconval' + i + '>' + $("#drpdecreamenton").val() + '</td><td id=LIP' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhl' + i + '>' + $('#showhlprice').val() + '</td><td id=showstart' + i + '>' + $('#showstartprice').val() + '</td></tr>');
-    }
-    else {
-        jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><button type="button" class="btn  btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemname' + i + ' >' + $('#txtshortname').val() + '</td><td id=TP' + i + ' >' + $('#txttargetprice').val() + '</td><td id=quantity' + i + ' >' + $('#txtquantitiy').val() + '</td><td id=minquantity' + i + ' >' + $('#txtminquantitiy').val() + '</td><td id=maxquantity' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOM' + i + '>' + $('#dropuom').val() + '</td><td id=BSP' + i + ' >' + $('#txtCeilingPrice').val() + '</td><td id=maskvendor' + i + ' >' + status + '</td><td id=mininc' + i + ' >' + $('#txtminimumdecreament').val() + '</td><td id=incon' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconval' + i + '>' + $("#drpdecreamenton").val() + '</td><td id=LIP' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhl' + i + '>' + $('#showhlprice').val() + '</td><td id=showstart' + i + '>' + $('#showstartprice').val() + '</td></tr>');
-    }
-    $('#wrap_scroller').show();
-    if (!jQuery("#tblServicesProductPrev thead").length) {
-        jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>Min.Offered Quantity</th><th>Max.Offered Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
-        jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemnameprev' + i + '>' + $('#txtshortname').val() + '</td><td id=TPrev' + i + '>' + $('#txttargetprice').val() + '</td><td id=quantityprev' + i + '>' + $('#txtquantitiy').val() + '</td><td id=minquantityprev' + i + '>' + $('#txtminquantitiy').val() + '</td><td id=maxquantityprev' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOMprev' + i + '>' + $('#dropuom').val() + '</td><td id=BSPprev' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td id=minincprev' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=inconprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td id=inconvalprev' + i + ' class=hide>' + $("#drpdecreamenton").val() + '</td><td id=LIPprev' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhlprev' + i + '>' + $('#showhlprice').val() + '</td><td id=showstartprev' + i + '>' + $('#showstartprice').val() + '</td></tr>');
-    }
-    else {
-        jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemnameprev' + i + '>' + $('#txtshortname').val() + '</td><td id=TPprev' + i + '>' + $('#txttargetprice').val() + '</td><td id=quantityprev' + i + '>' + $('#txtquantitiy').val() + '</td><td id=minquantityprev' + i + '>' + $('#txtminquantitiy').val() + '</td><td id=maxquantityprev' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOMprev' + i + '>' + $('#dropuom').val() + '</td><td id=BSPprev' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td id=minincprev' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=inconprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td id=inconvalprev' + i + ' class=hide>' + $("#drpdecreamenton").val() + '</td><td id=LIPprev' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhlprev' + i + '>' + $('#showhlprice').val() + '</td><td id=showstartprev' + i + '>' + $('#showstartprice').val() + '</td></tr>');
-    }
-
-    $('#wrap_scrollerPrev').show();
-    rowAppItems = rowAppItems + 1;
-    rowAppItemsrno = rowAppItemsrno + 1;
-    resetfun()
-    disableiteminput()
-    $('#spansuccess1').html('Item successfully added and you cannot add more than one item for French Auction.');
-    $(".alert-success").show();
-    $(".alert-success").fadeOut(5000);
-
-
-
+    
     jQuery.unblockUI();
 }
 function disableiteminput() {
-
+   
     $("#txtshortname").prop("disabled", true);
     $("#txtItemCode").prop("disabled", true);
     $("#txttargetprice").prop("disabled", true);
@@ -1713,14 +1713,14 @@ function disableiteminput() {
     $("#txtCeilingPrice").prop("disabled", true);
     $("#txtminimumdecreament").prop("disabled", true);
     $("#drpdecreamenton").prop("disabled", true);
-    $("#showhlprice").prop("disabled", true);
+    $("#showhlprice").prop("disabled", true);   
     $("#showstartprice").prop("disabled", true);
     $("#add_or").prop("disabled", true);
     $("#delete_or").prop("disabled", true);
-
+    
 }
 function enableiteminput() {
-
+  
     $("#txtshortname").prop("disabled", false);
     $("#txtItemCode").prop("disabled", false);
     $("#txttargetprice").prop("disabled", false);
@@ -1732,7 +1732,7 @@ function enableiteminput() {
     $("#txtCeilingPrice").prop("disabled", false);
     $("#txtminimumdecreament").prop("disabled", false);
     $("#drpdecreamenton").prop("disabled", false);
-    $("#showhlprice").prop("disabled", false);
+    $("#showhlprice").prop("disabled", false);  
     $("#showstartprice").prop("disabled", false);
     $("#add_or").prop("disabled", false);
     $("#delete_or").prop("disabled", false);
@@ -1767,7 +1767,7 @@ function editvalues(icount) {
 
 }
 function deleterow(rowid, rowidPrev) {
-
+   
     enableiteminput()
     $('#' + rowid.id).remove();
     $('#' + rowidPrev.id).remove();
@@ -1786,8 +1786,8 @@ function deleterow(rowid, rowidPrev) {
             $.trim(this_row.find('td:eq(0)').html(i));
             i++;
         });
-
-
+        
+        
     }
 }
 function resetfun() {
@@ -2065,7 +2065,7 @@ function fetchFrenchBidDetails() {
                 jQuery('#selectedvendorlistsPrev').show()
 
             }
-            if (jQuery("#tblServicesProduct >tbody >tr ").length >= 1) {
+            if (jQuery("#tblServicesProduct >tbody >tr ").length >= 1) {              
                 resetfun();
                 disableiteminput();
             }
@@ -2423,7 +2423,7 @@ jQuery("#txtSearch").typeahead({
         map = {};
         var username = "";
         jQuery.each(data, function (i, username) {
-            vName = username.participantName + ' (' + username.companyEmail + ')' + " " + (username.stateName).toUpperCase()
+            vName = username.participantName + ' (' + username.companyEmail + ')' + " " + (username.stateName).toUpperCase() 
             map[vName] = username;
             usernames.push(vName);
         });
@@ -2438,8 +2438,8 @@ jQuery("#txtSearch").typeahead({
             //jQuery("#tblvendorlist > tbody").empty();
 
 
-            vName = map[item].participantName + ' (' + map[item].companyEmail + ')' + " " + (map[item].stateName).toUpperCase()
-
+             vName = map[item].participantName + ' (' + map[item].companyEmail + ')' + " " + (map[item].stateName).toUpperCase() 
+     
 
             var str = "<tr id=vList" + map[item].associatedVendorID + "><td class='hide'>" + map[item].associatedVendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].associatedVendorID + "'\)\"; id=\"chkvender" + map[item].associatedVendorID + "\" value=" + map[item].associatedVendorID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>";
             jQuery('#tblvendorlist > tbody').append(str);
@@ -2482,7 +2482,7 @@ function getCategoryWiseVendors(categoryID) {
             var vName = '';
             for (var i = 0; i < data.length; i++) {
                 vName = data[i].vendorName + " " + data[i].stateName;
-                var str = "<tr id=vList" + data[i].mappedVendorIdentifier + " ><td class='hide'>" + data[i].mappedVendorIdentifier + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].mappedVendorIdentifier + "'\)\"; id=\"chkvender" + data[i].mappedVendorIdentifier + "\" value=" + data[i].mappedVendorIdentifier + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " " + data[i].stateName + "</td></tr>";
+                var str = "<tr id=vList" + data[i].mappedVendorIdentifier + " ><td class='hide'>" + data[i].mappedVendorIdentifier + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].mappedVendorIdentifier + "'\)\"; id=\"chkvender" + data[i].mappedVendorIdentifier + "\" value=" + data[i].mappedVendorIdentifier + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " " + data[i].stateName +"</td></tr>";
 
                 jQuery('#tblvendorlist > tbody').append(str);
 
@@ -2512,7 +2512,6 @@ function getCategoryWiseVendors(categoryID) {
         }
 
     });
-
 
 }
 

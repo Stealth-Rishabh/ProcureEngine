@@ -102,10 +102,14 @@ function fetchReguestforQuotationDetails() {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (RFQData) {
-
+        success: function (Data) {
+          
+            let RFQData=Data.rData
+            
+            
+            
             $('#tbldetailsExcel > tbody').empty();
-
+            
 
 
 
@@ -167,7 +171,7 @@ function RFQFetchQuotedPriceReport() {
         success: function (data) {
             var totalamountsum = 0.0;
             var withoutGSTValue = 0.0;
-
+           
             if (data[0].quotesDetails.length > 0) {
                 var description = ""; var comments = "";
                 jQuery("#tblServicesProduct").empty();
@@ -340,7 +344,24 @@ function RFQFetchQuotedPriceReport() {
                 for (var i = 0; i < data[0].questions.length; i++) {
                     var attachQA = data[0].questions[i].attachementQA;
                     //jQuery('<tr id=trid' + i + '><td style="width:30%">' + data[0].questions[i].question + '</td><td>' + data[0].questions[i].requirement + '</td><td>' + data[0].questions[i].answer + '</td></tr>').appendTo("#tblquestions");
+                   if(sessionStorage.getItem('RFQBidType')=='Open'){
                     jQuery('<tr id=trid' + i + '><td style="width:30%">' + data[0].questions[i].question + '</td><td>' + data[0].questions[i].requirement + '</td><td>' + data[0].questions[i].answer + '<br>  <a id=eRFQVFilesques' + i + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this,' + data[0].questions[i].vendorID + ')>' + attachQA + '</a></td></tr>').appendTo("#tblquestions");
+                      
+                   }
+                   else{
+                       if(sessionStorage.getItem('ShowPrice')=='N'){
+                           
+                       jQuery('<tr id=trid' + i + '><td style="width:30%">' + data[0].questions[i].question + '</td><td>' + data[0].questions[i].requirement + '</td><td>' + data[0].questions[i].answer + '<br>  <a id=eRFQVFilesques' + i + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this,' + data[0].questions[i].vendorID + ')>' + "" + '</a></td></tr>').appendTo("#tblquestions");
+                 
+                           
+                       }
+                       else{
+                           jQuery('<tr id=trid' + i + '><td style="width:30%">' + data[0].questions[i].question + '</td><td>' + data[0].questions[i].requirement + '</td><td>' + data[0].questions[i].answer + '<br>  <a id=eRFQVFilesques' + i + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this,' + data[0].questions[i].vendorID + ')>' + attachQA + '</a></td></tr>').appendTo("#tblquestions");
+                  
+                       }
+                      
+                   }
+                    
                     //strQ += '<td >' + data[0].questions[s].answer + '<br>  <a id=eRFQVFilesques' + s + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this,' + data[0].questions[s].vendorID + ')>' + attachQA + '</a> </td>';
                     jQuery('<tr id=trid' + i + '><td style="width:20%">' + data[0].questions[i].question + '</td><td>' + data[0].questions[i].requirement + '</td><td>' + data[0].questions[i].answer + '</td></tr>').appendTo("#tblquestionsprev");
                 }
@@ -354,9 +375,31 @@ function RFQFetchQuotedPriceReport() {
             if (data[0].attachments.length > 0) {
                 jQuery("#tblAttachments").empty();
                 jQuery("#tblAttachmentsprev").empty();
-
+                 
+                 
+                 
                 jQuery('#tblAttachments').append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:30%!important'>Description</th><th class='bold'>Attachment</th></tr></thead>");
                 jQuery('#tblAttachmentsprev').append("<thead><tr><th class='bold' style='width:30%!important'>Description</th><th class='bold'>Attachment</th></tr></thead>");
+                
+                if(sessionStorage.getItem('RFQBidType')=='Open'){
+                    jQuery('#tblAttachments').show();
+                    jQuery('#tblAttachmentsprev').show();
+                     
+                 } 
+                 else{
+                     if(sessionStorage.getItem('ShowPrice')=='N'){
+                         jQuery('#tblAttachments').hide();
+                         jQuery('#tblAttachmentsprev').hide(); 
+                         
+                     }
+                     else{
+                        jQuery('#tblAttachments').show();
+                        jQuery('#tblAttachmentsprev').show(); 
+                     }
+                    
+                 }
+                
+                
                 for (var i = 0; i < data[0].attachments.length; i++) {
 
                     if (sessionStorage.getItem('RFQVersionId') == 99) {
@@ -370,10 +413,15 @@ function RFQFetchQuotedPriceReport() {
 
                     }
                     verArray[i] = version;
-                    jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td><a id=attchvendor' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFileVendor(this)" href="javascript:;" >' + data[0].attachments[i].attachment + '</a></td></tr>').appendTo("#tblAttachments");
-                    //jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td><a id=attchvendor' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFileVendor(this)" href="javascript:;" >' + data[0].attachments[i].attachment + '</a></td><tdstyle="display: none;">' + data[0].attachments[i].rfqVersionId + '</td></tr>').appendTo("#tblAttachments");
-                    jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td>' + data[0].attachments[i].attachment + '</td></tr>').appendTo("#tblAttachmentsprev");
-                }
+                     
+                        jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td><a id=attchvendor' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFileVendor(this)" href="javascript:;" >' + data[0].attachments[i].attachment + '</a></td></tr>').appendTo("#tblAttachments");
+                       //jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td><a id=attchvendor' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFileVendor(this)" href="javascript:;" >' + data[0].attachments[i].attachment + '</a></td><tdstyle="display: none;">' + data[0].attachments[i].rfqVersionId + '</td></tr>').appendTo("#tblAttachments");
+                       jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td>' + data[0].attachments[i].attachment + '</td></tr>').appendTo("#tblAttachmentsprev");
+            
+                         
+                    
+                    
+                 }
             }
             else {
 
@@ -453,30 +501,34 @@ function RFQFetchQuotedPriceReportBoq() {
                 jQuery('#tblServicesProduct').append('<thead><tr style="background: grey; color:light black;"><th style="width:10%!important;"></th><th style="width:10%!important">SrNo</th><th style="width:30%!important;">Item Name</th><th style="width:20%!important;">' + taxHRTextinc + '</th><th style="width:30%!important;">' + taxHRTextEx + '</th></tr></thead>');
                 jQuery('#tblServicesProductforexcel').append('<thead><tr style="background: grey; color:light black;"><th style="width:5%!important;"></th><th style="width:4%!important">SrNo</th><th style="width:40%!important;">Item Name</th><th>' + taxHRTextinc + '</th><th>' + taxHRTextEx + '</th></tr></thead>');
                 for (var i = 0; i < data[0].quotesDetails.length; i++) {
-
+                    
                     if (data[0].quotesDetails[i].rfqtcid == "0") {
-                        debugger;
+                       
                         srno = data[0].quotesDetails[i].srno;
 
                         if (sessionStorage.getItem('ShowPrice') == "Y" || sessionStorage.getItem('ShowPrice') == "") {
-                            if (data[0].quotesDetails[i].rfqVendorPricewithTax <= 0) {
-                                bsicpercentageofGST = thousands_separators((data[0].quotesDetails[i].rfqVendorPricewithoutGST).round(2)) || "Not Quoted";
+                            if (data[0].quotesDetails[i].rfqVendorPricewithTax<=0)
+                            {
+                             bsicpercentageofGST = thousands_separators((data[0].quotesDetails[i].rfqVendorPricewithoutGST).round(2)) || "Not Quoted";
                             }
-                            else {
-                                bsicpercentageofGST = thousands_separators((data[0].quotesDetails[i].rfqVendorPricewithTax).round(2)) || "Not Quoted";
-
+                            else
+                            {
+                             bsicpercentageofGST = thousands_separators((data[0].quotesDetails[i].rfqVendorPricewithTax).round(2)) || "Not Quoted";
+                                
                             }
                             _basicPrice = thousands_separators((data[0].quotesDetails[i].rfqVendorPricewithoutGST).round(2)) || "Not Quoted";
                             itemprice = thousands_separators((data[0].quotesDetails[i].itemPrice).round(2)) || "Not Quoted";
                             totalamount = data[0].quotesDetails[i].rfqVendorPricewithTax * data[0].quotesDetails[i].quantity || "Not Quoted";
                         }
                         else {
-                            if (data[0].quotesDetails[i].rfqVendorPricewithTax <= 0) {
+                            if (data[0].quotesDetails[i].rfqVendorPricewithTax<=0)
+                            {
                                 bsicpercentageofGST = (data[0].quotesDetails[i].rfqVendorPricewithoutGST) ? "Quoted" : "Not Quoted";
                             }
-                            else {
+                            else
+                            {
                                 bsicpercentageofGST = (data[0].quotesDetails[i].rfqVendorPricewithTax) ? "Quoted" : "Not Quoted";
-
+                                
                             }
                             _basicPrice = (data[0].quotesDetails[i].rfqVendorPricewithoutGST) ? "Quoted" : "Not Quoted";
                             itemprice = (data[0].quotesDetails[i].itemPrice) ? "Quoted" : "Not Quoted"
@@ -486,38 +538,38 @@ function RFQFetchQuotedPriceReportBoq() {
                         if (data[0].quotesDetails[i].vendorItemRemarks != "") {
                             comments = stringDivider(data[0].quotesDetails[i].vendorItemRemarks, 45, "<br/>\n");
                         }
+                      
+                            if (data[0].quotesDetails[i].rfqParameterParentID > 0) {
+                                $('#btn' + data[0].quotesDetails[i].rfqParameterParentID).attr('data-target', '#itemDiv' + data[0].quotesDetails[i].rfqParameterParentID);
 
-                        if (data[0].quotesDetails[i].rfqParameterParentID > 0) {
-                            $('#btn' + data[0].quotesDetails[i].rfqParameterParentID).attr('data-target', '#itemDiv' + data[0].quotesDetails[i].rfqParameterParentID);
-
-                            if ($("#itemTbl" + data[0].quotesDetails[i].rfqParameterParentID).find('#itemDiv' + data[0].quotesDetails[i].rfqParameterParentID).length <= 0) {
-                                $("#itemTbl" + data[0].quotesDetails[i].rfqParameterParentID).append("<tr><td colspan=10 class=hiddenRow style='border:none !important'><div class='accordian-body collapse' id='itemDiv" + data[0].quotesDetails[i].rfqParameterParentID + "' ></div></tr>");
-                            }
-
-                            if (data[0].quotesDetails[i].uom != '' && data[0].quotesDetails[i].rfqtcid <= 0) {
-                                if ($("#itemDiv" + data[0].quotesDetails[i].rfqParameterParentID).find('#th' + data[0].quotesDetails[i].rfqParameterParentID).length <= 0) {
-                                    $('#itemDiv' + data[0].quotesDetails[i].rfqParameterParentID).append("<table id=itemTbl" + data[0].quotesDetails[i].rfqParameterParentID + " class='table table-bordered table-condensed  BoqTable'  style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0><thead id=th" + data[0].quotesDetails[i].rfqParameterParentID + "><tr style='background: #eee;color: #000;'><th style='width:10%!important'></th><th  style='width:10%!important' class=text-left>S No</th><th style='width:30%!important'>Item Name</th><th style='width:20%!important'>Quantity</th><th style='width:10%!important'>UOM</th><th style='width:20%!important'>Price</th></tr></thead></table>")
+                                if ($("#itemTbl" + data[0].quotesDetails[i].rfqParameterParentID).find('#itemDiv' + data[0].quotesDetails[i].rfqParameterParentID).length <= 0) {
+                                    $("#itemTbl" + data[0].quotesDetails[i].rfqParameterParentID).append("<tr><td colspan=10 class=hiddenRow style='border:none !important'><div class='accordian-body collapse' id='itemDiv" + data[0].quotesDetails[i].rfqParameterParentID + "' ></div></tr>");
                                 }
-                                $("#itemDiv" + data[0].quotesDetails[i].rfqParameterParentID).append("<table id=itemTbl" + data[0].quotesDetails[i].rfqParameterId + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0></table>");
 
-                                $('#itemTbl' + data[0].quotesDetails[i].rfqParameterId).append("<tbody><tr><td style='width:10%!important'></td><td  style='width:10%!important' class='text-right'>" + srno + " </td><td style='width:30%!important'>" + data[0].quotesDetails[i].rfqShortName + "</td><td style='width:20%!important'>" + data[0].quotesDetails[i].quantity + "</td><td class=text-right style='width:10%!important'><b>" + data[0].quotesDetails[i].uom + "</b></td><td class=text-right style='width:20%!important'><b>" + itemprice + "</b></td></tr></tbody>")
+                                if (data[0].quotesDetails[i].uom != '' && data[0].quotesDetails[i].rfqtcid <= 0) {
+                                    if ($("#itemDiv" + data[0].quotesDetails[i].rfqParameterParentID).find('#th' + data[0].quotesDetails[i].rfqParameterParentID).length <= 0) {
+                                        $('#itemDiv' + data[0].quotesDetails[i].rfqParameterParentID).append("<table id=itemTbl" + data[0].quotesDetails[i].rfqParameterParentID + " class='table table-bordered table-condensed  BoqTable'  style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0><thead id=th" + data[0].quotesDetails[i].rfqParameterParentID + "><tr style='background: #eee;color: #000;'><th style='width:10%!important'></th><th  style='width:10%!important' class=text-left>S No</th><th style='width:30%!important'>Item Name</th><th style='width:20%!important'>Quantity</th><th style='width:10%!important'>UOM</th><th style='width:20%!important'>Price</th></tr></thead></table>")
+                                    }
+                                    $("#itemDiv" + data[0].quotesDetails[i].rfqParameterParentID).append("<table id=itemTbl" + data[0].quotesDetails[i].rfqParameterId + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0></table>");
 
+                                    $('#itemTbl' + data[0].quotesDetails[i].rfqParameterId).append("<tbody><tr><td style='width:10%!important'></td><td  style='width:10%!important' class='text-right'>" + srno + " </td><td style='width:30%!important'>" + data[0].quotesDetails[i].rfqShortName + "</td><td style='width:20%!important'>" + data[0].quotesDetails[i].quantity + "</td><td class=text-right style='width:10%!important'><b>" + data[0].quotesDetails[i].uom + "</b></td><td class=text-right style='width:20%!important'><b>" + itemprice + "</b></td></tr></tbody>")
+
+                                }
+                                else {
+                                    $("#itemDiv" + data[0].quotesDetails[i].rfqParameterParentID).append("<table id=itemTbl" + data[0].quotesDetails[i].rfqParameterId + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0></table>");
+
+                                    $('#itemTbl' + data[0].quotesDetails[i].rfqParameterId).append("<tbody><tr><td style='width:10%!important' class=border-none><button style='background-color:white !important;margin-left:12%;'  type='button'  data-toggle=collapse   id='btn" + data[0].quotesDetails[i].rfqParameterId + "'  class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItem" + i + ")'><i class='glyphicon glyphicon-plus' id='mainItem" + i + "'></i></button></td><td  style='width:10%!important' class='text-right'>" + srno + " </td><td style='width:30%!important'>" + data[0].quotesDetails[i].rfqShortName + "</td><td style='width:50%!important'>" + itemprice + "</td></tr></tbody>")
+                                }
                             }
                             else {
-                                $("#itemDiv" + data[0].quotesDetails[i].rfqParameterParentID).append("<table id=itemTbl" + data[0].quotesDetails[i].rfqParameterId + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0></table>");
 
-                                $('#itemTbl' + data[0].quotesDetails[i].rfqParameterId).append("<tbody><tr><td style='width:10%!important' class=border-none><button style='background-color:white !important;margin-left:12%;'  type='button'  data-toggle=collapse   id='btn" + data[0].quotesDetails[i].rfqParameterId + "'  class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItem" + i + ")'><i class='glyphicon glyphicon-plus' id='mainItem" + i + "'></i></button></td><td  style='width:10%!important' class='text-right'>" + srno + " </td><td style='width:30%!important'>" + data[0].quotesDetails[i].rfqShortName + "</td><td style='width:50%!important'>" + itemprice + "</td></tr></tbody>")
+                                sheetcount++
+                                sheet = data[0].quotesDetails[i].boqsheetName;
+                                $("#tblServicesProduct").append("<tr><td colspan=10 class='hiddenRow' style='border:none !important'><div id='itemDiv" + sheetcount + "'></div></tr>");
+                                $("#itemDiv" + sheetcount).append("<table id=itemTbl" + data[0].quotesDetails[i].rfqParameterId + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0></table>");
+                                $('#itemTbl' + data[0].quotesDetails[i].rfqParameterId).append("<tbody><tr><td style='width:10%!important' class=border-none><button style='background-color:white !important; margin-left:5%' type='button'  data-toggle=collapse   id='btn" + data[0].quotesDetails[i].rfqParameterId + "'  class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItem" + i + ")'><i class='glyphicon glyphicon-plus' id='mainItem" + i + "'></i></button></td><td  style='width:10%!important' class='text-right'>" + sheetcount + " </td><td style='width:30%!important'>" + data[0].quotesDetails[i].rfqShortName + "</td><td style='width:20%!important'>" + _basicPrice + "</td> <td style='width:30%!important'>" + bsicpercentageofGST + "</td> </tr></tbody>")
                             }
-                        }
-                        else {
-
-                            sheetcount++
-                            sheet = data[0].quotesDetails[i].boqsheetName;
-                            $("#tblServicesProduct").append("<tr><td colspan=10 class='hiddenRow' style='border:none !important'><div id='itemDiv" + sheetcount + "'></div></tr>");
-                            $("#itemDiv" + sheetcount).append("<table id=itemTbl" + data[0].quotesDetails[i].rfqParameterId + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0></table>");
-                            $('#itemTbl' + data[0].quotesDetails[i].rfqParameterId).append("<tbody><tr><td style='width:10%!important' class=border-none><button style='background-color:white !important; margin-left:5%' type='button'  data-toggle=collapse   id='btn" + data[0].quotesDetails[i].rfqParameterId + "'  class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItem" + i + ")'><i class='glyphicon glyphicon-plus' id='mainItem" + i + "'></i></button></td><td  style='width:10%!important' class='text-right'>" + sheetcount + " </td><td style='width:30%!important'>" + data[0].quotesDetails[i].rfqShortName + "</td><td style='width:20%!important'>" + _basicPrice + "</td> <td style='width:30%!important'>" + bsicpercentageofGST + "</td> </tr></tbody>")
-                        }
-                    }
+                     }
                 }
 
             }

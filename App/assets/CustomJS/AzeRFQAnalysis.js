@@ -24,7 +24,7 @@ jQuery(document).ready(function () {
     fetchRFIRFQSubjectforReport('RFQ')
 
     formvalidate();
-
+   
     fetchRegisterUser();
 });
 if (window.location.search) {
@@ -62,7 +62,7 @@ function getSummary(vendorid, version) {
 }
 var Vendor;
 function fetchrfqcomprative() {
-
+   
 
     sessionStorage.setItem("RFQVersionId", $("#ddlrfqVersion option:selected").val())
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -112,26 +112,26 @@ function fetchrfqcomprative() {
             // ShowPrice = 'Y';
             $('#btnPDF').show()
 
-            /* var _RFQOpenDate = new Date(bidopeningdate.replace('-', ''));
- 
-             if (_rfqBidType != 'Open') {
-                 if (bidopeningdate != null || bidopeningdate != '') {
-                     if (_RFQOpenDate <= _CurrentDate) {
-                         ShowPrice = 'Y';
-                         $('#btnPDF').show()
-                     }
-                 }
-                 else {
-                     ShowPrice = 'N';
-                     $('#btnPDF').hide()
-                 }
-             }
-             else {
-                 ShowPrice = 'Y';
-                 $('#btnPDF').show()
- 
-             }
- */            // sessionStorage.setItem('ShowPrice', '');
+           /* var _RFQOpenDate = new Date(bidopeningdate.replace('-', ''));
+
+            if (_rfqBidType != 'Open') {
+                if (bidopeningdate != null || bidopeningdate != '') {
+                    if (_RFQOpenDate <= _CurrentDate) {
+                        ShowPrice = 'Y';
+                        $('#btnPDF').show()
+                    }
+                }
+                else {
+                    ShowPrice = 'N';
+                    $('#btnPDF').hide()
+                }
+            }
+            else {
+                ShowPrice = 'Y';
+                $('#btnPDF').show()
+
+            }
+*/            // sessionStorage.setItem('ShowPrice', '');
             sessionStorage.setItem('ShowPrice', ShowPrice);
 
             if (data[0].vendorNames.length > 0) {

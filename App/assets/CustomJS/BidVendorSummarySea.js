@@ -38,7 +38,7 @@ function getCurrenttime() {
 }
 
 $(document).ready(function () {
-
+    
     var path = window.location.pathname;
     page = path.split("/").pop();
 
@@ -79,10 +79,10 @@ $(document).ready(function () {
         fetchBidSummary(BidID);
         fetchApproverStatus();
     }
+    
+    
 
-
-
-
+    
 });
 function fnToCheckUserIPaccess() {
 
@@ -486,10 +486,10 @@ function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'Bid/' + BidID);
 }
 
-let configby = ''
+let configby=''
 function fetchBidSummary(BidID) {
     var tncAttachment, anyotherAttachment;
-
+    debugger
 
     jQuery.ajax({
         type: "GET",
@@ -500,11 +500,11 @@ function fetchBidSummary(BidID) {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-
+                 
             if (data.length > 0) {
                 BidTypeID = data[0].bidTypeID;
-
-                configby = data[0].decryptedConfiguredBy;
+                
+                configby =data[0].decryptedConfiguredBy;
                 jQuery('#bid_ConfiguredBy').html("Bid Configured By: " + data[0].configureByName);
 
                 if (BidTypeID != "7") {
@@ -527,10 +527,10 @@ function fetchBidSummary(BidID) {
 
 
                 if (data[0].bidClosingType != null) _bidClosingType = data[0].bidClosingType;
-
+                
                 if (sessionStorage.getItem("UserID") == data[0].decryptedConfiguredBy) {
-
-
+                     
+                    
                     if (data[0].itemStatus == "RunningBid") {
                         $('#butCancelbid').hide()
                     }
@@ -574,7 +574,7 @@ function fetchBidSummary(BidID) {
                     //  $('#lichat').removeClass('hide')
                 }
                 else {
-
+                    
 
                     $('#btnCancelbidAdmin,#btnCancelbidAward,#cancl_btn,#btnCancelbidApp,#butCancelbid,#btn_invite_vendors').hide();
                     $('#btnCancelbidAdmin,#btnCancelbidAward,#cancl_btn,#btnCancelbidApp,#butCancelbid,#btn_invite_vendors').addClass('hide');
@@ -653,8 +653,9 @@ function fetchBidSummary(BidID) {
                 BidForID = data[0].bidForID
                 $('#tbldetails').append("<tr><td>" + data[0].bidSubject + "</td><td>" + data[0].bidDetails + "</td><td>" + _bidDate + "</td><td>" + data[0].bidTypeName + "</td><td>" + jQuery("#lblbidfor").text() + "</td><td>" + data[0].bidDuration + "</td><td>" + data[0].currencyName + "</td></tr>")
                 sessionStorage.setItem('hdnbidtypeid', BidTypeID)
-
+                 debugger
                 fetchBidSummaryDetails(BidID, BidForID);
+               
 
             }
             else {
@@ -716,15 +717,18 @@ function fetchBidSummaryDetails(BidID, BidForID) {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-
-
+            debugger
+           
             jQuery("#tblBidSummary > thead").empty();
             jQuery("#tblBidSummary > tbody").empty();
             jQuery("#tblbidsummarypercentagewise > thead").empty();
             jQuery("#tblbidsummarypercentagewise > tbody").empty();
+            
             _bidarray = [];
             var wtavg = 0;
             if (data.length > 0) {
+                
+               
 
                 if (parseInt(BidTypeID) == 6) {
 
@@ -843,7 +847,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                             str += "<td>" + data[i].srNo + "</td><td>" + data[i].vendorName + "</td><td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
                             str += "<td class=text-right>" + (data[i].vQuote == '0' ? '' : thousands_separators(data[i].lQuote)) + "</td>";
                             str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
-
+                          
                             if (data[i].srNo != 'N/A' && data[i].srNo.toLowerCase() != 'not participated' && data[i].srNo.toLowerCase() != 'not quoted' && sessionStorage.getItem("UserID") == configby) {
                                 strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo + '<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a></td>';
                             }
@@ -859,7 +863,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                             str += "<td>" + data[i].srNo + "</td><td>" + data[i].vendorName + "</td>";
                             str += "<td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
                             str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
-
+                           
                             if (data[i].srNo != 'N/A' && data[i].srNo.toLowerCase() != 'not participated' && data[i].srNo.toLowerCase() != 'not quoted' && sessionStorage.getItem("UserID") == configby) {
                                 strsumm += '<td id=level' + i + ' width="5%">' + data[i].srNo + '<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td>';
                             }
@@ -1189,7 +1193,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                             str += '<td>' + data[i].srNo + '</td><td>' + data[i].vendorName + '</td><td class=text-right>' + data[i].advFactor + '</td><td class=text-right >' + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + '</td>';
                             str += "<td class='text-right' class='text-right' >" + (data[i].lQuote == '0' ? '' : thousands_separators(data[i].lQuote)) + "</td>";
                             str += "<td class='text-right' >" + thousands_separators(TotalBidValue) + "</td>";
-
+                           
                             if (data[i].srNo != 'N/A' && sessionStorage.getItem("UserID") == configby) {
                                 strsumm += '<td id=level' + i + ' width="5%">' + data[i].srNo + '&nbsp;<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a></td>';
                             }
@@ -1204,7 +1208,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                             str += '<td>' + data[i].srNo + '</td><td>' + data[i].vendorName + '</td>';
                             str += "<td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
                             str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
-
+                           
                             if (data[i].srNo != 'N/A' && sessionStorage.getItem("UserID") == configby) {
                                 strsumm += '<td id=level' + i + ' width="5%">' + data[i].srNo + '&nbsp;<a href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a></td>';
                             }
@@ -1418,7 +1422,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
 
                         strsumm += "<td id=vname" + i + "  class=showvendor >" + data[i].vendorName + "</td><td class=text-right>" + (data[i].landedPrice == '0' ? '' : thousands_separators(data[i].landedPrice)) + "</td><td class=text-right>" + (data[i].cess == '0' ? '' : thousands_separators(data[i].cess)) + "</td><td class=text-right>" + data[i].gst + "</td><td class=text-right>" + (data[i].ncv == '0' ? '' : thousands_separators(data[i].ncv)) + "</td>"
                         //abheedev coal remove quote
-
+                      
                         if (data[i].srNo != 'N/A' && data[i].srNo.toLowerCase() != 'not participated' && data[i].srNo.toLowerCase() != 'not quoted' && sessionStorage.getItem("UserID") == configby) {
                             strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo + '<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a></td>';
                         }
@@ -1494,8 +1498,8 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                 else {
                     $('.showvendor').removeClass('hide');
                 }
-
-
+                
+                
             }
         },
         error: function (xhr, status, error) {
@@ -1668,7 +1672,7 @@ function fnrefreshStaggerTimerdataonItemClose() {
 
                             $('#bidvalue' + j).html(thousands_separators(TotalBidValue))
                             //$('#level' + j).html(data[i].srNo)
-
+                           
                             if (data[i].srNo != 'N/A' && sessionStorage.getItem("UserID") == configby) {
                                 $('#level' + i).html(data[i].srNo + '&nbsp;<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" <i class="glyphicon glyphicon-remove"></i></a>');
                             }
@@ -1741,7 +1745,7 @@ function fnrefreshStaggerTimerdataonItemClose() {
             fnbidpause();
             //** Refresh Total Time if extension /on window focus 
             fetchBidTime();
-
+             
         }
     });
     $(window).blur();
@@ -2047,7 +2051,7 @@ connection.on("refreshColumnStatus", function (data1) {
 
                                 $('#bidvalue' + j).html(thousands_separators(TotalBidValue))
                                 // $('#level' + j).html(data[i].srNo)
-
+                              
                                 if (data[i].srNo != 'N/A' && sessionStorage.getItem("UserID") == configby) {
                                     $('#level' + j).html(data[i].srNo + '&nbsp;<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" <i class="glyphicon glyphicon-remove"></i></a>');
                                 }
@@ -2162,7 +2166,7 @@ connection.on("refreshColumnStatusFA", function (data1) {
                     Percentreductionceiling = 'N/A';
                     Percentreductioninvoice = 'N/A';
                 }
-
+                
                 if (data[i].srNo != 'N/A' && sessionStorage.getItem("UserID") == configby) {
                     $('#level' + i).html(data[i].srNo + '&nbsp;<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" <i class="glyphicon glyphicon-remove"></i></a>');
                 }
@@ -2401,8 +2405,8 @@ connection.on("refreshColumnStatusCoal", function (data1) {
                     }
                     strsumm += "<td id=vname" + i + " class=showvendor>" + data[i].vendorName + "</td><td class=text-right>" + (data[i].landedPrice == '0' ? '' : thousands_separators(data[i].landedPrice)) + "</td><td class=text-right>" + (data[i].cess == '0' ? '' : thousands_separators(data[i].cess)) + "</td><td class=text-right>" + data[i].gst + "</td><td class=text-right>" + (data[i].ncv == '0' ? '' : thousands_separators(data[i].ncv)) + "</td>"
                     //abheedev remove coal quote
-
-                    if (data[i].srNo != 'N/A' && data[i].srNo.toLowerCase() != 'not participated' && data[i].srNo.toLowerCase() != 'not quoted' && sessionStorage.getItem("UserID") == configby) {
+                   
+                    if (data[i].srNo != 'N/A' && data[i].srNo.toLowerCase() != 'not participated' && data[i].srNo.toLowerCase() != 'not quoted'&& sessionStorage.getItem("UserID") == configby) {
                         strsumm += '<td id=level' + i + ' width="5%">' + data[i].srNo + '<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td>';
                     }
                     else {
@@ -3913,3 +3917,63 @@ $("#deletepopup").on("hidden.bs.modal", function () {
     $('#fileToUpload').val('');
 });
 
+
+function CheckPrToEventValidity() {
+    debugger
+    
+    let _bidid=parseInt(sessionStorage.getItem('BidID'))
+    let _CustomerID=parseInt(sessionStorage.getItem('CustomerID'))
+    let EventType ="7"
+    console.log( sessionStorage.getItem("APIPath") + "PRMapping/CheckPrToEventValidity/?CustomerId=" + _CustomerID +  '&EventId=' + _bidid +  '&EventType='+EventType)
+      
+     jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "PRMapping/CheckPrToEventValidity/?CustomerId=" + _CustomerID +  '&EventId=' + _bidid +  '&EventType='+EventType,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+    
+           debugger
+           if ($("#ddlrfqVersion option:selected").val() == 99 && data.message =="Y"){
+               
+               
+               $('#btnPRMapping').show()
+               $('#btnPRMapping').attr("onclick",`getPRMapping(${_bidid},${sessionStorage.getItem('CustomerID')},${EventType})`)
+             
+              
+           }
+           else{
+                $('#btnPRMapping').hide()
+           }
+            
+        },
+        error: function (xhr, status, error) {
+            var err = xhr.responseText
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+    });
+}
+
+
+function getPRMapping(_bidid,CustomerID,EvT) {  
+    
+   // let _pi = StringDecodingMechanism(pi)
+    var encrypdata = fnencrypt("EventId=" + _bidid + "&EventType="+EvT+"&CustomerID=" + CustomerID )
+   
+
+        window.open("PRMapping.html?param=" + encrypdata, "_blank")
+
+    
+   
+
+}

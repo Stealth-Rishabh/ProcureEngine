@@ -81,7 +81,7 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html">
+                <a class="navbar-brand" href="index.html" >
                     <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
                 </a>
                 <div class="menu-toggler sidebar-toggler hide">
@@ -109,7 +109,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container nodisplay">
+    <div class="page-container nodisplay" >
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
                 <ul class="page-sidebar-menu page-sidebar-menu-closed" data-auto-scroll="true" data-slide-speed="200" id="ulMain">
@@ -132,7 +132,7 @@
                         <li><a href="javascript:;">Reports</a> <i class="fa fa-angle-right"></i></li>
                         <li><a href="javascript:;">RFQ Comparative Analysis</a> </li>
                     </ul>
-
+                   
                 </div>
                 <!-- END PAGE HEADER-->
                 <!-- BEGIN PAGE CONTENT-->
@@ -147,7 +147,7 @@
                                     <a id="showHide" href="javascript:;" class="expand"></a>
                                 </div>
                             </div>
-                            <div id="entryForm" class="portlet-body form nodisplay">
+                            <div id="entryForm" class="portlet-body form nodisplay" >
                                 <form action="#" class="form-horizontal" id="RFIRFQREport">
 
 
@@ -159,7 +159,7 @@
                                                         RFQ Subject:
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <label id="RFQSubject" class="control-label txtalignleft">
+                                                        <label id="RFQSubject" class="control-label txtalignleft" >
                                                         </label>
                                                     </div>
                                                 </div>
@@ -171,7 +171,7 @@
                                                         Ref No.:
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <label id="refno" class="control-label txtalignleft">
+                                                        <label id="refno" class="control-label txtalignleft" >
                                                         </label>
 
                                                     </div>
@@ -187,7 +187,7 @@
                                                         RFQ Description:
                                                     </label>
                                                     <div class="col-md-10">
-                                                        <label id="RFQDescription" class="control-label txtalignleft">
+                                                        <label id="RFQDescription"  class="control-label txtalignleft">
                                                         </label>
                                                     </div>
                                                 </div>
@@ -201,15 +201,15 @@
                                                         Currency:
                                                     </label>
                                                     <div class="col-md-1">
-                                                        <label id="Currency" class="control-label txtalignleft">
+                                                        <label id="Currency" class="control-label txtalignleft" >
                                                         </label>
 
                                                     </div>
-                                                    <label class="control-label col-md-3 txtalignleft">
+                                                    <label class="control-label col-md-3 txtalignleft" >
                                                         Conversion Rate:
                                                     </label>
                                                     <div class="col-md-1">
-                                                        <label id="ConversionRate" class="control-label txtalignleft">
+                                                        <label id="ConversionRate" class="control-label txtalignleft" >
                                                         </label>
                                                     </div>
                                                 </div>
@@ -220,7 +220,7 @@
                                                         RFQ Deadline:
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <label id="RFQDeadline" class="control-label txtalignleft">
+                                                        <label id="RFQDeadline" class="control-label txtalignleft" >
                                                         </label>
                                                     </div>
                                                 </div>
@@ -234,7 +234,7 @@
                                                     </label>
                                                     <div class="col-md-8">
                                                         <label class="control-label">
-                                                            <a href="javascript:;" id="TermCondition" onclick="DownloadFile(this)" class="notextdecoTalign">
+                                                            <a href="javascript:;" id="TermCondition" onclick="DownloadFile(this)" class="notextdecoTalign" >
 
                                                             </a>
                                                         </label>
@@ -247,7 +247,7 @@
                                                         RFQ Configured By:
                                                     </label>
                                                     <div class="col-md-8">
-                                                        <label id="lblrfqconfigby" class="control-label txtalignleft">
+                                                        <label id="lblrfqconfigby" class="control-label txtalignleft" >
 
                                                         </label>
                                                     </div>
@@ -260,9 +260,7 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="col-md-offset-10 col-md-5">
-                            <button type='button' onclick='tblforsob()' class='btn btn-primary' data-toggle="modal" href="#SOBQ">Click for SOB</button>
-                        </div>
+                        
                         <div class="col-md-12 display-none" id="displayComparativetabs">
                             <div class="alert alert-danger display-hide text-center">
                                 <span id="error"></span>
@@ -299,7 +297,7 @@
                                             <table class="table table-striped table-bordered table-hover" id="tblRFQComprative">
                                                 <thead></thead>
                                             </table>
-                                            <table class="table table-striped table-bordered table-hover display-none" id="tblRFQComprativeBoq">
+                        <table class="table table-striped table-bordered table-hover display-none" id="tblRFQComprativeBoq">
                                                 <thead>
                                                     <tr style="background: #f5f5f5; color:light black;"><th class="hide">&nbsp;</th><th>SrNo</th><th>Short Name</th><th>Quantity</th><th>UOM</th><th>Target/Budget Price</th><th colspan="4" style="text-align:center;"><a onclick="getSummary('6269','0')" href="javascript:;" style="color:#2474f6; text-decoration:underline;">Vendor A (Person A,M:5555555555)</a></th><th colspan="4" style="text-align:center;"><a onclick="getSummary('6270','0')" href="javascript:;" style="color:#2474f6; text-decoration:underline;">Vendor B (Vendor B,M:9985456854)</a></th><th>Delivery Location</th></tr>
                                                     <tr style="background: #f5f5f5; color:light black;"><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th>&nbsp;</th><th colspan="4" style="text-align:center;">Submission Time:28 Nov 2022, 11:37</th><th colspan="4" style="text-align:center;">Submission Time:28 Nov 2022, 11:38</th><th>&nbsp;</th></tr>
@@ -1042,7 +1040,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="form-group padding105">
+                                                                <div class="form-group padding105" >
                                                                     <div class="col-md-offset-1 col-md-12 txtaligncentre">
                                                                         <button id="btnSubmitApp" type="submit" class="btn green">
                                                                             Submit
@@ -1052,7 +1050,7 @@
                                                             </form>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6 divstyle250" id="frmdivapprove">
+                                                    <div class="col-md-6 divstyle250"  id="frmdivapprove">
 
                                                         <form action="#" id="form2" class="form-horizontal">
 
@@ -1159,10 +1157,10 @@
                 <div class="portlet-body form">
                     <form class="form-horizontal" role="form" id="frmMapApprover">
                         <div class="form-body">
-                            <div class="alert alert-danger" id="msgErrorApp">
+                            <div class="alert alert-danger" id="msgErrorApp" >
                                 <span id="spandanger"> </span>
                             </div>
-                            <div class="alert alert-success" id="msgSuccessApp">
+                            <div class="alert alert-success" id="msgSuccessApp" >
                                 <span id=""> </span>
                             </div>
                             <input type="hidden" id="hdnvendorid" value="0" />
@@ -1178,7 +1176,7 @@
                                         <div class="col-md-9">
                                             <input type="text" class="form-control" id="txtquestions" maxlength="1000" name="txtquestions" placeholder="Enter Question" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
                                         </div>
-
+                                       
                                     </div>
 
                                     <div class="inputgroup">
@@ -1228,30 +1226,31 @@
                 <div class="portlet-body form">
                     <div class="modal-body modalbody1">
                         <div class='row'>
-                            <div class="form-group">
-                                <div class="col-md-12 ">
-                                    <label class="col-md-3 control-label txtalignleft">
-                                        SOB Preference<span class="required"> *</span>
-                                    </label>
-                                    <div class="col-md-3 xyz">
-                                        <select id="ddlCountryCd" name="sobpref" class="form-control">
-                                            <option Value="">Select</option>
-                                            <option Value="Q">Quantity</option>
-                                            <option Value="P">Percentage</option>
-                                        </select>
+                              <div class="form-group">
+                                    <div class="col-md-12 ">
+                                        <label class="col-md-3 control-label txtalignleft" >
+                                            SOB Preference<span class="required"> *</span>
+                                        </label>
+                                        <div class="col-md-3 xyz">
+                                            <select id="ddlCountryCd" name="sobpref" class="form-control">
+                                               <option Value="">Select</option>
+                                               <option Value="Q">Quantity</option>
+                                               <option Value="P">Percentage</option>
+                                            </select>
+                                        </div>
+                                                                                               
                                     </div>
-
                                 </div>
-                            </div>
                         </div>
                         <div class="form-group">
-                            <div class="table-scrollable">
+                            <div class="table-scrollable" >
                                 <table class="table table-bordered" id="tblsob">
+                                                           
                                 </table>
                             </div>
                         </div>
-
-                    </div>
+                        
+                   </div>
                 </div>
             </div>
         </div>
@@ -1268,12 +1267,12 @@
 
         jQuery(document).ready(function () {
             callPagejs('eRFQApproverAnalysis.js');
-
+           
         });
     </script>
 
 
-
+    
     <!-- END JAVASCRIPTS -->
 </body>
 

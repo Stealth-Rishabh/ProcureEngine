@@ -1749,7 +1749,7 @@
             sessionStorage.setItem('CustomerID', "1")
             Pageloaded()
 
-            var x = isAuthenticated();
+
 
             setInterval(function () { Pageloaded() }, 15000);
 
@@ -1758,21 +1758,6 @@
             $('.page-container').show();
 
 
-            $("#ddlCategoryMultiple").select2();
-
-            $("#ddlTypeofProduct").select2();
-
-            $("#ddlProduct").select2();
-
-            $("#ddlState").select2();
-
-            $("#ddlCity").select2();
-
-            $("#ddlTds").select2();
-
-            $("#ddPayTerms").select2();
-
-            $("#ddlCountry").select2();
 
             Metronic.init();
 
@@ -1790,12 +1775,8 @@
 
             }
 
-            fetchCategorymaster();
-            fetchCategorymaster1();
-            fetchCountry();
-            fetchProduct();
-            fetchTDS();
-            fetchPaymentTerms();
+           
+            fetchMasters();
 
 
             FormWizard.init();

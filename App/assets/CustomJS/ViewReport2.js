@@ -16,8 +16,9 @@ $(document).ready(function () {
     fetchBidSummaryDetails(BidID, BidTypeID, BidForID)
     FetchRecomendedVendor(BidID)
     fnfetchvendortotalSummary(BidID, BidTypeID)
-   // fngetConnHistory(BidID);
-
+    //abheedev 14/03/2023
+    //fngetConnHistory(BidID);
+    
 
 });
 //*******
@@ -35,15 +36,27 @@ function getCurrenttime() {
 }
 
 
-function saveAspdf() {
 
-    var pdf = new jsPDF('l', 'mm', [300, 475]);
+
+
+
+function saveAspdf() {
+    
+    const svgElement = document.getElementById('linechart_material');
+
+    var pdf = new printJS('l','mm',[500, 1000]);
     var options = {
-        pagesplit: true
+       pagesplit: true
     };
+    
+   /* svg2pdf(svgElement, pdf, {
+	xOffset: 0,
+	yOffset: 0,
+	scale: 1
+});*/
 
     pdf.addHTML(document.body, options, function () {
-        pdf.save('BidSummary.pdf');
+    pdf.save('BidSummary.pdf');
         encrypdata = fnencrypt("BidID=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeID=" + getUrlVarsURL(decryptedstring)["BidTypeID"] + "&BidForID=" + getUrlVarsURL(decryptedstring)["BidForID"]);
         window.location = "BidSummary.html?param=" + encrypdata
     });
@@ -145,7 +158,7 @@ function ReportBind(Bidid, Bidtypeid, Bidforid) {
 
 function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
 
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     jQuery.ajax({
         type: "GET",
@@ -241,14 +254,14 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                         if (sname != data[i].shortName) {
                             sname = data[i].shortName
                             if (BidForID == 81 || BidForID == 83) {
-                                var str = "<tr id=low" + i + "><td>" + data[i].shortName + "</td><td class='text-right'>" + thousands_separators((data[i].targetPrice).round(2)) + "</td><td class='text-right'>" + thousands_separators((data[i].lastInvoicePrice).round(2)) + "</td><td class='text-right'>" + thousands_separators((data[i].ceilingPrice).round(2)) + "</td><td class='text-right'>" + thousands_separators((data[i].quantity).round(2)) + "</td><td>" + data[i].uom + "</td><td>" + data[i].minimumIncreament + "</td>";
+                                var str = "<tr id=low" + i + "><td>" + data[i].shortName + "</td><td class='text-right'>" + thousands_separators(data[i].targetPrice) + "</td><td class='text-right'>" + thousands_separators(data[i].lastInvoicePrice) + "</td><td class='text-right'>" + thousands_separators(data[i].ceilingPrice) + "</td><td class='text-right'>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td>" + data[i].minimumIncreament + "</td>";
                                 counterForItenscount = counterForItenscount + 1;
                                 if (counterForItenscount <= 6) {
                                     fnPaintGraph(data[i].shortName, counterForItenscount, data[i].psid)
                                 }
 
                             } else {
-                                var str = "<tr id=low" + i + "><td>" + data[i].shortName + "</td><td class='text-right'>" + thousands_separators((data[i].targetPrice).round(2)) + "</td><td class='text-right'>" + thousands_separators((data[i].lastInvoicePrice).round(2)) + "</td><td class='text-right'>" + thousands_separators((data[i].startingPrice).round(2)) + "</td><td class='text-right'>" + thousands_separators((data[i].ceilingPrice).round(2)) + "</td><td class='text-right'>" + thousands_separators((data[i].quantity).round(2)) + "</td><td>" + data[i].uom + "</td><td>" + data[i].minimumIncreament + "</td>";
+                                var str = "<tr id=low" + i + "><td>" + data[i].shortName + "</td><td class='text-right'>" + thousands_separators(data[i].targetPrice) + "</td><td class='text-right'>" + thousands_separators(data[i].lastInvoicePrice) + "</td><td class='text-right'>" + thousands_separators(data[i].startingPrice) + "</td><td class='text-right'>" + thousands_separators(data[i].ceilingPrice) + "</td><td class='text-right'>" + thousands_separators(thousands_separators(data[i].quantity)) + "</td><td>" + data[i].uom + "</td><td>" + data[i].minimumIncreament + "</td>";
 
                             }
 
@@ -269,14 +282,14 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                         if (BidForID == 81 || BidForID == 83) {
                             str += "<td>" + data[i].srNo + "</td><td>" + data[i].vendorName + "</td><td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
                             str += "<td class=text-right>" + thousands_separators((data[i].lQuote == '0' ? '' : data[i].lQuote)) + "</td>";
-                            str += "<td class=text-right>" + thousands_separators((TotalBidValue).round(2)) + "</td>";
+                            str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
 
                         }
                         else {
                             // alert(data[i].SrNo)
                             str += "<td>" + data[i].srNo + "</td><td>" + data[i].vendorName + "</td>";
                             str += "<td class=text-right>" + (data[i].iQuote != '-93' ? data[i].iQuote : thousands_separators(data[i].iPrice)) + "</td>";
-                            str += "<td class=text-right>" + thousands_separators((TotalBidValue).round(2)) + "</td>";
+                            str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
 
                         }
                         if (data[i].srNo == 'H1') {
@@ -611,11 +624,11 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                     _bidarray.push([data[prop].shortName, parseInt(data[prop].lQuote), parseInt(_timelft), data[prop].vendorName]) //]
                 }
                 setTimeout(function () {
-                    // saveAspdf()
-                    jQuery.unblockUI();
+                   //saveAspdf();
+                   // jQuery.unblockUI();
                     setTimeout(function () {
-                        window.print();
-                        window.close();
+                   // window.print();
+                      //  window.close();
                     }, 1000)
                 }, 6000)
 
@@ -674,7 +687,7 @@ function fnfetchvendortotalSummary(BidID, BidTypeID) {
     });
 }
 function FetchRecomendedVendor(bidid) {
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+   // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -744,7 +757,7 @@ function fngetConnHistory(bidid) {
                 $('#tblIPHistory').show();
                 jQuery("#tblIPHistory").append("<thead><tr style='background: #44b6ae;'><th colspan=4 style='font-size:19px; text-align:left;color: #FFF;'>Connection History</th></tr><tr><th style='width:20%!important;'>From</th><th style='width:20%!important;'>To</th><th style='width:20%!important;'>Status</th></thead>");
                 for (var i = 0; i < JSonData.length; i++) {
-                    jQuery("#tblIPHistory").append("<tr><<td>" + fnConverToLocalTime(JSonData[i].ConnectionFrom) + "</td><td>" + fnConverToLocalTime(JSonData[i].ConnectionTo) + "</td><td>" + JSonData[i].Status + "</td></tr>");
+                    jQuery("#tblIPHistory").append("<tr><td>" + fnConverToLocalTime(JSonData[i].ConnectionFrom) + "</td><td>" + fnConverToLocalTime(JSonData[i].ConnectionTo) + "</td><td>" + JSonData[i].Status + "</td></tr>");
                 }
             }
             else {
@@ -759,12 +772,12 @@ var graphData = [];
 function fnPaintGraph(shortname, counter, itemId) {
 
 
-    $('#Items').append('<table  width="100%"  class=pagebreak border="1" style="border-collapse: collapse;" id="tblBidItem' + counter + '"></table>')
+    $('#Items').append('<table  width="100%"  class="pagebreak" border="1" style="border-collapse: collapse;" id="tblBidItem' + counter + '"></table>')
     if (counter == 1) {
         $('#tblBidItem' + counter).append('<tr><td width="100%"><div id="BidTrendGraph" style="width:100%;margin-top:10px;font-size:20px;line-height: 30px;padding-bottom: 8px;font-family:Arial, Helvetica, sans-serif; font-weight: 200;text-align: center;"><div style="clear: both;"></div> <label style="text-align: center;">Bid Graph Trend</label></div></td></tr>')
     }
     $('#tblBidItem' + counter).append('<tr style="background: #44b6ae;"  width="100%" ><th colspan=2 style="font-size: 19px; text-align: left;color: #FFF;">' + shortname + '</th></tr>')
-    $('#tblBidItem' + counter).append('<tbody><tr><td><table width="100%"  cellpadding="8" style="border-collapse: collapse;display:block;"  border="1" id="tblForTrendGraphs' + counter + '"></table></td></tr><tr><td><div id="linechart_material' + counter + '" style="text-align:center;min-height:300px;width:900px;margin-left:200px;margin-bottom:40px;"></div></td></tr></tbody>'); //
+    $('#tblBidItem' + counter).append('<tbody><tr><td><table width="100%"  cellpadding="8" style="border-collapse: collapse;display:block;"  border="1" id="tblForTrendGraphs' + counter + '"></table></td></tr><tr><td><div id="linechart_material' + counter + '" style="text-align:center;min-height:300px;width:700px;margin-left:10px;margin-bottom:40px;"></div></td></tr></tbody>'); //
     fetchGraphData(itemId, counter);
     linegraphsforItems(itemId, counter);
 }
@@ -1013,4 +1026,21 @@ function stringDivider(str, width, spaceReplacer) {
         }
     }
     return str;
+}
+
+//to print pdf
+function printpdf(){
+    printJS(
+        {
+            printable:'mainBody',
+            type:'html',
+            scanStyles:true,
+            css:[`assets/CustomCSS/common.css`,`assets/CustomCSS/ViewReport2.css`],
+            showModal:true,
+            modalMessage:'Downloading pdf'
+            
+        }
+        
+        
+        )
 }

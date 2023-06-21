@@ -1,5 +1,5 @@
-﻿jQuery(document).ready(function () {
-
+jQuery(document).ready(function () {
+   
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -92,7 +92,7 @@ function FormValidate() {
 }
 
 function insupdconditionmaster() {
-
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
     if (jQuery("#checkboxactive").is(':checked')) {
@@ -108,9 +108,9 @@ function insupdconditionmaster() {
         "IsActive": status,
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
         "conditionSr": $('#conditionSr').val(),
-        "createdBy": sessionStorage.getItem('UserID')
+        "createdBy":sessionStorage.getItem('UserID')
     }
-
+  
     //alert(JSON.stringify(data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "NFA/InsUpdConditionMaster",
@@ -123,7 +123,7 @@ function insupdconditionmaster() {
         dataType: "json",
         contentType: "application/json",
         success: function (data) {
-
+           
             if (data == '1') {
                 $("#success").html("Transaction Successfull...");
                 success.show();
@@ -149,7 +149,7 @@ function insupdconditionmaster() {
             resetform();
         },
         error: function (xhr, status, error) {
-
+           
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);

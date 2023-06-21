@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Configuration object to be passed to MSAL instance on creation. 
  * For a full list of MSAL.js configuration parameters, visit:
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/configuration.md 
@@ -14,7 +14,7 @@ const msalConfig = {
         cacheLocation: "localStorage", // This configures where your cache will be stored
         storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
     },
-
+   
 };
 
 // Add here the endpoints and scopes for the web API you would like to use.
@@ -58,7 +58,7 @@ myMSALObj.handleRedirectPromise()
     });
 
 function handleResponse(response) {
-
+   
     if (sessionStorage.getItem("IsSSOAuth") == "Y") {
         if (response !== null) {
             username = response.account.username;
@@ -71,7 +71,7 @@ function handleResponse(response) {
 }
 
 function passTokenToApi() {
-
+ 
     getTokenRedirect(tokenRequest)
         .then(response => {
             sessionStorage.setItem("Token", response.accessToken)
@@ -166,12 +166,12 @@ function isAuthenticated() {
     }
     else {
         myMSALObj.handleRedirectPromise()
-            .then(handleResponse)
-            .catch(error => {
-                console.error(error);
-                return true;
-            });
-
+        .then(handleResponse)
+        .catch(error => {
+            console.error(error);
+           return true;
+        });
+      
     }
     return isValid;
 }

@@ -94,7 +94,7 @@ connection.on("disconnectSR", function (connectionId) {
 
 connection.on("refreshRAQuotes", function (data) {
 
-
+  
     if (BidForID == 81 || BidForID == 83) {
         fetchBidSummaryVendorproduct();
     }
@@ -103,27 +103,27 @@ connection.on("refreshRAQuotes", function (data) {
     }
 });
 connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
-
-
+    
+    
     let data = JSON.parse(rdataJson)
-    if (data[0].VendorID == "0") {
+    if(data[0].VendorID=="0"){
         $('#hddnadminConnection').val(connectionId)
-        if (flag == false) {
-            $('#adminconn').removeClass('badge-success').addClass('badge-danger')
-            $('#admstatus').text("Buyer Offline")
-            $('#chatbtn').addClass('hide')
-            $('#txtChatMsg').addClass('hide')
-        }
-        else {
-            $('#adminconn').removeClass('badge-danger').addClass('badge-success')
-            $('#admstatus').text("Buyer Online")
-            $('#chatbtn').removeClass('hide')
-            $('#txtChatMsg').removeClass('hide')
-        }
-
+         if (flag == false) {
+                    $('#adminconn').removeClass('badge-success').addClass('badge-danger')
+                    $('#admstatus').text("Buyer Offline")
+                    $('#chatbtn').addClass('hide')
+                    $('#txtChatMsg').addClass('hide')
+                }
+                else{
+                     $('#adminconn').removeClass('badge-danger').addClass('badge-success')
+                     $('#admstatus').text("Buyer Online")
+                     $('#chatbtn').removeClass('hide')
+                     $('#txtChatMsg').removeClass('hide')
+         }
+        
     }
-
-
+  
+  
 });
 connection.on("refreshColumnStatus", function (data) {
 
@@ -183,7 +183,7 @@ connection.on("refreshColumnStatus", function (data) {
                             display = document.querySelector('#lblTimeLeft');
 
                             startTimer(data[0].timeLeft, display);
-                            $("#initialquote" + i).html(data[0].initialQuotedPrice == '0' ? '' : thousands_separators(data[0].initialQuotedPrice))
+                           $("#initialquote" + i).html(data[0].initialQuotedPrice == '0' ? '' : thousands_separators(data[0].initialQuotedPrice))
                             $("#iqquote" + i).html(data[0].initialQuotedPrice == '0' ? '' : thousands_separators(data[0].initialQuotedPrice))
                             $("#lastQuote" + i).html(data[0].lowestQuotedPrice == '0' ? '' : thousands_separators(data[0].lowestQuotedPrice))
                             $("#totalbidvalue" + i).html(TotalBidValue % 1 != 0 ? thousands_separators(TotalBidValue) : thousands_separators(TotalBidValue))
@@ -193,7 +193,7 @@ connection.on("refreshColumnStatus", function (data) {
 
 
                             $("#L1Price" + i).html(L1Quote)
-                            if (data[0].vendorRank == 'L1') {
+                          if (data[0].vendorRank == 'L1') {
 
                                 jQuery('#lblstatus' + i).css('color', 'Blue');
 
@@ -441,7 +441,7 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
 
 
 function openForm() {
-    fetchUserChats(sessionStorage.getItem("UserID"), "T");//T stands for both single & Broadcast
+   fetchUserChats(sessionStorage.getItem("UserID"),"T");//T stands for both single & Broadcast
 }
 function sendChatMsgs() {
     if ($("#txtChatMsg").val() != '' && $("#txtChatMsg").val() != null) {
@@ -1232,7 +1232,7 @@ function InsUpdQuoteSeaExport(index) {
 
     else if (jQuery("#L1Price" + index).text() != "" && jQuery("#L1Price" + index).text() != "0" && BidForID == "83" && valdiff < parseFloat(Amount) && $('#decon' + index).text() == "A") {
 
-
+       
 
         $('#spanamount' + index).removeClass('hide')
 
@@ -1284,23 +1284,23 @@ function InsUpdQuoteSeaExport(index) {
 
     else {
 
-        insertquery = $('#seid' + index).html() + '~' + removeThousandSeperator($('#txtquote' + index).val());
+      //  insertquery = $('#seid' + index).html() + '~' + removeThousandSeperator($('#txtquote' + index).val());
 
         var QuoteProduct = {
 
             "VendorID": vendorID,
             "BidID": parseInt(sessionStorage.getItem("BidID")),
-            //   "insertQuery": insertquery,
-            //    "EnteredBy": vendorID,
+         //   "insertQuery": insertquery,
+        //    "EnteredBy": vendorID,
             "Quote": parseFloat(removeThousandSeperator($('#txtquote' + index).val())),
             "SEID": parseInt($('#seid' + index).html()),
             "AdvFactor": parseFloat($("#hdnAdvFactor").val()),
-            //  "ForRFQ": "N",
+          //  "ForRFQ": "N",
             "extendTime": parseInt($('#hdnval').val()),
             "BidClosingType": "A",
             "isPrePricing": "N"
         }
-        console.log(JSON.stringify(QuoteProduct));
+
         $('#hdnselectedindex').val(index);
         connection.invoke("RefreshBidParticipation", JSON.stringify(QuoteProduct)).catch(function (err) {
 
@@ -1325,7 +1325,7 @@ var mytimeforSatus = 0;
 var coutercall = 0;
 
 function startTimer(duration, display) {
-
+    let  thisC;
     clearInterval(mytime)
 
     var timer = duration, hours, minutes, seconds;
@@ -1376,13 +1376,23 @@ function startTimer(duration, display) {
             coutercall = 0;
 
         }
+        
+        $('.clsdisable').each(function() {
+               thisC = $(this);
+               if (timer <= 0) {
+               thisC.attr('disabled', 'disabled');
+               } 
+               else if (timer > 0 && !thisC.is(':disabled') && thisC.closest('input').val() !== "Restricted") {
+               thisC.removeAttr('disabled');
+              }
+        });
 
-        if (timer <= 0) {
+        /*if (timer <= 0) {
             $('.clsdisable').attr('disabled', 'disabled')
         }
         else if (timer > 0 && $('.clsdisable').is(':disabled') && $('.clsdisable').closest('input').val() !== "Restricted") {
             $('.clsdisable').removeAttr('disabled')
-        }
+        }*/
         if (--timer < -3) {
             timer = -3;
             if (timer == -3) {
@@ -1422,7 +1432,7 @@ function closeBidAir() {
 
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+          
             if (data == '1') {
 
                 bootbox.alert("Bid time has been over. Thanks for Participation.", function () {

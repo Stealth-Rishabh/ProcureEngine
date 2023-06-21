@@ -145,7 +145,7 @@ function SubmitVendorRegistration() {
     };
 
     console.log(JSON.stringify(VendorInfo));
-
+ 
     jQuery.ajax({
 
         url: sessionStorage.getItem("APIPath") + "VendorRequest/VendorRequestSubmit",
@@ -528,7 +528,7 @@ function fnClearformfields() {
 
 // make reset Function & call after Details submit ????
 function fnFormClear() {
-
+  
     $("#ddlNatureEstaiblishment").val('0')
     //$("#ddlNatureEstaiblishment option:selected").text('')
     $("#ddlVendorType").val('0')
@@ -537,7 +537,7 @@ function fnFormClear() {
     $("#txtAdd1").val('')
     $("#ddlCountry").val('111').trigger("change");
     $("#ddlState").val(''),
-        $("#ddlCity").val('')
+    $("#ddlCity").val('')
     $("#txtPin").val('')
     $("#txtPan").val('')
     $("#txtTan").val('')
@@ -605,11 +605,11 @@ function fnChangeGSTClass() {
     }
 }
 function fetchMsme() {
-
+       
     $('#submit_form').validate();
     if (jQuery("#ddlMSME option:selected").val() == 'Y') {
         $('.hideInput').removeClass('hide');
-
+        
         $('input[name="txtUdyam"]').rules('add', {
             required: true
         });
@@ -620,7 +620,7 @@ function fetchMsme() {
             required: true
         });
 
-    }
+    } 
     else {
         $('.hideInput').addClass('hide');
         $('input[name="filemsme"]').rules('remove');

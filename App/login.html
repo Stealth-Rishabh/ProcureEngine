@@ -1,694 +1,259 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<!--<![endif]-->
-<!-- BEGIN HEAD -->
+    <!--<![endif]-->
+    <!-- BEGIN HEAD -->
 
-<head>
-    <meta charset="utf-8" />
-    <title>Sourcing Portal</title>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <meta content="" name="description" />
-    <meta content="" name="author" />
-    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <head>
+        <meta charset="utf-8" />
+        <title>Sourcing Portal</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta content="width=device-width, initial-scale=1" name="viewport" />
+        <meta content="" name="description" />
+        <meta content="" name="author" />
+        <!-- BEGIN GLOBAL MANDATORY STYLES -->
+         <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    </script>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+        <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
+		 <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
+        <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+        <!-- END GLOBAL MANDATORY STYLES -->
+        <link href="assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+        <link href="assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+        <!-- BEGIN PAGE LEVEL STYLES -->
+        <link href="assets/css/login-5.min.css" rel="stylesheet" type="text/css" />
+        <!-- END PAGE LEVEL STYLES -->    
+        <link rel="shortcut icon" href="../favicon.ico" /> </head>
+    <!-- END HEAD -->
 
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
-    <link href="../App/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link href="../App/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
-    <link href="../App/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="../App/assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
-    <link href="../App/assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
-    <link href="../App/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="../App/assets/global/plugins/select2/select2.css" />
-    <!-- END GLOBAL MANDATORY STYLES -->
-    <link href="../App/assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
-    <link href="../App/assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
-    <!--<link href="../App/assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
-    <link href="../App/assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />-->
-    <!-- BEGIN PAGE LEVEL STYLES -->
-    <script src="../App/assets/scripts/aes.js"></script>
-    <link href="../App/assets/css/login-5.min.css" rel="stylesheet" type="text/css" />
-    <!-- END PAGE LEVEL STYLES -->
-    <link rel="shortcut icon" href="../favicon.ico" />
-    <!-- Page Specific CSS-->
-    <!-- added for self registration -->
-    <link rel="stylesheet" href="../App/assets/CustomCSS/loginpage.css">
-    <style>
-        .user-login-5 .login-container > .login-content {
-            margin-top: 20%;
-        }
-
-        .select2-drop.select2-display-none.select2-with-searchbox.select2-drop-active ul.select2-results.nav.nav-pills {
-            display: flex;
-            flex-flow: column;
-        }
-
-        @media (min-width: 992px) {
-            .modal-lg {
-                width: 1200px !important;
-            }
-        }
-    </style>
-</head>
-<!-- END HEAD -->
-
-<body class=" login">
-    <!-- BEGIN : LOGIN PAGE 5-1 -->
-    <div class="user-login-5">
-        <div class="row bs-reset">
-            <div class="col-md-6 bs-reset">
-                <div class="login-bg" style="background-image:url(assets/bg1.jpg)">
-                    <!--<img class="login-logo" src="assets/img/mmlogo.png" />-->
+    <body class=" login">
+        <!-- BEGIN : LOGIN PAGE 5-1 -->
+        <div class="user-login-5">
+            <div class="row bs-reset">
+                <div class="col-md-6 bs-reset">
+                    <div class="login-bg" style="background-image:url(assets/global/img/login/bg1.jpg)">
+                        <!--<img class="login-logo" src="assets/img/mmlogo.png" />--></div>
                 </div>
-            </div>
-            <div class="col-md-6 login-container bs-reset">
-                <div class="col-md-12">
-                    <img class="login-logo" src="assets/aalogo.png" />
-                </div>
-                <div class="clearfix"></div><br /><br />
-
-                <div class="login-content white">
-
-                    <p> Our sourcing portal covers all the requirements of procurement - from the initial enquiry through RFQ (RFI/RFQ/RFP) and auctions, to detailed Cost Breakdowns and workflow approvals to optimize your award decision.</p>
-
-
-                    <form action="#" class="login-form" method="post">
-                        <div class="alert alert-danger display-none" id="alrt1">
-                            <button class="close" data-close="alert"></button>
-                            <span id="alertmessage1"> </span>
-                        </div>
-                        <div class="alert alert-success display-none" id="succs1">
-                            <button class="close" data-close="alert"></button>
-                            <span id="sucssmessage1"> </span>
-                        </div>
-                        <h1 class="font-green">User Login</h1>
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <input class="form-control form-control-solid placeholder-no-fix form-group " type="text" autocomplete="off" placeholder="Username" id="username" name="username" />
-                            </div>
-                            <div class="col-xs-6">
-                                <input class="form-control form-control-solid placeholder-no-fix form-group" type="password" autocomplete="off" placeholder="Password" name="password" id="password" />
-                            </div>
-                        </div>
-                        <div class="form-actions">
-
-                            <a href="javascript:;" class="pull-left" style="color:#ff0000;text-decoration:none;" onclick="fnOpenRegisterUser()">Register as new vendor</a>
-                            <div class="col-sm-8 text-right pull-right">
-                                <div class="forgot-password">
-                                    <a href="javascript:;" id="forget-password" class="forget-password">Forgot Password?</a>
-                                </div>
-                                <button class="btn blue" type="submit">Sign In</button>
-                            </div>
-                        </div>
-                    </form>
-                    <!-- BEGIN FORGOT PASSWORD FORM -->
-                    <form class="forget-form display-none" action="javascript:;" method="post" style="margin-top: 80px !important;">
-                        <div class="alert alert-danger display-none" id="alrt2">
-                            <button class="close" data-close="alert"></button>
-                            <span id="alertmessage2"> </span>
-                        </div>
-                        <div class="alert alert-success display-none" id="succs2">
-                            <button class="close" data-close="alert"></button>
-                            <span id="sucssmessage2"> </span>
-                        </div>
-                        <h3 class="font-green">Forgot Password ?</h3>
-                        <div class="form-group">
-                            <input class="form-control form-control-solid placeholder-no-fix form-group" type="text" autocomplete="off" placeholder="Email" name="email" id="txtemail" />
-                        </div>
-                        <div class="form-actions">
-                            <button type="button" id="back-btn" class="btn grey btn-default">Back</button>
-                            <button type="submit" class="btn blue btn-success uppercase pull-right">Submit</button>
-                        </div>
-                    </form>
-                    <!-- END FORGOT PASSWORD FORM -->
-                </div>
-                <div class="login-footer">
-                    <div class="row bs-reset">
-
-                        <div class="col-xs-12  pull-left">
-                            <div class="login-copyright text-left">
-                                <p>Powered by: <a href="http://agileapt.com/">AgileApt Solutions Pvt Ltd.</a></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- added for self registration -->
-        <div id="registerParticipantModal" class="modal bs-modal-lg" aria-hidden="true">
-            <div class="modal-dialog modal-xxl">
-                <div class="row">
+                <div class="col-md-6 login-container bs-reset">
                     <div class="col-md-12">
-                        <div class="portlet box green-haze">
-                            <div class="portlet-title">
-                                <div class="caption">
-                                    <i class="fa fa-reorder"></i>Vendor Registration Request
+                    <img class="login-logo" src="assets/img/mmlogo.png" />
+                </div>
+		<div class="clearfix"></div><br /><br />
+                
+                    <div class="login-content white">
+                     <p> Our sourcing portal covers all the requirements of procurement - from the initial enquiry through RFQ (RFI/RFQ/RFP) and auctions, to detailed Cost Breakdowns and workflow approvals to optimize your award decision.</p>
+		     
+                        <form action="#" class="login-form" method="post">
+		     <div class="alert alert-danger display-none" id="alrt1">
+                                <button class="close" data-close="alert"></button>
+                                <span id="alertmessage1"> </span>
+                     </div>
+		     <div class="alert alert-success display-none" id="succs1">
+                                <button class="close" data-close="alert"></button>
+                                <span id="sucssmessage1"> </span>
+                     </div>
+                           <h1 class="font-green">User Login</h1>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-solid placeholder-no-fix form-group " type="text" autocomplete="off" placeholder="Username" id="username" name="username" />
                                 </div>
-                                <div class="tools">
-                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                                    <a id="showHide" href="javascript:;" class="collapse"></a>
+                                <div class="col-xs-6">
+                                    <input class="form-control form-control-solid placeholder-no-fix form-group" type="password" autocomplete="off" placeholder="Password" name="password" id="password" />
                                 </div>
                             </div>
-                            <div class="portlet-body form">
-                                <div class="page-container">
-                                    <div class="alert alert-success" style='display: none;' id="divsuccvendor">
-                                        <span id="spansuccessvendor"> </span>
+                            <div class="form-actions">
+                                <!--<div class="col-sm-4">
+                                    <div class="rem-password">
+                                        <p>
+                                            Remember Me
+                                            <input type="checkbox" class="rem-checkbox" />
+                                        </p>
                                     </div>
-                                    <div class="alert alert-danger display-none" id="diverrorvendor">
-                                        <button class="close" data-close="alert"></button>
-                                        <span id="spanerrorvendor"> </span>
+                                </div>-->
+                                <div class="col-sm-8 text-right pull-right">
+                                    <div class="forgot-password">
+                                        <a href="javascript:;" id="forget-password" class="forget-password">Forgot Password?</a>
                                     </div>
-
-
-                                    <form action="#" id="submit_form" class="form-horizontal">
-                                        <div class="form-body">
-
-                                            <div class="tab-pane" id="tab1">
-
-                                                <div class="panel-group accordion" id="accordion1">
-                                                    <div class="panel panel-default">
-
-                                                        <div class="panel-heading">
-
-                                                            <h4 class="panel-title">
-
-                                                                <a class="accordion-toggle collapsed" id="H4ContactDetails" data-toggle="collapse" data-parent="#accordion1" href="#collapse2">Contact details</a>
-
-                                                            </h4>
-
-                                                        </div>
-                                                        <div id="collapse2" class="panel-collapse collapse">
-
-                                                            <div class="panel-body">
-
-                                                                <div class="row">
-
-                                                                    <div class="col-lg-12">
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
-                                                                                <h4 class="text-capitalize text-center" style="font-weight:600; margin-bottom:20px;">Primary Contact Detail</h4>
-                                                                                <div class="form-group">
-
-                                                                                    <div class="col-lg-12">
-
-                                                                                        <label class="col-md-3 control-label" style="text-align:left">
-
-                                                                                            Name<span class="required"> *</span>
-
-                                                                                        </label>
-
-                                                                                        <div class="col-md-9 xyz">
-
-                                                                                            <input type="text" class="form-control" placeholder="Enter Name"
-                                                                                                   id="txtContName" name="txtContName" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
-
-                                                                                        </div>
-
-                                                                                    </div>
-
-                                                                                </div>
-
-                                                                                <div class="form-group">
-                                                                                    <div class="col-md-12 ">
-                                                                                        <label class="col-md-3 control-label txtalignleft" data-i18n="mobileno">
-                                                                                            Mobile No<span class="required"> *</span>
-                                                                                        </label>
-                                                                                        <div class="col-md-3 xyz">
-                                                                                            <select id="ddlCountryCd" name="ddlCountryCd" class="form-control">
-                                                                                                <option Value="">Select</option>
-                                                                                            </select>
-                                                                                        </div>
-                                                                                        <div class="col-md-6 xyz">
-                                                                                            <input type="text" class="form-control"
-                                                                                                   id="vendormobileno" name="vendormobileno" autocomplete="off" maxlength="10" tabindex="1" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-
-                                                                                <div class="form-group">
-
-                                                                                    <div class="col-lg-12">
-
-                                                                                        <label class="col-md-3 control-label" style="text-align:left">
-
-                                                                                            Email ID<span class="required"> *</span>
-
-                                                                                        </label>
-
-                                                                                        <div class="col-md-9 xyz">
-
-                                                                                            <input type="text" class="form-control" placeholder="Email"
-                                                                                                   id="txtEmail" name="txtEmail" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
-
-                                                                                        </div>
-
-                                                                                    </div>
-
-                                                                                </div>
-                                                                                <div class="col-md-12">
-                                                                                    <div class="form-group">
-                                                                                        <label class="control-label col-md-3 txtalignleft" data-i18n="preferredzone">Preferred Time/Zone<span class="required"> *</span></label>
-                                                                                        <div class="col-md-9 xyz">
-                                                                                            <select id="ddlpreferredTime" name="ddlpreferredTime" class="form-control">
-                                                                                                <option>Select</option>
-                                                                                            </select>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-6">
-                                                                                <h4 class="text-capitalize text-center" style="font-weight:600; margin-bottom:20px;">Alternate Contact Detail</h4>
-                                                                                <div class="form-group">
-
-                                                                                    <div class="col-lg-12">
-
-                                                                                        <label class="col-md-3 control-label" style="text-align:left">
-
-                                                                                            Name
-
-                                                                                        </label>
-
-                                                                                        <div class="col-md-9 xyz">
-
-                                                                                            <input type="text" class="form-control" placeholder="Enter Name"
-                                                                                                   id="txtContName2" name="txtContName2" autocomplete="off" />
-
-                                                                                        </div>
-
-                                                                                    </div>
-
-                                                                                </div>
-
-                                                                                <div class="form-group">
-                                                                                    <div class="col-md-12">
-                                                                                        <label class="col-md-3 control-label txtalignleft" data-i18n="mobileno">
-                                                                                            Mobile No
-                                                                                        </label>
-                                                                                        <div class="col-md-3">
-                                                                                            <select id="ddlCountryCdPhone" name="ddlCountryCdPhone" class="form-control">
-                                                                                                <option Value="">Select</option>
-                                                                                            </select>
-                                                                                        </div>
-                                                                                        <div class="col-md-6 xyz">
-                                                                                            <input type="text" class="form-control"
-                                                                                                   id="vendoraltmobileno" name="vendoraltmobileno" autocomplete="off" maxlength="10" tabindex="1" />
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-
-                                                                                <div class="form-group">
-
-                                                                                    <div class="col-lg-12">
-
-                                                                                        <label class="col-md-3 control-label" style="text-align:left">
-
-                                                                                            Email ID
-
-                                                                                        </label>
-
-                                                                                        <div class="col-md-9 xyz">
-
-                                                                                            <input type="text" class="form-control" placeholder="Email"
-                                                                                                   id="txtEmail2" name="txtEmail2" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
-
-                                                                                        </div>
-
-                                                                                    </div>
-
-                                                                                </div>
-
-                                                                            </div>
-                                                                        </div>
-
-
-
-
-
-
-
-                                                                    </div>
-
-                                                                </div>
-
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-
-
-                                                    <div class="panel panel-default">
-
-                                                        <div class="panel-heading">
-
-                                                            <h4 class="panel-title">
-
-                                                                <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion1" href="#collapse0">Company Details</a>
-
-                                                            </h4>
-
-                                                        </div>
-                                                        <div id="collapse0" class="panel-collapse collapse">
-
-                                                            <div class="panel-body">
-
-                                                                <div class="row">
-                                                                    <div class="form-group">
-                                                                        <div class="col-md-12">
-                                                                            <label class="col-md-2 control-label" data-i18n="country">
-                                                                                Country<span class="required"> *</span>
-                                                                            </label>
-                                                                            <div class="col-md-4 coun_stat_city_select xyz">
-                                                                                <select class="form-control" name="ddlCountry" id="ddlCountry" tabindex="4"></select>
-                                                                            </div>
-
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="form-group">
-                                                                        <div class="col-md-12">
-                                                                            <label class="col-md-2 control-label" id="taxlabel">
-                                                                                Tax Type
-                                                                            </label>
-                                                                            <div class="col-md-4 xyz">
-                                                                                <select class="form-control" name="txtTINType" id="txtTINType" tabindex="4">
-                                                                                </select>
-
-                                                                            </div>
-                                                                            <label class="col-md-2 control-label nogsthide" id="taxlabel">
-                                                                                Tax Type 2
-                                                                            </label>
-                                                                            <div class="col-md-4 xyz nogsthide">
-                                                                                <select class="form-control" name="txtTINType2" id="txtTINType2" tabindex="4">
-                                                                                </select>
-
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="form-group nogsthide">
-                                                                        <div class="col-md-12">
-                                                                            <span class="tax-group">
-                                                                                <label class="col-md-2 control-label" data-i18n="state">
-                                                                                    Tax Id
-                                                                                </label>
-                                                                                <div class="col-md-4 xyz">
-                                                                                    <input type="text" class="form-control" id="txtTINNo" name="txtTINNo" autocomplete="off" tabindex="1">
-                                                                                </div>
-                                                                            </span>
-
-                                                                            <span class="pan-group">
-                                                                                <label class="col-md-2 control-label ">
-                                                                                    Tax Id 2
-                                                                                </label>
-                                                                                <div class="col-md-4 xyz">
-
-                                                                                    <input type="text" class="form-control" id="vendorpanno" name="vendorpanno" autocomplete="off" tabindex="1">
-
-                                                                                </div>
-
-                                                                            </span>
-
-
-
-
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="form-group nogsthide">
-                                                                        <div class="col-md-12">
-                                                                            <label class="control-label col-md-2 control-label">
-                                                                                Attach TAX
-                                                                            </label>
-                                                                            <div class="col-md-4 xyz">
-
-                                                                                <div class="inputgroup">
-                                                                                    <div class="att_input">
-                                                                                        <input type="file" class="form-control" tabindex="5" id="filegst" onchange="checkfilesize(this)">
-
-
-                                                                                    </div>
-                                                                                </div>
-
-                                                                            </div>
-                                                                            <label class="control-label col-md-2 control-label">
-                                                                                Attach TaxId 2
-                                                                            </label>
-                                                                            <div class="col-md-4 xyz">
-
-                                                                                <div class="inputgroup">
-                                                                                    <div class="att_input">
-                                                                                        <input type="file" class="form-control" tabindex="5" id="filepan" onchange="checkfilesize(this)">
-
-
-                                                                                    </div>
-                                                                                </div>
-
-                                                                            </div>
-
-
-
-
-
-
-
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="form-group">
-                                                                        <div class="col-md-12">
-                                                                            <label class="col-md-2 control-label " data-i18n="companyname">
-                                                                                Company Name<span class="required"> *</span>
-                                                                            </label>
-                                                                            <div class="col-md-4 xyz">
-
-                                                                                <input type="text" class="form-control" id="vendorname" name="vendorname" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)">
-
-                                                                            </div>
-                                                                            <label class="col-md-2 control-label " data-i18n="natureofestablishment">
-                                                                                Nature of Establishment
-                                                                            </label>
-                                                                            <div class="col-md-4 xyz">
-                                                                                <input type="text" class="form-control" id="ddlNatureEstaiblishment" name="ddlNatureEstaiblishment" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)">
-
-
-                                                                            </div>
-
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="form-group">
-                                                                        <div class="col-md-12">
-                                                                            <label class="col-md-2 control-label " data-i18n="address">
-                                                                                Address <span class="required"> * </span>
-                                                                            </label>
-                                                                            <div class="col-md-4 xyz">
-                                                                                <input type="text" class="form-control"
-                                                                                       id="vendoraddress" name="vendoraddress" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
-                                                                            </div>
-
-                                                                            <label class="col-md-2 control-label">
-                                                                                PIN Code<span class="required"> *</span>
-                                                                            </label>
-                                                                            <div class="col-md-4 xyz">
-                                                                                <input type="text" class="form-control numberonly"
-                                                                                       id="pincode" name="pincode" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" maxlength=9 />
-                                                                            </div>
-
-
-
-                                                                        </div>
-                                                                    </div>
-
-
-                                                                    <div class="form-group">
-                                                                        <div class="col-md-12">
-                                                                            <label class="col-md-2 control-label" data-i18n="state">
-                                                                                State<span class="required"> *</span>
-                                                                            </label>
-                                                                            <div class="col-md-4 coun_stat_city_select xyz">
-                                                                                <select class="form-control" name="ddlState" id="ddlState" tabindex="4"></select>
-
-                                                                            </div>
-
-                                                                            <label class="col-md-2 control-label ">
-                                                                                City<span class="required"> *</span>
-                                                                            </label>
-                                                                            <div class="col-md-4 coun_stat_city_select xyz">
-                                                                                <select class="form-control" name="ddlCity" id="ddlCity" tabindex="4"></select>
-                                                                            </div>
-
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="form-group">
-                                                                        <div class="col-md-12">
-                                                                            <label class="col-md-2 control-label" data-i18n="suppliertype">
-                                                                                Supplier Type
-                                                                            </label>
-                                                                            <div class="col-md-4 xyz">
-                                                                                <select class="form-control" id="ddlVendorType" name="ddlVendorType">
-                                                                                    <option value="0" data-i18n="select">Select</option>
-                                                                                    <option value="1" data-i18n="supplyvendor">Supply Vendor</option>
-                                                                                    <option value="2" data-i18n="servicevendor">Service Vendor</option>
-                                                                                    <option value="3" data-i18n="both">Both</option>
-                                                                                </select>
-                                                                            </div>
-                                                                            <label class="col-md-2 control-label" data-i18n="language">
-                                                                                Language
-                                                                            </label>
-                                                                            <div class="col-md-4 xyz">
-                                                                                <select class="form-control" id="ddllanguage" name="ddllanguage">
-                                                                                </select>
-                                                                            </div>
-
-
-
-
-
-                                                                        </div>
-                                                                    </div>
-
-
-
-
-
-
-
-                                                                    <div class="form-group">
-                                                                        <div class="row">
-                                                                            <div class="col-md-12">
-                                                                                <label class="control-label col-md-11"><span class="required">*:</span>&nbsp;&nbsp;<span class="font-red">If your PAN Number or GST Number are incorrect, please send correction request at: <b>info@agileapt.com</b> with copy of PAN/GST or both, as applicable.</span></label>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-
-
-                                                                </div>
-
-                                                            </div>
-
-                                                        </div>
-
-                                                    </div>
-
-
-                                                </div>
-
-
-                                            </div>
-
-                                        </div>
-                                        <div class="form-actions fluid">
-                                            <div class="col-md-offset-5 col-md-6">
-                                                <br />
-                                                <button type="submit" class="btn btn-success" id="buttoncompanyupdate">
-                                                    Submit
-                                                </button>
-
-                                            </div>
-
-                                        </div>
-
-
-                                    </form>
-
+                                    <button class="btn blue" type="submit">Sign In</button>
                                 </div>
-
+                            </div>
+                        </form>
+                        <!-- BEGIN FORGOT PASSWORD FORM -->
+                        <form class="forget-form display-none" action="javascript:;" method="post" style="margin-top: 80px !important;">
+                     	<div class="alert alert-danger display-none" id="alrt2">
+                                <button class="close" data-close="alert"></button>
+                                <span id="alertmessage2"> </span>
+                     	</div>
+		     	<div class="alert alert-success display-none" id="succs2">
+                                <button class="close" data-close="alert"></button>
+                                <span id="sucssmessage2"> </span>
+                     	</div>
+                            <h3 class="font-green">Forgot Password ?</h3>                      
+                            <div class="form-group">
+                                <input class="form-control form-control-solid placeholder-no-fix form-group" type="text" autocomplete="off" placeholder="Email" name="email" id="txtemail" /> </div>
+                            <div class="form-actions">
+                                <button type="button" id="back-btn" class="btn grey btn-default">Back</button>
+                                <button type="submit" class="btn blue btn-success uppercase pull-right">Submit</button>
+                            </div>
+                        </form>
+                        <!-- END FORGOT PASSWORD FORM -->
+                    </div>   
+                    <div class="login-footer">
+                        <div class="row bs-reset">
+                            <!--<div class="col-xs-5 bs-reset">
+                                <ul class="login-social">
+                                    <li>
+                                        <a href="javascript:;">
+                                            <i class="icon-social-facebook"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            <i class="icon-social-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:;">
+                                            <i class="icon-social-dribbble"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>-->
+                            <div class="col-xs-12 bs-reset pull-right">
+                                <div class="login-copyright text-right">
+                                    <p>Powered by: <a href="http://agileapt.com/">AgileApt Solutions Pvt Ltd.</a></p>
+                                </div>
                             </div>
                         </div>
-
-                    </div>
+                    </div>                
                 </div>
             </div>
         </div>
-
         <!-- END : LOGIN PAGE 5-1 -->
+      
         <!-- BEGIN CORE PLUGINS -->
-        <script src="../App/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
-        <script src="../App/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
-        <script src="../App/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="../App/assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
-        <script src="../App/assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
-        <script src="../App/assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-        <script src="../App/assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-        <script src="../App/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-        <script src="../App/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+		<script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+        <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
         <!-- END CORE PLUGINS -->
         <!-- BEGIN PAGE LEVEL PLUGINS -->
-
-        <script src="../App/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-        <script src="../App/assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
-        <script src="../App/assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-        <script src="../App/assets/global/plugins/backstretch/jquery.backstretch.min.js" type="text/javascript"></script>
-
-
+        <script src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+		<script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+        <script src="assets/global/plugins/backstretch/jquery.backstretch.min.js" type="text/javascript"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
+        <script src="assets/CustomJS/TypeaHead.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
         <!--<script src="assets/global/scripts/app.min.js" type="text/javascript"></script>-->
-        <script src="../App/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-        <script src="../App/assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-        <script src="../App/assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
-        <script src="../App/assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
-        <!-- BEGIN PAGE LEVEL SCRIPTS -->
-        <!--<script src="../App/assets/global/scripts/app.min.js" type="text/javascript"></script>-->
-        <!--<script src="../App/assets/global/scripts/app.min.js" type="text/javascript"></script>-->
-        <script src="../App/assets/global/scripts/metronic.js" type="text/javascript"></script>
-        <script type="text/javascript" src="../App/assets/global/plugins/select2/select2.min.js"></script>
-        <script src="../App/assets/scripts/aes.js"></script>
-        <script src="../App/assets/CustomJS/TypeaHead.js"></script>
-        <script src="../App/assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+        <script src="assets/global/scripts/aes.js" type="text/javascript"></script>
+        <script src="assets/global/scripts/app.min.js" type="text/javascript"></script>
+         <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
+        <!-- BEGIN PAGE LEVEL SCRIPTS -->        
+        <script src="assets/scripts/custom/login.js" type="text/javascript"></script>        
+        <!-- END PAGE LEVEL SCRIPTS -->        
 
-        <script src="../App/assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
-        <script src="../App/assets/CustomJS/Auction.js" type="text/javascript"></script>
-        <script src="../App/assets/CustomJS/Common.js" type="text/javascript"></script>
-        <script src="../App/assets/scripts/custom/login.js" type="text/javascript"></script>
-        <!--<script src="../App/assets/CustomJS/VQ.js" type="text/javascript"></script>-->
-
-
+        <!-- END PAGE LEVEL SCRIPTS -->
         <script type="text/javascript">
-            // jQuery(document).ajaxStart(jQuery.blockUI({ message: '<h5><img src="../App/assets/global/img/loading.gif" /> Please Wait...</h5>' })).ajaxStop(jQuery.unblockUI);
+            jQuery(document).ajaxStart(jQuery.blockUI({ message: '<h5><img src="./assets/global/img/loading.gif" /> Please Wait...</h5>' })).ajaxStop(jQuery.unblockUI);
             jQuery(document).ready(function () {
-                Pageloaded()
-                setInterval(function () { Pageloaded() }, 15000);
-                sessionStorage.setItem('CustomerID', "29")
-
-                if (window.location.href.split('#')[1] != undefined) {
-                    if (window.location.href.split('#')[1].toLowerCase() == "v") {
-
-                        $('#registerParticipantModal').modal('show')
-                        $('#modalLoader').removeClass('display-none');
-
-                    }
-                }
+			Pageloaded()
+            setInterval(function () { Pageloaded() }, 15000);
+                sessionStorage.clear();
+                App.init();                
                 Login.init();
-                Metronic.init();
-                FormValidate();
-                $('.page-container').show();
                 jQuery.unblockUI()
                 $(".login-bg").backstretch([
-                    "assets/bg1.jpg",
-                    "assets/bg2.jpg",
-                    "assets/bg3.jpg"
+                "assets/global/img/login/bg1.jpg",
+                "assets/global/img/login/bg2.jpg",
+                "assets/global/img/login/bg3.jpg"
                 ], { fade: 1e3, duration: 8e3 })
-
-
             });
-            // FormWizard.init();
-            FormValidate();
-                   /* function fnOpenRegisterUser(){
-                 $('#registerParticipantModal').modal('show')
-                 $('#modalLoader').removeClass('display-none');
-                  setTimeout(function () {
-                  fetchMasters();
-                      $('#modalLoader').addClass('display-none');
-                      $('#btnverifyemail').removeAttr('disabled')
-                  },500)
-             }*/
+        </script>
+          <script>
+         
+      //get the IP addresses associated with an account
+      function getIPs(callback) {
+    
+          var ip_dups = {};
+          //compatibility for firefox and chrome
+          var RTCPeerConnection = window.RTCPeerConnection
+                    || window.mozRTCPeerConnection
+                    || window.webkitRTCPeerConnection;
+          var useWebKit = !!window.webkitRTCPeerConnection;
+          //bypass naive webrtc blocking using an iframe
+          if (!RTCPeerConnection) {
+              //NOTE: you need to have an iframe in the page right above the script tag
+              //
+              //<iframe id="iframe" sandbox="allow-same-origin" style="display: none"></iframe>
+              //<script>...getIPs called in here...
+              //
+              var win = iframe.contentWindow;
+              RTCPeerConnection = win.RTCPeerConnection
+                        || win.mozRTCPeerConnection
+                        || win.webkitRTCPeerConnection;
+              useWebKit = !!win.webkitRTCPeerConnection;
+          }
+          //minimal requirements for data connection
+          var mediaConstraints = {
+              optional: [{ RtpDataChannels: true}]
+          };
+          var servers = { iceServers: [{ urls: "stun:stun.services.mozilla.com"}] };
+          //construct a new RTCPeerConnection
+          var pc = new RTCPeerConnection(servers, mediaConstraints);
+          function handleCandidate(candidate) {
+              //match just the IP address
+              var ip_regex = /([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/
+              var ip_addr = ip_regex.exec(candidate)[1];
+              //remove duplicates
+              if (ip_dups[ip_addr] === undefined)
+                  callback(ip_addr);
+              ip_dups[ip_addr] = true;
+          }
+          //listen for candidate events
+          pc.onicecandidate = function(ice) {
+              //skip non-candidate events
+              if (ice.candidate)
+                  handleCandidate(ice.candidate.candidate);
+          };
+          //create a bogus data channel
+          pc.createDataChannel("");
+          //create an offer sdp
+          pc.createOffer(function(result) {
+              //trigger the stun server request
+              pc.setLocalDescription(result, function() { }, function() { });
+          }, function() { });
+          //wait for a while to let everything done
+          setTimeout(function() {
+              //read candidate info from local description
+              var lines = pc.localDescription.sdp.split('\n');
+              lines.forEach(function(line) {
+                  if (line.indexOf('a=candidate:') === 0)
+                      handleCandidate(line);
+              });
+          }, 1000);
+      }
+      //insert IP addresses into the page
+      getIPs(function(ip) {
+          if (ip.match(/^(192\.168\.|169\.254\.|10\.|172\.(1[6-9]|2\d|3[01]))/)){
+             
+              sessionStorage.setItem('MachineIP' ,ip)
+          }
 
+      });
         </script>
         <!-- END JAVASCRIPTS -->
-</body>
+    </body>
 
 </html>

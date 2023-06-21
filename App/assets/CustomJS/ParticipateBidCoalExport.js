@@ -70,29 +70,29 @@ connection.onclose(error => {
     });
 });
 connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
-
+    
     //console.log(rdataJson)
     //console.log(connectionId)
     let data = JSON.parse(rdataJson)
-
-    if (data[0].VendorID == "0") {
+    
+    if(data[0].VendorID=="0"){
         $('#hddnadminConnection').val(connectionId)
-        if (flag == false) {
-            $('#adminconn').removeClass('badge-success').addClass('badge-danger')
-            $('#admstatus').text("Buyer Offline")
-            $('#chatbtn').addClass('hide')
-            $('#txtChatMsg').addClass('hide')
-        }
-        else {
-            $('#adminconn').removeClass('badge-danger').addClass('badge-success')
-            $('#admstatus').text("Buyer Online")
-            $('#chatbtn').removeClass('hide')
-            $('#txtChatMsg').removeClass('hide')
-        }
-
+          if (flag == false) {
+                    $('#adminconn').removeClass('badge-success').addClass('badge-danger')
+                    $('#admstatus').text("Buyer Offline")
+                    $('#chatbtn').addClass('hide')
+                    $('#txtChatMsg').addClass('hide')
+                }
+                else{
+                     $('#adminconn').removeClass('badge-danger').addClass('badge-success')
+                     $('#admstatus').text("Buyer Online")
+                     $('#chatbtn').removeClass('hide')
+                     $('#txtChatMsg').removeClass('hide')
+         }
+        
     }
-
-
+  
+  
 });
 connection.on("disconnectSR", function (connectionId) {
     bootbox.alert("You are connect to bid with multiple devices...disconnecting.", function () {
@@ -136,12 +136,12 @@ connection.on("refreshColumnStatusCoal", function (data) {
             crossDomain: true,
             dataType: "json",
             success: function (data, status, jqXHR) {
-
+                
                 if (data.length > 0) {
                     for (var i = 0; i < data.length; i++) {
                         let TotalBidValue = '';
                         TotalBidValue = removeThousandSeperator(parseFloat(removeThousandSeperator(data[i].quantity))) * parseFloat(removeThousandSeperator(data[i].lqQuotedPrice));
-
+             
                         if (data[i].noOfExtension >= 1) {
 
                             jQuery('#lblTimeLeft').css('color', 'red');
@@ -161,7 +161,7 @@ connection.on("refreshColumnStatusCoal", function (data) {
                         $("#initialquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(data[i].iqQuotedPrice))
                         $("#iqquote" + i).html(data[i].iqQuotedPrice == '0' ? '' : thousands_separators(data[i].iqQuotedPrice))
                         $("#lastQuote" + i).html(data[i].lqQuotedPrice == '0' ? '' : thousands_separators(data[i].lqQuotedPrice))
-
+                      
                         $("#totalbidvalue" + i).html(TotalBidValue % 1 != 0 ? thousands_separators(TotalBidValue) : thousands_separators(TotalBidValue))
 
                         $("#lblstatus" + i).html(data[i].loQuotedPrice)
@@ -288,7 +288,7 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
 });
 
 function openForm() {
-    fetchUserChats(sessionStorage.getItem("UserID"), "T");//T stands for both single & Broadcast
+    fetchUserChats(sessionStorage.getItem("UserID"),"T");//T stands for both single & Broadcast
 }
 function sendChatMsgs() {
     if ($("#txtChatMsg").val() != '' && $("#txtChatMsg").val() != null) {
@@ -298,7 +298,7 @@ function sendChatMsgs() {
             "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
             "msgType": 'S',
             "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : '',
-            "fromconnectionID": $('#hddnadminConnection').val()
+             "fromconnectionID": $('#hddnadminConnection').val()
 
         }
         $("#chatList").append('<div class="post in">'
@@ -420,7 +420,8 @@ function fetchBidSummaryVendorproduct() {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (data, status, jqXHR) {           
+        success: function (data, status, jqXHR) {  
+         
             if (data.length > 0) {
                 let TotalBidValue = '';
                 if (_isBidStarted == false) {
@@ -442,12 +443,12 @@ function fetchBidSummaryVendorproduct() {
                     if (data[0].bidClosingType == 'A') {
 
                         for (var i = 0; i < data.length; i++) {
-
+                       
                             var IQuote = data[i].iqQuotedPrice == '0' ? '' : data[i].iqQuotedPrice;
                             var LqQuote = data[i].lqQuotedPrice == '0' ? '' : data[i].lqQuotedPrice;
                             var decreamentOn = data[i].decreamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
                             TotalBidValue = parseFloat(data[i].quantity) * parseFloat(data[i].lqQuotedPrice);
-
+                            
 
                             jQuery("#Coalitems").append('<table class="table table-bordered" id=tblParticipantsService' + i + ' ></table><div id=collapse class="panel-collapse"><div class="panel-body" style="margin-top:-10px!important;" ><div class="col-md-12"><table class="table" id=itemquotes' + i + '></table></div>');
                             jQuery("#tblParticipantsService" + i).append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th>GST %</th><th id='bidStartPrice'>Start Unit Price</th><th>Target Price</th><th>Minimum Decrement</th><th>Initial Quote</th><th>Current Quote</th><th>L1 Quote</th><th> Status </th><th>Bid Value</th></thead>");
@@ -550,7 +551,6 @@ function onkeyCess(index) {
     }
 
     if (parseFloat($('#landedp' + index).val()) > 0 && parseFloat($('#ncv' + index).val()) > 0) {
-        
         var price = (parseFloat($('#landedp' + index).val()) + parseFloat(cess)) / parseFloat($('#ncv' + index).val());
         // $('#txtquote' + index).val(price.round(3));
         //  $('#txtquote' + index).innerHTML=(price.round(3));

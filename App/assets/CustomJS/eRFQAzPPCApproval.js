@@ -1,6 +1,5 @@
 
 jQuery(document).ready(function () {
-    callPagejs('eRFQAzPPCApproval.js');
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -915,8 +914,9 @@ function fetchAttachments() {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (data, status, jqXHR) {
-
+        success: function (Data, status, jqXHR) {
+            
+             let data=Data.rData
             jQuery("#tblAttachments").empty();
 
             if (data[0].attachments.length > 0) {
@@ -964,7 +964,9 @@ function fetchReguestforQuotationDetails() {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (RFQData) {
+        success: function (Data) {
+            
+            let RFQData=Data.rData
             var replaced1 = '';
             $('#tbldetailsExcel > tbody').empty();
 
@@ -1571,8 +1573,9 @@ function fnGetApprovers() {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (data) {
+        success: function (Data) {
             var str = "";
+            let data=Data.rData
 
             jQuery("#tblapprovers").empty();
             if (data[0].approvers.length > 0) {

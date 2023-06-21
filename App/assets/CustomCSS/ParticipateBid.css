@@ -110,3 +110,6 @@ input[type=number] {
 .padding12px {
     padding: 12px !important;
 }
+.nav-tabs>li{
+        float: none!important;
+    }

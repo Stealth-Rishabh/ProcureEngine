@@ -1,4 +1,4 @@
-﻿jQuery(document).ready(function () {
+jQuery(document).ready(function () {
     //FROM HTML
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -17,11 +17,11 @@
 
     App.init();
     setCommonData();
-    fetchMenuItemsFromSession(9, 10);
+    fetchMenuItemsFromSession(9, 10);   
     fetchBidType();// for serach vendor
-
+ 
     //abheedev 25/11/2022
-
+  
 
 });
 
@@ -57,12 +57,12 @@ $("#addbtnvendor").click(function () {
 
         $("#txtInviteVendor").val("")
         $("#emailTable").show();
-
+        
         // Add a new row to the email table
         if (jQuery("#emailTable tbody tr").length < 1) {
             i = 0;
         }
-        jQuery("#emailTable").append('<tr id=trAppid' + i + '><td>' + (i + 1) + '</td><td>' + email + '</td></tr>');
+        jQuery("#emailTable").append('<tr id=trAppid' + i + '><td>' +( i + 1) + '</td><td>' + email + '</td></tr>');
         $("#btnvendorsumbit").show();
         i = i + 1
     }
@@ -107,27 +107,27 @@ function InviteVendorsToRegister() {
             $("#createdEmailTable tbody").empty();
             $("#notCreatedEmailTable tbody").empty();
             $("#emailTable").hide();
-
+            
             $("#btnvendorsumbit").hide();
-            let createdVendorList = data.createdVendorList || "";
+            let createdVendorList = data.createdVendorList || "" ;
             let notCreatedVendor = data.notCreatedVendor;
-
-            if (createdVendorList.length > 0 && createdVendorList != "") {
+            
+            if (createdVendorList.length > 0 && createdVendorList!="") {
                 for (let i = 0; i < createdVendorList.length; i++) {
                     $("#createdEmailTable").show();
-
-                    jQuery("#createdEmailTable").append('<tr id=trCEAppid' + i + '><td>' + (i + 1) + '</td><td>' + createdVendorList[i].email + '</td></tr>');
-
+                   
+                    jQuery("#createdEmailTable").append('<tr id=trCEAppid' + i + '><td>' + (i+1) + '</td><td>' + createdVendorList[i].email + '</td></tr>');
+                    
                 }
             }
             if (notCreatedVendor.length > 0) {
                 for (let i = 0; i < notCreatedVendor.length; i++) {
                     $("#notCreatedEmailTable").show();
-                    jQuery("#notCreatedEmailTable").append('<tr id=trNCEAppid' + i + '><td>' + (i + 1) + '</td><td>' + notCreatedVendor[i].email + '</td><td>' + notCreatedVendor[i].message + '</td></tr>');
-
+                    jQuery("#notCreatedEmailTable").append('<tr id=trNCEAppid' + i + '><td>' + (i+1) + '</td><td>' + notCreatedVendor[i].email + '</td><td>' + notCreatedVendor[i].message + '</td></tr>');
+                   
                 }
             }
-            emailIds.length = 0
+            emailIds.length=0          
             bootbox.alert('Check email invitation status below')
         },
         error: function (xhr, status, error) {

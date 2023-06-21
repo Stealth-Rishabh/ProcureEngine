@@ -199,7 +199,7 @@ function onlyNumberKey(evt) {
     return true;
 }
 function callPagejs(pagejs) {
-
+   
     var js = [];
     if (sessionStorage.getItem("ISFromSurrogate") != "Y") {
         js.push("assets/SSO/msalHead.js");
@@ -211,7 +211,7 @@ function callPagejs(pagejs) {
         js.push("assets/CustomJS/" + Pages[i] + "?v=" + Math.random());
     }
     var $head = $("head");
-
+     
     for (var i = 0; i < js.length; i++) {
         $head.append("<script src=\"" + js[i] + "\"></scr" + "ipt>");
     }
@@ -219,6 +219,7 @@ function callPagejs(pagejs) {
 }
 
 function handleDateTimepicker(locale) {
+    
     //var locale = sessionStorage.getItem("localcode")
     //var tz = moment().tz('Asia/Baghdad').format();
     //alert(GetCurrentDateTime())
@@ -240,6 +241,7 @@ function handleDateTimepicker(locale) {
           })
 
       }*/
+      
     if (jQuery().datepicker) {
         $('.date-picker').datepicker({
             locale: locale,
@@ -249,6 +251,7 @@ function handleDateTimepicker(locale) {
         $(".form_datetime").datetimepicker({
             locale: locale,
             language: locale,
+           
             // startDate: theStDate
         });
 
@@ -267,7 +270,7 @@ function setCommonData() {
 }
 
 function fetchCountry() {
-
+    
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
@@ -291,7 +294,7 @@ function fetchCountry() {
                     $("#ddlCountryCd").append(jQuery("<option></option>").val(data[i].countryID).html(data[i].dialingCode));
                     $("#ddlCountryCdPhone").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
                 }
-
+                
                 $("#ddlCountry").val('IN').trigger("change");
 
                 $("#ddlCountryCd").val('111');
@@ -308,7 +311,7 @@ function fetchCountry() {
 
         },
         error: function (xhr, status, error) {
-
+    
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 // error401Messagebox(err.Message);
@@ -329,11 +332,11 @@ function fetchCountry() {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         dataType: "json",
-        async: false,
+        async:false,
         success: function (data) {
 
             let lstTZ = JSON.parse(data[0].jsondata);
-
+            
             jQuery("#ddlpreferredTime").empty();
             jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val("").html("Select"));
             for (var i = 0; i < lstTZ.length; i++) {
@@ -603,7 +606,7 @@ function fetchMasters() {
 
 
 function prefferedTimezone() {
-
+    
 
     jQuery.ajax({
         type: "GET",
@@ -613,7 +616,7 @@ function prefferedTimezone() {
         cache: false,
         dataType: "json",
         success: function (data) {
-
+        
             let lstTZ = JSON.parse(data[0].jsondata);
 
             jQuery("#ddlpreferredTime").empty();
@@ -624,7 +627,7 @@ function prefferedTimezone() {
             }
         },
         error: function (xhr, status, error) {
-
+            
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 //error401Messagebox(err.Message);
@@ -837,11 +840,11 @@ function GetCustomerSpecificMaster(CustId) {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
-        async: false,
+        async:false,
         dataType: "json",
         success: function (data) {
-
-            //Authentication Group
+             
+             //Authentication Group
             jQuery("#authGrp").empty();
             jQuery("#authGrp").append(jQuery("<option value=''>Select</option>"));
             for (var i = 0; i < data.authGrp.length; i++) {
@@ -849,23 +852,23 @@ function GetCustomerSpecificMaster(CustId) {
 
             }
             $("#authGrp").val('').trigger("change");
-
-            //GST Vendor Classification
+             
+              //GST Vendor Classification
             jQuery("#gstVendClass").empty();
             for (var i = 0; i < data.gstVendClass.length; i++) {
                 jQuery("#gstVendClass").append(jQuery("<option value='" + data.gstVendClass[i].gstVendClassification + "'>" + data.gstVendClass[i].description + "</option>"));
 
             }
-
-            if ($("#txtTINNom").text().trim() == "") {
-                $("#gstVendClass").val('0').trigger("change");
+            
+            if ($("#txtTINNom").text().trim()==""){
+            $("#gstVendClass").val('0').trigger("change");
             }
-            else {
+            else{
                 $("#gstVendClass").val('').trigger("change");
             }
-
-
-
+             
+             
+             
             //reconcillationaccount
             jQuery("#ReconAcc").empty();
             jQuery("#ReconAcc").append(jQuery("<option value=''>Select</option>"));
@@ -874,7 +877,7 @@ function GetCustomerSpecificMaster(CustId) {
 
             }
             $("#ReconAcc").val('').trigger("change");
-
+            
             //Witholding tax type
             jQuery("#WitholdingTaxType").empty();
             jQuery("#WitholdingTaxType").append(jQuery("<option value='0' data-subjectToTDS='' data-typeOfReceipt='' data-witholdingTaxCode=''>Select</option>"));
@@ -929,7 +932,7 @@ function GetCustomerSpecificMaster(CustId) {
 
         },
         error: function (xhr, status, error) {
-
+            
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -958,8 +961,8 @@ function GetCountrySpecificMaster(CountryKey) {
         dataType: "json",
         async: false,
         success: function (data) {
-
-
+         
+            
 
             //currency
             jQuery("#ddlcurrency").empty();
@@ -990,9 +993,14 @@ function GetCountrySpecificMaster(CountryKey) {
             }
 
             $(".nogsthide").show();
+            
             if (CountryKey === "IN") {
-
+                
+                
+                 $(".nopanhide").show();
+                 $(".newgsthide").show();
                 jQuery("#txtTINType").append(jQuery("<option></option>").val('').html("Unregistered"));
+               
                 $("#txtTINNo").attr("onchange", "extractPan(this)");
                 $("#txtPanNo").attr("disabled", "disabled");
                 $("#vendorpanno").attr("disabled", "disabled");
@@ -1002,9 +1010,13 @@ function GetCountrySpecificMaster(CountryKey) {
 
                 $("#txtTINType2").empty();
                 $("#txtTINType2").append(jQuery("<option></option>").val("PAN").html("PAN Number"));
+                 /*if(CountryKey === "MU") {
+                    jQuery("#txtTINType").val('').trigger('change')
+                }*/
             }
             else {
-
+                $(".newgsthide").hide();
+                jQuery("#txtTINType").append(jQuery("<option></option>").val('').html("Unregistered"));
                 jQuery("#txtTINType2").empty();
                 $("#txtTINNo").attr("onchange", "");
                 $("#txtPanNo").removeAttr("disabled");
@@ -1018,16 +1030,16 @@ function GetCountrySpecificMaster(CountryKey) {
                 }
                 // afterTaxEnable()
             }
-
+          
             $("#ddlState").empty();
             if (data.stateAndRegion.length > 0) {
 
                 $("#ddlState").append("<option value='' data-stateid=0>Select State</option>");
                 for (var i = 0; i < data.stateAndRegion.length; i++) {
-                    $("#ddlState").append("<option value='" + data.stateAndRegion[i].regionKey + "' data-stateid='" + data.stateAndRegion[i].stateID + "' data-statename='" + data.stateAndRegion[i].stateName + "'>" + data.stateAndRegion[i].stateName + " [" + data.stateAndRegion[i].regionKey + "]" + "</option>");
+                    $("#ddlState").append("<option value='" + data.stateAndRegion[i].regionKey + "' data-stateid='" + data.stateAndRegion[i].stateID + "' data-statename='" + data.stateAndRegion[i].stateName + "'>" + data.stateAndRegion[i].stateName +" [" + data.stateAndRegion[i].regionKey +"]"+ "</option>");
 
                 }
-                $("#ddlState").val('').trigger("change");
+                 $("#ddlState").val('').trigger("change");
 
 
             }
@@ -1039,7 +1051,7 @@ function GetCountrySpecificMaster(CountryKey) {
 
         },
         error: function (xhr, status, error) {
-
+            
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -1065,7 +1077,137 @@ function onlynumeric(ele) {
     ele.value = ele.value.replace(/[^0-9]/g, '');
 }
 
+function downloadNFAMatrix() {
+    
+    var x = isAuthenticated();
+    var url = sessionStorage.getItem("APIPath") + "NFA/downloadNFAMatrix/";
+    var Tab1Data = {
+   "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
+  
+    };
+    $(".loaderC").removeClass("hide");
+    setTimeout(function () {
+        fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(Tab1Data),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem("Token")
+            },
+           })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'NFAMatrix.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+
+                bootbox.alert("File downloaded Successfully.", function () {
+                    $("#MatrixExportToExcel").removeAttr("disabled");
+                    return true;
+                });
+                console.log(a)
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                setTimeout(function () {
+                    $(".loaderC").addClass("hide");
+                }, 500);
+            });
+
+    }, 500)
+}
+
+//loader
+function loadingEngine(){
+    
+    // Create the blocking overlay element
+const overlay = $('<div id="loadingEngine"></div>');
+
+// Create the loading GIF element
+const loadingGif = $('<img src="assets/img/loadingengine.gif" alt="Loading...">'); // Replace with the path to your loading GIF
+
+// Append the loading GIF to the overlay
+overlay.append(loadingGif);
+
+// Append the overlay to the container
+$('body').append(overlay);
+
+// To remove the blocking overlay after some time (e.g., when content is loaded), you can use:
+// overlay.remove();
+
+    
+}
+
+function unloadingEngine(){
+    $('#loadingEngine').remove();
+}
+
+//alertpopupgroup
+function alertforerror(error) {
+
+    bootbox.dialog({
+        message: error,
+        buttons: {
+           
+            ok: {
+                label: "OK",
+                className: "btn-danger",
+                callback: function () {
+                   
+                }
+            }
+        }
+    });
+}
 
 
 
+function alertforinfo(info) {
+
+    bootbox.dialog({
+        message: info,
+        buttons: {
+           
+            ok: {
+                label: "OK",
+                className: "btn-warning",
+                callback: function () {
+                   
+                }
+            }
+        }
+    });
+}
+
+
+
+function alertforsucess(sucess) {
+
+    bootbox.dialog({
+        message: sucess,
+        buttons: {
+           
+            ok: {
+                label: "OK",
+                className: "btn-success",
+                callback: function () {
+                    hideModal()
+                }
+            }
+        }
+    });
+}
+
+
+function hideModal() {
+
+    $('.modal').modal("hide");
+}
 

@@ -171,7 +171,7 @@
                                                             </label>
                                                             <div class="col-md-4">
                                                                 <input type="text" class="form-control" placeholder="Enter RFQ Subject" id="txtrfqSubject"
-                                                                       name="txtrfqSubject" onkeyup="replaceQuoutesFromString(this)">
+                                                                       name="txtrfqSubject">
                                                             </div>
                                                         </div>
                                                         <div class="inputgroup">
@@ -194,7 +194,7 @@
                                                             </label>
                                                             <div class="col-md-9">
                                                                 <textarea id="txtrfqdescription" name="txtrfqdescription" class="wysihtml5 form-control"
-                                                                          rows="6" onkeyup="replaceQuoutesFromString(this)"></textarea>
+                                                                          rows="6"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -274,7 +274,7 @@
                                                             </span>
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <input type="text" class="form-control" id="txtshortname" name="txtshortname" autocomplete="off" onkeyup="replaceQuoutesFromString(this)"/>
+                                                            <input type="text" class="form-control" id="txtshortname" name="txtshortname" autocomplete="off"/>
 
                                                         </div>
                                                         <label class="control-label col-md-2">
@@ -325,7 +325,7 @@
                                                         </label>
                                                             <div class="col-md-4">
                                                                 <textarea id="txtbiddescriptionP" name="txtbiddescriptionP" class="wysihtml5 form-control"
-                                                                          rows="6" onkeyup="replaceQuoutesFromString(this)"></textarea>
+                                                                          rows="6" ></textarea>
                                                             </div>
                                                         
                                                             <label class="control-label  col-md-2">
@@ -333,7 +333,7 @@
                                                             </label>
                                                             <div class="col-md-4">
                                                                 <textarea id="txtRemark" name="txtRemark" class="wysihtml5 form-control"
-                                                                          rows="6" onkeyup="replaceQuoutesFromString(this)"></textarea>
+                                                                          rows="6"></textarea>
                                                               
                                                             </div>
                                                         </div>
@@ -351,7 +351,7 @@
                                                             Delivery Location <span class="required">* </span>
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <input type="text" class="form-control" id="txtedelivery" name="txtedelivery" autocomplete="off" onkeyup="replaceQuoutesFromString(this)"/>
+                                                            <input type="text" class="form-control" id="txtedelivery" name="txtedelivery" autocomplete="off" />
                                                         </div>
 
                                                         </div>
@@ -385,7 +385,7 @@
                                                             <label class="col-md-3 control-label">
                                                                 Search Vendor
                                                             </label><div class="col-md-6">
-                                                                <input type="text" class="form-control" placeholder="Search" id="txtSearch" name="txtSearch" onkeyup="replaceQuoutesFromString(this)">
+                                                                <input type="text" class="form-control" placeholder="Search" id="txtSearch" name="txtSearch" >
                                                             </div>
                                                         </div>
                                                     </div>
@@ -417,19 +417,6 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-6">
-                                                                <input type="hidden" id="hdnweightageIndex" value="0" />
-                                                                <div class="table-scrollable">
-                                                                    <table id="selectedvendorlists" class="table table-bordered display-none">
-                                                                        <thead>
-                                                                            <tr>
-                                                                                <th>Vendors</th>
-                                                                                <th>Actions</th>
-                                                                            </tr>
-                                                                        </thead>
-                                                                    </table>
-                                                                </div>
-                                                            </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -497,7 +484,7 @@
                                     </span>
                                 </label>
                                 <div class="col-md-4">
-                                    <input type="text" class="form-control" id="txtmodelshortname" name="txtmodelshortname" autocomplete="off" onkeyup="replaceQuoutesFromString(this)"/>
+                                    <input type="text" class="form-control" id="txtmodelshortname" name="txtmodelshortname" autocomplete="off" />
                                     <input type="hidden" id="txtRFQParameterId" name="txtRFQParameterId" autocomplete="off" value="0" />
                                     <input type="hidden" id="txtRFQId" name="txtRFQId" autocomplete="off" value="0" />
                                 </div>
@@ -564,8 +551,7 @@
                                         <table class="table table-striped table-bordered table-hover" id="tblRFQParameterComponet"></table>
                                     </div>
                             </div>                                
-                            <input type="hidden" class="form-control" id="txtChildRFQParameterId" name="txtChildRFQParameterId" />
-                             <input type="hidden" class="form-control" id="txtParentRFQParameterId" name="txtParentRFQParameterId" />
+                           
                         </div>
                     </form>
                 </div>
@@ -629,22 +615,25 @@
                 var decryptedstring = fndecrypt(param)
                 _RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
             }
-           
             if (_RFQID == null)
-                sessionStorage.setItem('hddnRFQID', 0)
+                sessionStorage.setItem('CurrentrfiID', 0)
             else {
-                sessionStorage.setItem('hddnRFQID', _RFQID)
-                fetchReguestforQuotationDetails();
+                sessionStorage.setItem('CurrentrfiID', _RFQID)
+                fetchRequestForQuotaionDetails();
             }
             FormWizard.init();
             ComponentsPickers.init();
             setCommonData();
+          
             fetchMenuItemsFromSession(1, 24);
+          
             FetchCurrency('0');
+          
             FetchVender();
             fetchRegisterUser('1');
             FetchUOM(sessionStorage.getItem("CustomerID"));
-            FormValidate();
+            FetchUOMforpop(sessionStorage.getItem("CustomerID"));
+            FormValidate()
 
         });
         jQuery('#btnpush').click(function (e) {

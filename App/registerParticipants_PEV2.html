@@ -28,6 +28,8 @@
     <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
     <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
     <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/clockface/css/clockface.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datepicker/css/datepicker3.css" />
@@ -47,6 +49,7 @@
 
     <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
     <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/ui-blockui.js"></script>
     <script src="assets/plugins/jquery.cokie.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
     <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
@@ -58,6 +61,9 @@
     <script type="text/javascript" src="assets/plugins/jquery-validation/dist/additional-methods.min.js"></script>
     <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
     <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
+    <script src="assets/global/scripts/datatable.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN PAGE LEVEL STYLES -->
     <script src="assets/global/scripts/metronic.js" type="text/javascript"></script> <!--abheedev bug 353 line added-->
@@ -306,6 +312,8 @@
                                                                                                 </div>
 
                                                                                             </div>
+                                                                                            
+                                                                                             
 
                                                                                             <div class="form-group col-md-12 hide" id="lbl_panmsz">
                                                                                                 <label class="col-md-3 control-label">
@@ -368,10 +376,24 @@
                                                                                             Add Another
                                                                                         </button>
                                                                                     </div>
+                                                                                    
+                                                                                    
                                                                                 </div>
                                                                             </div>
+                                                                            
                                                                             <div class="row" id="tab1check">
                                                                                 <div id="divVendorCompaniesForm" class="hide">
+                                                                                    <div class="form-group" id="showapproval">
+                                                                                    <label class="col-md-10 control-label">
+                                                                                                    
+                                                                                    </label>
+                                                                                    <div class="col-md-2">
+                                                                                        
+                                                                                                    <button type="button" class="btn btn-sm btn-primary" id="Userapprovebtn" onclick="">Approve</button>
+                                                                                                    <button type="button" class="btn btn-sm btn-danger" id="Userrejectbtn" onclick="">Reject</button>
+                                                                                
+                                                                                    </div>           
+                                                                                </div>
                                                                                     <div class="form-body">
                                                                                         <div class="col-md-8">
                                                                                             <div class="form-group">
@@ -385,7 +407,7 @@
 
                                                                                             <div class="form-group tax-group">
                                                                                                 <label class="col-md-3 control-label" id="taxlabel">
-                                                                                                    Tax Type
+                                                                                                    Tax Type 
                                                                                                 </label>
                                                                                                 <div class="col-md-6">
                                                                                                     <select class="form-control" name="txtTINType" id="txtTINType" tabindex="4">
@@ -405,9 +427,9 @@
                                                                                                 </div>
 
                                                                                             </div>
-                                                                                            <div class="form-group pan-group nogsthide">
+                                                                                            <div class="form-group pan-group nopanhide">
                                                                                                 <label class="col-md-3 control-label" id="taxlabel">
-                                                                                                    Tax Type 2
+                                                                                                    Tax Type 2 
                                                                                                 </label>
                                                                                                 <div class="col-md-6">
                                                                                                     <select class="form-control" name="txtTINType2" id="txtTINType2" tabindex="4">
@@ -416,13 +438,13 @@
                                                                                                 </div>
 
                                                                                             </div>
-                                                                                            <div class="form-group pan-group nogsthide">
+                                                                                            <div class="form-group pan-group nopanhide">
 
                                                                                                 <label class="col-md-3 control-label">
                                                                                                     Tax Id 2 <span class="required">*</span>
                                                                                                 </label>
                                                                                                 <div class="col-md-6">
-                                                                                                    <input type="text" class="form-control" placeholder="Enter Tax Id 2 No." id="txtPanNo" name="txtPanNo" maxlength="10" />
+                                                                                                    <input type="text" class="form-control" placeholder="Enter Tax Id 2 No." id="txtPanNo" name="txtPanNo" maxlength="15" />
 
                                                                                                 </div>
                                                                                             </div>
@@ -435,6 +457,50 @@
                                                                                                            data-provide="typeahead" autocomplete="off" name="ParticipantName" onkeyup="replaceQuoutesFromString(this)" />
                                                                                                 </div>
                                                                                             </div>
+                                                                                            
+                                                                                             <div class="form-group nogsthide">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    Trade Name 
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+                                                                                                    <input type="text" class="form-control" placeholder="Enter Trade Name" id="TradeName"
+                                                                                                           data-provide="typeahead" autocomplete="off" name="TradeName" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            
+                                                                                            <div class="form-group newgsthide">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    GSTN Status
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+                                                                                                    <input type="text" class="form-control"  id="gstnStatus"
+                                                                                                            autocomplete="off" name="gstnStatus" onkeyup="replaceQuoutesFromString(this)"  disabled/>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            
+                                                                                             <div class="form-group newgsthide">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    E-Invoice Status
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+                                                                                                    <input type="text" class="form-control"  id="eInvoiceStatus"
+                                                                                                            autocomplete="off" name="eInvoiceStatus" onkeyup="replaceQuoutesFromString(this)"  disabled/>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            
+                                                                                            <div class="form-group newgsthide">
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    Taxpayer Type
+                                                                                                </label>
+                                                                                                <div class="col-md-6">
+                                                                                                    <input type="text" class="form-control"  id="taxpayerType"
+                                                                                                            autocomplete="off" name="taxpayerType" onkeyup="replaceQuoutesFromString(this)"  disabled/>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            
+                                                                                           
+                                                                                            
+                                                                                            
 
                                                                                             <div class="form-group">
                                                                                                 <label class="col-md-3 control-label">
@@ -490,18 +556,18 @@
                                                                                                 </div>
                                                                                             </div>
 
-                                                                                            <!--   <div class="form-group">
+                                                                                         <!--   <div class="form-group">
 
-                                                                                                   <label class="col-md-3 control-label">
-                                                                                                       Active
-                                                                                                   </label>
-                                                                                                   <div class="col-md-1 checkbox-list">
-                                                                                                       <label class="checkbox-inline">
-                                                                                                           <input type="checkbox" id="chkIsActiveparticipant" checked="checked" name="chkIsActiveparticipant" />
-                                                                                                       </label>
-                                                                                                   </div>
+                                                                                                <label class="col-md-3 control-label">
+                                                                                                    Active
+                                                                                                </label>
+                                                                                                <div class="col-md-1 checkbox-list">
+                                                                                                    <label class="checkbox-inline">
+                                                                                                        <input type="checkbox" id="chkIsActiveparticipant" checked="checked" name="chkIsActiveparticipant" />
+                                                                                                    </label>
+                                                                                                </div>
 
-                                                                                               </div>-->
+                                                                                            </div>-->
 
                                                                                             <div class="form-group col-md-12 hide" id="lbl_panmsz">
                                                                                                 <label class="col-md-3 control-label">
@@ -615,12 +681,21 @@
                                                                                 <th class="width10">Action</th>
                                                                                 <th class="width10">Created By</th>
                                                                                 <th class="width10">Extended</th>
+                                                                                <th class="width10">
+                                                                                    Trade Name
+                                                                                </th>
 
+                                                                                <th style="display:none;">
+                                                                                    row <!--datatable-->
+                                                                                </th>
                                                                                 <th class="width10">
                                                                                     Company Name
                                                                                 </th>
                                                                                 <th class="width10">
                                                                                     Contact Person
+                                                                                </th>
+                                                                                 <th class="width10">
+                                                                                    Vendor Code
                                                                                 </th>
                                                                                 <th class="width10">Address</th>
                                                                                 <th class="width10">City</th>
@@ -638,7 +713,19 @@
                                                                         <tbody></tbody>
                                                                     </table>
                                                                 </div>
+                                                               <div class="pagination-section" id="MainDivPagination">
+                                                                    <nav aria-label="Page navigation example">
+                                                                        <ul class="pagination" id="paginationId">
+                                                                            <li class="page-item prev" id="page_numbers"><a class="page-link" href="#">Previous</a></li>
+                                                                            <li><ul id="paginationid1" class="pagination" name="paginationid1"></ul></li>
+                                                                         
+                                                                            <li class="page-item next" id="nextPagination"><a class="page-link" href="#">Next</a></li>
+                                                                        </ul>
+                                                                    </nav>
+                                                                </div>
+                                                                
                                                             </div>
+                                                            
                                                         </div>
                                                         <div class="tab-pane " id="tab_1">
                                                             <div class="col-md-12">
@@ -857,8 +944,8 @@
                                     <i class="fa fa-gift"></i>Vendor Details
                                 </div>
                                 <div class="tools">
-                                    <label class="control-label bold txtalignleft">
-                                        VendorCode :&nbsp;<span id=spnvendorcode></span>
+                                    <label class="control-label bold txtalignleft hide">
+                                        Vendor ID :&nbsp;<span id=spnvendorcode></span>
 
                                     </label>
                                     &nbsp; <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -881,6 +968,7 @@
                                                     </div>
                                                     <div id="collapsem1" class="panel-collapse collapse noheight" seqno="5">
                                                         <div class="panel-body">
+                                                            
                                                             <div class="row" id="tab1check">
                                                                 <div class="col-md-12">
                                                                     <div class="row">
@@ -990,10 +1078,10 @@
                                                 <div class="panel panel-default">
                                                     <div class="panel-heading">
                                                         <h4 class="panel-title">
-                                                            <a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordionmodal1" href="#collapsem2">Companies Details</a>
+                                                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordionmodal1" href="#collapsem2">Companies Details</a>
                                                         </h4>
                                                     </div>
-                                                    <div id="collapsem2" class="panel-collapse collapse noheight" seqno="6">
+                                                    <div id="collapsem2" class="panel-collapse collapse in" style="height:auto;" seqno="6">
                                                         <div class="panel-body">
                                                             <div class="panel-group accordion" id="accordion2">
 
@@ -1002,6 +1090,7 @@
 
                                                                 </div>
                                                                 <div class="clearfix"></div>
+                                                                
                                                                 <!--child form details-->
                                                                 <div id="childDetailsForm" class="hide">
                                                                     <div class="panel panel-default">
@@ -1018,7 +1107,23 @@
                                                                         </div>
                                                                         <div id="collapse4" class="panel-collapse active">
                                                                             <div class="panel-body">
+                                                                                
+                                                                              
                                                                                 <div class="row">
+                                                                                    
+                                                                                <div class="form-group col-md-12" id="showapprovalM">
+                                                                                    <label class="col-md-10 control-label">
+                                                                                                  
+                                                                                    </label>
+                                                                                    <div class="col-md-2">
+                                                                                        
+                                                                                            <button type="button" class="btn btn-sm btn-primary" id="UserapprovebtnM" onclick="">Approve</button>
+                                                                                            <button type="button" class="btn btn-sm btn-danger" id="UserrejectbtnM" onclick="">Reject</button>
+                                                                                 
+                                                                                   </div>  
+                                                                                   
+                                                                                </div>
+                                                                                    
                                                                                     <div class="form-group">
                                                                                         <div class="col-md-12">
                                                                                             <label class="col-md-2 control-label txtalignleft" data-i18n="country">
@@ -1133,7 +1238,52 @@
                                                                                                 Nature of Establishment
                                                                                             </label>
                                                                                             <div class="col-md-4 ">
-                                                                                                <label class="control-labe" id="ddlNatureEstaiblishment" name="ddlNatureEstaiblishment"></label>
+                                                                                                <label class="control-label" id="ddlNatureEstaiblishment" name="ddlNatureEstaiblishment"></label>
+
+
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    
+                                                                                    <div class="form-group">
+                                                                                        <div class="col-md-12">
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="companyname">
+                                                                                                
+                                                                                                Trade Name
+                                                                                            </label>
+                                                                                            <div class="col-md-4">
+
+                                                                                                <label class="control-label txtalignleft" id="tradenamem" name="tradenamem"></label>
+
+                                                                                            </div>
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="natureofestablishment">
+                                                                                                GSTN Status
+                                                                                            </label>
+                                                                                            <div class="col-md-4 ">
+                                                                                                <label class="control-labe" id="gstnstatusm" name="gstnstatusm"></label>
+
+
+                                                                                            </div>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    
+                                                                                    <div class="form-group">
+                                                                                        <div class="col-md-12">
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="einvoicestatusm">
+                                                                                                E-invoice Status
+                                                                                            </label>
+                                                                                            <div class="col-md-4">
+
+                                                                                                <label class="control-label txtalignleft" id="einvoicestatusm" name="einvoicestatusm"></label>
+
+                                                                                            </div>
+                                                                                            <label class="col-md-2 control-label txtalignleft" data-i18n="taxpayertypem">
+                                                                                               Taxpayer Type
+                                                                                            </label>
+                                                                                            <div class="col-md-4 ">
+                                                                                                <label class="control-labe" id="taxpayertypem" name="taxpayertypem"></label>
 
 
                                                                                             </div>
@@ -1217,7 +1367,7 @@
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-                                                                                </div>
+                                                                                
                                                                             </div>
 
                                                                         </div>
@@ -1237,14 +1387,21 @@
                                                                             </h4>
 
                                                                         </div>
+                                                                        <form action="#" id="submit_form_bank" class="form-horizontal">
                                                                         <div id="collapse1" class="panel-collapse collapse" seqno="2">
                                                                             <div class="panel-body">
-
+                                                                               
+                                                                                    
+                                                                                     <div class="col-md-12 text-right">
+                                                                                    <button class="btn btn-xs btn-primary tooltips " type="button" id="btnAddBank" data-placement="top" data-original-title="Click here to add another bank account details" onclick="Addanotherbank()">
+                                                                                        <i class="fa fa-plus-circle"></i> Add Account
+                                                                                    </button>
+                                                                                </div>
                                                                                 <div>
                                                                                     <table class="table table-striped table-bordered table-hover" id="tblGetBankDetail"></table>
 
                                                                                 </div>
-                                                                                <div class="row" id="bankForm">
+                                                                                <!--<div class="row" id="bankForm">
 
                                                                                     <div class="form-group hide">
                                                                                         <div class="col-md-12">
@@ -1320,10 +1477,90 @@
                                                                                         </div>
 
                                                                                     </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
+                                                                                </div>-->
+                                                                                <div class="row" id="bankForm">
+                                                                                                
+                                                                                                <div class="form-group">
 
+                                                                                                    <div class="col-md-12">
+                                                                                                        <label class="col-md-2 control-label txtalignleft">
+                                                                                                            Account Holder Name <span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+                                                                                                            <input type="text" class="form-control"
+                                                                                                                   id="accountholder" name="accountholder" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                        </div>
+                                                                                                        <label class="col-md-2 control-label">
+                                                                                                            IFSC Code<span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+                                                                                                            <input type="text" class="form-control"
+                                                                                                                   id="ifsccode" name="ifsccode" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" maxlength="11" />
+                                                                                                        </div>
+
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                <div class="form-group">
+                                                                                                    <div class="col-md-12">
+                                                                                                        <label class="col-md-2 control-label txtalignleft">
+                                                                                                            Name of Bank<span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+                                                                                                            <input type="text" class="form-control"
+                                                                                                                   id="bankname" name="bankname" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                        </div>
+                                                                                                        <label class="col-md-2 control-label">
+                                                                                                            Bank A/c No<span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+                                                                                                            <input type="text" class="form-control"
+                                                                                                                   id="bankaccount" name="bankaccount" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" maxlength="34" />
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+
+
+                                                                                                <div class="form-group">
+                                                                                                    <div class="col-md-12">
+
+                                                                                                        <label class="col-md-2 control-label txtalignleft">
+                                                                                                            Attach Cancelled Cheque<span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+
+                                                                                                            <div class="inputgroup">
+                                                                                                                <div class="att_input">
+
+                                                                                                                    <input type="file" class="form-control" tabindex="5" id="filecheck"
+                                                                                                                           onchange="checkfilesize(this)" />
+
+                                                                                                                    <label class="control-label uploadedfile" id="uploadcheck"><a href="javascript:;" onclick="DownloadFile(this)" id="checkattach" class="txtleftnone"></a><span class="fix-left-margin" onclick="editCheck()" id="editcheck"><i class="fa fa-pencil"></i></span></label>
+
+                                                                                                                </div>
+                                                                                                            </div>
+
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="fluid">
+                                                                                                    <div class="col-md-offset-5 col-md-6">
+                                                                                                        <br />
+                                                                                                        <button type="submit" class="btn btn-success" id="buttonbankupdate">
+                                                                                                            Update Bank Details
+                                                                                                        </button>
+                                                                                                    </div>
+
+                                                                                                </div>
+                                                                                                <div class="clearfix">&nbsp;</div>
+
+                                                                                            </div>
+                                                                                    
+                                                                          
+                                                                               
+                                                                                   </div>
+                                                                               </div>
+                                                                        </form>
                                                                         <div class="panel panel-default" id="financeaccordion">
                                                                             <div class="panel-heading">
                                                                                 <h4 class="panel-title">
@@ -1397,7 +1634,7 @@
 
                                                                                                     <label class="control-label" id="externalsourceid" name="externalsourceid" autocomplete="off" tabindex="1"></label>
                                                                                                 </div>
-
+                                                                                               
 
                                                                                             </div>
                                                                                         </div>
@@ -1494,12 +1731,12 @@
 
                                                                                             </div>
                                                                                         </div>
-
-                                                                                        <div class="form-group">
+                                                                                        
+                                                                                         <div class="form-group">
                                                                                             <div class="col-md-12">
 
                                                                                                 <label class="col-md-2 control-label txtalignleft" data-i18n="state">
-                                                                                                    GST Vendor Classification  <span class="required">*</span>
+                                                                                                   GST Vendor Classification  <span class="required">*</span>
                                                                                                 </label>
                                                                                                 <div class="col-md-4">
                                                                                                     <select class="form-control" id="gstVendClass" name="gstVendClass" required>
@@ -1577,14 +1814,15 @@
 
                                                                         </div>
 
-
+                                                                         
                                                                     </div>
-
+                                                                    
 
 
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>

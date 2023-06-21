@@ -322,29 +322,29 @@ connection.on("refreshRAQuotes", function (data) {
     fetchBidSummaryVendorproduct();
 });
 connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
-
+    
     console.log(rdataJson)
     //console.log(connectionId)
     let data = JSON.parse(rdataJson)
-
-    if (data[0].VendorID == "0") {
+    
+    if(data[0].VendorID=="0"){
         $('#hddnadminConnection').val(connectionId)
-        if (flag == false) {
-            $('#adminconn').removeClass('badge-success').addClass('badge-danger')
-            $('#admstatus').text("Buyer Offline")
-            $('#chatbtn').addClass('hide')
-            $('#txtChatMsg').addClass('hide')
-        }
-        else {
-            $('#adminconn').removeClass('badge-danger').addClass('badge-success')
-            $('#admstatus').text("Buyer Online")
-            $('#chatbtn').removeClass('hide')
-            $('#txtChatMsg').removeClass('hide')
-        }
-
+          if (flag == false) {
+                    $('#adminconn').removeClass('badge-success').addClass('badge-danger')
+                    $('#admstatus').text("Buyer Offline")
+                    $('#chatbtn').addClass('hide')
+                    $('#txtChatMsg').addClass('hide')
+                }
+                else{
+                     $('#adminconn').removeClass('badge-danger').addClass('badge-success')
+                     $('#admstatus').text("Buyer Online")
+                     $('#chatbtn').removeClass('hide')
+                     $('#txtChatMsg').removeClass('hide')
+         }
+        
     }
-
-
+  
+  
 });
 connection.on("refreshBidStatusAfterPause", function (data) {
     fetchBidTime();
@@ -676,7 +676,7 @@ function fetchBidTime() {
     });
 }
 function openForm() {
-    fetchUserChats(sessionStorage.getItem("UserID"), "T");//T stands for both single & Broadcast
+   fetchUserChats(sessionStorage.getItem("UserID"),"T");//T stands for both single & Broadcast
 }
 function sendChatMsgs() {
     var _cleanString = StringEncodingMechanism($("#txtChatMsg").val());
@@ -686,7 +686,7 @@ function sendChatMsgs() {
         "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
         "msgType": 'S',
         "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : '',
-        "fromconnectionID": $('#hddnadminConnection').val()
+         "fromconnectionID": $('#hddnadminConnection').val()
 
     }
     $("#chatList").append('<div class="post in">'

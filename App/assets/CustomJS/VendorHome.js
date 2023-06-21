@@ -2,6 +2,7 @@ var Changepassworderror = $('#errordivChangePassword');
 var Changepasswordsuccess = $('#successdivChangePassword');
 let isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted')
 let mobileNo = sessionStorage.getItem('mobileNo');
+let hasLoggedIn= sessionStorage.getItem('hasLoggedIn');
 //let mobileNo = "9506902863";
 
 Changepassworderror.hide();
@@ -26,9 +27,13 @@ jQuery(document).ready(function () {
             });
         }
     }
-    if (isWhatsappOpted == "") {
+   if(hasLoggedIn=="N"){
+       profileAlert()
+       
+   }    
+   if (isWhatsappOpted == "") {
         whatsappAlert()
-    }
+   }   
     setCommonData();
     App.init();
     //  multilingualLanguage()
@@ -239,7 +244,7 @@ function GetDataForCust() {
     }, 400)
 }
 function fetchPendingBid() {
-
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     if ($('#ULCustomers').val() == null) {
@@ -409,7 +414,7 @@ function fnOpenLink(linkurl, Bidid, isterms, bidtype, version) {
         // },1000)
 
     }
-
+ 
     _Bidtype = bidtype;
 
     if (bidtype == 'VQ' || bidtype == 'RFQ' || bidtype == 'RFI' || bidtype == 'eRFQ') {
@@ -551,8 +556,8 @@ function fetchReguestforQuotationDetailseRFQ() {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (RFQData) {
-
+        success: function (Data) {
+            let RFQData=Data.rData
             let _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
             let _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
             sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
@@ -568,7 +573,7 @@ function fetchReguestforQuotationDetailseRFQ() {
 
             $('#Currency').html(RFQData[0].general[0].currencyNm)
             jQuery('#RFQDescription').text(_cleanStringDesc)
-
+           
             jQuery('#rfqstartdate').text(fnConverToLocalTime(RFQData[0].general[0].rfqStartDate))
             jQuery('#rfqenddate').text(fnConverToLocalTime(RFQData[0].general[0].rfqEndDate))
             jQuery('#rfqTermandCondition').attr("name", RFQData[0].general[0].rfqTermandCondition)
@@ -1287,7 +1292,7 @@ jQuery('#bidchkIsAccepted').click(function () {
 //whatsapp message to vendor
 let whatsappdialog
 function whatsappAlert() {
-
+    
     bootbox.dialog({
         title: "Now get alerts on WhatsApp!",
         message: "We'll send you important updates and notifications on Whatsapp",
@@ -1329,7 +1334,7 @@ function whatsappAlert() {
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         success: function (data) {
-
+                            
                             sessionStorage.setItem('isWhatsappOpted', 'N');
                             isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted');
 
@@ -1341,11 +1346,11 @@ function whatsappAlert() {
                     });
                 }
             }
-
+           
         }
-
-    });
-
+        
+     });
+   
 }
 
 
@@ -1364,7 +1369,7 @@ function SendWhatsApp() {
         success: function (data) {
             bootbox.alert("You are successfully subscribed to Whatsapp", function () {
                 return true;
-            });
+            });          
         },
         error: function (error) {
             console.error("Error sending WhatsApp message:", error);
@@ -1440,3 +1445,29 @@ else {
 
 
 }*/
+
+
+
+
+function profileAlert() {
+    
+    bootbox.dialog({
+        title: "Complete your Profile",
+        message: "Please complete your profile and all further details on Myprofile page",
+        closeButton: false,
+        buttons: {
+            ok: {
+                label: "OK",
+                className: "btn-success",
+                callback: function () {
+                   
+                      sessionStorage.setItem('hasLoggedIn','Y');
+
+                }
+            }
+           
+        }
+        
+     });
+   
+}

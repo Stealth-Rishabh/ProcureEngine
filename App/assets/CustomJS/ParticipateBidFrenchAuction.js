@@ -82,29 +82,29 @@ connection.on("refreshFAQuotes", function () {
     fetchBidSummaryVendorFrench();
 });
 connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
-
+    
     console.log(rdataJson)
     //console.log(connectionId)
     let data = JSON.parse(rdataJson)
-
-    if (data[0].VendorID == "0") {
+    
+    if(data[0].VendorID=="0"){
         $('#hddnadminConnection').val(connectionId)
-        if (flag == false) {
-            $('#adminconn').removeClass('badge-success').addClass('badge-danger')
-            $('#admstatus').text("Buyer Offline")
-            $('#chatbtn').addClass('hide')
-            $('#txtChatMsg').addClass('hide')
-        }
-        else {
-            $('#adminconn').removeClass('badge-danger').addClass('badge-success')
-            $('#admstatus').text("Buyer Online")
-            $('#chatbtn').removeClass('hide')
-            $('#txtChatMsg').removeClass('hide')
-        }
-
+          if (flag == false) {
+                    $('#adminconn').removeClass('badge-success').addClass('badge-danger')
+                    $('#admstatus').text("Buyer Offline")
+                    $('#chatbtn').addClass('hide')
+                    $('#txtChatMsg').addClass('hide')
+                }
+                else{
+                     $('#adminconn').removeClass('badge-danger').addClass('badge-success')
+                     $('#admstatus').text("Buyer Online")
+                     $('#chatbtn').removeClass('hide')
+                     $('#txtChatMsg').removeClass('hide')
+         }
+        
     }
-
-
+  
+  
 });
 connection.on("refreshColumnStatusFF", function (data) {
     // var JsonMsz = JSON.parse(data[0]);
@@ -312,7 +312,7 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
     //$(".pulsate-regular").css('animation', 'none');
 });
 function openForm() {
-    fetchUserChats(sessionStorage.getItem("UserID"), "T");//T stands for both single & Broadcast
+   fetchUserChats(sessionStorage.getItem("UserID"),"T");//T stands for both single & Broadcast
 }
 function sendChatMsgs() {
     if ($("#txtChatMsg").val() != '' && $("#txtChatMsg").val() != null) {
@@ -323,7 +323,7 @@ function sendChatMsgs() {
             "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
             "msgType": 'S',
             "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : '',
-            "fromconnectionID": $('#hddnadminConnection').val()
+             "fromconnectionID": $('#hddnadminConnection').val()
 
         }
         $("#chatList").append('<div class="post in">'
@@ -719,13 +719,13 @@ function InsUpdQuoteFrench(rowID) {
 
     var valdiff = (parseFloat(removeThousandSeperator(jQuery("#txtquote" + i).val())) - parseFloat(removeThousandSeperator(jQuery("#H1Price" + i).text()))).toFixed(2)
     if ((removeThousandSeperator($('#txtquantity' + i).val()) == 0) || (!/^[0-9]+$/.test(removeThousandSeperator($('#txtquantity' + i).val())))) {
-
+       
         $('#spanquan' + i).removeClass('hide')
         $('#spanquan' + i).text('quantity is required in number only')
         return false
     }
     else if ((removeThousandSeperator($('#txtquote' + i).val()) == 0) || (!/^[0-9]+$/.test(removeThousandSeperator($('#txtquote' + i).val())))) {
-
+    
         $('#spanamount' + i).removeClass('hide')
         $('#spanamount' + i).text('Amount is required in number only')
         return false

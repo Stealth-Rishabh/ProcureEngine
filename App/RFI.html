@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -728,8 +728,7 @@
     <script>
         jQuery(document).ready(function () {
             callPagejs('RFI.js');
-            Pageloaded()
-            var x = isAuthenticated();
+		 Pageloaded()
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
                  window.location = sessionStorage.getItem('MainUrl');
