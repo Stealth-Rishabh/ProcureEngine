@@ -2234,6 +2234,7 @@ function updateRFQField(updateType) {
                 fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
+            console.log('');
             return false;
 
         }
