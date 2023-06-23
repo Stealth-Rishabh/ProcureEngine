@@ -188,7 +188,7 @@
 
                                 <div class="clearfix"></div>
 
-                                <br/>
+                                <br />
                                 <div class="form-group col-lg-10">
 
                                     <label class="col-lg-2  control-label">
@@ -266,10 +266,13 @@
                                                                                         <label class="control-label col-md-4">
                                                                                             RFQ Subject:
                                                                                         </label>
-                                                                                        <div class="col-md-8">
-                                                                                            <label id="RFQSubject" class="control-label txtalignleft">
-                                                                                            </label>
+                                                                                        <div class="col-md-8" style="display:flex;align-items:center;gap:5px;">
+                                                                                            <label id="RFQSubject" class="control-label txtalignleft rfqsub"></label>
+                                                                                            <a class="isDisabledClass cursorpointer" id="RFQSub"><i class="fa fa-pencil" style="margin-top:10px"></i></a>
+                                                                                            <button style="display:none; width: 80px; height: 35px; border-radius: 10px !important; text-align: center !important; margin-top:5px;" type="button" id="subRfqID" class="btn btn-primary" onclick="updateRFQField('subject')">Update</button>
                                                                                         </div>
+
+
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="col-md-6">
@@ -293,9 +296,10 @@
                                                                                         <label class="control-label col-md-2">
                                                                                             RFQ Description:
                                                                                         </label>
-                                                                                        <div class="col-md-10">
-                                                                                            <label id="RFQDescription" class="control-label txtalignleft">
-                                                                                            </label>
+                                                                                        <div class="col-md-10" style="display:flex;align-items:center;gap:5px;">
+                                                                                            <label id="RFQDescription" class="control-label txtalignleft rfqdesc"></label>
+                                                                                            <a class="isDisabledClass cursorpointer" id="RFQDesc"><i class="fa fa-pencil" style="margin-top:10px"></i></a>
+                                                                                            <button style="display:none; width: 80px; height: 35px; border-radius: 10px !important; text-align: center !important; margin-top:5px" type="button" id="descRfqID" class="btn btn-primary" onclick="updateRFQField('description')">Update</button>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -1214,8 +1218,8 @@
             </div>
         </div>
     </div>
-    
-    
+
+
     <!--technical approver-->
     <div id="addtechnicalapprovers" class="modal fade bs-modal-md" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-md">
