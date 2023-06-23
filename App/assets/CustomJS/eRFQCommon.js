@@ -2003,7 +2003,6 @@ function Checktechapp(event, rowid) {
 
 //post request for techincal apoorver
 function MapRFQTechapprover(Type) {
-    debugger
     var RFQID = 0;
     if (Type == "Report") {
         RFQID = $('#hdnRfqID').val()
@@ -2014,11 +2013,9 @@ function MapRFQTechapprover(Type) {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvers = '';
     var rowCount = jQuery('#tblRFQtechnicalapprovers tbody tr').length;
-    debugger
     if (rowCount > 0) {
         var techsno = 0
         $("#tblRFQtechnicalapprovers tbody tr").each(function () {
-            debugger
             var this_row = $(this);
             techsno = techsno + 1;
             // var showPriceyn = 'chkshowp' + $.trim(this_row.find('td:eq(3)').html());
@@ -2060,7 +2057,6 @@ function MapRFQTechapprover(Type) {
         data: JSON.stringify(Approvers),
         dataType: "json",
         success: function (data) {
-            debugger
             $('#successapp').show();
             $('#spansuccessapp').html('Approvers mapped successfully');
             Metronic.scrollTo($('#successapp'), -200);
@@ -2097,7 +2093,6 @@ function MapRFQTechapprover(Type) {
 
         },
         error: function (xhr) {
-             debugger
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -2115,4 +2110,124 @@ function MapRFQTechapprover(Type) {
 }
 
 
-//technical approver by Anurag 
+//edit options for subject and description by anurag
+
+$('#RFQSub').click(function () {
+    var text = $('.rfqsub').text();
+    var input = $('<input id="attributeSub" name="subj" type="text" value="' + text + '" />')
+    $('.rfqsub').text('').append(input);
+    input.select();
+    var x = document.getElementById("subRfqID");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+});
+
+
+$('#RFQDesc').click(function () {
+    var text = $('.rfqdesc').text();
+    var input = $('<input id="attributeDesc" name="descptn" type="text" value="' + text + '" />')
+    $('.rfqdesc').text('').append(input);
+    input.select();
+    var x = document.getElementById("descRfqID");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+});
+
+//post reqquest for updation of subject and description
+
+function updateRFQField(updateType) {
+    var RFQSubject = '';
+    var RFQDescription = '';
+
+    if (updateType == "subject") {
+        var RFQSubject = $('#attributeSub').val();
+        console.log("RFQSubject:", RFQSubject);
+        if (document.getElementById("attributeSub").value.length == 0) {
+            bootbox.dialog({
+                message: "Subject Cannot Be Empty!",
+                buttons: {
+                    confirm: {
+                        label: "OK",
+                        className: "btn-danger"
+                    }
+                }
+            });
+            return false;
+        }
+    }
+
+    if (updateType == "description") {
+        var RFQDescription = $('#attributeDesc').val();
+        console.log("RFQDescription:", RFQDescription);
+        if (document.getElementById("attributeDesc").value.length == 0) {
+            bootbox.dialog({
+                message: "Description Cannot Be Empty!",
+                buttons: {
+                    confirm: {
+                        label: "OK",
+                        className: "btn-danger"
+                    }
+                }
+            });
+            return false;
+        }
+    }
+    var UpdateData = {
+        "RFQId": parseInt(sessionStorage.getItem("hdnrfqid")),
+        "RFQSubject": RFQSubject,
+        "RFQDescription": RFQDescription,
+        //"UserId": sessionStorage.getItem('UserID'),
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "updateType": updateType
+
+    };
+    console.log("UpdateData:", UpdateData)
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/erfqUpdateReqForQuotation",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        crossDomain: true,
+        async: false,
+        data: JSON.stringify(UpdateData),
+        dataType: "json",
+        success: function (data) {
+           // $('#successapp').show();
+           // Metronic.scrollTo($('#successapp'), -200);
+           // $('#successapp').fadeOut(3000);
+            bootbox.dialog({
+                message: "Updated Successfully!",
+                buttons: {
+                    confirm: {
+                        label: "OK",
+                        className: "btn-success",
+
+                    }
+                }
+            });
+            setTimeout(() => {
+                document.location.reload();
+            }, 3000);
+            jQuery.unblockUI();
+
+        },
+        error: function (xhr) {
+            var err = xhr.responseText
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+    });
+}
