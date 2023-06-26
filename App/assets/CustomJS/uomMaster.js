@@ -1,4 +1,4 @@
-﻿jQuery(document).ready(function () {
+jQuery(document).ready(function () {
     Pageloaded()
     var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
@@ -17,9 +17,9 @@
         }
     }
 
-
+    
     App.init();
-    setCommonData();
+    setCommonData();  
     fetchMenuItemsFromSession(19, 32);
     FormValidate();
     fetchCustomerDetail();
@@ -96,7 +96,7 @@ function FormValidate() {
             uomId: {
                 required: true
             }
-
+          
         },
         messages: {
             uomName: {
@@ -175,12 +175,12 @@ function uomFuncDetails() {
     }
     else {
         status = "N";
-    }
+    }   
 
     var data = {
         "id": parseInt($('#hddnUOMpiD').val()),
-        "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
-        "UOM": _cleanString1,
+        "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),   
+        "UOM":        _cleanString1,
         "UOMID": _cleanString2,
         "IsActive": status
     }
@@ -203,7 +203,7 @@ function uomFuncDetails() {
                 fetchCustomerDetail();
                 jQuery.unblockUI();
             }
-
+            
 
             else if (data.isSuccess == '0') {
                 success.hide();
@@ -214,7 +214,7 @@ function uomFuncDetails() {
             }
 
             setTimeout(function () {
-                window.location.reload();
+                window.location.reload();        
             }, 3000);
 
         },
@@ -253,9 +253,9 @@ function fetchCustomerDetail() {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
-        crossDomain: true,
+        crossDomain: true,  
         processData: true,
-        dataType: "json",
+        dataType: "json",   
         success: function (data) {
             jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
             jQuery("#uomPlaceMaster").empty();

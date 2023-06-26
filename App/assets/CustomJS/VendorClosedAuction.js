@@ -659,7 +659,7 @@ function linegraphsforItems(itemId) {
 
             if (data[0].submissionTime.length > 0) {
 
-                for (var x = 0; x < data[0].submissionTime.length; x++) {
+                for (var x = 0; x < data[0].submissionTime.length; x++) {                    
                     graphtime.push(keepTimeOnly(data[0].submissionTime[x].subTime));
                 }
 

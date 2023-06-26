@@ -73,7 +73,7 @@ if (window.location.search) {
 
 
         fetchApproverRemarks();
-        // fetchAttachments();
+        fetchAttachments();
     }, 400);
 }
 if (AppType == "C" && AppStatus == 'Approved' && FwdTo == 'Approver') {
@@ -445,7 +445,7 @@ function fetchrfqcomprative() {
                     let isPresent = ttpArray.includes(data[0].quotesDetails[t].rfqParameterId)
                     if (!isPresent) {
                         ttpArray.push(data[0].quotesDetails[t].rfqParameterId);
-                        totaltargetprice = totaltargetprice + data[0].quotesDetails[t].targetPrice;
+                        totaltargetprice = totaltargetprice + (data[0].quotesDetails[t].targetPrice * data[0].quotesDetails[t].quantity);
                     }
                     else {
                         break;
@@ -1388,8 +1388,9 @@ function fetchAttachments() {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (data, status, jqXHR) {
+        success: function (Data, status, jqXHR) {
 
+            let data = Data.rData
             jQuery("#tblAttachments").empty();
 
             if (data[0].attachments.length > 0) {
@@ -1439,17 +1440,18 @@ jQuery("#txtSearch").keyup(function () {
 function fetchReguestforQuotationDetails() {
     var attachment = '';
     var termattach = '';
-
+    debugger
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + $('#hdnRfqID').val(),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
-        async: false,
         crossDomain: true,
         dataType: "json",
-        success: function (RFQData) {
+        success: function (Data) {
+            debugger
+            let RFQData = Data.rData
             var replaced1 = '';
             $('#tbldetailsExcel > tbody').empty();
             if (RFQData.length > 0) {
@@ -1482,7 +1484,14 @@ function fetchReguestforQuotationDetails() {
 
                     for (var i = 0; i < RFQData[0].attachments.length; i++) {
                         var str = "<tr><td style='width:50%!important'>" + RFQData[0].attachments[i].rfqAttachmentDescription + "</td>";
-                        str += '<td class=style="width:50%!important"><a id=eRFQFile' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFile(this)"  href="javascript:;" >' + RFQData[0].attachments[i].rfqAttachment + '</a></td>';
+                        if (Data.showQuotedPrice.showQoutedPrice == 'Y') {
+                            str += '<td class=style="width:50%!important"><a id=eRFQFile' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFile(this)"  href="javascript:;" >' + RFQData[0].attachments[i].rfqAttachment + '</a></td>';
+
+                        }
+                        else {
+                            str += '<td class=style="width:50%!important"></td>';
+
+                        }
                         jQuery('#tblAttachments').append(str);
 
                     }
@@ -1730,6 +1739,7 @@ function validateAppsubmitData() {
 function ApprovalCommercialApp() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    debugger
     var approvalbyapp = {
         "ApproverType": "C",
         "FromUserId": sessionStorage.getItem('UserID'),
@@ -1758,6 +1768,7 @@ function ApprovalCommercialApp() {
                  window.location = "index.html";
                 
              });*/
+            debugger
             bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
 
                 window.location = "index.html";
@@ -1766,7 +1777,7 @@ function ApprovalCommercialApp() {
             );
         },
         error: function (xhr, status, error) {
-
+            debugger
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1849,7 +1860,7 @@ function AwardCommeRFQ() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendors = '';
     var rowCount = jQuery('#tblremarksvendorsawared tr').length;
-
+    debugger
 
     if (rowCount > 1) {
         $('#drpVendors').rules('add', {
@@ -1885,7 +1896,9 @@ function AwardCommeRFQ() {
             jQuery.unblockUI();
 
         }
+
         else {
+            debugger
             var approvalbyapp = {
                 "ApproverType": "C",
                 "FromUserId": sessionStorage.getItem('UserID'),
@@ -1913,6 +1926,7 @@ function AwardCommeRFQ() {
                          window.location = "index.html";
                          return false;
                      });*/
+                    debugger
                     bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
                         window.location = "index.html";
                         return false;
@@ -1921,7 +1935,7 @@ function AwardCommeRFQ() {
 
                 },
                 error: function (xhr, status, error) {
-
+                    debugger
                     var err = xhr.responseText // eval("(" + xhr.responseText + ")");
                     if (xhr.status == 401) {
                         error401Messagebox(err.Message);
@@ -2163,6 +2177,8 @@ function fetchrfqcomprativeBoq() {
 
                 strHeadQ = "<tr  style='background:#f5f5f5; color:light black;'><th>Question</th><th>Our Requirement</th>"
                 strHeadExcelQ = "<tr><th colspan=4>Question</th><th colspan=2>Our Requirement</th>"
+                jQuery("#drpVendors").empty();
+                jQuery("#drpVendors").append(jQuery("<option ></option>").val("").html("Only for auto PO confirmation"));
 
                 for (var i = 0; i < data[0].vendorNames.length; i++) {
 
@@ -2170,6 +2186,7 @@ function fetchrfqcomprativeBoq() {
 
                         strHead += "<th colspan='4' style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vendorName; +"</a></th>";
                         strHeadExcel += "<th colspan='4'>" + data[0].vendorNames[i].vendorName; +"</th>";
+                        jQuery("#drpVendors").append(jQuery("<option ></option>").val(data[0].vendorNames[i].vendorID).html(data[0].vendorNames[i].vName));
 
                         strHeadQ += "<th style='text-align:center;'><a onclick=getSummary(\'" + data[0].vendorNames[i].vendorID + "'\,\'" + data[0].vendorNames[i].rfqVersionId + "'\) href='javascript:;'  style='color:#2474f6; text-decoration:underline;'>" + data[0].vendorNames[i].vName; +"</a></th>";
                         strHeadExcelQ += "<th colspan='4'>" + data[0].vendorNames[i].vName; +"</th>";
@@ -2508,13 +2525,12 @@ function fetchrfqcomprativeBoq() {
                     let isPresent = ttpArray.includes(data[0].quotesDetails[t].rfqParameterId)
                     if (!isPresent) {
                         ttpArray.push(data[0].quotesDetails[t].rfqParameterId);
-                        totaltargetprice = totaltargetprice + data[0].quotesDetails[t].targetPrice;
+                        totaltargetprice = totaltargetprice + (data[0].quotesDetails[t].targetPrice * data[0].quotesDetails[t].quantity);
                     }
                     else {
                         break;
                     }
                 }
-
                 str += "<tr><td colspan=6 style='text-align:center;'><b>Total</b></td><td colspan=1 style='text-align:center;'><b>" + thousands_separators(totaltargetprice) + "</b></td>";
                 strExcel += "<tr><td colspan=7><b>Total</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {

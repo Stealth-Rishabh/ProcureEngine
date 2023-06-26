@@ -50,8 +50,8 @@ function fetchReguestforQuotationDetails() {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (RFQData) {
-
+        success: function (Data) {
+            let RFQData=Data.rData
             $('#tblvendors > tbody').empty();
             $('#tblvendors > thead').empty();
             if (RFQData.length > 0) {

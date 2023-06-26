@@ -29,7 +29,7 @@ jQuery(document).ready(function () {
     setCommonData();
     App.init();
     Tasks.initDashboardWidget();
-
+    
     if (sessionStorage.getItem('UserType') == 'E') {
         fetchMenuItemsFromSession(0, 0);
     }
@@ -262,7 +262,7 @@ function fetchDashboardData() {
         //data: JSON.stringify(userData),
         dataType: "json",
         success: function (BidData) {
-
+            
             if (BidData[0].bidcnt != "") {
                 jQuery('#lblTodayBidCount').text(BidData[0].bidcnt[0].todayBid)
                 jQuery('#lblNotForwardedBidCount').text(BidData[0].bidcnt[0].notForwarded)
@@ -273,7 +273,7 @@ function fetchDashboardData() {
                 jQuery('#lblNotFwRFQCount').text(BidData[0].rFxcnt[0].notForwardedRFx)
                 jQuery('#lblFwRFQCount').text(BidData[0].rFxcnt[0].forwardedRFx)
                 jQuery('#lblAwRFQCount').text(BidData[0].rFxcnt[0].awardedRFx)
-
+                
                 jQuery('#lblopenNFACount').text(BidData[0].nfAcnt[0].todayNFA)
                 jQuery('#lblFwNFACount').text(BidData[0].nfAcnt[0].forwardedNFA)
                 jQuery('#lblAwNFACount').text(BidData[0].nfAcnt[0].awardedNFA)
@@ -333,7 +333,7 @@ function fetchDashboardData() {
 
                     }
 
-
+                    
                 }
             }
             else {
@@ -494,7 +494,7 @@ function fetchDashboardData() {
     });
 }
 function fetchBidDataDashboard(requesttype) {
-
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var x = isAuthenticated();
     if (requesttype == 'Today') {
@@ -518,7 +518,7 @@ function fetchBidDataDashboard(requesttype) {
     else if (requesttype == 'AwardedRFQ') {
         jQuery('#spanPanelCaption').html("Approved RFx");
     }
-    else if (requesttype == 'TodayNFA') {
+     else if (requesttype == 'TodayNFA') {
         jQuery('#spanPanelCaption').html("Open NFA");
     }
     else if (requesttype == 'ForwardedNFA') {
@@ -527,8 +527,8 @@ function fetchBidDataDashboard(requesttype) {
     else if (requesttype == 'AwardedNFA') {
         jQuery('#spanPanelCaption').html("Approved NFA");
     }
-
-
+  
+  
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardBidDetails/?RequestType=" + requesttype + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
@@ -538,7 +538,7 @@ function fetchBidDataDashboard(requesttype) {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-
+        
             jQuery("#ulList").empty();
             $('#spanPanelCaptioncount').text("(" + BidData.length + ")")
             if (BidData.length > 0) {

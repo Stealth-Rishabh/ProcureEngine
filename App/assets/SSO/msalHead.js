@@ -1,11 +1,10 @@
-﻿/*! @azure/msal-browser v2.32.2 2023-01-10 */
+/*! @azure/msal-browser v2.32.2 2023-01-10 */
 'use strict';
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-        typeof define === 'function' && define.amd ? define(['exports'], factory) :
-            (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.msal = {}));
-}(this, (function (exports) {
-    'use strict';
+    typeof define === 'function' && define.amd ? define(['exports'], factory) :
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.msal = {}));
+}(this, (function (exports) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -23,7 +22,7 @@
     ***************************************************************************** */
     /* global Reflect, Promise */
 
-    var extendStatics$1 = function (d, b) {
+    var extendStatics$1 = function(d, b) {
         extendStatics$1 = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
             function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
@@ -36,7 +35,7 @@
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     }
 
-    var __assign$1 = function () {
+    var __assign$1 = function() {
         __assign$1 = Object.assign || function __assign(t) {
             for (var s, i = 1, n = arguments.length; i < n; i++) {
                 s = arguments[i];
@@ -70,8 +69,8 @@
     }
 
     function __generator$1(thisArg, body) {
-        var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
+        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
         function verb(n) { return function (v) { return step([n, v]); }; }
         function step(op) {
             if (f) throw new TypeError("Generator is already executing.");
@@ -137,7 +136,7 @@
     ***************************************************************************** */
     /* global Reflect, Promise */
 
-    var extendStatics = function (d, b) {
+    var extendStatics = function(d, b) {
         extendStatics = Object.setPrototypeOf ||
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
             function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
@@ -150,7 +149,7 @@
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     }
 
-    var __assign = function () {
+    var __assign = function() {
         __assign = Object.assign || function __assign(t) {
             for (var s, i = 1, n = arguments.length; i < n; i++) {
                 s = arguments[i];
@@ -172,8 +171,8 @@
     }
 
     function __generator(thisArg, body) {
-        var _ = { label: 0, sent: function () { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function () { return this; }), g;
+        var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+        return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
         function verb(n) { return function (v) { return step([n, v]); }; }
         function step(op) {
             if (f) throw new TypeError("Generator is already executing.");
@@ -4928,7 +4927,7 @@
                             };
                             return [4 /*yield*/, this.cryptoUtils.hashString(reqCnfString)];
                         case 2: return [2 /*return*/, (_a.reqCnfHash = _b.sent(),
-                            _a)];
+                                _a)];
                     }
                 });
             });
@@ -4947,9 +4946,9 @@
                         case 1:
                             kidThumbprint = _a.sent();
                             return [2 /*return*/, {
-                                kid: kidThumbprint,
-                                xms_ksl: KeyLocation.SW
-                            }];
+                                    kid: kidThumbprint,
+                                    xms_ksl: KeyLocation.SW
+                                }];
                     }
                 });
             });
@@ -5351,27 +5350,27 @@
                             uid = (idTokenObj === null || idTokenObj === void 0 ? void 0 : idTokenObj.claims.oid) || (idTokenObj === null || idTokenObj === void 0 ? void 0 : idTokenObj.claims.sub) || Constants.EMPTY_STRING;
                             tid = (idTokenObj === null || idTokenObj === void 0 ? void 0 : idTokenObj.claims.tid) || Constants.EMPTY_STRING;
                             return [2 /*return*/, {
-                                authority: authority.canonicalAuthority,
-                                uniqueId: uid,
-                                tenantId: tid,
-                                scopes: responseScopes,
-                                account: cacheRecord.account ? cacheRecord.account.getAccountInfo() : null,
-                                idToken: idTokenObj ? idTokenObj.rawToken : Constants.EMPTY_STRING,
-                                idTokenClaims: idTokenObj ? idTokenObj.claims : {},
-                                accessToken: accessToken,
-                                fromCache: fromTokenCache,
-                                expiresOn: expiresOn,
-                                correlationId: request.correlationId,
-                                requestId: requestId || Constants.EMPTY_STRING,
-                                extExpiresOn: extExpiresOn,
-                                familyId: familyId,
-                                tokenType: ((_a = cacheRecord.accessToken) === null || _a === void 0 ? void 0 : _a.tokenType) || Constants.EMPTY_STRING,
-                                state: requestState ? requestState.userRequestState : Constants.EMPTY_STRING,
-                                cloudGraphHostName: ((_b = cacheRecord.account) === null || _b === void 0 ? void 0 : _b.cloudGraphHostName) || Constants.EMPTY_STRING,
-                                msGraphHost: ((_c = cacheRecord.account) === null || _c === void 0 ? void 0 : _c.msGraphHost) || Constants.EMPTY_STRING,
-                                code: code,
-                                fromNativeBroker: false,
-                            }];
+                                    authority: authority.canonicalAuthority,
+                                    uniqueId: uid,
+                                    tenantId: tid,
+                                    scopes: responseScopes,
+                                    account: cacheRecord.account ? cacheRecord.account.getAccountInfo() : null,
+                                    idToken: idTokenObj ? idTokenObj.rawToken : Constants.EMPTY_STRING,
+                                    idTokenClaims: idTokenObj ? idTokenObj.claims : {},
+                                    accessToken: accessToken,
+                                    fromCache: fromTokenCache,
+                                    expiresOn: expiresOn,
+                                    correlationId: request.correlationId,
+                                    requestId: requestId || Constants.EMPTY_STRING,
+                                    extExpiresOn: extExpiresOn,
+                                    familyId: familyId,
+                                    tokenType: ((_a = cacheRecord.accessToken) === null || _a === void 0 ? void 0 : _a.tokenType) || Constants.EMPTY_STRING,
+                                    state: requestState ? requestState.userRequestState : Constants.EMPTY_STRING,
+                                    cloudGraphHostName: ((_b = cacheRecord.account) === null || _b === void 0 ? void 0 : _b.cloudGraphHostName) || Constants.EMPTY_STRING,
+                                    msGraphHost: ((_c = cacheRecord.account) === null || _c === void 0 ? void 0 : _c.msGraphHost) || Constants.EMPTY_STRING,
+                                    code: code,
+                                    fromNativeBroker: false,
+                                }];
                     }
                 });
             });
@@ -5452,12 +5451,12 @@
                             // Validate response. This function throws a server error if an error is returned by the server.
                             responseHandler.validateTokenResponse(response.body);
                             return [2 /*return*/, responseHandler.handleServerTokenResponse(response.body, this.authority, reqTimestamp, request, authCodePayload, undefined, undefined, undefined, requestId).then(function (result) {
-                                atsMeasurement === null || atsMeasurement === void 0 ? void 0 : atsMeasurement.endMeasurement({
-                                    success: true
-                                });
-                                return result;
-                            })
-                                .catch(function (error) {
+                                    atsMeasurement === null || atsMeasurement === void 0 ? void 0 : atsMeasurement.endMeasurement({
+                                        success: true
+                                    });
+                                    return result;
+                                })
+                                    .catch(function (error) {
                                     _this.logger.verbose("Error in fetching token in ACC", request.correlationId);
                                     atsMeasurement === null || atsMeasurement === void 0 ? void 0 : atsMeasurement.endMeasurement({
                                         errorCode: error.errorCode,
@@ -5488,10 +5487,9 @@
             if (!serverParams.code) {
                 throw ClientAuthError.createNoAuthCodeInServerResponseError();
             }
-            return __assign(__assign({}, serverParams), {
+            return __assign(__assign({}, serverParams), { 
                 // Code param is optional in ServerAuthorizationCodeResponse but required in AuthorizationCodePaylod
-                code: serverParams.code
-            });
+                code: serverParams.code });
         };
         /**
          * Used to log out the current user, and redirect the user to the postLogoutRedirectUri.
@@ -6025,12 +6023,12 @@
                             responseHandler = new ResponseHandler(this.config.authOptions.clientId, this.cacheManager, this.cryptoUtils, this.logger, this.config.serializableCache, this.config.persistencePlugin);
                             responseHandler.validateTokenResponse(response.body);
                             return [2 /*return*/, responseHandler.handleServerTokenResponse(response.body, this.authority, reqTimestamp, request, undefined, undefined, true, request.forceCache, requestId).then(function (result) {
-                                atsMeasurement === null || atsMeasurement === void 0 ? void 0 : atsMeasurement.endMeasurement({
-                                    success: true
-                                });
-                                return result;
-                            })
-                                .catch(function (error) {
+                                    atsMeasurement === null || atsMeasurement === void 0 ? void 0 : atsMeasurement.endMeasurement({
+                                        success: true
+                                    });
+                                    return result;
+                                })
+                                    .catch(function (error) {
                                     _this.logger.verbose("Error in fetching refresh token", request.correlationId);
                                     atsMeasurement === null || atsMeasurement === void 0 ? void 0 : atsMeasurement.endMeasurement({
                                         errorCode: error.errorCode,
@@ -6103,12 +6101,10 @@
                     atsMeasurement === null || atsMeasurement === void 0 ? void 0 : atsMeasurement.endMeasurement({
                         success: true
                     });
-                    refreshTokenRequest = __assign(__assign({}, request), {
-                        refreshToken: refreshToken.secret, authenticationScheme: request.authenticationScheme || exports.AuthenticationScheme.BEARER, ccsCredential: {
+                    refreshTokenRequest = __assign(__assign({}, request), { refreshToken: refreshToken.secret, authenticationScheme: request.authenticationScheme || exports.AuthenticationScheme.BEARER, ccsCredential: {
                             credential: request.account.homeAccountId,
                             type: CcsCredentialType.HOME_ACCOUNT_ID
-                        }
-                    });
+                        } });
                     return [2 /*return*/, this.acquireToken(refreshTokenRequest)];
                 });
             });
@@ -6144,13 +6140,13 @@
                             };
                             endpoint = UrlString.appendQueryString(authority.tokenEndpoint, queryParameters);
                             return [2 /*return*/, this.executePostToTokenEndpoint(endpoint, requestBody, headers, thumbprint)
-                                .then(function (result) {
+                                    .then(function (result) {
                                     acquireTokenMeasurement === null || acquireTokenMeasurement === void 0 ? void 0 : acquireTokenMeasurement.endMeasurement({
                                         success: true
                                     });
                                     return result;
                                 })
-                                .catch(function (error) {
+                                    .catch(function (error) {
                                     acquireTokenMeasurement === null || acquireTokenMeasurement === void 0 ? void 0 : acquireTokenMeasurement.endMeasurement({
                                         success: false
                                     });
@@ -7014,7 +7010,7 @@
                         case 1:
                             _a.trys.push([1, 3, , 4]);
                             return [4 /*yield*/, this.networkInterface.
-                                sendGetRequestAsync(this.defaultOpenIdConfigurationEndpoint, options)];
+                                    sendGetRequestAsync(this.defaultOpenIdConfigurationEndpoint, options)];
                         case 2:
                             response = _a.sent();
                             return [2 /*return*/, isOpenIdConfigResponse(response.body) ? response.body : null];
@@ -7441,8 +7437,8 @@
             if (entity) {
                 validateEntity =
                     entity.hasOwnProperty("failedRequests") &&
-                    entity.hasOwnProperty("errors") &&
-                    entity.hasOwnProperty("cacheHits");
+                        entity.hasOwnProperty("errors") &&
+                        entity.hasOwnProperty("cacheHits");
             }
             return validateKey && validateEntity;
         };
@@ -7907,10 +7903,9 @@
                 // null indicates no measurement was taken (e.g. needed performance APIs not present)
                 if (durationMs !== null) {
                     this.logger.trace("PerformanceClient: Performance measurement ended for " + event.name + ": " + durationMs + " ms", event.correlationId);
-                    var completedEvent = __assign(__assign({
+                    var completedEvent = __assign(__assign({ 
                         // Allow duration to be overwritten when event ends (e.g. testing), but not status
-                        durationMs: Math.round(durationMs)
-                    }, event), { status: PerformanceEventStatus.Completed });
+                        durationMs: Math.round(durationMs) }, event), { status: PerformanceEventStatus.Completed });
                     return completedEvent;
                 }
                 else {
@@ -9574,9 +9569,9 @@
                 var _this = this;
                 return __generator$1(this, function (_a) {
                     switch (_a.label) {
-                        case 0:
-                            // Removes all accounts and their credentials
-                            return [4 /*yield*/, this.removeAllAccounts()];
+                        case 0: 
+                        // Removes all accounts and their credentials
+                        return [4 /*yield*/, this.removeAllAccounts()];
                         case 1:
                             // Removes all accounts and their credentials
                             _a.sent();
@@ -10012,9 +10007,9 @@
                         case 0:
                             _b.trys.push([0, 2, , 3]);
                             return [4 /*yield*/, fetch(url, {
-                                method: HTTP_REQUEST_TYPE.GET,
-                                headers: this.getFetchHeaders(options)
-                            })];
+                                    method: HTTP_REQUEST_TYPE.GET,
+                                    headers: this.getFetchHeaders(options)
+                                })];
                         case 1:
                             response = _b.sent();
                             return [3 /*break*/, 3];
@@ -10033,8 +10028,8 @@
                             };
                             return [4 /*yield*/, response.json()];
                         case 4: return [2 /*return*/, (_a.body = (_b.sent()),
-                            _a.status = response.status,
-                            _a)];
+                                _a.status = response.status,
+                                _a)];
                         case 5:
                             _b.sent();
                             throw BrowserAuthError.createFailedToParseNetworkResponseError(url);
@@ -10060,10 +10055,10 @@
                         case 1:
                             _b.trys.push([1, 3, , 4]);
                             return [4 /*yield*/, fetch(url, {
-                                method: HTTP_REQUEST_TYPE.POST,
-                                headers: this.getFetchHeaders(options),
-                                body: reqBody
-                            })];
+                                    method: HTTP_REQUEST_TYPE.POST,
+                                    headers: this.getFetchHeaders(options),
+                                    body: reqBody
+                                })];
                         case 2:
                             response = _b.sent();
                             return [3 /*break*/, 4];
@@ -10082,8 +10077,8 @@
                             };
                             return [4 /*yield*/, response.json()];
                         case 5: return [2 /*return*/, (_a.body = (_b.sent()),
-                            _a.status = response.status,
-                            _a)];
+                                _a.status = response.status,
+                                _a)];
                         case 6:
                             _b.sent();
                             throw BrowserAuthError.createFailedToParseNetworkResponseError(url);
@@ -10460,10 +10455,8 @@
                             this.logger.verbose("Initializing BaseAuthRequest");
                             authority = request.authority || this.config.auth.authority;
                             scopes = __spread(((request && request.scopes) || []));
-                            validatedRequest = __assign$1(__assign$1({}, request), {
-                                correlationId: this.correlationId, authority: authority,
-                                scopes: scopes
-                            });
+                            validatedRequest = __assign$1(__assign$1({}, request), { correlationId: this.correlationId, authority: authority,
+                                scopes: scopes });
                             // Set authenticationScheme to BEARER if not explicitly set in the request
                             if (!validatedRequest.authenticationScheme) {
                                 validatedRequest.authenticationScheme = exports.AuthenticationScheme.BEARER;
@@ -10702,33 +10695,33 @@
                             discoveredAuthority = _a.sent();
                             logger = this.config.system.loggerOptions;
                             return [2 /*return*/, {
-                                authOptions: {
-                                    clientId: this.config.auth.clientId,
-                                    authority: discoveredAuthority,
-                                    clientCapabilities: this.config.auth.clientCapabilities
-                                },
-                                systemOptions: {
-                                    tokenRenewalOffsetSeconds: this.config.system.tokenRenewalOffsetSeconds,
-                                    preventCorsPreflight: true
-                                },
-                                loggerOptions: {
-                                    loggerCallback: logger.loggerCallback,
-                                    piiLoggingEnabled: logger.piiLoggingEnabled,
-                                    logLevel: logger.logLevel,
-                                    correlationId: this.correlationId
-                                },
-                                cryptoInterface: this.browserCrypto,
-                                networkInterface: this.networkClient,
-                                storageInterface: this.browserStorage,
-                                serverTelemetryManager: serverTelemetryManager,
-                                libraryInfo: {
-                                    sku: BrowserConstants.MSAL_SKU,
-                                    version: version,
-                                    cpu: Constants.EMPTY_STRING,
-                                    os: Constants.EMPTY_STRING
-                                },
-                                telemetry: this.config.telemetry
-                            }];
+                                    authOptions: {
+                                        clientId: this.config.auth.clientId,
+                                        authority: discoveredAuthority,
+                                        clientCapabilities: this.config.auth.clientCapabilities
+                                    },
+                                    systemOptions: {
+                                        tokenRenewalOffsetSeconds: this.config.system.tokenRenewalOffsetSeconds,
+                                        preventCorsPreflight: true
+                                    },
+                                    loggerOptions: {
+                                        loggerCallback: logger.loggerCallback,
+                                        piiLoggingEnabled: logger.piiLoggingEnabled,
+                                        logLevel: logger.logLevel,
+                                        correlationId: this.correlationId
+                                    },
+                                    cryptoInterface: this.browserCrypto,
+                                    networkInterface: this.networkClient,
+                                    storageInterface: this.browserStorage,
+                                    serverTelemetryManager: serverTelemetryManager,
+                                    libraryInfo: {
+                                        sku: BrowserConstants.MSAL_SKU,
+                                        version: version,
+                                        cpu: Constants.EMPTY_STRING,
+                                        os: Constants.EMPTY_STRING
+                                    },
+                                    telemetry: this.config.telemetry
+                                }];
                     }
                 });
             });
@@ -10777,13 +10770,13 @@
                             builtAuthority = Authority.generateAuthority(userAuthority, requestAzureCloudOptions || this.config.auth.azureCloudOptions);
                             this.logger.verbose("Creating discovered authority with configured authority", this.correlationId);
                             return [4 /*yield*/, AuthorityFactory.createDiscoveredInstance(builtAuthority, this.config.system.networkClient, this.browserStorage, authorityOptions, this.logger)
-                                .then(function (result) {
+                                    .then(function (result) {
                                     getAuthorityMeasurement.endMeasurement({
                                         success: true,
                                     });
                                     return result;
                                 })
-                                .catch(function (error) {
+                                    .catch(function (error) {
                                     getAuthorityMeasurement.endMeasurement({
                                         errorCode: error.errorCode,
                                         subErrorCode: error.subError,
@@ -11390,7 +11383,7 @@
                             response = _a.sent();
                             validatedResponse = this.validateNativeResponse(response);
                             return [2 /*return*/, this.handleNativeResponse(validatedResponse, nativeRequest, reqTimestamp)
-                                .then(function (result) {
+                                    .then(function (result) {
                                     nativeATMeasurement.endMeasurement({
                                         success: true,
                                         isNativeBroker: true,
@@ -11398,7 +11391,7 @@
                                     });
                                     return result;
                                 })
-                                .catch(function (error) {
+                                    .catch(function (error) {
                                     nativeATMeasurement.endMeasurement({
                                         success: false,
                                         errorCode: error.errorCode,
@@ -11775,9 +11768,8 @@
                                         throw BrowserAuthError.createNativePromptParameterNotSupportedError();
                                 }
                             };
-                            validatedRequest = __assign$1(__assign$1({}, remainingProperties), {
-                                accountId: this.accountId, clientId: this.config.auth.clientId, authority: canonicalAuthority.urlString, scope: scopeSet.printScopes(), redirectUri: this.getRedirectUri(request.redirectUri), prompt: getPrompt(), correlationId: this.correlationId, tokenType: request.authenticationScheme, windowTitleSubstring: document.title, extraParameters: __assign$1(__assign$1(__assign$1({}, request.extraQueryParameters), request.tokenQueryParameters), { telemetry: NativeConstants.MATS_TELEMETRY }), extendedExpiryToken: false // Make this configurable?
-                            });
+                            validatedRequest = __assign$1(__assign$1({}, remainingProperties), { accountId: this.accountId, clientId: this.config.auth.clientId, authority: canonicalAuthority.urlString, scope: scopeSet.printScopes(), redirectUri: this.getRedirectUri(request.redirectUri), prompt: getPrompt(), correlationId: this.correlationId, tokenType: request.authenticationScheme, windowTitleSubstring: document.title, extraParameters: __assign$1(__assign$1(__assign$1({}, request.extraQueryParameters), request.tokenQueryParameters), { telemetry: NativeConstants.MATS_TELEMETRY }), extendedExpiryToken: false // Make this configurable?
+                             });
                             if (!(request.authenticationScheme === exports.AuthenticationScheme.POP)) return [3 /*break*/, 2];
                             shrParameters = {
                                 resourceRequestUri: request.resourceRequestUri,
@@ -11836,8 +11828,8 @@
                     this.logger.tracePii("NativeMessageHandler - Sending request to browser extension: " + JSON.stringify(req));
                     this.messageChannel.port1.postMessage(req);
                     return [2 /*return*/, new Promise(function (resolve, reject) {
-                        _this.resolvers.set(req.responseId, { resolve: resolve, reject: reject });
-                    })];
+                            _this.resolvers.set(req.responseId, { resolve: resolve, reject: reject });
+                        })];
                 });
             });
         };
@@ -11897,19 +11889,19 @@
                     };
                     window.postMessage(req, window.origin, [this.messageChannel.port2]);
                     return [2 /*return*/, new Promise(function (resolve, reject) {
-                        _this.handshakeResolvers.set(req.responseId, { resolve: resolve, reject: reject });
-                        _this.timeoutId = window.setTimeout(function () {
-                            /*
-                             * Throw an error if neither HandshakeResponse nor original Handshake request are received in a reasonable timeframe.
-                             * This typically suggests an event handler stopped propagation of the Handshake request but did not respond to it on the MessageChannel port
-                             */
-                            window.removeEventListener("message", _this.windowListener, false);
-                            _this.messageChannel.port1.close();
-                            _this.messageChannel.port2.close();
-                            reject(BrowserAuthError.createNativeHandshakeTimeoutError());
-                            _this.handshakeResolvers.delete(req.responseId);
-                        }, _this.handshakeTimeoutMs); // Use a reasonable timeout in milliseconds here
-                    })];
+                            _this.handshakeResolvers.set(req.responseId, { resolve: resolve, reject: reject });
+                            _this.timeoutId = window.setTimeout(function () {
+                                /*
+                                 * Throw an error if neither HandshakeResponse nor original Handshake request are received in a reasonable timeframe.
+                                 * This typically suggests an event handler stopped propagation of the Handshake request but did not respond to it on the MessageChannel port
+                                 */
+                                window.removeEventListener("message", _this.windowListener, false);
+                                _this.messageChannel.port1.close();
+                                _this.messageChannel.port2.close();
+                                reject(BrowserAuthError.createNativeHandshakeTimeoutError());
+                                _this.handshakeResolvers.delete(req.responseId);
+                            }, _this.handshakeTimeoutMs); // Use a reasonable timeout in milliseconds here
+                        })];
                 });
             });
         };
@@ -12104,14 +12096,14 @@
                             // Clear temporary cache if the back button is clicked during the redirect flow.
                             window.addEventListener("pageshow", handleBackButton);
                             return [4 /*yield*/, interactionHandler.initiateAuthRequest(navigateUrl, {
-                                navigationClient: this.navigationClient,
-                                redirectTimeout: this.config.system.redirectNavigationTimeout,
-                                redirectStartPage: redirectStartPage,
-                                onRedirectNavigate: request.onRedirectNavigate
-                            })];
-                        case 6:
-                            // Show the UI once the url has been created. Response will come back in the hash, which will be handled in the handleRedirectCallback function.
-                            return [2 /*return*/, _a.sent()];
+                                    navigationClient: this.navigationClient,
+                                    redirectTimeout: this.config.system.redirectNavigationTimeout,
+                                    redirectStartPage: redirectStartPage,
+                                    onRedirectNavigate: request.onRedirectNavigate
+                                })];
+                        case 6: 
+                        // Show the UI once the url has been created. Response will come back in the hash, which will be handled in the handleRedirectCallback function.
+                        return [2 /*return*/, _a.sent()];
                         case 7:
                             e_1 = _a.sent();
                             if (e_1 instanceof AuthError) {
@@ -12272,11 +12264,10 @@
                                 }
                                 nativeInteractionClient = new NativeInteractionClient(this.config, this.browserStorage, this.browserCrypto, this.logger, this.eventHandler, this.navigationClient, exports.ApiId.acquireTokenPopup, this.performanceClient, this.nativeMessageHandler, serverParams.accountId, this.browserStorage, cachedRequest.correlationId);
                                 userRequestState = ProtocolUtils.parseRequestState(this.browserCrypto, state).userRequestState;
-                                return [2 /*return*/, nativeInteractionClient.acquireToken(__assign$1(__assign$1({}, cachedRequest), {
-                                    state: userRequestState, prompt: undefined // Server should handle the prompt, ideally native broker can do this part silently
-                                })).finally(function () {
-                                    _this.browserStorage.cleanRequestByState(state);
-                                })];
+                                return [2 /*return*/, nativeInteractionClient.acquireToken(__assign$1(__assign$1({}, cachedRequest), { state: userRequestState, prompt: undefined // Server should handle the prompt, ideally native broker can do this part silently
+                                     })).finally(function () {
+                                        _this.browserStorage.cleanRequestByState(state);
+                                    })];
                             }
                             currentAuthority = this.browserStorage.getCachedAuthority(state);
                             if (!currentAuthority) {
@@ -12520,11 +12511,10 @@
                                 }
                                 nativeInteractionClient = new NativeInteractionClient(this.config, this.browserStorage, this.browserCrypto, this.logger, this.eventHandler, this.navigationClient, exports.ApiId.acquireTokenPopup, this.performanceClient, this.nativeMessageHandler, serverParams.accountId, this.nativeStorage, validRequest.correlationId);
                                 userRequestState = ProtocolUtils.parseRequestState(this.browserCrypto, state_1).userRequestState;
-                                return [2 /*return*/, nativeInteractionClient.acquireToken(__assign$1(__assign$1({}, validRequest), {
-                                    state: userRequestState, prompt: undefined // Server should handle the prompt, ideally native broker can do this part silently
-                                })).finally(function () {
-                                    _this.browserStorage.cleanRequestByState(state_1);
-                                })];
+                                return [2 /*return*/, nativeInteractionClient.acquireToken(__assign$1(__assign$1({}, validRequest), { state: userRequestState, prompt: undefined // Server should handle the prompt, ideally native broker can do this part silently
+                                     })).finally(function () {
+                                        _this.browserStorage.cleanRequestByState(state_1);
+                                    })];
                             }
                             return [4 /*yield*/, interactionHandler.handleCodeResponseFromHash(hash, state_1, authClient.authority, this.networkClient)];
                         case 7:
@@ -12973,14 +12963,12 @@
             piiLoggingEnabled: false
         };
         // Default system options for browser
-        var DEFAULT_BROWSER_SYSTEM_OPTIONS = __assign$1(__assign$1({}, DEFAULT_SYSTEM_OPTIONS), {
-            loggerOptions: DEFAULT_LOGGER_OPTIONS, networkClient: isBrowserEnvironment ? BrowserUtils.getBrowserNetworkClient() : StubbedNetworkModule, navigationClient: new NavigationClient(), loadFrameTimeout: 0,
+        var DEFAULT_BROWSER_SYSTEM_OPTIONS = __assign$1(__assign$1({}, DEFAULT_SYSTEM_OPTIONS), { loggerOptions: DEFAULT_LOGGER_OPTIONS, networkClient: isBrowserEnvironment ? BrowserUtils.getBrowserNetworkClient() : StubbedNetworkModule, navigationClient: new NavigationClient(), loadFrameTimeout: 0, 
             // If loadFrameTimeout is provided, use that as default.
             windowHashTimeout: (userInputSystem === null || userInputSystem === void 0 ? void 0 : userInputSystem.loadFrameTimeout) || DEFAULT_POPUP_TIMEOUT_MS, iframeHashTimeout: (userInputSystem === null || userInputSystem === void 0 ? void 0 : userInputSystem.loadFrameTimeout) || DEFAULT_IFRAME_TIMEOUT_MS, navigateFrameWait: isBrowserEnvironment && BrowserUtils.detectIEOrEdge() ? 500 : 0, redirectNavigationTimeout: DEFAULT_REDIRECT_TIMEOUT_MS, asyncPopups: false, allowRedirectInIframe: false, allowNativeBroker: false, nativeBrokerHandshakeTimeout: (userInputSystem === null || userInputSystem === void 0 ? void 0 : userInputSystem.nativeBrokerHandshakeTimeout) || DEFAULT_NATIVE_BROKER_HANDSHAKE_TIMEOUT_MS, pollIntervalMilliseconds: BrowserConstants.DEFAULT_POLL_INTERVAL_MS, cryptoOptions: {
                 useMsrCrypto: false,
                 entropy: undefined
-            }
-        });
+            } });
         var providedSystemOptions = __assign$1(__assign$1({}, userInputSystem), { loggerOptions: (userInputSystem === null || userInputSystem === void 0 ? void 0 : userInputSystem.loggerOptions) || DEFAULT_LOGGER_OPTIONS });
         var DEFAULT_TELEMETRY_OPTIONS = {
             application: {
@@ -13198,13 +13186,13 @@
                             authClient = _a.sent();
                             this.logger.verbose("Auth code client created");
                             return [4 /*yield*/, this.silentTokenHelper(authClient, silentRequest).then(function (result) {
-                                acquireTokenMeasurement.endMeasurement({
-                                    success: true,
-                                    fromCache: false,
-                                    requestId: result.requestId
-                                });
-                                return result;
-                            })];
+                                    acquireTokenMeasurement.endMeasurement({
+                                        success: true,
+                                        fromCache: false,
+                                        requestId: result.requestId
+                                    });
+                                    return result;
+                                })];
                         case 4: return [2 /*return*/, _a.sent()];
                         case 5:
                             e_1 = _a.sent();
@@ -13266,8 +13254,8 @@
                                 nativeInteractionClient = new NativeInteractionClient(this.config, this.browserStorage, this.browserCrypto, this.logger, this.eventHandler, this.navigationClient, this.apiId, this.performanceClient, this.nativeMessageHandler, serverParams.accountId, this.browserStorage, this.correlationId);
                                 userRequestState = ProtocolUtils.parseRequestState(this.browserCrypto, state).userRequestState;
                                 return [2 /*return*/, nativeInteractionClient.acquireToken(__assign$1(__assign$1({}, silentRequest), { state: userRequestState, prompt: silentRequest.prompt || PromptValue.NONE })).finally(function () {
-                                    _this.browserStorage.cleanRequestByState(state);
-                                })];
+                                        _this.browserStorage.cleanRequestByState(state);
+                                    })];
                             }
                             // Handle response from hash string
                             return [2 /*return*/, silentHandler.handleCodeResponseFromHash(hash, state, authClient.authority, this.networkClient)];
@@ -13310,7 +13298,7 @@
                             this.logger.verbose("Refresh token client created");
                             // Send request to renew token. Auth module will throw errors if token cannot be renewed.
                             return [2 /*return*/, refreshTokenClient.acquireTokenByRefreshToken(silentRequest)
-                                .then(function (result) {
+                                    .then(function (result) {
                                     acquireTokenMeasurement.endMeasurement({
                                         success: true,
                                         fromCache: result.fromCache,
@@ -13318,7 +13306,7 @@
                                     });
                                     return result;
                                 })
-                                .catch(function (e) {
+                                    .catch(function (e) {
                                     if (e instanceof AuthError) {
                                         e.setCorrelationId(_this.correlationId);
                                     }
@@ -13695,7 +13683,7 @@
                                 : nPart > 191 && nPart < 224 && nIdx + 1 < nLen ? /* two bytes */
                                     (nPart - 192 << 6) + aBytes[++nIdx] - 128
                                     : /* nPart < 127 ? */ /* one byte */
-                                    nPart);
+                                        nPart);
             }
             return sView;
         };
@@ -13785,7 +13773,7 @@
                             : nUint6 === 63 ?
                                 47
                                 :
-                                65;
+                                    65;
         };
         return Base64Encode;
     }());
@@ -13860,7 +13848,7 @@
                             : charNum === 47 ?
                                 63
                                 :
-                                0;
+                                    0;
         };
         return Base64Decode;
     }());
@@ -13893,9 +13881,9 @@
                         case 1:
                             codeChallenge = _a.sent();
                             return [2 /*return*/, {
-                                verifier: codeVerifier,
-                                challenge: codeChallenge
-                            }];
+                                    verifier: codeVerifier,
+                                    challenge: codeChallenge
+                                }];
                     }
                 });
             });
@@ -14058,14 +14046,14 @@
             return __awaiter$1(this, void 0, void 0, function () {
                 return __generator$1(this, function (_a) {
                     return [2 /*return*/, new Promise(function (resolve, reject) {
-                        var msGenerateKey = window["msCrypto"].subtle.generateKey(algorithm, extractable, keyUsages);
-                        msGenerateKey.addEventListener("complete", function (e) {
-                            resolve(e.target.result);
-                        });
-                        msGenerateKey.addEventListener("error", function (error) {
-                            reject(error);
-                        });
-                    })];
+                            var msGenerateKey = window["msCrypto"].subtle.generateKey(algorithm, extractable, keyUsages);
+                            msGenerateKey.addEventListener("complete", function (e) {
+                                resolve(e.target.result);
+                            });
+                            msGenerateKey.addEventListener("error", function (error) {
+                                reject(error);
+                            });
+                        })];
                 });
             });
         };
@@ -14073,26 +14061,26 @@
             return __awaiter$1(this, void 0, void 0, function () {
                 return __generator$1(this, function (_a) {
                     return [2 /*return*/, new Promise(function (resolve, reject) {
-                        var msExportKey = window["msCrypto"].subtle.exportKey(KEY_FORMAT_JWK, key);
-                        msExportKey.addEventListener("complete", function (e) {
-                            var resultBuffer = e.target.result;
-                            var resultString = BrowserStringUtils.utf8ArrToString(new Uint8Array(resultBuffer))
-                                .replace(/\r/g, Constants.EMPTY_STRING)
-                                .replace(/\n/g, Constants.EMPTY_STRING)
-                                .replace(/\t/g, Constants.EMPTY_STRING)
-                                .split(" ").join(Constants.EMPTY_STRING)
-                                .replace("\u0000", Constants.EMPTY_STRING);
-                            try {
-                                resolve(JSON.parse(resultString));
-                            }
-                            catch (e) {
-                                reject(e);
-                            }
-                        });
-                        msExportKey.addEventListener("error", function (error) {
-                            reject(error);
-                        });
-                    })];
+                            var msExportKey = window["msCrypto"].subtle.exportKey(KEY_FORMAT_JWK, key);
+                            msExportKey.addEventListener("complete", function (e) {
+                                var resultBuffer = e.target.result;
+                                var resultString = BrowserStringUtils.utf8ArrToString(new Uint8Array(resultBuffer))
+                                    .replace(/\r/g, Constants.EMPTY_STRING)
+                                    .replace(/\n/g, Constants.EMPTY_STRING)
+                                    .replace(/\t/g, Constants.EMPTY_STRING)
+                                    .split(" ").join(Constants.EMPTY_STRING)
+                                    .replace("\u0000", Constants.EMPTY_STRING);
+                                try {
+                                    resolve(JSON.parse(resultString));
+                                }
+                                catch (e) {
+                                    reject(e);
+                                }
+                            });
+                            msExportKey.addEventListener("error", function (error) {
+                                reject(error);
+                            });
+                        })];
                 });
             });
         };
@@ -14103,14 +14091,14 @@
                     keyString = BrowserStringUtils.getSortedObjectString(keyData);
                     keyBuffer = BrowserStringUtils.stringToArrayBuffer(keyString);
                     return [2 /*return*/, new Promise(function (resolve, reject) {
-                        var msImportKey = window["msCrypto"].subtle.importKey(KEY_FORMAT_JWK, keyBuffer, algorithm, extractable, keyUsages);
-                        msImportKey.addEventListener("complete", function (e) {
-                            resolve(e.target.result);
-                        });
-                        msImportKey.addEventListener("error", function (error) {
-                            reject(error);
-                        });
-                    })];
+                            var msImportKey = window["msCrypto"].subtle.importKey(KEY_FORMAT_JWK, keyBuffer, algorithm, extractable, keyUsages);
+                            msImportKey.addEventListener("complete", function (e) {
+                                resolve(e.target.result);
+                            });
+                            msImportKey.addEventListener("error", function (error) {
+                                reject(error);
+                            });
+                        })];
                 });
             });
         };
@@ -14118,14 +14106,14 @@
             return __awaiter$1(this, void 0, void 0, function () {
                 return __generator$1(this, function (_a) {
                     return [2 /*return*/, new Promise(function (resolve, reject) {
-                        var msSign = window["msCrypto"].subtle.sign(algorithm, key, data);
-                        msSign.addEventListener("complete", function (e) {
-                            resolve(e.target.result);
-                        });
-                        msSign.addEventListener("error", function (error) {
-                            reject(error);
-                        });
-                    })];
+                            var msSign = window["msCrypto"].subtle.sign(algorithm, key, data);
+                            msSign.addEventListener("complete", function (e) {
+                                resolve(e.target.result);
+                            });
+                            msSign.addEventListener("error", function (error) {
+                                reject(error);
+                            });
+                        })];
                 });
             });
         };
@@ -14133,14 +14121,14 @@
             return __awaiter$1(this, void 0, void 0, function () {
                 return __generator$1(this, function (_a) {
                     return [2 /*return*/, new Promise(function (resolve, reject) {
-                        var digestOperation = window["msCrypto"].subtle.digest(algorithm, data.buffer);
-                        digestOperation.addEventListener("complete", function (e) {
-                            resolve(e.target.result);
-                        });
-                        digestOperation.addEventListener("error", function (error) {
-                            reject(error);
-                        });
-                    })];
+                            var digestOperation = window["msCrypto"].subtle.digest(algorithm, data.buffer);
+                            digestOperation.addEventListener("complete", function (e) {
+                                resolve(e.target.result);
+                            });
+                            digestOperation.addEventListener("error", function (error) {
+                                reject(error);
+                            });
+                        })];
                 });
             });
         };
@@ -14324,19 +14312,19 @@
                 var _this = this;
                 return __generator$1(this, function (_a) {
                     return [2 /*return*/, new Promise(function (resolve, reject) {
-                        var openDB = window.indexedDB.open(_this.dbName, _this.version);
-                        openDB.addEventListener("upgradeneeded", function (e) {
-                            var event = e;
-                            event.target.result.createObjectStore(_this.tableName);
-                        });
-                        openDB.addEventListener("success", function (e) {
-                            var event = e;
-                            _this.db = event.target.result;
-                            _this.dbOpen = true;
-                            resolve();
-                        });
-                        openDB.addEventListener("error", function () { return reject(BrowserAuthError.createDatabaseUnavailableError()); });
-                    })];
+                            var openDB = window.indexedDB.open(_this.dbName, _this.version);
+                            openDB.addEventListener("upgradeneeded", function (e) {
+                                var event = e;
+                                event.target.result.createObjectStore(_this.tableName);
+                            });
+                            openDB.addEventListener("success", function (e) {
+                                var event = e;
+                                _this.db = event.target.result;
+                                _this.dbOpen = true;
+                                resolve();
+                            });
+                            openDB.addEventListener("error", function () { return reject(BrowserAuthError.createDatabaseUnavailableError()); });
+                        })];
                 });
             });
         };
@@ -14380,23 +14368,23 @@
                         case 1:
                             _a.sent();
                             return [2 /*return*/, new Promise(function (resolve, reject) {
-                                // TODO: Add timeouts?
-                                if (!_this.db) {
-                                    return reject(BrowserAuthError.createDatabaseNotOpenError());
-                                }
-                                var transaction = _this.db.transaction([_this.tableName], "readonly");
-                                var objectStore = transaction.objectStore(_this.tableName);
-                                var dbGet = objectStore.get(key);
-                                dbGet.addEventListener("success", function (e) {
-                                    var event = e;
-                                    _this.closeConnection();
-                                    resolve(event.target.result);
-                                });
-                                dbGet.addEventListener("error", function (e) {
-                                    _this.closeConnection();
-                                    reject(e);
-                                });
-                            })];
+                                    // TODO: Add timeouts?
+                                    if (!_this.db) {
+                                        return reject(BrowserAuthError.createDatabaseNotOpenError());
+                                    }
+                                    var transaction = _this.db.transaction([_this.tableName], "readonly");
+                                    var objectStore = transaction.objectStore(_this.tableName);
+                                    var dbGet = objectStore.get(key);
+                                    dbGet.addEventListener("success", function (e) {
+                                        var event = e;
+                                        _this.closeConnection();
+                                        resolve(event.target.result);
+                                    });
+                                    dbGet.addEventListener("error", function (e) {
+                                        _this.closeConnection();
+                                        reject(e);
+                                    });
+                                })];
                     }
                 });
             });
@@ -14415,22 +14403,22 @@
                         case 1:
                             _a.sent();
                             return [2 /*return*/, new Promise(function (resolve, reject) {
-                                // TODO: Add timeouts?
-                                if (!_this.db) {
-                                    return reject(BrowserAuthError.createDatabaseNotOpenError());
-                                }
-                                var transaction = _this.db.transaction([_this.tableName], "readwrite");
-                                var objectStore = transaction.objectStore(_this.tableName);
-                                var dbPut = objectStore.put(payload, key);
-                                dbPut.addEventListener("success", function () {
-                                    _this.closeConnection();
-                                    resolve();
-                                });
-                                dbPut.addEventListener("error", function (e) {
-                                    _this.closeConnection();
-                                    reject(e);
-                                });
-                            })];
+                                    // TODO: Add timeouts?
+                                    if (!_this.db) {
+                                        return reject(BrowserAuthError.createDatabaseNotOpenError());
+                                    }
+                                    var transaction = _this.db.transaction([_this.tableName], "readwrite");
+                                    var objectStore = transaction.objectStore(_this.tableName);
+                                    var dbPut = objectStore.put(payload, key);
+                                    dbPut.addEventListener("success", function () {
+                                        _this.closeConnection();
+                                        resolve();
+                                    });
+                                    dbPut.addEventListener("error", function (e) {
+                                        _this.closeConnection();
+                                        reject(e);
+                                    });
+                                })];
                     }
                 });
             });
@@ -14448,21 +14436,21 @@
                         case 1:
                             _a.sent();
                             return [2 /*return*/, new Promise(function (resolve, reject) {
-                                if (!_this.db) {
-                                    return reject(BrowserAuthError.createDatabaseNotOpenError());
-                                }
-                                var transaction = _this.db.transaction([_this.tableName], "readwrite");
-                                var objectStore = transaction.objectStore(_this.tableName);
-                                var dbDelete = objectStore.delete(key);
-                                dbDelete.addEventListener("success", function () {
-                                    _this.closeConnection();
-                                    resolve();
-                                });
-                                dbDelete.addEventListener("error", function (e) {
-                                    _this.closeConnection();
-                                    reject(e);
-                                });
-                            })];
+                                    if (!_this.db) {
+                                        return reject(BrowserAuthError.createDatabaseNotOpenError());
+                                    }
+                                    var transaction = _this.db.transaction([_this.tableName], "readwrite");
+                                    var objectStore = transaction.objectStore(_this.tableName);
+                                    var dbDelete = objectStore.delete(key);
+                                    dbDelete.addEventListener("success", function () {
+                                        _this.closeConnection();
+                                        resolve();
+                                    });
+                                    dbDelete.addEventListener("error", function (e) {
+                                        _this.closeConnection();
+                                        reject(e);
+                                    });
+                                })];
                     }
                 });
             });
@@ -14479,22 +14467,22 @@
                         case 1:
                             _a.sent();
                             return [2 /*return*/, new Promise(function (resolve, reject) {
-                                if (!_this.db) {
-                                    return reject(BrowserAuthError.createDatabaseNotOpenError());
-                                }
-                                var transaction = _this.db.transaction([_this.tableName], "readonly");
-                                var objectStore = transaction.objectStore(_this.tableName);
-                                var dbGetKeys = objectStore.getAllKeys();
-                                dbGetKeys.addEventListener("success", function (e) {
-                                    var event = e;
-                                    _this.closeConnection();
-                                    resolve(event.target.result);
-                                });
-                                dbGetKeys.addEventListener("error", function (e) {
-                                    _this.closeConnection();
-                                    reject(e);
-                                });
-                            })];
+                                    if (!_this.db) {
+                                        return reject(BrowserAuthError.createDatabaseNotOpenError());
+                                    }
+                                    var transaction = _this.db.transaction([_this.tableName], "readonly");
+                                    var objectStore = transaction.objectStore(_this.tableName);
+                                    var dbGetKeys = objectStore.getAllKeys();
+                                    dbGetKeys.addEventListener("success", function (e) {
+                                        var event = e;
+                                        _this.closeConnection();
+                                        resolve(event.target.result);
+                                    });
+                                    dbGetKeys.addEventListener("error", function (e) {
+                                        _this.closeConnection();
+                                        reject(e);
+                                    });
+                                })];
                     }
                 });
             });
@@ -14512,22 +14500,22 @@
                         case 1:
                             _a.sent();
                             return [2 /*return*/, new Promise(function (resolve, reject) {
-                                if (!_this.db) {
-                                    return reject(BrowserAuthError.createDatabaseNotOpenError());
-                                }
-                                var transaction = _this.db.transaction([_this.tableName], "readonly");
-                                var objectStore = transaction.objectStore(_this.tableName);
-                                var dbContainsKey = objectStore.count(key);
-                                dbContainsKey.addEventListener("success", function (e) {
-                                    var event = e;
-                                    _this.closeConnection();
-                                    resolve(event.target.result === 1);
-                                });
-                                dbContainsKey.addEventListener("error", function (e) {
-                                    _this.closeConnection();
-                                    reject(e);
-                                });
-                            })];
+                                    if (!_this.db) {
+                                        return reject(BrowserAuthError.createDatabaseNotOpenError());
+                                    }
+                                    var transaction = _this.db.transaction([_this.tableName], "readonly");
+                                    var objectStore = transaction.objectStore(_this.tableName);
+                                    var dbContainsKey = objectStore.count(key);
+                                    dbContainsKey.addEventListener("success", function (e) {
+                                        var event = e;
+                                        _this.closeConnection();
+                                        resolve(event.target.result === 1);
+                                    });
+                                    dbContainsKey.addEventListener("error", function (e) {
+                                        _this.closeConnection();
+                                        reject(e);
+                                    });
+                                })];
                     }
                 });
             });
@@ -14545,11 +14533,11 @@
                         this.closeConnection();
                     }
                     return [2 /*return*/, new Promise(function (resolve, reject) {
-                        var deleteDbRequest = window.indexedDB.deleteDatabase(DB_NAME);
-                        deleteDbRequest.addEventListener("success", function () { return resolve(true); });
-                        deleteDbRequest.addEventListener("blocked", function () { return resolve(true); });
-                        deleteDbRequest.addEventListener("error", function () { return reject(false); });
-                    })];
+                            var deleteDbRequest = window.indexedDB.deleteDatabase(DB_NAME);
+                            deleteDbRequest.addEventListener("success", function () { return resolve(true); });
+                            deleteDbRequest.addEventListener("blocked", function () { return resolve(true); });
+                            deleteDbRequest.addEventListener("error", function () { return reject(false); });
+                        })];
                 });
             });
         };
@@ -14894,11 +14882,11 @@
                             unextractablePrivateKey = _b.sent();
                             // Store Keypair data in keystore
                             return [4 /*yield*/, this.cache.asymmetricKeys.setItem(publicJwkHash, {
-                                privateKey: unextractablePrivateKey,
-                                publicKey: keyPair.publicKey,
-                                requestMethod: request.resourceRequestMethod,
-                                requestUri: request.resourceRequestUri
-                            })];
+                                    privateKey: unextractablePrivateKey,
+                                    publicKey: keyPair.publicKey,
+                                    requestMethod: request.resourceRequestMethod,
+                                    requestUri: request.resourceRequestUri
+                                })];
                         case 6:
                             // Store Keypair data in keystore
                             _b.sent();
@@ -15034,7 +15022,7 @@
         EventHandler: EventHandler,
         NativeMessageHandler: NativeMessageHandler,
         BrowserConstants: BrowserConstants,
-        get TemporaryCacheKeys() { return TemporaryCacheKeys; },
+        get TemporaryCacheKeys () { return TemporaryCacheKeys; },
         CryptoOps: CryptoOps,
         NativeAuthError: NativeAuthError
     });
@@ -15316,11 +15304,11 @@
                             silentHandler = new SilentHandler(authClient, this.browserStorage, authCodeRequest, this.logger, this.config.system);
                             // Handle auth code parameters from request
                             return [2 /*return*/, silentHandler.handleCodeResponseFromServer({
-                                code: request.code,
-                                msgraph_host: request.msGraphHost,
-                                cloud_graph_host_name: request.cloudGraphHostName,
-                                cloud_instance_host_name: request.cloudInstanceHostName
-                            }, silentRequest.state, authClient.authority, this.networkClient, false)];
+                                    code: request.code,
+                                    msgraph_host: request.msGraphHost,
+                                    cloud_graph_host_name: request.cloudGraphHostName,
+                                    cloud_instance_host_name: request.cloudInstanceHostName
+                                }, silentRequest.state, authClient.authority, this.networkClient, false)];
                         case 4:
                             e_1 = _a.sent();
                             if (e_1 instanceof AuthError) {
@@ -15441,11 +15429,9 @@
             // Capture page visibilityState and then invoke start/end measurement
             var startPageVisibility = this.getPageVisibility();
             var inProgressEvent = _super.prototype.startMeasurement.call(this, measureName, correlationId);
-            return __assign$1(__assign$1({}, inProgressEvent), {
-                endMeasurement: function (event) {
+            return __assign$1(__assign$1({}, inProgressEvent), { endMeasurement: function (event) {
                     return inProgressEvent.endMeasurement(__assign$1({ startPageVisibility: startPageVisibility, endPageVisibility: _this.getPageVisibility() }, event));
-                }
-            });
+                } });
         };
         return BrowserPerformanceClient;
     }(PerformanceClient));
@@ -15673,15 +15659,15 @@
                         result = redirectClient.acquireToken(request);
                     }
                     return [2 /*return*/, result.catch(function (e) {
-                        // If logged in, emit acquire token events
-                        if (isLoggedIn) {
-                            _this.eventHandler.emitEvent(exports.EventType.ACQUIRE_TOKEN_FAILURE, exports.InteractionType.Redirect, null, e);
-                        }
-                        else {
-                            _this.eventHandler.emitEvent(exports.EventType.LOGIN_FAILURE, exports.InteractionType.Redirect, null, e);
-                        }
-                        throw e;
-                    })];
+                            // If logged in, emit acquire token events
+                            if (isLoggedIn) {
+                                _this.eventHandler.emitEvent(exports.EventType.ACQUIRE_TOKEN_FAILURE, exports.InteractionType.Redirect, null, e);
+                            }
+                            else {
+                                _this.eventHandler.emitEvent(exports.EventType.LOGIN_FAILURE, exports.InteractionType.Redirect, null, e);
+                            }
+                            throw e;
+                        })];
                 });
             });
         };
@@ -15805,10 +15791,9 @@
                 var _this = this;
                 return __generator$1(this, function (_a) {
                     correlationId = this.getRequestCorrelationId(request);
-                    validRequest = __assign$1(__assign$1({}, request), {
+                    validRequest = __assign$1(__assign$1({}, request), { 
                         // will be PromptValue.NONE or PromptValue.NO_SESSION
-                        prompt: request.prompt, correlationId: correlationId
-                    });
+                        prompt: request.prompt, correlationId: correlationId });
                     this.preflightBrowserEnvironmentCheck(exports.InteractionType.Silent);
                     ssoSilentMeasurement = this.performanceClient.startMeasurement(exports.PerformanceEvents.SsoSilent, correlationId);
                     this.logger.verbose("ssoSilent called", correlationId);
@@ -15829,28 +15814,28 @@
                         result = silentIframeClient.acquireToken(validRequest);
                     }
                     return [2 /*return*/, result.then(function (response) {
-                        _this.eventHandler.emitEvent(exports.EventType.SSO_SILENT_SUCCESS, exports.InteractionType.Silent, response);
-                        ssoSilentMeasurement.addStaticFields({
-                            accessTokenSize: response.accessToken.length,
-                            idTokenSize: response.idToken.length
-                        });
-                        ssoSilentMeasurement.endMeasurement({
-                            success: true,
-                            isNativeBroker: response.fromNativeBroker,
-                            requestId: response.requestId
-                        });
-                        ssoSilentMeasurement.flushMeasurement();
-                        return response;
-                    }).catch(function (e) {
-                        _this.eventHandler.emitEvent(exports.EventType.SSO_SILENT_FAILURE, exports.InteractionType.Silent, null, e);
-                        ssoSilentMeasurement.endMeasurement({
-                            errorCode: e.errorCode,
-                            subErrorCode: e.subError,
-                            success: false
-                        });
-                        ssoSilentMeasurement.flushMeasurement();
-                        throw e;
-                    })];
+                            _this.eventHandler.emitEvent(exports.EventType.SSO_SILENT_SUCCESS, exports.InteractionType.Silent, response);
+                            ssoSilentMeasurement.addStaticFields({
+                                accessTokenSize: response.accessToken.length,
+                                idTokenSize: response.idToken.length
+                            });
+                            ssoSilentMeasurement.endMeasurement({
+                                success: true,
+                                isNativeBroker: response.fromNativeBroker,
+                                requestId: response.requestId
+                            });
+                            ssoSilentMeasurement.flushMeasurement();
+                            return response;
+                        }).catch(function (e) {
+                            _this.eventHandler.emitEvent(exports.EventType.SSO_SILENT_FAILURE, exports.InteractionType.Silent, null, e);
+                            ssoSilentMeasurement.endMeasurement({
+                                errorCode: e.errorCode,
+                                subErrorCode: e.subError,
+                                success: false
+                            });
+                            ssoSilentMeasurement.flushMeasurement();
+                            throw e;
+                        })];
                 });
             });
         };
@@ -15882,31 +15867,31 @@
                                 this.logger.verbose("Initiating new acquireTokenByCode request", correlationId);
                                 response = this.acquireTokenByCodeAsync(__assign$1(__assign$1({}, request), { correlationId: correlationId }))
                                     .then(function (result) {
-                                        _this.eventHandler.emitEvent(exports.EventType.ACQUIRE_TOKEN_BY_CODE_SUCCESS, exports.InteractionType.Silent, result);
-                                        _this.hybridAuthCodeResponses.delete(hybridAuthCode_1);
-                                        atbcMeasurement.addStaticFields({
-                                            accessTokenSize: result.accessToken.length,
-                                            idTokenSize: result.idToken.length
-                                        });
-                                        atbcMeasurement.endMeasurement({
-                                            success: true,
-                                            isNativeBroker: result.fromNativeBroker,
-                                            requestId: result.requestId
-                                        });
-                                        atbcMeasurement.flushMeasurement();
-                                        return result;
-                                    })
-                                    .catch(function (error) {
-                                        _this.hybridAuthCodeResponses.delete(hybridAuthCode_1);
-                                        _this.eventHandler.emitEvent(exports.EventType.ACQUIRE_TOKEN_BY_CODE_FAILURE, exports.InteractionType.Silent, null, error);
-                                        atbcMeasurement.endMeasurement({
-                                            errorCode: error.errorCode,
-                                            subErrorCode: error.subError,
-                                            success: false
-                                        });
-                                        atbcMeasurement.flushMeasurement();
-                                        throw error;
+                                    _this.eventHandler.emitEvent(exports.EventType.ACQUIRE_TOKEN_BY_CODE_SUCCESS, exports.InteractionType.Silent, result);
+                                    _this.hybridAuthCodeResponses.delete(hybridAuthCode_1);
+                                    atbcMeasurement.addStaticFields({
+                                        accessTokenSize: result.accessToken.length,
+                                        idTokenSize: result.idToken.length
                                     });
+                                    atbcMeasurement.endMeasurement({
+                                        success: true,
+                                        isNativeBroker: result.fromNativeBroker,
+                                        requestId: result.requestId
+                                    });
+                                    atbcMeasurement.flushMeasurement();
+                                    return result;
+                                })
+                                    .catch(function (error) {
+                                    _this.hybridAuthCodeResponses.delete(hybridAuthCode_1);
+                                    _this.eventHandler.emitEvent(exports.EventType.ACQUIRE_TOKEN_BY_CODE_FAILURE, exports.InteractionType.Silent, null, error);
+                                    atbcMeasurement.endMeasurement({
+                                        errorCode: error.errorCode,
+                                        subErrorCode: error.subError,
+                                        success: false
+                                    });
+                                    atbcMeasurement.flushMeasurement();
+                                    throw error;
+                                });
                                 this.hybridAuthCodeResponses.set(hybridAuthCode_1, response);
                             }
                             else {
@@ -15921,12 +15906,12 @@
                         else if (request.nativeAccountId) {
                             if (this.canUseNative(request, request.nativeAccountId)) {
                                 return [2 /*return*/, this.acquireTokenNative(request, exports.ApiId.acquireTokenByCode, request.nativeAccountId).catch(function (e) {
-                                    // If native token acquisition fails for availability reasons fallback to standard flow
-                                    if (e instanceof NativeAuthError && e.isFatal()) {
-                                        _this.nativeExtensionProvider = undefined; // If extension gets uninstalled during session prevent future requests from continuing to attempt
-                                    }
-                                    throw e;
-                                })];
+                                        // If native token acquisition fails for availability reasons fallback to standard flow
+                                        if (e instanceof NativeAuthError && e.isFatal()) {
+                                            _this.nativeExtensionProvider = undefined; // If extension gets uninstalled during session prevent future requests from continuing to attempt
+                                        }
+                                        throw e;
+                                    })];
                             }
                             else {
                                 throw BrowserAuthError.createUnableToAcquireTokenFromNativePlatformError();
@@ -16517,31 +16502,31 @@
                         this.logger.verbose("acquireTokenSilent called for the first time, storing active request", correlationId);
                         response = this.acquireTokenSilentAsync(__assign$1(__assign$1({}, request), { correlationId: correlationId }), account)
                             .then(function (result) {
-                                _this.activeSilentTokenRequests.delete(silentRequestKey);
-                                atsMeasurement.addStaticFields({
-                                    accessTokenSize: result.accessToken.length,
-                                    idTokenSize: result.idToken.length
-                                });
-                                atsMeasurement.endMeasurement({
-                                    success: true,
-                                    fromCache: result.fromCache,
-                                    isNativeBroker: result.fromNativeBroker,
-                                    cacheLookupPolicy: request.cacheLookupPolicy,
-                                    requestId: result.requestId,
-                                });
-                                atsMeasurement.flushMeasurement();
-                                return result;
-                            })
-                            .catch(function (error) {
-                                _this.activeSilentTokenRequests.delete(silentRequestKey);
-                                atsMeasurement.endMeasurement({
-                                    errorCode: error.errorCode,
-                                    subErrorCode: error.subError,
-                                    success: false
-                                });
-                                atsMeasurement.flushMeasurement();
-                                throw error;
+                            _this.activeSilentTokenRequests.delete(silentRequestKey);
+                            atsMeasurement.addStaticFields({
+                                accessTokenSize: result.accessToken.length,
+                                idTokenSize: result.idToken.length
                             });
+                            atsMeasurement.endMeasurement({
+                                success: true,
+                                fromCache: result.fromCache,
+                                isNativeBroker: result.fromNativeBroker,
+                                cacheLookupPolicy: request.cacheLookupPolicy,
+                                requestId: result.requestId,
+                            });
+                            atsMeasurement.flushMeasurement();
+                            return result;
+                        })
+                            .catch(function (error) {
+                            _this.activeSilentTokenRequests.delete(silentRequestKey);
+                            atsMeasurement.endMeasurement({
+                                errorCode: error.errorCode,
+                                subErrorCode: error.subError,
+                                success: false
+                            });
+                            atsMeasurement.flushMeasurement();
+                            throw error;
+                        });
                         this.activeSilentTokenRequests.set(silentRequestKey, response);
                         return [2 /*return*/, response];
                     }
@@ -16575,21 +16560,19 @@
                             if (!(NativeMessageHandler.isNativeAvailable(this.config, this.logger, this.nativeExtensionProvider, request.authenticationScheme) && account.nativeAccountId)) return [3 /*break*/, 1];
                             this.logger.verbose("acquireTokenSilent - attempting to acquire token from native platform");
                             silentRequest = __assign$1(__assign$1({}, request), { account: account });
-                            result = this.acquireTokenNative(silentRequest, exports.ApiId.acquireTokenSilent_silentFlow).catch(function (e) {
-                                return __awaiter$1(_this, void 0, void 0, function () {
-                                    var silentIframeClient;
-                                    return __generator$1(this, function (_a) {
-                                        // If native token acquisition fails for availability reasons fallback to web flow
-                                        if (e instanceof NativeAuthError && e.isFatal()) {
-                                            this.logger.verbose("acquireTokenSilent - native platform unavailable, falling back to web flow");
-                                            this.nativeExtensionProvider = undefined; // Prevent future requests from continuing to attempt 
-                                            silentIframeClient = this.createSilentIframeClient(request.correlationId);
-                                            return [2 /*return*/, silentIframeClient.acquireToken(request)];
-                                        }
-                                        throw e;
-                                    });
+                            result = this.acquireTokenNative(silentRequest, exports.ApiId.acquireTokenSilent_silentFlow).catch(function (e) { return __awaiter$1(_this, void 0, void 0, function () {
+                                var silentIframeClient;
+                                return __generator$1(this, function (_a) {
+                                    // If native token acquisition fails for availability reasons fallback to web flow
+                                    if (e instanceof NativeAuthError && e.isFatal()) {
+                                        this.logger.verbose("acquireTokenSilent - native platform unavailable, falling back to web flow");
+                                        this.nativeExtensionProvider = undefined; // Prevent future requests from continuing to attempt 
+                                        silentIframeClient = this.createSilentIframeClient(request.correlationId);
+                                        return [2 /*return*/, silentIframeClient.acquireToken(request)];
+                                    }
+                                    throw e;
                                 });
-                            });
+                            }); });
                             return [3 /*break*/, 3];
                         case 1:
                             this.logger.verbose("acquireTokenSilent - attempting to acquire token from web flow");
@@ -16597,10 +16580,9 @@
                             return [4 /*yield*/, silentCacheClient.initializeSilentRequest(request, account)];
                         case 2:
                             silentRequest_1 = _a.sent();
-                            requestWithCLP_1 = __assign$1(__assign$1({}, request), {
+                            requestWithCLP_1 = __assign$1(__assign$1({}, request), { 
                                 // set the request's CacheLookupPolicy to Default if it was not optionally passed in
-                                cacheLookupPolicy: request.cacheLookupPolicy || exports.CacheLookupPolicy.Default
-                            });
+                                cacheLookupPolicy: request.cacheLookupPolicy || exports.CacheLookupPolicy.Default });
                             result = this.acquireTokenFromCache(silentCacheClient, silentRequest_1, requestWithCLP_1).catch(function (cacheError) {
                                 if (requestWithCLP_1.cacheLookupPolicy === exports.CacheLookupPolicy.AccessToken) {
                                     throw cacheError;
@@ -16626,23 +16608,23 @@
                             });
                             _a.label = 3;
                         case 3: return [2 /*return*/, result.then(function (response) {
-                            _this.eventHandler.emitEvent(exports.EventType.ACQUIRE_TOKEN_SUCCESS, exports.InteractionType.Silent, response);
-                            atsAsyncMeasurement.endMeasurement({
-                                success: true,
-                                fromCache: response.fromCache,
-                                isNativeBroker: response.fromNativeBroker,
-                                requestId: response.requestId
-                            });
-                            return response;
-                        }).catch(function (tokenRenewalError) {
-                            _this.eventHandler.emitEvent(exports.EventType.ACQUIRE_TOKEN_FAILURE, exports.InteractionType.Silent, null, tokenRenewalError);
-                            atsAsyncMeasurement.endMeasurement({
-                                errorCode: tokenRenewalError.errorCode,
-                                subErrorCode: tokenRenewalError.subError,
-                                success: false
-                            });
-                            throw tokenRenewalError;
-                        })];
+                                _this.eventHandler.emitEvent(exports.EventType.ACQUIRE_TOKEN_SUCCESS, exports.InteractionType.Silent, response);
+                                atsAsyncMeasurement.endMeasurement({
+                                    success: true,
+                                    fromCache: response.fromCache,
+                                    isNativeBroker: response.fromNativeBroker,
+                                    requestId: response.requestId
+                                });
+                                return response;
+                            }).catch(function (tokenRenewalError) {
+                                _this.eventHandler.emitEvent(exports.EventType.ACQUIRE_TOKEN_FAILURE, exports.InteractionType.Silent, null, tokenRenewalError);
+                                atsAsyncMeasurement.endMeasurement({
+                                    errorCode: tokenRenewalError.errorCode,
+                                    subErrorCode: tokenRenewalError.subError,
+                                    success: false
+                                });
+                                throw tokenRenewalError;
+                            })];
                     }
                 });
             });

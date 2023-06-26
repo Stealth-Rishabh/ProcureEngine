@@ -1,4 +1,7 @@
+
+var gstflag=false
 jQuery(document).ready(function () {
+    //loadingEngine()
     //FROM HTML
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -19,8 +22,10 @@ jQuery(document).ready(function () {
     setCommonData();
     fetchMenuItemsFromSession(9, 10);
     FormValidation.init();
-
-    fetchParticipantsVenderTable();
+    
+    /*fetchParticipantsVenderTable(0);*/
+    SearchText = $('#txtSearch').val();
+    fetchParticipantsVenderTable(0, SearchText);
     fetchMapCategory('M', 0);
 
 
@@ -73,7 +78,7 @@ jQuery(document).ready(function () {
         var decryptedstring = fndecrypt(param)
         vendoridparam = getUrlVarsURL(decryptedstring)["VendorId"];
         let tmpvendoridparam = parseInt(sessionStorage.getItem('CustomerID'))
-        UpdateActivity(vendoridparam, tmpvendoridparam);
+       /* UpdateActivity(vendoridparam, tmpvendoridparam);*/
         fnViewDetails(tmpvendoridparam, vendoridparam)
     }
 
@@ -82,6 +87,8 @@ jQuery(document).ready(function () {
 
         dynamiccontrolvalidation();
     });
+    
+    
 });
 //FROM HTML
 
@@ -143,10 +150,16 @@ var FormValidation = function () {
                 txtAddress: {
                     required: true
                 },
+                txtPhoneNo: {
+                    required: true
+                },
                 ParticipantName: {
                     required: true
                 },
                 ContactName: {
+                    required: true
+                },
+                 txtPanNo: {
                     required: true
                 },
                 txtCity: {
@@ -180,7 +193,7 @@ var FormValidation = function () {
                     email: true
                 },
                 txtAlternateeMailID: {
-
+                   
                     email: true
                 },
                 ddlCountryCd: {
@@ -231,7 +244,7 @@ var FormValidation = function () {
                 txtcompanyemail: {
                     required: "Please enter company e-mail"
                 },
-
+                
                 ContactName: {
                     required: "Please enter contact person name"
                 },
@@ -267,7 +280,7 @@ var FormValidation = function () {
             },
 
             submitHandler: function (form) {
-
+               
                 var flag = "T";
 
 
@@ -324,13 +337,45 @@ var FormValidation = function () {
 
 
 function RegisterParticipants() {
-    var RegisterParticipants = '';
-    $("#btnvendreg").attr("disabled", "disabled")
+   
+    
+     if(jQuery("#txtTINType option:selected").val()=="IN3"){
+         if(gstflag==false){
+             $('#divalerterr').find('span').text('Please select valid GST to proceed');
+             $('#divalerterr').slideDown('show');
+             App.scrollTo(jQuery('#divalerterr'), -200);
+             return false;
+             setTimeout(function () {
+            jQuery('#divalerterr').css('display', 'none');
+                }, 2000);
+         }
+        
+         $('#txtTINNo').rules('add', {
+                 required: true
+            });
+        $('#txtPanNo').rules('add', {
+                 required: true
+            });
+            
+        
+    }
+    
+    else if(jQuery("#txtTINType option:selected").val()=="" && $("#ddlCountry option:selected").val()=='IN' ){
+         
+        $('#txtPanNo').rules('add', {
+                 required: true
+            });
+            
+        
+    }
+    var RegisterParticipants='';
+   $("#btnvendreg").attr("disabled", "disabled")
     var _cleanString = StringEncodingMechanism(jQuery("#ParticipantName").val());
-    var _cleanString2 = StringEncodingMechanism((jQuery("#txtAddress").val()).replace(/[,|-]/g, " "));
-
+    var _cleanString2 = StringEncodingMechanism(jQuery("#txtAddress").val());
+    let cleanTradeName=StringEncodingMechanism(jQuery("#TradeName").val());
+    
     var encodedcontactperson = StringEncodingMechanism(jQuery("#ContactName").val());
-
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
 
@@ -363,83 +408,128 @@ function RegisterParticipants() {
             jQuery('#divalerterr').css('display', 'none');
         }, 5000);
     }
-
-
-
-    if (jQuery("#txtTINType option:selected").val() == "") {
+   debugger
+    if(jQuery("#txtTINType option:selected").val()==""&& $("#ddlCountry option:selected").val()=='IN' ){
         RegisterParticipants = {
-            "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-            "UserID": sessionStorage.getItem('UserID'),
-            "CompanyEmail": jQuery("#txtcompanyemail").val().trim().toLowerCase(),
-            "AlternateEmailID": $('#txtAlternateeMailID').val(),
-            "ParticipantName": _cleanString,
-            "ContactPerson": encodedcontactperson,
-            "MobileNo": jQuery("#txtMobileNo").val(),
-            "PhoneNo": jQuery("#txtPhoneNo").val(),
-            "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
-            "DialingCodePhone": parseInt(jQuery("#ddlCountryCdPhone option:selected").val()),
-            "IsActive": status,
-            "ActionType": $('#hdnFlagType').val(),
-            "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
-            "ProductCatID": InsertQuery,
-            "ProductCatIDList": ProductCatId,
-            "AssociatedVendorID": parseInt($('#hdnChildID').val()),
-            "Address": _cleanString2,
-            "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
-            "CityName": jQuery("#ddlCity option:selected").text(),
-            "StateID": parseInt(jQuery("#ddlState option:selected").data('stateid')), //parseInt(jQuery("#ddlState option:selected").val()),
-            "StateName": jQuery("#ddlState option:selected").data('statename'),
-            "CountryID": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
-            "CountryName": jQuery("#ddlCountry option:selected").text(),
-            "ZipCode": jQuery("#txtZipCd").val(),
-            "TaxId": "",
-            "TaxIdType": "",
-            "TaxId2": "",
-            "TaxIdType2": "",
-            "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val()),
-            "CountryKey": jQuery("#ddlCountry option:selected").val(),
-            "RegionKey": jQuery("#ddlState option:selected").val(),
-        };
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "CompanyEmail": jQuery("#txtcompanyemail").val().trim().toLowerCase(),
+        "AlternateEmailID": $('#txtAlternateeMailID').val(),
+        "ParticipantName": _cleanString,
+        "ContactPerson":encodedcontactperson,
+        "MobileNo": jQuery("#txtMobileNo").val(),
+        "PhoneNo": jQuery("#txtPhoneNo").val(),
+        "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
+        "DialingCodePhone": parseInt(jQuery("#ddlCountryCdPhone option:selected").val()),
+        "IsActive": status,
+        "ActionType": $('#hdnFlagType').val(),
+        "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
+        "ProductCatID": InsertQuery,
+        "ProductCatIDList": ProductCatId,
+        "AssociatedVendorID": parseInt($('#hdnChildID').val()),
+        "Address": _cleanString2,
+        "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
+        "CityName": jQuery("#ddlCity option:selected").text(),
+        "StateID": parseInt(jQuery("#ddlState option:selected").data('stateid')), //parseInt(jQuery("#ddlState option:selected").val()),
+        "StateName": jQuery("#ddlState option:selected").data('statename'),
+        "CountryID": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
+        "CountryName": jQuery("#ddlCountry option:selected").text(),
+        "ZipCode": jQuery("#txtZipCd").val(),
+        "TaxId": "",
+        "TaxIdType": "",
+        "TaxId2": jQuery("#txtPanNo").val(),
+        "TaxIdType2":jQuery("#txtTINType2 option:selected").val(),
+        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val()),
+        "CountryKey": jQuery("#ddlCountry option:selected").val(),
+        "RegionKey": jQuery("#ddlState option:selected").val(),
+        "TradeName":cleanTradeName,
+        "GSTNStatus":"",
+        "EInvoiceStatus":"",
+        "TaxpayerType":"",
+    };
 
     }
-    else {
+     else if(jQuery("#txtTINType option:selected").val()=="IN3"){
         RegisterParticipants = {
-            "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-            "UserID": sessionStorage.getItem('UserID'),
-            "CompanyEmail": jQuery("#txtcompanyemail").val().trim().toLowerCase(),
-            "AlternateEmailID": $('#txtAlternateeMailID').val(),
-            "ParticipantName": _cleanString,
-            "ContactPerson": encodedcontactperson,
-            "MobileNo": jQuery("#txtMobileNo").val(),
-            "PhoneNo": jQuery("#txtPhoneNo").val(),
-            "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
-            "DialingCodePhone": parseInt(jQuery("#ddlCountryCdPhone option:selected").val()),
-            "IsActive": status,
-            "ActionType": $('#hdnFlagType').val(),
-            "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
-            "ProductCatID": InsertQuery,
-            "ProductCatIDList": ProductCatId,
-            "AssociatedVendorID": parseInt($('#hdnChildID').val()),
-            "Address": _cleanString2,
-            "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
-            "CityName": jQuery("#ddlCity option:selected").text(),
-            "StateID": parseInt(jQuery("#ddlState option:selected").data('stateid')), //parseInt(jQuery("#ddlState option:selected").val()),
-            "StateName": jQuery("#ddlState option:selected").data('statename'),
-            "CountryID": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
-            "CountryName": jQuery("#ddlCountry option:selected").text(),
-            "ZipCode": jQuery("#txtZipCd").val(),
-            "TaxId": jQuery("#txtTINNo").val(),
-            "TaxIdType": jQuery("#txtTINType option:selected").val(),
-            "TaxId2": jQuery("#txtPanNo").val(),
-            "TaxIdType2": jQuery("#txtTINType2 option:selected").val(),
-            "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val()),
-            "CountryKey": jQuery("#ddlCountry option:selected").val(),
-            "RegionKey": jQuery("#ddlState option:selected").val(),
-        };
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "CompanyEmail": jQuery("#txtcompanyemail").val().trim().toLowerCase(),
+        "AlternateEmailID": $('#txtAlternateeMailID').val(),
+        "ParticipantName": _cleanString,
+        "ContactPerson":encodedcontactperson,
+        "MobileNo": jQuery("#txtMobileNo").val(),
+        "PhoneNo": jQuery("#txtPhoneNo").val(),
+        "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
+        "DialingCodePhone": parseInt(jQuery("#ddlCountryCdPhone option:selected").val()),
+        "IsActive": status,
+        "ActionType": $('#hdnFlagType').val(),
+        "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
+        "ProductCatID": InsertQuery,
+        "ProductCatIDList": ProductCatId,
+        "AssociatedVendorID": parseInt($('#hdnChildID').val()),
+        "Address": _cleanString2,
+        "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
+        "CityName": jQuery("#ddlCity option:selected").text(),
+        "StateID": parseInt(jQuery("#ddlState option:selected").data('stateid')), //parseInt(jQuery("#ddlState option:selected").val()),
+        "StateName": jQuery("#ddlState option:selected").data('statename'),
+        "CountryID": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
+        "CountryName": jQuery("#ddlCountry option:selected").text(),
+        "ZipCode": jQuery("#txtZipCd").val(),
+        "TaxId": jQuery("#txtTINNo").val(),
+        "TaxIdType": jQuery("#txtTINType option:selected").val(),
+        "TaxId2": jQuery("#txtPanNo").val(),
+        "TaxIdType2": jQuery("#txtTINType2 option:selected").val(),
+        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val()),
+        "CountryKey": jQuery("#ddlCountry option:selected").val(),
+        "RegionKey": jQuery("#ddlState option:selected").val(),
+        "TradeName":cleanTradeName,
+        "GSTNStatus":$('#gstnStatus').val(),
+        "EInvoiceStatus":$('#eInvoiceStatus').val(),
+        "TaxpayerType":$('#taxpayerType').val(),
+    };
 
     }
+   else{
+        RegisterParticipants = {
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "CompanyEmail": jQuery("#txtcompanyemail").val().trim().toLowerCase(),
+        "AlternateEmailID": $('#txtAlternateeMailID').val(),
+        "ParticipantName": _cleanString,
+        "ContactPerson":encodedcontactperson,
+        "MobileNo": jQuery("#txtMobileNo").val(),
+        "PhoneNo": jQuery("#txtPhoneNo").val(),
+        "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
+        "DialingCodePhone": parseInt(jQuery("#ddlCountryCdPhone option:selected").val()),
+        "IsActive": status,
+        "ActionType": $('#hdnFlagType').val(),
+        "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
+        "ProductCatID": InsertQuery,
+        "ProductCatIDList": ProductCatId,
+        "AssociatedVendorID": parseInt($('#hdnChildID').val()),
+        "Address": _cleanString2,
+        "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
+        "CityName": jQuery("#ddlCity option:selected").text(),
+        "StateID": parseInt(jQuery("#ddlState option:selected").data('stateid')), //parseInt(jQuery("#ddlState option:selected").val()),
+        "StateName": jQuery("#ddlState option:selected").data('statename'),
+        "CountryID": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
+        "CountryName": jQuery("#ddlCountry option:selected").text(),
+        "ZipCode": jQuery("#txtZipCd").val(),
+        "TaxId": "",
+        "TaxIdType": "",
+        "TaxId2": "",
+        "TaxIdType2":jQuery("#txtTINType2 option:selected").val(),
+        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val()),
+        "CountryKey": jQuery("#ddlCountry option:selected").val(),
+        "RegionKey": jQuery("#ddlState option:selected").val(),
+        "TradeName":cleanTradeName,
+        "GSTNStatus":"",
+        "EInvoiceStatus":"",
+        "TaxpayerType":"",
+    };
 
-
+    }
+ 
     jQuery.ajax({
 
         // url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RegParticpants_PEV2/",
@@ -450,7 +540,7 @@ function RegisterParticipants() {
         data: JSON.stringify(RegisterParticipants),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+             gststatus=false
 
             $("#btnvendreg").attr("disabled", "disabled")
             $("#hdnParticipantID").val(data.participantID)
@@ -473,24 +563,24 @@ function RegisterParticipants() {
                 jQuery('#divalertsucess').css('display', 'none');
                 jQuery('#divalerterr').css('display', 'none');
             }, 5000);
-            //  fetchParticipantsVenderTable();
-            setTimeout(function () { location.reload() }, 2000)
+          
+            setTimeout(function () { fnfetchfoundVendors() }, 3000)
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
-
+            
             $("#btnvendreg").removeAttr("disabled")
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-
-
-                $('#spanerterr').text(xhr.responseText);
-                jQuery('#divalerterr').slideDown('show');
-                App.scrollTo(jQuery('#divalerterr'), -200);
-                $('.alert-danger').fadeOut(2000);
+               
+                
+                 $('#spanerterr').text(xhr.responseText);
+                 jQuery('#divalerterr').slideDown('show');
+                 App.scrollTo(jQuery('#divalerterr'), -200);
+                 $('.alert-danger').fadeOut(2000);
             }
             jQuery.unblockUI();
             return false;
@@ -511,7 +601,7 @@ function fnshowexistedVendorForextend() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-
+        
             if (data.length > 0) {
                 if (data[0].encryptedVendorCreatedBy == sessionStorage.getItem('UserID')) {
                     $('#spanerterr').text("This email address is already registerd with another company.");
@@ -529,9 +619,10 @@ function fnshowexistedVendorForextend() {
                         for (var i = 0; i < data.length; i++) {
                             addr1 = data[0].address1.replace(/\n/g, " ");
                             addr2 = data[0].address2.replace(/\n/g, " ");
-                            //$('#tblforexistedVendor').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td class=hide><a href=\"#\"   onclick=\"ExtendVendor(\'" + data[i].vendorID + "'\,\'" + data[i].zipCode + "'\,\'" + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs yellow \"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].zipCode + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].phone + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
-
-                            $('#tblforexistedVendor').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td class=hide><a href=\"#\"   onclick=\"ExtendVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].dialingCodePhone + "'\,\'" + data[i].phone + "'\,\'" + data[i].dialingCodeMobile + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].zipCode + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].prefferedTZ + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs yellow \"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].dialingCodePhone + "'\,\'" + data[i].phone + "'\,\'" + data[i].dialingCode + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].zipCode + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                           
+                          // $('#tblforexistedVendor').append("<tr><td>" + data[i].vendorCode + "</td><td>" + data[i].vendorName + "</td><td>" + data[i].contactPerson + "</td><td>" + data[i].mobileNo + "</td><td>" + data[i].emailID + "</td><td class=hide><a href=\"#\"   onclick=\"ExtendVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].dialingCodePhone + "'\,\'" + data[i].phone + "'\,\'" + data[i].dialingCodeMobile + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].zipCode + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].prefferedTZ + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs yellow \"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + data[i].vendorID + "'\,\'" + data[i].vendorName + "'\,\'" + data[i].contactPerson + "'\,\'" + data[i].emailID + "'\,\'" + data[i].dialingCodePhone + "'\,\'" + data[i].phone + "'\,\'" + data[i].dialingCode + "'\,\'" + data[i].mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + data[i].zipCode + "'\,\'" + data[i].serviceTaxNo.toUpperCase() + "'\,\'" + data[i].isActive + "'\,\'" + data[i].panNo.toUpperCase() + "'\,\'" + data[i].buttonName + "'\,\'" + data[i].vendorCode + "'\,\'" + data[i].alternateEmailID + "'\,\'" + data[i].countryID + "'\,\'" + data[i].stateID + "'\,\'" + data[i].cityID + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                            
+                          $(`#tblforexistedVendor`).append(`<tr><td>${data[i].vendorCode}</td><td>${data[i].vendorName}</td><td>${data[i].contactPerson}</td><td>${data[i].mobileNo}</td><td>${data[i].emailID}</td><td class=hide><a href="#"  onclick="ExtendVendor('${data[i].vendorID}','${data[i].vendorName}','${data[i].contactPerson}','${data[i].emailID}','${data[i].dialingCodePhone}','${data[i].phone}','${data[i].dialingCodeMobile}','${data[i].mobileNo}','${addr1}','${addr2}','${data[i].zipCode}','${data[i].serviceTaxNo.toUpperCase()}','${data[i].isActive}','${data[i].panNo.toUpperCase()}','${data[i].buttonName}','${data[i].vendorCode}','${data[i].alternateEmailID}','${data[i].countryID}','${data[i].stateID}','${data[i].prefferedTZ}','${data[i].cityID }') class="btn btn-xs yellow"><i class="fa fa-edit"></i>Extend</a>&nbsp;<a href="#"   onclick=AddVendor('${data[i].vendorID}','${data[i].vendorName}','${data[i].contactPerson}','${data[i].emailID}','${data[i].dialingCodePhone}','${data[i].phone}','${data[i].dialingCode}','${data[i].mobileNo}','${addr1}','${addr2}','${data[i].zipCode}','${data[i].serviceTaxNo.toUpperCase()}','${data[i].isActive}',${data[i].panNo.toUpperCase()}','${data[i].buttonName}','${data[i].vendorCode}','${data[i].alternateEmailID}','${data[i].countryID}','${data[i].stateID}','${data[i].cityID}') class="btn btn-xs green hide"><i class="a fa-plus"></i>Add</a></td></tr>`);
 
 
                         }
@@ -622,18 +713,17 @@ function validateVendorGroup(ctrl, categoryId) {
     }
 }
 
-function fetchParticipantsVenderTable() {
-
+function fetchParticipantsVenderTable(PageNo,searchText) {
+    currentpage = PageNo + 1;
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchParticipantsVender_PEV2/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&CreatedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchParticipantsVender_PEV2/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&CreatedBy=" + encodeURIComponent(sessionStorage.getItem('UserID'))+"&PageNo="+PageNo+ "&SearchText=" + searchText,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (Venderdata) {
-
             jQuery("#tblParticipantsVender > tbody").empty();
             if (Venderdata.length > 0) {
                 vendorsForAutoComplete = Venderdata;
@@ -645,6 +735,9 @@ function fetchParticipantsVenderTable() {
 
                 }
                 jQuery.each(Venderdata, function (key, value) {
+                    
+                    
+                    console.log(1)
                     var str = "";
                     var addr1 = (value.address).replace(/\n/g, " ");
 
@@ -690,16 +783,28 @@ function fetchParticipantsVenderTable() {
                         str = "<tr><td style=\"text-align:right;width:10%!important;\">";
                         str += "<a href=\"javascript:;\"  onclick=\"MapCategory(this)\" class=\"btn btn-xs green\"><i class=\"fa fa-edit\"></i>Map</a><a href=\"#\" href=\"#\"  onclick=\"EditProduct(this)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
                     }
-                    str += "<td style=\"display:none;\">" + value.participantID + "</td><td style=\"width:10%!important;color:darkblue!important;font:bold;cursor:pointer;\" class=bold onclick =\"fnViewDetails(\'0'\,\'" + value.participantID + "'\)\">" + value.participantName + "</td><td style=\"width:10%!important;\">" + value.contactPerson + "</td><td style=\"width:10%!important;\">" + value.address + "</td><td style=\"width:5%!important;\">" + value.cityName + "</td><td style=\"width:10%!important;\">" + value.panNo.toUpperCase() + "</td><td style=\"width:10%!important;\">" + value.tinNo.toUpperCase() + "</td><td style=\"width:20%!important;\">" + value.mobileNo + "</td><td style=\"width:20%!important;\">" + value.phoneNo + "</td><td style=\"width:10%!important;\">" + value.companyEmail + "</td><td style=\"width:10%!important;\">" + value.alternateEmailID + "</td>";
+                 
+                    str += "<td style=\"display:none;\">" + value.participantID + "</td><td style=\"width:10%!important;color:darkblue!important;font:bold;cursor:pointer;\" class=bold onclick =\"fnViewDetails(\'0'\,\'" + value.participantID + "'\)\">" + value.participantName + "</td><td style=\"width:10%!important;\">" + value.legalName + "</td><td style=\"width:10%!important;\">" + value.contactPerson + "</td><td style=\"width:10%!important;\">" + value.vendorCode + "</td><td style=\"width:10%!important;\">" + StringDecodingMechanism(value.address) + "</td><td style=\"width:5%!important;\">" + value.cityName + "</td><td style=\"width:10%!important;\">" + value.panNo.toUpperCase() + "</td><td style=\"width:10%!important;\">" + value.tinNo.toUpperCase() + "</td><td style=\"width:20%!important;\">" + value.mobileNo + "</td><td style=\"width:20%!important;\">" + value.phoneNo + "</td><td style=\"width:10%!important;\">" + value.companyEmail + "</td><td style=\"width:10%!important;\">" + value.alternateEmailID + "</td>";
                     str += "<td style=\"width:5%!important;\">" + value.isActive + "</td>";
                     str += "</td></tr>";
                     jQuery('#tblParticipantsVender > tbody').append(str);
                 });
+               
+               
+               var total_records = Venderdata[0].totalRecords;
+                numberOfPages = 1;
+                if (total_records > 0) {
+                    numberOfPages = Math.ceil(total_records / 10);
+                }
+                setupPagination();
+                
             }
             else {
                 jQuery('#tblParticipantsVender > tbody').append("<tr><td colspan='12' style='text-align: center; color:red;'>No Participant found</td></tr>");
             }
             fetchParticipantsparked();
+           
+             
         },
         error: function (xhr, status, error) {
 
@@ -711,6 +816,7 @@ function fetchParticipantsVenderTable() {
                 fnErrorMessageText('spanerterr', '');
             }
             jQuery.unblockUI();
+          
             return false;
         }
     });
@@ -762,11 +868,12 @@ function fetchParticipantsparked() {
 }
 let customerid = parseInt(sessionStorage.getItem('CustomerID'));
 function fnViewDetails(tmpvendorid, vendorid) {
-
+  
     $('#viewalldetails').modal('show');
     $('#childDetailsForm').addClass('hide')
     fetchVendorRegistrationDetails(customerid, parseInt(vendorid));
     fetchpayment()
+   
 
 }
 /*function fetchVendorRegistrationDetails(tmpvendorid, vendorid) {
@@ -1298,7 +1405,7 @@ function validatePanNumber(pan) {
 
 
 function fnfetchfoundVendors() {
-    debugger
+  
     var UniqueId = "";
     if ($('#txtUI').val() == null || $('#txtUI').val() == undefined || $('#txtUI').val() == "") {
         if ($('#ddlUI').val() == "EmailID") {
@@ -1313,7 +1420,7 @@ function fnfetchfoundVendors() {
             })
 
         }
-
+       
         jQuery('#spanerterr').text('Please Enter ' + UniqueId + ' then Proceed to Search.')
         jQuery('#divalerterr').slideDown('show');
         App.scrollTo(jQuery('#divalerterr'), -200);
@@ -1325,7 +1432,7 @@ function fnfetchfoundVendors() {
 
         let customerid = parseInt(sessionStorage.getItem('CustomerID'));
         let emailid = $('#txtUI').val();
-
+       
         jQuery.ajax({
             type: "GET",
             contentType: "application/json; charset=utf-8",
@@ -1347,6 +1454,7 @@ function fnfetchfoundVendors() {
                     $('#txtAlternateeMailID').val($('#txtUI').val())
                     $('#txtcompanyemail').attr('disabled', 'disabled')
                     $("#ddlCountry").val('IN').trigger("change");
+                    $("#showapproval").hide()
                     return true
 
                 }
@@ -1355,7 +1463,7 @@ function fnfetchfoundVendors() {
                 ParticipantID = parentData.vendorID;
                 debugger
                 let isactiveUser = parentData.isActive;
-                $("#ContactName").val(StringDecodingMechanism(parentData.vendorName))
+                $("#ContactName").val(StringDecodingMechanism(parentData.contactPerson))
                 $("#ddlCountryCd").val(parentData.dialingCodeMobile).trigger("change")
                 $("#txtMobileNo").val(parentData.mobileNo)
                 $("#txtcompanyemail").val(parentData.emailID)
@@ -1365,17 +1473,19 @@ function fnfetchfoundVendors() {
                 else {
                     $("#txtAlternateeMailID").val(parentData.alternateEmailID)
                 }
-
+                
                 $("#ddlpreferredTime").val(parentData.preferredtimezone).trigger("change")
-
+                
                 if (isactiveUser == "Y") {
-                    jQuery('input:checkbox[name=chkIsActiveparticipant]').attr('checked', 'checked');
+                    jQuery('input:checkbox[name=chkIsActiveparticipant]').attr('checked','checked');
                     jQuery('#chkIsActiveparticipant').parents('span').addClass('checked');
                 }
                 else {
                     jQuery('input:checkbox[name=chkIsActiveparticipant]').removeAttr('checked');
                     jQuery('#chkIsActiveparticipant').parents('span').removeClass('checked');
                 }
+                
+                
 
                 $("#hdnParticipantID").val(parentData.vendorID)
                 $('#divVendorForm').removeClass('hide')
@@ -1392,7 +1502,7 @@ function fnfetchfoundVendors() {
                 let taxIdNo = "";
                 let addrC = "";
                 if (childData.length > 0) {
-
+                    
                     $('#tblVendorFoundDetails').append("<thead><tr><th class='hide'></th><th>Company Name</th><th>Address</th><th>Tax Identification Number</th><th></th></tr></thead><tbody>")
 
                     for (var i = 0; i < childData.length; i++) {
@@ -1402,70 +1512,73 @@ function fnfetchfoundVendors() {
                         addr2 = (childData[i].address2 || "").replace(/\n/g, " ");
                         taxIdNo = childData[i].taxId;
                         addrC = childData[i].address + " " + childData[i].city + " " + childData[i].state + " " + childData[i].country;
-
-
-
-
-
-
-
+                      
+                      
+                       
+                   
+                      
+                      
+                      
                         if (parentData.action == "Extend") {
                             disableParent()
-                            $('#btnAddAnother').addClass('hide');
-                            $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"ExtendVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityId) + "'\,\'" + (childData[i].childId || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                            $('#btnAddAnother').removeClass('hide');
+                            
+                        /*  if (isSapIntegrated != 'Y') {
+                               if (childData[i].isParent == 'Y' ){
+                                    $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"ExtendVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityId ) + "'\,\'" + (childData[i].childId || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\,\'" + childData[i].gstnStatus + "'\,\'" + childData[i].eInvoiceStatus + "'\,\'" + childData[i].taxpayerType + "'\,\'" + data.showApproval + "'\,\'" + childData[i].legalName + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                                    return true
+                               }
+                               
+                              
+                          }
+                          else{
+                                   $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"ExtendVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityId ) + "'\,\'" + (childData[i].childId || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency +"'\,\'" + childData[i].gstnStatus + "'\,\'" + childData[i].eInvoiceStatus + "'\,\'" + childData[i].taxpayerType + "'\,\'" + data.showApproval+ "'\,\'" + childData[i].legalName + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
 
-                            /* if (isSapIntegrated != 'Y') {
-                                  if (childData[i].isParent == 'Y' ){
-                                       $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"ExtendVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityId ) + "'\,\'" + (childData[i].childId || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
-                                       return true
-                                  }
-                                  
-                                 
-                             }
-                             else{
-                                      $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"ExtendVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityId ) + "'\,\'" + (childData[i].childId || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
-   
-                                  }
-                                 */
+                               }*/
+                               
+                              
+                             $(`#tblVendorFoundDetails`).append(`<tr><td class='hide'>${childData[i].childId}</td><td>${childData[i].companyName}</td><td>${addrC}</td><td>${taxIdNo}</td><td><a href="#"   onclick="ExtendVendor('${parentData.vendorID}','${childData[i].companyName}','${parentData.emailID}','${parentData.dialingCodePhone}','${parentData.phone}','${parentData.dialingCodeMobile}','${parentData.mobileNo}','${encodeURIComponent(StringDecodingMechanism(childData[i].address))}','${childData[i].zipCode}','${(childData[i].taxId || "").toUpperCase()}','${(childData[i].isActive || "")}','${childData[i].taxId2.toUpperCase()}','${parentData.action}','${parentData.vendorCode}','${parentData.alternateEmailID}','${(childData[i].countryID || 111)}','${(childData[i].stateID || 3508)}','${parentData.preferredtimezone}','${childData[i].cityId}','${(childData[i].childId || "")}','${childData[i].taxIdType}','${childData[i].taxIdType2}','${childData[i].city}','${childData[i].regionKey}','${childData[i].countryKey}','${childData[i].langu}','${childData[i].currency}','${childData[i].gstnStatus}','${childData[i].eInvoiceStatus}','${childData[i].taxpayerType}','${data.showApproval}','${childData[i].legalName}')" class="btn btn-xs yellow"><i class="fa fa-edit"></i>Extend</a>&nbsp;<a href="#"   onclick="AddVendor('${parentData.vendorID}','${parentData.vendorName}','${parentData.emailID}','${parentData.dialingCodePhone}','${parentData.phone}','${parentData.dialingCode} ','${parentData.mobileNo} ','${addr1}','${addr2}','${childData[i].zipCode}','${childData[i].taxId.toUpperCase()}','${(childData[i].isActive || "")}','${childData[i].taxId2.toUpperCase()}','${childData[i].action}','${parentData.vendorCode}','${parentData.alternateEmailID}','${(childData[i].countryID || "")} ','${(childData[i].stateID || "")}','${(childData[i].cityID || "")}')" class="btn btn-xs green hide"><i class="fa fa-plus"></i>Add</a></td></tr>`);
 
-
+                         
 
                         }
                         else {
                             if (parentData.action !== "Edit") {
                                 disableParent();
-                                /* if (isSapIntegrated != 'Y') {
-                                      if (childData[i].isParent == 'Y' ){
-                                           $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityId ) + "'\,\'" + (childData[i].childId || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a>&nbsp;<a href=\"#\"  onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
-                                           return true
-                                      }
-                                      
+                               /* if (isSapIntegrated != 'Y') {
+                                     if (childData[i].isParent == 'Y' ){
+                                          $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityId ) + "'\,\'" + (childData[i].childId || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\,\'" + childData[i].gstnStatus + "'\,\'" + childData[i].eInvoiceStatus + "'\,\'" + childData[i].taxpayerType + "'\,\'" + data.showApproval + "'\,\'" + childData[i].legalName + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a>&nbsp;<a href=\"#\"  onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                                          return true
+                                     }
                                      
-                                 }
-                                  else{
-                                           $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityId ) + "'\,\'" + (childData[i].childId || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a>&nbsp;<a href=\"#\"  onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
- 
-                                      }*/
-                                $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityId) + "'\,\'" + (childData[i].childId || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a>&nbsp;<a href=\"#\"  onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                                    
+                                }
+                                 else{
+                                          $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityId ) + "'\,\'" + (childData[i].childId || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\,\'" + childData[i].gstnStatus + "'\,\'" + childData[i].eInvoiceStatus + "'\,\'" + childData[i].taxpayerType + "'\,\'" + data.showApproval+  "'\,\'" + childData[i].legalName + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a>&nbsp;<a href=\"#\"  onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
 
+                                     }*/
+                                     
+                                      $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + encodeURIComponent(StringDecodingMechanism(childData[i].address)) + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityId ) + "'\,\'" + (childData[i].childId || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\,\'" + childData[i].gstnStatus + "'\,\'" + childData[i].eInvoiceStatus + "'\,\'" + childData[i].taxpayerType + "'\,\'" + data.showApproval+  "'\,\'" + childData[i].legalName + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a>&nbsp;<a href=\"#\"  onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
 
+                               
+                                
                             }
                             else {
                                 enableParent();
-                                /*if (isSapIntegrated != 'Y') {
+                             /*   if (isSapIntegrated != 'Y') {
                                     if (childData[i].isParent == 'Y' ){
-                                        $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + (childData[i].taxId2 || "").toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityId ) + "'\,\'" + (childData[i].childId || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"  onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + (childData[i].taxId2 || "").toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + childData[i].countryID + "'\,\'" + childData[i].stateID + "'\,\'" + childData[i].cityID + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                                        $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + (childData[i].taxId2 || "").toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityId ) + "'\,\'" + (childData[i].childId || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\,\'" + childData[i].gstnStatus + "'\,\'" + childData[i].eInvoiceStatus + "'\,\'" + childData[i].taxpayerType + "'\,\'" + data.showApproval+  "'\,\'" + childData[i].legalName + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"  onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + (childData[i].taxId2 || "").toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + childData[i].countryID + "'\,\'" + childData[i].stateID + "'\,\'" + childData[i].cityID + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
                                 
                                     }
                                    
                                     
                                 }
                                 else{
-                                     $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + (childData[i].taxId2 || "").toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityId ) + "'\,\'" + (childData[i].childId || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"  onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + (childData[i].taxId2 || "").toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + childData[i].countryID + "'\,\'" + childData[i].stateID + "'\,\'" + childData[i].cityID + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                                     $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + (childData[i].taxId2 || "").toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityId ) + "'\,\'" + (childData[i].childId || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\,\'" + childData[i].gstnStatus + "'\,\'" + childData[i].eInvoiceStatus + "'\,\'" + childData[i].taxpayerType + "'\,\'" + data.showApproval+  "'\,\'" + childData[i].legalName + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"  onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + (childData[i].taxId2 || "").toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + childData[i].countryID + "'\,\'" + childData[i].stateID + "'\,\'" + childData[i].cityID + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
                                 
                                 }*/
-                                $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + (childData[i].taxId2 || "").toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityId) + "'\,\'" + (childData[i].childId || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"  onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + (childData[i].taxId2 || "").toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + childData[i].countryID + "'\,\'" + childData[i].stateID + "'\,\'" + childData[i].cityID + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
-
+                               $('#tblVendorFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + encodeURIComponent(StringDecodingMechanism(childData[i].address)) + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + (childData[i].taxId2 || "").toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityId ) + "'\,\'" + (childData[i].childId || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\,\'" + childData[i].gstnStatus + "'\,\'" + childData[i].eInvoiceStatus + "'\,\'" + childData[i].taxpayerType + "'\,\'" + data.showApproval+  "'\,\'" + childData[i].legalName + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"  onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + (childData[i].taxId2 || "").toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + childData[i].countryID + "'\,\'" + childData[i].stateID + "'\,\'" + childData[i].cityID + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                                
 
                             }
                             $('#btnAddAnother').removeClass('hide');
@@ -1474,7 +1587,7 @@ function fnfetchfoundVendors() {
 
                 }
                 else {
-
+                    
 
                     $('#btnAddAnother').removeClass('hide');
                     if ($('#ddlUI').val() == "EmailID") {
@@ -1485,18 +1598,18 @@ function fnfetchfoundVendors() {
                 }
             },
             error: function (xhr, status, error) {
-
+             
                 var err = xhr.responseText//eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
                 }
                 else {
-
-
-                    $('#spanerterr').text(xhr.responseText);
-                    jQuery('#divalerterr').slideDown('show');
-                    App.scrollTo(jQuery('#divalerterr'), -200);
-                    $('.alert-danger').fadeOut(2000);
+                   
+                   
+                     $('#spanerterr').text(xhr.responseText);
+                     jQuery('#divalerterr').slideDown('show');
+                     App.scrollTo(jQuery('#divalerterr'), -200);
+                     $('.alert-danger').fadeOut(2000);
                 }
                 jQuery.unblockUI();
                 return false;
@@ -1506,14 +1619,14 @@ function fnfetchfoundVendors() {
 
 
     }
-    /* setTimeout(function () {
-         jQuery('#divalerterr').css('display', 'none');
-     }, 5000);*/
+   /* setTimeout(function () {
+        jQuery('#divalerterr').css('display', 'none');
+    }, 5000);*/
 }
 
 function AddVendor() {
     clearAddAnother();
-    //beforeTaxDisable()
+    $("#showapproval").hide()
     $('#divVendorForm').removeClass('hide')
     $('#divVendorCompaniesForm').removeClass('hide')
     $('#divVendorFormbtn').removeClass('hide')
@@ -1527,35 +1640,68 @@ function AddVendor() {
         $('#txtAlternateeMailID').val($('#txtUI').val())
         $('#txtcompanyemail').attr('disabled', 'disabled')
     }
+    
+    $('#txtAddress').removeAttr('disabled')
+    $('#ddlState').removeAttr('disabled')
+    $('#ddlCity').removeAttr('disabled')
+    $('#txtZipCd').removeAttr('disabled')
+    $('#ddlCountryCdPhone').removeAttr('disabled')
+    $('#txtPhoneNo').removeAttr('disabled')
+    
+    
 
 }
 $("#txtUI").keyup(function () {
     clearformkeyup();
 });
-function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid, childid, taxIdType, taxIdType2, city, regionKey, countryKey, Langu, currency) {
-
+function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile,addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid, childid, taxIdType, taxIdType2, city, regionKey, countryKey, Langu, currency,gstnstatus,einvoicestatus,taxpayertype,showApproval,legalName) {
+   
+  
+    $('#btnvendreg').removeAttr('disabled');
     $('#divVendorCompaniesForm').removeClass('hide')
     $('#divVendorFormbtn').removeClass('hide')
     $('#ddlCountry').val(countryKey).trigger('change')
-
-
-
+    
+    
+    if(showApproval=="Y"){
+                    
+        $("#showapproval").show()
+        $("#Userapprovebtn").attr('onclick',`UpdateActivity('${vendorid}','${customerid}','${childid}','A')`)
+        $("#Userrejectbtn").attr('onclick',`UpdateActivity('${vendorid}','${customerid}','${childid}','R')`)
+                     
+    }
+   else{
+        $("#showapproval").hide() 
+    }
+    
+    if(taxIdType=='IN3'){
+       gstflag=true;
+    }
+    
+   
     setTimeout(function () {
+        
+         $('#ddlState').val(regionKey).trigger('change')
+    }, 500)
 
-        $('#ddlState').val(regionKey).trigger('change')
-    }, 2000)
-
-
+   
     setTimeout(function () {
-
+        
         $('#ddlCity').val(cityid).trigger('change')
-    }, 2000)
+       
+    }, 500)
     $('#hdnFlagType').val('Edit');
     $('#hdnChildID').val(childid);
 
     jQuery("#hdnParticipantID").val(vendorid);
     $("#hdnParticipantCode").val(vendorcode);
-    jQuery("#ParticipantName").val(vname);
+    jQuery("#ParticipantName").val(legalName);
+    jQuery("#TradeName").val(vname);
+    
+    jQuery("#gstnStatus").val(gstnstatus);
+    jQuery("#eInvoiceStatus").val(einvoicestatus);
+    jQuery("#taxpayerType").val(taxpayertype);
+  
     jQuery("#txtAddress").val(decodeURIComponent(addr));
 
     jQuery("#txtPanNo").val(pan);
@@ -1572,25 +1718,25 @@ function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingco
 
     $('#ddlCountryCd').val(dialingcode).trigger('change')
     $('#ddlCountryCdPhone').val(dialingcodephone).trigger('change')
-
-    if (taxIdType == "") {
+ 
+     if(taxIdType ==""){
         $('#txtTINType').removeAttr('disabled');
     }
-    else {
-        $('#txtTINType').attr('disabled', 'disabled');
+    else{
+        $('#txtTINType').attr('disabled', 'disabled'); 
     }
 
 
 
-    /*  if (isactive == "Y" || isactive.toLowerCase() == "yes") {
-          jQuery('input:checkbox[name=chkIsActiveparticipant]').prop('checked', true);
-          jQuery('#uniform-chkIsActiveparticipant').parents('div').addClass('checked');
-      }
-      else {
-          jQuery('input:checkbox[name=chkIsActiveparticipant]').prop('checked', false);
-          jQuery('#uniform-chkIsActiveparticipant').parents('div').removeClass('checked');
-      }
-  */
+  /*  if (isactive == "Y" || isactive.toLowerCase() == "yes") {
+        jQuery('input:checkbox[name=chkIsActiveparticipant]').prop('checked', true);
+        jQuery('#uniform-chkIsActiveparticipant').parents('div').addClass('checked');
+    }
+    else {
+        jQuery('input:checkbox[name=chkIsActiveparticipant]').prop('checked', false);
+        jQuery('#uniform-chkIsActiveparticipant').parents('div').removeClass('checked');
+    }
+*/
     $('#divVendorForm').removeClass('hide')
     $('#divVendorCompaniesForm').removeClass('hide')
     $('#divVendorFormbtn').removeClass('hide')
@@ -1622,6 +1768,7 @@ function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingco
     else {
 
         $('#ParticipantName').removeAttr('disabled');
+        $('#TradeName').removeAttr('disabled');
         $('#txtAddress').removeAttr('disabled');
         $('#txtCity').removeAttr('disabled');
         $('#txtZipCd').removeAttr('disabled');
@@ -1640,23 +1787,23 @@ function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingco
         /*jQuery("#ContactName").removeAttr('disabled');*/
         $('#lbl_panmsz').addClass('hide');
     }
-    $('#txtTINType').val(taxIdType).trigger('change')
+      $('#txtTINType').val(taxIdType).trigger('change') 
 }
 
-function ExtendVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid, childid, taxIdType, taxIdType2, city, regionKey, countryKey, Langu, currency) {
-
-    $('#ddlCountry').val(countryKey || "IN").trigger('change')
+function ExtendVendor(vendorid,vname,emailid,dialingcodephone,phone,dialingcode,mobile,addr,zipcode,gst,isactive,pan,buttonname,vendorcode,alternateemailid,countryid,stateid,prefferredTZ,cityid,childid,taxIdType,taxIdType2,city,regionKey,countryKey,Langu,currency,gstnstatus,einvoicestatus,taxpayertype,showApproval,legalName) {
+    $('#btnvendreg').removeAttr('disabled');
+    $('#ddlCountry').val(countryKey||"IN").trigger('change')
     $('#divVendorForm').removeClass('hide')
     $('#divVendorCompaniesForm').removeClass('hide')
     $('#divVendorFormbtn').removeClass('hide')
     $('#divVendorContactForm').removeClass('hide')
-
     $("#hdnParticipantID").val(vendorid);
     $("#hdnParticipantCode").val(vendorcode);
     $('#hdnFlagType').val('Edit');
     $('#hdnChildID').val(childid);
-    $("#ParticipantName").val(vname);
-    $("#txtAddress").val(addr);
+    $("#ParticipantName").val(legalName);
+    $("#TradeName").val(vname);
+    $("#txtAddress").val(decodeURIComponent(addr));
     $("#txtTINNo").val(gst);
     $("#txtPanNo").val(pan);
 
@@ -1666,25 +1813,38 @@ function ExtendVendor(vendorid, vname, emailid, dialingcodephone, phone, dialing
 
     $("#txtMobileNo").val(mobile);
 
-
-
-
-
-
-    setTimeout(function () {
-
-        $('#ddlState').val(regionKey).trigger('change')
-    }, 2000);
-
-    setTimeout(function () {
-
-        $('#ddlCity').val(cityid).trigger('change')
-
-        $('#txtTINType').val(taxIdType).trigger('change')
-        $('#txtTINType2').val(taxIdType2).trigger('change')
-    }, 2000);
-
-
+   
+    
+     if(showApproval=="Y"){
+                    
+        $("#showapproval").show()
+        $("#Userapprovebtn").attr('onclick',`UpdateActivity('${vendorid}','${customerid}','${childid}','A')`)
+        $("#Userrejectbtn").attr('onclick',`UpdateActivity('${vendorid}','${customerid}','${childid}','R')`)
+                     
+    }
+   else{
+        $("#showapproval").hide() 
+    }
+    
+     if(taxIdType='IN3'){
+       gstflag=true;
+    }
+   
+    
+     setTimeout(function () {
+         
+              $('#ddlState').val(regionKey).trigger('change') 
+            }, 500);
+  
+     setTimeout(function () {
+         
+             $('#ddlCity').val(cityid).trigger('change') 
+              
+             $('#txtTINType').val(taxIdType).trigger('change') 
+             $('#txtTINType2').val(taxIdType2).trigger('change') 
+            }, 500);
+    
+    
 
     jQuery("#txtcompanyemail").val(emailid);
     jQuery("#txtAlternateeMailID").val(alternateemailid);
@@ -1695,20 +1855,27 @@ function ExtendVendor(vendorid, vname, emailid, dialingcodephone, phone, dialing
     $("#txtTINNo").val(gst);
     $("#txtPanNo").val(pan);
 
+    jQuery("#gstnStatus").val(gstnstatus);
+    jQuery("#eInvoiceStatus").val(einvoicestatus);
+    jQuery("#taxpayerType").val(taxpayertype);
 
 
 
-
-
-
+   
+    
+   
+    
+    setTimeout(function () {
+       
     $('#ParticipantName').attr('disabled', 'disabled');
+    $('#TradeName').attr('disabled', 'disabled');
     $('#txtAddress').attr('disabled', 'disabled');
     $('#txtCity').attr('disabled', 'disabled');
     $('#txtPanNo').attr('disabled', 'disabled');
     $('#txtTINNo').attr('disabled', 'disabled');
     $('#txtPhoneNo').attr('disabled', 'disabled');
-    $('#txtTINType').attr('disabled', 'disabled');
-
+    $('#txtTINType').attr('disabled', 'disabled'); 
+    
     $('#txtTINType2').attr('disabled', 'disabled');
     /*$('#txtMobileNo').attr('disabled', 'disabled');*/
     /* $('#txtcompanyemail').attr('disabled', 'disabled');*/
@@ -1721,8 +1888,11 @@ function ExtendVendor(vendorid, vname, emailid, dialingcodephone, phone, dialing
     //@abheedev
     /* $('#ddlCountryCd').attr('disabled', 'disabled')*/
     $('#ddlCountryCdPhone').attr('disabled', 'disabled')
+    
+    fetchMapCategory('Z', childid);
 
-    $('#lbl_panmsz').removeClass('hide');
+    $('#lbl_panmsz').removeClass('hide');},500)
+    
     /*if (isactive == "Y") {
         $('input:checkbox[name=chkIsActiveparticipant]').prop('checked', true);
         $('#chkIsActiveparticipant').parents('div').addClass('checked');
@@ -1734,7 +1904,7 @@ function ExtendVendor(vendorid, vname, emailid, dialingcodephone, phone, dialing
 
 }
 function ExtendParticipants() {
-
+  
     var InsertQuery = '';
 
     $('.childchkbox').each(function () {
@@ -1770,7 +1940,7 @@ function ExtendParticipants() {
         data: JSON.stringify(RegisterParticipants),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+           
             if (data.isSuccess == '1') {
                 $("#hdnParticipantID").val(data.participantID)
                 $('#divalertsucess').slideDown('show');
@@ -1788,7 +1958,7 @@ function ExtendParticipants() {
                 $('#divalerterr').css('display', 'none');
             }, 5000);
             fnfetchfoundVendors();
-            fetchParticipantsVenderTable();
+           fetchParticipantsVenderTable(0, SearchText);
 
         },
 
@@ -1841,7 +2011,7 @@ function clearform() {
     $('#txtPhoneNo').removeAttr('disabled')
     $('#ddlCountryCd').removeAttr('disabled')
     $('#txtMobileNo').removeAttr('disabled')
-    $('#ddlpreferredTime').removeAttr('disabled')
+     $('#ddlpreferredTime').removeAttr('disabled')
     $('#chkalternatemail').removeAttr('disabled')
     $('#ddlCountry').removeAttr('disabled')
     $('#ddlState').removeAttr('disabled')
@@ -1854,8 +2024,9 @@ function clearform() {
     $('#divVendorFormbtn').addClass('hide')
     $('#divVendorContactForm').addClass('hide')
     $('#lbl_panmsz').addClass('hide')
-    //  $('#div_tableVendor').addClass('hide');
     $('#btnAddAnother').addClass('hide');
+    //  $('#div_tableVendor').addClass('hide');
+   
 }
 function clearAddAnother() {
     jQuery("#txtPanNo").val('');
@@ -1866,6 +2037,7 @@ function clearAddAnother() {
     jQuery("#txtZipCd").val('');
     jQuery("#txtPhoneNo").val('');
     $('#txtTINType').removeAttr('disabled');
+    jQuery("#TradeName").val('');
 
     $('.childchkbox').each(function () {
         jQuery(this).closest('span#spancheckedvendorgroup').removeAttr('class');
@@ -1938,7 +2110,7 @@ function fetchCountry() {
         async: false,
         dataType: "json",
         success: function (data) {
-
+            
             $("#ddlCountry").empty();
             $("#ddlCountryCd").empty();
             $("#ddlCountryCdPhone").empty();
@@ -1964,7 +2136,7 @@ function fetchCountry() {
 
         },
         error: function (xhr, status, error) {
-
+        
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -2020,7 +2192,7 @@ function fetchCountry() {
 
 
 function fetchCity(stateid) {
-
+    
     if (stateid == null) {
         stateid = 0;
     }
@@ -2035,12 +2207,12 @@ function fetchCity(stateid) {
         async: false,
         dataType: "json",
         success: function (data) {
-
+        
             $("#ddlCity").empty();
             if (data.length > 0) {
-                $("#ddlCity").append("<option value=0>Select City</option>");
+                $("#ddlCity").append("<option value=0 data-cityName='"+ ""+"'>Select City</option>");
                 for (var i = 0; i < data.length; i++) {
-                    $("#ddlCity").append("<option value=" + data[i].cityID + ">" + data[i].cityName + "</option>");
+                    $("#ddlCity").append("<option value=" + data[i].cityID + " data-cityName='" + data[i].cityName + "'>" + data[i].cityName + "</option>");
                 }
                 $("#ddlCity").val('0').trigger("change");
             }
@@ -2076,22 +2248,24 @@ function DownloadFile(aID) {
 
 
 function extractPan(data) {
-
+   
     $('#txtTINNo').removeClass("gstvalidicon")
     var reggst = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/
 
 
     if (data.value.length === 15) {
         if (!reggst.test(data.value)) {
+            gstflag=false;
             bootbox.alert('GST Number Format is not valid. please check it');
             return false;
+            
         }
-
+        
         ValidateGST(data.value)
 
     }
     else {
-
+         gstflag=false;   
         $("#txtPanNo").val("");
         // $("#txtPanNo").removeAttr("disabled", "disabled");
         beforeTaxDisable()
@@ -2101,46 +2275,70 @@ function extractPan(data) {
 
 
 function ValidateGST(data) {
-
+ 
     let GSTNo = data
-
+  
+   
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+           
             if (status != 'E') {
-                if (data.status != 'E') {
-                    var data = jQuery.parseJSON(data);
-                    let panNumber = ""
-                    let legalName = data.legalName
+                if(data.status != 'E'){
+                var data = jQuery.parseJSON(data);
+                gstflag=true
+                let panNumber = ""
+                let legalName = data.legalNameOfBusiness
+                let tradeName=data.tradeName
+                 
+                let tradeaddress=`${data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.buildingName} ${data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.buildingNumber} ${data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.streetName} ${data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.location} ${data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.districtName} `
+               
+                let gststatus = data.gstnStatus
+                let eInvoiceStatus=data.eInvoiceStatus
+                let taxpayerType=data.taxpayerType
+                let stateName=data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.stateName
+                let pincode =data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.pincode
+                
+                $('#txtTINNo').addClass("gstvalidicon")
 
 
-                    $('#txtTINNo').addClass("gstvalidicon")
-
-
-                    panNumber = data.gstin.substring(2, 12);
-                    $("#txtPanNo").val(panNumber);
-                    $("#txtPanNo").attr("disabled", "disabled");
-                    afterTaxEnable()
-                    $("#ParticipantName").val(legalName);
-                    $("#ParticipantName").attr("disabled", "disabled");
-                    setTimeout(function () {
-                        $('#txtTINNo').removeClass("gstvalidicon");
-                    }, 2000);
+                panNumber = data.gstIdentificationNumber.substring(2, 12);
+                $("#txtPanNo").val(panNumber);
+                $("#txtPanNo").attr("disabled", "disabled");
+                afterTaxEnable()
+                $("#ParticipantName").val(legalName);
+                $("#ParticipantName").attr("disabled", "disabled");
+                $("#TradeName").val(tradeName);
+                $("#txtAddress").val(tradeaddress);
+                
+                $("#gstnStatus").val(gststatus);
+                $("#eInvoiceStatus").val(eInvoiceStatus);
+                $("#taxpayerType").val(taxpayerType);
+                $("#txtZipCd").val(pincode);
+                
+               
+                
+                
+                jQuery("#ddlState").find(`option[data-statename=${stateName}]`).prop('selected', true).trigger('change')
+                
+                setTimeout(function () {
+                   
+                    $('#txtTINNo').removeClass("gstvalidicon");
+                }, 2000);
                 }
-                else {
-                    $('.alert-danger').html('Some error occured')
-                    $('.alert-danger').show();
-                    Metronic.scrollTo($('.alert-danger'), -200);
-                    $('.alert-danger').fadeOut(5000);
-                    $('.alert-danger').html('')
+                else{
+                     $('#divalerterr').html('GST Number could not be validated')
+                     $('#divalerterr').show();
+                     Metronic.scrollTo($('.alert-danger'), -200);
+                     $('.alert-danger').fadeOut(5000);
+                     
                 }
             }
             else {
-                $('.alert-danger').html('No such GST number exist')
+                $('.alert-danger').html('GST Number could not be validated')
                 $('.alert-danger').show();
                 Metronic.scrollTo($('.alert-danger'), -200);
                 $('.alert-danger').fadeOut(5000);
@@ -2152,13 +2350,18 @@ function ValidateGST(data) {
 
         },
         error: function (xhr, status, error) {
-
+           
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                fnErrorMessageText('spanerterr', '');
+                $('.alert-danger').html('')
+                $('.alert-danger').html(err)
+                $('.alert-danger').show();
+                Metronic.scrollTo($('.alert-danger'), -200);
+                $('.alert-danger').fadeOut(5000);
+                
             }
             jQuery.unblockUI();
             return false;
@@ -2187,7 +2390,7 @@ function beforeTaxDisable() {
 }
 
 function afterTaxEnable() {
-    $('#ParticipantName').removeAttr('disabled');
+   // $('#ParticipantName').removeAttr('disabled');
     /*$('#ContactName').removeAttr('disabled');*/
     $('#txtAddress').removeAttr('disabled');
     $('#ddlState').removeAttr('disabled');
@@ -2230,6 +2433,7 @@ function clearformkeyup() {
     jQuery("#txtCity").val('');
     jQuery("#txtZipCd").val('');
     jQuery("#txtPanNo").val('');
+    jQuery("#TradeName").val('');
     /* jQuery("#txtTINNo").val('');*/
     jQuery("#txtPhoneNo").val('');
     jQuery("#txtMobileNo").val('');
@@ -2298,7 +2502,7 @@ function enableParent() {
     $("#ContactName").removeAttr('disabled');
     $('#ddlCountryCd').removeAttr('disabled');
     $('#txtMobileNo').removeAttr('disabled');
-    // $('#txtcompanyemail').removeAttr('disabled');
+   // $('#txtcompanyemail').removeAttr('disabled');
     $('#chkalternatemail').removeAttr('disabled');
     $('#ddlpreferredTime').removeAttr('disabled');
     $('#chkIsActiveparticipant').removeAttr('disabled');
@@ -2306,7 +2510,7 @@ function enableParent() {
 
 //advance vendor search
 function fetchAdvanceSearch() {
-
+   
     let categoryresult = [];
     let selectedValue = $('#txtsearchvendor').val();
     if ($("#txtsearchcat").select2('data').length) {
@@ -2334,9 +2538,8 @@ function fetchAdvanceSearch() {
 //fetchvendorsdetails
 
 function fetchVendorRegistrationDetails(custid, vendId) {
-
-
-
+ 
+   console.log(sessionStorage.getItem("APIPath") + "VendorLCM/GetVendorById/?Id=" + vendId + "&CustomerId=" + custid)
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -2347,7 +2550,7 @@ function fetchVendorRegistrationDetails(custid, vendId) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-
+          
             /* if (!data.isVendorPresent) {
                  $("#hdnFlagType").val("New")
                  $('#divVendorForm').removeClass('hide')
@@ -2363,18 +2566,24 @@ function fetchVendorRegistrationDetails(custid, vendId) {
             //
             let parentData = data.vendorMasterToReturn;
             let childData = data.vendorChildrenToReturn;
-            ParticipantID = parentData.vendorID;
-            $('#spnvendorcode').text(ParticipantID)
+            ParticipantCode = parentData.vendorCode;
+            Participantid = parentData.vendorID;
+            $('#spnvendorcode').text(Participantid)
             let isactiveUser = parentData.isActive;
-            $("#personname").text(parentData.vendorName)
-            $("#personnamealt").text(parentData.contactPerson)
+            debugger
+            $("#personname").text(StringDecodingMechanism(parentData.contactPerson))
+            $("#personnamealt").text(StringDecodingMechanism(parentData.contactNameAlt))
+            
+         
             $("#hdnVendorCode").val(parentData.vendorCode) //hidden vendor code
 
             $("#vendormobileno").text(parentData.mobileNo)
             $("#vendoraltmobileno").text(parentData.phone)
             $("#ddlCountryCdm").text(parentData.mobilePrefix)
             $("#ddlCountryAltCd").text(parentData.phonePrefix)
-
+            
+             $("#showapprovalM").hide()
+            
             $("#vendorEmailID").text(parentData.emailID)
             if (parentData.alternateEmailID == "") {
                 $("#vendorAltEmailID").text(parentData.emailID)
@@ -2386,7 +2595,7 @@ function fetchVendorRegistrationDetails(custid, vendId) {
             $('#ddlpreferredTimem').val(parentData.preferredtimezone).trigger('change') //abheedev 28/11/2022 bug 530
 
 
-
+            sapselection() //select2 for sap
 
             $('#tblCompaniesFoundDetails').empty();
             var addr1 = "";
@@ -2396,7 +2605,7 @@ function fetchVendorRegistrationDetails(custid, vendId) {
             if (childData.length > 0) {
 
                 $('#tblCompaniesFoundDetails').append("<thead><tr><th class='hide'></th><th>Company Name</th><th>Address</th><th>Tax Identification Number</th><th></th></tr></thead><tbody>")
-
+                
                 for (var i = 0; i < childData.length; i++) {
 
                     //AssociatedVendorID = childData[i].childId;
@@ -2404,29 +2613,31 @@ function fetchVendorRegistrationDetails(custid, vendId) {
                     addr2 = (childData[i].address2 || "").replace(/\n/g, " ");
                     taxIdNo = childData[i].taxId;
                     addrC = childData[i].address + " " + childData[i].city + " " + childData[i].state + " " + childData[i].country;
-
-                    /* if (isSapIntegrated != 'Y') { 
-                          if (childData[i].isParent == 'Y') {
-                              $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendorModal(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].country || "") + "'\,\'" + (childData[i].state || "") + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].city || "") + "'\,\'" + (childData[i].childId || "") + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-expand\"></i>Expand</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityId|| "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
-                              $('#btnAddAnother').removeClass('hide');
-                              return true
-                          }
-                          
-                      }
-                      else {
-                          $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendorModal(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].country || "") + "'\,\'" + (childData[i].state || "") + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].city || "") + "'\,\'" + (childData[i].childId || "") + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-expand\"></i>Expand</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityId || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
-                          $('#btnAddAnother').removeClass('hide');
-                      }*/
-
-                    $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendorModal(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].country || "") + "'\,\'" + (childData[i].state || "") + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].city || "") + "'\,\'" + (childData[i].childId || "") + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-expand\"></i>Expand</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityId || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+/*
+                   if (isSapIntegrated != 'Y') { 
+                        if (childData[i].isParent == 'Y') {
+                            $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendorModal(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].country || "") + "'\,\'" + (childData[i].state || "") + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].city || "") + "'\,\'" + (childData[i].childId || "") + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\,\'" + childData[i].gstnStatus + "'\,\'" + childData[i].eInvoiceStatus + "'\,\'" + childData[i].taxpayerType + "'\,\'" + data.showApproval + "'\,\'" + childData[i].legalName + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-expand\"></i>Expand</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityId|| "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                            $('#btnAddAnother').removeClass('hide');
+                            return true
+                        }
+                        
+                    }
+                    else {
+                        $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendorModal(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].country || "") + "'\,\'" + (childData[i].state || "") + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].city || "") + "'\,\'" + (childData[i].childId || "") + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\,\'" + childData[i].gstnStatus + "'\,\'" + childData[i].eInvoiceStatus + "'\,\'" + childData[i].taxpayerType + "'\,\'" + data.showApproval+ "'\,\'" + childData[i].legalName + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-expand\"></i>Expand</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityId || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                        $('#btnAddAnother').removeClass('hide');
+                    }*/
+                    
+                    $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendorModal(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].country || "") + "'\,\'" + (childData[i].state || "") + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].city || "") + "'\,\'" + (childData[i].childId || "") + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\,\'" + childData[i].gstnStatus + "'\,\'" + childData[i].eInvoiceStatus + "'\,\'" + childData[i].taxpayerType + "'\,\'" + data.showApproval+ "'\,\'" + childData[i].legalName + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-expand\"></i>Expand</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityId || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
                     $('#btnAddAnother').removeClass('hide');
+                   
+
                 }
 
             }
 
         },
         error: function (xhr, status, error) {
-
+          
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -2447,137 +2658,153 @@ function fetchVendorRegistrationDetails(custid, vendId) {
     }, 5000);
 }
 
-function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, country, state, prefferredTZ, city, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile, taxIdType, taxIdType2, regionKey, countryKey, Langu, currency) {
-
+function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, country, state, prefferredTZ, city, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile, taxIdType, taxIdType2, regionKey, countryKey, Langu, currency,gstnstatus,einvoicestatus,taxpayertype,showApproval,legalName) {
+  
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    setTimeout(function () {
+    setTimeout(function() {
+      
+    clearexternal()
+    $('#childDetailsForm').removeClass('hide')
+    $("#bankaccordion").show()
+    $("#financeaccordion").show()
+    $('#ddlCountrym').text(country)
+    $('#ddlStatem').text(state)
+    $('#ddlCitym').text(city)
+    $('#txtTINTypemodal').text(taxIdType)
+    $('#txtTINTypemodal2').text(taxIdType2)
+    
+   if(showApproval=="Y"){
+                    
+        $("#showapprovalM").show()
+        $("#UserapprovebtnM").attr('onclick',`UpdateActivity('${vendorid}','${customerid}','${childid}','A')`)
+        $("#UserrejectbtnM").attr('onclick',`UpdateActivity('${vendorid}','${customerid}','${childid}','R')`)
+                     
+    }
+   else{
+        $("#showapprovalM").hide() 
+    }
+    
 
-        clearexternal()
-        $('#childDetailsForm').removeClass('hide')
-        $("#bankaccordion").show()
-        $("#financeaccordion").show()
-        $('#ddlCountrym').text(country)
-        $('#ddlStatem').text(state)
-        $('#ddlCitym').text(city)
-        $('#txtTINTypemodal').text(taxIdType)
-        $('#txtTINTypemodal2').text(taxIdType2)
-
-
-        $('#ddllanguagemodal').text(Langu)
-        $('#ddlcurrencymodal').text(currency)
-
-
-        $('#hdnCountryKey').val(countryKey)
-        $('#hdnRegionKey').val(regionKey)
-
-
-
-
-        jQuery("#vendorname").text(vname);
-        jQuery("#vendoraddress").text(decodeURIComponent(addr));
-
-        jQuery("#vendorpanno").text(pan);
-
-        jQuery("#txtTINNom").text(gst);
-        jQuery("#txtPhoneNo").text(phone);
-        jQuery("#txtMobileNo").text(mobile);
-        jQuery("#txtcompanyemail").text(emailid);
-        jQuery("#txtAlternateeMailID").text(alternateemailid);
-        jQuery("#pincode").text(zipcode)
+    $('#ddllanguagemodal').text(Langu)
+    $('#ddlcurrencymodal').text(currency)
 
 
-        $('.radio').find('span').removeClass('checked');
-
-        //@abheedev
-
-
-        //company specific
-        jQuery("#ddlNatureEstaiblishment").text("Private Limited Company");
-        $('#ddlVendorType').val(supplierType).trigger('change')
-        if (supplierType == "1") {
-            $('#ddlVendorType').text("Supply Vendor")
-        }
-        else if (supplierType == "2") {
-            $('#ddlVendorType').text("Service Vendor")
-        }
-        else if (supplierType == "3") {
-            $('#ddlVendorType').text("Both")
-        }
-        else {
-            $('#ddlVendorType').text("")
-        }
-        if (msmeCheck == "Y") {
-            $('#ddlMSME').text("Yes")
-        }
-        else if (msmeCheck == "N") {
-            $('#ddlMSME').text("No")
-        }
-        else {
-            $('#ddlMSME').text("")
-        }
-
-        // $('#ddlMSMEClass').val(msmeType).trigger('change')
-        // $('#txtUdyam').val(msmeNo)
-        // $('#msmeattach').html(msmeFile)
-        $('#gstattach').html(taxIdFile)
-        $('#panattach').html(taxId2File)
-
-        //Bank specific
-        /* $('#ddPayTerms').val("0").trigger('change')
-         $('#ifsccode').val("")
-         $('#bankname').val("")
-         $('#bankaccount').val("")
-         $('#accountholder').val("")
-         $('#checkattach').html("")*/
-
-        //finance specific
+    $('#hdnCountryKey').val(countryKey)
+    $('#hdnRegionKey').val(regionKey)
+    
+    $('#tradenamem').text(vname)
+    $('#gstnstatusm').text(gstnstatus)
+    $('#einvoicestatusm').text(einvoicestatus)
+    $('#taxpayertypem').text(taxpayertype)
 
 
 
 
-        $('#txtTINNo').attr('disabled', 'disabled');
-        $('#ddlCountry').attr('disabled', 'disabled');
-        $('#vendorpanno').attr('disabled', 'disabled');
+    jQuery("#vendorname").text(legalName);
+    jQuery("#vendoraddress").text(addr);
 
-        $('#vendorname').attr('disabled', 'disabled');
-        $('#ddlNatureEstaiblishment').attr('disabled', 'disabled');
+    jQuery("#vendorpanno").text(pan);
 
-        //hide tags
-        $('#bankForm').hide();
-        $('#financeform').hide();
-        $("#txtTINNo").removeAttr("onchange");
-        jQuery("#hdnChildID").val(childid)
-        jQuery("#hdnVendorId").val(vendorid)
+    jQuery("#txtTINNom").text(gst);
+    jQuery("#txtPhoneNo").text(phone);
+    jQuery("#txtMobileNo").text(mobile);
+    jQuery("#txtcompanyemail").text(emailid);
+    jQuery("#txtAlternateeMailID").text(alternateemailid);
+    jQuery("#pincode").text(zipcode)
 
 
-        GetFinancialDetail(parseInt(childid), parseInt(vendorid))
-        GetBankDetail(parseInt(childid), customerid)
+    $('.radio').find('span').removeClass('checked');
 
-        GetCustomerSpecificMaster(customerid) //function defined in common.js
-        GetCountrySpecificMaster(countryKey)  //function defined in common.js
-
-        if (isSapIntegrated == 'Y') {
-            jQuery("#sapuseraccordion").show()
-            GetVendorExternalDetail(parseInt(vendorid), parseInt(childid), customerid)
-
-        }
-        else {
-            jQuery("#sapuseraccordion").hide()
-        }
+    //@abheedev
 
 
-        jQuery.unblockUI()
+    //company specific
+    jQuery("#ddlNatureEstaiblishment").text("Private Limited Company");
+    $('#ddlVendorType').val(supplierType).trigger('change')
+    if (supplierType == "1") {
+        $('#ddlVendorType').text("Supply Vendor")
+    }
+    else if (supplierType == "2") {
+        $('#ddlVendorType').text("Service Vendor")
+    }
+    else if (supplierType == "3") {
+        $('#ddlVendorType').text("Both")
+    }
+    else {
+        $('#ddlVendorType').text("")
+    }
+    if (msmeCheck == "Y") {
+        $('#ddlMSME').text("Yes")
+    }
+    else if (msmeCheck == "N") {
+        $('#ddlMSME').text("No")
+    }
+    else {
+        $('#ddlMSME').text("")
+    }
+
+    // $('#ddlMSMEClass').val(msmeType).trigger('change')
+    // $('#txtUdyam').val(msmeNo)
+    // $('#msmeattach').html(msmeFile)
+    $('#gstattach').html(taxIdFile)
+    $('#panattach').html(taxId2File)
+
+    //Bank specific
+    /* $('#ddPayTerms').val("0").trigger('change')
+     $('#ifsccode').val("")
+     $('#bankname').val("")
+     $('#bankaccount').val("")
+     $('#accountholder').val("")
+     $('#checkattach').html("")*/
+
+    //finance specific
 
 
-    }, 500)
 
+
+    $('#txtTINNo').attr('disabled', 'disabled');
+    $('#ddlCountry').attr('disabled', 'disabled');
+    $('#vendorpanno').attr('disabled', 'disabled');
+
+    $('#vendorname').attr('disabled', 'disabled');
+    $('#ddlNatureEstaiblishment').attr('disabled', 'disabled');
+
+    //hide tags
+    $('#bankForm').hide();
+    $('#financeform').hide();
+    $("#txtTINNo").removeAttr("onchange");
+    jQuery("#hdnChildID").val(childid)
+    jQuery("#hdnVendorId").val(vendorid)
+
+
+    GetFinancialDetail(parseInt(childid), parseInt(vendorid))
+    GetBankDetail(parseInt(childid), customerid,parseInt(vendorid))
+
+    GetCustomerSpecificMaster(customerid) //function defined in common.js
+    GetCountrySpecificMaster(countryKey)  //function defined in common.js
+
+    if (isSapIntegrated == 'Y') {
+        jQuery("#sapuseraccordion").show()
+        GetVendorExternalDetail(parseInt(vendorid), parseInt(childid), customerid)
+        
+    }
+    else {
+        jQuery("#sapuseraccordion").hide()
+    }
+    
+
+    jQuery.unblockUI()    
+    
+    
+    },500)
+   
 
 }
 
 
-function GetBankDetail(ChildId, customerid) {
+/*function GetBankDetail(ChildId, customerid) {
 
-
+   
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -2587,7 +2814,7 @@ function GetBankDetail(ChildId, customerid) {
         cache: false,
         dataType: "json",
         success: function (childData) {
-
+    
             if (childData.length > 0) {
                 $('#tblGetBankDetail').empty();
                 $('#tblGetBankDetail').append("<thead><tr><th>Action</th><th>Bank Name</th><th>Account Number</th><th>IFSC Code</th></tr></thead><tbody>");
@@ -2622,7 +2849,88 @@ function GetBankDetail(ChildId, customerid) {
         }
 
     });
+}*/
+
+
+
+function GetBankDetail(ChildId, CustId, vendorid) {
+     debugger
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "VendorLCM/GetBankDetail/?ChildId=" + ChildId + "&CustomerId=" + CustId,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        dataType: "json",
+        success: function (childData) {
+               debugger
+               
+               let isBVerify=""
+            $('#mapMN').val($('#vendormobileno').val())
+            if (childData.length > 0) {
+                $('#tblGetBankDetail').empty();
+
+
+                $('#tblGetBankDetail').append("<thead><tr><th>Action</th><th>Bank Name</th><th>Account Number</th><th>IFSC Code</th></tr></thead><tbody>");
+                for (var i = 0; i < childData.length; i++) {
+                    isBVerify=childData[i].isVerified;
+                    if(isBVerify=="Y"){
+                         $('#tblGetBankDetail').append("<tr onclick=''><td><button type='button' class='btn btn-xs btn-primary' onclick=\"editBankDetail('" + childData[i].bankingId + "','" + childData[i].childId + "','" + childData[i].bankCountryKey + "','" + childData[i].bankRoutingNumber + "','" + childData[i].bankName + "','" + childData[i].cancelledCheckFile + "','" + childData[i].payTerm + "','" + childData[i].bankAccountNumber + "','" + childData[i].accounHolderName + "')\">Edit</button></td><td class='hovertextLeft' data-hover='Click here to see associated customer with this bank account' onclick=\"viewbankcustomer(\'" + "accordion" + childData[i].bankingId + "'\)\">" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "  <img src='assets/img/greenchecktick.svg' width='25px' height='25px' style='{margin-bottom:4px;}'/></td><td>" + childData[i].bankRoutingNumber + "</td></tr>");
+                   
+                    }
+                    else{
+                        $('#tblGetBankDetail').append("<tr onclick=''><td><button type='button' class='btn btn-xs btn-primary' onclick=\"editBankDetail('" + childData[i].bankingId + "','" + childData[i].childId + "','" + childData[i].bankCountryKey + "','" + childData[i].bankRoutingNumber + "','" + childData[i].bankName + "','" + childData[i].cancelledCheckFile + "','" + childData[i].payTerm + "','" + childData[i].bankAccountNumber + "','" + childData[i].accounHolderName + "')\">Edit</button></td><td class='hovertextLeft' data-hover='Click here to see associated customer with this bank account' onclick=\"viewbankcustomer(\'" + "accordion" + childData[i].bankingId + "'\)\">" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "</td><td>" + childData[i].bankRoutingNumber + "</td></tr>");
+                   
+                    }
+                    
+                    if (childData[i].mappedCustomersList.length > 0) {
+                        
+                            $('#tblGetBankDetail').append("<tr style='display:none' class='accordion" + childData[i].bankingId + "'><th colspan='5'>Customer list</th></tr>");
+                        
+                    }
+                    else {
+                        $('#tblGetBankDetail').append("<tr style='display:none' class='accordion" + childData[i].bankingId + "'><th colspan='5'>No customer is associated with this bank account</th></tr>");
+
+                    }
+                    for (var j = 0; j < childData[i].mappedCustomersList.length; j++) {
+
+                        $('#tblGetBankDetail').append("<tr style='display:none' class='accordion" + childData[i].bankingId + "'><td colspan='5'>" + childData[i].mappedCustomersList[j].customerName + "</td><td class='hide'>" + childData[i].mappedCustomersList[j].mappingId + "</td><td class='hide'>" + childData[i].mappedCustomersList[j].bankingId + "</td><td class='hide'>" + childData[i].mappedCustomersList[j].associateVendorId + "</td><td class='hide'>" + childData[i].mappedCustomersList[j].customerId + "</td></tr>")
+
+                    }
+
+
+
+
+
+                }
+
+                jQuery.unblockUI();
+
+            }
+            else {
+                $('#tblGetBankDetail').empty();
+            }
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
 }
+
+
 
 function expandBankDetail(bankingId, childId, bankCountryKey, bankRoutingNumber, bankName, cancelledCheckFile, payTerm, bankAccountNumber, bankCountryKey) {
 
@@ -2640,7 +2948,7 @@ function expandBankDetail(bankingId, childId, bankCountryKey, bankRoutingNumber,
 
 function GetFinancialDetail(ChildId, VendId) {
 
-
+   
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -2650,16 +2958,23 @@ function GetFinancialDetail(ChildId, VendId) {
         cache: false,
         dataType: "json",
         success: function (childData) {
-
+          
             if (childData.length > 0) {
                 $('#tblGetFinancialDetail').empty()
-                $('#tblGetFinancialDetail').append("<thead><tr><th class='hide'></th><th>Financial Year</th><th>Turn Over</th></tr></thead><tbody>")
+                $('#tblGetFinancialDetail').append("<thead><tr><th class='hide'></th><th>Turn Over</th><th>Financial Year</th><th>Attachment</th></tr></thead><tbody>")
                 for (var i = 0; i < childData.length; i++) {
 
 
-                    $('#tblGetFinancialDetail').append("<tr><td class='hide'></td><td>" + childData[i].financialYearFrom + " - " + childData[i].financialYearTo + "</td><td>" + thousands_separators(childData[i].turnover) + " " + childData[i].currency + "</td></tr>")
-
-
+                   
+                     if(childData[i].attachmentName){
+                        $('#tblGetFinancialDetail').append(`<tr><td class='hide'>${childData[i].financialDetailId}</td><td>${thousands_separators(childData[i].turnover)}  ${childData[i].currency}</td><td>${childData[i].financialYearFrom}  - ${childData[i].financialYearTo} </td><td><a href="javascript:;" onclick="DownloadFile(this)" id="financeattach${i}" class="txtleftnone">${(childData[i].attachmentName)}</a></td></tr>`)
+ 
+                    }
+                    else{
+                        $('#tblGetFinancialDetail').append(`<tr><td class='hide'>${childData[i].financialDetailId}</td><td>${thousands_separators(childData[i].turnover)}  ${childData[i].currency}</td><td>${childData[i].financialYearFrom}  - ${childData[i].financialYearTo} </td><td></td></tr>`)
+ 
+                    }
+                   
                 }
 
                 jQuery.unblockUI();
@@ -2742,8 +3057,8 @@ function fetchpayment() {
 
 
 function GetVendorExternalDetail(vendId, ChildId, CustId) {
-
-
+debugger
+   
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -2753,19 +3068,20 @@ function GetVendorExternalDetail(vendId, ChildId, CustId) {
         cache: false,
         dataType: "json",
         success: function (data) {
-            debugger
-
+           
+         
             if (!data) {
                 jQuery("#hdnExternalActionTypeUser").val("Add");
                 jQuery("#hdnExternalActionTypeFinancer").val("Add");
                 $("#btnPostToExternalSource").hide();
                 $("#sapwitholdingtaxaccordion").hide();
+                $("#UpdateUserByDetail").removeAttr("disabled");
 
                 return false
 
             }
 
-
+             debugger
             if (data.coCd !== 0 || data.vendorAccGrp !== "0") {
                 jQuery("#hdnExternalActionTypeFinancer").val("Update");
                 jQuery("#hdnExternalActionTypeUser").val("Update")
@@ -2782,7 +3098,7 @@ function GetVendorExternalDetail(vendId, ChildId, CustId) {
             else {
                 $("#sapwitholdingtaxaccordion").hide();
             }
-
+           
             if (data.partnerNumber == "") {
                 $("#btnPostToExternalSource").show();
                 $("#UpdateUserByDetail").removeAttr("disabled");
@@ -2792,14 +3108,14 @@ function GetVendorExternalDetail(vendId, ChildId, CustId) {
                 $("#externalsourceid").text(data.partnerNumber);
                 $("#UpdateUserByDetail").attr("disabled", "disabled");
             }
+            
 
 
-
-
+            
 
             $("#hdnSourceId").val(data.sourceId);
             $("#hdnGRBasedInvoiceLogic").val(data.grBasedInvoiceLogic);
-
+            
 
             $('#CoCd').val(data.coCd).trigger('change')
             $('#PayTerm').val(data.payTerm).trigger('change')
@@ -2814,29 +3130,29 @@ function GetVendorExternalDetail(vendId, ChildId, CustId) {
             $('#WitholdingTaxCode').text(data.witholdingTaxCode)
 
             $('#ReconAcc').val(data.reconAcc).trigger('change')
-
+            
             $('#authGrp').val(data.authGroup).trigger('change')
             $('#gstVendClass').val(data.gstVendClass).trigger('change')
+            
+             
+           
+    
+            
+             // To check required value updated
+            if (jQuery("#authGrp option:selected").val() == "" || jQuery("#WitholdingTaxType option:selected").val() == "0" ||$("#CoCd option:selected").val() == "0" || $("#PayTerm option:selected").val() == "0" || $("#PORG option:selected").val() == "0") {
+                  $("#btnPostToExternalSource").hide(); 
+             }
+           
+
+     
+   
 
 
-
-
-
-            // To check required value updated
-            if (jQuery("#authGrp option:selected").val() == "" || jQuery("#WitholdingTaxType option:selected").val() == "0" || $("#CoCd option:selected").val() == "0" || $("#PayTerm option:selected").val() == "0" || $("#PORG option:selected").val() == "0") {
-                $("#btnPostToExternalSource").hide();
-            }
-
-
-
-
-
-
-            jQuery.unblockUI();
+        jQuery.unblockUI();
 
         },
         error: function (xhr, status, error) {
-
+             debugger
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -2855,7 +3171,7 @@ function GetVendorExternalDetail(vendId, ChildId, CustId) {
 
 
 $('#ddlCountry').on('change', function () {
-
+    
     let CountryKey = $(this).val();
 
     GetCountrySpecificMaster(CountryKey)
@@ -2865,9 +3181,9 @@ $('#ddlCountry').on('change', function () {
 
 
 $('#ddlState').on('change', function () {
-
+    
     let stateidentity = $('option:selected', this).data('stateid') || 0;
-
+   
 
     fetchCity(parseInt(stateidentity));
 });
@@ -2891,31 +3207,26 @@ $('#WitholdingTaxType').on('change', function () {
 
 
 function UpdateExternalSourceUser() {
-
+    debugger
     if (jQuery("#WitholdingTaxType option:selected").val() == "0") {
-        $('#divalerterrsap').html('')
-        $('#divalerterrsap').html('Please select a valid value of Witholding tax to proceed...')
-        $('#divalerterrsap').show();
-        $('#divalerterrsap').fadeOut(5000);
+       
+        alertforerror('Please select a valid value of Witholding tax to proceed...')
         return false
     }
-
+    
     if (jQuery("#authGrp option:selected").val() == "") {
-        $('#divalerterrsap').html('')
-        $('#divalerterrsap').html('Please select a valid value of Authorization Group to proceed...')
-        $('#divalerterrsap').show();
-        $('#divalerterrsap').fadeOut(5000);
+        
+        
+        alertforerror('Please select a valid value of Authorization Group to proceed...')
         return false
     }
 
     if ($("#CoCd option:selected").val() == "0" || $("#PayTerm option:selected").val() == "0" || $("#PORG option:selected").val() == "0") {
-        $('#divalerterrsap').html('')
-        $('#divalerterrsap').html('Please select valid value for all required Fields')
-        $('#divalerterrsap').show();
-        $('#divalerterrsap').fadeOut(5000);
+    
+        alertforerror('Please select valid value for all required Fields')
         return false
     }
-
+   
     let externalactiontype = jQuery("#hdnExternalActionTypeUser").val();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var sourcedata = {
@@ -2942,12 +3253,12 @@ function UpdateExternalSourceUser() {
         "PartnerFunction": "",
         "CustomerId": parseInt(sessionStorage.getItem('CustomerID')),
         "SourceId": parseInt($("#hdnSourceId").val()),
-        "AuthGroup": jQuery("#authGrp option:selected").val(),
-        "GstVendClass": jQuery("#gstVendClass option:selected").val()
-
+        "AuthGroup":jQuery("#authGrp option:selected").val(),
+        "GstVendClass":jQuery("#gstVendClass option:selected").val()
+    
     };
 
-
+    
     jQuery.ajax({
 
         // url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RegParticpants_PEV2/",
@@ -2958,20 +3269,19 @@ function UpdateExternalSourceUser() {
         data: JSON.stringify(sourcedata),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+            debugger
             $("#UpdateUserByDetail").attr("disabled", "disabled");
             jQuery.unblockUI();
 
 
-            $('#divalertsucesssap').html('')
-            $('#divalertsucesssap').html('Your Supplier detail is updated successfully...')
-            $('#divalertsucesssap').show();
-            $('#divalertsucesssap').fadeOut(2000);
-
-
+            
+            
+            alertforinfo('Your Supplier detail is updated successfully...')
+           
             setTimeout(function () {
 
-                $('#viewalldetails').modal('hide');
+                 GetVendorExternalDetail(parseInt(jQuery("#spnvendorcode").text()), parseInt(jQuery("#hdnChildID").val()), parseInt(sessionStorage.getItem('CustomerID'))) 
+
             }, 2000);
 
 
@@ -2979,16 +3289,15 @@ function UpdateExternalSourceUser() {
 
         },
         error: function (xhr, status, error) {
+            debugger
             $("#UpdateUserByDetail").removeAttr("disabled");
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                $('#divalerterrsap').html('')
-                $('#divalerterrsap').html(err)
-                $('#divalerterrsap').show();
-                $('#divalerterrsap').fadeOut(5000);
+                 
+                 alertforerror(err);
             }
             jQuery.unblockUI();
             return false;
@@ -3011,40 +3320,32 @@ function PostToExternalSource() {
 
 
     if ($("#bankCountryKey").text() == "" || $("#ifsccode").text() == "" || $("#bankaccount").text() == "") {
-        $('#divalerterrsap').html('')
-        $('#divalerterrsap').html('Please click on expand button in Bank Details section for your preffered bank account...')
-        $('#divalerterrsap').show();
-        $('#divalerterrsap').fadeOut(5000);
+        
+        alertforerror(`Please click on expand button in Bank Details section for your preffered bank account...`)
         return false
     }
-
+    
     if (jQuery("#authGrp option:selected").val() == "") {
-        $('#divalerterrsap').html('')
-        $('#divalerterrsap').html('Please select a valid value of Authorization Group to proceed...')
-        $('#divalerterrsap').show();
-        $('#divalerterrsap').fadeOut(5000);
+        
+        alertforerror('Please select a valid value of Authorization Group to proceed...')
         return false
     }
 
-
-    if (jQuery("#WitholdingTaxType option:selected").val() == "0") {
-        $('#divalerterrsap').html('')
-        $('#divalerterrsap').html('Please select a valid value of Witholding tax to proceed...')
-        $('#divalerterrsap').show();
-        $('#divalerterrsap').fadeOut(5000);
+    
+     if (jQuery("#WitholdingTaxType option:selected").val() == "0") {
+        
+        alertforerror('Please select a valid value of Witholding tax to proceed...')
         return false
     }
 
     if ($("#CoCd option:selected").val() == "0" || $("#PayTerm option:selected").val() == "0" || $("#PORG option:selected").val() == "0") {
-        $('#divalerterrsap').html('')
-        $('#divalerterrsap').html('Please select valid value for all required Fields')
-        $('#divalerterrsap').show();
-        $('#divalerterrsap').fadeOut(5000);
+       
+        alertforerror('Please select valid value for all required Fields')
         return false
     }
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    debugger
+     debugger
     var sourcedata = {
         "PARTNER": "",
         "VGROUP": jQuery("#VendorAccGrp option:selected").val(),
@@ -3097,10 +3398,10 @@ function PostToExternalSource() {
         "MINDK": "",
         "ISEC": "",
         "J_1ICSTNO": "",
-        "MESSAGE": "",
-        "AUGRP": jQuery("#authGrp option:selected").val(),
-        "WEBRE": $("#hdnGRBasedInvoiceLogic").val()
-
+        "MESSAGE":"",
+        "AUGRP":jQuery("#authGrp option:selected").val(),
+        "WEBRE":$("#hdnGRBasedInvoiceLogic").val()
+       
     };
 
 
@@ -3115,35 +3416,36 @@ function PostToExternalSource() {
         data: JSON.stringify(sourcedata),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            debugger
+          debugger
             jQuery.unblockUI();
+           if(data.message){
+               alertforinfo(`Your data is posted successfully to SAP with following message : ${data.message}`)
+           }
+           else{
+               alertforinfo(`Your data is posted successfully to SAP.`)
+           }
 
+            
+            
 
-            $('#divalertsucesssap').html('')
-            $('#divalertsucesssap').html('Your data is posted successfully to SAP...')
-            $('#divalertsucesssap').show();
-            $('#divalertsucesssap').fadeOut(5000);
+           setTimeout(function () {
 
+                 GetVendorExternalDetail(parseInt(jQuery("#spnvendorcode").text()), parseInt(jQuery("#hdnChildID").val()), parseInt(sessionStorage.getItem('CustomerID'))) 
 
-            setTimeout(function () {
-
-                $('#viewalldetails').modal('hide');
             }, 3000);
 
 
 
         },
         error: function (xhr, status, error) {
-
+            debugger
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                $('#divalerterrsap').html('')
-                $('#divalerterrsap').html(err)
-                $('#divalerterrsap').show();
-                $('#divalerterrsap').fadeOut(5000);
+                 
+                 alertforerror(err)
             }
             jQuery.unblockUI();
             return false;
@@ -3179,37 +3481,46 @@ function clearexternal() {
 }
 
 
-function UpdateActivity(vendId, CustId) {
+function UpdateActivity(vendId, CustId,ChildId,Status) {
+    debugger
+    upvendid=parseInt(vendId);
+    upCustId=parseInt(CustId);
+    upChildId=parseInt(ChildId);
+    let data={
+        "Id":upvendid,
+        "CustomerId":upCustId,
+        "ChildId":upChildId,
+        "Status":Status
+    }
     jQuery.ajax({
 
         // url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RegParticpants_PEV2/",
-        url: sessionStorage.getItem("APIPath") + "VendorLCM/UpdateActivity/?Id=" + vendId + "&CustomerId=" + CustId,
+        url: sessionStorage.getItem("APIPath") + "VendorLCM/UpdateActivity",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "POST",
         async: false,
-        data: '',
+        data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
-            //jQuery.unblockUI();
-            //$('#viewalldetails').modal('hide');
-            //$('.alert-success').html('Your  data is posted successfully to SAP...')
-            //$('.alert-success').show();
-            //Metronic.scrollTo($('.alert-success'), -200);
-            //$('.alert-success').fadeOut(10000);
-            //setTimeout(function () { $('.alert-success').html('') }, 1000)
-
-
+         debugger
+        if(Status=='A') {
+            alertforsucess(`Your Vendor is approved successfully`) ; 
+        }
+        else{
+           alertforsucess(`Your Vendor is rejected successfully`) ;  
+        }
+              
 
         },
         error: function (xhr, status, error) {
-
+            debugger
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                fnErrorMessageText('spanerterr', '');
+                 
+                 alertforerror(xhr.responseText);
             }
             jQuery.unblockUI();
             return false;
@@ -3221,50 +3532,424 @@ function UpdateActivity(vendId, CustId) {
 //unregistered vendor
 
 $('#txtTINType').on('change', function () {
-
-    let Taxtype = $(this).val();
-    if (Taxtype == "") {
+  
+    let Taxtype = $(this).val() ;
+    if(Taxtype=="" &&  $("#ddlCountry option:selected").val()=='IN'){
         $(".nogsthide").hide();
+        $(".newgsthide").hide();
+        $(".nopanhide").show();
         $("#ParticipantName").removeAttr('disabled');
         $("#txtTINNo").attr("onchange", "");
-        /* $("#ParticipantName").removeAttr('disabled');
-         $("#ddlNatureEstaiblishment").removeAttr('disabled');
-         $("#txtTINNo").attr("onchange","");
-         $("#txtPanNo").removeAttr('disabled');
-         $("#vendorpanno").removeAttr('disabled');
-         $("#vendorname").removeAttr('disabled');*/
+        $("#txtPanNo").removeAttr('disabled');
+        afterTaxEnable()
+       /* $("#ParticipantName").removeAttr('disabled');
+        $("#ddlNatureEstaiblishment").removeAttr('disabled');
+        $("#txtTINNo").attr("onchange","");
+       
+        $("#vendorpanno").removeAttr('disabled');
+        $("#vendorname").removeAttr('disabled');*/
     }
-
-    else if (Taxtype == "IN3") {
-
-        $(".nogsthide").show();
-        $("#ParticipantName").attr("disabled", "disabled");
-        $("#txtPanNo").attr("disabled", "disabled");
-
-        $("#txtTINNo").attr("onchange", "extractPan(this)");
-        /*$("#ParticipantName").attr("disabled", "disabled");
-        $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
-        
-        $("#txtPanNo").attr("disabled", "disabled");
-        $("#vendorpanno").attr("disabled", "disabled");
-        $("#vendorname").attr("disabled", "disabled");*/
+    
+    else if(Taxtype=="" &&  $("#ddlCountry option:selected").val()!='IN'){
+        $(".nogsthide").hide();
+        $(".nopanhide").hide();
+        $(".newgsthide").hide();
+        $("#ParticipantName").removeAttr('disabled');
+        $("#txtTINNo").attr("onchange", "");
+        $("#txtPanNo").removeAttr('disabled');
+        afterTaxEnable()
+       /* $("#ParticipantName").removeAttr('disabled');
+        $("#ddlNatureEstaiblishment").removeAttr('disabled');
+        $("#txtTINNo").attr("onchange","");
+       
+        $("#vendorpanno").removeAttr('disabled');
+        $("#vendorname").removeAttr('disabled');*/
+    }
+  
+    else if(Taxtype=="IN3"){
+         
+         $(".nogsthide").show();
+         $(".newgsthide").show();
+         $(".nopanhide").show();
+         $("#ParticipantName").attr("disabled", "disabled");
+         $("#txtPanNo").attr("disabled", "disabled");
+         
+         $("#txtTINNo").attr("onchange", "extractPan(this)");
+         afterTaxEnable()
+         /*$("#ParticipantName").attr("disabled", "disabled");
+         $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
+         
+         $("#txtPanNo").attr("disabled", "disabled");
+         $("#vendorpanno").attr("disabled", "disabled");
+         $("#vendorname").attr("disabled", "disabled");*/
     }
     else {
-
-        $(".nogsthide").show();
-        $("#txtTINNo").attr("onchange", "");
-        $("#ParticipantName").removeAttr("disabled");
-        $("#txtPanNo").removeAttr("disabled");
-        /*$("#ParticipantName").attr("disabled", "disabled");
-        $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
-        $("#txtTINNo").attr("onchange", "extractPan(this)");
-        $("#txtPanNo").attr("disabled", "disabled");
-        $("#vendorpanno").attr("disabled", "disabled");
-        $("#vendorname").attr("disabled", "disabled");*/
+         
+         $(".nogsthide").show();
+         $(".newgsthide").hide();
+         $(".nopanhide").show();
+         $("#txtTINNo").attr("onchange", "");
+         $("#ParticipantName").removeAttr("disabled");
+         $("#txtPanNo").removeAttr("disabled");
+         afterTaxEnable()
+         /*$("#ParticipantName").attr("disabled", "disabled");
+         $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
+         $("#txtTINNo").attr("onchange", "extractPan(this)");
+         $("#txtPanNo").attr("disabled", "disabled");
+         $("#vendorpanno").attr("disabled", "disabled");
+         $("#vendorname").attr("disabled", "disabled");*/
     }
 
-
+   
 
 
 }
 )
+
+//mapping recon and schema
+$('#VendorAccGrp').on('change', function () {
+    let _VAGval = $(this).val() ;
+    if(_VAGval=='ZIMP'){
+        
+        $('#SchemaGrp').val('IM').trigger('change')
+        $('#ReconAcc').val('13010001').trigger('change')
+        
+    }
+    else{
+        $('#SchemaGrp').val('DM').trigger('change')
+        if(_VAGval=="ZDOM" || _VAGval=="ZPI"){
+            $('#ReconAcc').val('13010000').trigger('change')
+        }
+        else if(_VAGval=="ZSER"||_VAGval=="ZFWA"){
+            $('#ReconAcc').val('13010002').trigger('change')
+        }
+        else if(_VAGval=="ZINT"){
+            $('#ReconAcc').val('13010004').trigger('change')
+        }
+        else if(_VAGval=="ZOTV"){
+            $('#ReconAcc').val('13010005').trigger('change')
+        }
+        else if(_VAGval=="ZVBP"){
+            $('#ReconAcc').val('13020001').trigger('change')
+        }
+        
+        
+        
+    }
+    
+})
+
+function sapselection(){
+     $('#VendorAccGrp').select2()
+     $('#Incoterm').select2()
+     $('#Incoterm').select2()
+     $('#CoCd').select2()
+     $('#PayTerm').select2()
+     $('#gstVendClass').select2()
+     $('#PORG').select2()
+     $('#SchemaGrp').select2()
+     $('#ReconAcc').select2()
+     $('#authGrp').select2()
+     $('#gstVendClass').select2()
+     $('#WitholdingTaxType').select2()
+}
+
+
+function editBankDetail(bankingId, childId, bankCountryKey, bankRoutingNumber, bankName, cancelledCheckFile, payTerm, bankAccountNumber,accountholdername) {
+
+    $('#bankForm').show();
+    $('#hdnBankingId').val(bankingId)
+    $('#hdnChildID').val(childId)
+    jQuery("#ifsccode").val(bankRoutingNumber)
+    jQuery("#bankaccount").val(bankAccountNumber)
+    jQuery("#bankname").val(StringDecodingMechanism(bankName))
+    jQuery("#accountholder").val(accountholdername)
+   
+    jQuery("#ddPayTerms").val(payTerm).trigger('change')
+    $('#hdnActionType').val("Update")
+
+    $('#filecheck').hide()
+    $('#checkattach').show()
+    $('#checkattach').html(cancelledCheckFile);
+}
+
+
+
+
+function Addanotherbank() {
+    $('#bankForm').show();
+    jQuery("#ifsccode").val("")
+    jQuery("#bankaccount").val("")
+    jQuery("#bankname").val("")
+    jQuery("#accountholder").val("")
+    jQuery("#ddPayTerms").val("0").trigger('change')
+    $('#hdnActionType').val("Add")
+    $('#filecheck').val("");
+}
+
+var formvendorbank = $('#submit_form_bank');
+
+function FormValidateBank() {
+
+    formvendorbank.validate({
+
+        errorElement: 'span',
+        errorClass: 'help-block',
+        focusInvalid: false,
+        ignore: "",
+        rules: {
+
+            accountholder: {
+                required: true,
+            },
+            ifsccode: {
+                required: true,
+            },
+            bankname: {
+                required: true,
+            },
+            bankaccount: {
+                required: true,
+                number:true
+            }
+        },
+        messages: {
+
+            accountholder: {
+                required: "Please Enter Valid account holder",
+            },
+            ifsccode: {
+                required: "Please Enter Valid IFSC code",
+            },
+            bankname: {
+                required: "Please Enter Valid Bank name",
+            },
+            bankaccount: {
+                required: "Please Enter Valid Bank account",
+            }
+
+        },
+        invalidHandler: function (event, validator) {
+            //errorVendor.show()
+            // successVendor.hide();
+            $('#successdivbank').show()
+            $('#successdivbank').hide()
+            $('#successdivbank').html("")
+            $('#errorbank').text("Please Enter all required field to proceed");
+            $('#errordivbank').fadeOut(6000);
+        },
+
+        highlight: function (element) {
+            $(element).closest('.xyz').addClass('has-error');
+
+        },
+
+        unhighlight: function (element) {
+            $(element).closest('.xyz').removeClass('has-error');
+
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element);
+        },
+        success: function (label) {
+        },
+        submitHandler: function (form) {
+            
+
+            UpdateBankDetail()
+        }
+    });
+}
+
+
+
+function UpdateBankDetail() {
+    debugger
+    $('#buttonbankupdate').attr('disabled','disabled');
+    let ActionType = $('#hdnActionType').val()
+
+    if ($('#checkattach').html() !== '') {
+        checkfilename = $('#checkattach').html();
+    }
+    else {
+        checkfilename = jQuery('#filecheck').val().substring(jQuery('#filecheck').val().lastIndexOf('\\') + 1)
+        checkfilename = checkfilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    }
+
+    if (checkfilename == "") {
+        $('#buttonbankupdate').removeAttr('disabled');
+       
+        alertforerror('please attach valid Check file to proceed...')
+        return false;
+    }
+    let data = "";
+    let bankurl = ""
+    let encodedbankname=StringEncodingMechanism(jQuery("#bankname").val());
+   
+    debugger
+    if (ActionType == "Add") {
+        bankurl = APIPath + "VendorLCM/UpdateBankDetail/?ActionType=Add"
+        data = {
+            "ChildId": parseInt($('#hdnChildID').val()),
+            "BankCountryKey": "IN",
+            "BankRoutingNumber": jQuery("#ifsccode").val(),
+            "BankAccountNumber": jQuery("#bankaccount").val(),
+            "BankName": encodedbankname,
+            "CancelledCheckFile": checkfilename,
+            "Currency": $("#ddlcurrencymodal").text(),
+          
+            "AccounHolderName":jQuery("#accountholder").val()
+        }
+    }
+    else {
+        bankurl = APIPath + "VendorLCM/UpdateBankDetail/?ActionType=Update"
+        data = {
+            "BankingId": parseInt($('#hdnBankingId').val()),
+            "ChildId": parseInt($('#hdnChildID').val()),
+            "BankCountryKey": "IN",
+            "BankRoutingNumber": jQuery("#ifsccode").val(),
+            "BankAccountNumber":jQuery("#bankaccount").val(),
+            "BankName": encodedbankname,
+            "CancelledCheckFile": checkfilename,
+            "Currency": $("#ddlcurrencymodal").text(),
+            /*"PayTerm": jQuery("#ddPayTerms option:selected").val(),*/
+            "AccounHolderName":jQuery("#accountholder").val()
+        }
+
+    }
+
+
+    
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        //url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&UserType=" + sessionStorage.getItem('UserType'),
+        url: bankurl,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+            debugger
+             if ($('#filecheck').val() != '') {
+                fnUploadFilesonAzure('filecheck', checkfilename, 'VR/' + $('#hdnChildID').val());
+            }
+            jQuery("#errordivbank").hide();
+            jQuery.unblockUI();
+            jQuery("#successdivbank").text("Your Bank specific details added successfully..");
+            jQuery("#successdivbank").show();
+            jQuery("#successdivbank").fadeOut(5000);
+            App.scrollTo(jQuery("#successdivbank"), -200);
+            $('#buttonbankupdate').removeAttr('disabled');
+            setTimeout(function () {
+                $('#bankForm').hide();
+                GetBankDetail(parseInt($('#hdnChildID').val()), customerid, VendorId)
+                }, 1500)
+           
+
+        },
+        error: function (xhr, status, error) {
+             debugger
+             $('#buttonbankupdate').removeAttr('disabled');
+             var err = xhr.responseText
+             jQuery("#error").text(err);
+             profileerror.show();
+             profileerror.fadeOut(5000);
+             App.scrollTo(profileerror, -200);
+      
+            jQuery.unblockUI();
+        }
+    });
+}
+
+
+
+
+
+//pagination
+var currentpage=0
+
+
+var pageNumber = 1; 
+var numberOfPages = 0; 
+const prev = document.querySelector('.prev');
+prev.addEventListener('click', (e) => {
+   e.preventDefault();
+if (pageNumber > 1) {
+    pageNumber--;
+       fetchParticipantsVenderTable(pageNumber, SearchText);
+    }
+});
+
+const next = document.querySelector(".next");
+next.addEventListener("click", (e) => {
+ e.preventDefault();
+
+if (pageNumber < numberOfPages) {
+    pageNumber++;
+     fetchParticipantsVenderTable(pageNumber, SearchText);
+    }
+});
+
+function replaceQuoutesFromString_PEV2(ele) {
+
+    var str = '';
+    str = ele.value;
+    str = str.replace(/'/g, '');
+    str = str.replace(/"/g, '');
+
+    str = str.replace(/#/g, '');
+    //str = str.replace(/&/g, '');
+
+
+    str = str.replace(/~/g, '');
+    str = str.replace(/`/g, '');
+    str = str.replace(/</g, '');
+    str = str.replace(/>/g, '');
+    // str = str.replace(/_/g, '');
+    str = str.replace(/^/g, '');
+    SearchText = str;
+    ele.value = str;
+    console.log(str);
+    
+    if (str.length > 4) {
+        console.log(str);
+       fetchParticipantsVenderTable(pageNumber, SearchText);
+    }
+    //return val;
+}
+
+function setupPagination() { 
+    const pagination = document.querySelector("#paginationid1");
+    pagination.innerHTML = ""; 
+    for (let i = 1; i <= numberOfPages; i++) {
+       // console.log(i);
+        var listart = "<li class=page-item id=" + i + ">";
+        var liend = "</li>";
+        const li = document.createElement("li");
+        li.id = i;
+        li.setAttribute("class", "page-link");
+        const link = document.createElement("a");
+        link.href = "#";
+        link.setAttribute("class", "page-link");
+        link.innerText = i;
+
+        if (i === pageNumber) {
+            link.classList.add("active");
+        }
+
+        link.addEventListener("click", (event) => {
+            event.preventDefault();
+            pageNumber = i; 
+           fetchParticipantsVenderTable(pageNumber, SearchText);
+            const currentActive = pagination.querySelector(".active");
+            currentActive.classList.remove("active");
+            link.classList.add("active");
+        }); 
+        li.appendChild(link);
+        pagination.appendChild(li);
+    }
+}
+

@@ -211,13 +211,13 @@ function fetNFAReport(dtfrom, dtto, subject) {
     var result = '';
     if ($("#ddlconfiguredby").select2('data').length) {
         $.each($("#ddlconfiguredby").select2('data'), function (key, item) {
-            debugger
             result = result + (item.id) + ','
 
         });
         result = result.slice(0, -1)
     }
     //var url = sessionStorage.getItem("APIPath") + "NFA/fetNFAReport/?EventID=" + jQuery("#ddlEventType option:selected").val() + "&OrgID=" + jQuery("#ddlPurchaseOrg option:selected").val() + "&GroupID=" + jQuery("#ddlPurchasegroup option:selected").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&NFASubject=" + subject + "&FinalStatus=" + jQuery("#ddlNFAstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val();
+   debugger
     var url = sessionStorage.getItem("APIPath") + "NFA/fetNFAReport/";
     var Tab1Data = {
         "EventID": parseInt(jQuery("#ddlEventType option:selected").val()),
@@ -243,9 +243,9 @@ function fetNFAReport(dtfrom, dtto, subject) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-
+             debugger
             jQuery("#tblNFASummary").empty();
-            jQuery('#tblNFASummary').append("<thead><tr><th class='bold'>ID</th><th class='bold'>Subject</th><th class='bold'>Configured By</th><th class='bold'>Date</th><th class='bold'>Aging</th><th class='bold'>Currency</th><th class='bold'>Purchase Org</th><th class='bold'>Purchase Group</th><th class='bold'>Amount</th><th class='bold'>Budget</th><th class='bold'>Deviation %</th><th class='bold'>Status</th><th class='bold'>Pending With</th><th class='bold'>Pending Since</th></tr></thead>");
+            jQuery('#tblNFASummary').append("<thead><tr><th class='bold'>ID</th><th class='bold'>Subject</th><th class='bold'>Configured By</th><th class='bold'>Date</th><th class='bold'>Aging</th><th class='bold'>Currency</th><th class='bold'>Purchase Org</th><th class='bold'>Purchase Group</th><th class='bold'>Amount</th><th class='bold'>Budget</th><th class='bold'>Deviation %</th><th class='bold'>Status</th></tr></thead>");
             if (data.length > 0) {
 
                 for (var i = 0; i < data.length; i++) {
@@ -268,11 +268,6 @@ function fetNFAReport(dtfrom, dtto, subject) {
                         str += "<td>Budget not defined </td>";
 
                     str += "<td>" + data[i].finalStatus + "</td>";
-                    str += "<td>" + data[i].pendingWith + "</td>";
-                    str += "<td>" + data[i].pendingSince + "</td>";
-
-
-
                     str += "</tr>";
                     jQuery('#tblNFASummary').append(str);
                 }

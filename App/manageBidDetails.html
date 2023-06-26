@@ -40,7 +40,7 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
     <!-- Page Specific CSS-->
-    <link rel="stylesheet" href="assets/CustomCSS/managebbiddetail.css">
+    <link rel="stylesheet" href="assets/CustomCSS/managebiddetail.css">
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
@@ -525,7 +525,7 @@
                                                         <div class="portlet light ">
 
                                                             <div class="portlet-body">
-                                                                <form action="#" class="form-horizontal" onsubmit="preventSubmit(event)">
+                                                                <form action="#" class="form-horizontal">
                                                                     <div class="form-body">
                                                                         <div class="form-group">
                                                                             <label class="col-lg-2  control-label">
@@ -534,8 +534,8 @@
                                                                             </label>
                                                                             <div class="col-lg-10">
 
-                                                                                <input type="text" class="form-control margin0auto" id="txtvendor" 
-                                                                                 data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Select Vendor" />
+                                                                                <input type="text" class="form-control margin0auto" id="txtvendor" name="txtvendor"
+                                                                                       data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Select Vendor" />
 
                                                                             </div>
                                                                         </div>
@@ -571,7 +571,7 @@
                                                                         <input type="text" class="form-control" placeholder="Search Vendor Name" autocomplete="off" id="txtSearch" name="txtSearch" />
                                                                     </div>
                                                                 </div>
-                                                                <br/><br/><br/>
+                                                                </br></br></br>
                                                                 <form action="#" id="entryForm" class="form-horizontal">
                                                                     <div class="form-group">
 
@@ -869,8 +869,7 @@
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-4">Status:</label>
                                                                                     <div class="col-md-6">
-                                                                                        <select class="form-control" id="ddlBidStatus">
-                                                                                            <!--onchange="fnshowDatetime()"-->
+                                                                                        <select class="form-control" id="ddlBidStatus" onchange="fnshowDatetime()">
                                                                                             <!--<option value="">Select All</option>-->
                                                                                             <option value="1" id="optopen">OPEN</option>
                                                                                             <option value="2">CLOSE</option>
@@ -937,7 +936,7 @@
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
-
+                                                                                    
                                                                                 </div>
 
                                                                             </div>
@@ -1555,7 +1554,7 @@
                                     <div class="form-group">
 
                                         <label class="control-label  col-md-2 RaAuctionFields" id="BSPENG">
-                                            Start Unit price<span class="required"> *</span>
+                                            Bid Start Price<span class="required"> *</span>
                                         </label>
                                         <label class="control-label col-md-2 fadutchAuctionFields" id="CElingFA">
                                             Ceiling/ Max Price<span class="required"> *</span>
@@ -1737,7 +1736,7 @@
                                     <div class="form-group">
 
                                         <label class="control-label  col-md-2">
-                                            Start Unit Price<span class="required"> *</span>
+                                            Bid Start Price<span class="required"> *</span>
                                         </label>
                                         <div class="col-md-2 xyz">
                                             <input type="tel" class="form-control thousandseparated" id="txtCeilingPricefrench" name="txtCeilingPricefrench" number="true" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
@@ -1862,7 +1861,7 @@
             <div class="portlet box blue">
                 <div class="portlet-title">
                     <div class="caption">
-                        <i class="fa fa-reorder"></i>Edit Start Unit Price
+                        <i class="fa fa-reorder"></i>Edit Bid Start Price
                     </div>
                     <div class="tools">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
@@ -1881,7 +1880,7 @@
                                 <input type="hidden" value="0" id="hddnbidstartprice" />
                                 <div class="inputgroup">
                                     <label class="control-label col-md-3">
-                                        Start Unit Price<span class="required"> *</span>
+                                        Bid Start Price<span class="required"> *</span>
                                     </label>
                                     <div class="col-md-3">
                                         <input type="tel" class="form-control thousandseparated" id="txtbidstartpricetab_0" name="txtbidstartpricetab_0" autocomplete="off" onkeyup="removeZero(this)" /> <!--onkeyup="thousands_separators_input(this)"-->

@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8" />
     <title>Sourcing Portal</title>
-      <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
@@ -38,47 +37,14 @@
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css" />
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/bootstrap-datetimepicker/css/datetimepicker.css" />
     <link rel="shortcut icon" href="../favicon.ico" />
-    <!-- Page Specific CSS-->
-    <link rel="stylesheet" href="assets/CustomCSS/common.css">
-    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
-            type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
-    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
-    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-    <!--<script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>-->
-    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
-    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
-    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
-
-    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
-    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
-
 
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html">
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage"/>
+                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
                 </a>
                 <!--<a href="index.html">
                     <img src="assets/img/logo.png" alt="logo" class="logo-default" />
@@ -92,10 +58,8 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
                             <!--<img alt="" class="img-circle hide1" src="assets/admin/layout/img/avatar3_small.jpg" />-->
-                            <b>
-                                <span id="spanUserName" class="username username-hide-on-mobile">
-                                </span>
-                            </b><i class="fa fa-angle-down"></i>
+                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
+                            </span><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -108,7 +72,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container nodisplay" >
+    <div class="page-container" style="display:none">
         <!-- BEGIN SIDEBAR -->
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
@@ -203,10 +167,10 @@
                                                 </div>
                                             </div>
                                             <div class="tab-content">
-                                                <div class="alert alert-success">
+                                                <div class="alert alert-success" style='display: none;'>
                                                     <span id="spansuccess1"> </span>
                                                 </div>
-                                                <div class="alert alert-danger" >
+                                                <div class="alert alert-danger" style='display: none; '>
                                                     <span id="spandanger"> </span>
                                                 </div>
                                                 <div class="tab-pane active" id="tab1">
@@ -218,7 +182,7 @@
                                                             </label>
                                                             <div class="col-md-4">
                                                                 <input type="text" class="form-control" placeholder="Enter Bid Subject" id="txtBidSubject" maxlength="200"
-                                                                       name="txtBidSubject" onkeyup="replaceQuoutesFromString(this)">
+                                                                       name="txtBidSubject">
                                                             </div>
                                                         </div>
                                                         <div class="inputgroup">
@@ -241,7 +205,7 @@
                                                             </label>
                                                             <div class="col-md-9">
                                                                 <textarea id="txtbiddescription" name="txtbiddescription" class="wysihtml5 form-control"
-                                                                          rows="6" onkeyup="replaceQuoutesFromString(this)"></textarea>
+                                                                          rows="6"></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -306,8 +270,8 @@
                                                             </label>
                                                             <div class="col-md-3">
                                                                 <input type="file" class="form-control" id="file1" name="file1" onchange="checkfilesize(this)" />
-                                                                <a href="javascript:;" id="filepthterms" class="notextdecoFleft" ></a> &nbsp;
-                                                                <span class="display-none closebutton2" id="closebtn" onclick="ajaxFileDelete('icon1', 'file1','filepthterms', 'Termsconditions')">
+                                                                <a href="javascript:;" id="filepthterms" style="text-decoration: none !important; float:left;"></a> &nbsp;
+                                                                <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" id="closebtn" onclick="ajaxFileDelete('icon1', 'file1','filepthterms', 'Termsconditions')">
                                                                     <i class='fa fa-times-circle-o' id='icon1'></i>
                                                                 </span>
                                                             </div>
@@ -319,8 +283,8 @@
                                                             </label>
                                                             <div class="col-md-3">
                                                                 <input type="file" class="form-control" id="file2" name="file" onchange="checkfilesize(this)" />
-                                                                <a href="javascript:;" id="filepthattach" class="notextdecoFleft" ></a>
-                                                                <span class="display-none closebutton2"  id="closebtn2" onclick="ajaxFileDelete('icon2', 'file2','filepthattach','Otherattachment')">
+                                                                <a href="javascript:;" id="filepthattach" style="text-decoration: none !important; float:left;"></a>
+                                                                <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" id="closebtn2" onclick="ajaxFileDelete('icon2', 'file2','filepthattach','Otherattachment')">
                                                                     <i class='fa fa-times-circle-o' id='icon2'></i>
                                                                 </span>
 
@@ -355,7 +319,7 @@
                                                             </span>
                                                         </label>
                                                         <div class="col-md-4">
-                                                            <input type="text" class="form-control" maxlength="100" id="txtshortname" name="txtshortname" autocomplete="off" onkeyup="replaceQuoutesFromString(this)"/>
+                                                            <input type="text" class="form-control" maxlength="100" id="txtshortname" name="txtshortname" autocomplete="off" />
 
                                                         </div>
                                                         <label class="control-label col-md-2">
@@ -365,7 +329,7 @@
                                                             <input type="text" class="form-control" id="txttargetprice" name="txttargetprice" number="true" autocomplete="off" />
 
                                                         </div>
-                                                        <label class="control-label col-md-1 currencyparam textalignleft" >
+                                                        <label class="control-label col-md-1 currencyparam" style="text-align: left !important;">
 
                                                         </label>
 
@@ -385,7 +349,10 @@
                                                         </label>
                                                         <div class="col-md-4">
                                                             <select class="form-control" id="dropuom" name="dropuom" onchange="displayUOM()">
-                                                                
+                                                                <!--<option value="" style="display: none">Select</option>
+                                                                <option value="Number">Number</option>
+                                                                <option value="Kg">Kg</option>
+                                                                <option value="Ltr">Ltr</option>-->
 
                                                             </select>
 
@@ -402,7 +369,7 @@
                                                         </label>
                                                         <div class="col-md-10">
                                                             <textarea id="txtbiddescriptionP" name="txtbiddescriptionP" class="wysihtml5 form-control"
-                                                                      rows="6" onkeyup="replaceQuoutesFromString(this)"></textarea>
+                                                                      rows="6"></textarea>
                                                         </div>
 
 
@@ -435,7 +402,7 @@
                                                         <div class="col-md-3">
                                                             <input type="text" class="form-control input-inline input-medium" id="txtCeilingPrice" name="txtCeilingPrice" number="true" autocomplete="off" />
                                                         </div>
-                                                        <label class="control-label col-md-1 textalignleft" id="lblUOM" >
+                                                        <label class="control-label col-md-1" id="lblUOM" style="text-align: left;">
                                                         </label>
                                                         <label class="control-label col-md-2">
                                                             <input type="checkbox" name="checkmaskvendor" id="checkmaskvendor" checked />
@@ -451,7 +418,7 @@
                                                         <div class="col-md-3">
                                                             <input type="text" class="form-control input-inline input-medium" id="txtminimumdecreament" number="true" name="txtminimumdecreament" autocomplete="off" />
                                                         </div>
-                                                        <label class="control-label col-md-1 currencyparam textalignleft" >
+                                                        <label class="control-label col-md-1 currencyparam" style="text-align: left !important;">
                                                         </label>
 
                                                         <label class="control-label col-md-2">
@@ -460,7 +427,7 @@
 
                                                         <div class="col-md-4">
                                                             <select class="form-control" id="drpdecreamenton" name="drpdecreamenton">
-                                                                <option value="" class="nodisplay">Select</option>
+                                                                <option value="" style="display: none">Select</option>
                                                                 <option value="A">Amount</option>
                                                                 <option value="P">Percentage</option>
 
@@ -483,15 +450,15 @@
                                                         </label>
                                                         <div class="col-md-4">
                                                             <input type="file" class="form-control " id="fileattachment" name="fileattachment" onchange="checkfilesize(this)" />
-                                                            <a href="javascript:;" id="fileattachmentforitems" class="notextdecoFleft"></a> &nbsp;
-                                                            <span class="display-none closebutton2" id="closebtnitms" onclick="ajaxFileDelete('icon3', 'fileattachment','fileattachmentforitems', 'ParameterFilesedit')">
+                                                            <a href="javascript:;" id="fileattachmentforitems" style="text-decoration: none !important; float:left;"></a> &nbsp;
+                                                            <span class="display-none" style="float:left;margin-top:-5px;cursor:pointer;margin-left: 3px;" id="closebtnitms" onclick="ajaxFileDelete('icon3', 'fileattachment','fileattachmentforitems', 'ParameterFilesedit')">
                                                                 <i class='fa fa-times-circle-o' id='icon3'></i>
                                                             </span>
                                                         </div>
 
                                                     </div>
 
-                                                    <div class="form-actions noborderbackground" >
+                                                    <div class="form-actions" style="border:none !important; background: none !important;">
                                                         <div class="row">
                                                             <div class="col-md-offset-9 col-md-6">
                                                                 <input type="hidden" id="rowid" />
@@ -511,18 +478,18 @@
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <div class="col-md-6">
-                                                                <input type="text" class="form-control" placeholder="Search" id="txtSearch" name="txtSearch" onkeyup="replaceQuoutesFromString(this)"></br>
+                                                                <input type="text" class="form-control" placeholder="Search" id="txtSearch" name="txtSearch"></br>
 
-                                                                <div class="scroller scroller300"  data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
+                                                                <div class="scroller" style="height:300px" data-always-visible="1" data-rail-visible="1" data-rail-color="yellow" data-handle-color="red">
                                                                     <!--#a1b2bd-->
                                                                     <div id="divvendorlist" class="portlet-body flip-scroll table-scrollable">
-                                                                        <table  id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content width100">
+                                                                        <table style="width:100%;" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
                                                                             <thead class="flip-content">
                                                                                 <tr>
                                                                                     <th width="20%">
                                                                                         <div class="col-md-10 checkbox-list">
-                                                                                            <label class="checkbox-inline checkboxinline1" >
-                                                                                               All
+                                                                                            <label class="checkbox-inline" style="margin-left: -16px;">
+                                                                                                <!-- <input type="checkbox" id="chkAll" value="Select All" name="chkAll" />-->All
                                                                                             </label>
                                                                                         </div>
                                                                                     </th>
@@ -691,7 +658,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4">Term & Condition:</label>
                                                     <div class="col-md-8">
-                                                        <a class="form-control-static notextdeco" href="javascript:;" id="filepthtermsPrev" >
+                                                        <a class="form-control-static" href="javascript:;" id="filepthtermsPrev" style="text-decoration: none;">
                                                         </a>
                                                     </div>
                                                 </div>
@@ -701,7 +668,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4">Attachment (If Any):</label>
                                                     <div class="col-md-8">
-                                                        <a class="form-control-static notextdeco" id="filepthattachPrev" ></a>
+                                                        <a class="form-control-static" id="filepthattachPrev" style="text-decoration: none;"></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -806,11 +773,16 @@
                 </div>
                 <div class="portlet-body form">
 
-                    <div class="modal-body modalbody1" >
+                    <div class="modal-body" style="height: 450px; overflow-y: scroll;">
 
 
 
-                       
+                        <!--  <h4 class="ppolicy-head4">Product & Services</h4>
+                         <p class="ppolicy-text">
+                            On left hand side click on "Configuration" and then click on "product & Services" and fill following details :
+
+                         </p> -->
+                        <!-- <h4 class="ppolicy-head4">(A) Bid Details</h4> -->
                         <p class="ppolicy-text">
                             Using this page user can configure bids related to Direct Material  area and invite vendors to participate on specified date and time.<br />
                             There are three steps to complete this process.You may complete one step at a time by using “Save & Continue” feature and fill other details later by clicking activity displayed as “Saved as Draft” in pending activities. All the mandatory information is marked with * sign.
@@ -842,7 +814,7 @@
                             <li><b>Contract duration: </b>Enter the time frame of the contract signed.</li>
                             <li><b>Delivery Location: </b>Name of the location where item/services need to be delivered.</li>
                             <li><b>Ceiling/MAX. Price: </b>Enter the MAX price for bid above which vendors will not be able to quote.</li>
-                            <li><b>Mask from vendor: </b>By checking this Start Unit Price will not be visible to vendors.</li>
+                            <li><b>Mask from vendor: </b>By checking this Bid start price will not be visible to vendors.</li>
                             <li><b>Decrement on: </b>You can define the decrement in price would be based on Amount or percentage.</li>
                         </ul><br />
                         <p class="ppolicy-text"><b>Step-3: "Invite Participants"–</b>User can select participants whom he wants to send invite to participate in bid. User can search from the list by typing participants name in search text box or he can check select all in case he wants to invite all available vendors.</p>
@@ -853,13 +825,86 @@
             </div>
         </div>
     </div>
-   
-    <script nonce="dimat">
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
+            type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/clockface/js/clockface.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/moment.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="assets/admin/pages/scripts/components-pickers.js"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+    <!--<script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>-->
+    <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
+    <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
+    <script src="assets/admin/layout/scripts/layout.js" type="text/javascript"></script>
+
+    <script src="assets/admin/layout/scripts/demo.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
+    <script src="assets/CustomJS/Auction.js" type="text/javascript"></script>
+
+    <script src="assets/CustomJS/DirectMaterial.js" type="text/javascript"></script>
+    <script>
         jQuery(document).ready(function () {
-            callPagejs('DirectMaterial.js');    
-		 
+		 Pageloaded()
+            setInterval(function () { Pageloaded() }, 15000);
+            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+                 window.location = sessionStorage.getItem('MainUrl');
+            }
+            else {
+                if (sessionStorage.getItem("UserType") == "E") {
+                    $('.page-container').show();
+                }
+                else {
+                    bootbox.alert("You are not Authorize to view this page", function () {
+                        parent.history.back();
+                        return false;
+                    });
+                }
+            }
+            Metronic.init();
+            Layout.init();
+            FormWizard.init();
+            ComponentsPickers.init();
+            setCommonData();
+
+            fetchMenuItemsFromSession(1, 27);
+            fetchBidTypeMapping();
+            FetchCurrency('0');
+            FetchContinent('0');
+            FetchVenderForrfirfq()
+            fetchRegisterUser('6');
+            FetchUOM(sessionStorage.getItem("CustomerID"));
+            //fetchPendingBidDataTab1();
+
+            var _BidID = getUrlVars()["BidID"];
+            if (_BidID == null)
+                sessionStorage.setItem('CurrentBidID', 0)
+            else {
+                sessionStorage.setItem('CurrentBidID', _BidID)
+                fetchProductServicesBidDetails();
+            }
+
         });
-       
+        jQuery('#btnpush').click(function (e) {
+            jQuery('#approverList > option:selected').appendTo('#mapedapprover');
+        });
+        jQuery('#btnpull').click(function (e) {
+            jQuery('#mapedapprover > option:selected').appendTo('#mapedapprover');
+        });
 
     </script>
 </body>

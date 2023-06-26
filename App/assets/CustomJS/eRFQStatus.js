@@ -234,6 +234,7 @@ function CancelRFIRFQ(MailPermit) {
 
 }
 function ViewReport() {
+    debugger;
     var encrypdata = fnencrypt("RFQID=" + RFQID + "&RFQSubject=" + ($('#rq_subject').text()) + "Type=");//encodeURIComponent
     if (sessionStorage.getItem('CustomerID') != "32") {
 
@@ -322,14 +323,14 @@ function formValidation() {
 
         submitHandler: function (form) {
             Dateandtimevalidate();
-
+           
         }
     });
 
 }
 var currentdate = new Date();
 function ExtendDuration() {
-
+   
     var EndDT = new Date();
     if ($('#txtextendDate').val() != null && $('#txtextendDate').val() != "") {
         EndDT = $('#txtextendDate').val().replace('-', '');
@@ -338,73 +339,75 @@ function ExtendDuration() {
         new Date(EndDT.toLocaleString("en", {
             timeZone: sessionStorage.getItem('preferredtimezone')
         }));
-
+    
     ST = new String(EtTime);
     ST = ST.substring(0, ST.indexOf("GMT"));
     ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
 
-    var RFQData = {
-        "RFQID": parseInt(RFQID),
-        "ExtendedDateST": ST,// $("#txtextendDate").val(),
-        "ExtendedBy": sessionStorage.getItem('UserID')
-    }
-    jQuery.ajax({
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQExtendDeadline/",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        crossDomain: true,
-        async: false,
-        data: JSON.stringify(RFQData),
-        dataType: "json",
-        success: function (data) {
-            if (data == '1') {
-                $("#extendDate").modal("hide");
-                $("#txtextendDate").val('');
-                bootbox.alert("Date extended successfully.", function () {
-                    FetchInvitedVendorsForeRFQ();
-                });
-
-            }
-            else {
-                var msg = '';
-                switch (data) {
-                    case '2':
-                        msg = 'RFQ does not exist.';
-                        break;
-                    case '3':
-                        msg = 'RFQ End Date Cannot be greater than the RFQ Open Date.';
-                        break;
-                    case '4':
-                        msg = 'Date Cannot be extended as Quotes have been opened.';
-                        break
-                    default:
-                        msg = 'Some error occurred';
-                        break;
+        var RFQData = {
+            "RFQID": parseInt(RFQID),
+            "ExtendedDateST": ST,// $("#txtextendDate").val(),
+            "ExtendedBy": sessionStorage.getItem('UserID')
+        }
+        //alert(JSON.stringify(RFQData));
+        console.log(JSON.stringify(RFQData))
+        jQuery.ajax({
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQExtendDeadline/",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            crossDomain: true,
+            async: false,
+            data: JSON.stringify(RFQData),
+            dataType: "json",
+            success: function (data) {
+                if (data == '1') {
+                    $("#extendDate").modal("hide");
+                    $("#txtextendDate").val('');
+                    bootbox.alert("Date extended successfully.", function () {
+                        FetchInvitedVendorsForeRFQ();
+                    });
 
                 }
-                bootbox.alert(msg, function () {
-                    return false;
-                });
+                else {
+                    var msg = '';
+                    switch (data) {
+                        case '2':
+                            msg = 'RFQ does not exist.';
+                            break;
+                        case '3':
+                            msg = 'RFQ End Date Cannot be greater than the RFQ Open Date.';
+                            break;
+                        case '4':
+                            msg = 'Date Cannot be extended as Quotes have been opened.';
+                            break
+                        default:
+                            msg = 'Some error occurred';
+                            break;
+    
+                    }
+                    bootbox.alert(msg, function () {
+                        return false;
+                    });
+                }
+
+            },
+            error: function (xhr, status, error) {
+
+                var err = xhr.responseText // eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
+                }
+                else {
+                    fnErrorMessageText('error', '');
+                }
+                jQuery.unblockUI();
+                return false;
+
             }
 
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText // eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('error', '');
-            }
-            jQuery.unblockUI();
-            return false;
-
-        }
-
-    });
-}
+        });
+    }
 
 
 function Dateandtimevalidate() {
@@ -439,7 +442,7 @@ function Dateandtimevalidate() {
         data: JSON.stringify(Tab1Data),
         dataType: "json",
         success: function (data) {
-
+            
             if (data == "1") {
                 ExtendDuration();
             }

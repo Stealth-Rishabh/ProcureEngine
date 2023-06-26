@@ -1,5 +1,5 @@
 jQuery(document).ready(function () {
-
+    
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
     }
@@ -17,8 +17,8 @@ jQuery(document).ready(function () {
     App.init();
     setCommonData();
     fetchMenuItemsFromSession(45, 41);
-    /*  FormValidation.init();*/
-    ValidateParticipants()
+  /*  FormValidation.init();*/
+   ValidateParticipants()
     FetchAllCustomer();
 
 
@@ -296,13 +296,14 @@ function FetchAllCustomer() {
 }
 var status = "";
 function RegisterParticipants() {
-
+  
     var _cleanString = StringEncodingMechanism(jQuery("#ParticipantName").val());
     var _cleanString2 = StringEncodingMechanism((jQuery("#txtAddress").val()).replace(/[,|-]/g, " "));
-    let data = '';
+    let cleanTradeName=StringEncodingMechanism(jQuery("#TradeName").val());
+    let data='';
     var encodedcontactperson = StringEncodingMechanism(jQuery("#ContactName").val());
-
-
+   
+    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
     if (jQuery('#chkIsActiveparticipant').is(':checked') == true) {
@@ -334,82 +335,84 @@ function RegisterParticipants() {
         }, 5000);
     }
 
-
-    if (jQuery("#txtTINType option:selected").val() == "") {
+  
+    if(jQuery("#txtTINType option:selected").val()==""){
         data = {
-            "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-            "UserID": sessionStorage.getItem('UserID'),
-            "CompanyEmail": jQuery("#txtcompanyemail").val().trim().toLowerCase(),
-            "AlternateEmailID": $('#txtAlternateeMailID').val(),
-            "ParticipantName": _cleanString,
-            "ContactPerson": encodedcontactperson,
-            "MobileNo": jQuery("#txtMobileNo").val(),
-            "PhoneNo": jQuery("#txtPhoneNo").val(),
-            "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
-            "DialingCodePhone": parseInt(jQuery("#ddlCountryCdPhone option:selected").val()),
-            "IsActive": status,
-            "ActionType": $('#hdnFlagType').val(),
-            "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
-            "ProductCatID": InsertQuery,
-            "ProductCatIDList": ProductCatId,
-            "AssociatedVendorID": parseInt($('#hdnChildID').val()),
-            "Address": _cleanString2,
-            "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
-            "CityName": jQuery("#ddlCity option:selected").text(),
-            "StateID": parseInt(jQuery("#ddlState option:selected").data('stateid')), //parseInt(jQuery("#ddlState option:selected").val()),
-            "StateName": jQuery("#ddlState option:selected").data('statename'),
-            "CountryID": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
-            "CountryName": jQuery("#ddlCountry option:selected").text(),
-            "ZipCode": jQuery("#txtZipCd").val(),
-            "TaxId": "",
-            "TaxIdType": "",
-            "TaxId2": "",
-            "TaxIdType2": "",
-            "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val()),
-            "CountryKey": jQuery("#ddlCountry option:selected").val(),
-            "RegionKey": jQuery("#ddlState option:selected").val(),
-        };
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "CompanyEmail": jQuery("#txtcompanyemail").val().trim().toLowerCase(),
+        "AlternateEmailID": $('#txtAlternateeMailID').val(),
+        "ParticipantName": _cleanString,
+        "ContactPerson":encodedcontactperson,
+        "MobileNo": jQuery("#txtMobileNo").val(),
+        "PhoneNo": jQuery("#txtPhoneNo").val(),
+        "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
+        "DialingCodePhone": parseInt(jQuery("#ddlCountryCdPhone option:selected").val()),
+        "IsActive": status,
+        "ActionType": $('#hdnFlagType').val(),
+        "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
+        "ProductCatID": InsertQuery,
+        "ProductCatIDList": ProductCatId,
+        "AssociatedVendorID": parseInt($('#hdnChildID').val()),
+        "Address": _cleanString2,
+        "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
+        "CityName": jQuery("#ddlCity option:selected").text(),
+        "StateID": parseInt(jQuery("#ddlState option:selected").data('stateid')), //parseInt(jQuery("#ddlState option:selected").val()),
+        "StateName": jQuery("#ddlState option:selected").data('statename'),
+        "CountryID": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
+        "CountryName": jQuery("#ddlCountry option:selected").text(),
+        "ZipCode": jQuery("#txtZipCd").val(),
+        "TaxId": "",
+        "TaxIdType": "",
+        "TaxId2": "",
+        "TaxIdType2":"",
+        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val()),
+        "CountryKey": jQuery("#ddlCountry option:selected").val(),
+        "RegionKey": jQuery("#ddlState option:selected").val(),
+        "TradeName":cleanTradeName
+    };
 
     }
-    else {
-
+    else{
+        
         data = {
-            "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-            "UserID": sessionStorage.getItem('UserID'),
-            "CompanyEmail": jQuery("#txtcompanyemail").val().trim().toLowerCase(),
-            "AlternateEmailID": $('#txtAlternateeMailID').val(),
-            "ParticipantName": _cleanString,
-            "ContactPerson": encodedcontactperson,
-            "MobileNo": jQuery("#txtMobileNo").val(),
-            "PhoneNo": jQuery("#txtPhoneNo").val(),
-            "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
-            "DialingCodePhone": parseInt(jQuery("#ddlCountryCdPhone option:selected").val()),
-            "IsActive": status,
-            "ActionType": "Edit",
-            "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
-            "ProductCatID": InsertQuery,
-            "ProductCatIDList": ProductCatId,
-            "AssociatedVendorID": parseInt($('#hdnChildID').val()),
-            "Address": _cleanString2,
-            "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
-            "CityName": jQuery("#ddlCity option:selected").text(),
-            "StateID": parseInt(jQuery("#ddlState option:selected").data('stateid')), //parseInt(jQuery("#ddlState option:selected").val()),
-            "StateName": jQuery("#ddlState option:selected").data('statename'),
-            "CountryID": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
-            "CountryName": jQuery("#ddlCountry option:selected").text(),
-            "ZipCode": jQuery("#txtZipCd").val(),
-            "TaxId": jQuery("#txtTINNo").val(),
-            "TaxIdType": jQuery("#txtTINType option:selected").val(),
-            "TaxId2": jQuery("#txtPanNo").val(),
-            "TaxIdType2": jQuery("#txtTINType2 option:selected").val(),
-            "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val()),
-            "CountryKey": jQuery("#ddlCountry option:selected").val(),
-            "RegionKey": jQuery("#ddlState option:selected").val(),
-        };
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "UserID": sessionStorage.getItem('UserID'),
+        "CompanyEmail": jQuery("#txtcompanyemail").val().trim().toLowerCase(),
+        "AlternateEmailID": $('#txtAlternateeMailID').val(),
+        "ParticipantName": _cleanString,
+        "ContactPerson":encodedcontactperson,
+        "MobileNo": jQuery("#txtMobileNo").val(),
+        "PhoneNo": jQuery("#txtPhoneNo").val(),
+        "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
+        "DialingCodePhone": parseInt(jQuery("#ddlCountryCdPhone option:selected").val()),
+        "IsActive": status,
+        "ActionType": "Edit",
+        "ParticipantID": parseInt(jQuery("#hdnParticipantID").val()),
+        "ProductCatID": InsertQuery,
+        "ProductCatIDList": ProductCatId,
+        "AssociatedVendorID": parseInt($('#hdnChildID').val()),
+        "Address": _cleanString2,
+        "CityID": parseInt(jQuery("#ddlCity option:selected").val()),
+        "CityName": jQuery("#ddlCity option:selected").text(),
+        "StateID": parseInt(jQuery("#ddlState option:selected").data('stateid')), //parseInt(jQuery("#ddlState option:selected").val()),
+        "StateName": jQuery("#ddlState option:selected").data('statename'),
+        "CountryID": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
+        "CountryName": jQuery("#ddlCountry option:selected").text(),
+        "ZipCode": jQuery("#txtZipCd").val(),
+        "TaxId": jQuery("#txtTINNo").val(),
+        "TaxIdType": jQuery("#txtTINType option:selected").val(),
+        "TaxId2": jQuery("#txtPanNo").val(),
+        "TaxIdType2": jQuery("#txtTINType2 option:selected").val(),
+        "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val()),
+        "CountryKey": jQuery("#ddlCountry option:selected").val(),
+        "RegionKey": jQuery("#ddlState option:selected").val(),
+        "TradeName":cleanTradeName
+    }; 
     }
-
-
-
+        
+    
+     
 
 
 
@@ -417,7 +420,7 @@ function RegisterParticipants() {
 
 
 
-    // alert(JSON.stringify(RegisterParticipants))
+   // alert(JSON.stringify(RegisterParticipants))
     jQuery.ajax({
 
         url: sessionStorage.getItem("APIPath") + "VendorLCM/VendorRegistrationByUser/",
@@ -426,7 +429,7 @@ function RegisterParticipants() {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+         
             $("#hdnParticipantID").val(data.participantID)
             $("#hdnParticipantCode").val(data.vendorCode)
 
@@ -491,7 +494,7 @@ function fetchParticipantsVenderTable() {
         crossDomain: true,
         dataType: "json",
         success: function (Venderdata) {
-
+             debugger
             jQuery("#tblParticipantsVender > tbody").empty();
             $('#lblTotallength').html("<b>Total Record : </b>" + Venderdata.length)
             if (Venderdata.length > 0) {
@@ -502,9 +505,9 @@ function fetchParticipantsVenderTable() {
                     if (value.mapBtnRequired == 'N') {
                         str = "<tr><td style=\"text-align:center;width:10%!important;\">";
 
-                        // str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
+                       // str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.phoneNo + "'\,\'" + value.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
 
-                        str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.dialingCodePhone + "'\,\'" + value.phoneNo + "'\,\'" + value.dialingCode + "'\,\'" + value.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + value.zipCode + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\,\'" + value.associatedVendorID + "'\,\'" + value.taxIdType + "'\,\'" + value.taxIdType2 + "'\,\'" + value.cityName + "'\,\'" + value.regionKey + "'\,\'" + value.countryKey + "'\,\'" + value.langu + "'\,\'" + value.currency + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
+                        str += "<a href=\"#\"   onclick =\"EditVendor(\'" + value.participantID + "'\,\'" + value.participantName + "'\,\'" + value.contactPerson + "'\,\'" + value.companyEmail + "'\,\'" + value.dialingCodePhone + "'\,\'" + value.phoneNo + "'\,\'" + value.dialingCode + "'\,\'" + value.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" +  value.zipCode + "'\,\'" + value.tinNo + "'\,\'" + value.isActive + "'\,\'" + value.panNo + "'\,\'" + value.actionType + "'\,\'" + value.vendorCode + "'\,\'" + value.alternateEmailID + "'\,\'" + value.countryID + "'\,\'" + value.stateID + "'\,\'" + value.cityID + "'\,\'" + value.associatedVendorID  + "'\,\'" + value.taxIdType  + "'\,\'" + value.taxIdType2 + "'\,\'" + value.cityName +  "'\,\'" + value.regionKey  + "'\,\'" + value.countryKey + "'\,\'" + value.langu  + "'\,\'" + value.currency +  "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
                         str += "<td style=\"width:10%!important;\">" + value.createdByName + "</td>";
                         if (value.actionType == "EditVendor") {
                             str += "<td style=\"width:10%!important;\">No</td>";
@@ -545,23 +548,23 @@ function fetchParticipantsVenderTable() {
 }
 
 function EditVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone, dialingcode, mobile, addr1, addr2, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, cityid, childid, taxIdType, taxIdType2, city, regionKey, countryKey, Langu, currency) {
-    /* $('#hdnFlagType').val(buttonname)*/
+   /* $('#hdnFlagType').val(buttonname)*/
     jQuery("#hdnParticipantID").val(vendorid)
     $("#hdnParticipantCode").val(vendorcode)
     jQuery("#ParticipantName").val(vname)
     jQuery("#txtAddress").val(addr1)
-
-    setTimeout(function () {
-
-        $('#ddlState').val(regionKey).trigger('change')
+    
+      setTimeout(function () {
+        
+         $('#ddlState').val(regionKey).trigger('change')
     }, 2000)
 
-
+   
     setTimeout(function () {
-
+        
         $('#ddlCity').val(cityid).trigger('change')
     }, 2000)
-
+   
     jQuery("#txtPanNo").val(pan)
     jQuery("#txtTINNo").val(gst)
     jQuery("#txtPhoneNo").val(phone)
@@ -581,17 +584,17 @@ function EditVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone,
     else {
         status = 'N';
     }
-
+   
 
     GetCustomerSpecificMaster(jQuery("#ULCustomers").val()) //function defined in common.js
-    GetCountrySpecificMaster(countryKey)
+    GetCountrySpecificMaster(countryKey) 
     $('#divVendorForm').removeClass('hide')
     fetchMapCategory('Z', childid);
 
 }
 
 function fetchMapCategory(categoryFor, childId) {
-
+     
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -602,7 +605,7 @@ function fetchMapCategory(categoryFor, childId) {
         cache: false,
         dataType: "json",
         success: function (data) {
-
+            
             jQuery("#tblCategoryMaster").empty();
 
             var count = 3;
@@ -669,7 +672,7 @@ function clearform() {
     $('#txtTINNo').removeAttr('disabled')
     $('#txtPhoneNo').removeAttr('disabled')
     $('#txtMobileNo').removeAttr('disabled')
-    //  $('#txtcompanyemail').removeAttr('disabled')
+  //  $('#txtcompanyemail').removeAttr('disabled')
     $('#ddlCountry').removeAttr('disabled')
     $('#ddlState').removeAttr('disabled')
     $('#ddlCity').removeAttr('disabled')
@@ -741,7 +744,7 @@ function fetchCountry() {
         async: false,
         dataType: "json",
         success: function (data) {
-
+            
             $("#ddlCountry").empty();
             $("#ddlCountryCd").empty();
             $("#ddlCountryCdPhone").empty();
@@ -767,7 +770,7 @@ function fetchCountry() {
 
         },
         error: function (xhr, status, error) {
-
+        
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -865,7 +868,7 @@ function fetchState() {
 }
 
 function fetchCity(stateid) {
-
+    
     if (stateid == null) {
         stateid = 0;
     }
@@ -880,7 +883,7 @@ function fetchCity(stateid) {
         async: false,
         dataType: "json",
         success: function (data) {
-
+        
             $("#ddlCity").empty();
             if (data.length > 0) {
                 $("#ddlCity").append("<option value=0>Select City</option>");
@@ -913,7 +916,7 @@ function fetchCity(stateid) {
 
 
 $('#ddlCountry').on('change', function () {
-
+    
     let CountryKey = $(this).val();
 
     GetCountrySpecificMaster(CountryKey)
@@ -923,9 +926,9 @@ $('#ddlCountry').on('change', function () {
 
 
 $('#ddlState').on('change', function () {
-
+    
     let stateidentity = $('option:selected', this).data('stateid') || 0;
-
+   
 
     fetchCity(parseInt(stateidentity));
 });
@@ -933,118 +936,118 @@ $('#ddlState').on('change', function () {
 
 
 function ValidateParticipants() {
+   
+       var form1 = $('#divvendordetails');
+        var error1 = $('.alert-danger', form1);
+        var success1 = $('.alert-success', form1);
 
-    var form1 = $('#divvendordetails');
-    var error1 = $('.alert-danger', form1);
-    var success1 = $('.alert-success', form1);
+        form1.validate({
+            errorElement: 'span',
+            errorClass: 'help-block',
+            focusInvalid: false,
+            ignore: "",
+            
+              rules: {
+               
+                txtZipCd: {
+                    required: true,
+                    number: true
+                },
+                
+            },
+            messages: {
+               
+               txtZipCd: {
+                    required: "Please enter zip code to proceed",
+                    number: "please enter number only"
+                }
+                
 
-    form1.validate({
-        errorElement: 'span',
-        errorClass: 'help-block',
-        focusInvalid: false,
-        ignore: "",
-
-        rules: {
-
-            txtZipCd: {
-                required: true,
-                number: true
             },
 
-        },
-        messages: {
+          
+           invalidHandler: function (event, validator) { //display error alert on form submit              
+                success1.hide();
 
-            txtZipCd: {
-                required: "Please enter zip code to proceed",
-                number: "please enter number only"
+                App.scrollTo(error1, -300);
+            },
+
+            highlight: function (element) { // hightlight error inputs
+                $(element)
+                    .closest('.form-group,.reqcls').addClass('has-error'); // set error class to the control group
+
+            },
+
+            unhighlight: function (element) { // revert the change done by hightlight
+                $(element)
+                    .closest('.form-group,.reqcls').removeClass('has-error'); // set error class to the control group
+
+
+            },
+
+            success: function (label) {
+                label
+                    .closest('.form-group,.reqcls').removeClass('has-error'); // set success class to the control group
+
+            },
+
+
+            submitHandler: function (form) {
+                 
+                RegisterParticipants();
+                App.scrollTo(error1, -100);
             }
-
-
-        },
-
-
-        invalidHandler: function (event, validator) { //display error alert on form submit              
-            success1.hide();
-
-            App.scrollTo(error1, -300);
-        },
-
-        highlight: function (element) { // hightlight error inputs
-            $(element)
-                .closest('.form-group,.reqcls').addClass('has-error'); // set error class to the control group
-
-        },
-
-        unhighlight: function (element) { // revert the change done by hightlight
-            $(element)
-                .closest('.form-group,.reqcls').removeClass('has-error'); // set error class to the control group
-
-
-        },
-
-        success: function (label) {
-            label
-                .closest('.form-group,.reqcls').removeClass('has-error'); // set success class to the control group
-
-        },
-
-
-        submitHandler: function (form) {
-
-            RegisterParticipants();
-            App.scrollTo(error1, -100);
-        }
-    });
-
+        });
+    
 }
 
 
 //unregistered vendor
 
 $('#txtTINType').on('change', function () {
-
-    let Taxtype = $(this).val();
-    if (Taxtype == "") {
+   
+    let Taxtype = $(this).val() ;
+    if(Taxtype==""){
         $(".nogsthide").hide();
         $("#ParticipantName").removeAttr('disabled');
-        $("#txtTINNo").attr("onchange", "");
-        /* $("#ParticipantName").removeAttr('disabled');
-         $("#ddlNatureEstaiblishment").removeAttr('disabled');
-         $("#txtTINNo").attr("onchange","");
-         $("#txtPanNo").removeAttr('disabled');
-         $("#vendorpanno").removeAttr('disabled');
-         $("#vendorname").removeAttr('disabled');*/
+         $("#txtTINNo").attr("onchange", "");
+       /* $("#ParticipantName").removeAttr('disabled');
+        $("#ddlNatureEstaiblishment").removeAttr('disabled');
+        $("#txtTINNo").attr("onchange","");
+        $("#txtPanNo").removeAttr('disabled');
+        $("#vendorpanno").removeAttr('disabled');
+        $("#vendorname").removeAttr('disabled');*/
     }
-
-    else if (Taxtype == "IN3") {
-
-        $(".nogsthide").show();
-        $("#ParticipantName").attr("disabled", "disabled");
-        $("#txtPanNo").attr("disabled", "disabled");
-
-        $("#txtTINNo").attr("onchange", "extractPan(this)");
-        /*$("#ParticipantName").attr("disabled", "disabled");
-        $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
-        
-        $("#txtPanNo").attr("disabled", "disabled");
-        $("#vendorpanno").attr("disabled", "disabled");
-        $("#vendorname").attr("disabled", "disabled");*/
+  
+    else if(Taxtype=="IN3"){
+         
+         $(".nogsthide").show();
+         $("#ParticipantName").attr("disabled", "disabled");
+         $("#txtPanNo").attr("disabled", "disabled");
+         
+         $("#txtTINNo").attr("onchange", "extractPan(this)");
+         /*$("#ParticipantName").attr("disabled", "disabled");
+         $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
+         
+         $("#txtPanNo").attr("disabled", "disabled");
+         $("#vendorpanno").attr("disabled", "disabled");
+         $("#vendorname").attr("disabled", "disabled");*/
     }
     else {
-
-        $(".nogsthide").show();
-        $("#txtTINNo").attr("onchange", "");
-        $("#ParticipantName").removeAttr("disabled");
-        $("#txtPanNo").removeAttr("disabled");
-        /*$("#ParticipantName").attr("disabled", "disabled");
-        $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
-        $("#txtTINNo").attr("onchange", "extractPan(this)");
-        $("#txtPanNo").attr("disabled", "disabled");
-        $("#vendorpanno").attr("disabled", "disabled");
-        $("#vendorname").attr("disabled", "disabled");*/
+         
+         $(".nogsthide").show();
+         $("#txtTINNo").attr("onchange", "");
+         $("#ParticipantName").removeAttr("disabled");
+         $("#txtPanNo").removeAttr("disabled");
+         /*$("#ParticipantName").attr("disabled", "disabled");
+         $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
+         $("#txtTINNo").attr("onchange", "extractPan(this)");
+         $("#txtPanNo").attr("disabled", "disabled");
+         $("#vendorpanno").attr("disabled", "disabled");
+         $("#vendorname").attr("disabled", "disabled");*/
     }
 
-
+   
 
 
 }

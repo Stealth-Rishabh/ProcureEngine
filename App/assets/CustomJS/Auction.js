@@ -107,9 +107,9 @@ function gritternotification(msz) {
     return false;
 }
 function calltoaster(msz, title, type) {
-
+   
     $(".toast-success").remove();
-    // toastr.clear()
+     // toastr.clear()
     var options = {
         tapToDismiss: false,
         "closeButton": true,
@@ -548,7 +548,7 @@ function replaceQuoutesFromString(ele) {
     str = ele.value;
     str = str.replace(/'/g, '');
     str = str.replace(/"/g, '');
-
+   
     str = str.replace(/#/g, '');
     //str = str.replace(/&/g, '');
 
@@ -556,7 +556,7 @@ function replaceQuoutesFromString(ele) {
     str = str.replace(/`/g, '');
     str = str.replace(/</g, '');
     str = str.replace(/>/g, '');
-    // str = str.replace(/_/g, ''); for email
+   // str = str.replace(/_/g, ''); for email
     str = str.replace(/^/g, '');
     ele.value = str;
     //return val;
@@ -569,12 +569,12 @@ function replaceQuoutesFromStringFromExcel(ele) {
         str = ele.replace(/'/g, '');
         str = ele.replace(/"/g, '');
         str = ele.replace(/#/g, '');
-        // str = ele.replace(/&/g, '');
+       // str = ele.replace(/&/g, '');
         str = ele.replace(/~/g, '');
         str = ele.replace(/`/g, '');
         str = ele.replace(/</g, '');
         str = ele.replace(/>/g, '');
-        // str = ele.replace(/_/g, ''); for email
+       // str = ele.replace(/_/g, ''); for email
         str = ele.replace(/^/g, '');
     }
 
@@ -588,15 +588,15 @@ function replaceQuoutesFromText(ele) {
     str = ele.value;
     str = str.replace(/'/g, '');
     str = str.replace(/"/g, '');
-
+    
     str = str.replace(/#/g, '');
-
+   
 
     str = str.replace(/~/g, '');
     str = str.replace(/`/g, '');
     str = str.replace(/</g, '');
     str = str.replace(/>/g, '');
-    // str = str.replace(/_/g, ''); for email
+   // str = str.replace(/_/g, ''); for email
     str = str.replace(/,/g, '');
     str = str.replace(/^/g, '');
     ele.value = str;
@@ -619,7 +619,7 @@ function openChatDiv(name, email, vendorId, connectionid, userid, contactperson)
     $("#hddnVendorId").val(vendorId);
     $("#hddnVendorConnection").val(connectionid);
     fetchUserChats(vendorId, 'S');
-
+    
     if (connectionid == '') {
         $('#chatbtn').hide()
         $('#txtChatMsg').hide()
@@ -974,8 +974,8 @@ function fnDownloadAttachments(filename, foldername) {
         cache: false,
         crossDomain: true,
         success: function (data) {
-
-
+            
+            
             if (data.indexOf('<?xml') != -1) //if file is xml then give error
             {
 
@@ -1243,7 +1243,8 @@ function validateEmail(email) {
 var allvendorsforautocomplete;
 
 function fetchParticipantsVender() {
-
+     debugger
+     console.log(sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchParticipantsVender_PEV2/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&CreatedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')))
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1253,7 +1254,7 @@ function fetchParticipantsVender() {
         crossDomain: true,
         dataType: "json",
         success: function (Venderdata) {
-
+             
             if (Venderdata.length > 0) {
                 allvendorsforautocomplete = Venderdata;
 
@@ -1405,7 +1406,7 @@ function fetchBidType() {
 
 
 function fnfetchCatVendors() {
-
+    debugger
     let data = {
         "ProductCatIDList": JSON.parse(sessionStorage.getItem("hdnCategoryGrpID")),
         "VendorID": sessionStorage.getItem('hdnVendorID'),
@@ -1417,12 +1418,12 @@ function fnfetchCatVendors() {
         url: sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchCategoryVendorForAdvSearch_PEV2/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "POST",
-        async: false,
+        async: false,                      
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
-        crossDomain: true,
+        crossDomain:true,
         success: function (data) {
-
+            debugger
             $('#div_table').removeClass('hide');
             $('#tbldetails').empty();
             if (data.length) {
@@ -1442,7 +1443,7 @@ function fnfetchCatVendors() {
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
-
+            debugger
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -1453,9 +1454,9 @@ function fnfetchCatVendors() {
                 $('#spanerterrserach').text('Please Select Category to Proceed')
             }
             jQuery.unblockUI();
-            return false;
+            return false;           
         }
-
+       
     })
 
     setTimeout(function () {
@@ -1689,7 +1690,7 @@ var tableToExcelMultipleSheetwithoutColor = (function () {
     }
 })();
 var tableToExcelMultipleWorkSheet = (function () {
-
+ 
     var uri = 'data:application/vnd.ms-excel;base64,'
         , tmplWorkbookXML = '<?xml version="1.0" encoding="windows-1252"?><?mso-application progid="Excel.Sheet"?>'
             + '   <Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel"  xmlns:html="http://www.w3.org/TR/REC-html40">'
@@ -1745,14 +1746,14 @@ var tableToExcelMultipleWorkSheet = (function () {
         , base64 = function (s) { return window.btoa(unescape(encodeURIComponent(s))) }
         , format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) }
     return function (tables, wsnames, wbname, appname) {
-
+      
         var ctx = "";
         var workbookXML = "";
         var worksheetsXML = "";
         var rowsXML = "";
 
         for (var i = 0; i < tables.length; i++) {
-
+            
             if (!tables[i].nodeType) tables[i] = document.getElementById(tables[i]);
             for (var j = 0; j < tables[i].rows.length; j++) {
                 rowsXML += '<Row>'
@@ -1928,7 +1929,7 @@ var tablesToExcel = (function () {
 })();
 
 function checkExcelUpload(fileid) {
-
+    
     var ftype = $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
 
     var fn = $('#' + fileid.id)[0].files[0].name; // get file type
@@ -1971,12 +1972,16 @@ function StringDecodingMechanism(maliciousText) {
         returnStr = returnStr.replaceAll('&#x2F;', '/');
         // returnStr = returnStr.replaceAll('alert-', 'alert(');
         returnStr = returnStr.replaceAll('&amp;', '&');
+       
     }
     else {
         returnStr = '';
     }
     return returnStr;
 }
+
+
+
 
 function toUTF8Array(str) {
     var utf8 = [];

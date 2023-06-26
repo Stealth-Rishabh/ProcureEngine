@@ -38,7 +38,6 @@ function acceptterms() {
     }
 }
 function acceptBidTerms() {
-    var x = isAuthenticated();
 	var vendorID = 0;
     if (sessionStorage.getItem('ContactEmailID') == 'null' || sessionStorage.getItem('ContactEmailID') == '') {
         vendorID = sessionStorage.getItem('UserID');
@@ -72,7 +71,7 @@ function acceptBidTerms() {
 }
 
 function acceptBidTermsRFIRFQ() {
-    var x = isAuthenticated();
+   
     var vendorID = 0;
     
         vendorID = sessionStorage.getItem('VendorId');

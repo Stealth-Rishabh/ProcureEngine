@@ -68,7 +68,7 @@
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/CustomJS/Common.js"></script>
-
+    
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
     <div class="page-header navbar navbar-fixed-top">
@@ -287,6 +287,35 @@
                                 </div>
                             </div>
                             <div class="portlet-body">
+                                <div class="row">
+                                    <div class="col-md-12 hide" id="#pricetype">
+                                        <div class='form-group'>
+                                            <label class="col-md-2 control-label bold">
+                                                 Preffered Type
+                                            </label>
+                                            <div class="col-md-2">
+                                                <select class="form-control" id="ddlPriceTypeP" name="ddlPriceTypeP">
+                                                    <option value="">Select</option>
+                                                    <option value="V">Value</option>
+                                                    <option value="P">Percentage</option>
+                                               </select>
+                                            </div>
+                                                                        
+                                        </div>
+                                    </div>
+                                </div> 
+                                <br/>
+                                                    
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-md-9">
+                                                   <table id="tblvendorsP" class="table table-striped table-bordered table-hover">
+                                                   </table>
+                                            </div>
+                                       </div>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-12 display-none" id="divNFADetails">
                                         <div class="form-group">
@@ -808,13 +837,17 @@
                                         Close
                                     </button>
                                     <button id="btnpdf" type="button" class="btn red-mint" onclick="fngeneratePDF()">generate PDF</button>
-                                    <button type="button" class="btn blue" onclick="fnDownloadZip()" id="btnDownloadFile">
-                                        Download
-                                    </button>
+                                <button type="button" class="btn blue" onclick="fnDownloadZip()" id="btnDownloadFile">
+                                     Download
+                                 </button>
+                                 <button type="button" class="btn yellow btnPRMapping"  id="btnPRMapping1">
+                                                                           Map to PR
+                                </button>
+                                  
                                 </div>
                             </div>
                         </div>
-
+                        
                     </div>
                     <div id="divRemarksApp" class="col-md-12">
                         <div class="row">
@@ -875,25 +908,29 @@
                                                 <button id="btnraisequery" type="button" class="btn blue" href="#RaiseQuery" onclick="fnRaisequery()" data-toggle="modal">
                                                     Raise Query
                                                 </button>
-                                                <button id="btnaddapprovers" type="button" class="btn yellow-saffron" href="#addNFAApprovers" onclick="fnOpenPopupApprover()">
+                                                 <button id="btnaddapprovers" type="button" class="btn yellow-saffron hide" href="#addNFAApprovers" onclick="fnOpenPopupApprover()">
                                                     Add Approvers
                                                 </button>
                                                 <button id="btnBack" type="button" class="btn yellow" onclick="Fnback()">
                                                     Close
                                                 </button>
                                                 <button id="btnpdf" type="button" class="btn red-mint" onclick="fngeneratePDF()">generate PDF</button>
-                                                <button type="button" class="btn blue" onclick="fnDownloadZip()" id="btnDownloadFile">
-                                                    Download
-                                                </button>
+                                                 <button type="button" class="btn blue" onclick="fnDownloadZip()" id="btnDownloadFile">
+                                                     
+                                                  Download
+                                               </button>
+                                              
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                             <form id="frmadminbutton" style="display:none;" class="col-md-12">
+
+
                                 <div class="form-group">
 
-                                    <div class="col-md-offset-4 col-md-12 margin-top-10">
+                                    <div class="col-md-offset-3 col-md-12 margin-top-10">
                                         <button id="btnExportToExcel1" type="button" class="btn blue hide">
                                             Export To Excel
                                         </button>
@@ -904,7 +941,7 @@
                                         <button id="btnsubmitquery" type="button" onclick="fnsubmitQueryByCreator()" class="btn green-haze hide">
                                             Submit Query
                                         </button>
-                                        <button id="btnaddapprovers" type="button" class="btn yellow-saffron" href="#addNFAApprovers" onclick="fnOpenPopupApprover()">
+                                        <button id="btnaddapprovers" type="button" class="btn yellow-saffron " href="#addNFAApprovers" onclick="fnOpenPopupApprover()">
                                             Add Approvers
                                         </button>
                                         <button id="btnCancelbidApp" type="button" class="btn red hide" href="#delegatemodal" data-toggle="modal">
@@ -915,6 +952,9 @@
                                             Close
                                         </button>
                                         <button id="btnpdf" type="button" class="btn red-mint" onclick="fngeneratePDF()">generate PDF</button>
+                                         <button type="button" class="btn yellow btnPRMapping"  id="btnPRMapping2">
+                                                                           Map to PR
+                                               </button>
                                     </div>
                                 </div>
                             </form>
@@ -1128,7 +1168,7 @@
                         </div>
                     </div>
                 </div>
-                <form id="formDelegate">
+                 <form id="formDelegate">
                     <div id="appmodpop" class="modal fade bs-modal-md" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-md">
                             <div class="portlet box blue-hoki">
@@ -1144,10 +1184,11 @@
                                     <div class="alert alert-block alert-danger" id="errordiv">
                                         <span class="alert-danger"></span>
                                     </div>
-                                    <div class="alert alert-success success-block" id="successdivD" >
+                                     <div class="alert alert-success success-block" id="successdivD" >
                                         <span class="alert-success"></span>
                                     </div>
-                                    <div style="display:flex;">
+
+                                   <div style="display:flex;">
                                         <div id="fromApproveUser" style="width:24%; margin:20px"></div>
                                         <div class="form-group" style="width: 76%; margin: 20px">
                                             <div class="inputgroup isProject" style="display:flex;">
@@ -1210,17 +1251,23 @@
                                                 <label class="col-md-3 control-label">
                                                     Select Approvers
                                                 </label>
-                                                <label class="col-md-7">
+                                                <label class="col-md-4">
                                                     <input type="text" class="form-control pull-right MaxLength txtInputs" maxlength="100" placeholder="Select Approver" id="txtApproverNFA"
                                                            data-provide="typeahead" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" name="txtApproverNFA" />
                                                 </label>
-                                                <div class="col-md-1 ">
+                                                <label class="col-md-3">
+                                                    <input type="text" class="form-control pull-right MaxLength txtInputs" maxlength="100" placeholder="Approval Sequence No" id="txtApproverSqn"
+                                                           data-provide="typeahead" autocomplete="off" onkeyup="localecommaseperator(this)" name="txtApproverSqn" />
+                                                </label>
+
+                                                <div class="col-md-2 control-label">
                                                     <button type="button" id="Addbtn1" onclick="addNFAApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
                                                 </div>
                                             </div>
-                                            <div class="row">
+                                            <div class="row"> 
                                                 <div class="col-md-12">
                                                     <table class="table table-striped table-bordered table-hover" id="tblRFQapprovers"></table>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -1230,7 +1277,7 @@
                                                     <div class="row">
                                                         <div class="col-md-offset-4 col-md-9">
                                                             <button type="submit" class="btn green" id="btnnfaapproversubmit">Submit</button>
-                                                            <button type="button" class="btn yellow-crusta" onclick="fnclosepopupApprovers()" id="btnClose">Close</button>
+                                                            <button type="button" class="btn btnapphide yellow-crusta" onclick="fnclosepopupApprovers()" id="btnClose">Close</button>
 
                                                         </div>
                                                     </div>
@@ -1246,52 +1293,50 @@
                         </div>
                     </div>
                 </div>
-
-            </div>
             </div>
         </div>
+    </div>
 
-        <script>
-            jQuery(document).ready(function () {
+    <script>
+        jQuery(document).ready(function () {
 
-                callPagejs('NFAApproverReq.js');
-                //handleDateTimepicker();
-                $('[data-toggle="popover"]').popover({})
-                Pageloaded()
-                var x = isAuthenticated();
-                setInterval(function () { Pageloaded() }, 15000);
-                if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-                    window.location = sessionStorage.getItem('MainUrl');
+            callPagejs('NFAApproverReq.js');
+            //handleDateTimepicker();
+            $('[data-toggle="popover"]').popover({})
+            Pageloaded()
+            setInterval(function () { Pageloaded() }, 15000);
+            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+                window.location = sessionStorage.getItem('MainUrl');
+            }
+            else {
+                if (sessionStorage.getItem("UserType") == "E") {
+                    $('.page-container').show();
                 }
                 else {
-                    if (sessionStorage.getItem("UserType") == "E") {
-                        $('.page-container').show();
-                    }
-                    else {
-                        bootbox.alert("You are not Authorize to view this page", function () {
-                            parent.history.back();
-                            return false;
-                        });
-                    }
+                    bootbox.alert("You are not Authorize to view this page", function () {
+                        parent.history.back();
+                        return false;
+                    });
                 }
-                $(function () {
-                    $('[data-toggle="tooltip"]').tooltip()
-                })
+            }
+            $(function () {
+                $('[data-toggle="tooltip"]').tooltip()
+            })
 
 
-                Metronic.init();
-                Layout.init();
-                validateAppsubmitData();
+            Metronic.init();
+            Layout.init();
+            validateAppsubmitData();
 
-                setCommonData();
-                fetchMenuItemsFromSession(1, 58);
-
-
+            setCommonData();
+            fetchMenuItemsFromSession(1, 58);
 
 
-            });
 
-        </script>
+
+        });
+
+    </script>
 </body>
 
 </html>

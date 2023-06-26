@@ -3,11 +3,12 @@
  * For a full list of MSAL.js configuration parameters, visit:
  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/configuration.md 
  */
+debugger;
 const msalConfig = {
     auth: {
         clientId: "90dbc2c3-5ed2-4bfe-9a81-d33d180291d7",
         authority: "https://login.microsoftonline.com/d8bbc884-1f64-49e8-b313-369b0fa440bf",
-        redirectUri: "https://procurengine.com/azure/",
+        //redirectUri: "https://procurengine.com/azure/",
     },
     cache: {
         cacheLocation: "localStorage", // This configures where your cache will be stored
@@ -18,7 +19,7 @@ const msalConfig = {
 
 // Add here the endpoints and scopes for the web API you would like to use.
 const apiConfig = {
-    uri: "https://pev3proapi.azurewebsites.net", // e.g. http://localhost:5000/api
+    uri: "https://pev3qaapi.azurewebsites.net", // e.g. http://localhost:5000/api
     scopes: ["api://2b56545a-4596-4513-a502-c9b88ab9390c/ProcurEngine_Pro_API"] // e.g. ["scp1", "scp2"]
 };
 

@@ -351,7 +351,7 @@
                                                                 </div>
                                                             </div>
                                                         </form>
-
+                                                            
                                                     </div>
 
                                                     <div class="panel panel-default">
@@ -366,578 +366,683 @@
                                                                 </a>
                                                             </h4>
                                                         </div>
+                                                        
+                                                           
+                                                            <div id="collapse0" class="panel-collapse collapse">
+                                                                <div class="panel-body">
 
+                                                                    <div class="panel-group accordion" id="accordion2">
+                                                                        <div class="col-md-12 text-right">
+                                                                            <button class="btn btn-xs btn-primary tooltips " type="button" id="btnAddAnother" data-placement="top" data-original-title="Click here to add another company" onclick="Addanother()">
+                                                                                <i class="fa fa-plus-circle"></i> Add Another
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="clearfix"></div>
+                                                                        <div class="table-scrollable">
+                                                                            <table class="table table-striped table-bordered table-hover" id="tblCompaniesFoundDetails"></table>
 
-                                                        <div id="collapse0" class="panel-collapse collapse">
-                                                            <div class="panel-body">
-
-                                                                <div class="panel-group accordion" id="accordion2">
-                                                                    <div class="col-md-12 text-right">
-                                                                        <button class="btn btn-xs btn-primary tooltips " type="button" id="btnAddAnother" data-placement="top" data-original-title="Click here to add another company" onclick="Addanother()">
-                                                                            <i class="fa fa-plus-circle"></i> Add Another
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="clearfix"></div>
-                                                                    <div class="table-scrollable">
-                                                                        <table class="table table-striped table-bordered table-hover" id="tblCompaniesFoundDetails"></table>
-
-                                                                    </div>
-                                                                    <div class="clearfix"></div>
-                                                                    <!--child form details-->
-                                                                    <div id="childDetailsForm" class="hide">
-                                                                        <div class="panel panel-default">
-                                                                            <div class="panel-heading">
-                                                                                <h4 class="panel-title">
-                                                                                    <a class="accordion-toggle active total-tab headingfont" data-toggle="collapse" data-parent="#accordion2" href="#collapse4">
-                                                                                        <span data-i18n="companydetails">Company Details</span>
-                                                                                        <div class="outer_wrap">
-                                                                                            <span class="progress-value" id="companyspan" name="companyspan"></span>
-                                                                                            <div class="cs_chart" id="company_chart" data-percent=""></div>
-                                                                                        </div>
-                                                                                    </a>
-                                                                                </h4>
-                                                                            </div>
-                                                                            <form action="#" id="submit_form_company" class="form-horizontal">
-                                                                                <div id="collapse4" class="panel-collapse active">
-                                                                                    <div class="panel-body">
-                                                                                        <div class="alert alert-block alert-danger" id="companieserrordiv">
-                                                                                            <span id="sendcompanieserror"></span>
-                                                                                        </div>
-                                                                                        <div class="alert alert-success" id="companiessuccessdiv">
-                                                                                            <span id="sendcompaniessuccess"></span>
-                                                                                        </div>
-                                                                                        <div class="row">
-                                                                                            <div class="form-group">
-                                                                                                <div class="col-md-12">
-                                                                                                    <label class="col-md-2 control-label txtalignleft" data-i18n="country">
-                                                                                                        Country  <span class="required">*</span>
-                                                                                                    </label>
-                                                                                                    <div class="col-md-4 coun_stat_city_select xyz">
-                                                                                                        <select class="form-control" name="ddlCountry" id="ddlCountry" tabindex="4"></select>
-                                                                                                    </div>
-
-                                                                                                </div>
+                                                                        </div>
+                                                                        <div class="clearfix"></div>
+                                                                        <!--child form details-->
+                                                                        <div id="childDetailsForm" class="hide">
+                                                                            <div class="panel panel-default">
+                                                                                <div class="panel-heading">
+                                                                                    <h4 class="panel-title">
+                                                                                        <a class="accordion-toggle active total-tab headingfont" data-toggle="collapse" data-parent="#accordion2" href="#collapse4">
+                                                                                            <span data-i18n="companydetails">Company Details</span>
+                                                                                            <div class="outer_wrap">
+                                                                                                <span class="progress-value" id="companyspan" name="companyspan"></span>
+                                                                                                <div class="cs_chart" id="company_chart" data-percent=""></div>
                                                                                             </div>
-                                                                                            <div class="form-group">
-                                                                                                <div class="col-md-12">
-                                                                                                    <label class="col-md-2 control-label" id="taxlabel">
-                                                                                                        Tax Type
-                                                                                                    </label>
-                                                                                                    <div class="col-md-4 xyz">
-                                                                                                        <select class="form-control" name="txtTINType" id="txtTINType" tabindex="4">
-                                                                                                        </select>
-
-                                                                                                    </div>
-                                                                                                    <label class="col-md-2 control-label nogsthide" id="taxlabel">
-                                                                                                        Tax Type 2
-                                                                                                    </label>
-                                                                                                    <div class="col-md-4 xyz nogsthide">
-                                                                                                        <select class="form-control" name="txtTINType2" id="txtTINType2" tabindex="4">
-                                                                                                        </select>
+                                                                                        </a>
+                                                                                    </h4>
+                                                                                </div>
+                                                                                <form action="#" id="submit_form_company" class="form-horizontal">
+                                                                                    <div id="collapse4" class="panel-collapse active">
+                                                                                        <div class="panel-body">
+                                                                                            <div class="alert alert-block alert-danger" id="companieserrordiv">
+                                                                                                <span id="sendcompanieserror"></span>
+                                                                                            </div>
+                                                                                            <div class="alert alert-success" id="companiessuccessdiv">
+                                                                                                <span id="sendcompaniessuccess"></span>
+                                                                                            </div>
+                                                                                            <div class="row">
+                                                                                                <div class="form-group">
+                                                                                                    <div class="col-md-12">
+                                                                                                        <label class="col-md-2 control-label txtalignleft" data-i18n="country">
+                                                                                                            Country  <span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 coun_stat_city_select xyz">
+                                                                                                            <select class="form-control" name="ddlCountry" id="ddlCountry" tabindex="4"></select>
+                                                                                                        </div>
 
                                                                                                     </div>
                                                                                                 </div>
-                                                                                            </div>
-
-                                                                                            <div class="form-group nogsthide">
-                                                                                                <div class="col-md-12">
-                                                                                                    <span class="tax-group">
-                                                                                                        <label class="col-md-2 control-label" data-i18n="state">
-                                                                                                            Tax Id  <span class="required">*</span>
+                                                                                                <div class="form-group">
+                                                                                                    <div class="col-md-12">
+                                                                                                        <label class="col-md-2 control-label" id="taxlabel">
+                                                                                                            Tax Type 
                                                                                                         </label>
                                                                                                         <div class="col-md-4 xyz">
-                                                                                                            <input type="text" class="form-control" id="txtTINNo" name="txtTINNo" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled>
+                                                                                                            <select class="form-control" name="txtTINType" id="txtTINType" tabindex="4">
+                                                                                                            </select>
+
                                                                                                         </div>
-                                                                                                    </span>
+                                                                                                        <label class="col-md-2 control-label nogsthide" id="taxlabel">
+                                                                                                            Tax Type 2
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz nogsthide">
+                                                                                                            <select class="form-control" name="txtTINType2" id="txtTINType2" tabindex="4">
+                                                                                                            </select>
 
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
 
-
-                                                                                                    <label class="control-label col-md-2 txtalignleft">
-                                                                                                        Attach TAX <span class="required">*</span>
-                                                                                                    </label>
-                                                                                                    <div class="col-md-4 xyz">
-
-                                                                                                        <div class="inputgroup">
-                                                                                                            <div class="att_input">
-                                                                                                                <input type="file" class="form-control" tabindex="5" id="filegst" onchange="checkfilesize(this)">
-                                                                                                                <label class="control-label uploadedfile" id="uploadgst"><a href="javascript:;" onclick="DownloadFile(this)" id="gstattach" class="txtleftnone"></a><span class="fix-left-margin" onclick="editGST()" id="editgst"><i class="fa fa-pencil"></i></span></label>
-
-
+                                                                                                <div class="form-group nogsthide">
+                                                                                                    <div class="col-md-12">
+                                                                                                        <span class="tax-group">
+                                                                                                            <label class="col-md-2 control-label" data-i18n="state">
+                                                                                                                Tax Id  <span class="required">*</span> 
+                                                                                                            </label>
+                                                                                                            <div class="col-md-4 xyz">
+                                                                                                                <input type="text" class="form-control" id="txtTINNo" name="txtTINNo" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled>
                                                                                                             </div>
+                                                                                                        </span>
+
+
+
+                                                                                                        <label class="control-label col-md-2 txtalignleft">
+                                                                                                            Attach TAX <span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+
+                                                                                                            <div class="inputgroup">
+                                                                                                                <div class="att_input">
+                                                                                                                    <input type="file" class="form-control" tabindex="5" id="filegst" onchange="checkfilesize(this)">
+                                                                                                                    <label class="control-label uploadedfile" id="uploadgst"><a href="javascript:;" onclick="DownloadFile(this)" id="gstattach" class="txtleftnone"></a><span class="fix-left-margin" onclick="editGST()" id="editgst"><i class="fa fa-pencil"></i></span></label>
+
+
+                                                                                                                </div>
+                                                                                                            </div>
+
                                                                                                         </div>
+
 
                                                                                                     </div>
-
-
                                                                                                 </div>
-                                                                                            </div>
 
-                                                                                            <div class="form-group nogsthide" id="pangroup">
-                                                                                                <div class="col-md-12">
-                                                                                                    <span class="pan-group">
-                                                                                                        <label class="col-md-2 control-label txtalignleft">
-                                                                                                            Tax Id 2  <span class="required">*</span>
+                                                                                                <div class="form-group nopanhide" id="pangroup">
+                                                                                                    <div class="col-md-12">
+                                                                                                        <span class="pan-group">
+                                                                                                            <label class="col-md-2 control-label txtalignleft">
+                                                                                                                Tax Id 2  <span class="required">*</span>
+                                                                                                            </label>
+                                                                                                            <div class="col-md-4">
+
+                                                                                                                <input type="text" class="form-control" id="vendorpanno" name="vendorpanno" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled>
+
+                                                                                                            </div>
+
+                                                                                                        </span>
+                                                                                                        <label class="col-md-2 control-label">
+                                                                                                            Attach TaxId 2  <span class="required">*</span>
                                                                                                         </label>
                                                                                                         <div class="col-md-4">
+                                                                                                            <div class="inputgroup">
+                                                                                                                <div class="att_input">
+                                                                                                                    <input type="file" class="form-control" tabindex="5" id="filepan" onchange="checkfilesize(this)">
+                                                                                                                    <label class="control-label uploadedfile" id="uploadpan"><a href="javascript:;" onclick="DownloadFile(this)" id="panattach" class="txtleftnone"></a><span class="fix-left-margin" onclick="editPAN()" id="editpan"><i class="fa fa-pencil"></i></span></label>
 
-                                                                                                            <input type="text" class="form-control" id="vendorpanno" name="vendorpanno" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled>
+                                                                                                                </div>
+                                                                                                            </div>
+
 
                                                                                                         </div>
 
-                                                                                                    </span>
-                                                                                                    <label class="col-md-2 control-label">
-                                                                                                        Attach TaxId 2  <span class="required">*</span>
-                                                                                                    </label>
-                                                                                                    <div class="col-md-4">
-                                                                                                        <div class="inputgroup">
-                                                                                                            <div class="att_input">
-                                                                                                                <input type="file" class="form-control" tabindex="5" id="filepan" onchange="checkfilesize(this)">
-                                                                                                                <label class="control-label uploadedfile" id="uploadpan"><a href="javascript:;" onclick="DownloadFile(this)" id="panattach" class="txtleftnone"></a><span class="fix-left-margin" onclick="editPAN()" id="editpan"><i class="fa fa-pencil"></i></span></label>
 
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                <div class="form-group">
+                                                                                                    <div class="col-md-12">
+                                                                                                        <label class="col-md-2 control-label txtalignleft" data-i18n="companyname">
+                                                                                                            Company Name  <span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+
+                                                                                                            <input type="text" class="form-control" id="vendorname" name="vendorname" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled>
+
+                                                                                                        </div>
+                                                                                                        <label class="col-md-2 control-label txtalignleft nogsthide" data-i18n="TradeName">
+                                                                                                            Trade Name  
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+
+                                                                                                            <input type="text" class="form-control nogsthide" id="TradeName" name="TradeName" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)">
+
+                                                                                                        </div>
+                                                                                                        
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                
+                                                                                                
+                                                                                                <div class="form-group newgsthide">
+                                                                                                    <div class="col-md-12">
+                                                                                                        <label class="col-md-2 control-label txtalignleft" data-i18n="gstnStatus">
+                                                                                                            GSTN Status
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+
+                                                                                                            <input type="text" class="form-control" id="gstnStatus" name="gstnStatus" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled>
+
+                                                                                                        </div>
+                                                                                                        <label class="col-md-2 control-label txtalignleft" data-i18n="eInvoiceStatus">
+                                                                                                            E-Invoice Status 
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+
+                                                                                                            <input type="text" class="form-control" id="eInvoiceStatus" name="eInvoiceStatus" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled>
+
+                                                                                                        </div>
+                                                                                                        
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                
+                                                                                                 <div class="form-group">
+                                                                                                    <div class="col-md-12">
+                                                                                                        <label class="col-md-2 control-label txtalignleft newgsthide" data-i18n="gstnStatus">
+                                                                                                             Taxpayer Type
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz newgsthide">
+
+                                                                                                            <input type="text" class="form-control" id="taxpayerType" name="taxpayerType" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled>
+
+                                                                                                        </div>
+                                                                                                        
+                                                                                                         <label class="col-md-2 control-label txtalignleft" data-i18n="natureofestablishment">
+                                                                                                            Nature of Establishment
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+                                                                                                            <input type="text" class="form-control" id="ddlNatureEstaiblishment" name="ddlNatureEstaiblishment" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled>
+
+
+                                                                                                        </div>
+                                                                                                       
+                                                                                                        
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                <div class="form-group">
+                                                                                                    <div class="col-md-12">
+                                                                                                       
+
+                                                                                                        <label class="col-md-2 control-label txtalignleft" data-i18n="address">
+                                                                                                            Address  <span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+                                                                                                            <input type="text" class="form-control"
+                                                                                                                   id="vendoraddress" name="vendoraddress" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                        </div>
+                                                                                                        
+                                                                                                         <label class="col-md-2 control-label">
+                                                                                                            PIN Code  <span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+                                                                                                            <input type="text" class="form-control numberonly"
+                                                                                                                   id="pincode" name="pincode" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" maxlength=6 />
+                                                                                                        </div>
+
+                                                                                                        
+
+
+
+                                                                                                    </div>
+                                                                                                </div>
+
+
+                                                                                                <div class="form-group">
+                                                                                                    <div class="col-md-12">
+                                                                                                       
+                                                                                                        <label class="col-md-2 control-label" data-i18n="state">
+                                                                                                            State  <span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 coun_stat_city_select xyz">
+                                                                                                            <select class="form-control" name="ddlState" id="ddlState" tabindex="4"></select>
+
+                                                                                                        </div>
+                                                                                                         <label class="col-md-2 control-label txtalignleft">
+                                                                                                            City  <span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 coun_stat_city_select xyz">
+                                                                                                            <select class="form-control" name="ddlCity" id="ddlCity" tabindex="4"></select>
+                                                                                                        </div>
+
+                                                                                                       
+
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                <div class="form-group">
+                                                                                                    <div class="col-md-12">
+                                                                                                        
+                                                                                                        <label class="col-md-2 control-label" data-i18n="suppliertype">
+                                                                                                            Supplier Type
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4">
+                                                                                                            <select class="form-control" id="ddlVendorType" name="ddlVendorType">
+                                                                                                                <option value="0" data-i18n="select">Select</option>
+                                                                                                                <option value="1" data-i18n="supplyvendor">Supply Vendor</option>
+                                                                                                                <option value="2" data-i18n="servicevendor">Service Vendor</option>
+                                                                                                                <option value="3" data-i18n="both">Both</option>
+                                                                                                            </select>
+                                                                                                        </div>
+                                                                                                        
+                                                                                                        <label class="col-md-2 control-label" data-i18n="language">
+                                                                                                            Language  <span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+                                                                                                            <select class="form-control" id="ddllanguage" name="ddllanguage">
+                                                                                                            </select>
+                                                                                                        </div>
+                                                                                                        
+
+
+
+
+
+                                                                                                    </div>
+                                                                                                </div>
+
+
+                                                                                                <div class="form-group">
+                                                                                                    <div class="col-md-12">
+                                                                                                        
+                                                                                                        <label class="col-md-2 control-label" data-i18n="language">
+                                                                                                            Currency  <span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+                                                                                                            <select class="form-control" id="ddlcurrency" name="ddlcurrency">
+                                                                                                            </select>
+                                                                                                        </div>
+                                                                                                        
+                                                                                                        <div class="inputgroup">
+                                                                                                            <label class="col-md-2 control-label txtalignleft">
+                                                                                                                MSME  <span class="required">*</span>
+                                                                                                            </label>
+                                                                                                            <div class="col-md-4 xyz">
+                                                                                                                <select class="form-control selects selectno" id="ddlMSME" name="ddlMSME" onchange="fetchMsme();">
+                                                                                                                    <option value="" class="hide" data-i18n="select">Select</option>
+                                                                                                                    <option value="Y" data-i18n="yes">Yes</option>
+                                                                                                                    <option value="N" data-i18n="no">No</option>
+                                                                                                                </select>
                                                                                                             </div>
                                                                                                         </div>
 
-
-                                                                                                    </div>
-
-
-                                                                                                </div>
-                                                                                            </div>
-
-                                                                                            <div class="form-group">
-                                                                                                <div class="col-md-12">
-                                                                                                    <label class="col-md-2 control-label txtalignleft" data-i18n="companyname">
-                                                                                                        Company Name  <span class="required">*</span>
-                                                                                                    </label>
-                                                                                                    <div class="col-md-4 xyz">
-
-                                                                                                        <input type="text" class="form-control" id="vendorname" name="vendorname" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled>
-
-                                                                                                    </div>
-                                                                                                    <label class="col-md-2 control-label txtalignleft" data-i18n="natureofestablishment">
-                                                                                                        Nature of Establishment
-                                                                                                    </label>
-                                                                                                    <div class="col-md-4 xyz">
-                                                                                                        <input type="text" class="form-control" id="ddlNatureEstaiblishment" name="ddlNatureEstaiblishment" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled>
+                                                                                                       
 
 
-                                                                                                    </div>
-
-                                                                                                </div>
-                                                                                            </div>
-
-                                                                                            <div class="form-group">
-                                                                                                <div class="col-md-12">
-                                                                                                    <label class="col-md-2 control-label txtalignleft" data-i18n="address">
-                                                                                                        Address  <span class="required">*</span>
-                                                                                                    </label>
-                                                                                                    <div class="col-md-4 xyz">
-                                                                                                        <input type="text" class="form-control"
-                                                                                                               id="vendoraddress" name="vendoraddress" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
-                                                                                                    </div>
-
-                                                                                                    <label class="col-md-2 control-label">
-                                                                                                        PIN Code  <span class="required">*</span>
-                                                                                                    </label>
-                                                                                                    <div class="col-md-4 xyz">
-                                                                                                        <input type="text" class="form-control numberonly"
-                                                                                                               id="pincode" name="pincode" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" maxlength=6 />
-                                                                                                    </div>
-
-
-
-                                                                                                </div>
-                                                                                            </div>
-
-
-                                                                                            <div class="form-group">
-                                                                                                <div class="col-md-12">
-                                                                                                    <label class="col-md-2 control-label" data-i18n="state">
-                                                                                                        State  <span class="required">*</span>
-                                                                                                    </label>
-                                                                                                    <div class="col-md-4 coun_stat_city_select xyz">
-                                                                                                        <select class="form-control" name="ddlState" id="ddlState" tabindex="4"></select>
-
-                                                                                                    </div>
-
-                                                                                                    <label class="col-md-2 control-label txtalignleft">
-                                                                                                        City  <span class="required">*</span>
-                                                                                                    </label>
-                                                                                                    <div class="col-md-4 coun_stat_city_select xyz">
-                                                                                                        <select class="form-control" name="ddlCity" id="ddlCity" tabindex="4"></select>
-                                                                                                    </div>
-
-                                                                                                </div>
-                                                                                            </div>
-
-                                                                                            <div class="form-group">
-                                                                                                <div class="col-md-12">
-                                                                                                    <label class="col-md-2 control-label" data-i18n="suppliertype">
-                                                                                                        Supplier Type
-                                                                                                    </label>
-                                                                                                    <div class="col-md-4">
-                                                                                                        <select class="form-control" id="ddlVendorType" name="ddlVendorType">
-                                                                                                            <option value="0" data-i18n="select">Select</option>
-                                                                                                            <option value="1" data-i18n="supplyvendor">Supply Vendor</option>
-                                                                                                            <option value="2" data-i18n="servicevendor">Service Vendor</option>
-                                                                                                            <option value="3" data-i18n="both">Both</option>
-                                                                                                        </select>
-                                                                                                    </div>
-                                                                                                    <label class="col-md-2 control-label" data-i18n="language">
-                                                                                                        Language  <span class="required">*</span>
-                                                                                                    </label>
-                                                                                                    <div class="col-md-4 xyz">
-                                                                                                        <select class="form-control" id="ddllanguage" name="ddllanguage">
-                                                                                                        </select>
-                                                                                                    </div>
-
-
-
-
-
-                                                                                                </div>
-                                                                                            </div>
-
-
-                                                                                            <div class="form-group">
-                                                                                                <div class="col-md-12">
-                                                                                                    <label class="col-md-2 control-label" data-i18n="language">
-                                                                                                        Currency  <span class="required">*</span>
-                                                                                                    </label>
-                                                                                                    <div class="col-md-4 xyz">
-                                                                                                        <select class="form-control" id="ddlcurrency" name="ddlcurrency">
-                                                                                                        </select>
-                                                                                                    </div>
-
-                                                                                                    <div class="inputgroup">
-                                                                                                        <label class="col-md-2 control-label txtalignleft">
-                                                                                                            MSME  <span class="required">*</span>
-                                                                                                        </label>
-                                                                                                        <div class="col-md-4 xyz">
-                                                                                                            <select class="form-control selects selectno" id="ddlMSME" name="ddlMSME" onchange="fetchMsme();">
-                                                                                                                <option value="" class="hide" data-i18n="select">Select</option>
-                                                                                                                <option value="Y" data-i18n="yes">Yes</option>
-                                                                                                                <option value="N" data-i18n="no">No</option>
-                                                                                                            </select>
-                                                                                                        </div>
-                                                                                                    </div>
-
-
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="form-group hideInput hide">
-                                                                                                <div class="col-md-12">
-                                                                                                    <div class="inputgroup hideInput hide">
-                                                                                                        <label class="col-md-2 control-label">
-                                                                                                            MSME Class<span class="required"> *</span>
-                                                                                                        </label>
-                                                                                                        <div class="col-md-4 xyz">
-                                                                                                            <select class="form-control selects ddlMSMEClass" id="ddlMSMEClass" name="ddlMSMEClass">
-                                                                                                                <option value='0' data-i18n="select">Select</option>
-                                                                                                                <option value="MIC" data-i18n="micro">Micro</option>
-                                                                                                                <option value="SMA" data-i18n="small">Small</option>
-                                                                                                                <option value="MED" data-i18n="medium">Medium</option>
-                                                                                                            </select>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                    <label class="col-md-2 control-label txtalignleft">
-                                                                                                        MSME Udyam No.<span class="required">*</span>
-                                                                                                    </label>
-                                                                                                    <div class="col-md-4 xyz">
-                                                                                                        <input type="text" class="form-control" placeholder="MSME Udyam No."
-                                                                                                               id="txtUdyam" name="txtUdyam" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
-                                                                                                    </div>
-
-                                                                                                </div>
-                                                                                            </div>
-
-
-                                                                                            <div class="form-group hideInput hide">
-                                                                                                <div class="col-md-12">
-                                                                                                    <div class="inputgroup hideInput hide">
-                                                                                                        <label class="col-md-2 control-label">
-                                                                                                            Attach MSME Udyam certificate<span class="required"> *</span>
-                                                                                                        </label>
-                                                                                                        <div class="col-md-4 xyz">
-                                                                                                            <input type="file" class="form-control" tabindex="5" id="filemsme" name="filemsme"
-                                                                                                                   onchange="checkfilesize(this)" />
-                                                                                                            <span class="help-block uploadedfile"><a href="javascript:;" onclick="DownloadFile(this)" id="msmeattach" class="txtleftnone"></a></span>
-                                                                                                        </div>
                                                                                                     </div>
                                                                                                 </div>
-                                                                                            </div>
-
-                                                                                            <div class="form-group hide">
-
-                                                                                                <div class="col-md-12 hide">
-                                                                                                    <label class="col-md-2 control-label txtalignleft" data-i18n="product">
-                                                                                                        Product
-                                                                                                    </label>
-                                                                                                    <div class="col-md-10">
-                                                                                                        <input type="text" class="form-control"
-                                                                                                               id="product" name="product" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled />
-                                                                                                    </div>
-                                                                                                </div>
-
-                                                                                            </div>
-                                                                                            <div class="form-group">
-                                                                                                <div class="row">
+                                                                                                <div class="form-group hideInput hide">
                                                                                                     <div class="col-md-12">
-                                                                                                        <label class="control-label col-md-11"><span class="required">*:</span>&nbsp;&nbsp;<span class="font-red">If your PAN Number or GST Number are incorrect, please send correction request at: <b>info@agileapt.com</b> with copy of PAN/GST or both, as applicable.</span></label>
+                                                                                                         
+                                                                                                        <div class="inputgroup ">
+                                                                                                            <label class="col-md-2 control-label">
+                                                                                                                MSME Class<span class="required"> *</span>
+                                                                                                            </label>
+                                                                                                            <div class="col-md-4 xyz">
+                                                                                                                <select class="form-control selects ddlMSMEClass" id="ddlMSMEClass" name="ddlMSMEClass">
+                                                                                                                    <option value='0' data-i18n="select">Select</option>
+                                                                                                                    <option value="MIC" data-i18n="micro">Micro</option>
+                                                                                                                    <option value="SMA" data-i18n="small">Small</option>
+                                                                                                                    <option value="MED" data-i18n="medium">Medium</option>
+                                                                                                                </select>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        
+                                                                                                        <div class="inputgroup hideInput hide">
+                                                                                                             <label class="col-md-2 control-label txtalignleft">
+                                                                                                            MSME Udyam No.<span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+                                                                                                            <input type="text" class="form-control" placeholder="MSME Udyam No."
+                                                                                                                   id="txtUdyam" name="txtUdyam" autocomplete="off" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                        </div>
+                                                                                                       
+
                                                                                                     </div>
                                                                                                 </div>
-                                                                                            </div>
-                                                                                            <div class="fluid">
-                                                                                                <div class="col-md-offset-5 col-md-6">
-                                                                                                    <br />
-                                                                                                    <button type="button" class="btn btn-success" id="buttoncompanyupdate" onclick="UpdateCompanyDetail()">
-                                                                                                        Update Company Details
-                                                                                                    </button>
+
+
+                                                                                               
                                                                                                 </div>
+                                                                                                
+                                                                                                 <div class="form-group hideInput hide">
+                                                                                                    <div class="col-md-12">
+                                                                                                        <div class="inputgroup ">
+                                                                                                            
+                                                                                                             <label class="col-md-2 control-label">
+                                                                                                                Attach MSME Udyam certificate<span class="required"> *</span>
+                                                                                                            </label>
+                                                                                                            <div class="col-md-4 xyz">
+                                                                                                                <input type="file" class="form-control" tabindex="5" id="filemsme" name="filemsme"
+                                                                                                                       onchange="checkfilesize(this)" />
+                                                                                                                <span class="help-block uploadedfile"><a href="javascript:;" onclick="DownloadFile(this)" id="msmeattach" class="txtleftnone"></a></span>
+                                                                                                            </div>
+                                                                                                            
+                                                                                                        </div>
+                                                                                                           
+                                                                                                        </div>
+                                                                                                    </div>
+
+                                                                                                <div class="form-group hide">
+
+                                                                                                    <div class="col-md-12 hide">
+                                                                                                        <label class="col-md-2 control-label txtalignleft" data-i18n="product">
+                                                                                                            Product
+                                                                                                        </label>
+                                                                                                        <div class="col-md-10">
+                                                                                                            <input type="text" class="form-control"
+                                                                                                                   id="product" name="product" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled />
+                                                                                                        </div>
+                                                                                                    </div>
+
+                                                                                                </div>
+                                                                                                <div class="form-group">
+                                                                                                    <div class="row">
+                                                                                                        <div class="col-md-12">
+                                                                                                            <label class="control-label col-md-11"><span class="required">*:</span>&nbsp;&nbsp;<span class="font-red">If your PAN Number or GST Number are incorrect, please send correction request at: <b>info@agileapt.com</b> with copy of PAN/GST or both, as applicable.</span></label>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="fluid">
+                                                                                                    <div class="col-md-offset-5 col-md-6">
+                                                                                                        <br />
+                                                                                                        <button type="button" class="btn btn-success" id="buttoncompanyupdate" onclick="UpdateCompanyDetail()">
+                                                                                                            Update Company Details
+                                                                                                        </button>
+                                                                                                    </div>
+
+                                                                                                </div>
+                                                                                                <div class="fluid">
+                                                                                                    <div class="col-md-offset-5 col-md-6">
+                                                                                                        <br />
+                                                                                                        <button type="submit" class="btn btn-success hide" id="AddAssociate">
+                                                                                                            Add New Company
+                                                                                                        </button>
+                                                                                                    </div>
+
+                                                                                                </div>
+                                                                                                <div class="clearfix"></div>
 
                                                                                             </div>
-                                                                                            <div class="fluid">
-                                                                                                <div class="col-md-offset-5 col-md-6">
-                                                                                                    <br />
-                                                                                                    <button type="submit" class="btn btn-success hide" id="AddAssociate">
-                                                                                                        Add New Company
-                                                                                                    </button>
-                                                                                                </div>
 
-                                                                                            </div>
-                                                                                            <div class="clearfix"></div>
+
+                                                                                            <!--Accounting and financial-->
 
                                                                                         </div>
-
-
-                                                                                        <!--Accounting and financial-->
 
                                                                                     </div>
 
-                                                                                </div>
-
-                                                                            </form>
-
-
-                                                                        </div>
-
-                                                                        <div class="panel panel-default" id="bankaccordion">
-                                                                            <div class="panel-heading">
-                                                                                <h4 class="panel-title">
-                                                                                    <a class="accordion-toggle  total-tab headingfont" data-toggle="collapse" data-parent="#accordion2" href="#collapse1">
-                                                                                        Bank Details
-                                                                                        <div class="outer_wrap">
-                                                                                            <span class="progress-value" id="accountspan" name="accountspan"></span>
-                                                                                            <div class="cs_chart" id="account_chart" data-percent=""></div>
-                                                                                        </div>
-                                                                                    </a>
-                                                                                </h4>
+                                                                                </form>
+                                                                                   
 
                                                                             </div>
-                                                                            <form action="#" id="submit_form_bank" class="form-horizontal">
 
-                                                                                <div id="collapse1" class="panel-collapse collapse" seqno="2">
+                                                                            <div class="panel panel-default" id="bankaccordion">
+                                                                                <div class="panel-heading">
+                                                                                    <h4 class="panel-title">
+                                                                                        <a class="accordion-toggle  total-tab headingfont" data-toggle="collapse" data-parent="#accordion2" href="#collapse1">
+                                                                                            Bank Details
+                                                                                            <div class="outer_wrap">
+                                                                                                <span class="progress-value" id="accountspan" name="accountspan"></span>
+                                                                                                <div class="cs_chart" id="account_chart" data-percent=""></div>
+                                                                                            </div>
+                                                                                        </a>
+                                                                                    </h4>
 
+                                                                                </div>
+                                                                                <form action="#" id="submit_form_bank" class="form-horizontal">
+                                                                                    
+                                                                                    <div id="collapse1" class="panel-collapse collapse" seqno="2">
+
+                                                                                        <div class="panel-body">
+                                                                                                <div class="alert alert-block alert-danger" id="errordivbank">
+                                                                                                    <span id="errorbank"></span>
+                                                                                                </div>
+                                                                                                <div class="alert alert-success" id="successdivbank">
+                                                                                                    <span id="successbank"></span>
+                                                                                                </div>
+                                                                                            
+                                                                                            <div class="col-md-12 text-right">
+                                                                                                <button class="btn btn-xs btn-primary tooltips " type="button" id="btnAddBank" data-placement="top" data-original-title="Click here to add another bank account details" onclick="Addanotherbank()">
+                                                                                                    <i class="fa fa-plus-circle"></i> Add Account
+
+                                                                                                </button>
+                                                                                            </div>
+                                                                                            <div class="clearfix"></div>
+                                                                                            <div>
+                                                                                                <table class="table table-striped table-bordered table-hover" id="tblGetBankDetail"></table>
+                                                                                            </div>
+                                                                                            <div class="row" id="bankForm">
+                                                                                                
+                                                                                                <div class="form-group">
+
+                                                                                                    <div class="col-md-12">
+                                                                                                        <label class="col-md-2 control-label txtalignleft">
+                                                                                                            Account Holder Name <span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+                                                                                                            <input type="text" class="form-control"
+                                                                                                                   id="accountholder" name="accountholder" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                        </div>
+                                                                                                        <label class="col-md-2 control-label">
+                                                                                                            IFSC Code<span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+                                                                                                            <input type="text" class="form-control"
+                                                                                                                   id="ifsccode" name="ifsccode" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" maxlength="11" />
+                                                                                                        </div>
+
+                                                                                                    </div>
+                                                                                                </div>
+
+                                                                                                <div class="form-group">
+                                                                                                    <div class="col-md-12">
+                                                                                                        <label class="col-md-2 control-label txtalignleft">
+                                                                                                            Name of Bank<span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+                                                                                                            <input type="text" class="form-control"
+                                                                                                                   id="bankname" name="bankname" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                        </div>
+                                                                                                        <label class="col-md-2 control-label txtalignleft">
+                                                                                                            Bank A/c No<span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+                                                                                                            <input type="text" class="form-control"
+                                                                                                                   id="bankaccount" name="bankaccount" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" maxlength="34" />
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+
+
+                                                                                                <div class="form-group">
+                                                                                                    <div class="col-md-12">
+
+                                                                                                        <label class="col-md-2 control-label txtalignleft">
+                                                                                                            Attach Cancelled Cheque<span class="required">*</span>
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+
+                                                                                                            <div class="inputgroup">
+                                                                                                                <div class="att_input">
+
+                                                                                                                    <input type="file" class="form-control" tabindex="5" id="filecheck"
+                                                                                                                           onchange="checkfilesize(this)" />
+
+                                                                                                                    <label class="control-label uploadedfile" id="uploadcheck"><a href="javascript:;" onclick="DownloadFile(this)" id="checkattach" class="txtleftnone"></a><span class="fix-left-margin" onclick="editCheck()" id="editcheck"><i class="fa fa-pencil"></i></span></label>
+
+                                                                                                                </div>
+                                                                                                            </div>
+
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="fluid">
+                                                                                                    <div class="col-md-offset-5 col-md-6">
+                                                                                                        <br />
+                                                                                                        <button type="submit" class="btn btn-success" id="buttonbankupdate">
+                                                                                                            Update Bank Details
+                                                                                                        </button>
+                                                                                                    </div>
+
+                                                                                                </div>
+                                                                                                <div class="clearfix">&nbsp;</div>
+
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </form>
+
+                                                                            </div>
+
+                                                                            <div class="panel panel-default" id="financeaccordion">
+                                                                                <div class="panel-heading">
+                                                                                    <h4 class="panel-title">
+                                                                                        <a class="accordion-toggle total-tab collapsed headingfont" data-toggle="collapse" data-parent="#accordion2" href="#collapse3">
+                                                                                            Financial Detail
+                                                                                            <div class="outer_wrap">
+                                                                                                <span class="progress-value" id="businessspan" name="businessspan"></span>
+                                                                                                <div class="cs_chart" id="business_chart" data-percent=""></div>
+                                                                                            </div>
+                                                                                        </a>
+                                                                                    </h4>
+                                                                                </div>
+                                                                                <div id="collapse3" class="panel-collapse collapse" seqno="4">
                                                                                     <div class="panel-body">
-
+                                                                                        <div class="alert alert-block alert-danger" id="errordivfinance">
+                                                                                            <span id="errorfinance"></span>
+                                                                                        </div>
+                                                                                        <div class="alert alert-success" id="successdivfinance">
+                                                                                            <span id="successfinance"></span>
+                                                                                        </div>
                                                                                         <div class="col-md-12 text-right">
-                                                                                            <button class="btn btn-xs btn-primary tooltips " type="button" id="btnAddBank" data-placement="top" data-original-title="Click here to add another bank account details" onclick="Addanotherbank()">
-                                                                                                <i class="fa fa-plus-circle"></i> Add Account
+                                                                                            <button class="btn btn-xs btn-primary tooltips " type="button" id="btnAddFinance" data-placement="top" data-original-title="Click here to add another year financial details" onclick="Addanotherfinance()">
+                                                                                                <i class="fa fa-plus-circle"></i> Add Finance
 
                                                                                             </button>
                                                                                         </div>
                                                                                         <div class="clearfix"></div>
                                                                                         <div>
-                                                                                            <table class="table table-striped table-bordered table-hover" id="tblGetBankDetail"></table>
+                                                                                            <table class="table table-striped table-bordered table-hover" id="tblGetFinancialDetail"></table>
+
                                                                                         </div>
-                                                                                        <div class="row" id="bankForm">
-                                                                                            <div class="alert alert-block alert-danger" id="errordivbank">
-                                                                                                <span id="errorbank"></span>
-                                                                                            </div>
-                                                                                            <div class="alert alert-success" id="successdivbank">
-                                                                                                <span id="successbank"></span>
-                                                                                            </div>
-                                                                                            <div class="form-group">
-
-                                                                                                <div class="col-md-12">
-                                                                                                    <label class="col-md-2 control-label txtalignleft">
-                                                                                                        Account Holder Name <span class="required">*</span>
-                                                                                                    </label>
-                                                                                                    <div class="col-md-4 xyz">
-                                                                                                        <input type="text" class="form-control"
-                                                                                                               id="accountholder" name="accountholder" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled />
-                                                                                                    </div>
-                                                                                                    <label class="col-md-2 control-label">
-                                                                                                        IFSC Code<span class="required">*</span>
-                                                                                                    </label>
-                                                                                                    <div class="col-md-4 xyz">
-                                                                                                        <input type="text" class="form-control"
-                                                                                                               id="ifsccode" name="ifsccode" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" maxlength="11" />
-                                                                                                    </div>
-
-                                                                                                </div>
-                                                                                            </div>
+                                                                                        <div class="clearfix">&nbsp;</div>
+                                                                                        <div  id="financeform">
+                                                                                        <div class="row">
 
                                                                                             <div class="form-group">
                                                                                                 <div class="col-md-12">
                                                                                                     <label class="col-md-2 control-label txtalignleft">
-                                                                                                        Name of Bank<span class="required">*</span>
+                                                                                                        Turn Over
                                                                                                     </label>
-                                                                                                    <div class="col-md-4 xyz">
-                                                                                                        <input type="text" class="form-control"
-                                                                                                               id="bankname" name="bankname" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" />
-                                                                                                    </div>
-                                                                                                    <label class="col-md-2 control-label txtalignleft">
-                                                                                                        Bank A/c No<span class="required">*</span>
-                                                                                                    </label>
-                                                                                                    <div class="col-md-4 xyz">
-                                                                                                        <input type="text" class="form-control"
-                                                                                                               id="bankaccount" name="bankaccount" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" maxlength="34" />
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
 
-
-                                                                                            <div class="form-group">
-                                                                                                <div class="col-md-12">
-
-                                                                                                    <label class="col-md-2 control-label txtalignleft">
-                                                                                                        Attach Cancelled Cheque<span class="required">*</span>
-                                                                                                    </label>
-                                                                                                    <div class="col-md-4 xyz">
-
-                                                                                                        <div class="inputgroup">
-                                                                                                            <div class="att_input">
-
-                                                                                                                <input type="file" class="form-control" tabindex="5" id="filecheck"
-                                                                                                                       onchange="checkfilesize(this)" />
-
-                                                                                                                <label class="control-label uploadedfile" id="uploadcheck"><a href="javascript:;" onclick="DownloadFile(this)" id="checkattach" class="txtleftnone"></a><span class="fix-left-margin" onclick="editCheck()" id="editcheck"><i class="fa fa-pencil"></i></span></label>
-
-                                                                                                            </div>
+                                                                                                    <div class="select_input_area">
+                                                                                                        <div class="col-md-2">
+                                                                                                            <select class="form-control nopadding" id="currencyFiscalupdate" name="currencyFiscalupdate">
+                                                                                                            </select>
                                                                                                         </div>
-
+                                                                                                        <div class="col-md-2 xyz">
+                                                                                                            <input type="text" class="form-control selectno"
+                                                                                                                   id="turnoverfiscal" name="turnoverfiscal" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                        </div>
                                                                                                     </div>
+
+                                                                                                    <div class="inputgroup">
+                                                                                                        <label class="col-md-2 control-label xyz">
+                                                                                                            From Financial Year
+                                                                                                        </label>
+                                                                                                        <div class="col-md-2 xyz">
+                                                                                                            <input type="text" class="form-control selectno "
+                                                                                                                   id="fromFiscalyear" name="fromFiscalyear" maxlength="4" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" />
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                   
                                                                                                 </div>
                                                                                             </div>
-                                                                                            <div class="fluid">
-                                                                                                <div class="col-md-offset-5 col-md-6">
-                                                                                                    <br />
-                                                                                                    <button type="submit" class="btn btn-success" id="buttonbankupdate">
-                                                                                                        Update Bank Details
-                                                                                                    </button>
+                                                                                            
+                                                                                                
+
+                                                                                        </div>
+                                                                                       
+                                                                                        <div class="row">
+                                                                                            <div class="form-group">
+                                                                                                 <div class="col-md-12">
+
+                                                                                                        <label class="col-md-2 control-label txtalignleft">
+                                                                                                            Attach Document
+                                                                                                        </label>
+                                                                                                        <div class="col-md-4 xyz">
+
+                                                                                                            <div class="inputgroup">
+                                                                                                                <div class="att_input">
+
+                                                                                                                    <input type="file" class="form-control" tabindex="5" id="filefinance"
+                                                                                                                           onchange="checkfilesize(this)" />
+
+                                                                                                                    <label class="control-label uploadedfile" id="uploadfinance"><a href="javascript:;" onclick="DownloadFile(this)" id="financeattach" class="txtleftnone"></a><span class="fix-left-margin hide" onclick="editFinance()" id="editfinance"><i class="fa fa-pencil"></i></span></label>
+
+                                                                                                                </div>
+                                                                                                            </div>
+
+                                                                                                        </div>
+                                                                                                         <div class="inputgroup">
+                                                                                                             <label class="col-md-2 control-label">
+                                                                                                            To Financial Year
+                                                                                                           </label>
+                                                                                                           <div class="col-md-2 xyz">
+                                                                                                            <input type="text" class="form-control selectno"
+                                                                                                                   id="toFiscalyear" name="toFiscalyear" maxlength="4" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" />
+
+                                                                                                          </div>
+                                                                                                        </div>
                                                                                                 </div>
-
                                                                                             </div>
-                                                                                            <div class="clearfix">&nbsp;</div>
+                                                                                            
+                                                                                            
+                                                                                        </div>
+                                                                                        <div class="fluid">
+                                                                                                    <div class="col-md-offset-5 col-md-6">
+                                                                                                        <br />
+                                                                                                        <button type="button" class="btn btn-success" id="buttonfinancialupdate" onclick="UpdateFinancialDetail()">
+                                                                                                            Add Financial Details
+                                                                                                        </button>
+                                                                                                    </div>
 
+                                                                                        </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </form>
+                                                                            </div>
+
 
                                                                         </div>
 
-                                                                        <div class="panel panel-default" id="financeaccordion">
-                                                                            <div class="panel-heading">
-                                                                                <h4 class="panel-title">
-                                                                                    <a class="accordion-toggle total-tab collapsed headingfont" data-toggle="collapse" data-parent="#accordion2" href="#collapse3">
-                                                                                        Financial Detail
-                                                                                        <div class="outer_wrap">
-                                                                                            <span class="progress-value" id="businessspan" name="businessspan"></span>
-                                                                                            <div class="cs_chart" id="business_chart" data-percent=""></div>
-                                                                                        </div>
-                                                                                    </a>
-                                                                                </h4>
-                                                                            </div>
-                                                                            <div id="collapse3" class="panel-collapse collapse" seqno="4">
-                                                                                <div class="panel-body">
-                                                                                    <div class="col-md-12 text-right">
-                                                                                        <button class="btn btn-xs btn-primary tooltips " type="button" id="btnAddFinance" data-placement="top" data-original-title="Click here to add another year financial details" onclick="Addanotherfinance()">
-                                                                                            <i class="fa fa-plus-circle"></i> Add Finance
-
-                                                                                        </button>
-                                                                                    </div>
-                                                                                    <div class="clearfix"></div>
-                                                                                    <div>
-                                                                                        <table class="table table-striped table-bordered table-hover" id="tblGetFinancialDetail"></table>
-
-                                                                                    </div>
-                                                                                    <div class="clearfix">&nbsp;</div>
-                                                                                    <div class="row">
-
-
-                                                                                        <div class="form-group" id="financeform">
-                                                                                            <div class="col-md-12">
-                                                                                                <label class="col-md-2 control-label txtalignleft">
-                                                                                                    Turn Over
-                                                                                                </label>
-
-                                                                                                <div class="select_input_area">
-                                                                                                    <div class="col-md-2">
-                                                                                                        <select class="form-control nopadding" id="currencyFiscalupdate" name="currencyFiscalupdate">
-                                                                                                        </select>
-                                                                                                    </div>
-                                                                                                    <div class="col-md-2 xyz">
-                                                                                                        <input type="text" class="form-control selectno"
-                                                                                                               id="turnoverfiscal" name="turnoverfiscal" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" />
-                                                                                                    </div>
-                                                                                                </div>
-
-                                                                                                <div class="inputgroup">
-                                                                                                    <label class="col-md-2 control-label xyz">
-                                                                                                        From Financial Year
-                                                                                                    </label>
-                                                                                                    <div class="col-md-1 xyz">
-                                                                                                        <input type="text" class="form-control selectno "
-                                                                                                               id="fromFiscalyear" name="fromFiscalyear" maxlength="4" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" />
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="inputgroup">
-                                                                                                    <label class="col-md-2 control-label">
-                                                                                                        To Financial Year
-                                                                                                    </label>
-                                                                                                    <div class="col-md-1 xyz">
-                                                                                                        <input type="text" class="form-control selectno"
-                                                                                                               id="toFiscalyear" name="toFiscalyear" maxlength="4" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" />
-
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="fluid">
-                                                                                                <div class="col-md-offset-5 col-md-6">
-                                                                                                    <br />
-                                                                                                    <button type="button" class="btn btn-success" id="buttonfinancialupdate" onclick="UpdateFinancialDetail()">
-                                                                                                        Add Financial Details
-                                                                                                    </button>
-                                                                                                </div>
-
-                                                                                            </div>
-                                                                                        </div>
-
-
-
-                                                                                    </div>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
 
 
                                                                     </div>
-
-
-
                                                                 </div>
+
                                                             </div>
+                                                     
 
-                                                        </div>
-
-
-
+                                                            
 
                                                     </div>
 
-
+                                                    
                                                 </div>
                                             </div>
 
@@ -962,7 +1067,7 @@
                             <div class="portlet-body form">
                                 <div class="page-container mt-0">
 
-
+                                  
                                     <form class="form-horizontal" role="form" id="frmprofilevendornewcompany">
                                         <div class="form-body">
                                             <div class="row">
@@ -1067,14 +1172,19 @@
                 <div class="portlet-body form">
                     <div class="alert alert-danger display-hide" id="errordiv1">
                         <button class="close" data-close="alert"></button>
-                        <span id="errormsg"></span>
+                        <span id="errormsgmap"></span>
                     </div>
                     <div class="alert alert-success display-hide" id="successdiv1">
                         <button class="close" data-close="alert"></button>
-                        <span id="successmsg"></span>
+                        <span id="successmsgmap"></span>
                     </div>
                     <form action="#" id="mapsections" class="form-horizontal" role="form">
                         <div class="form-body">
+                            <!--<div class="col-md-12 text-right verifygroup">
+                                <button class="btn btn-xs btn-primary tooltips " type="button" id="btnVerifyBank" data-placement="top" data-original-title="Click here to verify your bank details for customer mapping" onclick="IciciBankPennyDropVerify()">
+                                        Verify Bank
+                                </button>
+                            </div>-->
                             <div class="form-group">
                                 <div class="col-md-12">
 
@@ -1090,12 +1200,64 @@
 
                                 </div>
                             </div>
+                            <div class="form-group verifygroup">
+                                <div class="col-md-12">
+
+                                    <label class="col-md-2 bold txtalignleft" data-i18n="state">
+                                         Account Holder:
+                                    </label>
+                                    <label class="col-md-4 txtalignleft" id="mapAH" >
+                                        
+                                    </label>
+                                    
+                                    <label class="col-md-2 bold txtalignleft" data-i18n="state">
+                                         Account No:
+                                    </label>
+                                    <label class="col-md-3  txtalignleft" id="mapAN" >
+                                        
+                                    </label>
+                                  
+                                        <button class=" btn btn-xs btn-primary tooltips " type="button" id="btnVerifyBank" data-placement="top" data-original-title="Click here to verify your bank details for customer mapping" onclick="IciciBankPennyDropVerify()">
+                                         <i class="fa fa-arrow-circle-right"></i>
+                                       </button>
+                                        
+                                        
+                                        
+        
+                                   
+                                    
+                                   
+
+
+                                </div>
+                            </div>
+                              <div class="form-group verifygroup">
+                                <div class="col-md-12">
+
+                                    <label class="col-md-2 bold txtalignleft" data-i18n="state">
+                                        IFSC CODE:
+                                    </label>
+                                    <label class="col-md-4  txtalignleft" id="mapIC" >
+                                        
+                                    </label>
+                                    
+                                    <label class="col-md-2 bold txtalignleft" data-i18n="state">
+                                         Mobile No:
+                                    </label>
+                                    <input class="col-md-4"  id="mapMN" maxlength='10' />
+                                        
+                                    
+                                   
+
+
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <div class="col-md-12">
 
                                     <div class="col-md-offset-5 col-md-6">
-                                        <button type="button" class="btn btn-success" onclick="UpdateBankMapping()">
-                                            Update Bank
+                                        <button type="button" id="btnmaptoc" class="btn btn-success" onclick="UpdateBankMapping()">
+                                           Map to Customer
                                         </button>
                                     </div>
 

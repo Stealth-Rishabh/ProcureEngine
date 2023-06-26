@@ -15,7 +15,7 @@
     }
             });
         Pageloaded()
-        
+        var x = isAuthenticated();
     setInterval(function () {Pageloaded()}, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {

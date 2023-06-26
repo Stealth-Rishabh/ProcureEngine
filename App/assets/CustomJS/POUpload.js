@@ -1,5 +1,5 @@
-﻿jQuery(document).ready(function () {
-
+jQuery(document).ready(function () {
+   
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -230,7 +230,7 @@ function ParametersQuery() {
 
     }
     resetfun()
-
+   
 }
 
 function editvalues(icount) {
@@ -275,7 +275,7 @@ function insPoDetails() {
     else {
 
         var rowCount = jQuery('#tblServicesProduct>tbody> tr').length;
-
+        
         if (rowCount >= 0) {
             $("#tblServicesProduct tr:gt(0)").each(function (index) {
                 var this_row = $(this);
@@ -297,20 +297,20 @@ function insPoDetails() {
                 PriceDetails.push(items)
             })
         }
-
+        
         //481
-        debugger
+       debugger
         rowCount = jQuery('#tblapprovers>tbody> tr').length;
         var ccEmails = "";
-
-
+       
+      
         if (rowCount >= 0) {
             $("#tblapprovers tr:gt(0)").each(function (index) {
-
+              
                 var this_row = $(this);
-
+               
                 index = (this_row.closest('tr').attr('id')).substring(7, (this_row.closest('tr').attr('id')).length)
-
+                
                 ccEmails = ccEmails + $.trim($("#email" + index).text()) + ";";
                 items = {
                     "ObserverID": parseInt($("#userid" + index).text()),
@@ -321,7 +321,7 @@ function insPoDetails() {
             })
         }
         debugger;
-
+        
 
         var Tab2data = {
             "PriceDetails": PriceDetails,
@@ -337,7 +337,7 @@ function insPoDetails() {
         };
 
 
-
+        
         jQuery.ajax({
 
             type: "POST",
@@ -509,7 +509,7 @@ function addAttachments() {
             "POAttachment": attchname,
             "UserID": sessionStorage.getItem('UserID'),
             "POHeaderID": parseInt($('#hdnPOHeader').val()),
-            // "POAttachmentDescription": $('#AttachDescription1').val()
+           // "POAttachmentDescription": $('#AttachDescription1').val()
             "POAttachmentDescription": _cleanString2
         }
         // alert(JSON.stringify(Attachments))
@@ -1382,7 +1382,7 @@ jQuery("#txtApprover").keyup(function () {
 });
 jQuery("#txtApprover").typeahead({
     source: function (query, process) {
-
+       
         var data = allUsers;
         usernames = [];
         map = {};
@@ -1475,10 +1475,10 @@ function fnApproversQuery(EmailID, UserID, UserName) {
         }
 
 
-
+        
         var rowcount = jQuery('#tblapprovers >tbody>tr').length;
-
-
+        
+        
     }
 }
 function deleteApprow(IDcount) {
@@ -1504,5 +1504,5 @@ function deleteApprow(IDcount) {
         });
     }
 
-
+    
 }
