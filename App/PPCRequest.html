@@ -278,11 +278,11 @@
                                                     <div class="form-group">
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
-                                                                Detail/Description<span class="required"> *</span>
+                                                               Introduction<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-8">
                                                                 <textarea id="txtNFADetail" name="txtNFADetail" class="wysihtml5 form-control MaxLength"
-                                                                          rows="3" placeholder="Enter PPC Request Detail" maxlength="1000" onkeyup="replaceQuoutesFromString(this)"></textarea>
+                                                                          rows="3" placeholder="Enter PPC Introduction" maxlength="1000" onkeyup="replaceQuoutesFromString(this)"></textarea>
 
                                                             </div>
                                                         </div>
@@ -431,10 +431,10 @@
                                                                         <div class="row">
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Introduction</label>
+                                                                                    <label class="control-label col-md-3"> Detail/Description</label>
                                                                                     <div class="col-md-9">
                                                                                         <textarea id="txtintroduction" name="txtintroduction" class="MaxLength wysihtml5 form-control"
-                                                                                                  maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Introduction"></textarea>
+                                                                                                  maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Detail/Description"></textarea>
 
 
                                                                                     </div>
@@ -455,16 +455,16 @@
                                                                         </div>
                                                                         <!--/row-->
                                                                         <div class="row">
-                                                                            <!--<div class="col-md-6">
-        <div class="form-group">
-            <label class="control-label col-md-3">Budget Availabilty</label>
-            <div class="col-md-9">
-                <textarea id="txtbudgetavailbilty" name="txtbudgetavailbilty" class="MaxLength wysihtml5 form-control"
-                          maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Budget Availabilty"></textarea>
+                                                                            <div class="col-md-6">
+                                                                               <div class="form-group">
+                                                                                     <label class="control-label col-md-3">Budget Availabilty</label>
+                                                                                     <div class="col-md-9">
+                                                                                          <textarea id="txtbudgetavailbilty" name="txtbudgetavailbilty" class="MaxLength wysihtml5 form-control"
+                                                                                                   maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Budget Availabilty"></textarea>
 
-            </div>
-        </div>
-    </div>-->
+                                                                                     </div>
+                                                                                </div>
+                                                                            </div>
                                                                             <!--/span-->
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
@@ -476,6 +476,12 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
+                                                                            
+
+                                                                        </div>
+
+                                                                        <div class="row">
+
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-3">Justification for award of contract other than L1 </label>
@@ -487,12 +493,6 @@
                                                                                 </div>
                                                                             </div>
 
-                                                                        </div>
-
-                                                                        <div class="row">
-
-
-
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-3">Justification for Less than 3 Quotes</label>
@@ -503,17 +503,22 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <!--<div class="col-md-6">
-        <div class="form-group">
-            <label class="control-label col-md-3">Completion Schedule</label>
-            <div class="col-md-9">
+                                                                          
 
-                <textarea id="txtcompletionsechdule" name="txtcompletionsechdule" class="MaxLength wysihtml5 form-control"
-                          maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Completion Schedule"></textarea>
+                                                                        </div>
+                                                                        <div class="row">
 
-            </div>
-        </div>
-    </div>-->
+                                                                            <div class="col-md-6">
+                                                                                <div class="form-group">
+                                                                                    <label class="control-label col-md-3">Completion Schedule</label>
+                                                                                    <div class="col-md-9">
+
+                                                                                        <textarea id="txtcompletionsechdule" name="txtcompletionsechdule" class="MaxLength wysihtml5 form-control"
+                                                                                                  maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Completion Schedule"></textarea>
+
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-3">Rational for spliting the order </label>
@@ -542,17 +547,17 @@
                                                                             </div>
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
-                                                                                    <label class="control-label col-md-3">Enquiry not sent to these Vendors (with reasons)</label>
+                                                                                    <label class="control-label col-md-3">Warranty/DLP Clause</label>
                                                                                     <div class="col-md-9">
 
                                                                                         <textarea id="txtenquirynotsent" name="txtenquirynotsent" class="MaxLength wysihtml5 form-control"
-                                                                                                  maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Enquiry not sent to these Vendors (with reasons)"></textarea>
+                                                                                                  maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Warranty/DLP Clause"></textarea>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
 
                                                                         </div>
-                                                                        <!--<div class="row">
+                                                                        <div class="row">
 
 
 
@@ -568,7 +573,7 @@
                                                                                 </div>
                                                                             </div>
 
-                                                                        </div>-->
+                                                                        </div>
                                                                         <div class="row">
 
                                                                             <!--/span-->
@@ -743,7 +748,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                        <div class="row">
+                                                                       <!-- <div class="row">
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-3">Quotations of the parties:</label>
@@ -755,7 +760,7 @@
                                                                                 </div>
                                                                             </div>
 
-                                                                        </div>
+                                                                        </div>-->
                                                                         <h3 class="form-section">Purchase Order/Work Order Details</h3>
                                                                         <div class="row">
                                                                             <div class="col-md-6">
@@ -812,7 +817,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="col-md-6">
+                                                                            <!--<div class="col-md-6">
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-3">Deliverables : </label>
                                                                                     <div class="col-md-9">
@@ -821,10 +826,8 @@
                                                                                                   maxlength="1000" rows="3" tabindex='3' onkeyup="replaceQuoutesFromString(this)" placeholder="Deliverables"></textarea>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-md-6">
+                                                                            </div>-->
+                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-3 ">Payment terms	:</label>
                                                                                     <div class="col-md-9">
@@ -834,6 +837,9 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
+                                                                        </div>
+                                                                        <div class="row">
+
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-3">Tax Details </label>
@@ -844,8 +850,6 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="row">
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-3">Whether LD applicable :</label>
@@ -856,6 +860,9 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
+                                                                        </div>
+                                                                        <div class="row">
+
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-3">Applicable BG Details</label>
@@ -866,8 +873,6 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="row">
                                                                             <div class="col-md-6">
                                                                                 <div class="form-group">
                                                                                     <label class="control-label col-md-3">PR Details :</label>
@@ -878,6 +883,9 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            
 
                                                                         </div>
 
@@ -974,7 +982,7 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                            <label class="col-12 col-md-2 control-label">Detail/Description :</label>
+                                                            <label class="col-12 col-md-2 control-label"> Introduction :</label>
                                                             <div class="col-12 col-md-10">
                                                                 <p class="form-control-static" id="lblDetails">
 
@@ -1094,9 +1102,9 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
+                                                                <label class="control-label col-md-4 bold txtalignleft ">
 
-                                                                    Introduction:
+                                                                    Detail/Description:
                                                                 </label>
                                                                 <div class="col-md-8">
                                                                     <label id="lblintroduction" class="control-label txtalignleft" >
@@ -1121,17 +1129,17 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        <!-- <div class="col-md-6">
-         <div class="form-group">
-             <label class="control-label col-md-4 bold txtalignleft " >
-                 Budget Availabilty:
-             </label>
-             <div class="col-md-8">
-                 <label id="lblbudgetavail"  class="control-label txtalignleft ">
-                 </label>
-             </div>
-         </div>
-     </div>-->
+                                                         <div class="col-md-6">
+                                                               <div class="form-group">
+                                                                  <label class="control-label col-md-4 bold txtalignleft " >
+                                                                            Budget Availabilty:
+                                                                  </label>
+                                                                <div class="col-md-8">
+                                                                    <label id="lblbudgetavail"  class="control-label txtalignleft ">
+                                                                     </label>
+                                                                </div>
+                                                                </div>
+                                                         </div>
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="control-label col-md-4 bold txtalignleft">
@@ -1143,6 +1151,10 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                       
+                                                    </div>
+                                                    <div class="row">
+
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="control-label col-md-4 bold txtalignleft ">
@@ -1156,8 +1168,6 @@
 
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
 
                                                         <div class="col-md-6">
                                                             <div class="form-group">
@@ -1166,6 +1176,19 @@
                                                                 </label>
                                                                 <div class="col-md-8">
                                                                     <label id="lbllessthan3quotes" class="control-label txtalignleft ">
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label col-md-4 bold txtalignleft ">
+                                                                    Completion Schedule:
+                                                                </label>
+                                                                <div class="col-md-8">
+                                                                    <label id="lblcompletionsechdule" class="control-label txtalignleft ">
                                                                     </label>
                                                                 </div>
                                                             </div>
@@ -1186,18 +1209,7 @@
                                                             </div>
 
                                                         </div>
-                                                        <!-- <div class="col-md-6">
-         <div class="form-group">
-             <label class="control-label col-md-4 bold txtalignleft ">
-                 Completion Schedule:
-             </label>
-             <div class="col-md-8">
-                 <label id="lblcompletionsechdule" class="control-label txtalignleft ">
-                 </label>
-             </div>
-         </div>
 
-     </div>-->
                                                     </div>
                                                     <div class="row">
 
@@ -1217,7 +1229,7 @@
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="control-label col-md-4 bold txtalignleft">
-                                                                    Enquiry not sent to these Vendors (with reasons):
+                                                                    Warranty/DLP Clause:
                                                                 </label>
                                                                 <div class="col-md-8">
                                                                     <label id="lblenquirynotsent" class="control-label txtalignleft ">
@@ -1234,7 +1246,7 @@
                                                         
                                                     </div>-->
                                                     <div class="row">
-                                                       <!-- <div class="col-md-6">
+                                                        <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="control-label col-md-4 bold txtalignleft " >
                                                                     General Remarks:
@@ -1245,7 +1257,7 @@
                                                                     </label>
                                                                 </div>
                                                             </div>
-                                                        </div>-->
+                                                        </div>
 
 
                                                     </div>
@@ -1338,7 +1350,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="row">
+                                                  <!--  <div class="row">
                                                         <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="control-label col-md-4 bold txtalignleft " >
@@ -1353,7 +1365,7 @@
                                                         </div>
 
 
-                                                    </div>
+                                                    </div>-->
                                                     <h3 class="form-section">Purchase Order/Work Order Details</h3>
                                                     <div class="row">
                                                         <div class="col-md-6">
@@ -1422,7 +1434,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-6">
+                                                       <!-- <div class="col-md-6">
                                                             <div class="form-group">
                                                                 <label class="control-label col-md-4 bold txtalignleft " >
                                                                     Deliverables:
@@ -1433,7 +1445,7 @@
                                                                     </label>
                                                                 </div>
                                                             </div>
-                                                        </div>
+                                                        </div>-->
 
                                                     </div>
                                                     <div class="row">

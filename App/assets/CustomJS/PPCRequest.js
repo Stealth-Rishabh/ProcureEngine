@@ -1742,6 +1742,7 @@ function frmAzurePPCForm() {
 
     var LowestPriceOffer = $("input[name='LowestPriceOffer']:checked").val();
     var repeatorder = $("input[name='repeatorder']:checked").val();
+    debugger
     var Data = {
         "nfaID": parseInt(idx),
         "RFQID": parseInt(RFQID),
@@ -1749,13 +1750,13 @@ function frmAzurePPCForm() {
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
         "Introduction": jQuery('#txtintroduction').val(),
         "CostBenefitAnalysis": jQuery('#txtcostbenefit').val(),
-        "Budgetavailabilty": "",
+        "Budgetavailabilty": jQuery('#txtbudgetavailbilty').val(), 
         "Workordergiven": jQuery('#txtpartordergiven').val(),
-        "Completionsechdule": "",
+        "Completionsechdule": jQuery('#txtcompletionsechdule').val(), 
         "Lessthan3Quotes": jQuery('#txtlessthan3quotes').val(),
         "AwardcontractthanL1": jQuery('#txtawardotherthanL1').val(),
         "Splitingorder01Vendor": jQuery('#txtsplitingmorethan01').val(),
-        "GeneralRemarks": "",
+        "GeneralRemarks": jQuery('#txtgemeralremarks').val(), 
         "IssuingRFQtoVendor": jQuery('#txtrationalrfqvendor').val(),
         "Enquirynotsentvendors": jQuery('#txtenquirynotsent').val(),
         "EnquiryIssuedOn": EnquiryIssuedOn,
@@ -1764,13 +1765,13 @@ function frmAzurePPCForm() {
         "RecomRepeatOrder": repeatorder,
         "RecomSuppEnclosure": jQuery('#txtsupportedenclosure').val(),
         "RecomCompFinalPrice": jQuery('#tctcomfinalprice').val(),
-        "RecomQuotationofParties": jQuery('#txtquotationparties').val(),
+        "RecomQuotationofParties":'',
         "WorkOrderRecomParty": jQuery('#txtorderrecparty').val(),
         "PurchaseOrder": jQuery('#txtworkordervalue').val(),
         "InternalCostestimate": jQuery('#txtinternalcost').val(),
         "Terms": jQuery('#txtterms').val(),
         "Scopeofwork": jQuery('#txtscopework').val(),
-        "Deliverables": jQuery('#txtdeliverables').val(),
+        "Deliverables": '',
         "Paymentterms": jQuery('#txtpaymentterms').val(),
         "ApplicableTaxduty": jQuery('#txtapplicabletax').val(),
         "WhetherLDApplicable": jQuery('#txtLDapplicable').val(),
@@ -1780,7 +1781,7 @@ function frmAzurePPCForm() {
         "BiddingVendorDetails": AzurevendorDetails
 
     };
-
+    debugger
     // console.log(JSON.stringify(Data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Azure/insPPC/",
@@ -1789,13 +1790,13 @@ function frmAzurePPCForm() {
         data: JSON.stringify(Data),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-
+            debugger
             jQuery.unblockUI();
             return true;
 
         },
         error: function (xhr, status, error) {
-
+            debugger
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
