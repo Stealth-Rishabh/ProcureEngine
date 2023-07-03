@@ -74,8 +74,8 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" >
-                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage"/>
+                <a class="navbar-brand" href="index.html" style="padding:4px !important;">
+                    <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" style="height:38px; width:180px;" />
                 </a>
                 <div class="menu-toggler sidebar-toggler hide">
                 </div>
@@ -88,10 +88,8 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
 
-                            <b>
-                                <span id="spanUserName" class="username username-hide-on-mobile">
-                                </span>
-                            </b><i class="fa fa-angle-down"></i>
+                            <span id="spanUserName" style="font-weight: bold" class="username username-hide-on-mobile">
+                            </span><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -104,7 +102,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container nodisplay" >
+    <div class="page-container" style="display:none">
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
                 <ul class="page-sidebar-menu page-sidebar-menu-closed" data-auto-scroll="true" data-slide-speed="200" id="ulMain">
@@ -148,10 +146,10 @@
                                 <!-- BEGIN FORM-->
                                 <form action="#" class="form-horizontal" id="frmIntroduction">
                                     <div class="form-body">
-                                        <div class="alert alert-success" >
+                                        <div class="alert alert-success" style='display: none;'>
                                             <span id="spansuccess1"> </span>
                                         </div>
-                                        <div class="alert alert-danger" >
+                                        <div class="alert alert-danger" style='display: none; '>
                                             <span id="spandanger"> </span>
                                         </div>
 
@@ -159,16 +157,16 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
 
-                                                    <label class="control-label col-md-2 labelstyle1" ><b>Enquiry Subject:</b></label>
+                                                    <label class="control-label col-md-2" style="text-align:left;padding-left:40px!important"><b>Enquiry Subject:</b></label>
                                                     <div class="col-md-10">
-                                                        <label class="control-label textalignright" id="lblenquirysubject" ></label>
+                                                        <label class="control-label" id="lblenquirysubject" style="text-align:right;"></label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
 
-                                                    <label class="control-label col-md-10 labelstyle1" ><b>SCM-FR-019 Rev Dt:16/12/21 Rev 01</b></label>
+                                                    <label class="control-label col-md-10" style="text-align:left;padding-left:40px!important"><b>SCM-FR-019 Rev Dt:16/12/21 Rev 01</b></label>
 
                                                 </div>
                                             </div>
@@ -646,7 +644,7 @@
                 </div>
                 <div class="portlet-body form">
 
-                    <div class="modal-body modalbody2">
+                    <div class="modal-body" style="height: 200px;  overflow-y: scroll;">
                         <p class="ppolicy-text">
                             The purpose of RFQ summary report is to see the details of various rfq configured and participated using our sourcing portal.
                             The report can be taken out using one or many filtration parameters. The filter parameters are;  RFQ Subject, RFQ Status, From Date,Configured By,Report Type From and To Date.
@@ -673,11 +671,38 @@
         </div>
     </div>
 
-    <script nonce="apf">
+    <script>
 
         jQuery(document).ready(function () {
             callPagejs('AzurePPCForm.js');
-                   });
+            Pageloaded()
+            setInterval(function () { Pageloaded() }, 15000);
+            if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+                bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
+                    window.location = sessionStorage.getItem('MainUrl');
+                    return false;
+                });
+            }
+            else {
+                if (sessionStorage.getItem("UserType") == "E") {
+                    $('.page-container').show();
+                }
+                else {
+                    bootbox.alert("You are not authorize to view this page", function () {
+                        parent.history.back();
+                        return false;
+                    });
+                }
+            }
+            App.init();
+            Metronic.init(); Layout.init(); setCommonData();
+            formvalidate();
+            fetchReguestforQuotationDetails();
+            setTimeout(function () {
+                fetchAzPPcFormDetails();
+            }, 1000);
+
+        });
     </script>
 
     <!-- END JAVASCRIPTS -->

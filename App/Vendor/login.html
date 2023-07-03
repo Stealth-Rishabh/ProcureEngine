@@ -12,18 +12,20 @@
     <meta content="" name="description" />
     <meta content="" name="author" />
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    </script>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
-    <link href="../App/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-    <link href="../App/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
-    <link href="../App/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="../App/assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
-    <link href="../App/assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
-    <link href="../App/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
+    <link href="../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
-    <link href="../App/assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
-    <link href="../App/assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/css/components.min.css" rel="stylesheet" id="style_components" type="text/css" />
+    <link href="../assets/global/css/plugins.min.css" rel="stylesheet" type="text/css" />
     <!-- BEGIN PAGE LEVEL STYLES -->
-    <link href="../App/assets/css/login-5.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/css/login-5.min.css" rel="stylesheet" type="text/css" />
     <!-- END PAGE LEVEL STYLES -->
     <link rel="shortcut icon" href="../favicon.ico" />
     <style>
@@ -39,19 +41,23 @@
     <div class="user-login-5">
         <div class="row bs-reset">
             <div class="col-md-6 bs-reset">
-                <div class="login-bg" style="background-image:url(assets/bg1.jpg)">
+                <div class="login-bg" style="background-image:url(assets/pl4.jpg)">
                     <!--<img class="login-logo" src="assets/img/mmlogo.png" />-->
                 </div>
             </div>
             <div class="col-md-6 login-container bs-reset">
                 <div class="col-md-12">
-                    <!--<img class="login-logo" src="../assets/images/logo.png" />-->
-                    <img class="login-logo" src="../assets/images/newlogo.png" />
+                    <img class="login-logo" src="assets/pllogo.png" style="height:90px; width:180px;" />
                 </div>
                 <div class="clearfix"></div><br /><br />
 
                 <div class="login-content white">
-                    <p style="text-align: justify;"> Procur[E]ngine is an advanced e-Negotiation platform, powered by AgileApt Solutions Pvt Ltd, enabling global customers and vendors to seamlessly exchange information in finalizing their B2B Contracts saving time, cost and money – in a transparent manner.</p>
+                    <p style="text-align: justify;">
+                        Pidilite is a consumer centric company committed to quality and innovation. For decades, we have been pioneering products for small to large applications, at home and industry, which have forged strong bonds with people from all walks of life.
+
+                        From adhesives, sealants, waterproofing solutions and construction chemicals to arts & crafts, industrial resins, polymers and more, our product portfolio is as diverse as it is ever-evolving. Today, our brands are trusted household and industrial names, and we are the market leader in adhesives.
+
+                    </p>
 
                     <form action="#" class="login-form" method="post">
                         <div class="alert alert-danger display-none" id="alrt1">
@@ -80,7 +86,7 @@
                                     </p>
                                 </div>
                             </div>-->
-                            <a href="#registerParticipantModal" class="pull-left hide" style="color:#ff0000;text-decoration:none;" data-toggle="modal">Register as new vendor</a>
+                            <!--<a href="#registerParticipantModal" class="pull-left" style="color:#ff0000;text-decoration:none;" data-toggle="modal">Register as new vendor</a>-->
                             <div class="col-sm-8 text-right pull-right">
                                 <div class="forgot-password">
                                     <a href="javascript:;" id="forget-password" class="forget-password">Forgot Password?</a>
@@ -134,8 +140,7 @@
                         </div>-->
                         <div class="col-xs-12  pull-right">
                             <div class="login-copyright text-right">
-                                <!--<p>Powered by: <a href="https://www.procurengine.com"> ProcurEngine</a></p>-->
-                                <p>Powered by: <a href="https://www.procurengine.org"> ProcurEngine</a></p>
+                                <p>Powered by: <a href="http://agileapt.com/">AgileApt Solutions Pvt Ltd.</a></p>
                             </div>
                         </div>
                     </div>
@@ -282,56 +287,53 @@
     </div>
     <!-- END : LOGIN PAGE 5-1 -->
     <!-- BEGIN CORE PLUGINS -->
-    <script src="../App/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
-    <script src="../App/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
-    <script src="../App/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script src="../App/assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
-    <script src="../App/assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
-    <script src="../App/assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="../App/assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
-    <script src="../App/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="../App/assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="../assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
     <!-- END CORE PLUGINS -->
     <!-- BEGIN PAGE LEVEL PLUGINS -->
-    <script src="../App/assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
-    <script src="../App/assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
-    <script src="../App/assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
-    <script src="../App/assets/global/plugins/backstretch/jquery.backstretch.min.js" type="text/javascript"></script>
-    <script src="../App/assets/CustomJS/TypeaHead.js" type="text/javascript"></script>
-    <script src="../App/assets/scripts/aes.js"></script>
+    <script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/backstretch/jquery.backstretch.min.js" type="text/javascript"></script>
+    <script src="../assets/CustomJS/TypeaHead.js" type="text/javascript"></script>
+    <script src="assets/scripts/aes.js"></script>
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN THEME GLOBAL SCRIPTS -->
-    <!--<script src="assets/global/scripts/app.min.js" type="text/javascript"></script>-->
-    <script src="../App/assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
 
-    <script src="../App/assets/CustomJS/Auction.js" type="text/javascript"></script>
+    <script src="../assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+    <script src="/assets/scripts/aes.js"></script>
+    <script src="../assets/CustomJS/Auction.js" type="text/javascript"></script>
     <!-- BEGIN PAGE LEVEL SCRIPTS -->
-    <script src="../App/assets/global/scripts/app.min.js" type="text/javascript"></script>
-    <script src="../App/assets/scripts/custom/login.js" type="text/javascript"></script>
+    <script src="../assets/global/scripts/app.min.js" type="text/javascript"></script>
+    <script src="../assets/scripts/custom/login.js" type="text/javascript"></script>
     <!-- END PAGE LEVEL SCRIPTS -->
     <!-- END PAGE LEVEL SCRIPTS -->
     <script type="text/javascript">
-        //jQuery(document).ajaxStart(jQuery.blockUI({ message: '<h5><img src="../App/assets/global/img/loading.gif" /> Please Wait...</h5>' })).ajaxStop(jQuery.unblockUI);
+        jQuery(document).ajaxStart(jQuery.blockUI({ message: '<h5><img src="../App/assets/global/img/loading.gif" /> Please Wait...</h5>' })).ajaxStop(jQuery.unblockUI);
         jQuery(document).ready(function () {
-
             Pageloaded()
             setInterval(function () { Pageloaded() }, 15000);
             sessionStorage.clear();
             App.init();
             Login.init();
-            //jQuery.unblockUI()
+            jQuery.unblockUI()
             $(".login-bg").backstretch([
-                "assets/bg1.jpg",
-                "assets/bg2.jpg",
-                "assets/bg3.jpg"
+                "assets/pl4.jpg",
+                "assets/pl5.jpg",
+                "assets/pl6.jpg"
             ], { fade: 1e3, duration: 8e3 })
 
-            sessionStorage.setItem("UserType", "V");
 
         });
 
-        fetchMapCategory('M', 0);
-
+       // fetchMapCategory('M', 0);
     </script>
     <!-- END JAVASCRIPTS -->
 </body>

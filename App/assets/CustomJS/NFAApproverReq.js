@@ -16,6 +16,8 @@ var userType = "";
 var loginUser = "";
 var approverSeq = 0;
 
+
+
 $(document).ready(function () {
 
     var path = window.location.pathname;
@@ -33,7 +35,7 @@ $(document).ready(function () {
     }
 
     if (idx != null) {
-        if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 61) {// || sessionStorage.getItem('CustomerID') == 29
+        if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 1) {// || sessionStorage.getItem('CustomerID') == 29
             $('#divNFADetails').hide();
             $('#divPPCDetails').show();
             Bindtab2DataforPreview();
@@ -91,6 +93,7 @@ function Bindtab2DataforPreview() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
+
             if (data[0].azureDetails.length > 0) {
                 $('#tblvendorsprev').empty();
                 jQuery('#lblintroduction').html(data[0].azureDetails[0].introduction)
@@ -262,20 +265,29 @@ function fetchRegisterUser() {
     //allUsers = RegisterUser_fetchRegisterUser(data);
 
 }
+
+
 //abheedev bug 385
 //abheedev backlog 471
 var nfaid = 0;
+let SOBID = 0
+let CustID = 0
 function GetOverviewmasterbyId(idx) {
+    debugger
     var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
+        debugger
         if (res.result != null) {
             nfaid = res.result[0].nfaID
+            SOBID = parseInt(res.result[0].sobId)
+            CustID = parseInt(res.result[0].customerID)
             if (res.result.length > 0) {
 
-                if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 61) {
+
+                if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 1) { // || sessionStorage.getItem('CustomerID') == 29
                     if (res.result[0].nfaCategory == "2") {
                         $(".clsHide").hide();
                     }
@@ -294,6 +306,16 @@ function GetOverviewmasterbyId(idx) {
 
                 }
 
+                if (res.result[0].finalStatus == 'Approved') {
+                    $("#btnrecall").hide();
+                }
+                else {
+                    $("#btnrecall").show();
+                }
+
+
+
+
                 $("#lblProjectName").text(res.result[0].projectName);
                 //if (res.result[0].eventID == 0) {
                 //    $(".clsHideEvent").hide();
@@ -302,7 +324,7 @@ function GetOverviewmasterbyId(idx) {
                 //    $(".clsHideEvent").show();
 
                 $("#lbltitle").text(res.result[0].nfaSubject);
-                $("#lblDetailsdesc").html("<b>Descrition:</b>");
+                $("#lblDetailsdesc").html("<b>Introduction:</b>");
                 $("#lblDetails").text(res.result[0].nfaDescription);
                 $("#lblAmount").text(thousands_separators(res.result[0].nfaAmount))//+ " " + res.result[0].currencyNm);
 
@@ -357,6 +379,8 @@ function GetOverviewmasterbyId(idx) {
                 //abheedev backlog 286
                 $("#lblRemark").html(res.result[0].remarks);
                 $("#NFa_ConfiguredBy").html("Configured By :" + res.result[0].createdBy);
+                GetSOBAllocation();
+                CheckPrToEventValidity()
 
             }
         }
@@ -442,6 +466,7 @@ function DownloadFile(aID) {
 
 function fetchApproverStatus() {
     userType = sessionStorage.getItem("roleName");
+
     var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = sessionStorage.getItem("APIPath") + "NFA/GetNFAApproverStatus/?NFaIdx=" + idx
@@ -457,6 +482,7 @@ function fetchApproverStatus() {
         dataType: "json",
         success: function (data) {
 
+            allApprovalUser = data;
             var status = '';
             var c = 0;
             var ApprovalType = ""
@@ -466,8 +492,6 @@ function fetchApproverStatus() {
                 var counterColor = 0;
                 var prevseq = '1';
                 for (var i = 0; i < data.length; i++) {
-
-                   // jQuery('#divappendstatusbar').append('<div class="col-md-2 mt-step-col first" id=divstatuscolor' + i + '><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id=divlevel' + i + '></div><div class="mt-step-title font-grey-cascade" id=divapprovername' + i + ' style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divstatus' + i + '></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id=divPendingDate' + i + '></div></div></div></div>')
                     if (data[i].statusCode == 0) {
                         jQuery('#divappendstatusbar').append(`<div class="col-md-2 mt-step-col first popApprove" id="divstatuscolor${i}"><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;color:#8e44ad !important;border-color: #8e44ad !important;" id="divlevel${i}"></div><div class="mt-step-title font-grey-cascade" style="font-size:smaller ;color:#8e44ad !important;" id="divapprovername${i}"></div><div style="font-size:x-small;color:#8e44ad !important;" class="mt-step-content font-grey-cascade" id="divstatus${i}"></div><div style="font-size:x-small; color:#8e44ad !important;" class="mt-step-content font-grey-cascade" id="divPendingDate${i}"></div></div></div></div>`)
                     }
@@ -477,7 +501,7 @@ function fetchApproverStatus() {
 
                     else {
                         //jQuery('#divappendstatusbar').append(`<a href="javascript:;" data-toggle="modal" data-target="#appmodpop" onclick="popapprfunc('${data[i].approverName}','${data[i].approverID}','${data[i].approverSeq}')"><div class="col-md-2 mt-step-col first popApprove" id="divstatuscolor${i}"><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id="divlevel${i}"></div><div class="mt-step-title font-grey-cascade" id="divapprovername${i}" style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id="divstatus${i}"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id="divPendingDate${i}"></div></div></div></div></a>`)
-                        if (userType == 'Administrator' ||userType == 'Admin') { //if user
+                        if (userType == 'Administrator' || userType == 'Admin') { //if user
                             jQuery('#divappendstatusbar').append(`<a href="javascript:;" data-toggle="modal" data-target="#appmodpop" onclick="popapprfunc('${data[i].approverName}','${data[i].approverID}','${data[i].approverSeq}')"><div class="col-md-2 mt-step-col first popApprove" id="divstatuscolor${i}"><div class="mt-step-number bg-white" style="font-size:small;height:38px;width:39px;" id="divlevel${i}"></div><div class="mt-step-title font-grey-cascade" id="divapprovername${i}" style="font-size:smaller"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id="divstatus${i}"></div><div style="font-size:x-small;" class="mt-step-content font-grey-cascade" id="divPendingDate${i}"></div>
                             <div style="font-size:x-small; margin-top: 5px;"   class="mt-step-content font-grey-cascade delegatebtn" id="divDelefateClick${i}"></div> </div></div></div></a>`)
 
@@ -487,21 +511,19 @@ function fetchApproverStatus() {
                              <div style="font-size:x-small;margin-top: 5px;" class="mt-step-content font-grey-cascade delegatebtn" id="divDelefateClick${i}"></div> </div></div></div>`)
                         }
                     }
-                    
+
                     jQuery('#divlevel' + i).text(data[i].approverSeq);
                     jQuery('#divapprovername' + i).text(data[i].approverName);
                     jQuery('#divPendingDate' + i).text(fnConverToLocalTime(data[i].receiptDt));
                     ApprovalType = data[0].approvalType;
 
                     if (data[i].statusCode == 10) {
+
                         counterColor = counterColor + 1;
                         status = 'Pending'
                         jQuery('#divstatus' + i).text(status);
-                        jQuery('#divstatuscolor' + i).addClass('error');
-                        if (userType == 'Administrator' || userType =='Admin') { //if user
+                        jQuery('#divstatuscolor' + i).addClass('last');
 
-                            jQuery('#divDelefateClick' + i).text("Click Here to Delegate");
-                        }
                     }
                     if (data[i].statusCode == 20) {
                         counterColor = counterColor + 1;
@@ -536,15 +558,24 @@ function fetchApproverStatus() {
                         jQuery('#divstatuscolor' + i).addClass('last')
                         jQuery('#divstatus' + i).addClass('font-blue')
                     }
+
                     if (data[i].statusCode == 40) {
 
                         counterColor = counterColor + 1;
                         status = 'Feedback Sought'
                         jQuery('#divstatus' + i).text(status);
+
                         jQuery('#divstatuscolor' + i).addClass('last');
                     }
                     if (data[i].statusCode == 10) {
+                        counterColor = counterColor + 1;
+                        status = 'Pending'
+                        jQuery('#divstatus' + i).text(status);
                         jQuery('#divstatuscolor' + i).addClass('error');
+                        if (userType == 'Administrator' || userType == 'Admin') { //if user
+
+                            jQuery('#divDelefateClick' + i).text("Click Here to Delegate");
+                        }
                     }
                     if (data[i].statusCode == 20 || data[i].statusCode == 40 || data[i].statusCode == 0) {
                         jQuery('#divstatuscolor' + i).addClass('done');
@@ -689,6 +720,7 @@ var successrecall = $('.alert-success', formrecall);
 var formaddcommapprover = $('#frmNFAApprover');
 var errorapp = $('.alert-danger', formaddcommapprover);
 var successapp = $('.alert-success', formaddcommapprover);
+
 function validateAppsubmitData() {
 
 
@@ -937,13 +969,12 @@ function validateAppsubmitData() {
         }
     });
 
-
 }
 function ApprovalApp() {
     var x = isAuthenticated();
     var _cleanString = StringEncodingMechanism(jQuery("#txtRemarksApp").val());
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
+    debugger
     var approvalbyapp = {
         "NFAID": parseInt(idx),
         "FromUserId": sessionStorage.getItem("UserID"),
@@ -953,7 +984,7 @@ function ApprovalApp() {
         "ForwardedBy": "Approver",
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID"))
     };
-
+    console.log(JSON.stringify(approvalbyapp))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "NFA/ApproveRejectNFA",
@@ -964,6 +995,7 @@ function ApprovalApp() {
         crossDomain: true,
         dataType: "json",
         success: function () {
+            debugger
             bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
 
                 window.location = "index.html";
@@ -971,9 +1003,11 @@ function ApprovalApp() {
             }, 2000)
             );
 
+            jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
+            debugger
+            var err = xhr.responseText;
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
@@ -1682,7 +1716,7 @@ function fnDownloadZip() {
 
 function fngeneratePDF() {
     var encrypdata = fnencrypt("nfaIdx=" + nfaid + "&FwdTo=View")
-    if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 61) {
+    if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 29 || sessionStorage.getItem('CustomerID') == 1) {
         window.open("viewPPCReport.html?param=" + encrypdata, "_blank")
     }
     else {
@@ -1722,7 +1756,7 @@ function popapprfunc(approverName, approverID, apprSeqNo) {
     jQuery('#fromApproveUser').append('<tr><th>Delegate Approver</th></tr>')
     jQuery('#fromApproveUser').append('<tr><td>' + approverName + '</td></tr>')
     jQuery("#txtDeligateName").empty();
-    jQuery("#txtDeligateName").append(jQuery("<option></option>").val("").html("Select Project"));
+    jQuery("#txtDeligateName").append(jQuery("<option></option>").val("").html("Select User"));
     if (allUsers.length > 0) {
         for (var i = 0; i < allUsers.length; i++) {
             jQuery("#txtDeligateName").append(jQuery("<option></option>").val(allUsers[i].userID).html(StringDecodingMechanism(allUsers[i].userName)));
@@ -2179,7 +2213,7 @@ function PostAddApprover() {
         // SaveApproverSeqData(ApproverSeqData);
 
     }
-   // console.log(ApproverSeqData);
+    console.log(ApproverSeqData);
     /*
     var data = {
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
@@ -2261,4 +2295,63 @@ function GetSOBAllocation() {
         }
     });
 
-} 
+}
+
+function CheckPrToEventValidity() {
+    debugger
+
+    let _EventID = parseInt(idx);
+    let _CustomerID = parseInt(sessionStorage.getItem('CustomerID'))
+
+    console.log(sessionStorage.getItem("APIPath") + "PRMapping/CheckPrToEventValidity/?NFAId=" + _EventID + '&CustomerId=' + _CustomerID)
+
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "PRMapping/CheckPrToEventValidity/?NFAId=" + _EventID + '&CustomerId=' + _CustomerID,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+            debugger
+            if (data.message == "Y") {
+
+
+                $('.btnPRMapping').show()
+                $('.btnPRMapping').attr("onclick", `getPRMapping(${_EventID},${sessionStorage.getItem('CustomerID')})`)
+
+
+            }
+            else {
+                $('.btnPRMapping').hide()
+            }
+
+        },
+        error: function (xhr, status, error) {
+            var err = xhr.responseText
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+
+    });
+}
+
+function getPRMapping(EventID, CustomerID) {
+
+    // let _pi = StringDecodingMechanism(pi)
+    var encrypdata = fnencrypt("EventId=" + EventID + "&CustomerID=" + CustomerID)
+
+
+    window.open("PRMapping.html?param=" + encrypdata, "_blank")
+
+
+
+
+}
+
+

@@ -1,35 +1,17 @@
-﻿@media print {
-    .pagebreak {
-        page-break-before: always;
-    }
-    /* page-break-after works, as well */
-}
-
-@page {
-    size: landscape;
-}
-
-@page {
-    size: A4 landscape;
-    margin: 10%;
-}
-
-@media screen {
-    div.divFooter {
-        display: none;
-    }
+@page{
+    
+    margin:10px;
 }
 
 @media print {
-    div.divFooter {
-        position: fixed;
-        bottom: 0;
-    }
+  .pagebreak {
+    page-break-before: always;
+  }
 }
 
 * {
     -webkit-print-color-adjust: exact !important; /* Chrome, Safari */
-    color-adjust: exact !important; /*Firefox*/
+     color-adjust: exact !important; /*Firefox*/
 }
 
 .mainbody {
@@ -107,4 +89,29 @@
     width: auto;
     float: right !important;
     font-size: 14px !important;
+}
+
+#spnconfiguredby{
+    margin-right: 30px !important;
+}
+
+
+.printpdfbtn {
+   display: inline-block;
+  padding: 10px 20px;
+  background-image: linear-gradient(to bottom, #3498db, #2980b9);
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  float: right;
+}
+
+.printpdfbtn:hover {
+  background-image: linear-gradient(to bottom, #2980b9, #1f6697);
+}
+
+.printpdfbtn:active {
+   background-image: linear-gradient(to bottom, #1f6697, #134e75);
 }

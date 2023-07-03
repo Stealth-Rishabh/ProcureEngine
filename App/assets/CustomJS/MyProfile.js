@@ -14,6 +14,8 @@ function onloadcalls() {
     FormValidateCompany();
     validateUserPro()
     FormValidateBank();
+    
+    
 
 
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -1457,8 +1459,9 @@ function SendWhatsApp() {
 
 //myprofile changes based on email
 let VendorId = parseInt(sessionStorage.getItem('VendorId'));
+let customerid = parseInt(sessionStorage.getItem('CustomerID'));
 function fetchMyProfileVendor() {
-    let customerid = parseInt(sessionStorage.getItem('CustomerID'));
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     
     jQuery.ajax({
@@ -1472,7 +1475,7 @@ function fetchMyProfileVendor() {
         dataType: "json",
         async: false,
         success: function (data) {
-            debugger
+           
             /* if (!data.isVendorPresent) {
                  $("#hdnFlagType").val("New")
                  $('#divVendorForm').removeClass('hide')
@@ -1495,8 +1498,10 @@ function fetchMyProfileVendor() {
 
 
             let isactiveUser = parentData.isActive;
-            $("#personname").val(StringDecodingMechanism(parentData.contactPerson))
-            $("#personnamealt").val(StringDecodingMechanism(parentData.vendorName))
+             debugger
+           
+             $("#personname").val(StringDecodingMechanism(parentData.contactPerson))
+            $("#personnamealt").val(StringDecodingMechanism(parentData.contactNameAlt))
 
             $("#vendormobileno").val(parentData.mobileNo)
             $("#vendoraltmobileno").val(parentData.phone)
@@ -1576,7 +1581,7 @@ function fetchMyProfileVendor() {
 //edit vendor
 
 function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile, taxIdType, taxIdType2, city, regionKey, countryKey, Langu, currency,gstnstatus,einvoicestatus,taxpayertype,legalName) {
- 
+    debugger
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
      
      setTimeout(function() {
@@ -1719,7 +1724,7 @@ function updateVendorContactDetails() {
         "VendorID": parseInt(sessionStorage.getItem('VendorId')),
         "EmailID": $('#vendorEmailID').val(),
         "AlternateEmailID": $('#vendorAltEmailID').val(),
-        "VendorName": encodevendorName,
+        "ContactNameAlt": encodevendorName,
         "ContactPerson": encodeContactPerson,
         "MobileNo": $('#vendormobileno').val(),
         "Phone": $('#vendoraltmobileno').val(),
@@ -1742,15 +1747,17 @@ function updateVendorContactDetails() {
         dataType: "json",
         success: function (data) {
 
-
-            fetchMyProfileVendor()
+            
+            
             profileerror.hide();
             jQuery.unblockUI();
             jQuery("#success").text("Your Contact details updated successfully..");
             profilesuccess.show();
             profilesuccess.fadeOut(5000);
             App.scrollTo(profilesuccess, -200);
-            setTimeout(function () { location.reload() }, 2000)
+          //  setTimeout(function () { location.reload() }, 2000)
+          setTimeout(function () { fetchMyProfileVendor() }, 2000)
+           
         },
         error: function (xhr, status, error) {
 
@@ -1899,7 +1906,7 @@ function UpdateCompanyDetail() {
             profilesuccess.show();
             profilesuccess.fadeOut(5000);
             App.scrollTo(profilesuccess, -200);
-            setTimeout(function () { location.reload() }, 1500)
+            setTimeout(function () { fetchMyProfileVendor() }, 1500)
            
         },
         error: function (xhr, status, error) {
@@ -1920,7 +1927,8 @@ function UpdateCompanyDetail() {
 
 
 function UpdateBankDetail() {
-
+    debugger
+    $('#buttonbankupdate').attr('disabled','disabled');
     let ActionType = $('#hdnActionType').val()
 
     if ($('#checkattach').html() !== '') {
@@ -1932,17 +1940,16 @@ function UpdateBankDetail() {
     }
 
     if (checkfilename == "") {
-        jQuery("#error").text("please attach valid Check file to proceed...");
-        profileerror.show();
-        profileerror.fadeOut(5000);
-        App.scrollTo(profileerror, -200);
+        $('#buttonbankupdate').removeAttr('disabled');
+       
+        alertforerror('please attach valid Check file to proceed...')
         return false;
     }
     let data = "";
     let bankurl = ""
     let encodedbankname=StringEncodingMechanism(jQuery("#bankname").val());
    
-    
+    debugger
     if (ActionType == "Add") {
         bankurl = APIPath + "VendorLCM/UpdateBankDetail/?ActionType=Add"
         data = {
@@ -1953,7 +1960,7 @@ function UpdateBankDetail() {
             "BankName": encodedbankname,
             "CancelledCheckFile": checkfilename,
             "Currency": jQuery("#ddlcurrency option:selected").val(),
-            "PayTerm": jQuery("#ddPayTerms option:selected").val(),
+           /* "PayTerm": jQuery("#ddPayTerms option:selected").val(),*/
             "AccounHolderName":jQuery("#accountholder").val()
         }
     }
@@ -1968,7 +1975,7 @@ function UpdateBankDetail() {
             "BankName": encodedbankname,
             "CancelledCheckFile": checkfilename,
             "Currency": jQuery("#ddlcurrency option:selected").val(),
-            "PayTerm": jQuery("#ddPayTerms option:selected").val(),
+            /*"PayTerm": jQuery("#ddPayTerms option:selected").val(),*/
             "AccounHolderName":jQuery("#accountholder").val()
         }
 
@@ -1988,25 +1995,27 @@ function UpdateBankDetail() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
+            debugger
              if ($('#filecheck').val() != '') {
                 fnUploadFilesonAzure('filecheck', checkfilename, 'VR/' + $('#hdnChildID').val());
-
             }
-
-            
-
-            profileerror.hide();
+            jQuery("#errordivbank").hide();
             jQuery.unblockUI();
-            jQuery("#success").text("Your Bank specific details added successfully..");
-            profilesuccess.show();
-            profilesuccess.fadeOut(5000);
-            App.scrollTo(profilesuccess, -200);
-            setTimeout(function () { location.reload() }, 1500)
+            jQuery("#successdivbank").text("Your Bank specific details added successfully..");
+            jQuery("#successdivbank").show();
+            jQuery("#successdivbank").fadeOut(5000);
+            App.scrollTo(jQuery("#successdivbank"), -200);
+            $('#buttonbankupdate').removeAttr('disabled');
+            setTimeout(function () {
+                $('#bankForm').hide();
+                GetBankDetail(parseInt($('#hdnChildID').val()), customerid, VendorId)
+                }, 1500)
            
 
         },
         error: function (xhr, status, error) {
-
+             debugger
+             $('#buttonbankupdate').removeAttr('disabled');
              var err = xhr.responseText
              jQuery("#error").text(err);
              profileerror.show();
@@ -2020,7 +2029,7 @@ function UpdateBankDetail() {
 
 
 function GetBankDetail(ChildId, CustId, vendorid) {
-
+     debugger
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -2030,19 +2039,30 @@ function GetBankDetail(ChildId, CustId, vendorid) {
         cache: false,
         dataType: "json",
         success: function (childData) {
+               debugger
                
-
+               let isBVerify=""
+            $('#mapMN').val($('#vendormobileno').val())
             if (childData.length > 0) {
                 $('#tblGetBankDetail').empty();
 
 
                 $('#tblGetBankDetail').append("<thead><tr><th>Action</th><th>Bank Name</th><th>Account Number</th><th>IFSC Code</th></tr></thead><tbody>");
                 for (var i = 0; i < childData.length; i++) {
-
-                    $('#tblGetBankDetail').append("<tr onclick=''><td><button type='button' class='btn btn-xs btn-primary' onclick=\"editBankDetail('" + childData[i].bankingId + "','" + childData[i].childId + "','" + childData[i].bankCountryKey + "','" + childData[i].bankRoutingNumber + "','" + childData[i].bankName + "','" + childData[i].cancelledCheckFile + "','" + childData[i].payTerm + "','" + childData[i].bankAccountNumber + "','" + childData[i].accounHolderName + "')\">Edit</button><button type='button' class='btn btn-xs yellow' onclick=\"GetCustomerForBankMapping(\'" + vendorid + "','" + childData[i].childId + "','" + childData[i].bankingId + "'\)\">Map Customer</button></td><td class='hovertextLeft' data-hover='Click here to see associated customer with this bank account' onclick=\"viewbankcustomer(\'" + "accordion" + childData[i].bankingId + "'\)\">" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "</td><td>" + childData[i].bankRoutingNumber + "</td></tr>");
+                    isBVerify=childData[i].isVerified;
+                    if(isBVerify=="Y"){
+                         $('#tblGetBankDetail').append("<tr onclick=''><td><button type='button' class='btn btn-xs btn-primary' onclick=\"editBankDetail('" + childData[i].bankingId + "','" + childData[i].childId + "','" + childData[i].bankCountryKey + "','" + childData[i].bankRoutingNumber + "','" + childData[i].bankName + "','" + childData[i].cancelledCheckFile + "','" + childData[i].payTerm + "','" + childData[i].bankAccountNumber + "','" + childData[i].accounHolderName + "')\">Edit</button><button type='button' class='btn btn-xs yellow' onclick=\"GetCustomerForBankMapping(\'" + vendorid + "','" + childData[i].childId + "','" + childData[i].bankingId + "',\'" + childData[i].accounHolderName + "'\,\'" + childData[i].bankAccountNumber + "',\'" + childData[i].bankRoutingNumber + "',\'" + isBVerify + "')\">Map Customer</button></td><td class='hovertextLeft' data-hover='Click here to see associated customer with this bank account' onclick=\"viewbankcustomer(\'" + "accordion" + childData[i].bankingId + "'\)\">" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "  <img src='assets/img/greenchecktick.svg' width='25px' height='25px' style='{margin-bottom:4px;}'/></td><td>" + childData[i].bankRoutingNumber + "</td></tr>");
+                   
+                    }
+                    else{
+                        $('#tblGetBankDetail').append("<tr onclick=''><td><button type='button' class='btn btn-xs btn-primary' onclick=\"editBankDetail('" + childData[i].bankingId + "','" + childData[i].childId + "','" + childData[i].bankCountryKey + "','" + childData[i].bankRoutingNumber + "','" + childData[i].bankName + "','" + childData[i].cancelledCheckFile + "','" + childData[i].payTerm + "','" + childData[i].bankAccountNumber + "','" + childData[i].accounHolderName + "')\">Edit</button><button type='button' class='btn btn-xs yellow' onclick=\"GetCustomerForBankMapping(\'" + vendorid + "','" + childData[i].childId + "','" + childData[i].bankingId + "',\'" + childData[i].accounHolderName + "'\,\'" + childData[i].bankAccountNumber + "',\'" + childData[i].bankRoutingNumber + "',\'" + isBVerify + "')\">Map Customer</button></td><td class='hovertextLeft' data-hover='Click here to see associated customer with this bank account' onclick=\"viewbankcustomer(\'" + "accordion" + childData[i].bankingId + "'\)\">" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "</td><td>" + childData[i].bankRoutingNumber + "</td></tr>");
+                   
+                    }
+                    
                     if (childData[i].mappedCustomersList.length > 0) {
-                        $('#tblGetBankDetail').append("<tr style='display:none' class='accordion" + childData[i].bankingId + "'><th colspan='5'>Customer list</th></tr>");
-
+                        
+                            $('#tblGetBankDetail').append("<tr style='display:none' class='accordion" + childData[i].bankingId + "'><th colspan='5'>Customer list</th></tr>");
+                        
                     }
                     else {
                         $('#tblGetBankDetail').append("<tr style='display:none' class='accordion" + childData[i].bankingId + "'><th colspan='5'>No customer is associated with this bank account</th></tr>");
@@ -2106,6 +2126,8 @@ function editBankDetail(bankingId, childId, bankCountryKey, bankRoutingNumber, b
     $('#checkattach').html(cancelledCheckFile);
 }
 
+
+
 function Addanotherbank() {
     $('#bankForm').show();
     jQuery("#ifsccode").val("")
@@ -2118,7 +2140,12 @@ function Addanotherbank() {
 }
 
 function Addanotherfinance() {
-
+     
+    $('#turnoverfiscal').val('')
+    $('#fromFiscalyear').val('')
+    $('#toFiscalyear').val('')
+    $('#filefinance').val('')
+    
     $('#financeform').show();
 
 }
@@ -2130,27 +2157,36 @@ function UpdateFinancialDetail() {
     let financialyearto = parseInt($('#toFiscalyear').val())
 
     if (financialyearto - financialyearfrom < 0) {
-        jQuery("#error").text("From financial year cannot be less than To financial year");
-        profileerror.show();
-        profileerror.fadeOut(5000);
-        App.scrollTo(profileerror, -200);
+        $("#errordivfinance").text("From financial year cannot be less than To financial year");
+        $("#errordivfinance").show();
+        $("#errordivfinance").fadeOut(5000);
+        App.scrollTo($("#errordivfinance"), -200);
         return false;
 
     }
     else if (financialyearto - financialyearfrom !== 1) {
-        jQuery("#error").text("Turnover for particular financial year can only be updated");
-        profileerror.show();
-        profileerror.fadeOut(5000);
-        App.scrollTo(profileerror, -200);
+        $("#errordivfinance").text("Turnover for particular financial year can only be updated");
+        $("#errordivfinance").show();
+        $("#errordivfinance").fadeOut(5000);
+        App.scrollTo($("#errordivfinance"), -200);
         return false;
     }
-
+    
+    if ($('#checkattach').html() !== '') {
+        financefilename = $('#financeattach').html();
+    }
+    else {
+        financefilename = jQuery('#filefinance').val().substring(jQuery('#filefinance').val().lastIndexOf('\\') + 1)
+        financefilename = financefilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    }
+    debugger
     let data = {
         "ChildId": parseInt($('#hdnChildID').val()),
         "FinancialYearFrom": $('#fromFiscalyear').val(),
         "FinancialYearTo": $('#toFiscalyear').val(),
         "Turnover": parseInt($('#turnoverfiscal').val()),
         "Currency": jQuery("#currencyFiscalupdate option:selected").val(),
+        "AttachmentName":financefilename,
     }
 
     
@@ -2165,23 +2201,35 @@ function UpdateFinancialDetail() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-
+            
+           
            
             if (data.isSuccess == "2") {
-                jQuery("#error").text("Turnover for the said financial year already updated..");
-                profileerror.show();
-                profileerror.fadeOut(5000);
-                App.scrollTo(profileerror, -200);
+                $("#errordivfinance").text("Turnover for the said financial year already updated..");
+                $("#errordivfinance").show();
+                $("#errordivfinance").fadeOut(5000);
+                App.scrollTo($("#errordivfinance"), -200);
                 return false;
             }
+            
+             if ($('#filefinance').val() != '') {
+                 debugger
+                fnUploadFilesonAzure('filefinance', financefilename, 'VR/' + $('#hdnChildID').val());
 
-            profileerror.hide();
+            }
+
+
+            $("#errordivfinance").hide();
             jQuery.unblockUI();
-            jQuery("#success").text("Your Finance specific details added successfully..");
-            profilesuccess.show();
-            profilesuccess.fadeOut(5000);
-            App.scrollTo(profilesuccess, -200);
-            setTimeout(function () { location.reload() }, 1500)
+            $("#successdivfinance").text("Your Finance specific details added successfully..");
+            $("#successdivfinance").show();
+            $("#successdivfinance").fadeOut(5000);
+            App.scrollTo($("#successdivfinance"), -200);
+            setTimeout(function () { 
+                
+                $("#financeform").hide();
+                GetFinancialDetail(parseInt($('#hdnChildID').val())) }, 1500)
+           
         },
         error: function (xhr, status, error) {
              var err = xhr.responseText
@@ -2208,15 +2256,21 @@ function GetFinancialDetail(ChildId) {
         cache: false,
         dataType: "json",
         success: function (childData) {
-            
+            debugger
             if (childData.length > 0) {
                 $('#tblGetFinancialDetail').empty()
-                $('#tblGetFinancialDetail').append("<thead><tr><th class='hide'></th><th>Turn Over</th><th>Financial Year</th></tr></thead><tbody>")
+                $('#tblGetFinancialDetail').append("<thead><tr><th class='hide'></th><th>Turn Over</th><th>Financial Year</th><th>Attachment</th></tr></thead><tbody>")
                 for (var i = 0; i < childData.length; i++) {
-
-
-                    $('#tblGetFinancialDetail').append("<tr><td class='hide'>" + childData[i].financialDetailId + "</td><td>" + thousands_separators(childData[i].turnover) + " "+childData[i].currency + "</td><td>" + childData[i].financialYearFrom + " - " + childData[i].financialYearTo + "</td></tr>")
-
+  
+                    if(childData[i].attachmentName){
+                        $('#tblGetFinancialDetail').append(`<tr><td class='hide'>${childData[i].financialDetailId}</td><td>${thousands_separators(childData[i].turnover)}  ${childData[i].currency}</td><td>${childData[i].financialYearFrom}  - ${childData[i].financialYearTo} </td><td><a href="javascript:;" onclick="DownloadFile(this)" id="financeattach${i}" class="txtleftnone">${(childData[i].attachmentName)}</a></td></tr>`)
+ 
+                    }
+                    else{
+                        $('#tblGetFinancialDetail').append(`<tr><td class='hide'>${childData[i].financialDetailId}</td><td>${thousands_separators(childData[i].turnover)}  ${childData[i].currency}</td><td>${childData[i].financialYearFrom}  - ${childData[i].financialYearTo} </td><td></td></tr>`)
+ 
+                    }
+                   
 
                 }
 
@@ -2489,7 +2543,11 @@ function AddAssociateVendorDetail() {
             profilesuccess.show();
             profilesuccess.fadeOut(5000);
             App.scrollTo(profilesuccess, -200);
-            setTimeout(function () { location.reload() }, 2000)
+            setTimeout(function () { 
+                $("#AddAssociate").hide()
+                fetchMyProfileVendor() 
+                
+            }, 2000)
 
         },
         error: function (xhr, status, error) {
@@ -2582,7 +2640,7 @@ function extractPan(data) {
 function ValidateGST(data) {
 
     let GSTNo = data
-    
+    debugger
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -2590,7 +2648,7 @@ function ValidateGST(data) {
         contentType: "application/json; charset=utf-8",
         async:false,
         success: function (data, status, jqXHR) {
-          
+          debugger
             if (data.status != 'E') {
                 var data = jQuery.parseJSON(data);
                 gstflag=true
@@ -2598,12 +2656,13 @@ function ValidateGST(data) {
                 let legalName = data.legalNameOfBusiness
                 let tradeName=data.tradeName
                 let companytype = data.constitutionOfBusiness
-                let tradeaddress=`${data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.buildingName} ${data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.buildingNumber} ${data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.streetName} `
+                let tradeaddress=`${data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.buildingName} ${data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.buildingNumber} ${data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.streetName} ${data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.location} ${data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.districtName} `
                 let gststatus = data.gstnStatus
                 let eInvoiceStatus=data.eInvoiceStatus
                 let taxpayerType=data.taxpayerType
                 let stateName=data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.stateName
-
+                let pincode =data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.pincode
+                  
                
                 $('#txtTINNo').addClass("gstvalidicon")
 
@@ -2622,6 +2681,8 @@ function ValidateGST(data) {
                 $("#gstnStatus").val(gststatus);
                 $("#eInvoiceStatus").val(eInvoiceStatus);
                 $("#taxpayerType").val(taxpayerType);
+                $("#pincode").val(pincode);
+                
                 
                 
                 jQuery("#ddlState").find(`option[data-statename=${stateName}]`).prop('selected', true).trigger('change')
@@ -2669,6 +2730,13 @@ function editCheck() {
     $("#filecheck").show();
 }
 
+
+function editFinance() {
+    $("#financeattach").html("");
+    $("#uploadfinance").hide();
+    $("#filefinance").show();
+}
+
 function editGST() {
     $("#gstattach").html("");
     $("#uploadgst").hide();
@@ -2702,8 +2770,8 @@ function viewbankcustomer(accordionname) {
 }
 
 
-function GetCustomerForBankMapping(vendid, ChildId, bankingId) {
-
+function GetCustomerForBankMapping(vendid, ChildId, bankingId,accholder,accnum,accifsc,isVerify) {
+    debugger
     $('#hdnBankingId').val(bankingId)
     $('#hdnChildID').val(ChildId)
 
@@ -2717,19 +2785,36 @@ function GetCustomerForBankMapping(vendid, ChildId, bankingId) {
         cache: false,
         dataType: "json",
         success: function (data) {
-
-
+            
+            debugger   
+            
+            jQuery(".verifygroup").hide();
+            
+            
             jQuery("#mapbankcustomer").empty();
             jQuery("#mapbankcustomer").append(jQuery("<option></option>").val(0).html("Select"));
             for (var i = 0; i < data.length; i++) {
-                jQuery("#mapbankcustomer").append(jQuery("<option></option>").val(data[i].customerId).html(data[i].customerName));
+                jQuery("#mapbankcustomer").append(jQuery(`<option data-isverify='${data[i].showVerification}' data-verification='${isVerify}'></option>`).val(data[i].customerId).html(data[i].customerName));
+            }
+            $('#mapAH').html(accholder);
+            $('#mapAN').html(accnum);
+            $('#mapIC').html(accifsc);
+            if(isVerify=='Y'){
+                
+                $('#btnVerifyBank').hide()
+                $('#btnmaptoc').removeAttr('disabled')
+                
+            }
+            else{
+                $('#btnVerifyBank').show()
+                $('#btnmaptoc').attr('disabled','disabled')
             }
             $('#bankcustomermap').show();
 
         },
         error: function (xhr, status, error) {
 
-            var err = eval("(" + xhr.responseText + ")");
+            var err = eval(`( ${xhr.responseText} )`);
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
             }
@@ -2790,7 +2875,7 @@ function UpdateBankMapping() {
                 setTimeout(function () {
                     jQuery("#successdiv1").hide();
                     jQuery("#successdiv1").text("");
-
+                    hideModal()
                 }, 2000)
             }
             else {
@@ -3220,12 +3305,10 @@ $('#txtTINType').on('change', function () {
 
 let vendorchildId='';
 function DownloadFile(aID) {
-     
+     debugger
     vendorchildId = $('#hdnChildID').val()
     fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + vendorchildId);
 }
-
-
 
 function validateUserPro(){
     $('#frmprofile').validate({
@@ -3284,5 +3367,97 @@ function validateUserPro(){
     
 }
 
+//penny testing code
+function IciciBankPennyDropVerify() {
+   debugger
+   if($('#mapMN').val()==''){
+               $('#btnmaptoc').attr('disabled','disabled');
+                alertforerror("please fill valid mobile number to proceed")
+                return false
+   }
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    let data = {
+        "BenifAccNo":$('#mapAN').html(),
+        "BenifIFSC":$('#mapIC').html(),
+        "Amount":"1.00",
+        "AcountName":$('#mapAH').html(),
+        "Mobile":$('#mapMN').val(),
+        "ChildID":parseInt($('#hdnChildID').val())
+    }
+    
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        //url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&UserType=" + sessionStorage.getItem('UserType'),
+        url: APIPath + "Bank/IciciBankPennyDropVerify",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+           debugger
+          
+           let ActCode= data.data.actCode
+           if(data.isVeriFy==='Y'){
+               
+                $('#btnmaptoc').removeAttr('disabled');
+                alertforinfo("Banking details verified successfully...");
+                GetBankDetail(parseInt($('#hdnChildID').val()), customerid, VendorId)
+               
+           }
+           else{
+               
+             if(ActCode=='0') {
+                  $('#btnmaptoc').removeAttr('disabled');
+                  alertforsucess("Banking details verified successfully...");
+                  GetBankDetail(parseInt($('#hdnChildID').val()), customerid, VendorId)
+             }
+             else{
+                  $('#btnmaptoc').attr('disabled','disabled');
+               
+                  alertforerror(`${data.data.response}. Please check details.`)
+                
+             }
+               
+               
+               
+           }
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+
+           debugger
+           let err=xhr.responseText || `banking details cannot be verified. Please Check!`;
+          
+           alertforerror(err);
+            jQuery.unblockUI();
+        }
+    });
+}
 
 
+//dropdown changes for verification
+$('#mapbankcustomer').on('change', function () {
+    debugger
+   let isVerify = $('option:selected', this).data('isverify');
+   let verification=$('option:selected', this).data('verification');
+   if(isVerify=='Y' ){
+       if(verification=='Y'){
+            $('#btnmaptoc').removeAttr('disabled');
+            $('.verifygroup').show();
+       }
+           
+       else{
+            $('#btnmaptoc').attr('disabled','disabled');
+            $('.verifygroup').show();
+       }
+      
+   }
+   else{
+       $('#btnmaptoc').removeAttr('disabled');
+       $('.verifygroup').hide();
+   }
+
+    
+});

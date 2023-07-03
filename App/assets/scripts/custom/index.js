@@ -1,49 +1,7 @@
 
 
-jQuery(document).ready(function () {
-  
-    Pageloaded()
-    sessionStorage.setItem('CurrentBidID', 0);
-
-    sessionStorage.setItem('hddnRFQID', 0);
-
-    sessionStorage.setItem('CurrentRFIID', 0);
-
-    setInterval(function () { Pageloaded() }, 15000);
-    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
-        window.location = sessionStorage.getItem('MainUrl');
-
-    }
-    else {
-        
-        if (sessionStorage.getItem("UserType") == "E") {
-            $('.page-container').show();
-        }
-        else {
-            bootbox.alert("You are not Authorize to view this page", function () {
-                parent.history.back();
-                return false;
-            });
-        }
-    }
-    setCommonData();
-    App.init();
-    Tasks.initDashboardWidget();
-    if (sessionStorage.getItem('UserType') == 'E') {
-        fetchMenuItemsFromSession(0, 0);
-
-    }
-    else {
-
-    }
-    fetchDashboardData();
-    handleChangePasword();
-});
-
 var Index = function () {
-
-
-    return {
+return {
 
         //main function
         init: function () {
@@ -166,7 +124,7 @@ var Index = function () {
                         center: '',
                         right: 'prev,next,today,month,agendaWeek,agendaDay'
                     };
-                }               
+                }
             }
 
             $('#calendar').fullCalendar('destroy'); // destroy the calendar
@@ -175,47 +133,47 @@ var Index = function () {
                 header: h,
                 editable: true,
                 events: [{
-                        title: 'All Day Event',                        
-                        start: new Date(y, m, 1),
-                        backgroundColor: App.getLayoutColorCode('yellow')
-                    }, {
-                        title: 'Long Event',
-                        start: new Date(y, m, d - 5),
-                        end: new Date(y, m, d - 2),
-                        backgroundColor: App.getLayoutColorCode('green')
-                    }, {
-                        title: 'Repeating Event',
-                        start: new Date(y, m, d - 3, 16, 0),
-                        allDay: false,
-                        backgroundColor: App.getLayoutColorCode('red')
-                    }, {
-                        title: 'Repeating Event',
-                        start: new Date(y, m, d + 4, 16, 0),
-                        allDay: false,
-                        backgroundColor: App.getLayoutColorCode('green')
-                    }, {
-                        title: 'Meeting',
-                        start: new Date(y, m, d, 10, 30),
-                        allDay: false,
-                    }, {
-                        title: 'Lunch',
-                        start: new Date(y, m, d, 12, 0),
-                        end: new Date(y, m, d, 14, 0),
-                        backgroundColor: App.getLayoutColorCode('grey'),
-                        allDay: false,
-                    }, {
-                        title: 'Birthday Party',
-                        start: new Date(y, m, d + 1, 19, 0),
-                        end: new Date(y, m, d + 1, 22, 30),
-                        backgroundColor: App.getLayoutColorCode('purple'),
-                        allDay: false,
-                    }, {
-                        title: 'Click for Google',
-                        start: new Date(y, m, 28),
-                        end: new Date(y, m, 29),
-                        backgroundColor: App.getLayoutColorCode('yellow'),
-                        url: 'http://google.com/',
-                    }
+                    title: 'All Day Event',
+                    start: new Date(y, m, 1),
+                    backgroundColor: App.getLayoutColorCode('yellow')
+                }, {
+                    title: 'Long Event',
+                    start: new Date(y, m, d - 5),
+                    end: new Date(y, m, d - 2),
+                    backgroundColor: App.getLayoutColorCode('green')
+                }, {
+                    title: 'Repeating Event',
+                    start: new Date(y, m, d - 3, 16, 0),
+                    allDay: false,
+                    backgroundColor: App.getLayoutColorCode('red')
+                }, {
+                    title: 'Repeating Event',
+                    start: new Date(y, m, d + 4, 16, 0),
+                    allDay: false,
+                    backgroundColor: App.getLayoutColorCode('green')
+                }, {
+                    title: 'Meeting',
+                    start: new Date(y, m, d, 10, 30),
+                    allDay: false,
+                }, {
+                    title: 'Lunch',
+                    start: new Date(y, m, d, 12, 0),
+                    end: new Date(y, m, d, 14, 0),
+                    backgroundColor: App.getLayoutColorCode('grey'),
+                    allDay: false,
+                }, {
+                    title: 'Birthday Party',
+                    start: new Date(y, m, d + 1, 19, 0),
+                    end: new Date(y, m, d + 1, 22, 30),
+                    backgroundColor: App.getLayoutColorCode('purple'),
+                    allDay: false,
+                }, {
+                    title: 'Click for Google',
+                    start: new Date(y, m, 28),
+                    end: new Date(y, m, 29),
+                    backgroundColor: App.getLayoutColorCode('yellow'),
+                    url: 'http://google.com/',
+                }
                 ]
             });
         },
@@ -226,7 +184,7 @@ var Index = function () {
             }
 
             function showChartTooltip(x, y, xValue, yValue) {
-                $('<div id="tooltip" class="chart-tooltip">'+yValue+'<\/div>').css({
+                $('<div id="tooltip" class="chart-tooltip">' + yValue + '<\/div>').css({
                     position: 'absolute',
                     display: 'none',
                     top: y - 40,
@@ -258,7 +216,7 @@ var Index = function () {
                 return res;
             }
 
-            
+
 
             function randValue() {
                 return (Math.floor(Math.random() * (1 + 50 - 20))) + 10;
@@ -283,64 +241,64 @@ var Index = function () {
                 $('#site_statistics_loading').hide();
                 $('#site_statistics_content').show();
 
-                var plot_statistics = $.plot($("#site_statistics"), 
+                var plot_statistics = $.plot($("#site_statistics"),
 
                     [
-                    {
-                        data:visitors,
-                        lines: {
-                            fill: 0.6,
-                            lineWidth: 0,
+                        {
+                            data: visitors,
+                            lines: {
+                                fill: 0.6,
+                                lineWidth: 0,
+                            },
+                            color: ['#f89f9f']
                         },
-                        color: ['#f89f9f']
-                    },
-                    {
-                        data: visitors,
-                        points: {
-                            show: true,
-                            fill: true,
-                            radius: 5,
-                            fillColor: "#f89f9f",
-                            lineWidth: 3
+                        {
+                            data: visitors,
+                            points: {
+                                show: true,
+                                fill: true,
+                                radius: 5,
+                                fillColor: "#f89f9f",
+                                lineWidth: 3
+                            },
+                            color: '#fff',
+                            shadowSize: 0
                         },
-                        color: '#fff',
-                        shadowSize: 0
-                    },
-                    ], 
+                    ],
 
                     {
-                    
-                    xaxis: {
-                        tickLength: 0,
-                        tickDecimals: 0,                        
-                        mode: "categories",
-                        min: 2,
-                        font: {
-                            lineHeight: 14,
-                            style: "normal",
-                            variant: "small-caps",
-                            color: "#6F7B8A"
+
+                        xaxis: {
+                            tickLength: 0,
+                            tickDecimals: 0,
+                            mode: "categories",
+                            min: 2,
+                            font: {
+                                lineHeight: 14,
+                                style: "normal",
+                                variant: "small-caps",
+                                color: "#6F7B8A"
+                            }
+                        },
+                        yaxis: {
+                            ticks: 5,
+                            tickDecimals: 0,
+                            tickColor: "#eee",
+                            font: {
+                                lineHeight: 14,
+                                style: "normal",
+                                variant: "small-caps",
+                                color: "#6F7B8A"
+                            }
+                        },
+                        grid: {
+                            hoverable: true,
+                            clickable: true,
+                            tickColor: "#eee",
+                            borderColor: "#eee",
+                            borderWidth: 1
                         }
-                    },
-                    yaxis: {
-                        ticks: 5,
-                        tickDecimals: 0,
-                        tickColor: "#eee",
-                        font: {
-                            lineHeight: 14,
-                            style: "normal",
-                            variant: "small-caps",
-                            color: "#6F7B8A"
-                        }
-                    },
-                    grid: {
-                        hoverable: true,
-                        clickable: true,
-                        tickColor: "#eee",
-                        borderColor: "#eee",
-                        borderWidth: 1
-                    }
-                });
+                    });
 
                 var previousPoint = null;
                 $("#site_statistics").bind("plothover", function (event, pos, item) {
@@ -361,57 +319,57 @@ var Index = function () {
                         previousPoint = null;
                     }
                 });
-            }               
+            }
 
             if ($('#load_statistics').size() != 0) {
-                 //server load
+                //server load
                 $('#load_statistics_loading').hide();
                 $('#load_statistics_content').show();
-        
+
                 var updateInterval = 30;
                 var plot_statistics = $.plot($("#load_statistics"), [getRandomData()], {
-                series: {
-                    shadowSize: 1
-                },
-                lines: {
-                    show: true,
-                    lineWidth: 0.2,
-                    fill: true,
-                    fillColor: {
-                        colors: [{
+                    series: {
+                        shadowSize: 1
+                    },
+                    lines: {
+                        show: true,
+                        lineWidth: 0.2,
+                        fill: true,
+                        fillColor: {
+                            colors: [{
                                 opacity: 0.1
                             }, {
                                 opacity: 1
                             }
-                        ]
+                            ]
+                        }
+                    },
+                    yaxis: {
+                        ticks: 4,
+                        min: 0,
+                        max: 100,
+                        tickFormatter: function (v) {
+                            return v + "%";
+                        },
+                        tickColor: "#eee"
+                    },
+                    xaxis: {
+                        show: false
+                    },
+                    colors: ["#fcb322"],
+                    grid: {
+                        tickColor: "#a8a3a3",
+                        borderWidth: 0
                     }
-                },
-                yaxis: {
-                    ticks: 4,
-                    min: 0,
-                    max: 100,
-                    tickFormatter: function (v) {
-                        return v + "%";
-                    },                    
-                    tickColor: "#eee"
-                },
-                xaxis: {
-                    show: false
-                },
-                colors: ["#fcb322"],
-                grid: {
-                    tickColor: "#a8a3a3",
-                    borderWidth: 0
-                }
                 });
-                
+
                 function statisticsUpdate() {
-                plot_statistics.setData([getRandomData()]);
-                plot_statistics.draw();
-                setTimeout(statisticsUpdate, updateInterval);
-                
+                    plot_statistics.setData([getRandomData()]);
+                    plot_statistics.draw();
+                    setTimeout(statisticsUpdate, updateInterval);
+
                 }
-                
+
                 statisticsUpdate();
 
                 $('#load_statistics').bind("mouseleave", function () {
@@ -491,10 +449,10 @@ var Index = function () {
                             fill: true,
                             fillColor: {
                                 colors: [{
-                                        opacity: 1
-                                    }, {
-                                        opacity: 1
-                                    }
+                                    opacity: 1
+                                }, {
+                                    opacity: 1
+                                }
                                 ]
                             }
                         }
@@ -528,7 +486,7 @@ var Index = function () {
                             $("#tooltip").remove();
                             var x = item.datapoint[0].toFixed(2),
                                 y = item.datapoint[1].toFixed(2);
-                           showChartTooltip(item.pageX, item.pageY, item.datapoint[0], item.datapoint[1] + ' activities');
+                            showChartTooltip(item.pageX, item.pageY, item.datapoint[0], item.datapoint[1] + ' activities');
                         }
                     }
                 });
@@ -540,7 +498,7 @@ var Index = function () {
         },
 
         initMiniCharts: function () {
-             
+
             $('.easy-pie-chart .number.transactions').easyPieChart({
                 animate: 1000,
                 size: 75,
@@ -554,7 +512,7 @@ var Index = function () {
                 lineWidth: 3,
                 barColor: App.getLayoutColorCode('green')
             });
-             
+
             $('.easy-pie-chart .number.bounce').easyPieChart({
                 animate: 1000,
                 size: 75,
@@ -562,33 +520,35 @@ var Index = function () {
                 barColor: App.getLayoutColorCode('red')
             });
 
-            $('.easy-pie-chart-reload').click(function(){
-                $('.easy-pie-chart .number').each(function() {
-                    var newValue = Math.floor(100*Math.random());
+            $('.easy-pie-chart-reload').click(function () {
+                $('.easy-pie-chart .number').each(function () {
+                    var newValue = Math.floor(100 * Math.random());
                     $(this).data('easyPieChart').update(newValue);
                     $('span', this).text(newValue);
                 });
             });
-               
-            $("#sparkline_bar").sparkline([8,9,10,11,10,10,12,10,10,11,9,12,11,10,9,11,13,13,12], {
+
+            $("#sparkline_bar").sparkline([8, 9, 10, 11, 10, 10, 12, 10, 10, 11, 9, 12, 11, 10, 9, 11, 13, 13, 12], {
                 type: 'bar',
                 width: '100',
                 barWidth: 5,
                 height: '55',
                 barColor: '#35aa47',
-                negBarColor: '#e02222'}
+                negBarColor: '#e02222'
+            }
             );
 
-            $("#sparkline_bar2").sparkline([9,11,12,13,12,13,10,14,13,11,11,12,11,11,10,12,11,10], {
+            $("#sparkline_bar2").sparkline([9, 11, 12, 13, 12, 13, 10, 14, 13, 11, 11, 12, 11, 11, 10, 12, 11, 10], {
                 type: 'bar',
                 width: '100',
                 barWidth: 5,
                 height: '55',
                 barColor: '#ffb848',
-                negBarColor: '#e02222'}
+                negBarColor: '#e02222'
+            }
             );
 
-            $("#sparkline_line").sparkline([9,10,9,10,10,11,12,10,10,11,11,12,11,10,12,11,10,12], {
+            $("#sparkline_line").sparkline([9, 10, 9, 10, 10, 11, 12, 10, 10, 11, 11, 12, 11, 10, 12, 11, 10, 12], {
                 type: 'line',
                 width: '100',
                 height: '55',
@@ -607,7 +567,7 @@ var Index = function () {
 
             var handleClick = function (e) {
                 e.preventDefault();
-                
+
                 var text = input.val();
                 if (text.length == 0) {
                     return;
@@ -641,11 +601,11 @@ var Index = function () {
             });
             */
 
-            $('body').on('click', '.message .name', function(e){
+            $('body').on('click', '.message .name', function (e) {
                 e.preventDefault(); // prevent click event
 
                 var name = $(this).text(); // get clicked user's full name
-                input.val('@' +  name + ':'); // set it into the input field
+                input.val('@' + name + ':'); // set it into the input field
                 App.scrollTo(input); // scroll to input if needed
             });
 
@@ -697,10 +657,10 @@ var Index = function () {
                     firstDay: 1
                 }
             },
-            function (start, end) {
-                console.log("Callback has been called!");
-                $('#dashboard-report-range span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-            }
+                function (start, end) {
+                    console.log("Callback has been called!");
+                    $('#dashboard-report-range span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                }
             );
 
 

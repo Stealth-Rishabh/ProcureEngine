@@ -299,6 +299,7 @@ function RegisterParticipants() {
   
     var _cleanString = StringEncodingMechanism(jQuery("#ParticipantName").val());
     var _cleanString2 = StringEncodingMechanism((jQuery("#txtAddress").val()).replace(/[,|-]/g, " "));
+    let cleanTradeName=StringEncodingMechanism(jQuery("#TradeName").val());
     let data='';
     var encodedcontactperson = StringEncodingMechanism(jQuery("#ContactName").val());
    
@@ -368,6 +369,7 @@ function RegisterParticipants() {
         "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val()),
         "CountryKey": jQuery("#ddlCountry option:selected").val(),
         "RegionKey": jQuery("#ddlState option:selected").val(),
+        "TradeName":cleanTradeName
     };
 
     }
@@ -405,6 +407,7 @@ function RegisterParticipants() {
         "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val()),
         "CountryKey": jQuery("#ddlCountry option:selected").val(),
         "RegionKey": jQuery("#ddlState option:selected").val(),
+        "TradeName":cleanTradeName
     }; 
     }
         
@@ -481,7 +484,6 @@ $('#chkalternatemail').on('click', function (e) {//ifChanged
     }
 })
 function fetchParticipantsVenderTable() {
-    debugger
     $('#divVendorForm').addClass('hide')
     jQuery.ajax({
         type: "GET",
@@ -492,7 +494,7 @@ function fetchParticipantsVenderTable() {
         crossDomain: true,
         dataType: "json",
         success: function (Venderdata) {
-            debugger
+             debugger
             jQuery("#tblParticipantsVender > tbody").empty();
             $('#lblTotallength').html("<b>Total Record : </b>" + Venderdata.length)
             if (Venderdata.length > 0) {
@@ -547,7 +549,6 @@ function fetchParticipantsVenderTable() {
 
 function EditVendor(vendorid, vname, contactp, emailid, dialingcodephone, phone, dialingcode, mobile, addr1, addr2, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, cityid, childid, taxIdType, taxIdType2, city, regionKey, countryKey, Langu, currency) {
    /* $('#hdnFlagType').val(buttonname)*/
-   debugger
     jQuery("#hdnParticipantID").val(vendorid)
     $("#hdnParticipantCode").val(vendorcode)
     jQuery("#ParticipantName").val(vname)

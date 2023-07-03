@@ -121,9 +121,9 @@ function fetchrfqcomprative() {
                         strHead += "<th colspan='4' style='text-align:center;'>" + data[0].vendorNames[i].vendorName + "</th>";
                         strHeadExcel += "<th colspan='4'>" + data[0].vendorNames[i].vendorName + "</th>";
 
-                    }               
-                    strHeadQ += "<th style='text-align:center;'>" + data[0].vendorNames[i].vName +"</th>";
-                    strHeadExcelQ += "<th>" + data[0].vendorNames[i].vName +"</th>";
+                    }
+                    strHeadQ += "<th style='text-align:center;'>" + data[0].vendorNames[i].vName + "</th>";
+                    strHeadExcelQ += "<th>" + data[0].vendorNames[i].vName + "</th>";
 
 
                 }
@@ -767,7 +767,9 @@ function fetchReguestforQuotationDetails() {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (RFQData) {
+        success: function (Data) {
+            
+            let RFQData=Data.rData
             var replaced1 = '';
             $('#tbldetailsExcel > tbody').empty();
 
@@ -821,8 +823,10 @@ function fetchAttachments() {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (data, status, jqXHR) {
-
+        success: function (Data, status, jqXHR) {
+             
+            let data=Data.rData
+             
             jQuery("#tblAttachments").empty();
 
             if (data[0].attachments.length > 0) {
@@ -864,6 +868,6 @@ $('#btnPDF').click(function () {
 //sessionStorage.setItem("RFQVersionId", "0")
 function getSummary(vendorid, version) {
     sessionStorage.setItem("RFQVersionId", version)
-    var encrypdata = fnencrypt("RFQID=" + RFQID + "&VendorId=" + vendorid + "&max=" + version + "&RFQVersionId=" + sessionStorage.getItem("RFQVersionId") + "&RFQVersionTxt=Final Version" )
+    var encrypdata = fnencrypt("RFQID=" + RFQID + "&VendorId=" + vendorid + "&max=" + version + "&RFQVersionId=" + sessionStorage.getItem("RFQVersionId") + "&RFQVersionTxt=Final Version")
     window.open("eRFQReport.html?param=" + encrypdata, "_blank")
 }

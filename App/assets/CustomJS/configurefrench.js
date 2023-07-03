@@ -42,10 +42,10 @@ $('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
 $("#cancelBidBtn").hide();
 
 $('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
-/*jQuery(document).ready(function () {
-    $("#txtCeilingPrice,#txtquantitiy,#txtmaxquantitiy,#txtminquantitiy,#txtminimumdecreament,#txtStartingPrice,#txtPriceReductionAmount").inputmask({
+jQuery(document).ready(function () {
+   /* $("#txtCeilingPrice,#txtquantitiy,#txtmaxquantitiy,#txtminquantitiy,#txtminimumdecreament,#txtStartingPrice,#txtPriceReductionAmount").inputmask({
         alias: "decimal",
-        rightAlign: false,
+        rightAlign: true,
         groupSeparator: ",",
         radixPoint: ".",
         autoGroup: true,
@@ -58,8 +58,8 @@ $('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
         'removeMaskOnSubmit': true,
         autoUnmask: true
 
-    });
-});*/
+    });*/
+});
 
 var _BidID;
 var _savedDraft = '';
@@ -199,20 +199,20 @@ function fnApproversQuery(EmailID, UserID, UserName) {
         rownum = parseInt(maxidnum) + 1;
         if (!jQuery("#tblapprovers thead").length) {
             jQuery("#tblapprovers").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-            jQuery("#tblapprovers").append('<tr id=trAppid' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td></tr>');
+            jQuery("#tblapprovers").append(`<tbody><tr id=trAppid${rownum}'><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow('${rownum}')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>${UserName}</td><td>${EmailID}</td><td>${rowApp}</td><td class=hide>${UserID}</td></tr></tbody>`);
         }
         else {
-            jQuery("#tblapprovers").append('<tr id=trAppid' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td><td class=hide>' + UserID + '</td></tr>');
+            jQuery("#tblapprovers").append(`<tbody><tr id=trAppid${rownum}'><td><button class="btn  btn-xs btn-danger" onclick="deleteApprow('${rownum}')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>${UserName}</td><td>${EmailID}</td><td>${rowApp}</td><td class=hide>${UserID}</td></tr></tbody>`);
         }
         //** Preview
         $('#wrap_scrollerPrevApp').show();
         if (!jQuery("#tblapproversPrev thead").length) {
 
             jQuery("#tblapproversPrev,#tblpreBidapprovers1").append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-            jQuery("#tblapproversPrev,#tblpreBidapprovers1").append('<tr id=trAppidPrev' + rownum + '><td>' + UserName + '</td><td>' + EmailID + '</td><td class=hide>' + UserID + '</td><td>' + rowApp + '</td></tr>');
+            jQuery("#tblapproversPrev,#tblpreBidapprovers1").append('<tbody><tr id=trAppidPrev' + rownum + '><td>' + UserName + '</td><td>' + EmailID + '</td><td class=hide>' + UserID + '</td><td>' + rowApp + '</td></tr></tbody>');
         }
         else {
-            jQuery("#tblapproversPrev,#tblpreBidapprovers1").append('<tr id=trAppidPrev' + rownum + '><td>' + UserName + '</td><td>' + EmailID + '</td><td class=hide>' + UserID + '</td><td>' + rowApp + '</td></tr>');
+            jQuery("#tblapproversPrev,#tblpreBidapprovers1").append('<tbody><tr id=trAppidPrev' + rownum + '><td>' + UserName + '</td><td>' + EmailID + '</td><td class=hide>' + UserID + '</td><td>' + rowApp + '</td></tr></tbody>');
         }
 
 
@@ -231,10 +231,10 @@ function fnApproversQuery(EmailID, UserID, UserName) {
         rownumprebid = parseInt(maxidnum) + 1;
         if (!jQuery("#tblpreBidapprovers thead").length) {
             jQuery("#tblpreBidapprovers").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-            jQuery("#tblpreBidapprovers").append('<tr id=trpreAppid' + rownumprebid + '><td><button class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rownumprebid + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowpreBidApp + '</td><td class=hide>' + UserID + '</td></tr>');
+            jQuery("#tblpreBidapprovers").append('<tbody><tr id=trpreAppid' + rownumprebid + '><td><button class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rownumprebid + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowpreBidApp + '</td><td class=hide>' + UserID + '</td></tr></tbody>');
         }
         else {
-            jQuery("#tblpreBidapprovers").append('<tr id=trpreAppid' + rownumprebid + '><td><button class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rownumprebid + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowpreBidApp + '</td><td class=hide>' + UserID + '</td></tr>');
+            jQuery("#tblpreBidapprovers").append('<tbody><tr id=trpreAppid' + rownumprebid + '><td><button class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rownumprebid + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowpreBidApp + '</td><td class=hide>' + UserID + '</td></tr></tbody>');
         }
 
         var rowcount = jQuery('#tblapprovers >tbody>tr').length;
@@ -463,8 +463,8 @@ function Check(event, vname, vendorID) {
         //var EvID = event.id;
         $(event).prop("disabled", true);
         $(event).closest("span#spanchecked").addClass("checked")
-        jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorID + ',SelecetedVendorPrev' + vendorID + ',' + vendorID + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
-        jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td></tr>')
+        jQuery('#selectedvendorlists').append('<tbody><tr id=SelecetedVendor' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorID + ',SelecetedVendorPrev' + vendorID + ',' + vendorID + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr></tbody>')
+        jQuery('#selectedvendorlistsPrev').append('<tbody><tr id=SelecetedVendorPrev' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td></tr></tbody>')
         $('#divvendorlist').find('span#spandynamic').hide();
 
         $('table#tblvendorlist').closest('.inputgroup').removeClass('has-error');
@@ -546,8 +546,8 @@ $("#chkAll").click(function () {
             var v = vCount;
             vCount = vCount + 1;
             var vname = $.trim($(this).find('td:eq(1)').html())
-            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorid + '><td class=hide>' + vendorid + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorid + ',' + 'chkvender' + v + ',SelecetedVendorPrev' + vendorid + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
-            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorid + '><td class=hide>' + vendorid + '</td><td>' + vname + '</td></tr>')
+            jQuery('#selectedvendorlists').append('<tbody><tr id=SelecetedVendor' + vendorid + '><td class=hide>' + vendorid + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorid + ',' + 'chkvender' + v + ',SelecetedVendorPrev' + vendorid + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr></tbody>')
+            jQuery('#selectedvendorlistsPrev').append('<tbody><tr id=SelecetedVendorPrev' + vendorid + '><td class=hide>' + vendorid + '</td><td>' + vname + '</td></tr></tbody>')
 
         });
     }
@@ -1492,7 +1492,7 @@ function InsUpdProductSevices() {
             }
             else if (parseInt(removeThousandSeperator($('#txtminimumdecreament').val())) > parseInt(removeThousandSeperator($('#txtCeilingPrice').val()))) {
                 error.show();
-                $('#spandanger').html('Minimum Increment should be less than Bid start price.');
+                $('#spandanger').html('Minimum Increment should be less than Start Unit Price.');
                 Metronic.scrollTo(error, -200);
                 error.fadeOut(3000);
                 return false;
@@ -1508,7 +1508,7 @@ function InsUpdProductSevices() {
             }
             else if (parseInt($('#txtminimumdecreament').val()) > parseFloat(20 * (removeThousandSeperator($('#txtCeilingPrice').val())) / 100) && $("#drpdecreamenton option:selected").val() == "A") {
                 error.show();
-                $('#spandanger').html('Minimum Increment should be less than 20% of Bid Start Price.');
+                $('#spandanger').html('Minimum Increment should be less than 20% of Start Unit Price.');
                 Metronic.scrollTo(error, -200);
                 error.fadeOut(3000);
                 return false;
@@ -1572,7 +1572,7 @@ function InsUpdProductSevices() {
 
             if (parseInt(removeThousandSeperator($('#txtminimumdecreament').val())) > parseInt(removeThousandSeperator($('#txtCeilingPrice').val()))) {
                 error.show();
-                $('#spandanger').html('Minimum increment should be less than Bid start price.');
+                $('#spandanger').html('Minimum increment should be less than Start Unit Price.');
                 Metronic.scrollTo(error, -200);
                 error.fadeOut(3000);
                 return false;
@@ -1588,7 +1588,7 @@ function InsUpdProductSevices() {
             }
             else if (parseInt($('#txtminimumdecreament').val()) > parseFloat(20 * (removeThousandSeperator($('#txtCeilingPrice').val())) / 100) && $("#drpdecreamenton option:selected").val() == "A") {
                 error.show();
-                $('#spandanger').html('Minimum Increament should be less than 20% of Bid Start Price.');
+                $('#spandanger').html('Minimum Increament should be less than 20% of Start Unit Price.');
                 Metronic.scrollTo(error, -200);
                 error.fadeOut(3000);
                 return false;
@@ -1672,19 +1672,19 @@ function ParametersQuery() {
         }
         if (!jQuery("#tblServicesProduct thead").length) {
 
-            jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:100px;'></th><th>S No</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>Min.Offered Quantity</th><th>Max.Offered Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
-            jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><button type="button" class="btn btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemname' + i + ' >' + $('#txtshortname').val() + '</td><td id=TP' + i + ' >' + $('#txttargetprice').val() + '</td><td id=quantity' + i + ' >' + $('#txtquantitiy').val() + '</td><td id=minquantity' + i + ' >' + $('#txtminquantitiy').val() + '</td><td id=maxquantity' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOM' + i + '>' + $('#dropuom').val() + '</td><td id=BSP' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendor' + i + '>' + status + '</td><td id=mininc' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=incon' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconval' + i + '>' + $("#drpdecreamenton").val() + '</td><td id=LIP' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhl' + i + '>' + $('#showhlprice').val() + '</td><td id=showstart' + i + '>' + $('#showstartprice').val() + '</td></tr>');
+            jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th style='width:100px;'></th><th>S No</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>Min.Offered Quantity</th><th>Max.Offered Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
+            jQuery("#tblServicesProduct").append('<tbody><tr id=trid' + i + '><td style="width:150px;"><button type="button" class="btn btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemname' + i + ' >' + $('#txtshortname').val() + '</td><td id=TP' + i + ' >' + $('#txttargetprice').val() + '</td><td id=quantity' + i + ' >' + $('#txtquantitiy').val() + '</td><td id=minquantity' + i + ' >' + $('#txtminquantitiy').val() + '</td><td id=maxquantity' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOM' + i + '>' + $('#dropuom').val() + '</td><td id=BSP' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendor' + i + '>' + status + '</td><td id=mininc' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=incon' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconval' + i + '>' + $("#drpdecreamenton").val() + '</td><td id=LIP' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhl' + i + '>' + $('#showhlprice').val() + '</td><td id=showstart' + i + '>' + $('#showstartprice').val() + '</td></tr></tbody>');
         }
         else {
-            jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td style="width:150px;"><button type="button" class="btn  btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemname' + i + ' >' + $('#txtshortname').val() + '</td><td id=TP' + i + ' >' + $('#txttargetprice').val() + '</td><td id=quantity' + i + ' >' + $('#txtquantitiy').val() + '</td><td id=minquantity' + i + ' >' + $('#txtminquantitiy').val() + '</td><td id=maxquantity' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOM' + i + '>' + $('#dropuom').val() + '</td><td id=BSP' + i + ' >' + $('#txtCeilingPrice').val() + '</td><td id=maskvendor' + i + ' >' + status + '</td><td id=mininc' + i + ' >' + $('#txtminimumdecreament').val() + '</td><td id=incon' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconval' + i + '>' + $("#drpdecreamenton").val() + '</td><td id=LIP' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhl' + i + '>' + $('#showhlprice').val() + '</td><td id=showstart' + i + '>' + $('#showstartprice').val() + '</td></tr>');
+            jQuery("#tblServicesProduct").append('<tbody><tr id=trid' + i + '><td style="width:150px;"><button type="button" class="btn  btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp<button class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td>' + (rowAppItemsrno + 1) + '</td><td id=itemcode' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemname' + i + ' >' + $('#txtshortname').val() + '</td><td id=TP' + i + ' >' + $('#txttargetprice').val() + '</td><td id=quantity' + i + ' >' + $('#txtquantitiy').val() + '</td><td id=minquantity' + i + ' >' + $('#txtminquantitiy').val() + '</td><td id=maxquantity' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOM' + i + '>' + $('#dropuom').val() + '</td><td id=BSP' + i + ' >' + $('#txtCeilingPrice').val() + '</td><td id=maskvendor' + i + ' >' + status + '</td><td id=mininc' + i + ' >' + $('#txtminimumdecreament').val() + '</td><td id=incon' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td class=hide id=inconval' + i + '>' + $("#drpdecreamenton").val() + '</td><td id=LIP' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhl' + i + '>' + $('#showhlprice').val() + '</td><td id=showstart' + i + '>' + $('#showstartprice').val() + '</td></tr></tbody>');
         }
         $('#wrap_scroller').show();
         if (!jQuery("#tblServicesProductPrev thead").length) {
-            jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>Min.Offered Quantity</th><th>Max.Offered Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
-            jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemnameprev' + i + '>' + $('#txtshortname').val() + '</td><td id=TPrev' + i + '>' + $('#txttargetprice').val() + '</td><td id=quantityprev' + i + '>' + $('#txtquantitiy').val() + '</td><td id=minquantityprev' + i + '>' + $('#txtminquantitiy').val() + '</td><td id=maxquantityprev' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOMprev' + i + '>' + $('#dropuom').val() + '</td><td id=BSPprev' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td id=minincprev' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=inconprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td id=inconvalprev' + i + ' class=hide>' + $("#drpdecreamenton").val() + '</td><td id=LIPprev' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhlprev' + i + '>' + $('#showhlprice').val() + '</td><td id=showstartprev' + i + '>' + $('#showstartprice').val() + '</td></tr>');
+            jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th>Item Code</th><th>Item/Product</th><th>Target Price</th><th>Quantity</th><th>Min.Offered Quantity</th><th>Max.Offered Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th>Last Invoice Price</th><th>Show H1 price</th><th>Show Start price</th></tr></thead>");
+            jQuery("#tblServicesProductPrev").append('<tbody><tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemnameprev' + i + '>' + $('#txtshortname').val() + '</td><td id=TPrev' + i + '>' + $('#txttargetprice').val() + '</td><td id=quantityprev' + i + '>' + $('#txtquantitiy').val() + '</td><td id=minquantityprev' + i + '>' + $('#txtminquantitiy').val() + '</td><td id=maxquantityprev' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOMprev' + i + '>' + $('#dropuom').val() + '</td><td id=BSPprev' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td id=minincprev' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=inconprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td id=inconvalprev' + i + ' class=hide>' + $("#drpdecreamenton").val() + '</td><td id=LIPprev' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhlprev' + i + '>' + $('#showhlprice').val() + '</td><td id=showstartprev' + i + '>' + $('#showstartprice').val() + '</td></tr></tbody>');
         }
         else {
-            jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemnameprev' + i + '>' + $('#txtshortname').val() + '</td><td id=TPprev' + i + '>' + $('#txttargetprice').val() + '</td><td id=quantityprev' + i + '>' + $('#txtquantitiy').val() + '</td><td id=minquantityprev' + i + '>' + $('#txtminquantitiy').val() + '</td><td id=maxquantityprev' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOMprev' + i + '>' + $('#dropuom').val() + '</td><td id=BSPprev' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td id=minincprev' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=inconprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td id=inconvalprev' + i + ' class=hide>' + $("#drpdecreamenton").val() + '</td><td id=LIPprev' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhlprev' + i + '>' + $('#showhlprice').val() + '</td><td id=showstartprev' + i + '>' + $('#showstartprice').val() + '</td></tr>');
+            jQuery("#tblServicesProductPrev").append('<tbody><tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemnameprev' + i + '>' + $('#txtshortname').val() + '</td><td id=TPprev' + i + '>' + $('#txttargetprice').val() + '</td><td id=quantityprev' + i + '>' + $('#txtquantitiy').val() + '</td><td id=minquantityprev' + i + '>' + $('#txtminquantitiy').val() + '</td><td id=maxquantityprev' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOMprev' + i + '>' + $('#dropuom').val() + '</td><td id=BSPprev' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td id=minincprev' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=inconprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td id=inconvalprev' + i + ' class=hide>' + $("#drpdecreamenton").val() + '</td><td id=LIPprev' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhlprev' + i + '>' + $('#showhlprice').val() + '</td><td id=showstartprev' + i + '>' + $('#showstartprice').val() + '</td></tr></tbody>');
          }
       
         $('#wrap_scrollerPrev').show();
@@ -1738,6 +1738,7 @@ function enableiteminput() {
     $("#delete_or").prop("disabled", false);
 }
 function editvalues(icount) {
+    enableiteminput()
     //sessionStorage.setItem('ClickedEditID', icount.id)
     Metronic.scrollTo($("body"), 200);
     $('#rowid').val(icount)
@@ -1993,13 +1994,13 @@ function fetchFrenchBidDetails() {
             rowApp = 0;
             for (var i = 0; i < BidData[0].bidApproverDetails.length; i++) {
                 rowApp = rowApp + 1;
-                str = '<tr id=trAppid' + (i + 1) + '>';
+                str = '<tbody><tr id=trAppid' + (i + 1) + '>';
                 str += '<td><button type=button class="btn btn-xs btn-danger" id=Removebtn' + i + ' onclick="deleteApprow(' + (i + 1) + ')"  ><i class="glyphicon glyphicon-remove-circle"></i></button></td>';
                 str += '<td>' + BidData[0].bidApproverDetails[i].approverName + '</td>'
                 str += "<td>" + BidData[0].bidApproverDetails[i].emailID + "</td>";
 
                 str += "<td>" + BidData[0].bidApproverDetails[i].adMinSrNo + "</td>";
-                str += "<td class=hide>" + BidData[0].bidApproverDetails[i].userID + "</td></tr>";
+                str += "<td class=hide>" + BidData[0].bidApproverDetails[i].userID + "</td></tr></tbody>";
 
                 jQuery('#tblapprovers').append(str);
 
@@ -2034,8 +2035,8 @@ function fetchFrenchBidDetails() {
 
                 $('#wrap_scroller').show();
                 $('#wrap_scrollerPrev').show();
-                jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:150px !important;'></th><th>Item Code</th><th>Item/Name</th><th>Target Price</th><th>Quantity</th><th>Min. Offered Quantity</th><th>Max. Offered Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
-                jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th>Item Code</th><th>Item/Name</th><th>Target Price</th><th>Quantity</th><th>Min. Offered Quantity</th><th>Max. Offered Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
+                jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:150px !important;'></th><th>Item Code</th><th>Item/Name</th><th>Target Price</th><th>Quantity</th><th>Min. Offered Quantity</th><th>Max. Offered Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide>Attachment</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
+                jQuery("#tblServicesProductPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th>Item Code</th><th>Item/Name</th><th>Target Price</th><th>Quantity</th><th>Min. Offered Quantity</th><th>Max. Offered Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Mask Vendor</th><th>Minimum Increment</th><th>Increment On</th><th class=hide></th><th>Last Invoice Price</th><th class=hide></th><th>Show H1 Price</th><th>Show Start Price</th></tr></thead>");
                 for (var i = 0; i < BidData[0].bidFrenchDetails.length; i++) {
 
                     var decrementon = ''
@@ -2043,8 +2044,8 @@ function fetchFrenchBidDetails() {
                         decrementon = 'Amount'
                     else
                         decrementon = 'Percentage'
-                    jQuery("#tblServicesProduct").append('<tr id=trid' + i + '><td>' + (i + 1) + '</td><td style="width:150px !important;"><button class="btn  btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=itemcode' + i + '>' + BidData[0].bidFrenchDetails[i].itemCode + '</td><td id=itemname' + i + '>' + BidData[0].bidFrenchDetails[i].itemName + '</td><td id=TP' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].targetprice) + '</td><td id=quantity' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].quantity) + '</td><td id=minquantity' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].minOfferedQuantity) + '</td><td id=maxquantity' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].maxOfferedQuantity) + '</td><td id=UOM' + i + '>' + BidData[0].bidFrenchDetails[i].measurementUnit + '</td><td id=BSP' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].bidStartPrice) + '</td><td id=maskvendor' + i + '>' + BidData[0].bidFrenchDetails[i].maskVendor + '</td><td id=mininc' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].minimumIncreament) + '</td><td id=incon' + i + '>' + decrementon + '</td></td><td class=hide id=inconval' + i + '>' + BidData[0].bidFrenchDetails[i].increamentOn + '</td><td id=LIP' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].lastInvoicePrice) + '</td><td id=showhl' + i + '>' + BidData[0].bidFrenchDetails[i].showHLPrice + '</td><td id=showstart' + i + '>' + BidData[0].bidFrenchDetails[i].showStartPrice + '</td></tr>');
-                    jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcode' + i + '>' + BidData[0].bidFrenchDetails[i].itemCode + '</td><td id=itemnameprev' + i + '>' + BidData[0].bidFrenchDetails[i].itemName + '</td><td id=TPprev' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].targetprice) + '</td><td id=quantityprev' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].quantity) + '</td><td id=minquantityprev' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].minOfferedQuantity) + '</td><td id=maxquantityprev' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].maxOfferedQuantity) + '</td><td id=UOMprev' + i + '>' + BidData[0].bidFrenchDetails[i].measurementUnit + '</td><td id=BSPprev' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].bidStartPrice) + '</td><td id=maskvendorprev' + i + '>' + BidData[0].bidFrenchDetails[i].maskVendor + '</td><td id=minincprev' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].minimumIncreament) + '</td><td id=inconprev' + i + '>' + decrementon + '</td></td><td class=hide id=inconvalprev' + i + '>' + BidData[0].bidFrenchDetails[i].increamentOn + '</td><td id=LIPprev' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].lastInvoicePrice) + '</td><td id=showhlprev' + i + '>' + BidData[0].bidFrenchDetails[i].showHLPrice + '</td><td id=showstartprev' + i + '>' + BidData[0].bidFrenchDetails[i].showStartPrice + '</td></tr>');
+                    jQuery("#tblServicesProduct").append('<tbody><tr id=trid' + i + '><td>' + (i + 1) + '</td><td style="width:150px !important;"><button class="btn  btn-sm btn-success" onclick="editvalues(' + i + ')" ><i class="fa fa-pencil"></i></button>&nbsp;<button class="btn  btn-sm btn-danger" onclick="deleterow(trid' + i + ',tridPrev' + i + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=itemcode' + i + '>' + BidData[0].bidFrenchDetails[i].itemCode + '</td><td id=itemname' + i + '>' + BidData[0].bidFrenchDetails[i].itemName + '</td><td id=TP' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].targetprice) + '</td><td id=quantity' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].quantity) + '</td><td id=minquantity' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].minOfferedQuantity) + '</td><td id=maxquantity' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].maxOfferedQuantity) + '</td><td id=UOM' + i + '>' + BidData[0].bidFrenchDetails[i].measurementUnit + '</td><td id=BSP' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].bidStartPrice) + '</td><td id=maskvendor' + i + '>' + BidData[0].bidFrenchDetails[i].maskVendor + '</td><td id=mininc' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].minimumIncreament) + '</td><td id=incon' + i + '>' + decrementon + '</td></td><td class=hide id=inconval' + i + '>' + BidData[0].bidFrenchDetails[i].increamentOn + '</td><td id=LIP' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].lastInvoicePrice) + '</td><td id=showhl' + i + '>' + BidData[0].bidFrenchDetails[i].showHLPrice + '</td><td id=showstart' + i + '>' + BidData[0].bidFrenchDetails[i].showStartPrice + '</td></tr></tbody>');
+                    jQuery("#tblServicesProductPrev").append('<tbody><tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcode' + i + '>' + BidData[0].bidFrenchDetails[i].itemCode + '</td><td id=itemnameprev' + i + '>' + BidData[0].bidFrenchDetails[i].itemName + '</td><td id=TPprev' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].targetprice) + '</td><td id=quantityprev' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].quantity) + '</td><td id=minquantityprev' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].minOfferedQuantity) + '</td><td id=maxquantityprev' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].maxOfferedQuantity) + '</td><td id=UOMprev' + i + '>' + BidData[0].bidFrenchDetails[i].measurementUnit + '</td><td id=BSPprev' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].bidStartPrice) + '</td><td id=maskvendorprev' + i + '>' + BidData[0].bidFrenchDetails[i].maskVendor + '</td><td id=minincprev' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].minimumIncreament) + '</td><td id=inconprev' + i + '>' + decrementon + '</td></td><td class=hide id=inconvalprev' + i + '>' + BidData[0].bidFrenchDetails[i].increamentOn + '</td><td id=LIPprev' + i + '>' + thousands_separators(BidData[0].bidFrenchDetails[i].lastInvoicePrice) + '</td><td id=showhlprev' + i + '>' + BidData[0].bidFrenchDetails[i].showHLPrice + '</td><td id=showstartprev' + i + '>' + BidData[0].bidFrenchDetails[i].showStartPrice + '</td></tr></tbody>');
 
                 }
                 rowAppItems = rowAppItems + 1;
@@ -2055,8 +2056,8 @@ function fetchFrenchBidDetails() {
                 for (var i = 0; i < BidData[0].bidVendorDetails.length; i++) {
 
                     vCount = vCount + 1;
-                    jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + ',SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + ',' + BidData[0].bidVendorDetails[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
-                    jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td></tr>')
+                    jQuery('#selectedvendorlists').append('<tbody><tr id=SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + ',SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + ',' + BidData[0].bidVendorDetails[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr></tbody>')
+                    jQuery('#selectedvendorlistsPrev').append('<tbody><tr id=SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td></tr></tbody>')
 
                 }
 
@@ -2341,12 +2342,12 @@ function hideshowDuration() {
 }
 
 var vendorsForAutoComplete;
-function fetchVendorGroup(categoryFor, vendorId) {
+function fetchVendorGroup(categoryFor, childId) {
 
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VendorID=" + vendorId,
+        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=" + categoryFor + "&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&ChildId=" + childId,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
@@ -2422,7 +2423,7 @@ jQuery("#txtSearch").typeahead({
         map = {};
         var username = "";
         jQuery.each(data, function (i, username) {
-            vName = username.participantName + ' (' + username.companyEmail + ')'
+            vName = username.participantName + ' (' + username.companyEmail + ')' + " " + (username.stateName).toUpperCase() 
             map[vName] = username;
             usernames.push(vName);
         });
@@ -2432,18 +2433,22 @@ jQuery("#txtSearch").typeahead({
     },
     minLength: 2,
     updater: function (item) {
-        if (map[item].participantID != "0") {
+        if (map[item].associatedVendorID != "0") {
+            // sessionStorage.setItem('hdnVendorID', map[item].participantID);
+            //jQuery("#tblvendorlist > tbody").empty();
 
-            vName = map[item].participantName + '(' + map[item].companyEmail + ')';
 
-            var str = "<tr id=vList" + map[item].participantID + "><td class='hide'>" + map[item].participantID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\)\"; id=\"chkvender" + map[item].participantID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>";
+             vName = map[item].participantName + ' (' + map[item].companyEmail + ')' + " " + (map[item].stateName).toUpperCase() 
+     
+
+            var str = "<tr id=vList" + map[item].associatedVendorID + "><td class='hide'>" + map[item].associatedVendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].associatedVendorID + "'\)\"; id=\"chkvender" + map[item].associatedVendorID + "\" value=" + map[item].associatedVendorID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>";
             jQuery('#tblvendorlist > tbody').append(str);
 
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
                     //** remove from main table if already selected in selected List
-                    if (map[item].participantID == $(this).find("td:eq(0)").text()) {
-                        $('#vList' + map[item].participantID).remove();
+                    if (map[item].associatedVendorID == $(this).find("td:eq(0)").text()) {
+                        $('#vList' + map[item].associatedVendorID).remove();
 
                     }
                     $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true);
@@ -2472,12 +2477,12 @@ function getCategoryWiseVendors(categoryID) {
         cache: false,
         dataType: "json",
         success: function (data) {
-
+            debugger
             jQuery("#tblvendorlist > tbody").empty();
             var vName = '';
             for (var i = 0; i < data.length; i++) {
-                vName = data[i].vendorName;
-                var str = "<tr id=vList" + data[i].vendorID + " ><td class='hide'>" + data[i].vendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\)\"; id=\"chkvender" + data[i].vendorID + "\" value=" + data[i].vendorID + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " </td></tr>";
+                vName = data[i].vendorName + " " + data[i].stateName;
+                var str = "<tr id=vList" + data[i].mappedVendorIdentifier + " ><td class='hide'>" + data[i].mappedVendorIdentifier + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].mappedVendorIdentifier + "'\)\"; id=\"chkvender" + data[i].mappedVendorIdentifier + "\" value=" + data[i].mappedVendorIdentifier + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " " + data[i].stateName +"</td></tr>";
 
                 jQuery('#tblvendorlist > tbody').append(str);
 

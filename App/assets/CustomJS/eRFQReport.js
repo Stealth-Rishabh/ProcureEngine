@@ -103,7 +103,11 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (Data) {
+          
             let RFQData=Data.rData
+            
+            
+            
             $('#tbldetailsExcel > tbody').empty();
             
 
@@ -167,7 +171,7 @@ function RFQFetchQuotedPriceReport() {
         success: function (data) {
             var totalamountsum = 0.0;
             var withoutGSTValue = 0.0;
-
+           
             if (data[0].quotesDetails.length > 0) {
                 var description = ""; var comments = "";
                 jQuery("#tblServicesProduct").empty();
@@ -313,7 +317,8 @@ function RFQFetchQuotedPriceReport() {
                 jQuery('#tblServicesProduct').append('<tr><td>No Record Found</td></tr>');
                 jQuery('#tblServicesProductforexcel').append('<tr><td>No Record Found</td></tr>');
             }
-            
+
+
             if (data[0].commercialTerms.length > 0) {
                 jQuery("#tblcommercialtermsprev").empty();
                 jQuery("#tblcommercialterms").empty();
@@ -336,24 +341,25 @@ function RFQFetchQuotedPriceReport() {
 
                 jQuery('#tblquestions').append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:30%!important'>Questions</th><th class='bold' style='width:30%!important'>Our Requirement</th><th style='width:40%!important'>Answer</th></tr></thead>");
                 jQuery('#tblquestionsprev').append("<thead><tr><th class='bold' style='width:30%!important'>Questions</th><th class='bold' style='width:30%!important'>Our Requirement</th><th style='width:40%!important'>Answer</th></tr></thead>");
-               for (var i = 0; i < data[0].questions.length; i++) {
-                  
+                for (var i = 0; i < data[0].questions.length; i++) {
                     var attachQA = data[0].questions[i].attachementQA;
                     //jQuery('<tr id=trid' + i + '><td style="width:30%">' + data[0].questions[i].question + '</td><td>' + data[0].questions[i].requirement + '</td><td>' + data[0].questions[i].answer + '</td></tr>').appendTo("#tblquestions");
-                   if(sessionStorage.getItem('RFQBIDType')=='Open'){
+                   if(sessionStorage.getItem('RFQBidType')=='Open'){
                     jQuery('<tr id=trid' + i + '><td style="width:30%">' + data[0].questions[i].question + '</td><td>' + data[0].questions[i].requirement + '</td><td>' + data[0].questions[i].answer + '<br>  <a id=eRFQVFilesques' + i + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this,' + data[0].questions[i].vendorID + ')>' + attachQA + '</a></td></tr>').appendTo("#tblquestions");
                       
                    }
                    else{
                        if(sessionStorage.getItem('ShowPrice')=='N'){
-                     jQuery('<tr id=trid' + i + '><td style="width:30%">' + data[0].questions[i].question + '</td><td>' + data[0].questions[i].requirement + '</td><td>' + data[0].questions[i].answer + '<br>  <a id=eRFQVFilesques' + i + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this,' + data[0].questions[i].vendorID + ')>' + "" + '</a></td></tr>').appendTo("#tblquestions");
+                           
+                       jQuery('<tr id=trid' + i + '><td style="width:30%">' + data[0].questions[i].question + '</td><td>' + data[0].questions[i].requirement + '</td><td>' + data[0].questions[i].answer + '<br>  <a id=eRFQVFilesques' + i + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this,' + data[0].questions[i].vendorID + ')>' + "" + '</a></td></tr>').appendTo("#tblquestions");
+                 
+                           
                        }
-                       else
-                       {
+                       else{
                            jQuery('<tr id=trid' + i + '><td style="width:30%">' + data[0].questions[i].question + '</td><td>' + data[0].questions[i].requirement + '</td><td>' + data[0].questions[i].answer + '<br>  <a id=eRFQVFilesques' + i + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this,' + data[0].questions[i].vendorID + ')>' + attachQA + '</a></td></tr>').appendTo("#tblquestions");
-                       
-                       }
                   
+                       }
+                      
                    }
                     
                     //strQ += '<td >' + data[0].questions[s].answer + '<br>  <a id=eRFQVFilesques' + s + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this,' + data[0].questions[s].vendorID + ')>' + attachQA + '</a> </td>';
@@ -369,26 +375,31 @@ function RFQFetchQuotedPriceReport() {
             if (data[0].attachments.length > 0) {
                 jQuery("#tblAttachments").empty();
                 jQuery("#tblAttachmentsprev").empty();
-
+                 
+                 
+                 
                 jQuery('#tblAttachments').append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:30%!important'>Description</th><th class='bold'>Attachment</th></tr></thead>");
                 jQuery('#tblAttachmentsprev').append("<thead><tr><th class='bold' style='width:30%!important'>Description</th><th class='bold'>Attachment</th></tr></thead>");
-                if(sessionStorage.getItem('RFQBIDType')=='Open'){
+                
+                if(sessionStorage.getItem('RFQBidType')=='Open'){
                     jQuery('#tblAttachments').show();
                     jQuery('#tblAttachmentsprev').show();
                      
                  } 
                  else{
                      if(sessionStorage.getItem('ShowPrice')=='N'){
-                    jQuery('#tblAttachments').hide();
-                    jQuery('#tblAttachmentsprev').hide(); 
+                         jQuery('#tblAttachments').hide();
+                         jQuery('#tblAttachmentsprev').hide(); 
+                         
                      }
                      else{
-                          jQuery('#tblAttachments').show();
-                          jQuery('#tblAttachmentsprev').show();
+                        jQuery('#tblAttachments').show();
+                        jQuery('#tblAttachmentsprev').show(); 
                      }
+                    
                  }
-               
-               
+                
+                
                 for (var i = 0; i < data[0].attachments.length; i++) {
 
                     if (sessionStorage.getItem('RFQVersionId') == 99) {
@@ -402,10 +413,15 @@ function RFQFetchQuotedPriceReport() {
 
                     }
                     verArray[i] = version;
-                    jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td><a id=attchvendor' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFileVendor(this)" href="javascript:;" >' + data[0].attachments[i].attachment + '</a></td></tr>').appendTo("#tblAttachments");
-                    //jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td><a id=attchvendor' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFileVendor(this)" href="javascript:;" >' + data[0].attachments[i].attachment + '</a></td><tdstyle="display: none;">' + data[0].attachments[i].rfqVersionId + '</td></tr>').appendTo("#tblAttachments");
-                    jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td>' + data[0].attachments[i].attachment + '</td></tr>').appendTo("#tblAttachmentsprev");
-                }
+                     
+                        jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td><a id=attchvendor' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFileVendor(this)" href="javascript:;" >' + data[0].attachments[i].attachment + '</a></td></tr>').appendTo("#tblAttachments");
+                       //jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td><a id=attchvendor' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFileVendor(this)" href="javascript:;" >' + data[0].attachments[i].attachment + '</a></td><tdstyle="display: none;">' + data[0].attachments[i].rfqVersionId + '</td></tr>').appendTo("#tblAttachments");
+                       jQuery('<tr id=trid' + i + '><td>' + data[0].attachments[i].attachmentDescription + '</td><td>' + data[0].attachments[i].attachment + '</td></tr>').appendTo("#tblAttachmentsprev");
+            
+                         
+                    
+                    
+                 }
             }
             else {
 
@@ -437,7 +453,7 @@ function fncollapse(id) {
 function RFQFetchQuotedPriceReportBoq() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendorattach = '';
-console.log( "eRFQReport/eRFQFetchQuotedPriceReport/?VendorID=" + sessionStorage.getItem('hddnVendorId') + "&RFQId=" + sessionStorage.getItem('hddnRFQID') + "&RFQVersionId=" + sessionStorage.getItem('RFQVersionId'));
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -487,7 +503,7 @@ console.log( "eRFQReport/eRFQFetchQuotedPriceReport/?VendorID=" + sessionStorage
                 for (var i = 0; i < data[0].quotesDetails.length; i++) {
                     
                     if (data[0].quotesDetails[i].rfqtcid == "0") {
-                        
+                       
                         srno = data[0].quotesDetails[i].srno;
 
                         if (sessionStorage.getItem('ShowPrice') == "Y" || sessionStorage.getItem('ShowPrice') == "") {

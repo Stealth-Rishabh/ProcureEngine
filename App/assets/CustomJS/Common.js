@@ -213,6 +213,7 @@ function callPagejs(pagejs) {
     var $head = $("head");
      
     for (var i = 0; i < js.length; i++) {
+        
         $head.append("<script src=\"" + js[i] + "\"></scr" + "ipt>");
     }
 
@@ -728,6 +729,7 @@ function fnEnryptURL(URL) {
 var key = CryptoJS.enc.Utf8.parse('8080808080808080');
 var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
 function fnencrypt(message) {
+    debugger
     var encryptedtext = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(message), key,
         {
             keySize: 128 / 8,
@@ -738,7 +740,7 @@ function fnencrypt(message) {
     return (encryptedtext)
 }
 function fndecrypt(message) {
-
+     debugger
     var key = CryptoJS.enc.Utf8.parse('8080808080808080');
     var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
 
@@ -1124,7 +1126,7 @@ function downloadNFAMatrix() {
     }, 500)
 }
 
-
+//loader
 function loadingEngine(){
     
     // Create the blocking overlay element
@@ -1148,3 +1150,66 @@ $('body').append(overlay);
 function unloadingEngine(){
     $('#loadingEngine').remove();
 }
+
+//alertpopupgroup
+function alertforerror(error) {
+
+    bootbox.dialog({
+        message: error,
+        buttons: {
+           
+            ok: {
+                label: "OK",
+                className: "btn-danger",
+                callback: function () {
+                   
+                }
+            }
+        }
+    });
+}
+
+
+
+function alertforinfo(info) {
+
+    bootbox.dialog({
+        message: info,
+        buttons: {
+           
+            ok: {
+                label: "OK",
+                className: "btn-warning",
+                callback: function () {
+                   
+                }
+            }
+        }
+    });
+}
+
+
+
+function alertforsucess(sucess) {
+
+    bootbox.dialog({
+        message: sucess,
+        buttons: {
+           
+            ok: {
+                label: "OK",
+                className: "btn-success",
+                callback: function () {
+                    hideModal()
+                }
+            }
+        }
+    });
+}
+
+
+function hideModal() {
+
+    $('.modal').modal("hide");
+}
+

@@ -1,4 +1,4 @@
-﻿#A {
+#A {
     display: none;
 }
 #logoimage {
@@ -102,4 +102,22 @@
 .tab-content > .active {
     margin-right: 10%;
    
+}
+
+/*mobile specific css*/
+
+@media only screen and (max-width:900px) {
+    #currencyparamstyle {
+        width: 15% !important;
+        margin-top: 1px !important;
+    }
+    .bidtc {
+        padding-left: 2px !important;
+        padding-right: 2px !important;
+    }
+
+    .rfqtc {
+        padding-left: 2px !important;
+        padding-right: 2px !important;
+    }
 }

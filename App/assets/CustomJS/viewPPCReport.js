@@ -69,7 +69,7 @@ function Bindtab2DataforPreview() {
                 jQuery('#lblLD').html(data[0].azureDetails[0].whetherLDApplicable);
                 jQuery('#lblCPBG').html(data[0].azureDetails[0].whetherCPBGApplicable);
                 jQuery('#lblPRDetails').html(data[0].azureDetails[0].prDetails);
-                if (data[0].biddingVendor.length > 0) {
+                 if (data[0].biddingVendor.length > 0) {
 
                     $('#tblvendorsprev').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th><th>TPI</th></tr></thead>");
                     for (i = 0; i < data[0].biddingVendor.length; i++) {
@@ -165,7 +165,7 @@ function Bindtab2DataforPreview() {
 
 var nfaid
 function GetOverviewmasterbyId(idx) {
-
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
     var GetData = callajaxReturnSuccess(url, "Get", {});
@@ -268,6 +268,7 @@ function getSummary(bidid, bidforid, bidtypeid, RFQID) {
     }
 }
 function BindAttachmentsOfEdit() {
+    var x = isAuthenticated();
     var url = "NFA/FetchNFaFiles?CustomerId=" + parseInt(CurrentCustomer) + "&NfaId=" + parseInt(idx);
 
     var GetFilesData = callajaxReturnSuccess(url, "Get", {})

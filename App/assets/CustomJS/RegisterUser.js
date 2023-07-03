@@ -20,7 +20,7 @@ jQuery(document).ready(function () {
         }
     }
     App.init();
-
+   
     fetchMenuItemsFromSession(9, 14);
     setCommonData();
     FormValidation.init();
@@ -57,7 +57,7 @@ function fnaddPurchaseOrg() {
     }
     else if (selectedgroupid.length > 0) {
         for (var i = 0; i < selectedgroupid.length; i++) {
-            $('#tblpurchaseOrg').append('<tr id=TRgroup' + cc + '><td id=OrgId' + cc + ' class=hide >' + $('#ddlPurchaseOrg option:selected').val() + '</td><td class=hide id=GrpId' + cc + '>' + selectedgroupid[i] + '</td><td>' + $('#ddlPurchaseOrg option:selected').text() + '</td><td>' + selectedgroup[i] + '</td><td style="width:5%"><a class="btn  btn-xs btn-danger"  onclick="deleterow(TRgroup' + cc + ',' + cc + ',' + selectedgroupid[i] + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+            $('#tblpurchaseOrg').append('<tbody><tr id=TRgroup' + cc + '><td id=OrgId' + cc + ' class=hide >' + $('#ddlPurchaseOrg option:selected').val() + '</td><td class=hide id=GrpId' + cc + '>' + selectedgroupid[i] + '</td><td>' + $('#ddlPurchaseOrg option:selected').text() + '</td><td>' + selectedgroup[i] + '</td><td style="width:5%"><a class="btn  btn-xs btn-danger"  onclick="deleterow(TRgroup' + cc + ',' + cc + ',' + selectedgroupid[i] + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr></tbody>')
             cc = cc + 1;
         }
 
@@ -266,6 +266,7 @@ function RegisterUser() {
 
 
 function fetchRegisterUser() {
+  
     var data = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
@@ -282,6 +283,7 @@ function fetchRegisterUser() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
+         
             jQuery("#tblRegisterUsers > tbody").empty();
             if (data.length > 0) {
                 jQuery.each(data, function (key, value) {  
@@ -610,7 +612,7 @@ function fetchUserDetails(UserID) {
                 if (userdetails.length > 0 && userdetails != null) {
                     $('#tblpurchaseOrg').append('<thead class=hide id=theadgroup><tr><th>Purchase org</th><th>Purchase Group</th><th></th></tr></thead>');
                     for (var i = 0; i < userdetails.length; i++) {
-                        $('#tblpurchaseOrg').append('<tr id=TRgroup' + cc + '><td id=OrgId' + cc + ' class=hide >' + userdetails[i].PurchaseOrgID + '</td><td class=hide id=GrpId' + cc + '>' + userdetails[i].PurchaseGrpID + '</td><td>' + userdetails[i].PurchaseOrgName + '</td><td>' + userdetails[i].PurchaseGrpName + '</td><td style="width:5%"><a   class="btn  btn-xs btn-danger" onclick="deleterow(TRgroup' + cc + ',' + cc + ',' + userdetails[0].PurchaseGrpID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+                        $('#tblpurchaseOrg').append('<tbody><tr id=TRgroup' + cc + '><td id=OrgId' + cc + ' class=hide >' + userdetails[i].PurchaseOrgID + '</td><td class=hide id=GrpId' + cc + '>' + userdetails[i].PurchaseGrpID + '</td><td>' + userdetails[i].PurchaseOrgName + '</td><td>' + userdetails[i].PurchaseGrpName + '</td><td style="width:5%"><a   class="btn  btn-xs btn-danger" onclick="deleterow(TRgroup' + cc + ',' + cc + ',' + userdetails[0].PurchaseGrpID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr></tbody>')
                         cc = cc + 1;
                     }
                     if (jQuery('#tblpurchaseOrg tr').length > 0) {

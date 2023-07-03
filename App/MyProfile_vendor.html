@@ -213,7 +213,7 @@
 
                                                         </div>
                                                         <form action="#" id="submit_form_contact" class="form-horizontal">
-                                                            <div id="collapse2" class="panel-collapse collapse in height-auto" seqno="3">
+                                                            <div id="collapse2" class="panel-collapse active noheight" seqno="3">
                                                                 <div class="panel-body">
                                                                     <div class="row" id="tab1check">
                                                                         <div class="col-md-12">
@@ -368,7 +368,7 @@
                                                         </div>
                                                         
                                                            
-                                                            <div id="collapse0" class="panel-collapse collapse in height-auto">
+                                                            <div id="collapse0" class="panel-collapse collapse">
                                                                 <div class="panel-body">
 
                                                                     <div class="panel-group accordion" id="accordion2">
@@ -808,6 +808,12 @@
                                                                                     <div id="collapse1" class="panel-collapse collapse" seqno="2">
 
                                                                                         <div class="panel-body">
+                                                                                                <div class="alert alert-block alert-danger" id="errordivbank">
+                                                                                                    <span id="errorbank"></span>
+                                                                                                </div>
+                                                                                                <div class="alert alert-success" id="successdivbank">
+                                                                                                    <span id="successbank"></span>
+                                                                                                </div>
                                                                                             
                                                                                             <div class="col-md-12 text-right">
                                                                                                 <button class="btn btn-xs btn-primary tooltips " type="button" id="btnAddBank" data-placement="top" data-original-title="Click here to add another bank account details" onclick="Addanotherbank()">
@@ -820,12 +826,7 @@
                                                                                                 <table class="table table-striped table-bordered table-hover" id="tblGetBankDetail"></table>
                                                                                             </div>
                                                                                             <div class="row" id="bankForm">
-                                                                                                <div class="alert alert-block alert-danger" id="errordivbank">
-                                                                                                    <span id="errorbank"></span>
-                                                                                                </div>
-                                                                                                <div class="alert alert-success" id="successdivbank">
-                                                                                                    <span id="successbank"></span>
-                                                                                                </div>
+                                                                                                
                                                                                                 <div class="form-group">
 
                                                                                                     <div class="col-md-12">
@@ -921,6 +922,12 @@
                                                                                 </div>
                                                                                 <div id="collapse3" class="panel-collapse collapse" seqno="4">
                                                                                     <div class="panel-body">
+                                                                                        <div class="alert alert-block alert-danger" id="errordivfinance">
+                                                                                            <span id="errorfinance"></span>
+                                                                                        </div>
+                                                                                        <div class="alert alert-success" id="successdivfinance">
+                                                                                            <span id="successfinance"></span>
+                                                                                        </div>
                                                                                         <div class="col-md-12 text-right">
                                                                                             <button class="btn btn-xs btn-primary tooltips " type="button" id="btnAddFinance" data-placement="top" data-original-title="Click here to add another year financial details" onclick="Addanotherfinance()">
                                                                                                 <i class="fa fa-plus-circle"></i> Add Finance
@@ -933,10 +940,10 @@
 
                                                                                         </div>
                                                                                         <div class="clearfix">&nbsp;</div>
+                                                                                        <div  id="financeform">
                                                                                         <div class="row">
 
-
-                                                                                            <div class="form-group" id="financeform">
+                                                                                            <div class="form-group">
                                                                                                 <div class="col-md-12">
                                                                                                     <label class="col-md-2 control-label txtalignleft">
                                                                                                         Turn Over
@@ -957,23 +964,56 @@
                                                                                                         <label class="col-md-2 control-label xyz">
                                                                                                             From Financial Year
                                                                                                         </label>
-                                                                                                        <div class="col-md-1 xyz">
+                                                                                                        <div class="col-md-2 xyz">
                                                                                                             <input type="text" class="form-control selectno "
                                                                                                                    id="fromFiscalyear" name="fromFiscalyear" maxlength="4" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" />
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <div class="inputgroup">
-                                                                                                        <label class="col-md-2 control-label">
-                                                                                                            To Financial Year
+                                                                                                   
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            
+                                                                                                
+
+                                                                                        </div>
+                                                                                       
+                                                                                        <div class="row">
+                                                                                            <div class="form-group">
+                                                                                                 <div class="col-md-12">
+
+                                                                                                        <label class="col-md-2 control-label txtalignleft">
+                                                                                                            Attach Document
                                                                                                         </label>
-                                                                                                        <div class="col-md-1 xyz">
+                                                                                                        <div class="col-md-4 xyz">
+
+                                                                                                            <div class="inputgroup">
+                                                                                                                <div class="att_input">
+
+                                                                                                                    <input type="file" class="form-control" tabindex="5" id="filefinance"
+                                                                                                                           onchange="checkfilesize(this)" />
+
+                                                                                                                    <label class="control-label uploadedfile" id="uploadfinance"><a href="javascript:;" onclick="DownloadFile(this)" id="financeattach" class="txtleftnone"></a><span class="fix-left-margin hide" onclick="editFinance()" id="editfinance"><i class="fa fa-pencil"></i></span></label>
+
+                                                                                                                </div>
+                                                                                                            </div>
+
+                                                                                                        </div>
+                                                                                                         <div class="inputgroup">
+                                                                                                             <label class="col-md-2 control-label">
+                                                                                                            To Financial Year
+                                                                                                           </label>
+                                                                                                           <div class="col-md-2 xyz">
                                                                                                             <input type="text" class="form-control selectno"
                                                                                                                    id="toFiscalyear" name="toFiscalyear" maxlength="4" autocomplete="off" tabindex="5" onkeyup="replaceQuoutesFromString(this)" />
 
+                                                                                                          </div>
                                                                                                         </div>
-                                                                                                    </div>
                                                                                                 </div>
-                                                                                                <div class="fluid">
+                                                                                            </div>
+                                                                                            
+                                                                                            
+                                                                                        </div>
+                                                                                        <div class="fluid">
                                                                                                     <div class="col-md-offset-5 col-md-6">
                                                                                                         <br />
                                                                                                         <button type="button" class="btn btn-success" id="buttonfinancialupdate" onclick="UpdateFinancialDetail()">
@@ -981,11 +1021,7 @@
                                                                                                         </button>
                                                                                                     </div>
 
-                                                                                                </div>
-                                                                                            </div>
-
-
-
+                                                                                        </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -1136,14 +1172,19 @@
                 <div class="portlet-body form">
                     <div class="alert alert-danger display-hide" id="errordiv1">
                         <button class="close" data-close="alert"></button>
-                        <span id="errormsg"></span>
+                        <span id="errormsgmap"></span>
                     </div>
                     <div class="alert alert-success display-hide" id="successdiv1">
                         <button class="close" data-close="alert"></button>
-                        <span id="successmsg"></span>
+                        <span id="successmsgmap"></span>
                     </div>
                     <form action="#" id="mapsections" class="form-horizontal" role="form">
                         <div class="form-body">
+                            <!--<div class="col-md-12 text-right verifygroup">
+                                <button class="btn btn-xs btn-primary tooltips " type="button" id="btnVerifyBank" data-placement="top" data-original-title="Click here to verify your bank details for customer mapping" onclick="IciciBankPennyDropVerify()">
+                                        Verify Bank
+                                </button>
+                            </div>-->
                             <div class="form-group">
                                 <div class="col-md-12">
 
@@ -1159,12 +1200,64 @@
 
                                 </div>
                             </div>
+                            <div class="form-group verifygroup">
+                                <div class="col-md-12">
+
+                                    <label class="col-md-2 bold txtalignleft" data-i18n="state">
+                                         Account Holder:
+                                    </label>
+                                    <label class="col-md-4 txtalignleft" id="mapAH" >
+                                        
+                                    </label>
+                                    
+                                    <label class="col-md-2 bold txtalignleft" data-i18n="state">
+                                         Account No:
+                                    </label>
+                                    <label class="col-md-3  txtalignleft" id="mapAN" >
+                                        
+                                    </label>
+                                  
+                                        <button class=" btn btn-xs btn-primary tooltips " type="button" id="btnVerifyBank" data-placement="top" data-original-title="Click here to verify your bank details for customer mapping" onclick="IciciBankPennyDropVerify()">
+                                         <i class="fa fa-arrow-circle-right"></i>
+                                       </button>
+                                        
+                                        
+                                        
+        
+                                   
+                                    
+                                   
+
+
+                                </div>
+                            </div>
+                              <div class="form-group verifygroup">
+                                <div class="col-md-12">
+
+                                    <label class="col-md-2 bold txtalignleft" data-i18n="state">
+                                        IFSC CODE:
+                                    </label>
+                                    <label class="col-md-4  txtalignleft" id="mapIC" >
+                                        
+                                    </label>
+                                    
+                                    <label class="col-md-2 bold txtalignleft" data-i18n="state">
+                                         Mobile No:
+                                    </label>
+                                    <input class="col-md-4"  id="mapMN" maxlength='10' />
+                                        
+                                    
+                                   
+
+
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <div class="col-md-12">
 
                                     <div class="col-md-offset-5 col-md-6">
-                                        <button type="button" class="btn btn-success" onclick="UpdateBankMapping()">
-                                            Update Bank
+                                        <button type="button" id="btnmaptoc" class="btn btn-success" onclick="UpdateBankMapping()">
+                                           Map to Customer
                                         </button>
                                     </div>
 

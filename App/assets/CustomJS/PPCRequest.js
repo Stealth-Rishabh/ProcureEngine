@@ -1,6 +1,7 @@
 let projectnamestatus = false;
 jQuery(document).ready(function () {
 
+
     $('[data-toggle="popover"]').popover({})
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
@@ -21,13 +22,13 @@ jQuery(document).ready(function () {
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
-     jQuery('#MatrixExportToExcel').click(function () {
-                downloadNFAMatrix()
-                
-               // tableToExcel(['tblAllmatrix'], ['NFAMatrixDetails'], 'NFAMatrix.xls')
+
+    jQuery('#MatrixExportToExcel').click(function () {
+        downloadNFAMatrix()
+
+        // tableToExcel(['tblAllmatrix'], ['NFAMatrixDetails'], 'NFAMatrix.xls')
 
     });
-
 
     fetchProjectMaster()
     Metronic.init();
@@ -613,7 +614,7 @@ function bindNFAOverViewMaster() {
 };
 
 function GetOverviewmasterbyId(idx) {
-       
+
     var x = isAuthenticated();
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
     var GetData = callajaxReturnSuccess(url, "Get", {});
@@ -1061,6 +1062,7 @@ function Savedata() {
     if ($("#txtBudget").val() != '') {
         _budget = removeThousandSeperator($("#txtBudget").val());
     }
+    debugger
     var p_Budget = removeThousandSeperator(_budget);
     var p_category = $("#ddlCategory option:selected").val();
     var p_currency = $("#dropCurrency option:selected").val();
@@ -1131,6 +1133,7 @@ function Bindtab1DataforPreview() {
     $("#lblbudgetamount").text($("#txtBudget").val().toLocaleString(sessionStorage.getItem("culturecode")));
     //abheedev bug 385 end
     $("#lblCurrency").text($("#dropCurrency option:selected").text());
+
     $("#lblCategory").text($("#ddlCategory option:selected").text());
     $("#lblProjectName").text($("#txtProjectName option:selected").text());
     $("#lblbudget").text($("#ddlBudget option:selected").text());
@@ -1576,7 +1579,6 @@ function viewallmatrix() {
     bindApproverMaster('N');
 }
 function fetchReguestforQuotationDetails() {
-    
     var x = isAuthenticated();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -1588,10 +1590,12 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (Data) {
-            let RFQData=Data.rData
+
+            let RFQData = Data.rData
+
             $('#tblvendors').empty();
 
-            if (RFQData.length > 0) {   
+            if (RFQData.length > 0) {
 
                 jQuery('#RFQConfigueron').html(fnConverToLocalTime(RFQData[0].general[0].rfqConfigureDate))
                 if (RFQData[0].vendors.length > 0) {
@@ -1627,7 +1631,6 @@ function fetchReguestforQuotationDetails() {
 
 }
 function FetchBidVendors() {
-    
     var x = isAuthenticated();
     jQuery.ajax({
         type: "GET",
@@ -1739,6 +1742,7 @@ function frmAzurePPCForm() {
 
     var LowestPriceOffer = $("input[name='LowestPriceOffer']:checked").val();
     var repeatorder = $("input[name='repeatorder']:checked").val();
+    debugger
     var Data = {
         "nfaID": parseInt(idx),
         "RFQID": parseInt(RFQID),
@@ -1746,13 +1750,13 @@ function frmAzurePPCForm() {
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
         "Introduction": jQuery('#txtintroduction').val(),
         "CostBenefitAnalysis": jQuery('#txtcostbenefit').val(),
-        "Budgetavailabilty": jQuery('#txtbudgetavailbilty').val(),
+        "Budgetavailabilty": jQuery('#txtbudgetavailbilty').val(), 
         "Workordergiven": jQuery('#txtpartordergiven').val(),
-        "Completionsechdule": jQuery('#txtcompletionsechdule').val(),
+        "Completionsechdule": jQuery('#txtcompletionsechdule').val(), 
         "Lessthan3Quotes": jQuery('#txtlessthan3quotes').val(),
         "AwardcontractthanL1": jQuery('#txtawardotherthanL1').val(),
         "Splitingorder01Vendor": jQuery('#txtsplitingmorethan01').val(),
-        "GeneralRemarks": jQuery('#txtgemeralremarks').val(),
+        "GeneralRemarks": jQuery('#txtgemeralremarks').val(), 
         "IssuingRFQtoVendor": jQuery('#txtrationalrfqvendor').val(),
         "Enquirynotsentvendors": jQuery('#txtenquirynotsent').val(),
         "EnquiryIssuedOn": EnquiryIssuedOn,
@@ -1761,13 +1765,13 @@ function frmAzurePPCForm() {
         "RecomRepeatOrder": repeatorder,
         "RecomSuppEnclosure": jQuery('#txtsupportedenclosure').val(),
         "RecomCompFinalPrice": jQuery('#tctcomfinalprice').val(),
-        "RecomQuotationofParties": jQuery('#txtquotationparties').val(),
+        "RecomQuotationofParties":'',
         "WorkOrderRecomParty": jQuery('#txtorderrecparty').val(),
         "PurchaseOrder": jQuery('#txtworkordervalue').val(),
         "InternalCostestimate": jQuery('#txtinternalcost').val(),
         "Terms": jQuery('#txtterms').val(),
         "Scopeofwork": jQuery('#txtscopework').val(),
-        "Deliverables": jQuery('#txtdeliverables').val(),
+        "Deliverables": '',
         "Paymentterms": jQuery('#txtpaymentterms').val(),
         "ApplicableTaxduty": jQuery('#txtapplicabletax').val(),
         "WhetherLDApplicable": jQuery('#txtLDapplicable').val(),
@@ -1777,7 +1781,7 @@ function frmAzurePPCForm() {
         "BiddingVendorDetails": AzurevendorDetails
 
     };
-
+    debugger
     // console.log(JSON.stringify(Data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Azure/insPPC/",
@@ -1786,13 +1790,13 @@ function frmAzurePPCForm() {
         data: JSON.stringify(Data),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-
+            debugger
             jQuery.unblockUI();
             return true;
 
         },
         error: function (xhr, status, error) {
-
+            debugger
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1821,7 +1825,6 @@ function fetchAzPPcFormDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-            
             let validatescm = "Yes", TPI = "Yes", QR = "Yes", TA = "Yes", PE = "Yes";
 
 
@@ -2478,5 +2481,9 @@ function fetchProjectMaster() {
     });
 
 }
+
+
+
+
 
 

@@ -8,7 +8,6 @@ jQuery(document).ready(function () {
         allowClear: true
     });
     Layout.init();
-
     var param = getUrlVars()["param"];
     var decryptedstring = fndecrypt(param);
     var _tmpVendorID = getUrlVarsURL(decryptedstring)["tmpVendorID"];
@@ -50,7 +49,7 @@ function fetchCategorymaster1() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&For=M&MappedBy=a&VendorID=0",
+        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&For=M&MappedBy=a&ChildId=0",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
@@ -259,7 +258,7 @@ function DownloadFile(aID) {
 }
 
 function ApproveRFI(For) {
-    
+    debugger;
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var selected = [];
     var selectedid = [];

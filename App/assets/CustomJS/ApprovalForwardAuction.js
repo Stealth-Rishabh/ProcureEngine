@@ -72,8 +72,8 @@ function FetchVendors(BidID) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-			
-            jQuery("#ddlVendors,#ddlVendorsAdmin,#drpVendors").empty();
+            debugger;
+			jQuery("#ddlVendors,#ddlVendorsAdmin,#drpVendors").empty();
             jQuery("#ddlVendors,#ddlVendorsAdmin").append(jQuery("<option ></option>").val("").html("Select"));
             jQuery("#drpVendors").append(jQuery("<option ></option>").val("").html("Only for auto PO confirmation"));
             for (var i = 0; i < data.length; i++) {

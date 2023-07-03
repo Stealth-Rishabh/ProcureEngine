@@ -43,6 +43,8 @@
     <link rel="stylesheet" href="assets/CustomCSS/common.css">
     <link rel="stylesheet" href="assets/CustomCSS/erfq.css">
 
+    <!--for react-->
+    <!--  <link href="assets/build/static/css/main.cda89e40.css" rel="stylesheet">-->
 
     <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
@@ -67,6 +69,11 @@
     <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+
+    <!--for react-->
+    <script defer="defer" src="assets/build/static/js/main.0285f372.js"></script>
+
+
 
     <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
     <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
@@ -166,6 +173,9 @@
                     </ul>
                     <div class="page-toolbar">
                         <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
+                            <a href="#commuhub" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click for communication hub"><i class="fa fa-question-circle"></i> Chat </a>
+                        </div>
+                        <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
                             <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help </a>
                         </div>
                     </div>
@@ -236,6 +246,10 @@
                                                     <span id="spandanger"> </span>
                                                 </div>
                                                 <div class="tab-pane active" id="tab1">
+
+
+
+
                                                     <div class="form-group">
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
@@ -280,6 +294,8 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+
+
                                                         <div class="inputgroup">
                                                             <label class="control-label col-md-2">
                                                                 End Date/Time<span class="required"> *</span>
@@ -601,7 +617,7 @@
                                                             <div class="col-md-offset-9 col-md-5" id="btnrowid">
                                                                 <input type="hidden" id="rowid" />
                                                                 <input type="hidden" id="validattachmentSize" />
-                                                                <!--<button type="button" class="btn btn-success" data-toggle="modal" href="#RFQPullSAPModal" id="RFQPullSAP">Pull Indent</button>-->
+                                                                <button type="button" class="btn btn-success" data-toggle="modal" href="#RFQPullSAPModal" id="RFQPullSAP">Pull SAP Data</button>
                                                                 <button type="button" class="btn btn-info display-none" data-toggle="modal" href="#RfqParameterexcelBoq" id="boqbtnexcel">Boq Excel Upload</button>
                                                                 <span id="spninfoboq" class="hovertext display-none" data-hover="click Excel button to upload BoQ File">
                                                                     <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
@@ -1127,9 +1143,22 @@
                             <div class="form-group">
                                 <div class="Controlgroup col-md-12">
                                     <label class="col-md-3 control-label" id="lblsbjct">
-                                        Select Indent
+                                        Source
                                     </label>
-                                    <div class="col-md-6 paddingleft7px">
+                                    <div class="col-md-3">
+                                        <div class="radio-list">
+                                            <label class="radio-inline">
+                                                <input type="radio" id="pullPI" name="pullP" value="I" class="form-control" checked> Indent
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" id="pullPR" name="pullP" value="R" class="form-control"> PR
+                                            </label>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="col-md-3 paddingleft7px">
                                         <input type="hidden" id="hdnRfiRfqID" value='0' />
 
                                         <input type="text" class="form-control" id="txtrfirfqsubject"
@@ -1271,7 +1300,7 @@
                                                 </div>
                                             </div>
                                             3. Please ensure Target/Budget Price and Quantity and TAT should be in numbers only.
-                                            
+
                                         </span>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover display-none" id="temptableForExcelDataparameter"></table>
@@ -1366,6 +1395,7 @@
                                                         <li>Remarks</li>
                                                         <li>Quantity</li>
                                                         <li>UOM</li>
+                                                        <li>DeliveryLocation</li>
 
                                                     </ul>
                                                     <div class='clearfix'></div>
@@ -1383,18 +1413,18 @@
                                                     <br />
                                                 </div>
                                             </div>
-                                            3. Please ensure <b>Target/Budget</b> Price and Quantity and TAT should be in numbers only. <br />
-                                            4. <b>SrNo</b> should be running number only or It should not be in alphabetically form ex.(a/b/c). <br />
-                                            5. <b>UOM/Quantity</b> should be on child level only. <br />
-                                            6. <b>Item service</b> length should be <b>200</b> characters only.  <br />
-                                            7. The <b>UOM</b> and <b>quantity</b> fields should not be left blank. <br /> 
-                                            8. You may check the <b>UOM</b> in the instructions. <br />
-                                            9. When generating a <b>BOQ</b>, no fields should be left blank. <br />
-                                            10.The serial number must be <b>numeric</b> and in <b>synchronized sequence</b>. <br />
-                                            11.The spreadsheet must be in <b>Excel workbook format</b>. <br />
-                                            12.The <b>UOM</b> and <b>quantity</b> should be entered in the goods for which you want the vendor to quote. <br />
-                                            13.Description is a mandatory field. <br />
-                                            14.<b>Item Services</b> is a mandatory field. <br />
+                                            3. Please ensure <b>Target/Budget Price</b> and <b>Quantity</b> should be in numbers only.<br />
+                                            4. <b>UOM/Quantity</b> should be on child level item only.<br />
+                                            5. <b>Item service</b>length should be 200 characters only.<br />
+                                            6. The <b>UOM</b> and <b>quantity</b> fields should not be left blank in the child level item field .  <br />
+                                            7. You may check the <b>UOM</b> in the instructions page. <br />
+                                            8. While creating a <b>BOQ sheet</b>, no fields should be left <b>blank</b>.<br />
+                                            9. The <b>serial number</b> must be in a <b>numeric</b> and <b>synchronized</b> sequence manner. <br />
+                                            10.The <b>BOQ spreadsheet</b> must be in <b>Excel workbook format</b>(.xlsx). <br />
+                                            11.<b>Serial Number</b>,<b>Item Service</b> and <b>Description</b> is a mandatory field. <br />
+                                            12.Please do not change the <b>formating</b> of <b>BOQ file</b>. <br />
+                                            13.<b>Description</b> length should be <b>200</b> characters only.<br />
+
                                         </span>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover display-none" id="temptableForExcelDataparameterBOQ"></table>
@@ -1459,7 +1489,7 @@
                     <th data-style="Mandatory">SrNo</th>
                     <th data-style="Mandatory">Item</th>
                     <th data-style="Mandatory">Sheetname</th>
-                  
+
 
                 </tr>
             </thead>
@@ -1607,8 +1637,37 @@
             </div>
         </div>
     </div>
+    <div id="commuhub" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Help
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="alert alert-danger display-hide" id="errordiv1">
+                        <button class="close" data-close="alert"></button>
+                        <span id="errormsg"></span>
+                    </div>
+                    <div class="alert alert-success display-hide" id="successdiv1">
+                        <button class="close" data-close="alert"></button>
+                        <span id="successmsg"></span>
+                    </div>
+                    <div class="modal-body">
+                        <div id="root"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-
+    <!--for react-->
+    <script src="https://cdn.jsdelivr.net/npm/react/umd/react.production.min.js" crossorigin></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom/umd/react-dom.production.min.js" crossorigin></script>
 
     <script nonce="pE90">
 

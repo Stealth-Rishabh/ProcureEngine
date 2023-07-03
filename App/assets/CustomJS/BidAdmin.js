@@ -124,15 +124,14 @@ function startTimerForStaggerItem(duration1, displayS) {
         else {
             displayS.textContent = minutes1 + ":" + seconds1;
         }
-        //console.log(TotalTimer)
-
-        if (--timer1 <= 0 && TotalTimer > 0) {
+       
+        if (--timer1 <= 0   && TotalTimer > 0) {
             timer1 = 0;
             if (timer1 == 0) {
                 fnrefreshStaggerTimerdataonItemClose();
             }
         }
-
+       
     }, 1000);
 }
 ///** on enter submit form

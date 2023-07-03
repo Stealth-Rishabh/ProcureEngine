@@ -1,4 +1,4 @@
-﻿@media print {
+@media print {
     .pagebreak {
         page-break-before: always;
     }
@@ -40,4 +40,10 @@
     Background-repeat: repeat;
     opacity: 0.1;
     z-index: -999999;
+}
+.BoqTable {
+    margin-bottom: 2px !important;
+}
+.hiddenRow {
+    padding: 0 !important;
 }
