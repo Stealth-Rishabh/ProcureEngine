@@ -90,7 +90,7 @@
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-                            
+
                             <b>
                                 <span id="spanUserName" class="username username-hide-on-mobile">
                                 </span>
@@ -107,7 +107,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container nodisplay" >
+    <div class="page-container nodisplay">
         <!-- BEGIN SIDEBAR -->
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
@@ -154,7 +154,7 @@
                             </i>
                         </li>
                         <li><a href="javascript:;" class="notextdeco">Manage </a><i class="fa fa-angle-right"></i></li>
-                        <li><a href="javascript:;"class="notextdeco"> Add Vendors | Reset Password | Reopen Quotes </a></li>
+                        <li><a href="javascript:;" class="notextdeco"> Add Vendors | Reset Password | Reopen Quotes </a></li>
                     </ul>
                     <div class="page-toolbar">
                         <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
@@ -179,10 +179,10 @@
                             <div class="portlet-body">
                                 <!-- BEGIN FORM-->
 
-                                <div class="alert alert-success" >
+                                <div class="alert alert-success">
                                     <span id="spansuccess1"> </span>
                                 </div>
-                                <div class="alert alert-danger" >
+                                <div class="alert alert-danger">
                                     <span id="spandanger"> </span>
                                 </div>
 
@@ -200,7 +200,7 @@
                                         <input type="hidden" value="0" id="ddlrfq" />
                                         <input type="hidden" value="0" id="hdnDeadline" />
                                         <input type="text" class="form-control margin0auto" id="txtRFQ" name="txtRFQ"
-                                                data-provide="typeahead" autocomplete="off" maxlength="200" placeholder="Type RFQ" onkeyup="replaceQuoutesFromString(this)"/>
+                                               data-provide="typeahead" autocomplete="off" maxlength="200" placeholder="Type RFQ" onkeyup="replaceQuoutesFromString(this)" />
 
                                     </div>
 
@@ -294,7 +294,7 @@
                                                                                             RFQ Description:
                                                                                         </label>
                                                                                         <div class="col-md-10">
-                                                                                            <label id="RFQDescription"  class="control-label txtalignleft">
+                                                                                            <label id="RFQDescription" class="control-label txtalignleft">
                                                                                             </label>
                                                                                         </div>
                                                                                     </div>
@@ -346,7 +346,7 @@
                                                                                             Currency:
                                                                                         </label>
                                                                                         <div class="col-md-2">
-                                                                                            <label id="Currency" class="control-label txtalignleft" >
+                                                                                            <label id="Currency" class="control-label txtalignleft">
                                                                                             </label>
                                                                                             <input type="hidden" id="currencyid" />
                                                                                         </div>
@@ -366,8 +366,8 @@
                                                                                     <div class="form-group">
                                                                                         <label class="control-label col-md-4">Approvers:</label>
                                                                                         <div class="col-md-8">
-                                                                                            <p class="form-control-static" id="mapedapproverPrevtab_0"></p>
-                                                                                            <a class="isDisabledClass cursorpointer" id="ctrladdapprovers" ><i class="fa fa-pencil" onclick="fnOpenPopupApprover('manage')"></i></a>
+                                                                                            <label class="form-control-static" id="mapedapproverPrevtab_0"></label>
+                                                                                            <a class="isDisabledClass cursorpointer" id="ctrladdapprovers"><i class="fa fa-pencil" onclick="fnOpenPopupApprover('manage')"></i></a>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -376,7 +376,7 @@
                                                                                         <label class="control-label col-md-4">Technical Approval:</label>
                                                                                         <div class="col-md-8">
                                                                                             <p class="form-control-static" id="lbltechnicalApproval"></p>
-
+                                                                                            <a class="isDisabledClass cursorpointer hide" id="ctrladdapprovers"><i class="fa fa-pencil" onclick="fnOpenPopupTechApprover('manage')"></i></a>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -391,12 +391,18 @@
                                                                                             <label id="lblRFQOpenDate" class="control-label txtalignleft">
                                                                                             </label>&nbsp;
                                                                                             <a class="isDisabledOpenClass cursorpointer" id="ctrlRFQOpenDates" data-toggle="modal"><i class="fa fa-pencil"></i></a>
+
+                                                                                            <button id="openquote" type="button" class="btn btn-primary marginleft5px" onclick="OpenQuotes()">Go</button>
+
                                                                                         </div>
 
                                                                                     </div>
 
                                                                                 </div>
+                                                                                <div class="col-md-2">
 
+
+                                                                                </div>
                                                                             </div>
 
                                                                         </div>
@@ -428,7 +434,7 @@
 
 
                                                                             <div class="col-md-4">
-                                                                                <span  class="btn blue width390px"><input type="file" id="fileToUpload1" name="fileToUpload1" onchange="checkfilesize(this);" /></span>
+                                                                                <span class="btn blue width390px"><input type="file" id="fileToUpload1" name="fileToUpload1" onchange="checkfilesize(this);" /></span>
                                                                             </div>
 
 
@@ -525,7 +531,7 @@
                                                                             <div class="col-lg-10">
 
                                                                                 <input type="text" class="form-control margin0auto" id="txtvendor" name="txtvendor"
-                                                                                        data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Select Vendor" onkeyup="replaceQuoutesFromString(this)"/>
+                                                                                       data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Select Vendor" onkeyup="replaceQuoutesFromString(this)" />
 
                                                                             </div>
                                                                         </div>
@@ -559,7 +565,7 @@
                                                                     <div class="input-icon">
                                                                         <i class="fa fa-search"></i>
                                                                         <!--<input type="text" id="search" placeholder="Search..." class="form-control" />-->
-                                                                        <input type="text" class="form-control" placeholder="Search Vendor Name" autocomplete="off" id="txtSearch" name="txtSearch" onkeyup="replaceQuoutesFromString(this)"/>
+                                                                        <input type="text" class="form-control" placeholder="Search Vendor Name" autocomplete="off" id="txtSearch" name="txtSearch" onkeyup="replaceQuoutesFromString(this)" />
                                                                     </div>
                                                                 </div>
                                                                 </br></br></br>
@@ -569,10 +575,10 @@
                                                                         <div class="col-md-12">
 
                                                                             <div id="divvendorlist" class="portlet-body flip-scroll ">
-                                                                                <table  align="left" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content width620px">
+                                                                                <table align="left" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content width620px">
                                                                                     <thead class="flip-content">
                                                                                         <tr>
-                                                                                            
+
                                                                                             <th width="100%">
                                                                                                 Vendors
                                                                                             </th>
@@ -618,7 +624,7 @@
                                                                                 </label>
                                                                                 <div class="col-lg-4">
 
-                                                                                    <select class="form-control margin0auto" disabled id="ddlrfqVersion" name="ddlrfqVersion" ></select>
+                                                                                    <select class="form-control margin0auto" disabled id="ddlrfqVersion" name="ddlrfqVersion"></select>
 
                                                                                 </div>
                                                                             </div>
@@ -635,7 +641,7 @@
                                                                                             <tr>
                                                                                                 <th>
                                                                                                     <div class="col-md-10 checkbox-list">
-                                                                                                        <label class="checkbox-inline checkboxinline1" >
+                                                                                                        <label class="checkbox-inline checkboxinline1">
 
                                                                                                         </label>
                                                                                                     </div>
@@ -720,7 +726,7 @@
 
 
                                                                     </div>
-                                                                    <div class="form-actions fluid padding5px" >
+                                                                    <div class="form-actions fluid padding5px">
                                                                         <div class="col-md-offset-4 col-md-6">
                                                                             <button type="submit" class="btn green">
                                                                                 Update <!--& Send Email-->
@@ -756,7 +762,7 @@
                                                                             <div class="col-lg-10">
 
                                                                                 <input type="text" class="form-control margin0auto" id="txtvendorSurrogateBid" name="txtvendorSurrogateBid"
-                                                                                       data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Select Vendor" onkeyup="replaceQuoutesFromString(this)"/>
+                                                                                       data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Select Vendor" onkeyup="replaceQuoutesFromString(this)" />
 
                                                                             </div>
                                                                         </div>
@@ -823,7 +829,7 @@
                                                                         <div class="col-md-12">
 
                                                                             <div id="divvendorlistremainder" class="portlet-body flip-scroll ">
-                                                                                <table  align="left" id="tblparicipantslists" class="table table-bordered table-striped table-condensed flip-content width500px">
+                                                                                <table align="left" id="tblparicipantslists" class="table table-bordered table-striped table-condensed flip-content width500px">
                                                                                     <thead>
                                                                                         <tr>
                                                                                             <th>
@@ -974,7 +980,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label  col-md-2">
-                                        Target Price
+                                        Target/Budget Price
                                     </label>
                                     <div class="col-md-4 xyz">
                                         <input type="tel" class="form-control thousandseparated" id="txttargetprice"
@@ -1062,7 +1068,7 @@
                                         Term & Condition<span class="required"> *</span>
                                     </label>
                                     <div class="col-md-3">
-                                        <span  class="btn blue width390px"><input type="file" id="file1" name="file1" onchange="checkfilesize(this);" /></span>
+                                        <span class="btn blue width390px"><input type="file" id="file1" name="file1" onchange="checkfilesize(this);" /></span>
 
 
                                     </div>
@@ -1154,10 +1160,10 @@
                     </div>
 
                     <div class="portlet-body form">
-                        <div class="alert alert-success" id="successapp" >
+                        <div class="alert alert-success" id="successapp">
                             <span id="spansuccessapp"> </span>
                         </div>
-                        <div class="alert alert-danger" id="diverrorapp" >
+                        <div class="alert alert-danger" id="diverrorapp">
                             <span id="spandangerapp"> </span>
                         </div>
                         <form action="#" id="frmRFQApprover" class="form-horizontal" role="form">
@@ -1213,11 +1219,9 @@
 
         jQuery(document).ready(function () {
             callPagejs('eRFQCommon.js,manageErfq.js');
-           
+
         });
     </script>
     <!-- END JAVASCRIPTS -->
 </body>
-
-
 </html>

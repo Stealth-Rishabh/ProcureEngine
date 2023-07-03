@@ -202,9 +202,10 @@ function getCategoryIDforSubCategory() {
 
 
 function getQuestionForSubCategory() {
-   
+     
     
     if ($('#ddlQuestionFor option:selected').val() == 'VAA') {
+     
         $("#POItablediv").show();
         fetchCategorymaster();
         $("#ddlquestCategory").select2();
@@ -487,12 +488,13 @@ function mandatoryChange() {
 function insupdRFIQuestionMaster() {
     
    var CriteriaDetails = [];
+  /*
     $('#tblvendorlist >tbody> tr').each(function () {
         var Criteria = $('#txtCriteria', this).val();
         var Score = parseFloat($('#txtScore', this).val());
         var item = { Criteria, Score }; 
         CriteriaDetails.push(item);
-    });
+    });*/
        jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
         var status = "";
         if (jQuery("#chkattachment").is(':checked')) {

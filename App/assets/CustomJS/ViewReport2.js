@@ -16,7 +16,8 @@ $(document).ready(function () {
     fetchBidSummaryDetails(BidID, BidTypeID, BidForID)
     FetchRecomendedVendor(BidID)
     fnfetchvendortotalSummary(BidID, BidTypeID)
-    fngetConnHistory(BidID);
+    //abheedev 14/03/2023
+    //fngetConnHistory(BidID);
 
 
 });
@@ -183,12 +184,12 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                     var sname = '';
                     if (BidForID == 81 || BidForID == 83) {
                         $('#BidTrendGraph').css('display', 'block');
-                        var strHead = "<tr><th>Item/Product</th><th>Target Price</th><th>Last Invoice Price</th><th>Bid Start Price</th><th>Quantity</th><th>UOM</th><th>Minimum Increament</th><th>Level</th><th>Vendor</th><th>Initial Quote</th><th>Highest Quote</th><th>Bid Value</th><th>Percentage Increment (Target Price)</th><th>Percentage Increment (Last Invoice Price)</th><th>Percentage Increment (Bid start price)</th></tr>"; //<th>Contract Duration</th><th>Dispatch Location</th>
+                        var strHead = "<tr><th>Item/Product</th><th>Target Price</th><th>Last Invoice Price</th><th>Start Unit Price</th><th>Quantity</th><th>UOM</th><th>Minimum Increament</th><th>Level</th><th>Vendor</th><th>Initial Quote</th><th>Highest Quote</th><th>Bid Value</th><th>Percentage Increment (Target Price)</th><th>Percentage Increment (Last Invoice Price)</th><th>Percentage Increment (Start Unit Price)</th></tr>"; //<th>Contract Duration</th><th>Dispatch Location</th>
                     }
                     else {
 
                         $('#BidTrendGraph').css('display', 'none');
-                        var strHead = "<tr><th>Item/Product</th><th>Target Price</th><th>Last Invoice Price</th><th>Bid Start Price</th><th>Ceiling/ Max Price</th><th>Quantity</th><th>UOM</th><th>Minimum Increament</th><th>Level</th><th>Vendor</th><th>Accepted Price</th><th>Bid Value</th><th>Percentage Decrement (Target Price)</th><th>Percentage Decrement (Last Invoice Price)</th><th>Percentage Decrement (Ceiling/ Max Price)</th></tr>";
+                        var strHead = "<tr><th>Item/Product</th><th>Target Price</th><th>Last Invoice Price</th><th>Start Unit Price</th><th>Ceiling/ Max Price</th><th>Quantity</th><th>UOM</th><th>Minimum Increament</th><th>Level</th><th>Vendor</th><th>Accepted Price</th><th>Bid Value</th><th>Percentage Decrement (Target Price)</th><th>Percentage Decrement (Last Invoice Price)</th><th>Percentage Decrement (Ceiling/ Max Price)</th></tr>";
                     }
 
 
@@ -328,7 +329,7 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                     var minimuminc;
                     $('#divTarget').hide();
                     var sname = '';
-                    var strHead = "<tr><th>S No</th><th>Item/Product</th><th>Target Price</th><th>Last Invoice Price</th><th>Bid Start Price</th><th>Total Quantity</th><th>Min.Quantity</th><th>Max.Quantity</th><th>Unallocated Quantity</th><th>UOM</th><th>Wt. Avg.</th><th>Minimum Increment</th><th>Level</th><th>Vendor</th><th>Quantity Bided</th><th>Allocated Quantity</th><th>Initial Quote</th><th>Highest Quote</th></tr>"; //<th>Contract Duration</th><th>Dispatch Location</th>
+                    var strHead = "<tr><th>S No</th><th>Item/Product</th><th>Target Price</th><th>Last Invoice Price</th><th>Start Unit Price</th><th>Total Quantity</th><th>Min.Quantity</th><th>Max.Quantity</th><th>Unallocated Quantity</th><th>UOM</th><th>Wt. Avg.</th><th>Minimum Increment</th><th>Level</th><th>Vendor</th><th>Quantity Bided</th><th>Allocated Quantity</th><th>Initial Quote</th><th>Highest Quote</th></tr>"; //<th>Contract Duration</th><th>Dispatch Location</th>
                     jQuery('#tblBidSummary > thead').append(strHead);
 
                     var c = 1;
@@ -386,10 +387,10 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
                     var ItemNameHead = stringDivider("Item Product Service", 5, "<br/>\n");
 
                     if (_bidclosingtype != 'undefined' && _bidclosingtype == 'S') {
-                        var strHead = "<tr><th>S No</th><th>" + ItemNameHead + "</th><th>Target Price</th><th>Last Invoice Price</th><th>Bid start price</th><th>Quantity</th><th>UOM</th><th>Minimum Dec.</th><th>Item Closing Time</th><th>Level</th><th>Vendor</th><th>Loading Factor - &lambda; (in %)</th><th>Initial Quote</th><th>Lowest Quote</th><th>Bid Value</th><th>Percentage Reduction (Target Price)</th><th>Percentage Reduction (Last Invoice Price)</th><th>Percentage Reduction (Bid start price)</th></tr>";
+                        var strHead = "<tr><th>S No</th><th>" + ItemNameHead + "</th><th>Target Price</th><th>Last Invoice Price</th><th>Start Unit Price</th><th>Quantity</th><th>UOM</th><th>Minimum Dec.</th><th>Item Closing Time</th><th>Level</th><th>Vendor</th><th>Loading Factor - &lambda; (in %)</th><th>Initial Quote</th><th>Lowest Quote</th><th>Bid Value</th><th>Percentage Reduction (Target Price)</th><th>Percentage Reduction (Last Invoice Price)</th><th>Percentage Reduction (Start Unit Price)</th></tr>";
                     }
                     else {
-                        var strHead = "<tr><th>S No</th><th>" + ItemNameHead + "</th><th>Target Price</th><th>Last Invoice Price</th><th>Bid start price</th><th>Quantity</th><th>UOM</th><th>Minimum Dec.</th><th>Level</th><th>Vendor</th><th>Loading Factor - &lambda; (in %)</th><th>Initial Quote</th><th>Lowest Quote</th><th>Bid Value</th><th>Percentage Reduction (Target Price)</th><th>Percentage Reduction (Last Invoice Price)</th><th>Percentage Reduction (Bid start price)</th></tr>";
+                        var strHead = "<tr><th>S No</th><th>" + ItemNameHead + "</th><th>Target Price</th><th>Last Invoice Price</th><th>Start Unit Price</th><th>Quantity</th><th>UOM</th><th>Minimum Dec.</th><th>Level</th><th>Vendor</th><th>Loading Factor - &lambda; (in %)</th><th>Initial Quote</th><th>Lowest Quote</th><th>Bid Value</th><th>Percentage Reduction (Target Price)</th><th>Percentage Reduction (Last Invoice Price)</th><th>Percentage Reduction (Start Unit Price)</th></tr>";
                     }
 
                     jQuery('#tblBidSummary > thead').append(strHead);
@@ -497,10 +498,10 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
 
                     //if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
 
-                    //    strHead = "<tr><th>S No</th><th>Item/Product/Service</th><th>Target Price</th><th>Last Invoice Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Minimum Dec.</th><th>Vendor</th><th>Landed Price</th><th>Cess</th><th>GST %</th><th>NCV</th><th>Item Closing Time</th><th>Level</th><th>Initial Quote</th><th>Lowest Quote</th><th class=hide>Bid Value</th><th>Quantity Offered</th></tr>";
+                    //    strHead = "<tr><th>S No</th><th>Item/Product/Service</th><th>Target Price</th><th>Last Invoice Price</th><th>Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Minimum Dec.</th><th>Vendor</th><th>Landed Price</th><th>Cess</th><th>GST %</th><th>NCV</th><th>Item Closing Time</th><th>Level</th><th>Initial Quote</th><th>Lowest Quote</th><th class=hide>Bid Value</th><th>Quantity Offered</th></tr>";
                     //}
                     //else {
-                    strHead = "<tr><th>S No</th><th>Item/Product/Service</th><th>Target Price</th><th>Last Invoice Price</th><th>Quantity</th><th>UOM</th><th>Bid Start Price</th><th>Minimum Dec.</th><th>Vendor</th><th>Landed Price</th><th>Cess</th><th>GST %</th><th>NCV</th><th>Level</th><th>Initial Quote</th><th>Lowest Quote</th><th>Quantity Offered</th></tr>";
+                    strHead = "<tr><th>S No</th><th>Item/Product/Service</th><th>Target Price</th><th>Last Invoice Price</th><th>Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Minimum Dec.</th><th>Vendor</th><th>Landed Price</th><th>Cess</th><th>GST %</th><th>NCV</th><th>Level</th><th>Initial Quote</th><th>Lowest Quote</th><th>Quantity Offered</th></tr>";
                     // }
                     jQuery('#tblBidSummary > thead').append(strHead);
 
@@ -610,15 +611,8 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
 
                     _bidarray.push([data[prop].shortName, parseInt(data[prop].lQuote), parseInt(_timelft), data[prop].vendorName]) //]
                 }
-                setTimeout(function () {
-                    // saveAspdf()
-                    jQuery.unblockUI();
-                    setTimeout(function () {
-                        window.print();
-                        window.close();
-                    }, 1000)
-                }, 6000)
-
+               
+                jQuery.unblockUI(); 
             }
             else {
                 jQuery('#tblBidSummary > tbody').append("<tr><td colspan='18' style='text-align: center; color:red;'>No record found</td></tr>");
@@ -742,9 +736,9 @@ function fngetConnHistory(bidid) {
             jQuery("#tblIPHistory").empty();
             if (JSonData != null && JSonData.length > 0) {
                 $('#tblIPHistory').show();
-                jQuery("#tblIPHistory").append("<thead><tr style='background: #44b6ae;'><th colspan=4 style='font-size:19px; text-align:left;color: #FFF;'>Connection History</th></tr><tr><th>IP</th><th style='width:20%!important;'>From</th><th style='width:20%!important;'>To</th><th style='width:20%!important;'>Status</th></thead>");
+                jQuery("#tblIPHistory").append("<thead><tr style='background: #44b6ae;'><th colspan=4 style='font-size:19px; text-align:left;color: #FFF;'>Connection History</th></tr><tr><th style='width:20%!important;'>From</th><th style='width:20%!important;'>To</th><th style='width:20%!important;'>Status</th></thead>");
                 for (var i = 0; i < JSonData.length; i++) {
-                    jQuery("#tblIPHistory").append("<tr><td>" + JSonData[i].machineIP + "</td><td>" + fnConverToLocalTime(JSonData[i].ConnectionFrom) + "</td><td>" + fnConverToLocalTime(JSonData[i].ConnectionTo) + "</td><td>" + JSonData[i].Status + "</td></tr>");
+                    jQuery("#tblIPHistory").append("<tr><td>" + fnConverToLocalTime(JSonData[i].ConnectionFrom) + "</td><td>" + fnConverToLocalTime(JSonData[i].ConnectionTo) + "</td><td>" + JSonData[i].Status + "</td></tr>");
                 }
             }
             else {
@@ -759,7 +753,7 @@ var graphData = [];
 function fnPaintGraph(shortname, counter, itemId) {
 
 
-    $('#Items').append('<table  width="100%"  class=pagebreak border="1" style="border-collapse: collapse;" id="tblBidItem' + counter + '"></table>')
+    $('#Items').append('<table  width="100%"  class="pagebreak" border="1" style="border-collapse: collapse;" id="tblBidItem' + counter + '"></table>')
     if (counter == 1) {
         $('#tblBidItem' + counter).append('<tr><td width="100%"><div id="BidTrendGraph" style="width:100%;margin-top:10px;font-size:20px;line-height: 30px;padding-bottom: 8px;font-family:Arial, Helvetica, sans-serif; font-weight: 200;text-align: center;"><div style="clear: both;"></div> <label style="text-align: center;">Bid Graph Trend</label></div></td></tr>')
     }
@@ -1013,4 +1007,21 @@ function stringDivider(str, width, spaceReplacer) {
         }
     }
     return str;
+}
+
+//to print pdf
+function printpdf(){
+    printJS(
+        {
+            printable:'mainBody',
+            type:'html',
+            scanStyles:true,
+            css:[`assets/CustomCSS/common.css`,`assets/CustomCSS/ViewReport2.css`],
+            showModal:true,
+            modalMessage:'Downloading pdf'
+            
+        }
+        
+        
+        )
 }

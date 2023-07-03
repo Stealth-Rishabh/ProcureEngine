@@ -1,31 +1,9 @@
 function logoutFunction() {
     sessionStorage.clear();
-    //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net');
-    sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net');
-    window.location.href = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1) + 'index.htm';
+    sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net');
+      window.location.href = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1) + 'index.htm';
 }
-/*function handleDateTimepicker() {
-    if (jQuery().datepicker) {
-        $('.date-picker').datepicker({
-            locale: 'zh-CN',
-            language: 'zh-CN'
-        });
-        $(".form_datetime").datetimepicker({
-            locale: 'zh-CN',
-            language: 'zh-CN'
-        });
-        $(".form_advance_datetime").datetimepicker({
-            locale: 'zh-CN',
-            language: 'zh-CN'
-        });
 
-        $(".form_meridian_datetime").datetimepicker({
-            locale: 'zh-CN',
-            language: 'zh-CN'
-        });
-        //$('body').removeClass("modal-open"); // fix bug when inline picker is used in modal
-    }
-}*/
 function error401Messagebox(error) {
 
     bootbox.alert("Your session has expired due to inactivity.<br>Please Login again.", function () {
@@ -127,6 +105,8 @@ function gritternotification(msz) {
     return false;
 }
 function calltoaster(msz, title, type) {
+    $(".toast-success").remove();
+     // toastr.clear()
     var options = {
         tapToDismiss: false,
         "closeButton": true,
@@ -141,7 +121,8 @@ function calltoaster(msz, title, type) {
 
     }
     if (type == 'success') {
-        toastr.success(decodeURIComponent(msz), title, options);
+        toastr.success(decodeURIComponent(msz), 'You have a new message.', options);
+
     } else if (type == 'error') {
         toastr.error(decodeURIComponent(msz), 'Error');
     } else if (type == 'warning') {
@@ -183,8 +164,8 @@ var decodeEntities = (function () {
 function stringDivider(str, width, spaceReplacer) {
     if (str.length > width) {
         var p = width
-        for (; p > 0 && str[p] != ' '; p--) {
-        }
+        //for (; p > 0 && str[p] != ' '; p--) {
+        //}
         if (p > 0) {
             var left = str.substring(0, p);
             var right = str.substring(p + 1);
@@ -227,12 +208,12 @@ function fetchMenuItemsFromSession(parentmenuid, menuid) {
     });
 
 }
+
 function CheckOnlineStatus(msg) {
 
 
     var condition = navigator.onLine ? "ONLINE" : "OFFLINE";
     if (condition == "OFFLINE") {
-
         toastr.options = {
             "closeButton": true,
             "debug": false,
@@ -270,6 +251,13 @@ function Pageloaded() {
 
     }, false);
 }
+function getTimezoneOffset() {
+    function z(n) { return (n < 10 ? '0' : '') + n }
+    var offset = new Date().getTimezoneOffset();
+    var sign = offset < 0 ? '+' : '-';
+    offset = Math.abs(offset);
+    return sign + z(offset / 60 | 0) + z(offset % 60);
+}
 function BindNoExtensions(divid) {
 
     jQuery("#" + divid).append(jQuery("<option></option>").val('-1').html('Unlimited'));
@@ -295,7 +283,7 @@ $('#logOut_btn').click(function () {
 });
 //abheedev bug 605 16/12/2022
 function checkfilesize(fileid) {
-   
+
     var ftype = $('#' + fileid.id).val().substr(($('#' + fileid.id).val().lastIndexOf('.') + 1));
 
     var fn = $('#' + fileid.id)[0].files[0].name; // get file type
@@ -318,8 +306,8 @@ function checkfilesize(fileid) {
     //if (size > 5242880)// checks the file more than 5 MB
     //{
 
-    if (fname.length > 70) {
-        $('.alert-danger').html('File Name should not be more than 70 charachters!')
+    if (fname.length > 200) {
+        $('.alert-danger').html('File Name should not be more than 200 charachters!')
         $('.alert-danger').show();
         Metronic.scrollTo($('.alert-danger'), -200);
         $('.alert-danger').fadeOut(5000);
@@ -355,7 +343,7 @@ function thousands_Sep_Text(num) {
     num_parts[0] = num_parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return num_parts.join(".");
 }
-function thousands_separators(num) {
+/*function thousands_separators(num) {
     var res = "";
     if (num != null && num != undefined) {
         x = num.toString();
@@ -375,7 +363,17 @@ function thousands_separators(num) {
         res = otherNumbers.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + lastThree + afterPoint;
     }
     return res;
+}*/
+function thousands_separators(num) {
+    let str = "";
+    let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
+    if (num != null && num != undefined) {
+        str = num.toLocaleString(culturecode);
+    }
+    return str;
 }
+
+
 function thousands_separators_NonMadCol(ele) {
     var num = ele.value;
 
@@ -395,18 +393,47 @@ function thousands_separators_NonMadCol(ele) {
     ele.value = res;
 }
 function thousands_separators_input(ele) {
+
     var valArr, val = ele.value;
+    let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
     val = val.replaceAll(/[^0-9\.]/g, '');
+    val = val.replace(/[,]/g, '');
+
 
     if (val != "") {
         valArr = val.split('.');
-        valArr[0] = (parseInt(valArr[0], 10)).toLocaleString();
+        valArr[0] = (parseInt(valArr[0], 10)).toLocaleString(culturecode);
         val = valArr.join('.');
+    }
+    ele.value = val;
+}
+/*function thousands_separators_input(ele) {
+    var regex = /^[0-9,.]+$/g;
+    var str = ele.value;
+    if (!(regex.test(str))) {
+        str = "";
+        $(ele).val("")
+    }
+    str = str.replaceAll(',', "");
+    if (str != "") {
+        str = parseFloat(str);
+    }
+    $(ele).val(str.toLocaleString(sessionStorage.getItem("culturecode")));
+}*/
+
+
+function removeZero(ele) {
+
+    var val = ele.value;
+    if (val == "0") {
+        val = "";
+
     }
     ele.value = val;
 }
 
 function removeThousandSeperator(val) {
+
     if (val.length > 4) {
         val = val.replace(/,/g, '');
 
@@ -445,6 +472,7 @@ function convertTo24Hour(time) {
     return time;
 }
 function CancelBidDuringConfig(_bidId, _for) {
+    var x = isAuthenticated();
     var Cancelbid = {
         "BidID": parseInt(_bidId),
         "For": _for,
@@ -452,7 +480,7 @@ function CancelBidDuringConfig(_bidId, _for) {
         "SendMail": '',
         "UserID": sessionStorage.getItem('UserID')
     };
-   
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/CancelBidDuringConfig",
@@ -513,14 +541,14 @@ function replaceQuoutesFromString(ele) {
     str = str.replace(/"/g, '');
     //@abheedev bug368 start
     str = str.replace(/#/g, '');
-    //  str = str.replace(/&/g, '');
+     //str = str.replace(/&/g, '');
     //@abheedev bug368 end
 
     str = str.replace(/~/g, '');
     str = str.replace(/`/g, '');
     str = str.replace(/</g, '');
     str = str.replace(/>/g, '');
-    str = str.replace(/_/g, '');
+    //str = str.replace(/_/g, '');
     str = str.replace(/^/g, '');
     ele.value = str;
     //return val;
@@ -533,12 +561,12 @@ function replaceQuoutesFromStringFromExcel(ele) {
         str = ele.replace(/'/g, '');
         str = ele.replace(/"/g, '');
         str = ele.replace(/#/g, '');
-        str = ele.replace(/&/g, '');
+        //str = ele.replace(/&/g, '');
         str = ele.replace(/~/g, '');
         str = ele.replace(/`/g, '');
         str = ele.replace(/</g, '');
         str = ele.replace(/>/g, '');
-        str = ele.replace(/_/g, '');
+        //str = ele.replace(/_/g, '');
         str = ele.replace(/^/g, '');
     }
 
@@ -546,10 +574,31 @@ function replaceQuoutesFromStringFromExcel(ele) {
     return str;
 }
 
+function replaceQuoutesFromText(ele) {
+
+    var str = '';
+    str = ele.value;
+    str = str.replace(/'/g, '');
+    str = str.replace(/"/g, '');
+    //@abheedev bug368 start
+    str = str.replace(/#/g, '');
+    //  str = str.replace(/&/g, '');
+    //@abheedev bug368 end
+
+    str = str.replace(/~/g, '');
+    str = str.replace(/`/g, '');
+    str = str.replace(/</g, '');
+    str = str.replace(/>/g, '');
+    //str = str.replace(/_/g, '');
+    str = str.replace(/,/g, '');
+    str = str.replace(/^/g, '');
+    ele.value = str;
+    //return val;
+}
 ////******* Chat functions*********/////////////////////////////
 
 function openForm() {
-    
+
     $(".pulsate-regular").css('animation', 'none');
 }
 
@@ -563,13 +612,14 @@ function openChatDiv(name, email, vendorId, connectionid, userid, contactperson)
     $("#hddnVendorId").val(vendorId);
     $("#hddnVendorConnection").val(connectionid);
     fetchUserChats(vendorId, 'S');
+    
     if (connectionid == '') {
-        $('#chatbtn').addClass('hide')
-        $('#txtChatMsg').addClass('hide')
+        $('#chatbtn').hide()
+        $('#txtChatMsg').hide()
     }
     else {
-        $('#chatbtn').removeClass('hide')
-        $('#txtChatMsg').removeClass('hide')
+        $('#chatbtn').show()
+        $('#txtChatMsg').show()
 
     }
 }
@@ -593,7 +643,7 @@ function closeChatsForAdminB() {
 
 function fetchBroadcastMsgs(userId, msgType) {
     var _bidId = 0;
-    
+
     _bidId = (sessionStorage.getItem('BidID') == 0) ? getUrlVarsURL(decryptedstring)['BidID'] : sessionStorage.getItem('BidID');
     var data = {
         "UserID": userId,
@@ -615,8 +665,9 @@ function fetchBroadcastMsgs(userId, msgType) {
 
             $("#listBroadCastMessages").empty();
             if (data.length > 0) {
+
                 for (var i = 0; i < data.length; i++) {
-                   
+
                     if (sessionStorage.getItem("UserID") == data[i].fromUserId) {
                         $("#listBroadCastMessages").append('<div class="post in">'
                             + '<div class="message">'
@@ -667,7 +718,6 @@ function fetchvendor() {
         cache: false,
         dataType: "json",
         success: function (data) {
-
             jQuery('#vendorsChatlist').empty()
             if (data.length > 0) {
                 toastr.clear();
@@ -689,7 +739,7 @@ function fetchvendor() {
 
                     }
                     else {
-                       
+
                         $("#vendorsChatlist").append('<li class="media" id=v' + data[i].userID + '  onclick="openChatDiv(\'' + data[i].vendorName + '\', \'' + data[i].emailId + '\', \'' + data[i].vendorID + '\', \'' + encodeURIComponent(data[i].connectionID) + '\',\'' + data[i].userID + '\',\'' + data[i].contactPerson + '\');">'
                             + '<div class="media-status"><span class="badge badge-empty badge-danger" id=sticon' + data[i].userID + '  ></span>'
                             + '</div>'
@@ -733,17 +783,19 @@ function fetchvendor() {
     });
 }
 function fetchUserChats(userId, msgType) {
-   
+
     toastr.clear();
     var _bidId = 0;
     _bidId = (sessionStorage.getItem('BidID') == 0) ? BidID : sessionStorage.getItem('BidID');
     var url = "";
     var data = {
         "UserID": userId,
-        "BidID": _bidId,
+        "BidID": parseInt(_bidId),
         "UserType": sessionStorage.getItem("UserType"),
         "msgType": msgType
     }
+    //console.log(JSON.stringify(data))
+
     jQuery.ajax({
         type: "POSt",
         contentType: "application/json; charset=utf-8",
@@ -756,32 +808,47 @@ function fetchUserChats(userId, msgType) {
         dataType: "json",
         success: function (data, status, jqXHR) {
             $("#chatList").empty();
+
             if (data.length > 0) {
                 $(".pulsate-regular").css('animation', 'none');
-                for (var i = 0; i < data.length; i++) {
 
-                    if (sessionStorage.getItem("UserID") == data[i].fromUserId) {
-                        $("#chatList").append('<div class="post in">'
-                            + '<div class="message">'
-                            + '<span class="arrow"></span>'
-                            + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
-                            + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + fnConverToLocalTime(data[i].msgTime) + '</span>'
-                            + '<span class="body" style="color: #c3c3c3;">' + data[i].chatMsg + '</span>'
-                            + '</div>'
-                            + '</div>');
-                    }
-                    if (sessionStorage.getItem("UserID") != data[i].fromUserId) {
-                        $("#chatList").append('<div class="post out">'
-                            + '<div class="message">'
-                            + '<span class="arrow"></span>'
-                            + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
-                            + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + fnConverToLocalTime(data[i].msgTime) + '</span>'
-                            + '<span class="body" style="color: #c3c3c3;">' + data[i].chatMsg + '</span>'
-                            + '</div>'
-                            + '</div>');
+                $('#hddnadminConnection').val(data[0].fromconnectionID)
+                if (data[0].fromconnectionID == '') {
+                    $('#adminconn').removeClass('badge-success').addClass('badge-danger')
+                    $('#admstatus').text("Buyer Offline")
+                    $('#chatbtn').addClass('hide')
+                    $('#txtChatMsg').addClass('hide')
+                }
+                else {
+                    $('#adminconn').removeClass('badge-danger').addClass('badge-success')
+                    $('#admstatus').text("Buyer Online")
+                    $('#chatbtn').removeClass('hide')
+                    $('#txtChatMsg').removeClass('hide')
+                }
+
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].chatMsg != "") {
+                        if (sessionStorage.getItem("UserID") == data[i].fromUserId) {
+                            $("#chatList").append('<div class="post in">'
+                                + '<div class="message">'
+                                + '<span class="arrow"></span>'
+                                + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + fnConverToLocalTime(data[i].msgTime) + '</span>'
+                                + '<span class="body" style="color: #c3c3c3;">' + data[i].chatMsg + '</span>'
+                                + '</div>'
+                                + '</div>');
+                        }
+                        if (sessionStorage.getItem("UserID") != data[i].fromUserId) {
+                            $("#chatList").append('<div class="post out">'
+                                + '<div class="message">'
+                                + '<span class="arrow"></span>'
+                                + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + fnConverToLocalTime(data[i].msgTime) + '</span>'
+                                + '<span class="body" style="color: #c3c3c3;">' + data[i].chatMsg + '</span>'
+                                + '</div>'
+                                + '</div>');
+                        }
                     }
                 }
-                
+
                 if (document.body.classList.contains("page-quick-sidebar-open") && sessionStorage.getItem("UserType") == 'P') {
                     openForm();
                 }
@@ -808,7 +875,7 @@ function updateMsgReadFlag(bidId, vendorId, forUpdate) {
         "userID": vendorId,
         "UpdateFor": forUpdate
     }
-   
+
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Activities/updateMsgReadFlag",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -864,11 +931,10 @@ var counter = 0;
 
 //** upload Files on Blob/Portaldocs
 function fnUploadFilesonAzure(fileID, filename, foldername) {
-    
+
     var formData = new FormData();
     formData.append('file', $('#' + fileID)[0].files[0]);
     formData.append('foldername', foldername);
-
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/UploadFiles/",
         type: 'POST',
@@ -893,14 +959,14 @@ function fnUploadFilesonAzure(fileID, filename, foldername) {
 
 //** DownLoad Files from Blob
 function fnDownloadAttachments(filename, foldername) {
-
-
+    debugger
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/DownloadFiles/?fileName=" + filename + "&foldername=" + foldername,
         type: "Get",
         cache: false,
         crossDomain: true,
         success: function (data) {
+
             //abheedev bug 353 start line 894 to 922.
             if (data.indexOf('<?xml') != -1) //if file is xml then give error
             {
@@ -928,15 +994,37 @@ function fnDownloadAttachments(filename, foldername) {
         }
     })
 }
-//abheedev bug 353 end
-function fnConverToLocalTime(dttime) {
+///*** get Cuurenct datetime 
+function fnGetCurrentPrefferedProfileDTTime() {
+
+    var theStDate = new Date();
+    if (sessionStorage.getItem('preferredtimezone') != null) {
+        theStDate = theStDate.toLocaleString("en-GB", {
+            timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "medium"
+        });
+
+    }
+    else {
+        theStDate = theStDate.toLocaleString("en-GB", {
+            dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+        });
+
+    }
+    theStDate = theStDate.replace('at', '-');
+    return theStDate;
+
+}
+
+/*function fnConverToLocalTime(dttime) {
+
+    
     if (dttime != null) {
         var theStDate = new Date(dttime)
         theStDate = new Date(theStDate + ' UTC');
 
         if (sessionStorage.getItem('preferredtimezone') != null) {
             theStDate = theStDate.toLocaleString("en-GB", {
-                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "medium", hourCycle: "h24", timeStyle: "short"
             })
         }
         else {
@@ -946,12 +1034,15 @@ function fnConverToLocalTime(dttime) {
 
         }
         theStDate = theStDate.replace('at', '-');
+      
         return theStDate;
     }
     else return '..'
 }
+*/
+
 function fnSetLocalFromTimeZone(dateTime) {
-  
+
     var retDt = new Date();
     var userTz = sessionStorage.getItem('preferredtimezone');
     var systemDate = new Date();
@@ -1015,7 +1106,7 @@ function fnConverToLocalTimeWithSeconds(dttime) {
 
         if (sessionStorage.getItem('preferredtimezone') != null) {
             theStDate = theStDate.toLocaleString("en-GB", {
-                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "medium"
+                timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "medium", hourCycle: "h24", timeStyle: "medium"
             })
         }
         else {
@@ -1029,8 +1120,13 @@ function fnConverToLocalTimeWithSeconds(dttime) {
     }
     else return '..'
 }
+function keepTimeOnly(date) {
 
-function fnConverToShortDT(dttime) {
+    let timeOnly = new Date(date);
+    timeOnly = timeOnly.toTimeString().slice(0, 9)
+    return timeOnly;
+}
+/*function fnConverToShortDT(dttime) {
     if (dttime != null) {
 
 
@@ -1050,7 +1146,8 @@ function fnConverToShortDT(dttime) {
         return theStDate;
     }
     else return '..'
-}
+
+}*/
 
 function fnConverToTime(dttime) {
     if (dttime != null) {
@@ -1130,25 +1227,6 @@ function fnFileDeleteAzure(filename, foldername, deletionfor, srno) {
     })
 }
 
-//function fnFileDeleteLocalfolder(path) {
-//    var formData = new window.FormData();
-//    formData.append("Path", path);
-//    $.ajax({
-//        url: 'ConfigureFileAttachment.ashx',
-//        data: formData,
-//        processData: false,
-//        contentType: false,
-//        asyc: false,
-//        type: 'POST',
-//        success: function (data) {
-//            return;
-//        },
-//        error: function () {
-//            console.log('Error in deletion in file from local path')
-//        }
-
-//    });
-//}
 
 function validateEmail(email) {
     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -1317,18 +1395,25 @@ function fetchBidType() {
 
 }
 
-function fnfetchCatVendors() {
+function fnfetchCatVendors() { 
+   
+    let data = {
+        "ProductCatIDList": JSON.parse(sessionStorage.getItem("hdnCategoryGrpID")),
+        "VendorID": parseInt(sessionStorage.getItem('hdnVendorID')),
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
+    }
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     // alert(sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchCategoryVendorForAdvSearch_PEV2/?CategoryID=" + sessionStorage.getItem("hdnCategoryGrpID") + "&VendorID=" + sessionStorage.getItem('hdnVendorID') + "&CustomerID=" + sessionStorage.getItem('CustomerID'))
     jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchCategoryVendorForAdvSearch_PEV2/?CategoryID=" + sessionStorage.getItem("hdnCategoryGrpID") + "&VendorID=" + sessionStorage.getItem('hdnVendorID') + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
+        url: sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchCategoryVendorForAdvSearch_PEV2/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-        crossDomain: true,
-        dataType: "json",
+        type: "POST",
+        async: false,                      
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        crossDomain:true,
         success: function (data) {
+           debugger;
             $('#div_table').removeClass('hide');
             $('#tbldetails').empty();
             if (data.length) {
@@ -1341,8 +1426,8 @@ function fnfetchCatVendors() {
                 jQuery('#divalerterrsearch').slideDown('show');
                 $('#spanerterrserach').text('No data found')
                 $('#div_table').addClass('hide');
-                // App.scrollTo(jQuery('#divalerterrsearch'), -200);
-
+                App.scrollTo(jQuery('#divalerterrsearch'), -200);
+                jQuery.unblockUI();
                 return false;
             }
             jQuery.unblockUI();
@@ -1356,12 +1441,12 @@ function fnfetchCatVendors() {
             else {
                 jQuery('#divalerterrsearch').slideDown('show');
                 $('#div_table').addClass('hide');
-                $('#spanerterrserach').text('You have error .Please try again')
+                $('#spanerterrserach').text('Please Select Category to Proceed')
             }
-            return false;
             jQuery.unblockUI();
+            return false;           
         }
-
+       
     })
 
     setTimeout(function () {
@@ -1369,6 +1454,7 @@ function fnfetchCatVendors() {
     }, 5000);
     clearsearchmodal();
 }
+
 $('#Advancesearch').on("hidden.bs.modal", function () {
     clearsearchmodal();
     $('#div_table').addClass('hide');
@@ -1390,8 +1476,6 @@ function getUrlVarsURL(URLString) {
     }
     return vars;
 }
-
-
 var code = {
 
     encryptMessage: function (messageToencrypt, secretkey) {
@@ -1482,6 +1566,8 @@ function _base64ToArrayBuffer(base64) {
     }
     return bytes.buffer;
 }
+
+
 var tableToExcelMultipleSheetwithoutColor = (function () {
     var uri = 'data:application/vnd.ms-excel;base64,'
         , tmplWorkbookXML = '<?xml version="1.0"?><?mso-application progid="Excel.Sheet"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">'
@@ -1813,15 +1899,19 @@ function StringEncodingMechanism(maliciousText) {
 }
 
 function StringDecodingMechanism(maliciousText) {
-   
     var returnStr = maliciousText;
-    returnStr = returnStr.replaceAll('&lt;', '<');
-    returnStr = returnStr.replaceAll('&gt;', '>');
-    returnStr = returnStr.replaceAll('&quot;', '"');
-    returnStr = returnStr.replaceAll("&#x27;", "'");
-    returnStr = returnStr.replaceAll('&#x2F;', '/');
-    // returnStr = returnStr.replaceAll('alert-', 'alert(');
-    returnStr = returnStr.replaceAll('&amp;', '&');
+    if (returnStr != null) {
+        returnStr = returnStr.replaceAll('&lt;', '<');
+        returnStr = returnStr.replaceAll('&gt;', '>');
+        returnStr = returnStr.replaceAll('&quot;', '"');
+        returnStr = returnStr.replaceAll("&#x27;", "'");
+        returnStr = returnStr.replaceAll('&#x2F;', '/');
+        // returnStr = returnStr.replaceAll('alert-', 'alert(');
+        returnStr = returnStr.replaceAll('&amp;', '&');
+    }
+    else {
+        returnStr = '';
+    }
     return returnStr;
 }
 
@@ -1914,56 +2004,163 @@ function checkPasswordValidation(value) {
     }
 
 
-    const isValidLength = /^.{6,8}$/;
+    const isValidLength = /^.{6,15}$/;
     if (!isValidLength.test(value)) {
-        return "Password must be 6-8 Characters Long.";
+        return "Password must be 6-15 Characters Long.";
     }
     return "SUCCESS";
 
 }
 //common function
 function RegisterUser_fetchRegisterUser(docData) {
-  
+
     var data = docData;
     var dataToReturn = "";
     var url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser";
-    (async () => {jQuery.ajax({
-        //type: "GET",
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        url: url,
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-        crossDomain: true,
-        data: JSON.stringify(data),
-        dataType: "json",
-        success: function (data) {
-           
-            if (data.length > 0) {
-                dataToReturn = data;
-                
-            }
-            else {
-                dataToReturn = '';
+    (async () => {
+        jQuery.ajax({
+            //type: "GET",
+            type: "POST",
+            contentType: "application/json; charset=utf-8",
+            url: url,
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            cache: false,
+            crossDomain: true,
+            data: JSON.stringify(data),
+            dataType: "json",
+            success: function (data) {
+
+                if (data.length > 0) {
+                    dataToReturn = data;
+
+                }
+                else {
+                    dataToReturn = '';
+                }
+
+            },
+            error: function (xhr, status, error) {
+
+                var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+                if (xhr.status == 401) {
+                    error401Messagebox(err.Message);
+                }
+                else {
+                    fnErrorMessageText('error', '');
+                }
+                jQuery.unblockUI();
+                return false;
+
             }
 
-        },
-        error: function (xhr, status, error) {
-     
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('error', '');
-            }
-            jQuery.unblockUI();
-            return false;
 
+        });
+    })();
+    return dataToReturn;
+}
+function fnGetCurrentPrefferedProfileDTTime() {
+
+    var theStDate = new Date();
+    if (sessionStorage.getItem('preferredtimezone') != null) {
+        theStDate = theStDate.toLocaleString("en-GB", {
+            timeZone: sessionStorage.getItem('preferredtimezone'), dateStyle: "long", hourCycle: "h24", timeStyle: "medium"
+        });
+
+    }
+    else {
+        theStDate = theStDate.toLocaleString("en-GB", {
+            dateStyle: "long", hourCycle: "h24", timeStyle: "short"
+        });
+
+    }
+    theStDate = theStDate.replace('at', '-');
+    return theStDate;
+
+}
+
+/*function localecommaseperator(ele) {
+    var regex = /[^\d,]+/g
+    var str = ele.value;
+    if ((regex.test(str))) {
+        str = "";
+        $(ele).val("")
+    }
+    str = str.replaceAll(',', "")
+    if (str != "") {
+        str = parseFloat(str);
+    }
+    $(ele).val(str.toLocaleString(sessionStorage.getItem("culturecode")))
+
+}*/
+function localecommaseperator(ele) {
+
+    var valArr, val = ele.value;
+    val = val.replaceAll(/[^0-9\.]/g, '');
+    val = val.replace(/[,]/g, '');
+
+
+    if (val != "") {
+        valArr = val.split('.');
+        valArr[0] = (parseInt(valArr[0], 10)).toLocaleString(sessionStorage.getItem("culturecode"));
+        val = valArr.join('.');
+    }
+    ele.value = val;
+}
+
+function localeseperator(ele) {
+    let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
+    str = ele.toLocaleString(culturecode);
+    return str;
+}
+
+//abheedev changes to date-time formating on 06/02/2023
+function fnConverToLocalTime(dttime) {
+    let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
+    if (dttime != null) {
+        var theStDate = new Date(dttime);
+        theStDate = new Date(theStDate + ' UTC');
+
+        let options = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        };
+
+        if (sessionStorage.getItem('preferredtimezone') != null) {
+            options.timeZone = sessionStorage.getItem('preferredtimezone');
+        }
+
+        theStDate = theStDate.toLocaleDateString(culturecode, options);
+        //  theStDate = theStDate.toLocaleDateString("en-US", options);
+        return theStDate;
+    } else {
+        return '..';
+    }
+}
+
+//date format change by abheedev on 06/02/2023
+function fnConverToShortDT(dttime) {
+    let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
+    if (dttime != null) {
+        var theStDate = new Date(dttime);
+
+        let options = {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+        };
+
+        if (sessionStorage.getItem('preferredtimezone') != null) {
+            options.timeZone = sessionStorage.getItem('preferredtimezone');
         }
 
 
-    });
-    })();
-    return dataToReturn;
+        //  theStDate = theStDate.toLocaleDateString("en-US", options);
+        theStDate = theStDate.toLocaleDateString(culturecode, options);
+        return theStDate;
+    } else {
+        return '..';
+    }
 }

@@ -2,6 +2,41 @@ var Changepassworderror = $('#errordivChangePassword');
 var Changepasswordsuccess = $('#successdivChangePassword');
 Changepassworderror.hide();
 Changepasswordsuccess.hide();
+jQuery(document).ready(function () {
+
+    Pageloaded()
+    var x = isAuthenticated();
+    sessionStorage.setItem('CurrentBidID', 0);
+    sessionStorage.setItem('hddnRFQID', 0);
+    sessionStorage.setItem('CurrentRFIID', 0);
+    //setInterval(function () { Pageloaded() }, 15000);
+    if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
+        window.location = sessionStorage.getItem('MainUrl');
+
+    }
+    else {
+
+        if (sessionStorage.getItem("UserType") == "E") {
+            $('.page-container').show();
+        }
+        else {
+            bootbox.alert("You are not Authorize to view this page", function () {
+                parent.history.back();
+                return false;
+            });
+        }
+    }
+    setCommonData();
+    App.init();
+    Tasks.initDashboardWidget();
+    
+    if (sessionStorage.getItem('UserType') == 'E') {
+        fetchMenuItemsFromSession(0, 0);
+    }
+
+    fetchDashboardData();
+    handleChangePasword();
+});
 
 function handleChangePasword() {
 
@@ -68,7 +103,6 @@ function handleChangePasword() {
 }
 function ChangePassword() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    debugger;
     var isSubmit = true;
     var successMsg = "";
     if ($("#nPassword").val() != $("#reEnterPass").val()) {
@@ -85,6 +119,7 @@ function ChangePassword() {
         }
     }
     if (isSubmit) {
+        var x = isAuthenticated();
         var data = {
             //"EmailID": sessionStorage.getItem("EmailID"),
             "OldPassword": $("#oPassword").val(),
@@ -215,6 +250,7 @@ function fnArchive(RFQID) {
 
 function fetchDashboardData() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var x = isAuthenticated();
     var custId = parseInt(sessionStorage.getItem('CustomerID'));
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -237,6 +273,10 @@ function fetchDashboardData() {
                 jQuery('#lblNotFwRFQCount').text(BidData[0].rFxcnt[0].notForwardedRFx)
                 jQuery('#lblFwRFQCount').text(BidData[0].rFxcnt[0].forwardedRFx)
                 jQuery('#lblAwRFQCount').text(BidData[0].rFxcnt[0].awardedRFx)
+                
+                jQuery('#lblopenNFACount').text(BidData[0].nfAcnt[0].todayNFA)
+                jQuery('#lblFwNFACount').text(BidData[0].nfAcnt[0].forwardedNFA)
+                jQuery('#lblAwNFACount').text(BidData[0].nfAcnt[0].awardedNFA)
             }
 
 
@@ -456,6 +496,7 @@ function fetchDashboardData() {
 function fetchBidDataDashboard(requesttype) {
    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var x = isAuthenticated();
     if (requesttype == 'Today') {
         jQuery('#spanPanelCaption').html("Open Bids");
     } else if (requesttype == 'Not Forwarded') {
@@ -476,6 +517,15 @@ function fetchBidDataDashboard(requesttype) {
     }
     else if (requesttype == 'AwardedRFQ') {
         jQuery('#spanPanelCaption').html("Approved RFx");
+    }
+     else if (requesttype == 'TodayNFA') {
+        jQuery('#spanPanelCaption').html("Open NFA");
+    }
+    else if (requesttype == 'ForwardedNFA') {
+        jQuery('#spanPanelCaption').html("Pending NFA");
+    }
+    else if (requesttype == 'AwardedNFA') {
+        jQuery('#spanPanelCaption').html("Approved NFA");
     }
   
   

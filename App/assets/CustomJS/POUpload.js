@@ -1,4 +1,4 @@
-﻿jQuery(document).ready(function () {
+jQuery(document).ready(function () {
    
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);

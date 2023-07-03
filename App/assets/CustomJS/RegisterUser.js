@@ -24,10 +24,12 @@ jQuery(document).ready(function () {
     fetchMenuItemsFromSession(9, 14);
     setCommonData();
     FormValidation.init();
-    fetchRoleMaster();
-
+    fetchRoleMaster();   
     fetchRegisterUser();
     BindPurchaseOrg();
+    fetchCountry()
+    numberonly()
+    $('#ddlCountryCd').select2();
     $('#ddlPurchasegroup').select2({
         placeholder: "Select Purchase Group",
         allowClear: true
@@ -82,7 +84,7 @@ function deleterow(trid, rowcount, gid) {
 
     $('#' + trid.id).remove()
     cc = cc - 1;
-    
+
     if (jQuery('#tblpurchaseOrg tr').length == 1) {
         $('#theadgroup').addClass('hide');
     }
@@ -172,7 +174,6 @@ function BindPurchaseOrg() {
 
 
 function RegisterUser() {
-
     var _cleanString = StringEncodingMechanism(jQuery("#txtUsername").val());
     var _cleanString2 = StringEncodingMechanism(jQuery('#txtdesignation').val());
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -200,12 +201,13 @@ function RegisterUser() {
         })
     }
 
-
+ 
     var RegisterUser = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": parseInt(jQuery("#hdnUserID").val()),
         //"UserName": jQuery("#txtUsername").val(),
         "UserName": _cleanString,
+        "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
         "MobileNO": jQuery("#txtmobilno").val(),
         "EmailID": jQuery("#txtemail").val(),
         "RoleID": parseInt(jQuery('#ddlroleMaster').val()),
@@ -216,7 +218,6 @@ function RegisterUser() {
         "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val()),
         "purOrg": purOrg
     };
-    //alert(JSON.stringify(RegisterUser))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "RegisterUser/RegisterUser/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -224,7 +225,7 @@ function RegisterUser() {
         data: JSON.stringify(RegisterUser),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+          
             if (data.isSuccess == 'Y') {
                 jQuery('#divalerterror').hide();
                 App.scrollTo($('#divalertsucess'), -200);
@@ -269,11 +270,11 @@ function fetchRegisterUser() {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
         "Isactive": "T"
-    } 
+    }
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
-       // url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=T",
+        // url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&Isactive=T",
         url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
@@ -283,18 +284,20 @@ function fetchRegisterUser() {
         success: function (data) {
             jQuery("#tblRegisterUsers > tbody").empty();
             if (data.length > 0) {
-                jQuery.each(data, function (key, value) {
-
-                    var str = "<tr><td style=\"display:none;\">" + value.userID + "</td><td>" + value.userName + "</td><td>" + value.mobileNO + "</td><td>" + value.emailID + "</td><td>" + value.designation + "</td><td>" + value.roleName + "</td><td>" + value.isActive + "</td><td style=\"display:none;\">" + value.roleID + "</td>";
+                jQuery.each(data, function (key, value) {  
+                    // var str = "<tr><td style=\"display:none;\">" + value.userID + "</td><td>" + value.userName + "</td><td>" + "+<span id='usercode'>" + value.dialingCode + "</span>" + " " + "<span id='username'>" + value.mobileNO + "</span>" + "</td><td>" + value.emailID + "</td><td>" + value.designation + "</td><td>" + value.roleName + "</td><td>" + value.isActive + "</td><td style=\"display:none;\">" + value.roleID + "</td>";
+                    var str = "<tr><td style='display:none;'>" + value.userID + "</td><td>" + value.userName + "</td><td>" + "<span id='usercode" + value.userID + "'>" + value.dialingCodePreFix + "</span>" + " " + " <span id='username" + value.userID + "' > " + value.mobileNO + "</span>" + "</td ><td>" + value.emailID + "</td><td>" + value.designation + "</td><td>" + value.roleName + "</td><td>" + value.isActive + "</td><td style='display:none;'>" + value.roleID + "</td>";
                     str += "<td>" + value.localeName + "</td><td style=\"text-align:right\">";
                     str += "<a href=\"#\"  onclick=\"EditUser(this)\" class=\"btn default btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;&nbsp;";
-                    str += "</td><td style=\"display:none;\">" + value.prefferedTZ + "</td></tr>";
+                    str += "</td><td style=\"display:none;\">" + value.prefferedTZ + "</td><td class='hide'>" + value.dialingCode +"</td></tr>";                    
                     jQuery('#tblRegisterUsers > tbody').append(str);
                 });
             }
             else {
                 jQuery('#tblRegisterUsers > tbody').append("<tr><td colspan='8' style='text-align: center; color:red;'>No User found</td></tr>");
+                
             }
+            jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
 
@@ -314,13 +317,16 @@ function fetchRegisterUser() {
         jQuery('#divalertsucess').css('display', 'none');
     }, 2000);
 }
-
+let ddlCountryCd;
 function EditUser(ctrl) {
-
+    ddlCountryCd = jQuery(ctrl).closest('tr').find("td:last-child").html()
+    if(ddlCountryCd == '0'){
+        ddlCountryCd = '111';
+    }
     jQuery("#txtUsername").val(StringDecodingMechanism(jQuery(ctrl).closest('tr').find("td").eq(1).html()));
-    jQuery("#txtUsername").closest('.form-group').removeClass('has-error').find('span').hide()
-    jQuery("#txtmobilno").val(jQuery(ctrl).closest('tr').find("td").eq(2).html());
-    jQuery("#txtmobilno").closest('.form-group').removeClass('has-error').find('span').hide()
+    jQuery("#txtUsername").closest('.form-group').removeClass('has-error').find('span').hide();   
+    jQuery("#txtmobilno").val(jQuery(ctrl).closest('tr').find("td:nth-child(3) span:nth-child(2)").html());
+    jQuery("#txtmobilno").closest('.form-group').removeClass('has-error').find('span').hide();
     jQuery("#txtemail").val(jQuery(ctrl).closest('tr').find("td").eq(3).html());
     jQuery("#txtemail").closest('.form-group').removeClass('has-error').find('span').hide()
     jQuery("#txtdesignation").val(StringDecodingMechanism(jQuery(ctrl).closest('tr').find("td").eq(4).html()));
@@ -331,7 +337,8 @@ function EditUser(ctrl) {
     jQuery("#ddlpreferredTime").closest('.form-group').removeClass('has-error').find('span').hide()
     var isActivie = jQuery(ctrl).closest('tr').find("td").eq(6).html();
     jQuery("#chkIsActive").closest('.form-group').removeClass('has-error').find('span').show()
-
+    $('#ddlCountryCd').select2();
+    $("#ddlCountryCd").val(ddlCountryCd).trigger("change");
     if (isActivie == 'Yes') {
 
         jQuery('#chkIsActive').attr('checked', true);
@@ -394,12 +401,12 @@ function fetchRoleMaster() {
         success: function (data) {
 
             let lstTZ = JSON.parse(data[0].jsondata);
-            console.log(lstTZ);
+
             jQuery("#ddlpreferredTime").empty();
             jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val("").html("Select"));
             for (var i = 0; i < lstTZ.length; i++) {
 
-                jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val(lstTZ[i].id).html(lstTZ[i].localeName));
+                jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val(lstTZ[i].id).html(lstTZ[i].timezonelong));
             }
         },
         error: function (xhr, status, error) {
@@ -420,6 +427,7 @@ function fetchRoleMaster() {
 function clearform() {
     jQuery("#txtUsername").val('');
     jQuery("#txtemail").val('');
+    $("#ddlCountryCd").val("111").trigger("change");
     jQuery("#txtmobilno").val('');
     jQuery("#txtuserrole").val('');
     jQuery('#hdnUserID').val('0');
@@ -459,9 +467,8 @@ var FormValidation = function () {
                 },
                 txtmobilno: {
                     required: true,
-                    number: true,
                     minlength: 10,
-                    maxlength: 10
+                    maxlength: 10                   
                 },
                 txtemail: {
                     required: true,
@@ -529,7 +536,6 @@ var FormValidation = function () {
             },
 
             submitHandler: function (form) {
-
                 var status = 'True';
                 if (status == 'True') {
                     if ($('#tblpurchaseOrg >tbody >tr').length == 0) {

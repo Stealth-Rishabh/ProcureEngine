@@ -1,4 +1,4 @@
-﻿jQuery(document).ready(function () {
+jQuery(document).ready(function () {
 
     Pageloaded()
 
@@ -29,7 +29,7 @@
     fetchBidType();// for serach vendor
     FetchUOM(sessionStorage.getItem("CustomerID"));
     BindNoExtensions('txtBidExtension');
- 
+
     setTimeout(function () {
         $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
         $('#txtConversionRate').val(1);
@@ -42,7 +42,7 @@ $('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
 $("#cancelBidBtn").hide();
 
 $('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
-jQuery(document).ready(function () {
+/*jQuery(document).ready(function () {
     $("#txtCeilingPrice,#txtquantitiy,#txtmaxquantitiy,#txtminquantitiy,#txtminimumdecreament,#txtStartingPrice,#txtPriceReductionAmount").inputmask({
         alias: "decimal",
         rightAlign: false,
@@ -59,7 +59,7 @@ jQuery(document).ready(function () {
         autoUnmask: true
 
     });
-});
+});*/
 
 var _BidID;
 var _savedDraft = '';
@@ -74,7 +74,7 @@ if (window.location.search) {
     }
     else {
         sessionStorage.setItem('CurrentBidID', _BidID)
-       
+
         fetchFrenchBidDetails();
         sessionStorage.setItem('_savedDraft', 'Y')
     }
@@ -110,6 +110,7 @@ function CheckmaxQuantity(id) {
     }
 }
 function checkminmax(id) {
+    thousands_separators_input(id)
     $('#spnmaxq').addClass('hide');
     $('#spnminq').addClass('hide');
     $('.maxq').addClass('has-success').removeClass('has-error');
@@ -451,13 +452,13 @@ function FetchCurrency(CurrencyID) {
 }
 var vCount = 0;
 function Check(event, vname, vendorID) {
-   
+
     if ($(event).closest("span#spanchecked").attr('class') == 'checked') {
         $(event).closest("span#spanchecked").removeClass("checked")
 
     }
     else {
-       
+
         vCount = vCount + 1;
         //var EvID = event.id;
         $(event).prop("disabled", true);
@@ -480,7 +481,7 @@ function Check(event, vname, vendorID) {
 }
 
 function removevendor(trid, trprevid, vid) {
-   
+
     vCount = vCount - 1;
     $('#' + trid.id).remove()
     $('#' + trprevid.id).remove()
@@ -506,7 +507,7 @@ function removevendor(trid, trprevid, vid) {
 
 var status;
 function ValidateVendor() {
-  
+
     status = "false";
     var i = 0;
 
@@ -530,7 +531,7 @@ function ValidateVendor() {
 }
 
 $("#chkAll").click(function () {
-   
+
     if ($("#chkAll").is(':checked') == true) {
         $('#divvendorlist').find('span#spandynamic').hide();
         $('table#tblvendorlist').closest('.inputgroup').removeClass('has-error');
@@ -538,7 +539,7 @@ $("#chkAll").click(function () {
         jQuery('#selectedvendorlistsPrev> tbody').empty()
         vCount = 0;
         $("#tblvendorlist> tbody > tr").each(function (index) {
-           
+
             $(this).find("span#spanchecked").addClass("checked");
             $('#chkvender' + vCount).prop("disabled", true);
             var vendorid = $('#chkvender' + vCount).val()
@@ -552,7 +553,7 @@ $("#chkAll").click(function () {
     }
     else {
         $("#tblvendorlist> tbody > tr").each(function (index) {
-           
+
             $(this).find("span#spanchecked").removeClass("checked");
             vCount = 0;
             $('input[name="chkvender"]').prop('disabled', false);
@@ -603,7 +604,7 @@ function fetchRegisterUser() {
 
         },
         error: function (xhr, status, error) {
-    
+
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -635,7 +636,10 @@ jQuery.validator.addMethod(
     //"Value cannot be {0}"
     "This field is required."
 );
+$.validator.addMethod("numberWithComma", function (value, element) {
 
+    return this.optional(element) || /^(\d+(,\d{2})*(,\d{3})*(\.\d{1,2})?|\d+(\.\d{1,2})?)$/.test(value);
+}, "Please enter a valid number with a comma separator");
 var FormWizard = function () {
 
     return {
@@ -664,7 +668,7 @@ var FormWizard = function () {
                         required: true,
                         minlength: 1,
                         maxlength: 3,
-                        number: true,
+                        numberWithComma: true,
                         notEqualTo: 0
                     },
 
@@ -682,7 +686,7 @@ var FormWizard = function () {
 
                     txtConversionRate: {
                         required: true,
-                        number: true,
+                        numberWithComma: true,
                         minlength: 1,
                         maxlength: 7//3
                     },
@@ -710,7 +714,7 @@ var FormWizard = function () {
                         required: true
                     },
                     txtquantitiy: {
-                        number: true,
+                        numberWithComma: true,
                         required: true,
                         notEqualTo: 0
                     },
@@ -722,35 +726,35 @@ var FormWizard = function () {
                     },
                     txtminquantitiy: {
                         required: true,
-                        number: true,
+                        numberWithComma: true,
                         // notEqualTo: 0
                     },
                     txtmaxquantitiy: {
                         required: true,
-                        number: true,
+                        numberWithComma: true,
                         notEqualTo: 0
                     },
                     txtCeilingPrice: {
                         required: true,
-                        number: true,
+                        numberWithComma: true,
                         notEqualTo: 0
                     },
                     txtedelivery: {
 
                     },
                     txtminimumdecreament: {
-                        number: true,
+                        numberWithComma: true,
                         notEqualTo: 0
                     },
                     drpdecreamenton: {
 
                     },
                     txttargetprice: {
-                        number: true,
+                        numberWithComma: true,
                         maxlength: 10
                     },
                     txtlastinvoiceprice: {
-                        number: true,
+                        numberWithComma: true,
                         maxlength: 10
                     }
                 },
@@ -922,7 +926,7 @@ var FormWizard = function () {
                         }
 
                     } else if (index == 2) {
-                     
+                      
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
                             $('#spandanger').html('please Configure Bid parameters..')
                             $('.alert-danger').show();
@@ -1042,13 +1046,20 @@ function ConfigureBidInsfrenchTab1() {
 
             var this_row = $(this);
             approvers = approvers + $.trim(this_row.find('td:eq(4)').html()) + '~' + $.trim(this_row.find('td:eq(3)').html()) + '#';
-
         })
     }
     var StartDT = new Date();
     if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
-        StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+        StartDT = $('#txtbidDate').val().replace('-', '');
     }
+    let StTime =
+        new Date(StartDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
 
 
     var Tab1Data = {
@@ -1057,13 +1068,11 @@ function ConfigureBidInsfrenchTab1() {
         "BidTypeID": 9,
         "BidForID": parseInt($("#ddlAuctiontype option:selected").val()),
         "BidDuration": parseInt(bidDuration),
-        //"BidSubject": jQuery("#txtBidSubject").val(),
         "BidSubject": _cleanString,
         //"BidDescription": jQuery("#txtbiddescription").val(),
         "BidDescription": _cleanString2,
-        "BidDate": StartDT,
-        //"BidDate": jQuery("#txtbidDate").val(),
-        //"BidTime": jQuery("#txtbidTime").val(),
+        //"BidDate": StartDT,
+        "BidDateSt": ST,
         "CurrencyID": parseInt(jQuery("#dropCurrency option:selected").val()),
         "ConversionRate": parseFloat(jQuery("#txtConversionRate").val()),
         "TermsConditions": TermsConditionFileName,
@@ -1127,8 +1136,8 @@ function ConfigureBidInsfrenchTab1() {
 }
 
 function ConfigureBidInsfrenchTab2() {
-   
-  
+
+
     var targetPrice;
     var lastInvoiceprice = 0, i = 0;
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -1179,7 +1188,7 @@ function ConfigureBidInsfrenchTab2() {
 
     };
 
-  
+
     jQuery.ajax({
 
         type: "POST",
@@ -1191,7 +1200,7 @@ function ConfigureBidInsfrenchTab2() {
         data: JSON.stringify(Tab2data),
         dataType: "json",
         success: function (data) {
-           
+
             if (parseInt(data) > 0) {
                 return true;
             }
@@ -1220,7 +1229,7 @@ function ConfigureBidInsfrenchTab2() {
     jQuery.unblockUI();
 }
 function ConfigureFrenchVendorsave() {
-   
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var InsertQuery = '';
     $("#selectedvendorlistsPrev> tbody > tr").each(function (index) {
@@ -1422,7 +1431,7 @@ $('#addapprovers').on("hidden.bs.modal", function () {
     $('#frmapproverbody').addClass('hide')
     $('#txtpreApproverBid').val('')
     sessionStorage.setItem('hdnpreApproverid', '0');
-   
+
     fetchFrenchBidDetails();
 })
 function fnclosepopupApprovers() {
@@ -1449,6 +1458,7 @@ $("#txtbidDate").change(function () {
 
 
 function InsUpdProductSevices() {
+    
     //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />Please Wait...</h5>' });
     if (form.valid() == true) {
         var st = "true"
@@ -1611,7 +1621,7 @@ function InsUpdProductSevices() {
                         Metronic.scrollTo(error, -200);
                         error.fadeOut(3000);
                         jQuery.unblockUI();
-                        // resetfun();
+                       
                         return false;
                     }
                     else {
@@ -1637,15 +1647,6 @@ var PriceDetails = [];
 var rowAppItems = 0, rowAppItemsrno = 0;
 
 function ParametersQuery() {
-    if (jQuery("#tblServicesProduct >tbody >tr ").length >= 1) {
-        $('#spandanger').html('You can not add more than one item for French Auction.');
-        //$(".alert-danger").find("span").html('').html('You can not add more than one item for Dutch Auction.')
-        Metronic.scrollTo(error, -200);
-        $(".alert-danger").show();
-        $(".alert-danger").fadeOut(5000);
-        resetfun();
-        return false;
-    } else {
         var num = 0, i = 0;
         var maxinum = -1;
         $("#tblServicesProduct tr:gt(0)").each(function () {
@@ -1684,16 +1685,58 @@ function ParametersQuery() {
         }
         else {
             jQuery("#tblServicesProductPrev").append('<tr id=tridPrev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + ' >' + $('#txtItemCode').val() + '</td><td id=itemnameprev' + i + '>' + $('#txtshortname').val() + '</td><td id=TPprev' + i + '>' + $('#txttargetprice').val() + '</td><td id=quantityprev' + i + '>' + $('#txtquantitiy').val() + '</td><td id=minquantityprev' + i + '>' + $('#txtminquantitiy').val() + '</td><td id=maxquantityprev' + i + '>' + $('#txtmaxquantitiy').val() + '</td><td id=UOMprev' + i + '>' + $('#dropuom').val() + '</td><td id=BSPprev' + i + '>' + $('#txtCeilingPrice').val() + '</td><td id=maskvendorprev' + i + '>' + status + '</td><td id=minincprev' + i + '>' + $('#txtminimumdecreament').val() + '</td><td id=inconprev' + i + '>' + $("#drpdecreamenton option:selected").text() + '</td><td id=inconvalprev' + i + ' class=hide>' + $("#drpdecreamenton").val() + '</td><td id=LIPprev' + i + '>' + $("#txtlastinvoiceprice").val() + '</td><td id=showhlprev' + i + '>' + $('#showhlprice').val() + '</td><td id=showstartprev' + i + '>' + $('#showstartprice').val() + '</td></tr>');
-        }
+         }
+      
         $('#wrap_scrollerPrev').show();
         rowAppItems = rowAppItems + 1;
         rowAppItemsrno = rowAppItemsrno + 1;
         resetfun()
+        disableiteminput()        
+        $('#spansuccess1').html('Item successfully added and you cannot add more than one item for French Auction.');              
+        $(".alert-success").show();
+        $(".alert-success").fadeOut(5000);
+      
 
-    }
+    
     jQuery.unblockUI();
 }
-
+function disableiteminput() {
+   
+    $("#txtshortname").prop("disabled", true);
+    $("#txtItemCode").prop("disabled", true);
+    $("#txttargetprice").prop("disabled", true);
+    $("#txtquantitiy").prop("disabled", true);
+    $("#txtlastinvoiceprice").prop("disabled", true);
+    $("#txtminquantitiy").prop("disabled", true);
+    $("#txtmaxquantitiy").prop("disabled", true);
+    $("#txtUOM").prop("disabled", true);
+    $("#txtCeilingPrice").prop("disabled", true);
+    $("#txtminimumdecreament").prop("disabled", true);
+    $("#drpdecreamenton").prop("disabled", true);
+    $("#showhlprice").prop("disabled", true);   
+    $("#showstartprice").prop("disabled", true);
+    $("#add_or").prop("disabled", true);
+    $("#delete_or").prop("disabled", true);
+    
+}
+function enableiteminput() {
+  
+    $("#txtshortname").prop("disabled", false);
+    $("#txtItemCode").prop("disabled", false);
+    $("#txttargetprice").prop("disabled", false);
+    $("#txtquantitiy").prop("disabled", false);
+    $("#txtlastinvoiceprice").prop("disabled", false);
+    $("#txtminquantitiy").prop("disabled", false);
+    $("#txtmaxquantitiy").prop("disabled", false);
+    $("#txtUOM").prop("disabled", false);
+    $("#txtCeilingPrice").prop("disabled", false);
+    $("#txtminimumdecreament").prop("disabled", false);
+    $("#drpdecreamenton").prop("disabled", false);
+    $("#showhlprice").prop("disabled", false);  
+    $("#showstartprice").prop("disabled", false);
+    $("#add_or").prop("disabled", false);
+    $("#delete_or").prop("disabled", false);
+}
 function editvalues(icount) {
     //sessionStorage.setItem('ClickedEditID', icount.id)
     Metronic.scrollTo($("body"), 200);
@@ -1723,6 +1766,8 @@ function editvalues(icount) {
 
 }
 function deleterow(rowid, rowidPrev) {
+   
+    enableiteminput()
     $('#' + rowid.id).remove();
     $('#' + rowidPrev.id).remove();
     rowAppItems = rowAppItems - 1;
@@ -1740,6 +1785,8 @@ function deleterow(rowid, rowidPrev) {
             $.trim(this_row.find('td:eq(0)').html(i));
             i++;
         });
+        
+        
     }
 }
 function resetfun() {
@@ -1773,7 +1820,7 @@ function FetchUOM(CustomerID) {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "UOM/fetchUOMCust/?CustomerID=" + CustomerID,
+        url: sessionStorage.getItem("APIPath") + "UOM/fetchUOMCust/?CustomerID=" + CustomerID + "&status=Y",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         dataType: "json",
@@ -1876,7 +1923,7 @@ jQuery("#txtSearch").keyup(function () {
 });
 var _bidType;
 function fetchFrenchBidDetails() {
-   
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "ConfigureBid/fetchFrenchConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + sessionStorage.getItem('CurrentBidID'),
@@ -1887,7 +1934,7 @@ function fetchFrenchBidDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-            
+
             var str = '';
             var strp = '';
             var dtst = (fnConverToLocalTime(BidData[0].bidDetails[0].bidDate))
@@ -1913,7 +1960,7 @@ function fetchFrenchBidDetails() {
                 required: true,
                 minlength: 1,
                 maxlength: 3,
-                number: true
+                numberWithComma: true
             });
             if (BidData[0].bidDetails[0].bidForID == 81) {
                 $('#showhlprice').attr('disabled', false).val("N");
@@ -2004,9 +2051,9 @@ function fetchFrenchBidDetails() {
                 rowAppItemsrno = rowAppItemsrno + 1;
             }
             if (BidData[0].bidVendorDetails.length > 0) {
-              
+
                 for (var i = 0; i < BidData[0].bidVendorDetails.length; i++) {
-                  
+
                     vCount = vCount + 1;
                     jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + ',SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + ',' + BidData[0].bidVendorDetails[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
                     jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td></tr>')
@@ -2017,7 +2064,11 @@ function fetchFrenchBidDetails() {
                 jQuery('#selectedvendorlistsPrev').show()
 
             }
-           
+            if (jQuery("#tblServicesProduct >tbody >tr ").length >= 1) {              
+                resetfun();
+                disableiteminput();
+            }
+
 
         },
         error: function (xhr, status, error) {
@@ -2129,12 +2180,24 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor) {
 }
 function Dateandtimevalidate(indexNo) {
     var StartDT = new Date();
+
     if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
-        StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+        //StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+        StartDT = $('#txtbidDate').val().replace('-', '');
 
     }
+
+    let StTime =
+        new Date(StartDT.toLocaleString("en", {
+            timeZone: sessionStorage.getItem('preferredtimezone')
+        }));
+
+    ST = new String(StTime);
+    ST = ST.substring(0, ST.indexOf("GMT"));
+    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+
     var Tab1Data = {
-        "BidDate": StartDT
+        "BidDate": ST
     }
     //alert(JSON.stringify(Tab1Data));
     jQuery.ajax({
@@ -2375,7 +2438,7 @@ jQuery("#txtSearch").typeahead({
 
             var str = "<tr id=vList" + map[item].participantID + "><td class='hide'>" + map[item].participantID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\)\"; id=\"chkvender" + map[item].participantID + "\" value=" + map[item].participantID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>";
             jQuery('#tblvendorlist > tbody').append(str);
-           
+
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
                     //** remove from main table if already selected in selected List
@@ -2419,7 +2482,7 @@ function getCategoryWiseVendors(categoryID) {
                 jQuery('#tblvendorlist > tbody').append(str);
 
             }
-           
+
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
 

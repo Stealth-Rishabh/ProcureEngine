@@ -50,6 +50,8 @@
     <script src="assets/global/scripts/datatable.js" type="text/javascript"></script>
     <script src="assets/global/plugins/datatables/datatables.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
 
     <script type="text/javascript" src="assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
     <script type="text/javascript" src="assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
@@ -183,11 +185,11 @@
                                             </div>
                                             <div class="Controlgroup col-md-4">
                                                 <label class="col-md-4 control-label">
-                                                    RFQ Status
+                                                    RFQ Status<span class='required'>*</span>
                                                 </label>
                                                 <div class="col-md-8">
                                                     <select class="form-control" id="ddlbidstatus" name="ddlbidstatus">
-                                                        <option value="All">Select</option>
+                                                        <option value="">Select</option>
                                                         <!--Sid RFQ Stages-->
                                                         <!--<option value="Open">Open</option>
                                                         <option value="Close">Close</option>-->
@@ -254,7 +256,7 @@
                                         </div>
 
                                         <div class="form-actions fluid">
-                                            <div class="col-md-offset-3 col-md-6 txtaligncentre">
+                                            <div class="col-md-offset-5 col-md-6 txtaligncentre">
                                                 <input type="submit" id="btnSubject" value="Submit" class="btn yellow" />
                                             </div>
                                         </div>

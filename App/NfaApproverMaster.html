@@ -684,23 +684,33 @@
                                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                                 </div>
                             </div>
-                            <div class="portlet-body form">
-                                <br />
-                                <div class="col-md-12">
-                                    <div class="input-icon">
-                                        <i class="fa fa-search"></i>
-                                        <input type="text" id="txtSearchmatrix" placeholder="Search ..." class="form-control  input-circle" />
-                                    </div>
+                             <div class="portlet-body form">
+                    <br />
+                    <div class="col-md-12">
+                        <div class="input-icon">
+                            <i class="fa fa-search"></i>
+                            <input type="text" id="txtSearchmatrix" placeholder="Search ..." class="form-control  input-circle" />
+                        </div>
+                    </div>
+                    <div class="table-scrollable">
+                        <div class="loaderC hide">
+                            <div class="spinner center-block"></div>
+                            <div class="row text-center">Please wait while file is downloading...</div>
+                        </div>
+                        <div class="scroller scroller400" data-always-visible="1" data-rail-visible="0" style="display: flex;flex-direction: column;justify-content: space-between;">
+                            <table class="table table-striped table-bordered table-hover" id="tblAllmatrix"></table>
+                           
+                        </div>
+                    </div>
+                    <div class="form-actions fluid padding105px" >
+                                <div class="col-md-offset-3 col-md-6 txtaligncentre">
+                                    <button id="MatrixExportToExcel" type="button" class="btn green forbtnpause">
+                                        Export To Excel
+                                    </button>
                                 </div>
-                                <br />
-                                <div class="table-scrollable">
-                                    <div class="scroller" style="height:400px;" data-always-visible="1" data-rail-visible="0">
-                                        <table class="table table-striped table-bordered table-hover" id="tblAllmatrix"></table>
-                                    </div>
-                                </div>
+                    </div>
 
-
-                            </div>
+                </div>
                         </div>
                     </div>
                 </div>
@@ -905,7 +915,7 @@
                             <li><b>Quantity: </b>Specify number of containers required.</li>
                             <li><b>Target Price: </b>which we expect to reach as a result of bidding process.</li>
                             <li><b>Last Invoice Rate: </b>Unit rate from recent order.</li>
-                            <li><b>Ceiling/MAX. Price: </b>Enter the MAX price for bid above which vendors will not be able to quote. You may select whether bid start price would be visible to participant or not.</li>
+                            <li><b>Ceiling/MAX. Price: </b>Enter the MAX price for bid above which vendors will not be able to quote. You may select whether Start Unit Price would be visible to participant or not.</li>
                             <li><b>Minimum Decrement: </b>You can define the minimum decrement in price during bid and whether the decrement would be calculated on quoted price or percentage of quoted price.</li>
                             <li><b>Bid Duration (In Minute): </b>This column appears only when bid closing type is “Stagger: At item level” selected and should be filled with bid time allotted to particular item.</li>
                             <li><b>Decrement on: </b>You can define the decrement in price would be based on Price or percentage.</li>
@@ -939,6 +949,8 @@
                     });
                 }
             }
+            
+           
 
             setCommonData();
             Metronic.init();

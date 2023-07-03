@@ -7,14 +7,17 @@
     <!-- Page Specific CSS-->
     <link rel="stylesheet" href="assets/CustomCSS/ViewReport2.css">
     <link rel="stylesheet" href="assets/CustomCSS/common.css">
+    <link rel="stylesheet" type="text/css"  href="assets/CustomCSS/printpdf.css">
 
     <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>-->
     <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/highcharts/js/highcharts.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/highcharts/js/highcharts11.js" type="text/javascript"></script>
+   <!-- <script src="assets/global/plugins/highcharts/js/highcharts.js" type="text/javascript"></script>-->
     <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
     <!--<script src="assets/global/plugins/highcharts/js/modules/exporting.js"></script>-->
     <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/CustomJS/printpdf.js"></script>
     <script src="assets/CustomJS/jspdf.debug.js"></script>
     <script src="assets/CustomJS/html2canvas.js"></script>
 
@@ -25,6 +28,10 @@
 
 </head>
 <body>
+     <button type="button" class="printpdfbtn" id='btnpdfprint' onclick="printpdf()">
+       Print PDF
+   </button>
+   <div id="mainBody">
     <!--class="mainbody"-->
     <div id="watermark" class="watermark"></div>
     <div id="divGenerateReport">
@@ -93,8 +100,8 @@
                 <tr><td></td></tr>
                 <tr>
                     <td>
-                        <table width="100%" cellpadding="8" class="collaspenone" border="1" id="tblIPHistory">
-                            <thead>
+                        <table width="100%" cellpadding="8" class="collaspenone"  border="1" id="tblIPHistory">
+                             <thead>
                             </thead>
                             <tbody>
                                 <tr>
@@ -125,7 +132,7 @@
     </div>
 
 
-
+  </div>
 
     <script type="text/javascript" nonce="pev3">
         //jQuery(document).ajaxStart(jQuery.blockUI({ message: '<h5><img src="../assets/global/img/loading.gif" /> Please Wait...</h5>' })).ajaxStop(jQuery.unblockUI);

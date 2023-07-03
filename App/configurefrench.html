@@ -501,8 +501,8 @@
                                                             </span>
                                                         </label>
                                                         <div class="col-md-4 xyz">
-                                                            <input type="tel" class="form-control" id="txtquantitiy" name="txtquantitiy" autocomplete="off" onkeyup="checkminmax(this)" />
-                                                            <!--onkeyup="thousands_separators_input(this)"-->
+                                                            <input type="tel" class="form-control" id="txtquantitiy" name="txtquantitiy" autocomplete="off" onkeyup="checkminmax(this)"  />
+                                                    
 
                                                         </div>
 
@@ -513,7 +513,7 @@
                                                         </label>
                                                         <div class="col-md-4 xyz">
                                                             <input type="tel" class="form-control text-right" id="txtlastinvoiceprice"
-                                                                   name="txtlastinvoiceprice" autocomplete="off" onkeyup="thousands_separators_input(this)" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                                                   name="txtlastinvoiceprice" autocomplete="off" onkeyup="thousands_separators_input(this)" /> 
 
                                                         </div>
                                                         <label class="control-label col-md-2">
@@ -523,19 +523,19 @@
                                                         </label>
                                                         <div class="col-md-1 xyz minq">
                                                             <input type="tel" class="form-control  text-right" id="txtminquantitiy"
-                                                                   name="txtminquantitiy" autocomplete="off" onfocusout="CheckminQuantity(this)" />
+                                                                   name="txtminquantitiy" autocomplete="off" onfocusout="CheckminQuantity(this)" onkeyup="thousands_separators_input(this)" />
                                                             <span for="txtminquantitiy" class="help-block help-block-error hide" id="spnminq"></span>
 
                                                         </div>
-                                                        <label class="control-label col-md-1">
+                                                        <label class="control-label col-md-2">
                                                             Max_Quan.<span class="required">
                                                                 *
                                                             </span>
                                                         </label>
-                                                        <div class="col-md-2 xyz maxq">
+                                                        <div class="col-md-1 xyz maxq">
                                                             <input type="tel" class="form-control text-right " id="txtmaxquantitiy"
-                                                                   name="txtmaxquantitiy" autocomplete="off" onfocusout="CheckmaxQuantity(this)" />
-                                                            <span for="txtmaxquantitiy" class="help-block help-block-error hide" id="spnmaxq"></span><!--onkeyup="thousands_separators_input(this)"-->
+                                                                   name="txtmaxquantitiy" autocomplete="off" onfocusout="CheckmaxQuantity(this)" onkeyup="thousands_separators_input(this)" />
+                                                            <span for="txtmaxquantitiy" class="help-block help-block-error hide" id="spnmaxq" ></span>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -550,11 +550,11 @@
                                                         </div>
 
                                                         <label class="control-label  col-md-2" id="lblCeilingPrice">
-                                                            Bid Start Price<span class="required"> *</span>
+                                                            Start Unit Price<span class="required"> *</span>
                                                         </label>
                                                         <div class="col-md-4 xyz">
                                                             <input type="tel" class="form-control" id="txtCeilingPrice" name="txtCeilingPrice"
-                                                                   autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                                                   autocomplete="off" onkeyup="thousands_separators_input(this)"/> 
                                                         </div>
 
 
@@ -565,8 +565,8 @@
                                                             Minimum Increment<span class="required"> *</span>
                                                         </label>
                                                         <div class="col-md-3 xyz">
-                                                            <input type="text" class="form-control" id="txtminimumdecreament"
-                                                                   number="true" name="txtminimumdecreament" autocomplete="off" /> <!--onkeyup="thousands_separators_input(this)"-->
+                                                            <input type="tel" class="form-control" id="txtminimumdecreament"
+                                                                    name="txtminimumdecreament" autocomplete="off" onkeyup="thousands_separators_input(this)" />
                                                         </div>
                                                         <label class="control-label col-md-1 currencyparam txtalignleft" >
                                                         </label>
@@ -612,7 +612,7 @@
                                                             <input type="hidden" id="rowid" />
                                                             <input type="hidden" id="rowidPrev" />
                                                             <button type="button" class="btn btn-primary" id="add_or" onclick="InsUpdProductSevices()">Add</button>
-                                                            <button type="button" class="btn yellow" onclick="resetfun()">Clear</button>
+                                                            <button type="button" class="btn yellow" id="delete_or" onclick="resetfun()">Clear</button>
                                                             <!-- abheedev bug 52 start-->
                                                             <span class="hovertext" data-hover="click add button once u have submitted all required details">
                                                                 <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
@@ -702,7 +702,7 @@
                                                     </a>
 
                                                     <a href="javascript:;" class="btn green button-submit">
-                                                        Preview
+                                                      Save and Preview
 
                                                     </a>
                                                 </div>
@@ -995,7 +995,7 @@
                             <li><b>Contract duration: </b>Enter the time frame of the contract signed.</li>
                             <li><b>Dispatch Location: </b>Name of the location where item/services need to be delivered.</li>
                             <li><b>Ceiling/MIN. Price: </b>Enter the MIN price for event above which vendors will not be able to quote.</li>
-                            <li><b>Mask from vendor: </b>By checking this Bid start price will not be visible to vendors.</li>
+                            <li><b>Mask from vendor: </b>By checking this Start Unit Price will not be visible to vendors.</li>
                             <li><b>Increament on: </b>You can define the increament in price would be based on Amount or percentage.</li>
                         </ul><br />
                         <p class="ppolicy-text"><b>Step-3: "Invite Participants"–</b>User can select participants whom he wants to send invite to participate in event. User can search from the list by typing participants name in search text box or he can check select all in case he wants to invite all available vendors.</p>

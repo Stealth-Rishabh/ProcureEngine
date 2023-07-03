@@ -142,3 +142,11 @@ $("#txtChatMsg").keypress(function (e) {
 
     }
 })
+
+
+$("#txtBroadcastMsg").keypress(function (e) {
+    if (e.which == 13) {
+        sendBroadCastChatMsgs();
+
+    }
+})

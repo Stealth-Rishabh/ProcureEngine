@@ -1,5 +1,6 @@
 var _VQID;
 jQuery(document).ready(function () {
+    debugger;
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -415,7 +416,7 @@ var FormWizard = function() {
 
 function fileUploader(RFIID,fileObj) {
    
-    console.log("fileUploader ==> ", fileObj)
+    
 
     var formData = new window.FormData();
 
@@ -470,7 +471,7 @@ function fetchRFIDetails() {
         success: function (BidData) {
           
             if (BidData.length > 0) {
-
+                debugger;
                 jQuery('#tblServicesProduct').empty();
                 jQuery('#tblTempVendorslist').empty();
                 jQuery('#txtrfiSubject').val(StringDecodingMechanism(BidData[0].vqMaster[0].vqSubject))
@@ -610,7 +611,7 @@ function fetchRFIDetailsForTab2(applicableFor) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-           
+           debugger;
             jQuery("#accordion1").empty();
             var QuestionsubCategoryID = '';
             var QuestionCategoryID = '';
@@ -863,7 +864,7 @@ function fetchTempVendors() {
             dataType: "json",
 
             success: function (data) {
-
+            debugger;
             jQuery("#tblTempVendorslist").empty();
                 if (data.length > 0) {
                     jQuery('#tblTempVendorslist').append('<thead><tr style="background: gray; color: #FFF;"><th>Company</th><th>Email</th><th>Mobile No</th><th>Contact Person</th><th>Actions</th></tr></thead>')
@@ -927,7 +928,7 @@ function AddTempvendors() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (form.valid() == true) {
-        
+debugger;
         var TempCompany = {
             'VQID': parseInt(sessionStorage.getItem('CurrentVQID')),
             //'CompanyName': $('#txtcompany').val(),
@@ -955,7 +956,7 @@ function AddTempvendors() {
             dataType: "json",
 
             success: function (data) {
-               
+               debugger;
                 $('#txtcompany').val('');
                 $('#txtemailId').val('');
                 $('#txtmobileNo').val('');
@@ -1065,7 +1066,7 @@ function RFISubmitTempVendors() {
     var _cleanString4 = StringEncodingMechanism(jQuery("#txtrfiSubject").val());
     var _cleanString5 = StringEncodingMechanism(jQuery('#txtrfidescription').val());
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
+ debugger;
     
     var TempVendors = {
 
@@ -1087,7 +1088,7 @@ function RFISubmitTempVendors() {
         type: "POST",
         contentType: "application/json",
         success: function (data) {
-           
+            debugger;
                  bootbox.alert("VQ submitted successfully.", function () {
                             window.location = sessionStorage.getItem("HomePage")
                             return false;
@@ -1095,7 +1096,7 @@ function RFISubmitTempVendors() {
             
         },
         error: function (xhr, status, error) {
-
+ debugger;
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -1655,7 +1656,7 @@ jQuery("#searchPop-up").keyup(function () {
 // For Bid Preview
 
 function fetchRFIDetailsForPreview() {
-    
+      debugger;
     var AttachementFileName = '',_productCat, _txtCategories=[];
 
     jQuery('#txtrfiSubjectPrev').html(StringEncodingMechanism($('#txtrfiSubject').val()))
@@ -1788,6 +1789,7 @@ function fetchVendorDetail() {
         dataType: "json",
         success: function (data) {
             if (data.length > 0) {
+              
                 _vendorDetail = data;
             }
         },

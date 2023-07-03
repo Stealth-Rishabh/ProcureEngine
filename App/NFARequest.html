@@ -8,7 +8,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta http-equiv="Content-type" content="text/html; charset=utf-8">
     <meta content="" name="description" />
-    <meta content="" name="author" />
+    <meta content="" name="author"/>
     <!--Google Fonts-->
     <link rel="stylesheet" href="assets/CustomCSS/googlefont.css">
     <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
@@ -81,8 +81,8 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <div class="page-logo">
-                <a class="navbar-brand" href="index.html" >
-                    <img src="assets/img/mmlogo.png" alt="logo" id="logoimage" class="img-responsive"  />
+                <a class="navbar-brand" href="index.html">
+                    <img src="assets/img/mmlogo.png" alt="logo" id="logoimage" class="img-responsive" />
                 </a>
 
             </div>
@@ -94,8 +94,10 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
 
-                           <b> <span id="spanUserName" class="username username-hide-on-mobile">
-                            </span></b><i class="fa fa-angle-down"></i>
+                            <b>
+                                <span id="spanUserName" class="username username-hide-on-mobile">
+                                </span>
+                            </b><i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="MyProfile.html"><i class="icon-user"></i>My Profile </a></li>
@@ -109,7 +111,7 @@
 
     <div class="clearfix">
     </div>
-    <div class="page-container nodisplay" >
+    <div class="page-container nodisplay">
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
                 <ul class="page-sidebar-menu page-sidebar-menu-closed" data-auto-scroll="true" data-slide-speed="200" id="ulMain">
@@ -206,10 +208,10 @@
                                             <div class="tab-content">
 
                                                 <div class="tab-pane active" id="tab1">
-                                                    <div class="alert alert-success" >
+                                                    <div class="alert alert-success">
                                                         <span id="spansuccess1"> </span>
                                                     </div>
-                                                    <div class="alert alert-danger" >
+                                                    <div class="alert alert-danger">
                                                         <span id="spandanger"> </span>
                                                     </div>
 
@@ -225,7 +227,7 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td colspan="15" class="norecord" >
+                                                                        <td colspan="15" class="norecord">
                                                                             No record's found
                                                                         </td>
                                                                     </tr>
@@ -288,7 +290,7 @@
                                                                 Amount<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-3">
-                                                                <input type="tel" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" class="text-right form-control MaxLength " maxlength="18"   onkeyup="localecommaseperator(this)" />
+                                                                <input type="tel" id="txtAmountFrom" name="txtAmountFrom" autocomplete="off" class="text-right form-control MaxLength " maxlength="18" onkeyup="localecommaseperator(this)" />
                                                             </div>
                                                         </div>
                                                         <div class="inputgroup">
@@ -296,7 +298,7 @@
                                                                 Budget
                                                             </label>
                                                             <div class="col-md-2">
-                                                                <input type="tel" id="txtBudget" name="txtBudget" autocomplete="off" class="text-right form-control MaxLength" maxlength="18"  onkeyup="localecommaseperator(this)" />
+                                                                <input type="tel" id="txtBudget" name="txtBudget" autocomplete="off" class="text-right form-control MaxLength" maxlength="18" onkeyup="localecommaseperator(this)" />
                                                             </div>
 
                                                             <div class="col-md-1">
@@ -331,13 +333,13 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group">
+                                                   <div class="form-group">
                                                         <div class="inputgroup isProject">
                                                             <label class="col-md-3 control-label">
                                                                 Project Name<span class="required"> *</span>
                                                             </label>
                                                             <div class="col-md-8">
-                                                                <input type="text" id="txtProjectName" name="txtProjectName" autocomplete="off" class="form-control MaxLength" maxlength="250" onkeyup="replaceQuoutesFromString(this)"/>
+                                                                <select id="txtProjectName" name="txtProjectName" class="form-control"> </select>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -362,7 +364,7 @@
                                                                     </select>
                                                                 </div>
                                                                 <div class="col-md-1">
-                                                                    <a href="javascript:;" onclick="viewallmatrix()" data-toggle="modal" class="tooltips btn btn-sm btn-success cursorpointer" data-placement="left" data-original-title="Click here to
+                                                                    <a onclick="viewallmatrix()" data-toggle="modal" class="tooltips btn btn-sm btn-success cursorpointer" data-placement="left" data-original-title="Click here to
                                                                                   View All Matrix">
                                                                         <i class="fa fa-search"></i>
                                                                     </a>
@@ -377,7 +379,7 @@
                                                     <div class="form-group">
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
-                                                                Exception
+                                                                Exception<span class="required"> *</span>
                                                             </label>
 
                                                             <label class="col-md-8">
@@ -403,21 +405,74 @@
 
                                                 </div>
                                                 <div class="tab-pane" id="tab2">
-                                                    <div class="alert alert-block alert-danger" id="errordivSeq" >
+                                                    <div class="alert alert-block alert-danger" id="errordivSeq">
                                                         <span id="errorSeq"></span>
                                                     </div>
-                                                    <div class="alert alert-success" id="successdivSeq" >
+                                                    <div class="alert alert-success" id="successdivSeq">
                                                         <span id="successSeq"></span>
                                                     </div>
 
                                                     <div class="panel-group accordion" id="acc_TC">
-                                                        <div class="panel panel-default">
+                                                        
+                                                        
+                                                        
+                                                        <div class="panel panel-default hide">
                                                             <div class="panel-heading">
                                                                 <h4 class="panel-title">
-                                                                    <a class="accordion-toggle notextdeco" data-toggle="collapse" data-parent="#acc_TC" href='#collapse2' >Responses</a>
+                                                                    <a class="accordion-toggle notextdeco" data-toggle="collapse" data-parent="#acc_TC" href='#collapse2'>Bidding Details</a>
                                                                 </h4>
                                                             </div>
                                                             <div id=collapse2 class="panel-collapse collapse in">
+                                                                <div class="panel-body">
+                                                                    
+                                                                     <div class="col-md-12 text-right">
+                                                                        <button class="btn btn-xs btn-primary tooltips " type="button" id="btnAddAnother" data-placement="top" data-original-title="Click here to add another vendor" onclick="addSOBVendor()">
+                                                                            <i class="fa fa-plus-circle"></i> Add Another
+                                                                        </button>
+                                                                    </div>
+                                                                    
+                                                                    <div class='form-group'>
+                                                                         <label class="col-md-2 control-label bold">
+                                                                         Preffered Type
+                                                                         </label>
+                                                                       <div class="col-md-2">
+                                                                            <select class="form-control" id="ddlPriceType" name="ddlPriceType">
+                                                                              <option value="">Select</option>
+                                                                              <option value="V">Value</option>
+                                                                              <option value="P">Percentage</option>
+                                                                            </select>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                   
+
+                                                                    <div class="col-md-12">
+                                                                        <div class="col-md-1">
+                                                                            &nbsp;
+
+                                                                        </div>
+                                                                        <div class="inputgroup">
+                                                                            <div class="col-md-10">
+                                                                                <table class="table table-striped table-bordered table-hover" id="tblvendors"></table>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                   
+                                                                    
+
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        
+                                                        <div class="panel panel-default">
+                                                            <div class="panel-heading">
+                                                                <h4 class="panel-title">
+                                                                    <a class="accordion-toggle notextdeco" data-toggle="collapse" data-parent="#acc_TC" href='#collapse1'>Responses</a>
+                                                                </h4>
+                                                            </div>
+                                                            <div id=collapse1 class="panel-collapse collapse in">
                                                                 <div class="panel-body">
 
                                                                     <div class="col-md-12">
@@ -466,6 +521,7 @@
                                                             </div>
 
                                                         </div>
+                                                        
                                                         <div class="panel panel-default">
                                                             <div class="panel-heading">
                                                                 <h4 class="panel-title">
@@ -488,7 +544,7 @@
                                                                         </div>
                                                                         <div class="inputgroup">
                                                                             <div class="col-md-4">
-                                                                                <span  class="btn blue width300px"><input type="file" id="fileToUpload1" name="fileToUpload1" onchange="checkfilesize(this);" /></span>
+                                                                                <span class="btn blue width300px"><input type="file" id="fileToUpload1" name="fileToUpload1" onchange="checkfilesize(this);" /></span>
                                                                             </div>
                                                                         </div>
 
@@ -518,8 +574,7 @@
 
                                                             </div>
                                                         </div>
-
-
+                                                        
                                                     </div>
 
 
@@ -690,7 +745,7 @@
 
                                                                 </div>
                                                             </div>
-                                                            <div class="alert alert-block alert-danger" id="errorApproverdivSeq" >
+                                                            <div class="alert alert-block alert-danger" id="errorApproverdivSeq">
                                                                 <span id="errorApproverSeq"></span>
                                                             </div>
 
@@ -748,7 +803,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
                     </div>
                 </div>
-                <div class="portlet-body form">
+                 <div class="portlet-body form">
                     <br />
                     <div class="col-md-12">
                         <div class="input-icon">
@@ -757,11 +812,22 @@
                         </div>
                     </div>
                     <div class="table-scrollable">
-                        <div class="scroller scroller400"  data-always-visible="1" data-rail-visible="0">
+                        <div class="loaderC hide">
+                            <div class="spinner center-block"></div>
+                            <div class="row text-center">Please wait while file is downloading...</div>
+                        </div>
+                        <div class="scroller scroller400" data-always-visible="1" data-rail-visible="0" style="display: flex;flex-direction: column;justify-content: space-between;">
                             <table class="table table-striped table-bordered table-hover" id="tblAllmatrix"></table>
+                           
                         </div>
                     </div>
-
+                    <div class="form-actions fluid padding105px" >
+                                <div class="col-md-offset-3 col-md-6 txtaligncentre">
+                                    <button id="MatrixExportToExcel" type="button" class="btn green forbtnpause">
+                                        Export To Excel
+                                    </button>
+                                </div>
+                    </div>
 
                 </div>
             </div>
@@ -780,7 +846,7 @@
                 </div>
                 <div class="portlet-body form">
 
-                    <div class="modal-body modalbody1" >
+                    <div class="modal-body modalbody1">
 
                         <p class="ppolicy-text">
                             Using this page user can configure bids related to Sea export shipments and invite vendors to participate on specified date and time.<br />
@@ -859,7 +925,7 @@
                             </div>
 
                             <div class="form-group">
-                                <label class="col-md-4  control-label paddingtop0px" >IsActive</label>
+                                <label class="col-md-4  control-label paddingtop0px">IsActive</label>
                                 <div class="col-md-8">
                                     <input type="checkbox" name="checkboxactive" id="checkboxactive" class="form-control" checked>
                                 </div>
@@ -879,7 +945,7 @@
                                 <input type="text" id="searchPop-up" placeholder="Search" class="form-control  input-circle" />
                             </div><br />
                             <div class="table-scrollable">
-                                <div class="scroller scroller200"  data-always-visible="1" data-rail-visible="0">
+                                <div class="scroller scroller200" data-always-visible="1" data-rail-visible="0">
                                     <table class="table table-striped table-bordered table-hover" id="tblFetchParamMaster"></table>
                                 </div>
                             </div>
@@ -917,7 +983,8 @@
             $(function () {
                 $('[data-toggle="tooltip"]').tooltip()
             })
-
+            
+           
 
             Metronic.init();
             Layout.init();

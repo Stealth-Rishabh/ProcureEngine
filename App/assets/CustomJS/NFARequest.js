@@ -12,7 +12,10 @@ var ApprSeqval = [];
 var lstActivityData = [];
 var objActivity = {};
 
+fetchProjectMaster();
+
 if (window.location.search) {
+
     var param = getUrlVars()["param"]
     var decryptedstring = fndecrypt(param)
     idx = parseInt(getUrlVarsURL(decryptedstring)["nfaIdx"]);
@@ -24,6 +27,7 @@ if (window.location.search) {
     else {
         $('#divreverted').addClass('hide')
     }
+
     GetOverviewmasterbyId(idx);
 }
 
@@ -32,6 +36,7 @@ function cancelbid() {
 }
 //$('#cancelNFABtn').attr('onClick', `CancelBidDuringConfig(${idx}, "NFA")`);
 jQuery(document).ready(function () {
+
     $(".thousand").inputmask({
         alias: "decimal",
         rightAlign: false,
@@ -49,11 +54,17 @@ jQuery(document).ready(function () {
         limitReachedClass: "label label-danger",
         alwaysShow: true
     });
+    
+       jQuery('#MatrixExportToExcel').click(function () {
+        
+                downloadNFAMatrix()
+               // tableToExcel(['tblAllmatrix'], ['NFAMatrixDetails'], 'NFAMatrix.xls')
 
+    });
 });
 
 function FetchRecomendedVendor() {
-
+    var x = isAuthenticated();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "NFA/GETNFAActivity/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&NFaIdx=" + idx,
@@ -355,6 +366,7 @@ var FormWizard = function () {
                             if (idx != 0) {
                                 BindSaveparams();
                                 BindAttachmentsOfEdit();
+                                //fetchReguestforQuotationDetails();
                             }
                             SaveFirstTabActivity();
                         }
@@ -440,7 +452,7 @@ var FormWizard = function () {
             $('#form_wizard_1').find('.button-previous').hide();
 
             $('#form_wizard_1 .button-submit').click(function () {
-             //bug588 abheedev
+                //bug588 abheedev
                 $('#form_wizard_1 .button-submit').prop('disabled', true);
                 ConfirmSaveApprovers();
 
@@ -469,7 +481,7 @@ $("#ddlCategory").on('change', function () {
     }
 });
 function FetchCurrency(CurrencyID) {
-
+    var x = isAuthenticated();
     jQuery.ajax({
 
         type: "GET",
@@ -515,7 +527,7 @@ function FetchCurrency(CurrencyID) {
 
 
 function bindNFAOverViewMaster() {
-
+    var x = isAuthenticated();
     var url = "NFA/GetNFAOverViews?CustomerID=" + parseInt(CurrentCustomer) + "&userid=" + UserID;
 
     var GetData = callajaxReturnSuccess(url, "Get", {});
@@ -536,18 +548,25 @@ function bindNFAOverViewMaster() {
 
 };
 //abheedev backlog 286
+
 function GetOverviewmasterbyId(idx) {
+
+    var x = isAuthenticated();
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
-        if (res.result != null) {
 
+        if (res.result != null) {
             if (res.result.length > 0) {
+               
+                let _cleanStringSub = StringDecodingMechanism(res.result[0].nfaSubject);
+                let _cleanStringDet = StringDecodingMechanism(res.result[0].nfaDescription);
                 $("#txtEventref").val(res.result[0].eventReftext);
-                $("#txtTitle").val(res.result[0].nfaSubject);
-                $("#txtNFADetail").val(res.result[0].nfaDescription);
+                $("#txtTitle").val(_cleanStringSub);
+                $("#txtNFADetail").val(_cleanStringDet);
                 $("#ddlEventType").val(res.result[0].eventID);
                 setTimeout(function () {
+                  
                     GetEventRefData();
                     CKEDITOR.instances['txtRemark'].setData(res.result[0].remarks);
                     sessionStorage.setItem("hdnEventrefId", res.result[0].eventRefernce);
@@ -571,16 +590,29 @@ function GetOverviewmasterbyId(idx) {
                 else {
                     $(".isProject").show();
                 }
-                $("#txtProjectName").val(res.result[0].projectName);
+
                 $("#ddlBudget").val(res.result[0].budgetStatus);
 
-                $("#ddlPurchaseOrg").val(res.result[0].purchaseOrg);
-                setTimeout(function () {
-                    bindPurchaseGroupDDL()
-                    $("#ddlPurchasegroup").val(res.result[0].purchaseGroup);
-                }, 900)
+                //abheedev 16/03/2023
 
-                $("#ddlCondition").val(res.result[0].conditionID);
+                setTimeout(function () {
+                  
+                    BindPurchaseOrg()
+                    $("#ddlPurchaseOrg").val(res.result[0].purchaseOrg).trigger('change');
+                }, 500)
+                setTimeout(function () {
+                 
+                    bindPurchaseGroupDDL()
+                    $("#ddlPurchasegroup").val(res.result[0].purchaseGroup).trigger('change');
+                }, 500)
+
+
+                setTimeout(function () {
+                  
+                    bindConditionDDL()
+                    $("#ddlCondition").val(res.result[0].conditionID).trigger('change');
+                    $("#txtProjectName").val(res.result[0].projectName).trigger('change');
+                }, 500)
 
 
             }
@@ -602,6 +634,7 @@ $("#ddlEventType").on("change", function () {
 
 })
 function GetEventRefData() {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var EventTypeId = $("#ddlEventType option:selected").val();
 
@@ -677,19 +710,20 @@ $("#txtEventref").typeahead({
     minLength: 2,
     updater: function (item) {
         if (map[item].refId != "0") {
-
+            let _cleanStringSub = StringDecodingMechanism(map[item].bidSubject);
+            let _cleanStringDet = StringDecodingMechanism(map[item].bidDetails);
             sessionStorage.setItem('hdnEventrefId', map[item].refId);
             sessionStorage.setItem('hdnEventForID', map[item].bidForID);
 
-            $('#txtTitle').val("NFA -" + map[item].bidSubject)
-            $('#txtNFADetail').val(map[item].bidDetails)
+            $('#txtTitle').val("NFA -" + _cleanStringSub)
+            $('#txtNFADetail').val(_cleanStringDet)
 
         }
         else {
             gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
         }
 
-        return item;
+        return StringDecodingMechanism(item);
     }
 });
 
@@ -736,8 +770,6 @@ function fnApproversNBQuery(rownum, question) {
         else {
             jQuery("#tblNFAOverviewParam").append('<tr id=trNfaParam' + rownum + '><td><button class="btn  btn-xs btn-danger" onclick="deleteNFAParams(' + rownum + ')" ><i class="glyphicon glyphicon-remove-circle"></i></button></td><td id=ques' + rownum + '>' + question + '</td><td  class=clsTA><textarea name=paramremark' + rownum + '  rows=2 class="form-control paramremark"  onkeyup="replaceQuoutesFromString(this)" autocomplete=off id=paramremark' + rownum + ' maxlength=10000 ></textarea></td><td class=hide>' + rownum + '</td></tr>');
         }
-
-
         $("#ddlNFAParam").val('');
         $('#nfaparamoption' + rownum).remove();
 
@@ -874,6 +906,7 @@ function ajaxFileDelete(closebtnid, fileid, filename, deletionFor, filepath, srn
 }
 
 function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor, srno) {
+    var x = isAuthenticated();
     if (srno == 0) {
         $('#' + closebtnid).remove();
         $('#' + filepath).html('')
@@ -917,8 +950,6 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor, srno) {
 }
 
 
-
-
 jQuery("#txtDetails").keyup(function () {
     sessionStorage.setItem("hdnNfaOverviewIdx", 0);
 
@@ -955,13 +986,13 @@ $("#txtDetails").typeahead({
             gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
         }
 
-        return item;
+        return StringDecodingMechanism(item);
     }
 });
 
 var orgData = [];
 function BindPurchaseOrg() {
-
+    var x = isAuthenticated();
 
     var url = "NFA/GetPurchaseOrgByUserid?CustomerId=" + parseInt(CurrentCustomer) + "&UserId=" + encodeURIComponent(UserID);
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
@@ -976,9 +1007,9 @@ function BindPurchaseOrg() {
                 $('#ddlPurchaseOrg').append('<option value=' + value.purchaseOrgID + '>' + value.purchaseOrgName + '</option>');
 
             });
-            setTimeout(function () {
-                bindPurchaseGroupDDL();
-            }, 500);
+            //abheedev 16/03/2023
+            bindPurchaseGroupDDL();
+
         }
 
     });
@@ -990,6 +1021,7 @@ function BindPurchaseOrg() {
 
 };
 function bindPurchaseGroupDDL() {
+    var x = isAuthenticated();
     var url = "NFA/GetPurchaseGroupByUserID?CustomerId=" + parseInt(CurrentCustomer) + "&OrgId=" + parseInt($('#ddlPurchaseOrg option:selected').val()) + "&UserID=" + encodeURIComponent(UserID);
 
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
@@ -1020,6 +1052,7 @@ $("#txtProjectName").on("keyup", function () {
 //abheedev backlog 286
 function Savedata() {
 
+    var x = isAuthenticated();
     var overviewList = [];
     var p_title = $("#txtTitle").val();
     var p_descript = $("#txtNFADetail").val();
@@ -1032,7 +1065,7 @@ function Savedata() {
     var p_Budget = removeThousandSeperator(_budget);
     var p_category = $("#ddlCategory option:selected").val();
     var p_currency = $("#dropCurrency option:selected").val();
-    var p_projectname = $("#txtProjectName").val();
+    var p_projectname = $("#txtProjectName option:selected").text();
     var budgetStatus = $("#ddlBudget option:selected").val();
     var p_eventType = $("#ddlEventType option:selected").val();
     var p_eventID = sessionStorage.getItem("hdnEventrefId");
@@ -1058,6 +1091,7 @@ function Savedata() {
         conditionID: parseInt($("#ddlCondition option:selected").val()),
         CreatedBy: UserID,
         UpdatedBy: UserID
+
     }
     overviewList.push(model);
 
@@ -1066,6 +1100,7 @@ function Savedata() {
     var GetData = callajaxReturnSuccess(url, "Post", JSON.stringify(overviewList));
 
     GetData.success(function (res) {
+
         if (res.result != null) {
 
             if (res.result.length > 0) {
@@ -1085,6 +1120,8 @@ function Savedata() {
 };
 
 function Savetab2Data() {
+
+    var x = isAuthenticated();
     var url = "NFA/InsUpdateOverViewParamText?customerId=" + parseInt(CurrentCustomer) + "&NfaIdx=" + parseInt(idx);
 
     Paramdata = [];
@@ -1116,7 +1153,7 @@ function Savetab2Data() {
 
 };
 function GetNfaOverviewParams() {
-
+    var x = isAuthenticated();
     var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx) + "&For=nfrequestNotselected&Purchaseorg=" + $('#ddlPurchaseOrg option:selected').val();
 
     var ParamData = callajaxReturnSuccess(url, "Get", {})
@@ -1140,7 +1177,7 @@ function GetNfaOverviewParams() {
     })
 }
 function BindSaveparams() {
-
+    var x = isAuthenticated();
     var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx) + "&For=nfrequest&Purchaseorg=" + $('#ddlPurchaseOrg option:selected').val();
 
     var ParamData = callajaxReturnSuccess(url, "Get", {})
@@ -1184,6 +1221,7 @@ function BindSaveparams() {
 
 
 function Bindtab3Data() {
+
     BindParamsForpreview();
     Bindtab1DataforPreview();
     FetchMatrixApprovers();
@@ -1211,7 +1249,7 @@ function Bindtab1DataforPreview() {
     //abheedev bug 385 end
     $("#lblCurrency").text($("#dropCurrency option:selected").text());
     $("#lblCategory").text($("#ddlCategory option:selected").text());
-    $("#lblProjectName").text($("#txtProjectName").val());
+    $("#lblProjectName").text($("#txtProjectName option:selected").text());
     $("#lblbudget").text($("#ddlBudget option:selected").text());
 
     $("#lblPurOrg").text($("#ddlPurchaseOrg option:selected").text());
@@ -1252,6 +1290,7 @@ function getSummary(bidid, bidforid, bidtypeid, RFQID) {
     }
 }
 function FetchMatrixApprovers() {
+
     var amount = removeThousandSeperator($("#txtAmountFrom").val());
     var budget = removeThousandSeperator($("#txtBudget").val());
     var groupId = $('#ddlPurchasegroup option:selected').val()//sessionStorage.getItem("hdnPurchaseGroupID");
@@ -1262,7 +1301,7 @@ function FetchMatrixApprovers() {
 };
 
 function BindApprovers(amount, groupId, orgid, conId, budgetType, budget) {
-
+    var x = isAuthenticated();
     var url = "NFA/FetchNFAApprovers?customerId=" + parseInt(CurrentCustomer) + "&userID=" + UserID + "&amount=" + parseFloat(amount) + "&groupId=" + parseInt(groupId) + "&orgid=" + parseInt(orgid) + "&conId=" + parseInt(conId) + "&budgetType=" + budgetType + "&NFAID=" + parseInt(idx);
 
     var GetData = callajaxReturnSuccess(url, "Get", {});
@@ -1300,10 +1339,10 @@ function ConfirmSaveApprovers() {
                 label: "Yes",
                 className: "btn-success",
                 callback: function () {
-                   
+
                     $('.modal-footer .btn-success').prop('disabled', true);
                     SaveApproversConfirmation();
-                 }
+                }
             },
             cancel: {
                 label: "No",
@@ -1317,6 +1356,7 @@ function ConfirmSaveApprovers() {
     });
 }
 function SaveApproversConfirmation() {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approversData = [];
     var _data = {};
@@ -1383,6 +1423,7 @@ function SaveApproversConfirmation() {
 }
 
 function SaveAttechmentinDB() {
+    var x = isAuthenticated();
     var url = "NFA/InsUpdateNFAFiles?customerId=" + parseInt(CurrentCustomer) + "&NfaIdx=" + parseInt(idx);
     var lstFiles = [];
     var objFiles = {};
@@ -1415,6 +1456,7 @@ function SaveAttechmentinDB() {
 };
 
 function BindAttachmentsOfEdit() {
+    var x = isAuthenticated();
     var url = "NFA/FetchNFaFiles?CustomerId=" + parseInt(CurrentCustomer) + "&NfaId=" + parseInt(idx);
 
     var GetFilesData = callajaxReturnSuccess(url, "Get", {})
@@ -1458,6 +1500,7 @@ function BindAttachmentsOfEdit() {
 
 function SaveFirstTabActivity() {
 
+    var x = isAuthenticated();
     objActivity = {
         FromUserId: UserID,
         ToUserId: UserID,
@@ -1485,6 +1528,7 @@ Array.prototype.min = function () {
 };
 
 function SaveActivityDetails(data) {
+    var x = isAuthenticated();
     var aquaticCreatures = data.filter(function (details) {
         return details.apprSeq == ApprSeqval.min();
     });
@@ -1550,7 +1594,7 @@ $("#txtParamText").on("keyup", function () {
     $("#error").text('');
 })
 function BindData() {
-
+    var x = isAuthenticated();
 
     var url = "NFA/GetNFAText?CustomerID=" + parseInt(CurrentCustomer);
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
@@ -1606,7 +1650,7 @@ function onEditClick(idx, checked) {
 };
 
 function SaveUpdate() {
-
+    var x = isAuthenticated();
     var url = "NFA/CreateUpdateNfaParam";
     var idx = $("#hdnParamID").val();
     var paramtext = $("#txtParamText").val();
@@ -1649,7 +1693,7 @@ $("#searchPop-up").keyup(function () {
 });
 
 function bindConditionDDL() {
-
+    var x = isAuthenticated();
     var url = "NFA/fetchNFACondition?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=N";
 
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
@@ -1700,3 +1744,95 @@ function viewallmatrix() {
     $('#viewAllMatrix').modal('show');
     bindApproverMaster('N');
 }
+
+function fetchReguestforQuotationDetails() {
+
+    var x = isAuthenticated();
+    jQuery.ajax({
+        contentType: "application/json; charset=utf-8",
+        //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
+        url: sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativerank/?RFQID=" + sessionStorage.getItem('hdnEventrefId'),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (RFQData) {
+
+            let dt = JSON.parse(RFQData[0].jsondata);
+            $('#tblvendors').empty();
+            if (dt.length > 0) {
+                $('#tblvendors').append("<thead><tr><th></th><th>Enquiry issued To</th><th style='width:10%!important;'>Rank</th><th style='width:10%!important;'>Price</th><th style='width:20%!important;'></th></tr></thead>");
+                for (i = 0; i < dt.length; i++) {
+                    //$('#tblvendors').append("<tr><td class=hide id=TDVID" + i + ">" +dt[i].VendorID + "</td><td>" + dt[i].Vendorname + "</td><td id=TDRank" + i + "> " + dt[i].Status + " </td><td id=TDPrice" + i + "> " + dt[i].Price + "</td><td id=TDSOB" + i + "> Quantity/ Percentage of Value</td> <td id=TDSOBValue" + i + "> Quantity/ Percentage of Value</td> </tr>")
+                    $('#tblvendors').append("<tr><td class=hide id=TDVID" + i + ">" + dt[i].VendorID + "</td><td> <input type='checkbox' id='checkv'" + i + " style='width:16px !important; height:16px !important' class='form-control'/></td><td>" + dt[i].Vendorname + "</td><td id=TDRank" + i + "> " + dt[i].Status + " </td><td id=TDPrice" + i + "> " + dt[i].Price + "</td><td id=TDSOBValue" + i + "> <input class='form-control' /></td> </tr>")
+                }
+                $('#tblvendors').append("</tbody>");
+            }
+        },
+        error: function (xhr, status, error) {
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+    });
+
+}
+
+/*
+ fetchProjectName start
+ */
+function fetchProjectMaster() {
+   
+    var url = sessionStorage.getItem("APIPath") + "ProjectMaster/fetchProjectMasterCust/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&status=Y";// + sessionStorage.getItem('UserID') + "&status=Y";
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: url,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        processData: true,
+        async: false,
+        dataType: "json",
+        success: function (data) {
+
+            jQuery("#txtProjectName").empty();
+            jQuery("#txtProjectName").append(jQuery("<option></option>").val("").html("Select Project"));
+            if (data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    jQuery("#txtProjectName").append(jQuery("<option></option>").val(StringDecodingMechanism(data[i].projectName)).html(StringDecodingMechanism(data[i].projectName)));
+
+                }
+            }
+            else {
+                jQuery("#txtProjectName").append(jQuery("<option></option>").val("").html("No information is here..."));
+            }
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spnerror', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+
+    });
+
+}
+/*
+ fetchProjectName end
+ */
+ 

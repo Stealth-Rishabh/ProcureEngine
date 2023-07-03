@@ -27,6 +27,7 @@ $(document).ready(function () {
 
 });
 function Bindtab2DataforPreview() {
+    var x = isAuthenticated();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=0&BidID=0&nfaID=" + idx,
@@ -72,28 +73,72 @@ function Bindtab2DataforPreview() {
 
                     $('#tblvendorsprev').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th><th>TPI</th></tr></thead>");
                     for (i = 0; i < data[0].biddingVendor.length; i++) {
+                       
+                        if ((data[0].biddingVendor[i].quotationReceived).trim() == "Y") {
+                                
+                                QR = "Yes";
+                            }
+                             else if ((data[0].biddingVendor[i].quotationReceived).trim() == "NA") {
+                                
+                                QR = "NA";
+                            }
+                            else {
+                                
+                                QR = "No";
+                            }
+                            if ((data[0].biddingVendor[i].tpi).trim() == "Y") {
+                               
+                                TPI = "Yes";
+                            }
+                            else if ((data[0].biddingVendor[i].tpi).trim() == "NA") {
+                               
+                                TPI = "NA";
+                            }
 
-                        if (data[0].biddingVendor[i].tpi == "Y") {
-                            TPI = "Yes";
-                        }
-                        else if (data[0].biddingVendor[i].tpi == "NA") {
-                            TPI = "NA";
-                        }
-                        else {
-                            TPI = "No";
-                        }
-                        if (data[0].biddingVendor[i].quotedValidatedSCM == "Y") {
-                            validatescm = "Yes";
-                        }
-                        else if (data[0].biddingVendor[i].quotedValidatedSCM == "NA") {
-                            validatescm = "NA";
-                        }
-                        else {
-                            validatescm = "No";
-                        }
-
+                            else {
+                              
+                                TPI = "No";
+                            }
+                            if ((data[0].biddingVendor[i].texhnicallyAcceptable).trim() == "Y") {
+                               
+                                TA = "Yes";
+                            }
+                            else if ((data[0].biddingVendor[i].texhnicallyAcceptable).trim() == "NA") {
+                                
+                                TA = "NA";
+                                
+                            }
+                            else {
+                               
+                                TA = "No";
+                            }
+                            if ((data[0].biddingVendor[i].politicallyExposed).trim() == "Y") {
+                                
+                                PE="Yes";
+                            }
+                            else if ((data[0].biddingVendor[i].politicallyExposed).trim() == "NA") {
+                              
+                                PE="NA";
+                                
+                            }
+                            else {
+                               
+                                PE="No";
+                            }
+                            if ((data[0].biddingVendor[i].quotedValidatedSCM).trim() == "Y") {
+                                
+                                validatescm = "Yes";
+                            }
+                            else if ((data[0].biddingVendor[i].quotedValidatedSCM).trim() == "NA") {
+                               
+                                validatescm = "NA";
+                            }
+                            else {
+                               
+                                validatescm = "No";
+                            }
                         //**** Prev vendor Details Start
-                        $('#tblvendorsprev').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + ">" + (data[0].biddingVendor[i].quotationReceived == 'Y' ? 'Yes' : 'No') + "</td><td id=TDTechAccep" + i + ">" + (data[0].biddingVendor[i].texhnicallyAcceptable == 'Y' ? 'Yes' : 'No') + "</td><td id=TDpolexp" + i + ">" + (data[0].biddingVendor[i].politicallyExposed == 'Y' ? 'Yes' : 'No') + "</td><td id=TDvalidatescm" + i + ">" + validatescm + "</td><td id=TPI" + i + ">" + TPI + "</td></tr>")
+                        $('#tblvendorsprev').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + ">" + QR + "</td><td id=TDTechAccep" + i + ">" + TA + "</td><td id=TDpolexp" + i + ">" + PE + "</td><td id=TDvalidatescm" + i + ">" + validatescm + "</td><td id=TPI" + i + ">" + TPI + "</td></tr>")
                         //**** Prev vendor Details end
 
                     }
@@ -262,7 +307,7 @@ function DownloadFile(aID) {
 }
 
 function fetchApproverStatus() {
-
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = sessionStorage.getItem("APIPath") + "NFA/GetNFAApproverStatus/?NFaIdx=" + idx
 
@@ -374,7 +419,7 @@ function fetchApproverStatus() {
 
 
 function FetchRecomendedVendor() {
-
+    var x = isAuthenticated();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "NFA/GETNFAActivity/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&NFaIdx=" + idx,
@@ -412,7 +457,7 @@ function FetchRecomendedVendor() {
 
 }
 function GetQuestions() {
-
+    var x = isAuthenticated();
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",

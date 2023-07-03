@@ -81,6 +81,31 @@ connection.on("disconnectSR", function (connectionId) {
 connection.on("refreshFAQuotes", function () {
     fetchBidSummaryVendorFrench();
 });
+connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
+    
+    console.log(rdataJson)
+    //console.log(connectionId)
+    let data = JSON.parse(rdataJson)
+    
+    if(data[0].VendorID=="0"){
+        $('#hddnadminConnection').val(connectionId)
+          if (flag == false) {
+                    $('#adminconn').removeClass('badge-success').addClass('badge-danger')
+                    $('#admstatus').text("Buyer Offline")
+                    $('#chatbtn').addClass('hide')
+                    $('#txtChatMsg').addClass('hide')
+                }
+                else{
+                     $('#adminconn').removeClass('badge-danger').addClass('badge-success')
+                     $('#admstatus').text("Buyer Online")
+                     $('#chatbtn').removeClass('hide')
+                     $('#txtChatMsg').removeClass('hide')
+         }
+        
+    }
+  
+  
+});
 connection.on("refreshColumnStatusFF", function (data) {
     // var JsonMsz = JSON.parse(data[0]);
     //if (JSON.parse(JsonMsz[0]) == "-1" && JSON.parse(JsonMsz[1]) == sessionStorage.getItem('VendorId')) {
@@ -286,31 +311,36 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
     //  }
     //$(".pulsate-regular").css('animation', 'none');
 });
-
+function openForm() {
+   fetchUserChats(sessionStorage.getItem("UserID"),"T");//T stands for both single & Broadcast
+}
 function sendChatMsgs() {
-    var _cleanString = StringEncodingMechanism($("#txtChatMsg").val());
-    var data = {
-        "ChatMsg": _cleanString,
-        "fromID": sessionStorage.getItem("UserID"),
-        "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
-        "msgType": 'S',
-        "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : ''
+    if ($("#txtChatMsg").val() != '' && $("#txtChatMsg").val() != null) {
+        var _cleanString = StringEncodingMechanism($("#txtChatMsg").val());
+        var data = {
+            "ChatMsg": _cleanString,
+            "fromID": sessionStorage.getItem("UserID"),
+            "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
+            "msgType": 'S',
+            "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : '',
+             "fromconnectionID": $('#hddnadminConnection').val()
 
+        }
+        $("#chatList").append('<div class="post in">'
+            + '<div class="message">'
+            + '<span class="arrow"></span>'
+            + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
+            + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;"></span>'//time
+            + '<span class="body" style="color: #c3c3c3;">' + $("#txtChatMsg").val() + '</span>'
+            + '</div>'
+            + '</div>');
+
+        connection.invoke("SendMessage", JSON.stringify(data), $('#hddnadminConnection').val()).catch(function (err) {
+            return console.error(err.toString());
+
+        });
+        $("#txtChatMsg").val('')
     }
-    $("#chatList").append('<div class="post in">'
-        + '<div class="message">'
-        + '<span class="arrow"></span>'
-        + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
-        + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;"></span>'//time
-        + '<span class="body" style="color: #c3c3c3;">' + $("#txtChatMsg").val() + '</span>'
-        + '</div>'
-        + '</div>');
-
-    connection.invoke("SendMessage", JSON.stringify(data), $('#hddnadminConnection').val()).catch(function (err) {
-        return console.error(err.toString());
-
-    });
-    $("#txtChatMsg").val('')
 }
 
 /////****** Chat END*****************/////
@@ -493,7 +523,7 @@ function fetchBidSummaryVendorFrench() {
 
             jQuery("#tblParticipantsVender").empty();
             if (_isBidStarted == false) {
-                jQuery("#tblParticipantsVender").append("<thead> <tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product</th><th>Quantity</th><th>UOM</th><th class='hide'>Bid Start Price (" + $('#lblcurrency').text() + ")</th></thead>");
+                jQuery("#tblParticipantsVender").append("<thead> <tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product</th><th>Quantity</th><th>UOM</th><th class='hide'>Start Unit Price (" + $('#lblcurrency').text() + ")</th></thead>");
 
                 for (var i = 0; i < data.length; i++) {
                     _offeredPrice = (data[i].offeredPrice < 0) ? 'NA' : data[i].offeredPrice;
@@ -504,13 +534,13 @@ function fetchBidSummaryVendorFrench() {
             else {
                 if (data.length > 0) {
 
-                    jQuery("#tblParticipantsVender").append("<thead> <tr style='background: gray; color: #FFF'><th>S No</th><th class=hide>Item Code</th><th>Item/Product</th><th>Total Quantity</th><th>Min. Quantity</th><th>Max. Quantity</th><th>UOM</th><th id='bidStartPrice'>Bid start price</th><th class=hide>Target Price</th><th>Minimum Increment</th><th>Last Quote</th><th>H1 Price</th><th>Bidded Quantity*</th><th>Enter_Quote*</th><th>Action</th><th> Status</th><th>Allocated Quantity</th></thead>");
+                    jQuery("#tblParticipantsVender").append("<thead> <tr style='background: gray; color: #FFF'><th>S No</th><th class=hide>Item Code</th><th>Item/Product</th><th>Total Quantity</th><th>Min. Quantity</th><th>Max. Quantity</th><th>UOM</th><th id='bidStartPrice'>Start Unit Price</th><th class=hide>Target Price</th><th>Minimum Increment</th><th>Last Quote</th><th>H1 Price</th><th>Bidded Quantity*</th><th>Enter_Quote*</th><th>Action</th><th> Status</th><th class='display-none' >Allocated Quantity</th></thead>");
                     for (var i = 0; i < data.length; i++) {
 
 
                         var MqQuote = data[i].mqQuotedPrice == '0' ? '' : data[i].mqQuotedPrice;
                         var decreamentOn = data[i].increamentOn == "A" ? jQuery("#lblcurrency").text() : '%';
-                        $("#tblParticipantsVender").append("<tr><td>" + (i + 1) + "</td><td class=hide id=ceilingprice" + i + ">" + data[i].bidStartPrice + "</td><td class=hide id=minimuminc" + i + ">" + data[i].minimumIncreament + "</td><td class=hide id=incon" + i + ">" + data[i].increamentOn + "</td><td class=hide id=FRID" + i + ">" + data[i].frid + "</td><td class=hide>" + data[i].itemCode + "</td><td>" + data[i].shortName + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td class='text-right' id=minQ" + i + ">" + thousands_separators(data[i].minOfferedQuantity) + "</td><td class='text-right' id=maxQ" + i + ">" + thousands_separators(data[i].maxOfferedQuantity) + "</td><td>" + data[i].uom + "</td><td id=tdBidStartPrice" + i + "><span id=CP" + i + " class=ceilingprice" + i + " >" + thousands_separators(data[i].bidStartPrice) + " " + jQuery("#lblcurrency").text() + "</span><span  id=ceilingpricenotdisclose" + i + " class=ceilingpricenotdisclose" + i + ">Not Disclosed</span></td><td id=targetprice" + i + " class=hide>" + data[i].targetPrice + " " + jQuery("#lblcurrency").text() + "</td><td><span id=mininc" + i + ">" + thousands_separators(data[i].minimumIncreament) + "</span> " + decreamentOn + "</td><td id=lastQuote" + i + "></td><td><span id=H1Price" + i + " >" + thousands_separators(data[i].h1Price) + "</span><span id=H1Pricenotdisclosed" + i + " >Not Disclosed</span></td><td><input type=text class='form-control clsdisable' autocomplete=off  id=txtquantity" + i + " name=txtquantity" + i + " onfocusout='CheckBidQuantity(this," + i + ")' onkeyup='thousands_separators_input(this)'/> <span id=spanquan" + i + "   style=color:#a94442></span></td><td> <input type=text class='form-control clsdisable' autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " onkeyup='thousands_separators_input(this)' /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td><button id=AllItembtn" + i + "  type='button' class='btn yellow col-lg-offset-5 clsdisable' onclick='InsUpdQuoteFrench(" + i + ")'>Submit</button></td><td id=lblstatus" + i + " class='text-center'>" + data[i].itemRank + "</td><td  class='text-center bold' id=allocatedQuan" + i + " >" + thousands_separators(data[i].allocatedQuantity) + "</td></tr>");
+                        $("#tblParticipantsVender").append("<tr><td>" + (i + 1) + "</td><td class=hide id=ceilingprice" + i + ">" + data[i].bidStartPrice + "</td><td class=hide id=minimuminc" + i + ">" + data[i].minimumIncreament + "</td><td class=hide id=incon" + i + ">" + data[i].increamentOn + "</td><td class=hide id=FRID" + i + ">" + data[i].frid + "</td><td class=hide>" + data[i].itemCode + "</td><td>" + data[i].shortName + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td class='text-right' id=minQ" + i + ">" + thousands_separators(data[i].minOfferedQuantity) + "</td><td class='text-right' id=maxQ" + i + ">" + thousands_separators(data[i].maxOfferedQuantity) + "</td><td>" + data[i].uom + "</td><td id=tdBidStartPrice" + i + "><span id=CP" + i + " class=ceilingprice" + i + " >" + thousands_separators(data[i].bidStartPrice) + " " + jQuery("#lblcurrency").text() + "</span><span  id=ceilingpricenotdisclose" + i + " class=ceilingpricenotdisclose" + i + ">Not Disclosed</span></td><td id=targetprice" + i + " class=hide>" + data[i].targetPrice + " " + jQuery("#lblcurrency").text() + "</td><td><span id=mininc" + i + ">" + thousands_separators(data[i].minimumIncreament) + "</span> " + decreamentOn + "</td><td id=lastQuote" + i + "></td><td><span id=H1Price" + i + " >" + thousands_separators(data[i].h1Price) + "</span><span id=H1Pricenotdisclosed" + i + " >Not Disclosed</span></td><td><input type=text class='form-control clsdisable' autocomplete=off  id=txtquantity" + i + " name=txtquantity" + i + " onfocusout='CheckBidQuantity(this," + i + ")' onkeyup='thousands_separators_input(this)'/> <span id=spanquan" + i + "   style=color:#a94442></span></td><td> <input type=text class='form-control clsdisable' autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " onkeyup='thousands_separators_input(this)' /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td><button id=AllItembtn" + i + "  type='button' class='btn yellow col-lg-offset-5 clsdisable' onclick='InsUpdQuoteFrench(" + i + ")'>Submit</button></td><td id=lblstatus" + i + " class='text-center'>" + data[i].itemRank + "</td><td   class='text-center bold display-none' id=allocatedQuan" + i + " >" + thousands_separators(data[i].allocatedQuantity) + "</td></tr>");
                         jQuery('#allocatedQuan' + i).css('color', 'Red');
                         $("#lastQuote" + i).html(data[i].mqQuotedPrice == '0' ? '' : thousands_separators(MqQuote))
                         $('#spanamount' + i).addClass('hide spanclass');
@@ -688,12 +718,12 @@ function InsUpdQuoteFrench(rowID) {
     }
 
     var valdiff = (parseFloat(removeThousandSeperator(jQuery("#txtquote" + i).val())) - parseFloat(removeThousandSeperator(jQuery("#H1Price" + i).text()))).toFixed(2)
-    if ((removeThousandSeperator($('#txtquantity' + i).val()) == 0) || (!/^[0-9]+(\.[0-9]{1,2})?$/.test(removeThousandSeperator($('#txtquote' + i).val())))) {
+    if ((removeThousandSeperator($('#txtquantity' + i).val()) == 0) || (!/^[0-9]+$/.test(removeThousandSeperator($('#txtquantity' + i).val())))) {
         $('#spanquan' + i).removeClass('hide')
         $('#spanquan' + i).text('Amount is required in number only')
         return false
     }
-    else if ((removeThousandSeperator($('#txtquote' + i).val()) == 0) || (!/^[0-9]+(\.[0-9]{1,2})?$/.test(removeThousandSeperator($('#txtquote' + i).val())))) {
+    else if ((removeThousandSeperator($('#txtquote' + i).val()) == 0) || (!/^[0-9]+$/.test(removeThousandSeperator($('#txtquote' + i).val())))) {
         $('#spanamount' + i).removeClass('hide')
         $('#spanamount' + i).text('Amount is required in number only')
         return false
@@ -702,7 +732,7 @@ function InsUpdQuoteFrench(rowID) {
     else if (parseFloat(removeThousandSeperator($('#txtquote' + i).val())) < parseFloat(($('#ceilingprice' + i).text()))) {
 
         $('#spanamount' + i).removeClass('hide')
-        $('#spanamount' + i).text('Amount should not be less than Bid start price')
+        $('#spanamount' + i).text('Amount should not be less than Start Unit Price')
         return false
     }
     else if (jQuery("#H1Price" + i).text() != "0" && BidForID == "83" && valdiff < parseFloat(Amount) && $('#incon' + i).text() == "A") {
@@ -748,7 +778,7 @@ function InsUpdQuoteFrench(rowID) {
         }
         //alert(JSON.stringify(QuoteProduct))
         $('#hdnselectedindex').val(i);
-        connection.invoke("RefreshBidParticipationFF", JSON.stringify(QuoteProduct), parseInt(sessionStorage.getItem("BidID"))).catch(function (err) {
+        connection.invoke("RefreshBidParticipationFF", JSON.stringify(QuoteProduct)).catch(function (err) {
             return console.error(err.toString());
         });
         $('#txtquote' + i).val('')

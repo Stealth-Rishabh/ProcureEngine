@@ -441,8 +441,26 @@ var FormValidation = function () {
 
             submitHandler: function (form) {
 
-                var BidDate = new Date($('#txtbidDate').val().replace('-', ''));
-                Dateandtimevalidate(BidDate);
+                //var BidDate = new Date($('#txtbidDate').val().replace('-', ''));
+                    var BidDate = new Date();
+
+                    if ($('#txtbidDate').val() != null && $('#txtbidDate').val() != "") {
+                        //StartDT = new Date($('#txtbidDate').val().replace('-', ''));
+                        BidDate = $('#txtbidDate').val().replace('-', '');
+                
+                    }
+            
+                    let StTime =
+                             new Date(BidDate.toLocaleString("en", {
+                                 timeZone: sessionStorage.getItem('preferredtimezone')
+                             }));
+                
+                     ST= new String(StTime);
+                     ST = ST.substring(0, ST.indexOf("GMT"));
+                     ST = ST +'GMT'+sessionStorage.getItem('utcoffset');
+                    
+  
+                    Dateandtimevalidate(ST);
                 //if (isLastPreApprover == "Y") {
                 //if (BidDate < new Date()) {
                 //    bootbox.alert("Date and Time should not be less than current date and time.");
@@ -517,6 +535,7 @@ function Dateandtimevalidate(biddate) {
     });
 }
 function ApprovalApp() {
+    debugger
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var BidDate = new Date($('#txtbidDate').val().replace('-', ''));
 
@@ -544,6 +563,7 @@ function ApprovalApp() {
         crossDomain: true,
         dataType: "json",
         success: function () {
+            debugger
             if (isLastPreApprover == "N") {
                 bootbox.alert("Transaction Successful..", function () {
                     window.location = "index.html";

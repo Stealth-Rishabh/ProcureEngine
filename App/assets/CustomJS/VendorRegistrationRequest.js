@@ -15,297 +15,9 @@ jQuery(document).ready(function () {
     });
     $('#txtLastFiscalyear').val(getCurrentFinancialYear())
     $('#txt2LastFiscalyear').val(getlastFinancialYear())
+
 });
 
-
-function fetchCategorymaster1() {
-    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&For=M&MappedBy=a&VendorID=0",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: "{}",
-        cache: false,
-        dataType: "json",
-        success: function (data) {
-            $("#ddlTypeofProduct").empty();
-            var vlal = new Array();
-            if (data.length > 0) {
-                for (var i = 0; i < data.length; i++) {
-                    $("#ddlTypeofProduct").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
-                }
-                //$("#ddlTypeofProduct").trigger("change");
-            }
-            else {
-                $("#ddlTypeofProduct").append('<tr><td>No categories found..</td></tr>');
-            }
-            // jQuery.unblockUI();
-        },
-
-        error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('errormsg', '');
-            }
-            return false;
-            jQuery.unblockUI();
-        }
-    });
-}
-
-
-function fetchCountry() {
-    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/Country/?CountryID=0",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: "{}",
-        cache: false,
-        async: false,
-        dataType: "json",
-        success: function (data) {
-            $("#ddlCountry").empty();
-            var vlal = new Array();
-            if (data.length > 0) {
-                for (var i = 0; i < data.length; i++) {
-                    $("#ddlCountry").append("<option value=" + data[i].countryID + ">" + data[i].countryName + "</option>");
-                }
-                $("#ddlCountry").val('111').trigger("change");
-            }
-            else {
-                $("#ddlCountry").append('<tr><td>No countries found..</td></tr>');
-            }
-
-            // jQuery.unblockUI();
-        },
-        error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('errormsg', '');
-            }
-            return false;
-            jQuery.unblockUI();
-        }
-
-    });
-}
-
-function fetchState() {
-    var countryid = $('#ddlCountry option:selected').val();
-    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/State/?CountryID=" + countryid + "&StateID=0",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: "{}",
-        cache: false,
-        async: false,
-        dataType: "json",
-        success: function (data) {
-            $("#ddlState").empty();
-            if (data.length > 0) {
-
-                $("#ddlState").append("<option value=0>Select State</option>");
-                for (var i = 0; i < data.length; i++) {
-                    $("#ddlState").append("<option value=" + data[i].stateID + ">" + data[i].stateName + "</option>");
-                }
-                $("#ddlState").trigger("change");
-            }
-            else {
-                $("#ddlState").append('<tr><td>No state found..</td></tr>');
-            }
-            jQuery.unblockUI();
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText;
-            if (xhr.status === 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('errormsg', '');
-            }
-            return false;
-            jQuery.unblockUI();
-        }
-
-    });
-}
-
-function fetchCity() {
-    var stateid = $('#ddlState').val();
-    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/City/?StateID= " + stateid + "&CityID=0",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: "{}",
-        cache: false,
-        async: false,
-        dataType: "json",
-        success: function (data) {
-            $("#ddlCity").empty();
-            if (data.length > 0) {
-                $("#ddlCity").append("<option value=0>Select City</option>");
-                for (var i = 0; i < data.length; i++) {
-                    $("#ddlCity").append("<option value=" + data[i].cityID + ">" + data[i].cityName + "</option>");
-                }
-                $("#ddlCity").val('0').trigger("change");
-            }
-            else {
-                $("#ddlCity").append('<tr><td>No city found..</td></tr>');
-            }
-            jQuery.unblockUI();
-        },
-        error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('errormsg', '');
-            }
-            return false;
-            jQuery.unblockUI();
-        }
-
-    });
-}
-
-function fetchProduct() {
-    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "VendorRequest/FetchProducts?CustomerID=" + sessionStorage.getItem('CustomerID'),
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: "{}",
-        cache: false,
-        dataType: "json",
-        success: function (data) {
-            $("#ddlProduct").empty();
-            if (data.length > 0) {
-                for (var i = 0; i < data.length; i++) {
-                    $("#ddlProduct").append("<option value=" + data[i].productID + ">" + data[i].productName + "</option>");
-                }
-                //$("#ddlProduct").trigger("change");
-            }
-            else {
-                $("#ddlProduct").append('<tr><td>No products found..</td></tr>');
-            }
-
-        },
-        error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('errormsg', '');
-            }
-            return false;
-            jQuery.unblockUI();
-        }
-
-    });
-}
-
-function fetchTDS() {
-    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "VendorRequest/FetchTDS",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: "{}",
-        cache: false,
-        dataType: "json",
-        success: function (data) {
-            $("#ddlTds").empty();
-            if (data.length > 0) {
-
-                $("#ddlTds").append("<option value=0>Select Type of TDS</option>");
-                for (var i = 0; i < data.length; i++) {
-                    $("#ddlTds").append("<option value=" + data[i].tdsID + ">" + data[i].tds + "</option>");
-                }
-                $("#ddlTds").trigger("change");
-            }
-            else {
-                $("#ddlTds").append('<tr><td>No tds found..</td></tr>');
-            }
-
-        },
-        error: function (xhr, status, error) {
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('errormsg', '');
-            }
-            return false;
-            jQuery.unblockUI();
-        }
-
-    });
-}
-
-function fetchPaymentTerms() {
-
-    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "VendorRequest/FetchPaymentTerms?CustomerID=1",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: "{}",
-        cache: false,
-        dataType: "json",
-        success: function (data) {
-
-            $("#ddPayTerms").empty();
-            if (data.length > 0) {
-
-                $("#ddPayTerms").append("<option value=0>Select Payment Terms</option>");
-                for (var i = 0; i < data.length; i++) {
-                    $("#ddPayTerms").append("<option value=" + data[i].termID + ">" + data[i].paymentTerm + "</option>");
-                }
-
-                //$("#ddPayTerms").trigger("change");
-            }
-            else {
-                $("#ddPayTerms").append('<tr><td>No payment terms found..</td></tr>');
-            }
-
-        },
-        error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('errormsg', '');
-            }
-            return false;
-            jQuery.unblockUI();
-        }
-
-    });
-}
 
 function getPan(pan) {
     var pan = $('#txtGst').val().substr(2, 10); //11
@@ -314,30 +26,6 @@ function getPan(pan) {
         $('#txtGst').val($('#txtGst').val().toUpperCase())
         $('#txtPan').attr('disabled', 'disabled')
         //$('#txtGst').attr('disabled', 'disabled')
-    }
-}
-
-function fetchMsme() {
-
-    if (jQuery("#ddlMSME option:selected").val() == 'Y') {
-        $('.hideInput').removeClass('hide');
-        $('#submit_form').validate();
-        $('input[name="txtUdyam"]').rules('add', {
-            required: true
-        });
-        $('input[name="filemsme"]').rules('add', {
-            required: true
-        });
-        $('#ddlMSMEClass').rules('add', {
-            required: true
-        });
-
-
-    } else {
-        $('.hideInput').addClass('hide');
-        $('input[name="filemsme"]').rules('remove');
-        $('input[name="txtUdyam"]').rules('remove');
-        $('input[name="ddlMSMEClass"]').rules('remove');
     }
 }
 function SubmitVendorRegistration() {
@@ -457,7 +145,7 @@ function SubmitVendorRegistration() {
     };
 
     console.log(JSON.stringify(VendorInfo));
-    alert(JSON.stringify(VendorInfo))
+ 
     jQuery.ajax({
 
         url: sessionStorage.getItem("APIPath") + "VendorRequest/VendorRequestSubmit",
@@ -515,130 +203,8 @@ function SubmitVendorRegistration() {
     });
 
 }
-
 function DownloadFile(aID) {
     fnDownloadAttachments($("#" + aID.id).html(), 'tempVR/' + sessionStorage.getItem('tmpVendorID'));
-}
-
-function fetchCategorymaster() {
-
-    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    jQuery.ajax({
-        type: "GET",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&For=M&MappedBy=a&VendorID=0",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        data: "{}",
-        cache: false,
-        dataType: "json",
-        success: function (data) {
-
-            $("#ddlCategoryMultiple").empty();
-            if (data.length > 0) {
-                for (var i = 0; i < data.length; i++) {
-                    $("#ddlCategoryMultiple").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
-                }
-                $("#ddlCategoryMultiple").trigger("change");
-
-            }
-            else {
-                $("#ddlCategoryMultiple").append('<tr><td>No categories found..</td></tr>');
-            }
-            // jQuery.unblockUI();
-        },
-        error: function (xhr, status, error) {
-
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                fnErrorMessageText('errormsg', '');
-            }
-            return false;
-            jQuery.unblockUI();
-        }
-
-    });
-}
-function fetchRFIDetails() {
-    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    var replaced = '', _selectedCat = new Array();
-    jQuery.ajax({
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "VQMaster/fetchRFIPendingDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VQID=" + sessionStorage.getItem('CurrentVQID'),
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "GET",
-        cache: false,
-        crossDomain: true,
-        dataType: "json",
-        success: function (BidData) {
-
-            if (BidData.length > 0) {
-
-                $('#tblServicesProduct').empty();
-                $('#tblTempVendorslist').empty();
-                $('#txtrfiSubject').val(BidData[0].vqMaster[0].vqSubject)
-                $('#txtrfideadline').val(BidData[0].vqMaster[0].vqDeadline)
-                $('#txtrfidescription').val(BidData[0].vqMaster[0].vqDescription)
-                $('#txtattachdescription').val(BidData[0].vqMaster[0].vqAttachmentDescription)
-
-                $("#cancelBidBtn").show();
-                //jQuery('#attach-file').attr('href', 'PortalDocs/RFI/' + sessionStorage.getItem('CurrentVQID') + '/' + replaced).html(BidData[0].VQMaster[0].RFIAttachment)
-
-                if (BidData[0].vqAttachment.length > 0) {
-                    $("#tblAttachmentsElem").empty();
-                    for (var i = 0; i < BidData[0].vqAttachment.length; i++) {
-                        replaced = BidData[0].vqAttachment[i].vqAttachment.replace(/\s/g, "%20")
-                        $("#tblAttachmentsElem").append('<li><div class="inputgroup">' +
-                            '<label class="control-label col-md-3">Attachment</label>' +
-                            '<div class="col-md-4">' +
-                            '<input type="text" class="form-control" placeholder="Attachment Description" tabindex="5" name="txtattachdescription" autocomplete="off" value=' + BidData[0].vqAttachment[i].vqAttachmentDescription.replace(/\s/g, "&nbsp;") + ' />' +
-                            '</div>' +
-                            '<div class="col-md-3">' +
-                            '<input type="file" id=file' + (i + 1) + ' class="form-control"  tabindex="4" onchange="checkfilesizeMultiple(this)" />' +
-                            '<span class="help-block" style=float:left;><a id=attach-file' + (i + 1) + ' style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + BidData[0].vqAttachment[i].vqAttachment + '</a></span>' +
-
-                            '</div>' +
-                            '<div class="col-md-2" style=" padding-left:0px !important; ">' +
-                            '<a href="javascript:void(0);" class="btn btn-sm blue" onclick="addMoreAttachment()"><i class="fa fa-plus"></i></a>' +
-                            '</div>' +
-                            '</div></li>'
-                        );
-                    }
-                }
-
-                if (BidData[0].vqProductCat.length > 0) {
-                    for (var i = 0; i < BidData[0].vqProductCat.length; i++) {
-                        _selectedCat.push(BidData[0].vqProductCat[i].categoryID);
-                    }
-                    $("#ddlCategoryMultiple").select2('val', _selectedCat).trigger("change");
-
-
-                }
-                if (BidData[0].tempVendors.length > 0) {
-                    $('#tblTempVendorslist').append('<thead><tr style="background: gray; color: #FFF;"><th>Company</th><th>Email</th><th>Mobile No</th><th>Contact Person</th><th>Actions</th></tr></thead>')
-                    for (var i = 0; i < BidData[0].tempVendors.length; i++) {
-                        $('#tblTempVendorslist').append("<tr><td>" + BidData[0].tempVendors[i].companyName + "</td><td>" + BidData[0].tempVendors[i].emailId + "</td><td>" + BidData[0].tempVendors[i].mobileNo + "</td><td>" + BidData[0].tempVendors[i].contactPerson + "</td><td><button type=button class='btn default btn-xs blue' onclick='editTempCompany(\"" + BidData[0].tempVendors[i].rowID + "\",\"" + BidData[0].tempVendors[i].companyName + "\",\"" + BidData[0].tempVendors[i].emailId + "\",\"" + BidData[0].tempVendors[i].mobileNo + "\",\"" + BidData[0].tempVendors[i].contactPerson + "\")'><i class='fa fa-edit' style='margin-top: 0px !important;'></i> Modify</button><button type=button class='btn default btn-xs red' onclick='deleteRFITempVendors(\"" + BidData[0].tempVendors[i].rowID + "\")'><i class='fa fa-times' style='margin-top: 0px !important;'></i> Delete</button></td></tr>");
-                    }
-                }
-
-            }
-
-        },
-        error: function (xhr, status, error) {
-            var err = xhr.responseText//eval("(" +  + ")");
-            if (xhr.status === 401) {
-                error401Messagebox(err.Message);
-            }
-
-            return false;
-            jQuery.unblockUI();
-        }
-    });
-    jQuery.unblockUI();
-
-
 }
 
 
@@ -962,6 +528,7 @@ function fnClearformfields() {
 
 // make reset Function & call after Details submit ????
 function fnFormClear() {
+  
     $("#ddlNatureEstaiblishment").val('0')
     //$("#ddlNatureEstaiblishment option:selected").text('')
     $("#ddlVendorType").val('0')
@@ -970,7 +537,7 @@ function fnFormClear() {
     $("#txtAdd1").val('')
     $("#ddlCountry").val('111').trigger("change");
     $("#ddlState").val(''),
-        $("#ddlCity").val('')
+    $("#ddlCity").val('')
     $("#txtPin").val('')
     $("#txtPan").val('')
     $("#txtTan").val('')
@@ -1035,5 +602,29 @@ function fnChangeGSTClass() {
         $('#filegst').rules('remove');
         $('#txtPan').rules('remove');
         $('#filepan').rules('remove');
+    }
+}
+function fetchMsme() {
+       
+    $('#submit_form').validate();
+    if (jQuery("#ddlMSME option:selected").val() == 'Y') {
+        $('.hideInput').removeClass('hide');
+        
+        $('input[name="txtUdyam"]').rules('add', {
+            required: true
+        });
+        $('input[name="filemsme"]').rules('add', {
+            required: true
+        });
+        $('#ddlMSMEClass').rules('add', {
+            required: true
+        });
+
+    } 
+    else {
+        $('.hideInput').addClass('hide');
+        $('input[name="filemsme"]').rules('remove');
+        $('input[name="txtUdyam"]').rules('remove');
+        $('#ddlMSMEClass').rules('remove');
     }
 }
