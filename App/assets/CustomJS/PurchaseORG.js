@@ -90,7 +90,7 @@ function BindData() {
                 else
                     Status = "<span>In-Active</span>";
 
-                $('#tblPurchaseORGMaster').append('<tr id="rowid_' + value.purchaseOrgID + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;" onClick="onEditClick(\'rowid_' + value.purchaseOrgID + '\',' + value.isActive + ')"><i class="fa fa-pencil"></i></button></td><td>' + value.purchaseOrgName + '</td><td>' + Status + '</td></tr>')
+                $('#tblPurchaseORGMaster').append('<tbody><tr id="rowid_' + value.purchaseOrgID + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;" onClick="onEditClick(\'rowid_' + value.purchaseOrgID + '\',' + value.isActive + ')"><i class="fa fa-pencil"></i></button></td><td>' + value.purchaseOrgName + '</td><td>' + Status + '</td></tr></tbody>')
             });
         }
         else {

@@ -43,12 +43,13 @@ jQuery(document).ready(function () {
 if (window.location.search) {
     
     var param = getUrlVars()["param"];
+   
     var decryptedstring = fndecrypt(param);
     var RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
     var Type = getUrlVarsURL(decryptedstring)["Type"];
-
+    
     $('#hdnRfqID').val(RFQID);
-
+     
     var sub = getUrlVarsURL(decryptedstring)["RFQSubject"].replace(/%20/g, ' ').replace(/%2F/g, '/');
     if (Type != undefined && Type.toLowerCase() == "aw") {
         $('#btn_commercial').addClass('hide');
@@ -65,6 +66,7 @@ if (window.location.search) {
 function FetchInvitedVendorsForeRFQ() {
     var x = isAuthenticated();
     var verId = parseInt($('#ddlrfqVersion').val());
+    debugger
     jQuery.ajax({
         //url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchInvitedVendors/?RFQID=" + $('#hdnRfqID').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + '&CustomerID=' + sessionStorage.getItem('CustomerID'),
         url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchInvitedVendors/?RFQID=" + $('#hdnRfqID').val(),
@@ -73,6 +75,7 @@ function FetchInvitedVendorsForeRFQ() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
+            debugger
             if (data.length > 0) {
                 $('#tblVendorSummary tbody').empty();
                 $('#displayVendorTable').show();
@@ -94,7 +97,7 @@ function FetchInvitedVendorsForeRFQ() {
             }
         },
         error: function (xhr, status, error) {
-
+             debugger
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -127,13 +130,14 @@ function fetchrfqcomprative() {
     $('#tblRFQComprativeBoq').hide();
     sessionStorage.setItem("RFQVersionId", $("#ddlrfqVersion option:selected").val())
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    console.log(sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + _rfqID + "&RFQVersionId=" + _versionNo);
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativeDetails/?RFQID=" + _rfqID + "&RFQVersionId=" + _versionNo,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         contentType: "application/json; charset=utf-8",
         success: function (Data, status, jqXHR) {
-           
+           debugger
             let data = Data.rData
       
             var str = '';
@@ -1114,7 +1118,7 @@ function fetchrfqcomprative() {
             }
         },
         error: function (xhr, status, error) {
-         
+         debugger
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -2315,7 +2319,7 @@ function formvalidate() {
 
         },
         submitHandler: function (form) {
-
+             debugger
             if ($('#hdnRfiRfqID').val() == "0") {
                 gritternotification('Please Select RFQ properly!!!')
             }
@@ -2330,6 +2334,7 @@ function formvalidate() {
                 }
                 fetchAttachments();
                 fetchApproverRemarks('C');
+                debugger
                 setTimeout(function () {
 
                     if (sessionStorage.getItem('RFQBidType') == 'Closed') {

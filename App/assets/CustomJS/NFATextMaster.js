@@ -116,7 +116,7 @@ function BindData() {
                     porg = 'ALL';
                 else
                     porg = value.purchaseOrgName;
-                $('#tblFetchParamMaster').append('<tr id="rowid_' + value.nfaParamID + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;" onClick="onEditClick(\'rowid_' + value.nfaParamID + '\',\'' + value.isActive + '\',\'' + value.flDefault + '\',\'' + value.purchaseOrg + '\')"><i class="fa fa-pencil"></i></button></td><td>' + porg + '</td><td>' + value.nfaParamText + '</td><td>' + isdefault + '</td><td>' + Status + '</td></tr>')
+                $('#tblFetchParamMaster').append('<tbody><tr id="rowid_' + value.nfaParamID + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;" onClick="onEditClick(\'rowid_' + value.nfaParamID + '\',\'' + value.isActive + '\',\'' + value.flDefault + '\',\'' + value.purchaseOrg + '\')"><i class="fa fa-pencil"></i></button></td><td>' + porg + '</td><td>' + value.nfaParamText + '</td><td>' + isdefault + '</td><td>' + Status + '</td></tr></tbody>')
             });
         }
         else {

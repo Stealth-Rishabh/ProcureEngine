@@ -770,9 +770,10 @@ function fngetConnHistory(bidid) {
 }
 var graphData = [];
 function fnPaintGraph(shortname, counter, itemId) {
-
-
+   debugger
+   
     $('#Items').append('<table  width="100%"  class="pagebreak" border="1" style="border-collapse: collapse;" id="tblBidItem' + counter + '"></table>')
+
     if (counter == 1) {
         $('#tblBidItem' + counter).append('<tr><td width="100%"><div id="BidTrendGraph" style="width:100%;margin-top:10px;font-size:20px;line-height: 30px;padding-bottom: 8px;font-family:Arial, Helvetica, sans-serif; font-weight: 200;text-align: center;"><div style="clear: both;"></div> <label style="text-align: center;">Bid Graph Trend</label></div></td></tr>')
     }
@@ -1036,9 +1037,6 @@ function printpdf(){
             type:'html',
             scanStyles:true,
             css:[`assets/CustomCSS/common.css`,`assets/CustomCSS/ViewReport2.css`],
-            showModal:true,
-            modalMessage:'Downloading pdf'
-            
         }
         
         

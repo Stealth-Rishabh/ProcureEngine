@@ -115,6 +115,9 @@ function formvalidate() {
         rules: {
             ddlconfiguredby: {
                 required: true
+            },
+            ddlbidstatus: {
+                required: true
             }
         },
 
@@ -182,7 +185,7 @@ function formvalidate() {
 var rfqdeadline = '';
 var result = '';
 function fetchRFQVendorSummary() {
-
+   jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var dtfrom = '', dtto = '', subject = 'X-X';
     result = '';
     if ($("#txtFromDate").val() == null || $("#txtFromDate").val() == '') {
@@ -329,10 +332,11 @@ function fetchRFQVendorSummary() {
 
                     }
 
-
+                   
                 });
+                jQuery.unblockUI();
                 var tableWrapper = $('#tblVendorSummary_wrapper'); // datatable creates the table wrapper by adding with id {your_table_jd}_wrapper
-
+                
 
 
             }
@@ -349,6 +353,7 @@ function fetchRFQVendorSummary() {
 
 
                 });
+                jQuery.unblockUI();
             }
         },
         error: function (xhr, status, error) {

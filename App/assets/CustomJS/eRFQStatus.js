@@ -158,7 +158,7 @@ function sendremainderstoparicipants() {
 function CancelRFIRFQ(MailPermit) {
     var _cleanString = StringEncodingMechanism($('#rq_subject').html());
     var _cleanString2 = StringEncodingMechanism($('#rq_description').html().replace(/'/g, " "));
-
+debugger
 
     var Data = {
 
@@ -189,7 +189,7 @@ function CancelRFIRFQ(MailPermit) {
         dataType: "json",
 
         success: function (data) {
-
+            debugger
             bootbox.alert("RFQ cancelled successfully.", function () {
                 window.location = sessionStorage.getItem('HomePage');
                 return false;
@@ -199,6 +199,7 @@ function CancelRFIRFQ(MailPermit) {
 
         },
         error: function (jqXHR, exception) {
+            debugger
             var err = jqXHR.responseText //eval("(" + jqXHR.responseText + ")");
             if (jqXHR.status == 401) {
                 error401Messagebox(err.Message);

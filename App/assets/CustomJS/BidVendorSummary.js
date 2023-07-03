@@ -527,7 +527,7 @@ function fetchBidVendorSummary(dtfrom, dtto, subject) {
 
             }
             else {
-                jQuery('#tblVendorSummary > tbody').append("<tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr>");
+                jQuery('#tblVendorSummary > tbody').append("<tbody><tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr></tbody>");
                 $('#tblVendorSummary').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
@@ -771,7 +771,7 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
 
             }
             else {
-                jQuery('#tblVendorSummarydetails > tbody').append("<tr><td colspan='17' style='text-align: center; color:red;'>No record found</td></tr>");
+                jQuery('#tblVendorSummarydetails > tbody').append("<tbody><tr><td colspan='17' style='text-align: center; color:red;'>No record found</td></tr></tbody>");
                 $('#tblVendorSummarydetails').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
@@ -972,7 +972,7 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
                 var tableWrapper = $('#tblVendorSummarySUmzation_wrapper'); // datatable creates the table wrapper by adding with id {your_table_jd}_wrapper
             }
             else {
-                jQuery('#tblVendorSummarySUmzation > tbody').append("<tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr>");
+                jQuery('#tblVendorSummarySUmzation > tbody').append("<tbody><tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr></tbody>");
                 $('#tblVendorSummarySUmzation').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
@@ -1264,7 +1264,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
 
             }
             else {
-                jQuery('#tblVendorSummarydetails > tbody').append("<tr><td colspan='17' style='text-align: center; color:red;'>No record found</td></tr>");
+                jQuery('#tblVendorSummarydetails > tbody').append("<tbody><tr><td colspan='17' style='text-align: center; color:red;'>No record found</td></tr></tbody>");
                 $('#tblVendorSummarydetails').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
@@ -1513,7 +1513,7 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
 
             }
             else {
-                jQuery('#tblVendorSummarySUmzation > tbody').append("<tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr>");
+                jQuery('#tblVendorSummarySUmzation > tbody').append("<tbody><tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr></tbody>");
                 $('#tblVendorSummarySUmzation').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,

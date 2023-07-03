@@ -728,10 +728,10 @@ function fetchBidSummaryDetails(BidID, BidForID) {
             var wtavg = 0;
             if (data.length > 0) {
                 
-               
+               debugger
 
                 if (parseInt(BidTypeID) == 6) {
-
+                 
                     $('#lnktotvalue').html('Detailed Report')
                     if ($('#lnktotvalue').html() == "Detailed Report") {
                         jQuery("#tblBidSumm").hide()
@@ -1551,7 +1551,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
 
                 }
                 else {
-
+                     debugger
                     jQuery('#tblBidSummary > tbody').append("<tr><td colspan='18' style='text-align: center; color:red;'>No record found</td></tr>");
                 }
                 if (data[0].hideVendor == "Y") {
@@ -2854,7 +2854,7 @@ function AwardBid() {
 }
 
 function FetchRecomendedVendor(bidid) {
-
+debugger
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "ApprovalAir/FetchRecomendedVendor/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&BidID=" + bidid,
@@ -2865,6 +2865,7 @@ function FetchRecomendedVendor(bidid) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
+            debugger
             var isMappedPPCApp = 'N';
             var isLastApprover = 'N';
             $('#tblremarksforward').empty()

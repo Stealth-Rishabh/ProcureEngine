@@ -1003,6 +1003,7 @@ function fnSubmiteRFQSendmail(ismailsent) {
 
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    debugger
     if (validateSubmit) {
         var Tab2data = {
             "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
@@ -1024,7 +1025,7 @@ function fnSubmiteRFQSendmail(ismailsent) {
             data: JSON.stringify(Tab2data),
             dataType: "json",
             success: function (data) {
-
+                    debugger
                 setTimeout(function () {
                     fetchRFQResponse('Question', sessionStorage.getItem('RFQVersionId'))
                     if (ismailsent == "Y") {
@@ -1054,7 +1055,7 @@ function fnSubmiteRFQSendmail(ismailsent) {
 
             },
             error: function (xhr, status, error) {
-
+                debugger
                 var err = xhr.responseText// eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);
@@ -2380,6 +2381,7 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
 
                 },
                 error: function (xhr, status, error) {
+                    debugger
 
                     var err = xhr.responseText//eval("(" + xhr.responseText + ")");
                     if (xhr.status == 401) {
