@@ -380,6 +380,7 @@ function formvalidate() {
 var BidDate = "";
 var result = '';
 function fetchBidVendorSummary(dtfrom, dtto, subject) {
+    var x = isAuthenticated();
     var url = '';
 
     result = '';
@@ -527,7 +528,7 @@ function fetchBidVendorSummary(dtfrom, dtto, subject) {
 
             }
             else {
-                jQuery('#tblVendorSummary > tbody').append("<tbody><tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr></tbody>");
+                jQuery('#tblVendorSummary > tbody').append("<tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr>");
                 $('#tblVendorSummary').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
@@ -554,6 +555,7 @@ function fetchBidVendorSummary(dtfrom, dtto, subject) {
     });
 }
 function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (jQuery("#ddlBidFor option:selected").val() == 81) {
         jQuery("#ddlBidFor option:selected").val(0)
@@ -723,13 +725,22 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
                                 columns: ':visible',
                                 format: {
                                     body: function (data, column, node) {
+                                        
                                         if (column === 4) {
                                             return column === 4 ? data.replace(/[$,.]/g, '') : data.replace(/(&nbsp;|<([^>]+)>)/ig, "");
                                             data.replace(/<br\s*\/?>/ig, "\r\n");
                                             data;
                                         }
-                                        else if (column === 9 || column === 11 || column === 0) {                                           
-                                            let text = data.match(/>([^<]+)</)[1];
+                                        else if (column === 9 || column === 11 || column === 0) {    
+                                            
+                                            let text
+                                            
+                                            if( data.match(/>([^<]+)</)!=null){
+                                             text = data.match(/>([^<]+)</)[1] ;
+                                            }
+                                            else{
+                                               text=removeThousandSeperator(data) 
+                                            }
                                             return parseFloat(text);
                                         }
                                         else if (column === 5 || column === 10 || (column >= 12 && column <= 16)) {                                          
@@ -771,7 +782,7 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
 
             }
             else {
-                jQuery('#tblVendorSummarydetails > tbody').append("<tbody><tr><td colspan='17' style='text-align: center; color:red;'>No record found</td></tr></tbody>");
+                jQuery('#tblVendorSummarydetails > tbody').append("<tr><td colspan='17' style='text-align: center; color:red;'>No record found</td></tr>");
                 $('#tblVendorSummarydetails').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
@@ -801,6 +812,7 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
 
 }
 function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
+    var x = isAuthenticated();
     result = '';
     if (jQuery("#ddlBidFor option:selected").val() == 81) {
         jQuery("#ddlBidFor option:selected").val(0)
@@ -972,7 +984,7 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
                 var tableWrapper = $('#tblVendorSummarySUmzation_wrapper'); // datatable creates the table wrapper by adding with id {your_table_jd}_wrapper
             }
             else {
-                jQuery('#tblVendorSummarySUmzation > tbody').append("<tbody><tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr></tbody>");
+                jQuery('#tblVendorSummarySUmzation > tbody').append("<tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr>");
                 $('#tblVendorSummarySUmzation').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
@@ -997,6 +1009,7 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
 
 }
 function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
+    var x = isAuthenticated();
     result = '';
     if ($("#ddlconfiguredby").select2('data').length) {
         $.each($("#ddlconfiguredby").select2('data'), function (key, item) {
@@ -1264,7 +1277,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
 
             }
             else {
-                jQuery('#tblVendorSummarydetails > tbody').append("<tbody><tr><td colspan='17' style='text-align: center; color:red;'>No record found</td></tr></tbody>");
+                jQuery('#tblVendorSummarydetails > tbody').append("<tr><td colspan='17' style='text-align: center; color:red;'>No record found</td></tr>");
                 $('#tblVendorSummarydetails').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
@@ -1291,6 +1304,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
     });
 }
 function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
+    var x = isAuthenticated();
     result = '';
     if ($("#ddlconfiguredby").select2('data').length) {
         $.each($("#ddlconfiguredby").select2('data'), function (key, item) {
@@ -1513,7 +1527,7 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
 
             }
             else {
-                jQuery('#tblVendorSummarySUmzation > tbody').append("<tbody><tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr></tbody>");
+                jQuery('#tblVendorSummarySUmzation > tbody').append("<tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr>");
                 $('#tblVendorSummarySUmzation').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,

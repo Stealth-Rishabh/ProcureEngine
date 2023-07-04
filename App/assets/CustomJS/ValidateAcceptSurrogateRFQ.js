@@ -2,8 +2,8 @@ var param = getUrlVars()["param"]
 var decryptedstring = fndecrypt(param)
 var RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
 
-//sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 //FROM HTML
 jQuery(document).ready(function () {
 
@@ -20,8 +20,6 @@ jQuery(document).ready(function () {
 //
 function fetchReguestforQuotationDetailseRFQ() {
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
-
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetailsForSurrogate/?RFQID=" + RFQID,
@@ -31,7 +29,6 @@ function fetchReguestforQuotationDetailseRFQ() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-            //var EndDate = new Date(data[0].rfqEndDate.replace('-', ''));
             sessionStorage.setItem("preferredtimezone", data[0].preferredtimezone);
             sessionStorage.setItem('hddnRFQRFIID', RFQID);
             sessionStorage.setItem('CustomerID', data[0].customerID);
@@ -40,7 +37,8 @@ function fetchReguestforQuotationDetailseRFQ() {
            // if (EndDate > currentTime) {
 
             //** check end Date in valid or not
-            Dateandtimevalidate(fnConverToLocalTime(data[0].rfqEndDate));
+           
+                Dateandtimevalidate(fnConverToLocalTime(data[0].rfqEndDate));
                 jQuery('#RFQSubject').text(data[0].rfqSubject)
                 jQuery('#RFQSubjectTT').text(data[0].rfqSubject)
 
@@ -50,10 +48,10 @@ function fetchReguestforQuotationDetailseRFQ() {
                 jQuery('#RFQDescriptionTT').text(data[0].rfqDescription)
                 jQuery('#ConversionRate').html(data[0].rfqConversionRate);
                 jQuery('#refno').html(data[0].rfqConversionRate);
-                jQuery('#RFQStartDate').text(data[0].rfqStartDate)
-                jQuery('#RFQStartDateTT').text(data[0].rfqStartDate)
-                jQuery('#RFQEndDate').text(data[0].rfqEndDate)
-                jQuery('#RFQDeadlineTT').text(data[0].rfqEndDate)
+                jQuery('#RFQStartDate').text(fnConverToLocalTime(data[0].rfqStartDate))
+                jQuery('#RFQStartDateTT').text(fnConverToLocalTime(data[0].rfqStartDate))
+                jQuery('#RFQEndDate').text(fnConverToLocalTime(data[0].rfqEndDate))
+                jQuery('#RFQDeadlineTT').text(fnConverToLocalTime(data[0].rfqEndDate))
                 $('#bid_EventID').text(RFQID);
                 $('#lblEventID').text(RFQID);
                 jQuery('#TermCondition').attr("name", data[0].rfqTermandCondition);
@@ -74,8 +72,16 @@ function fetchReguestforQuotationDetailseRFQ() {
     });
     jQuery.unblockUI();
 }
-function Dateandtimevalidate(StartDT) {
+function getTimezoneOffset() {
+  function z(n){return (n<10? '0' : '') + n}
+  var offset = new Date().getTimezoneOffset();
+  var sign = offset < 0? '+' : '-';
+  offset = Math.abs(offset);
+  return sign + z(offset/60 | 0) + z(offset%60);
+}
 
+// +0800 for UTC/GMT + 8hrs
+function Dateandtimevalidate(StartDT) {
     var StartDT = StartDT.replace('-', '');
 
     let StTime =
@@ -85,13 +91,13 @@ function Dateandtimevalidate(StartDT) {
 
     ST = new String(StTime);
     ST = ST.substring(0, ST.indexOf("GMT"));
-    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
+    ST = ST + 'GMT' +getTimezoneOffset() //sessionStorage.getItem('utcoffset');
 
     var Tab1Data = {
         "BidDate": ST
     }
     //console.log(JSON.stringify(Tab1Data))
-
+   
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -99,6 +105,7 @@ function Dateandtimevalidate(StartDT) {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
+        async: false,
         data: JSON.stringify(Tab1Data),
         dataType: "json",
         success: function (data) {
@@ -149,8 +156,7 @@ var successopenbid = $('#successopenbid');
 
 function validatepassword() {
     //sessionStorage.setItem("APIPath", 'http://www.support2educate.com/procurengine/API/api/');
-    //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-    sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+    sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  </h5>' });
     if (jQuery("#txtpassword").val() == "") {
@@ -172,7 +178,6 @@ function validatepassword() {
             crossDomain: true,
             dataType: "json",
             success: function (response) {
-
                 sessionStorage.setItem("Token", response.token)
                 fnGtrTokenValidatePassword()
 
@@ -206,7 +211,6 @@ function validatepassword() {
             crossDomain: true,
             dataType: "json",
             success: function (data) {
-
                 if (data[0].flagStatus == "1") {
                     fetchReguestforQuotationDetailseRFQ();
                     sessionStorage.setItem("VendorId", data[0].vendorID)

@@ -14,7 +14,32 @@ const msalConfig = {
         cacheLocation: "localStorage", // This configures where your cache will be stored
         storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
     },
-   
+    system: {
+        loggerOptions: {
+            logLevel: msal.LogLevel.Verbose,
+            loggerCallback: (level, message, containsPii) => {
+                if (containsPii) {
+                    return;
+                }
+                switch (level) {
+                    case msal.LogLevel.Error:
+                        console.error(message);
+                        return;
+                    case msal.LogLevel.Info:
+                        console.info(message);
+                        return;
+                    case msal.LogLevel.Verbose:
+                        console.debug(message);
+                        return;
+                    case msal.LogLevel.Warning:
+                        console.warn(message);
+                        return;
+                }
+            },
+            piiLoggingEnabled: true
+        },
+    },
+
 };
 
 // Add here the endpoints and scopes for the web API you would like to use.
@@ -51,6 +76,7 @@ if (typeof exports !== 'undefined') {
 //______________________________________________________________________________________
 const myMSALObj = new msal.PublicClientApplication(msalConfig);
 
+
 myMSALObj.handleRedirectPromise()
     .then(handleResponse)
     .catch(error => {
@@ -58,20 +84,28 @@ myMSALObj.handleRedirectPromise()
     });
 
 function handleResponse(response) {
-   
+  
     if (sessionStorage.getItem("IsSSOAuth") == "Y") {
+         
         if (response !== null) {
+         
             username = response.account.username;
             passTokenToApi();
         }
         else {
+           
             selectAccount();
         }
     }
+    else{
+        var x = isAuthenticated();
+    }
 }
 
+
+
+
 function passTokenToApi() {
- 
     getTokenRedirect(tokenRequest)
         .then(response => {
             sessionStorage.setItem("Token", response.accessToken)
@@ -82,12 +116,15 @@ function passTokenToApi() {
 
 }
 
+
+
 async function getTokenRedirect(request) {
-
     request.account = myMSALObj.getAccountByUsername(username);
-
+    //request.account.name = ;
     return await myMSALObj.acquireTokenSilent(request)
+    //return await myMSALObj.AcquireTokenSilent(scopes, accounts.FirstOrDefault())
         .catch(error => {
+            alert(error)
             console.error(error);
             console.warn("silent token acquisition fails. acquiring token using popup");
             if (error instanceof msal.InteractionRequiredAuthError) {
@@ -100,18 +137,17 @@ async function getTokenRedirect(request) {
 }
 
 function selectAccount() {
-
-
-
+  
     const currentAccounts = myMSALObj.getAllAccounts();
-
+  
     if (!currentAccounts || currentAccounts.length < 1) {
+      
         return;
     } else if (currentAccounts.length > 1) {
         // Add your account choosing logic here
         console.warn("Multiple accounts detected.");
     } else if (currentAccounts.length === 1) {
-
+    
         username = currentAccounts[0].username;
         passTokenToApi();
     }
@@ -122,8 +158,7 @@ function selectAccount() {
 //Check JWT Validity
 
 
-function isAuthenticated() {
-
+async function isAuthenticated() {
     var token = sessionStorage.getItem("Token");
     var refreshToken = sessionStorage.getItem("RefreshToken");
     var isValid = true;
@@ -132,6 +167,7 @@ function isAuthenticated() {
         "RefreshToken": refreshToken
 
     }
+    //if (sessionStorage.getItem('CustomerID') != "32") {
     if (sessionStorage.getItem("IsSSOAuth") == "N") {
         var urlAc = sessionStorage.getItem("APIPath") + "Token/refresh";
         try {
@@ -165,13 +201,13 @@ function isAuthenticated() {
         }
     }
     else {
-        myMSALObj.handleRedirectPromise()
-        .then(handleResponse)
-        .catch(error => {
-            console.error(error);
-           return true;
-        });
-      
+        await myMSALObj.handleRedirectPromise()
+            .then(handleResponse)
+            .catch(error => {
+                console.error(error);
+                isValid = false;
+            });
+
     }
     return isValid;
 }

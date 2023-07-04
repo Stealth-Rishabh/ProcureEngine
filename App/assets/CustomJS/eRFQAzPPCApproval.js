@@ -1,5 +1,7 @@
 
 jQuery(document).ready(function () {
+    //callPagejs('eRFQAzPPCApproval.js');
+    debugger;
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -155,7 +157,7 @@ function DownloadFile(aID) {
 
 var Vendor;
 function fetchrfqcomprative() {
-    var x = isAuthenticated();
+
     var reInvited = '';
     var dtfrom = '';
     var dtto = '';
@@ -793,7 +795,7 @@ function fetchrfqcomprative() {
 
 }
 function RFQFetchTotalPriceForReport(VendorID, Counter) {
-    var x = isAuthenticated();
+
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -832,7 +834,7 @@ function RFQFetchTotalPriceForReport(VendorID, Counter) {
     });
 }
 function RFQFetchL1Package(VendorID, Counter) {
-    var x = isAuthenticated();
+
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -868,7 +870,6 @@ function RFQFetchL1Package(VendorID, Counter) {
 }
 var max = 0;
 function FetchRFQVersion() {
-    var x = isAuthenticated();
     max = 0;
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -904,7 +905,6 @@ function FetchRFQVersion() {
 }
 
 function fetchAttachments() {
-    var x = isAuthenticated();
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -915,8 +915,8 @@ function fetchAttachments() {
         crossDomain: true,
         dataType: "json",
         success: function (Data, status, jqXHR) {
-            
-             let data=Data.rData
+            let data=Data.rData
+
             jQuery("#tblAttachments").empty();
 
             if (data[0].attachments.length > 0) {
@@ -951,7 +951,6 @@ function fetchAttachments() {
     })
 }
 function fetchReguestforQuotationDetails() {
-    var x = isAuthenticated();
     var attachment = '';
     var termattach = '';
 
@@ -965,7 +964,6 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (Data) {
-            
             let RFQData=Data.rData
             var replaced1 = '';
             $('#tbldetailsExcel > tbody').empty();
@@ -1018,7 +1016,7 @@ function fnfillPPCForm() {
 }
 
 function fetchAzPPcFormDetails() {
-    var x = isAuthenticated();
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=" + $("#hdnRfqID").val() + "&BidID=0",
@@ -1142,7 +1140,6 @@ function fnRemoveClassTab0() {
 }
 var allUsers
 function fetchRegisterUser() {
-    var x = isAuthenticated();
     var data = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
@@ -1454,7 +1451,6 @@ function deleteApprow(approwid) {
 }
 function MapApprover() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    var x = isAuthenticated();
     var approvers = '';
     var FCCheck = 'N';
     var PPCCheck = 'N';
@@ -1563,7 +1559,6 @@ $("#MapppcApprover").on("hidden.bs.modal", function () {
     $('#hdnAppEmailIDID').val('0')
 });
 function fnGetApprovers() {
-    var x = isAuthenticated();
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1576,7 +1571,6 @@ function fnGetApprovers() {
         success: function (Data) {
             var str = "";
             let data=Data.rData
-
             jQuery("#tblapprovers").empty();
             if (data[0].approvers.length > 0) {
                 for (var i = 0; i < data[0].approvers.length; i++) {
@@ -1638,7 +1632,6 @@ function fnGetApprovers() {
 
 
 function fetchApproverRemarks() {
-    var x = isAuthenticated();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRFQApproval/FetchApproverRemarks/?RFQID=" + $('#hdnRfqID').val() + "&ApprovalType=" + AppType,
@@ -1817,7 +1810,6 @@ function validateAppsubmitData() {
 
 
 function fnFWDeRFQ() {
-    var x = isAuthenticated();
     var _cleanString = StringEncodingMechanism($('#txtbidspecification').val());
 
     var Approvers = {
@@ -1868,7 +1860,6 @@ function fnFWDeRFQ() {
     });
 }
 function ApprovalCommercialApp() {
-    var x = isAuthenticated();
     var _cleanString2 = StringEncodingMechanism($('#txtRemarksAppC').val());
 
     var approvalbyapp = {
@@ -1884,7 +1875,7 @@ function ApprovalCommercialApp() {
     };
 
 
-   // console.log(JSON.stringify(approvalbyapp))
+    console.log(JSON.stringify(approvalbyapp))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQPPCApprove",
@@ -1985,7 +1976,6 @@ function deleteitem(rowid) {
     }
 }
 function AwardCommeRFQ() {
-    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendors = '';
     var rowCount = jQuery('#tblremarksvendorsawared tr').length;
@@ -2018,7 +2008,6 @@ function AwardCommeRFQ() {
         })
     }
     if (formAward.valid() == true) {
-        var _cleanString3 = StringEncodingMechanism($('#txtRemarksAppC').val());
         if ($('#txtRemarksAward').val() != '' && $('#drpVendors').val() != '') {
             $('#diverrordiv2').show()
             $('#errordiv2').text('Your data is not inserted. Please do press "+" button after enter Remarks.')
@@ -2026,7 +2015,7 @@ function AwardCommeRFQ() {
             jQuery.unblockUI();
 
         }
-       
+        var _cleanString3 = StringEncodingMechanism($('#txtRemarksAppC').val());
         else {
             var approvalbyapp = {
                 "ApproverType": "P",

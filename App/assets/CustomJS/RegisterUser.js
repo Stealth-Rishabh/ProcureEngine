@@ -297,6 +297,7 @@ function fetchRegisterUser() {
             }
             else {
                 jQuery('#tblRegisterUsers > tbody').append("<tr><td colspan='8' style='text-align: center; color:red;'>No User found</td></tr>");
+                
             }
             jQuery.unblockUI();
         },

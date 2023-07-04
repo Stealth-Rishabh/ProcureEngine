@@ -3,13 +3,13 @@ var Changepasswordsuccess = $('#successdivChangePassword');
 Changepassworderror.hide();
 Changepasswordsuccess.hide();
 jQuery(document).ready(function () {
-debugger
+
     Pageloaded()
     var x = isAuthenticated();
     sessionStorage.setItem('CurrentBidID', 0);
     sessionStorage.setItem('hddnRFQID', 0);
     sessionStorage.setItem('CurrentRFIID', 0);
-    setInterval(function () { Pageloaded() }, 15000);
+    //setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
 
@@ -249,7 +249,6 @@ function fnArchive(RFQID) {
 
 
 function fetchDashboardData() {
-    debugger
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var x = isAuthenticated();
     var custId = parseInt(sessionStorage.getItem('CustomerID'));
@@ -263,7 +262,7 @@ function fetchDashboardData() {
         //data: JSON.stringify(userData),
         dataType: "json",
         success: function (BidData) {
-            debugger
+            
             if (BidData[0].bidcnt != "") {
                 jQuery('#lblTodayBidCount').text(BidData[0].bidcnt[0].todayBid)
                 jQuery('#lblNotForwardedBidCount').text(BidData[0].bidcnt[0].notForwarded)
@@ -423,7 +422,6 @@ function fetchDashboardData() {
 
 
                     }
-                    debugger
                     str = "<li><a href='" + BidData[0].todayBidStatus[i].linkURL + "'>";
 
                     str += "<div class='col1'><div class='cont'>";
@@ -484,7 +482,7 @@ function fetchDashboardData() {
         },
         error: function (xhr, status, error) {
 
-          debugger
+
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
 
             if (xhr.status == 401) {
