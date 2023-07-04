@@ -50,8 +50,6 @@ var displayForS = "";
 var openlefttime = 0;
 
 
-
-
 $(document).on("keyup", "#tblParticipantsService .form-control", function () {
     var txt = this.id
 
@@ -66,6 +64,7 @@ function fetchBidSummaryVendorproduct() {
     count = 0;
     openlefttime = 0;
     url = sessionStorage.getItem("APIPath") + "VendorParticipation/fetchBidSummaryVendorSeaExport/?VendorID=" + sessionStorage.getItem("VendorId") + "&BidID=" + sessionStorage.getItem("BidID") + "&UserType=" + sessionStorage.getItem("UserType") + "&_isBidStarted=" + _isBidStarted + "";
+   
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -75,7 +74,7 @@ function fetchBidSummaryVendorproduct() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-
+            
             if (data.length > 0) {
                 if (_isBidStarted == false) {
 
@@ -324,9 +323,7 @@ connection.on("refreshRAQuotes", function (data) {
     fetchBidSummaryVendorproduct();
 });
 connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
-    
-    console.log(rdataJson)
-    //console.log(connectionId)
+ 
     let data = JSON.parse(rdataJson)
     
     if(data[0].VendorID=="0"){
@@ -817,7 +814,7 @@ function fninsupdQuotesS(index) {
             "isPrePricing": "N"
 
         }
-        alert(JSON.stringify(QuoteProduct))
+      //  alert(JSON.stringify(QuoteProduct))
         $('#hdnselectedindex').val(index);
         connection.invoke("RefreshBidParticipation", JSON.stringify(QuoteProduct)).catch(function (err) {
             return console.error(err.toString());

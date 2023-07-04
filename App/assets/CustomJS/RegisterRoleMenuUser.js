@@ -1,4 +1,4 @@
-﻿var APIPath = sessionStorage.getItem("APIPath");
+var APIPath = sessionStorage.getItem("APIPath");
 var error = $('.alert-danger');
 var success = $('.alert-success');
 var form = $('#submit_form');
@@ -499,7 +499,7 @@ function fetchAllRoleMaster() {
                         var status = "No";
                     }
                    
-                    jQuery("#tblRoleMaster").append('<tr><td>' + data[i].roleName + '</td><td>' + status + '</td><td><button class="btn btn-primary btn-xs" id=btn' + i + ' onclick="fnUpdateType(\'' + data[i].roleID + '\',\'' + data[i].roleName + '\',\'' + data[i].isActive + '\')"><i class="fa fa-pencil"></i></button></td></tr>');
+                    jQuery("#tblRoleMaster").append('<tbody><tr><td>' + data[i].roleName + '</td><td>' + status + '</td><td><button class="btn btn-primary btn-xs" id=btn' + i + ' onclick="fnUpdateType(\'' + data[i].roleID + '\',\'' + data[i].roleName + '\',\'' + data[i].isActive + '\')"><i class="fa fa-pencil"></i></button></td></tr></tbody>');
                     if (data[i].canBeDeleted == "N") {
                         $('#btn' + i).attr("disabled", "disabled")
                     }

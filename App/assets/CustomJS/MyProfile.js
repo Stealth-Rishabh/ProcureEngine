@@ -2799,6 +2799,16 @@ function GetCustomerForBankMapping(vendid, ChildId, bankingId,accholder,accnum,a
             $('#mapAH').html(accholder);
             $('#mapAN').html(accnum);
             $('#mapIC').html(accifsc);
+            if(isVerify=='Y'){
+                
+                $('#btnVerifyBank').hide()
+                $('#btnmaptoc').removeAttr('disabled')
+                
+            }
+            else{
+                $('#btnVerifyBank').show()
+                $('#btnmaptoc').attr('disabled','disabled')
+            }
             $('#bankcustomermap').show();
 
         },
@@ -3362,15 +3372,7 @@ function IciciBankPennyDropVerify() {
    debugger
    if($('#mapMN').val()==''){
                $('#btnmaptoc').attr('disabled','disabled');
-                jQuery("#errordiv1").show();
-                jQuery("#errordiv1").text("please fill valid mobile number to proceed");
-
-                setTimeout(function () {
-
-                    jQuery("#errordiv1").hide();
-                    jQuery("#errordiv1").text("");
-                    
-                }, 2000)
+                alertforerror("please fill valid mobile number to proceed")
                 return false
    }
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -3395,29 +3397,30 @@ function IciciBankPennyDropVerify() {
         dataType: "json",
         success: function (data) {
            debugger
-           if(data.reponsestatus.isSuccessStatusCode===true){
-                jQuery("#successdiv1").show();
-                jQuery("#successdiv1").text("Banking details verified successfully...");
+          
+           let ActCode= data.data.actCode
+           if(data.isVeriFy==='Y'){
+               
                 $('#btnmaptoc').removeAttr('disabled');
-
-                setTimeout(function () {
-                    jQuery("#successdiv1").hide();
-                    jQuery("#successdiv1").text("");
-
-                }, 2000)
+                alertforinfo("Banking details verified successfully...");
+                GetBankDetail(parseInt($('#hdnChildID').val()), customerid, VendorId)
                
            }
            else{
-                $('#btnmaptoc').attr('disabled','disabled');
-                jQuery("#errordiv1").show();
-                jQuery("#errordiv1").text("banking details cannot be verified successfully");
-
-                setTimeout(function () {
-
-                    jQuery("#errordiv1").hide();
-                    jQuery("#errordiv1").text("");
-
-                }, 2000)
+               
+             if(ActCode=='0') {
+                  $('#btnmaptoc').removeAttr('disabled');
+                  alertforsucess("Banking details verified successfully...");
+                  GetBankDetail(parseInt($('#hdnChildID').val()), customerid, VendorId)
+             }
+             else{
+                  $('#btnmaptoc').attr('disabled','disabled');
+               
+                  alertforerror(`${data.data.response}. Please check details.`)
+                
+             }
+               
+               
                
            }
             jQuery.unblockUI();
@@ -3425,6 +3428,9 @@ function IciciBankPennyDropVerify() {
         error: function (xhr, status, error) {
 
            debugger
+           let err=xhr.responseText || `banking details cannot be verified. Please Check!`;
+          
+           alertforerror(err);
             jQuery.unblockUI();
         }
     });
@@ -3433,12 +3439,20 @@ function IciciBankPennyDropVerify() {
 
 //dropdown changes for verification
 $('#mapbankcustomer').on('change', function () {
-    
+    debugger
    let isVerify = $('option:selected', this).data('isverify');
    let verification=$('option:selected', this).data('verification');
-   if(isVerify=='Y'){
-       $('#btnmaptoc').attr('disabled','disabled');
-       $('.verifygroup').show();
+   if(isVerify=='Y' ){
+       if(verification=='Y'){
+            $('#btnmaptoc').removeAttr('disabled');
+            $('.verifygroup').show();
+       }
+           
+       else{
+            $('#btnmaptoc').attr('disabled','disabled');
+            $('.verifygroup').show();
+       }
+      
    }
    else{
        $('#btnmaptoc').removeAttr('disabled');

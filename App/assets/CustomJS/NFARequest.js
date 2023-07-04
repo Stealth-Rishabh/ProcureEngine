@@ -428,7 +428,13 @@ var FormWizard = function () {
 
                         if (flag == "T") {
                             if($('#ddlEventType').val()=="1") {
-                            allocateSOB()
+                            if(allocateSOB()==false){
+                                alertforerror(`Please fill SOB details Properly.`)
+                                form.valid()=false;
+                            }
+                            else{
+                               allocateSOB() 
+                            }
                             }
                             Savetab2Data();
                             SaveAttechmentinDB();
@@ -1878,6 +1884,7 @@ function fetchProjectMaster() {
     });
 
 }
+
 /*
  fetchProjectName end
  */
@@ -1901,11 +1908,16 @@ function fetchProjectMaster() {
             else{
                price= parseInt($(`#TDPrice${i}`).text())
             }
+            
+          if(!$(`#TDSOBValue${i} input`).val()){
+              alertforerror('please fill valid allocated value to proceed')
+              return false;
+          }
          
          let SOBDetailsunit ={
           "VendorId" :parseInt($(`#TDVID${i}`).text()),
           "AssociatedVendorId":parseInt($(`#TDCID${i}`).text()),
-          "Allocation":parseInt($(`#TDSOBValue${i} input`).val())||0,
+          "Allocation":parseInt($(`#TDSOBValue${i} input`).val()),
           "HasParticipated":$(`#TDParticipant${i}`).text(),
           "EventRank":$(`#TDRank${i}`).text(),
           "VendorName":$(`#Vendorname${i}`).text()||$(`#Vendorname${i}`).val(),
@@ -1916,6 +1928,9 @@ function fetchProjectMaster() {
         }   
      } )
      debugger
+     if(SOBDetailsArray.length===0){
+         return false
+     }
    
      let data = {
         "SOBId":parseInt(SOBID),

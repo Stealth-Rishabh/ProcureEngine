@@ -40,7 +40,7 @@ $('.maxlength').maxlength({
 });
 
 function fetchReguestforQuotationDetails() {
-    var x = isAuthenticated();
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + RFQID + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
@@ -52,6 +52,7 @@ function fetchReguestforQuotationDetails() {
         dataType: "json",
         success: function (Data) {
             let RFQData=Data.rData
+
             $('#tblvendors > tbody').empty();
             $('#tblvendors > thead').empty();
             if (RFQData.length > 0) {

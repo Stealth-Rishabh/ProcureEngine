@@ -250,7 +250,7 @@ function fetNFAReport(dtfrom, dtto, subject) {
 
                 for (var i = 0; i < data.length; i++) {
 
-                    var str = "<tr><td  class=text-right><a onclick=getSummary(\'" + data[i].nfaID + "'\,\'" + data[i].eventID + "'\,\'" + data[i].eventRefernce + "'\) href='javascript:;' >" + data[i].nfaID + "</a></td>";
+                    var str = "<tbody><tr><td  class=text-right><a onclick=getSummary(\'" + data[i].nfaID + "'\,\'" + data[i].eventID + "'\,\'" + data[i].eventRefernce + "'\) href='javascript:;' >" + data[i].nfaID + "</a></td>";
                     str += "<td>" + data[i].nfaSubject + "</td>";
                     str += "<td>" + data[i].createdBy + "</td>";
                     BidDate = fnConverToShortDT(data[i].updatedOn);
@@ -268,7 +268,7 @@ function fetNFAReport(dtfrom, dtto, subject) {
                         str += "<td>Budget not defined </td>";
 
                     str += "<td>" + data[i].finalStatus + "</td>";
-                    str += "</tr>";
+                    str += "</tr></tbody>";
                     jQuery('#tblNFASummary').append(str);
                 }
                 var table = $('#tblNFASummary');
@@ -313,7 +313,7 @@ function fetNFAReport(dtfrom, dtto, subject) {
 
             }
             else {
-                jQuery('#tblNFASummary > tbody').append("<tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr>");
+                jQuery('#tblNFASummary > tbody').append("<tbody><tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr></tbody>");
                 $('#tblNFASummary').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,

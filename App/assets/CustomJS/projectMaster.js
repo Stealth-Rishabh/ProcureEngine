@@ -1,4 +1,4 @@
-jQuery(document).ready(function () {
+﻿jQuery(document).ready(function () {
     Pageloaded()
     var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
@@ -172,6 +172,14 @@ function postProjectMaster() {
                 fetchProjectMaster();             
                 jQuery.unblockUI();
             }
+            else if (data.isSuccess == '1') {
+                $("#success").html("Successfull...");
+                success.show();
+                success.fadeOut(3000);            
+                fetchProjectMaster();              
+                jQuery.unblockUI();
+
+            }
 
             else if (data.isSuccess == '0') {
                 success.hide();
@@ -188,11 +196,11 @@ function postProjectMaster() {
         },
         error: function (xhr, status, error) {
             if (xhr.status == 401) {
-                $("#errordiv").html("Unauthorized...");
+                $("#errordiv").html("ProjectName Already exists..");
             }
             else {
                 success.hide();
-                $("#errordiv").html("oops some error occurs...");
+                $("#errordiv").html("ProjectName Already exists..");
                 $("#errordiv").show();
                 $("#errordiv").fadeOut(3000);
                 jQuery.unblockUI();

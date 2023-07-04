@@ -274,8 +274,25 @@ function fetchrfqcomprative(RFQID) {
                     }
 
                 }
+                
+                  let totaltargetprice = 0;
+                  let ttpArray = [];
+                  for (var t = 0; t < data[0].quotesDetails.length; t++) {
+  
+                      let isPresent = ttpArray.includes(data[0].quotesDetails[t].rfqParameterId)
+                      if (!isPresent) {
+                          ttpArray.push(data[0].quotesDetails[t].rfqParameterId);
+                          totaltargetprice = totaltargetprice + (data[0].quotesDetails[t].targetPrice*data[0].quotesDetails[t].quantity);
+                      }
+                      else {
+                          break;
+                      }
+                  }
+                
                 //abheedev bug 349 part2 start
-                str += "<tr><td colspan=6 style='text-align:center;'><b>Total</b></td>";
+                
+                str += "<tr><td colspan=5 style='text-align:center;'><b>Total</b></td><td colspan=1 style='text-align:center;'><b>" + thousands_separators(totaltargetprice) + "</b></td>";
+               
                 //abheedev bug 349 part2 end
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
                     if (data[0].vendorNames[k].seqNo != 0) {
@@ -1960,7 +1977,7 @@ function fetchrfqcomprativeBoq(RFQID) {
 
                 }
                 // for calculating total target price
-        
+               debugger
                   let totaltargetprice = 0;
                   let ttpArray = [];
                   for (var t = 0; t < data[0].quotesDetails.length; t++) {
@@ -1968,7 +1985,7 @@ function fetchrfqcomprativeBoq(RFQID) {
                       let isPresent = ttpArray.includes(data[0].quotesDetails[t].rfqParameterId)
                       if (!isPresent) {
                           ttpArray.push(data[0].quotesDetails[t].rfqParameterId);
-                          totaltargetprice = totaltargetprice + data[0].quotesDetails[t].targetPrice;
+                          totaltargetprice = totaltargetprice + (data[0].quotesDetails[t].targetPrice*data[0].quotesDetails[t].quantity);
                       }
                       else {
                           break;

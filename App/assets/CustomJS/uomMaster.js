@@ -20,7 +20,7 @@ jQuery(document).ready(function () {
     
     App.init();
     setCommonData();  
-    fetchMenuItemsFromSession(19, 32);
+    fetchMenuItemsFromSession(19, 66);
     FormValidate();
     fetchCustomerDetail();
 });
@@ -176,7 +176,7 @@ function uomFuncDetails() {
     else {
         status = "N";
     }   
-
+    
     var data = {
         "id": parseInt($('#hddnUOMpiD').val()),
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),   
@@ -219,12 +219,13 @@ function uomFuncDetails() {
 
         },
         error: function (xhr, status, error) {
+            
             if (xhr.status == 401) {
-                $("#errordiv").html("Unauthorized...");
+                $("#errordiv").html("UOM Already exists...");
             }
             else {
                 success.hide();
-                $("#errordiv").html("oops some error occurs...");
+                $("#errordiv").html("UOM Already exists...");
                 $("#errordiv").show();
                 $("#errordiv").fadeOut(3000);
                 jQuery.unblockUI();
@@ -245,7 +246,7 @@ function uomFuncDetails() {
 
 function fetchCustomerDetail() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    var url = sessionStorage.getItem("APIPath") + "UOM/fetchUOMCust/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=M&MappedBy=" + sessionStorage.getItem('UserID');
+    var url = sessionStorage.getItem("APIPath") + "UOM/fetchUOMCust/?CustomerID=" + sessionStorage.getItem('CustomerID');
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -259,7 +260,7 @@ function fetchCustomerDetail() {
         success: function (data) {
             jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
             jQuery("#uomPlaceMaster").empty();
-
+            
             if (data.length > 0) {
                 jQuery("#uomPlaceMaster").append("<thead id='tblheader'><th>Edit</th><th>UOM</th><th>UOM ID</th><th>Status</th></thead>");
 

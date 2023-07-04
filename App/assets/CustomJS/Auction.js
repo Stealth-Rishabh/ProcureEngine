@@ -481,6 +481,7 @@ function convertTo24Hour(time) {
     return time;
 }
 function CancelBidDuringConfig(_bidId, _for) {
+   debugger
     var x = isAuthenticated();
     var Cancelbid = {
         "BidID": parseInt(_bidId),
@@ -500,6 +501,7 @@ function CancelBidDuringConfig(_bidId, _for) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
+          debugger
             if (data == '1' && _for == 'BID') {
                 bootbox.alert("Bid Cancelled successfully.", function () {
                     window.location = "index.html";
@@ -532,7 +534,7 @@ function CancelBidDuringConfig(_bidId, _for) {
             }
         },
         error: function (xhr, status, error) {
-
+            debugger
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1243,7 +1245,7 @@ function validateEmail(email) {
 var allvendorsforautocomplete;
 
 function fetchParticipantsVender() {
-     debugger
+    
      console.log(sessionStorage.getItem("APIPath") + "RegisterParticipants/fetchParticipantsVender_PEV2/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&CreatedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')))
     jQuery.ajax({
         type: "GET",
@@ -1406,7 +1408,7 @@ function fetchBidType() {
 
 
 function fnfetchCatVendors() {
-    debugger
+   
     let data = {
         "ProductCatIDList": JSON.parse(sessionStorage.getItem("hdnCategoryGrpID")),
         "VendorID": sessionStorage.getItem('hdnVendorID'),
@@ -1423,7 +1425,7 @@ function fnfetchCatVendors() {
         contentType: "application/json; charset=utf-8",
         crossDomain:true,
         success: function (data) {
-            debugger
+          
             $('#div_table').removeClass('hide');
             $('#tbldetails').empty();
             if (data.length) {
@@ -1443,7 +1445,7 @@ function fnfetchCatVendors() {
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
-            debugger
+         
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -1564,6 +1566,7 @@ function encrypt(message) {
     return message.toString();
 }
 function decrypt(message) {
+  
     var code = CryptoJS.AES.decrypt(message, key);
     var decryptedMessage = code.toString(CryptoJS.enc.Utf8);
     return decryptedMessage;
@@ -1571,6 +1574,7 @@ function decrypt(message) {
 var key = CryptoJS.enc.Utf8.parse('8080808080808080');
 var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
 function fnencrypt(message) {
+    
     var encryptedtext = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(message), key,
         {
             keySize: 128 / 8,
@@ -1581,7 +1585,7 @@ function fnencrypt(message) {
     return (encryptedtext)
 }
 function fndecrypt(message) {
-
+   
     var key = CryptoJS.enc.Utf8.parse('8080808080808080');
     var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
 

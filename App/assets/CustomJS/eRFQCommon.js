@@ -152,7 +152,7 @@ function MapApprover() {
 
 }
 function fetchApproverRemarks(Type) {
-
+     debugger
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRFQApproval/FetchApproverRemarks/?RFQID=" + $('#hdnRfqID').val() + "&ApprovalType=" + Type,
@@ -162,7 +162,7 @@ function fetchApproverRemarks(Type) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-
+            debugger
             $('#tblCommercialApproval').empty()
             $('#tblCommercialApprovalprev').empty()
             if (data.length > 0) {
@@ -186,7 +186,7 @@ function fetchApproverRemarks(Type) {
             }
         },
         error: function (xhr, status, error) {
-
+           debugger
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -506,7 +506,7 @@ let totalitems
 function fetchReguestforQuotationDetails() {
     var attachment = '';
     var termattach = '';
-     
+   
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + $('#hdnRfqID').val() + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
@@ -517,7 +517,7 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (Data) {
-             
+            
             let RFQData=Data.rData
             totalitems = RFQData[0].parameters.length
             var _curentRFQStatus = '';
@@ -586,7 +586,7 @@ function fetchReguestforQuotationDetails() {
             }
         },
         error: function (xhr, status, error) {
-
+          
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -846,7 +846,7 @@ $("#editloadingfactor").on("hidden.bs.modal", function () {
 });
 
 function fetchAttachments() {
-    
+  
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -857,7 +857,7 @@ function fetchAttachments() {
         crossDomain: true,
         dataType: "json",
         success: function (Data, status, jqXHR) {
-            
+          
             data=Data.rData;
             
             jQuery("#tblAttachments").empty();
@@ -888,7 +888,7 @@ function fetchAttachments() {
 
         },
         error: function (xhr, status, error) {
-
+           
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -941,7 +941,7 @@ console.log(sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchTotalPriceF
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-            debugger
+          
             
             $("#totBoxwithoutgst" + VendorID).html(thousands_separators((data[0].totalPriceExTax).round(2)) + " &nbsp;<a class='lambdafactor' style='cursor:pointer' onclick=editwithgstlambdafactor(" + data[0].totalPriceExTax + "," + Counter + "," + VendorID + ")><i class='fa fa-pencil'></i></a>");
             $("#totBoxwithoutgstExcel" + VendorID).html(thousands_separators((data[0].totalPriceExTax).round(2)));
@@ -1182,6 +1182,7 @@ function MapRFQapprover(Type) {
 
         })
     }
+   
     var Approvers = {
         "RFQID": parseInt(RFQID),
         "QueryRFQApprovers": approvers,
@@ -1199,7 +1200,7 @@ function MapRFQapprover(Type) {
         data: JSON.stringify(Approvers),
         dataType: "json",
         success: function (data) {
-
+                debugger
             $('#successapp').show();
             $('#spansuccessapp').html('Approvers added successfully');
             Metronic.scrollTo($('#successapp'), -200);
@@ -1236,7 +1237,7 @@ function MapRFQapprover(Type) {
 
         },
         error: function (xhr, status, error) {
-
+                debugger
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1397,7 +1398,7 @@ function fnclosepopupApprovers(Type) {
     }
 }
 function fetchRFQApproverStatus(RFQID) {
-
+debugger
     var url = sessionStorage.getItem("APIPath") + "eRFQApproval/GetRFQApproverStatus/?RFQID=" + RFQID
 
     jQuery.ajax({
@@ -1410,6 +1411,7 @@ function fetchRFQApproverStatus(RFQID) {
         processData: true,
         dataType: "json",
         success: function (data) {
+            debugger
             var status = '';
             var c = 0;
             sessionStorage.setItem("LastApproverStaffCode", data[data.length - 1].approverStaffCode)
@@ -1484,7 +1486,7 @@ function fetchRFQApproverStatus(RFQID) {
         },
 
         error: function (xhr, status, error) {
-
+            debugger
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -2003,6 +2005,7 @@ function Checktechapp(event, rowid) {
 
 //post request for techincal apoorver
 function MapRFQTechapprover(Type) {
+    debugger
     var RFQID = 0;
     if (Type == "Report") {
         RFQID = $('#hdnRfqID').val()
@@ -2013,9 +2016,11 @@ function MapRFQTechapprover(Type) {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvers = '';
     var rowCount = jQuery('#tblRFQtechnicalapprovers tbody tr').length;
+    debugger
     if (rowCount > 0) {
         var techsno = 0
         $("#tblRFQtechnicalapprovers tbody tr").each(function () {
+            debugger
             var this_row = $(this);
             techsno = techsno + 1;
             // var showPriceyn = 'chkshowp' + $.trim(this_row.find('td:eq(3)').html());
@@ -2057,6 +2062,7 @@ function MapRFQTechapprover(Type) {
         data: JSON.stringify(Approvers),
         dataType: "json",
         success: function (data) {
+            debugger
             $('#successapp').show();
             $('#spansuccessapp').html('Approvers mapped successfully');
             Metronic.scrollTo($('#successapp'), -200);
@@ -2093,6 +2099,7 @@ function MapRFQTechapprover(Type) {
 
         },
         error: function (xhr) {
+             debugger
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -2108,6 +2115,7 @@ function MapRFQTechapprover(Type) {
 
     });
 }
+
 
 
 //edit options for subject and description by anurag
@@ -2198,9 +2206,9 @@ function updateRFQField(updateType) {
         data: JSON.stringify(UpdateData),
         dataType: "json",
         success: function (data) {
-           // $('#successapp').show();
-           // Metronic.scrollTo($('#successapp'), -200);
-           // $('#successapp').fadeOut(3000);
+            // $('#successapp').show();
+            // Metronic.scrollTo($('#successapp'), -200);
+            // $('#successapp').fadeOut(3000);
             bootbox.dialog({
                 message: "Updated Successfully!",
                 buttons: {

@@ -333,7 +333,7 @@ function fetchAttachments() {
         crossDomain: true,
         dataType: "json",
         success: function (Data, status, jqXHR) {
-            let data=Data.rData
+             let data=Data.rData
             jQuery("#tblotherrfqattachmentprev").empty();
             if (data[0].attachments.length > 0) {
 
@@ -566,7 +566,7 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (Data) {
-            let RFQData=Data.rData;
+             let RFQData=Data.rData;
             //sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqid)
             sessionStorage.setItem('hdnRFQBidType', RFQData[0].general[0].rfqBidType)
             _RFQBidType = RFQData[0].general[0].rfqBidType

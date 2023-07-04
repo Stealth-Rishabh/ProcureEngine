@@ -18,7 +18,7 @@ $(document).ready(function () {
     fnfetchvendortotalSummary(BidID, BidTypeID)
     //abheedev 14/03/2023
     //fngetConnHistory(BidID);
-    
+
 
 });
 //*******
@@ -36,27 +36,15 @@ function getCurrenttime() {
 }
 
 
-
-
-
-
 function saveAspdf() {
-    
-    const svgElement = document.getElementById('linechart_material');
 
-    var pdf = new printJS('l','mm',[500, 1000]);
+    var pdf = new jsPDF('l', 'mm', [300, 475]);
     var options = {
-       pagesplit: true
+        pagesplit: true
     };
-    
-   /* svg2pdf(svgElement, pdf, {
-	xOffset: 0,
-	yOffset: 0,
-	scale: 1
-});*/
 
     pdf.addHTML(document.body, options, function () {
-    pdf.save('BidSummary.pdf');
+        pdf.save('BidSummary.pdf');
         encrypdata = fnencrypt("BidID=" + getUrlVarsURL(decryptedstring)["BidID"] + "&BidTypeID=" + getUrlVarsURL(decryptedstring)["BidTypeID"] + "&BidForID=" + getUrlVarsURL(decryptedstring)["BidForID"]);
         window.location = "BidSummary.html?param=" + encrypdata
     });
@@ -158,7 +146,7 @@ function ReportBind(Bidid, Bidtypeid, Bidforid) {
 
 function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
 
-    //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     jQuery.ajax({
         type: "GET",
@@ -623,15 +611,8 @@ function fetchBidSummaryDetails(BidID, BidTypeID, BidForID) {
 
                     _bidarray.push([data[prop].shortName, parseInt(data[prop].lQuote), parseInt(_timelft), data[prop].vendorName]) //]
                 }
-                setTimeout(function () {
-                   //saveAspdf();
-                   // jQuery.unblockUI();
-                    setTimeout(function () {
-                   // window.print();
-                      //  window.close();
-                    }, 1000)
-                }, 6000)
-
+               
+                jQuery.unblockUI(); 
             }
             else {
                 jQuery('#tblBidSummary > tbody').append("<tr><td colspan='18' style='text-align: center; color:red;'>No record found</td></tr>");
@@ -687,7 +668,7 @@ function fnfetchvendortotalSummary(BidID, BidTypeID) {
     });
 }
 function FetchRecomendedVendor(bidid) {
-   // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -777,7 +758,7 @@ function fnPaintGraph(shortname, counter, itemId) {
         $('#tblBidItem' + counter).append('<tr><td width="100%"><div id="BidTrendGraph" style="width:100%;margin-top:10px;font-size:20px;line-height: 30px;padding-bottom: 8px;font-family:Arial, Helvetica, sans-serif; font-weight: 200;text-align: center;"><div style="clear: both;"></div> <label style="text-align: center;">Bid Graph Trend</label></div></td></tr>')
     }
     $('#tblBidItem' + counter).append('<tr style="background: #44b6ae;"  width="100%" ><th colspan=2 style="font-size: 19px; text-align: left;color: #FFF;">' + shortname + '</th></tr>')
-    $('#tblBidItem' + counter).append('<tbody><tr><td><table width="100%"  cellpadding="8" style="border-collapse: collapse;display:block;"  border="1" id="tblForTrendGraphs' + counter + '"></table></td></tr><tr><td><div id="linechart_material' + counter + '" style="text-align:center;min-height:300px;width:700px;margin-left:10px;margin-bottom:40px;"></div></td></tr></tbody>'); //
+    $('#tblBidItem' + counter).append('<tbody><tr><td><table width="100%"  cellpadding="8" style="border-collapse: collapse;display:block;"  border="1" id="tblForTrendGraphs' + counter + '"></table></td></tr><tr><td><div id="linechart_material' + counter + '" style="text-align:center;min-height:300px;width:900px;margin-left:200px;margin-bottom:40px;"></div></td></tr></tbody>'); //
     fetchGraphData(itemId, counter);
     linegraphsforItems(itemId, counter);
 }

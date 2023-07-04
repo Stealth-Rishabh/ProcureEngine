@@ -9,7 +9,7 @@ jQuery(document).ready(function () {
     sessionStorage.setItem('CurrentBidID', 0);
     sessionStorage.setItem('hddnRFQID', 0);
     sessionStorage.setItem('CurrentRFIID', 0);
-    setInterval(function () { Pageloaded() }, 15000);
+    //setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
 

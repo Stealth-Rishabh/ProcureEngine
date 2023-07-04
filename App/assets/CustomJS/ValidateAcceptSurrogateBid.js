@@ -5,7 +5,7 @@ var BIDID = getUrlVarsURL(decryptedstring)["BidID"];
 
 var BIDTypeID = '';
 var BidClosingType = '';
-sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 //FROM HTML
 jQuery(document).ready(function () {
@@ -36,8 +36,9 @@ function fetchBidHeaderDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
+          
             if (data.length == 1) {
-                //var BidStartDatetime = fnConverToLocalTime(data[0].bidDate);
+                var BidStartDatetime = fnConverToLocalTime(data[0].bidDate);
                 // var BidExpiryDatetime = fnConverToLocalTime(data[0].bidExpiryDate);
                 // var _bidDateStart = new Date(BidStartDatetime.replace('-', ''));
                 // var _bidDateExpiry = new Date(BidExpiryDatetime.replace('-', ''));
@@ -83,20 +84,7 @@ function fetchBidHeaderDetails() {
                     jQuery("#lblConvRate").text(data[0].conversionRate);
                     jQuery('#TermandCondition').attr("name", data[0].termsConditions)
                     jQuery('#bidTermandCondition').attr("name", data[0].termsConditions);
-                    /*}
-                    else {
-                        bootbox.alert("This bid has not yet started !!!", function () {
-
-                            $('#btnpassword').attr('disabled', 'disabled')
-                            $('#txtpassword').attr('disabled', 'disabled')
-
-                        });
-
-                    }*/
-               /* }
-                else {
-                  
-                        jQuery('#lblEventID').html(BIDID);
+                     /*  jQuery('#lblEventID').html(BIDID);
                         jQuery('#bid_EventID').html("Event ID : " + BIDID);
 
                         jQuery("#lblbidsubject").text(data[0].bidSubject);
@@ -127,8 +115,7 @@ function fetchBidHeaderDetails() {
                         jQuery("#lblConvRate").text(data[0].conversionRate);
                         jQuery("#lblstatus").text(data[0].conversionRate);
                         jQuery("#lblConvRate").text(data[0].conversionRate);
-                       
-                }*/
+                    }*/
 
             }
         },
@@ -147,33 +134,34 @@ function fetchBidHeaderDetails() {
 }
 
 function Dateandtimevalidate(StartDT) {
-
+    
     var StartDT = StartDT.replace('-', '');
-
     let StTime =
         new Date(StartDT.toLocaleString("en", {
             timeZone: sessionStorage.getItem('preferredtimezone')
         }));
-
+ 
     ST = new String(StTime);
     ST = ST.substring(0, ST.indexOf("GMT"));
-    ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
-
+    ST = ST + 'GMT' + getTimezoneOffset()//sessionStorage.getItem('utcoffset');
+   
     var Tab1Data = {
         "BidDate": ST
     }
-    //console.log(JSON.stringify(Tab1Data))
-
+   
+  
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/Dateandtimevalidate/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
+         async: false,
         crossDomain: true,
         data: JSON.stringify(Tab1Data),
         dataType: "json",
         success: function (data) {
+            
             if (data == "1") {
                 $('#btnpassword').removeAttr('disabled');
                 $('#txtpassword').removeAttr('disabled');
@@ -219,8 +207,8 @@ var successopenbid = $('#successopenbid');
 
 function validatepassword() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-   // sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+
+    sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 
     if (jQuery("#txtpassword").val() == "") {
 
@@ -241,7 +229,7 @@ function validatepassword() {
             crossDomain: true,
             dataType: "json",
             success: function (response) {
-
+               
                 sessionStorage.setItem("Token", response.token)
                 fnGtrTokenValidatePassword()
 
@@ -297,6 +285,9 @@ function fnGtrTokenValidatePassword() {
                         else if (BIDTypeID == "7" && BidClosingType == 'S') {
                             window.location = "ParticipateBidStagger.html";
                         }
+                        else if (BIDTypeID == "8") {
+                            window.location = "ParticipateBidCoalExport.html";
+                        }
                         else if (BIDTypeID == "9") {
                             window.location = "ParticipateBidFrenchAuction.html";
                         }
@@ -340,14 +331,7 @@ function fnGtrTokenValidatePassword() {
     })
 }
 
-jQuery('#bidchkIsAccepted').click(function () {
-    if (jQuery('#bidchkIsAccepted').is(':checked') == true) {
-        $('#btnContinue').attr("disabled", false);
-    }
-    else {
-        $('#btnContinue').attr("disabled", true);
-    }
-});
+
 function formvalidate() {
     $('#AccprtGNc').validate({
         errorElement: 'span', //default input error message container
@@ -421,4 +405,23 @@ function acceptBidTermsAuction() {
         }
 
     });
+}
+
+/*jQuery('#bidchkIsAccepted').click(function () {
+    
+    if (jQuery('#bidchkIsAccepted').is(':checked') == true) {
+        $('#btnContinue').removeAttr("disabled");
+    }
+    else {
+        $('#btnContinue').attr("disabled", "disabled");
+    }
+});*/
+
+function IsTermAcceppeted(){
+    if (jQuery('#bidchkIsAccepted').is(':checked') == true) {
+        $('#btnContinue').removeAttr("disabled");
+    }
+    else {
+        $('#btnContinue').attr("disabled", "disabled");
+    }
 }

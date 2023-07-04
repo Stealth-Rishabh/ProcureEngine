@@ -1743,7 +1743,6 @@ function fetchAttachments() {
         crossDomain: true,
         dataType: "json",
         success: function (Data, status, jqXHR) {
-            
             let data=Data.rData
             var attach = "";
             rowAttach = 0;
@@ -1849,8 +1848,7 @@ function GetQuestions() {
         crossDomain: true,
         dataType: "json",
         success: function (Data) {
-            
-            let data=Data.rData
+             let data=Data.rData
             jQuery("#tblquestions").empty();
             jQuery("#tblQuestionsPrev").empty();
             if (data[0].questions.length > 0) {
@@ -2170,7 +2168,6 @@ function fnGetApprovers() {
         crossDomain: true,
         dataType: "json",
         success: function (Data) {
-            
             let data=Data.rData
             var str = "";
             var strP = "";
@@ -2298,7 +2295,6 @@ function fetchRFIParameteronload() {
         cache: false,
         dataType: "json",
         success: function (Data) {
-            
             let data=Data.rData
             jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
             jQuery("#tblServicesProduct").empty();
@@ -3369,7 +3365,7 @@ function fetchReguestforQuotationDetails() {
         async:false,
         dataType: "json",
         success: function (Data) {
-            let RFQData=Data.rData
+             let RFQData=Data.rData
             
              if (RFQData[0].general[0].boqUpload == true) {
                 $('#divBoqUpload').show();
