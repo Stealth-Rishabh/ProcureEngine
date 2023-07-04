@@ -3258,7 +3258,9 @@ $('#txtTINType').on('change', function () {
         $(".newgsthide").hide();
         $("#ParticipantName").removeAttr('disabled');
         $("#ddlNatureEstaiblishment").removeAttr('disabled');
-        $("#txtTINNo").attr("onchange","");
+        /*$("#txtTINNo").attr("onchange","");*/
+        $("#btncalgst").attr("onClick", ``);
+        $("#btncalgst").hide()
         $("#txtPanNo").removeAttr('disabled');
         $("#vendorpanno").removeAttr('disabled');
         $("#vendorname").removeAttr('disabled');
@@ -3273,7 +3275,9 @@ $('#txtTINType').on('change', function () {
          $(".nopanhide").show();
          $("#ParticipantName").attr("disabled", "disabled");
          $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
-         $("#txtTINNo").attr("onchange", "extractPan(this)");
+        /*$("#txtTINNo").attr("onchange", "extractPan(this)");*/
+        $("#btncalgst").attr("onClick", `extractPan()`);
+        $("#btncalgst").show()
          $("#txtPanNo").attr("disabled", "disabled");
          $("#vendorpanno").attr("disabled", "disabled");
          $("#vendorname").attr("disabled", "disabled");
@@ -3283,7 +3287,9 @@ $('#txtTINType').on('change', function () {
          $(".nogsthide").show();
          $(".newgsthide").hide();
          $(".nopanhide").show();
-         $("#txtTINNo").attr("onchange", "");
+        /* $("#txtTINNo").attr("onchange", "");*/
+        $("#btncalgst").attr("onClick", ``);
+        $("#btncalgst").hide()
          $("#ParticipantName").removeAttr("disabled");
          $("#txtPanNo").removeAttr("disabled");
         

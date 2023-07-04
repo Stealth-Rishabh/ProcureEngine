@@ -3693,7 +3693,9 @@ $('#txtTINType').on('change', function () {
         $(".nopanhide").hide();
         $(".newgsthide").hide();
         $("#ParticipantName").removeAttr('disabled');
-        $("#txtTINNo").attr("onchange", "");
+        /* $("#txtTINNo").attr("onchange", "");*/
+        $("#btncalgst").attr("onClick", ``);
+        $("#btncalgst").hide()
         $("#txtPanNo").removeAttr('disabled');
         afterTaxEnable()
         /* $("#ParticipantName").removeAttr('disabled');
@@ -3712,7 +3714,8 @@ $('#txtTINType').on('change', function () {
         $("#ParticipantName").attr("disabled", "disabled");
         $("#txtPanNo").attr("disabled", "disabled");
 
-        $("#txtTINNo").attr("onchange", "extractPan(this)");
+        $("#btncalgst").show()
+        $("#txtPanNo").attr("disabled", "disabled");
         afterTaxEnable()
         /*$("#ParticipantName").attr("disabled", "disabled");
         $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
@@ -3726,7 +3729,9 @@ $('#txtTINType').on('change', function () {
         $(".nogsthide").show();
         $(".newgsthide").hide();
         $(".nopanhide").show();
-        $("#txtTINNo").attr("onchange", "");
+        /*$("#txtTINNo").attr("onchange", "");*/
+        $("#btncalgst").attr("onClick", ``);
+        $("#btncalgst").hide()
         $("#ParticipantName").removeAttr("disabled");
         $("#txtPanNo").removeAttr("disabled");
         afterTaxEnable()
