@@ -1,5 +1,5 @@
 
-var gstflag = false
+var gstflag = true
 var APIPath = sessionStorage.getItem("APIPath");
 
 var pageNumber = 1;
@@ -816,7 +816,7 @@ function fetchParticipantsVenderTable(PageNo, searchText) {
                         str = "<tr><td style=\"text-align:right;width:10%!important;\">";
                         str += "<a href=\"javascript:;\"  onclick=\"MapCategory(this)\" class=\"btn btn-xs green\"><i class=\"fa fa-edit\"></i>Map</a><a href=\"#\" href=\"#\"  onclick=\"EditProduct(this)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
                     }
-
+                    debugger
                     str += "<td style=\"display:none;\">" + value.participantID + "</td><td style=\"width:10%!important;color:darkblue!important;font:bold;cursor:pointer;\" class=bold onclick =\"fnViewDetails(\'0'\,\'" + value.participantID + "'\)\">" + value.participantName + "</td><td style=\"width:10%!important;\">" + value.legalName + "</td><td style=\"width:10%!important;\">" + value.contactPerson + "</td><td style=\"width:10%!important;\">" + value.vendorCode + "</td><td style=\"width:10%!important;\">" + StringDecodingMechanism(value.address) + "</td><td style=\"width:5%!important;\">" + value.cityName + "</td><td style=\"width:10%!important;\">" + value.panNo.toUpperCase() + "</td><td style=\"width:10%!important;\">" + value.tinNo.toUpperCase() + "</td><td style=\"width:20%!important;\">" + value.mobileNo + "</td><td style=\"width:20%!important;\">" + value.phoneNo + "</td><td style=\"width:10%!important;\">" + value.companyEmail + "</td><td style=\"width:10%!important;\">" + value.alternateEmailID + "</td>";
                     str += "<td style=\"width:5%!important;\">" + value.isActive + "</td>";
                     str += "</td></tr>";
@@ -828,7 +828,7 @@ function fetchParticipantsVenderTable(PageNo, searchText) {
 
             }
             else {
-                jQuery('#tblParticipantsVender > tbody').append("<tr><td colspan='12' style='text-align: center; color:red;'>No Participant found</td></tr>");
+                jQuery('#tblParticipantsVender > tbody').append("<tr><td colspan='16' style='text-align: center; color:red;'>No Participant found</td></tr>");
             }
             fetchParticipantsparked();
 
@@ -2396,25 +2396,26 @@ function DownloadFile(aID) {
 
 
 
-function extractPan(data) {
-
+function extractPan() {
+    debugger
+    let data = $("#txtTINNo").val();
     $('#txtTINNo').removeClass("gstvalidicon")
     var reggst = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/
 
 
-    if (data.value.length === 15) {
-        if (!reggst.test(data.value)) {
-            gstflag = false;
+    if (data.length === 15) {
+        if (!reggst.test(data)) {
+            gstflag = true;
             bootbox.alert('GST Number Format is not valid. please check it');
             return false;
 
         }
 
-        ValidateGST(data.value)
+        ValidateGST(data)
 
     }
     else {
-        gstflag = false;
+        gstflag = true;
         $("#txtPanNo").val("");
         // $("#txtPanNo").removeAttr("disabled", "disabled");
         beforeTaxDisable()
@@ -2424,7 +2425,7 @@ function extractPan(data) {
 
 
 function ValidateGST(data) {
-
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     let GSTNo = data
     debugger
     let url = sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo;
@@ -2490,7 +2491,7 @@ function ValidateGST(data) {
 
             }
 
-
+            jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
             debugger
@@ -2508,6 +2509,7 @@ function ValidateGST(data) {
         }
 
     })
+   
 }
 
 function beforeTaxDisable() {

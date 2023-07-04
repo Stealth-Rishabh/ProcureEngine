@@ -1244,3 +1244,8 @@ a:active, a:focus {
 #txtPageNumber {
     width: 37px !important;
 }
+
+.inlineblock {
+    display: flex;
+    align-items: center;
+}

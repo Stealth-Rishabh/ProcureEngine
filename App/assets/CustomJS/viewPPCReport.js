@@ -69,74 +69,74 @@ function Bindtab2DataforPreview() {
                 jQuery('#lblLD').html(data[0].azureDetails[0].whetherLDApplicable);
                 jQuery('#lblCPBG').html(data[0].azureDetails[0].whetherCPBGApplicable);
                 jQuery('#lblPRDetails').html(data[0].azureDetails[0].prDetails);
-                 if (data[0].biddingVendor.length > 0) {
+                if (data[0].biddingVendor.length > 0) {
 
                     $('#tblvendorsprev').append("<thead><tr><th>Enquiry issued To</th><th style='width:10%!important;'>Quotation Received</th><th style='width:20%!important;'>Technically Acceptable</th><th style='width:20%!important;'>Politically Exposed Person</th><th style='width:20%!important;'>Quote Validated By SCM</th><th>TPI</th></tr></thead>");
                     for (i = 0; i < data[0].biddingVendor.length; i++) {
-                       
-                        if ((data[0].biddingVendor[i].quotationReceived).trim() == "Y") {
-                                
-                                QR = "Yes";
-                            }
-                             else if ((data[0].biddingVendor[i].quotationReceived).trim() == "NA") {
-                                
-                                QR = "NA";
-                            }
-                            else {
-                                
-                                QR = "No";
-                            }
-                            if ((data[0].biddingVendor[i].tpi).trim() == "Y") {
-                               
-                                TPI = "Yes";
-                            }
-                            else if ((data[0].biddingVendor[i].tpi).trim() == "NA") {
-                               
-                                TPI = "NA";
-                            }
 
-                            else {
-                              
-                                TPI = "No";
-                            }
-                            if ((data[0].biddingVendor[i].texhnicallyAcceptable).trim() == "Y") {
-                               
-                                TA = "Yes";
-                            }
-                            else if ((data[0].biddingVendor[i].texhnicallyAcceptable).trim() == "NA") {
-                                
-                                TA = "NA";
-                                
-                            }
-                            else {
-                               
-                                TA = "No";
-                            }
-                            if ((data[0].biddingVendor[i].politicallyExposed).trim() == "Y") {
-                                
-                                PE="Yes";
-                            }
-                            else if ((data[0].biddingVendor[i].politicallyExposed).trim() == "NA") {
-                              
-                                PE="NA";
-                                
-                            }
-                            else {
-                               
-                                PE="No";
-                            }
-                            if ((data[0].biddingVendor[i].quotedValidatedSCM).trim() == "Y") {
-                                
-                                validatescm = "Yes";
-                            }
-                            else if ((data[0].biddingVendor[i].quotedValidatedSCM).trim() == "NA") {
-                               
-                                validatescm = "NA";
-                            }
-                            else {
-                               
-                                validatescm = "No";
-                            }
+                        if ((data[0].biddingVendor[i].quotationReceived).trim() == "Y") {
+
+                            QR = "Yes";
+                        }
+                        else if ((data[0].biddingVendor[i].quotationReceived).trim() == "NA") {
+
+                            QR = "NA";
+                        }
+                        else {
+
+                            QR = "No";
+                        }
+                        if ((data[0].biddingVendor[i].tpi).trim() == "Y") {
+
+                            TPI = "Yes";
+                        }
+                        else if ((data[0].biddingVendor[i].tpi).trim() == "NA") {
+
+                            TPI = "NA";
+                        }
+
+                        else {
+
+                            TPI = "No";
+                        }
+                        if ((data[0].biddingVendor[i].texhnicallyAcceptable).trim() == "Y") {
+
+                            TA = "Yes";
+                        }
+                        else if ((data[0].biddingVendor[i].texhnicallyAcceptable).trim() == "NA") {
+
+                            TA = "NA";
+
+                        }
+                        else {
+
+                            TA = "No";
+                        }
+                        if ((data[0].biddingVendor[i].politicallyExposed).trim() == "Y") {
+
+                            PE = "Yes";
+                        }
+                        else if ((data[0].biddingVendor[i].politicallyExposed).trim() == "NA") {
+
+                            PE = "NA";
+
+                        }
+                        else {
+
+                            PE = "No";
+                        }
+                        if ((data[0].biddingVendor[i].quotedValidatedSCM).trim() == "Y") {
+
+                            validatescm = "Yes";
+                        }
+                        else if ((data[0].biddingVendor[i].quotedValidatedSCM).trim() == "NA") {
+
+                            validatescm = "NA";
+                        }
+                        else {
+
+                            validatescm = "No";
+                        }
                         //**** Prev vendor Details Start
                         $('#tblvendorsprev').append("<tr><td class=hide>" + data[0].biddingVendor[i].vendorID + "</td><td>" + data[0].biddingVendor[i].vendorName + "</td><td id=TDquotation" + i + ">" + QR + "</td><td id=TDTechAccep" + i + ">" + TA + "</td><td id=TDpolexp" + i + ">" + PE + "</td><td id=TDvalidatescm" + i + ">" + validatescm + "</td><td id=TPI" + i + ">" + TPI + "</td></tr>")
                         //**** Prev vendor Details end
@@ -181,10 +181,10 @@ function GetOverviewmasterbyId(idx) {
                     $(".clsHide").show();
                 }
 
-            
+
 
                 $("#lbltitle").text(res.result[0].nfaSubject);
-                $("#lblDetailsdesc").html("<b>Descrition:</b>");
+                $("#lblDetailsdesc").html("<b>Introduction:</b>");
                 $("#lblDetails").text(res.result[0].nfaDescription);
                 $("#lblAmount").text(thousands_separators(res.result[0].nfaAmount))//+ " " + res.result[0].currencyNm);
 
@@ -192,7 +192,7 @@ function GetOverviewmasterbyId(idx) {
                 $('#logoimg').attr("src", res.result[0].logoImage);
                 $("#lblCurrency,#lblCurrencybud").text(res.result[0].currencyNm);
                 $("#lblCategory").text(res.result[0].categoryName);
-               
+
                 $("#lblProjectName").text(res.result[0].projectName);
                 $("#lblbudget").text(res.result[0].budgetStatustext);
 

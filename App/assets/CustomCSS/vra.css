@@ -89,3 +89,7 @@ a:active, a:focus {
     }
 
 
+.inlineblock {
+    display: flex;
+    align-items: center;
+}

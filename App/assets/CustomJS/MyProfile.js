@@ -1,4 +1,4 @@
-let gstflag=false;
+let gstflag=true;
 let isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted')
 let mobileNo = sessionStorage.getItem('mobileNo');
 
@@ -1599,7 +1599,7 @@ function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingco
         gstflag=true;
     }
     else{
-        gstflag=false;
+        gstflag=true;
         $('#txtTINType').removeAttr('disabled')
     }
     $('#childDetailsForm').removeClass('hide')
@@ -2611,24 +2611,24 @@ function cleanAddChild() {
 
 //to validate gst
 
-function extractPan(data) {
-
+function extractPan() {
+    let data = $("#txtTINNo").val();
     $('#txtTINNo').removeClass("gstvalidicon")
     var reggst = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/
 
 
-    if (data.value.length === 15) {
-        if (!reggst.test(data.value)) {
-             gstflag=false;
+    if (data.length === 15) {
+        if (!reggst.test(data)) {
+             gstflag=true;
             bootbox.alert('GST Number Format is not valid. please check it');
             return false;
         }
 
-        ValidateGST(data.value)
+        ValidateGST(data)
 
     }
     else {
-          gstflag=false;
+          gstflag=true;
         $("#vendorpanno").val("");
 
         //beforeTaxDisable()
@@ -2638,7 +2638,7 @@ function extractPan(data) {
 
 
 function ValidateGST(data) {
-
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     let GSTNo = data
     debugger
     jQuery.ajax({
@@ -2693,14 +2693,11 @@ function ValidateGST(data) {
                 }, 2000);
             }
             else {
-                $('.alert-danger').html('')
-                $('.alert-danger').html('No such GST number exist')
-                $('.alert-danger').show();
-                Metronic.scrollTo($('.alert-danger'), -200);
-                $('.alert-danger').fadeOut(5000);
+              
+                alertforerror(`GST Number could not be validated`);
             }
 
-
+            jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
           
@@ -2709,11 +2706,7 @@ function ValidateGST(data) {
                 error401Messagebox(err.Message);
             }
             else {
-                $('.alert-danger').html('')
-                $('.alert-danger').html(err)
-                $('.alert-danger').show();
-                Metronic.scrollTo($('.alert-danger'), -200);
-                $('.alert-danger').fadeOut(5000);
+                alertforerror(err)
             }
             jQuery.unblockUI();
             return false;
