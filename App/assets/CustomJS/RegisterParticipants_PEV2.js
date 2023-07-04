@@ -1,5 +1,6 @@
 
 var gstflag=false
+var APIPath = sessionStorage.getItem("APIPath");
 jQuery(document).ready(function () {
     //loadingEngine()
     //FROM HTML
@@ -25,11 +26,11 @@ jQuery(document).ready(function () {
     
     /*fetchParticipantsVenderTable(0);*/
     SearchText = $('#txtSearch').val();
-    fetchParticipantsVenderTable(0, SearchText);
+    fetchParticipantsVenderTable(1, SearchText);
     fetchMapCategory('M', 0);
 
 
-
+    numberonly();
     fetchBidType();// for serach vendor
     clearform();
     fetchCountry();
@@ -712,9 +713,9 @@ function validateVendorGroup(ctrl, categoryId) {
         jQuery(ctrl).closest('div#uniform-chkbidTypes').find('span#spancheckedvendorgroup').attr('class', '');
     }
 }
-
+let VenderdataList = [];
 function fetchParticipantsVenderTable(PageNo,searchText) {
-    currentpage = PageNo + 1;
+    currentpage = PageNo;
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -734,7 +735,34 @@ function fetchParticipantsVenderTable(PageNo,searchText) {
                     [i].participantName));
 
                 }
-                jQuery.each(Venderdata, function (key, value) {
+                /*Bijendra Singh 03-070-2023*/
+                VenderdataList = Venderdata;
+                var Size = 3;
+                var total_records = Venderdata.length; //Venderdata[0].totalRecords;
+                numberOfPages = 1;
+                if (total_records > 0) {
+                    numberOfPages = Math.ceil(total_records / Size);
+                }
+                PageNo = PageNo - 1;
+                var Offset = 0;
+                var Newsize = 0;
+
+                if (PageNo == 0) {
+                    Offset = PageNo;
+                    Newsize = Size;
+                }
+                else {
+                    Offset = (PageNo * Size) + 1;
+                    Newsize = Size;
+                }
+
+                var LastRow = Offset + Newsize;
+                  
+
+                let Venderdatalistfilter = Venderdata.filter(Venderdata => Venderdata.rownum >= Offset && Venderdata.rownum <= LastRow);
+ 
+ 
+                jQuery.each(Venderdatalistfilter, function (key, value) {
                     
                     
                     console.log(1)
@@ -821,6 +849,126 @@ function fetchParticipantsVenderTable(PageNo,searchText) {
         }
     });
 }
+
+/* by Bijendra Singh*/
+function fetchParticipantsVenderTableFilter(PageNo, searchText) {
+    //console.log("data", VenderdataList);
+    console.log("PageNo", PageNo);
+    currentpage = PageNo;
+    jQuery("#tblParticipantsVender > tbody").empty();
+    if (VenderdataList.length > 0) {
+         var Size = 3;
+        var total_records = VenderdataList.length //VenderdataList[0].totalRecords;
+        numberOfPages = 1;
+        if (total_records > 0) {
+            numberOfPages = Math.ceil(total_records / Size);
+        }
+
+        var Offset = 0;
+        var Newsize = 0;
+        PageNo = PageNo - 1;
+        if (PageNo == 0) {
+            Offset = PageNo;
+            Newsize = Size;
+        }
+        else {
+            Offset = (PageNo * Size) + 1;
+            Newsize = Size;
+        }
+
+        var LastRow = Offset + Newsize;
+
+ 
+        let Venderdatalistfilter = VenderdataList; // VenderdataList.filter(Venderdata => (Venderdata.rownum >= Offset && Venderdata.rownum <= LastRow) || Venderdata.contains(searchText));
+        if (searchText != "") {
+
+            let element = { participantName: searchText }
+
+            Venderdatalistfilter = VenderdataList.includes(searchText);
+        }
+        else {
+            Venderdatalistfilter = VenderdataList.filter(Venderdata => (Venderdata.rownum >= Offset && Venderdata.rownum <= LastRow));
+        }
+
+         
+        if (Venderdatalistfilter.length > 0) {
+            jQuery.each(Venderdatalistfilter, function (key, value) {
+                var str = "";
+                var addr1 = (value.address).replace(/\n/g, " ");
+
+                var addr2 = (value.cityName).replace(/\n/g, " ");
+                if (value.mapBtnRequired == 'N') {
+                    str = "<tr><td style=\"text-align:center;width:10%!important;\">";
+                    if (sessionStorage.getItem('UserID') == value.createdBy) {
+
+                        if (value.actionType == "EditVendor") {
+
+
+                            str += "<a href=\"#\"   onclick =\"editTableVendor(\'" + value.companyEmail + "'\)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
+                            str += "<td style=\"width:10%!important;\">" + value.createdByName + "</td>";
+                            str += "<td style=\"width:10%!important;\">No</td>";
+
+                        }
+                        else {
+                            str += "<a href=\"#\"   onclick =\"editTableVendor(\'" + value.companyEmail + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a></td>";
+                            str += "<td style=\"width:10%!important;\">" + value.createdByName + "</td>";
+                            str += "<td style=\"width:10%!important;\">Yes</td>";
+
+                        }
+                    }
+                    else {
+                        if (value.actionType == "EditVendor") {
+                            //abheedev
+                            str += "<a href=\"#\"   onclick =\"editTableVendor(\'" + value.companyEmail + "'\)\" class=\"btn btn-xs green\"><i class=\"fa fa-edit\"></i>Partial Edit</a></td>";
+                            //abheedev
+                            str += "<td style=\"width:10%!important;\">" + value.createdByName + "</td>";
+                            str += "<td style=\"width:10%!important;\">No</td>";
+
+                        }
+                        else {
+
+                            str += "<a href=\"#\"   onclick =\"editTableVendor(\'" + value.companyEmail + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Ext. Edit</a></td>";
+                            str += "<td style=\"width:10%!important;\">External</td>";
+                            str += "<td style=\"width:10%!important;\">Yes</td>";
+
+                        }
+                    }
+                }
+                else if (value.mapBtnRequired == 'Y') {
+                    str = "<tr><td style=\"text-align:right;width:10%!important;\">";
+                    str += "<a href=\"javascript:;\"  onclick=\"MapCategory(this)\" class=\"btn btn-xs green\"><i class=\"fa fa-edit\"></i>Map</a><a href=\"#\" href=\"#\"  onclick=\"EditProduct(this)\" class=\"btn btn-xs purple\"><i class=\"fa fa-edit\"></i>Edit</a></td>";
+                }
+                str += "<td style=\"display:none;\">" + value.participantID + "</td><td style=\"width:10%!important;color:darkblue!important;font:bold;cursor:pointer;\" class=bold onclick =\"fnViewDetails(\'0'\,\'" + value.participantID + "'\)\">" + value.participantName + "</td><td style=\"width:10%!important;\">" + value.contactPerson + "</td><td style=\"width:10%!important;\">" + value.address + "</td><td style=\"width:5%!important;\">" + value.cityName + "</td><td style=\"width:10%!important;\">" + value.panNo.toUpperCase() + "</td><td style=\"width:10%!important;\">" + value.tinNo.toUpperCase() + "</td><td style=\"width:20%!important;\">" + value.mobileNo + "</td><td style=\"width:20%!important;\">" + value.phoneNo + "</td><td style=\"width:10%!important;\">" + value.companyEmail + "</td><td style=\"width:10%!important;\">" + value.alternateEmailID + "</td>";
+                str += "<td style=\"width:5%!important;\">" + value.isActive + "</td>";
+                str += "</td></tr>";
+                jQuery('#tblParticipantsVender > tbody').append(str);
+            });
+
+        }
+        setupPagination(pageNumber);
+    }
+    else {
+        jQuery('#tblParticipantsVender > tbody').append("<tr><td colspan='12' style='text-align: center; color:red;'>No Participant found</td></tr>");
+    }
+    //        fetchParticipantsparked();
+    //}
+    /*,
+    error: function (xhr, status, error) {
+
+        var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+        if (xhr.status == 401) {
+            error401Messagebox(err.Message);
+        }
+        else {
+            fnErrorMessageText('spanerterr', '');
+        }
+        jQuery.unblockUI();
+        return false;
+    }*/
+    //});
+}
+
+
 function fetchParticipantsparked() {
 
     jQuery.ajax({
@@ -1110,15 +1258,15 @@ function fetchMapCategory(categoryFor, childId) {
                 CategoryForAutoComplete = data;
                 for (var i = 0; i < data.length; i++) {
                     if (data[i].checked == 'Y') {
-                        str += '<tr><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span class="checked"  id=\"spancheckedvendorgroup\"><input class=\"childchkbox\" type=\"checkbox\" style=\"cursor:pointer\"  onchange=\"validateVendorGroup(this, ' + data[i].categoryID + ')\" value=\'' + data[i].categoryID + '\' checked /></span></div></td><td>' + data[i].categoryName + '</td></tr>';
+                        str += '<tbody><tr><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span class="checked"  id=\"spancheckedvendorgroup\"><input class=\"childchkbox\" type=\"checkbox\" style=\"cursor:pointer\"  onchange=\"validateVendorGroup(this, ' + data[i].categoryID + ')\" value=\'' + data[i].categoryID + '\' checked /></span></div></td><td>' + data[i].categoryName + '</td></tr></tbody>';
                     } else {
-                        str += '<tr><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spancheckedvendorgroup\"><input class=\"childchkbox\" type=\"checkbox\" style=\"cursor:pointer\"  onchange=\"validateVendorGroup(this,' + data[i].categoryID + ')\" value=\'' + data[i].categoryID + '\'  /></span></div></td><td>' + data[i].categoryName + '</td></tr>';
+                        str += '<tbody><tr><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spancheckedvendorgroup\"><input class=\"childchkbox\" type=\"checkbox\" style=\"cursor:pointer\"  onchange=\"validateVendorGroup(this,' + data[i].categoryID + ')\" value=\'' + data[i].categoryID + '\'  /></span></div></td><td>' + data[i].categoryName + '</td></tr></tbody>';
                     }
                 }
                 jQuery("#tblCategoryMaster").append(str);
             }
             else {
-                jQuery("#tblCategoryMaster").append('<tr><td>No Information is there..</td></tr>');
+                jQuery("#tblCategoryMaster").append('<tbody><tr><td>No Information is there..</td></tr></tbody>');
             }
             jQuery.unblockUI();
         },
@@ -2277,15 +2425,15 @@ function extractPan(data) {
 function ValidateGST(data) {
  
     let GSTNo = data
-  
-   
+   debugger
+   let url =sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo;
     jQuery.ajax({
-        url: sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo,
+        url: url,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-           
+           debugger
             if (status != 'E') {
                 if(data.status != 'E'){
                 var data = jQuery.parseJSON(data);
@@ -2321,7 +2469,7 @@ function ValidateGST(data) {
                 
                
                 
-                
+                 alertforinfo('GST Number is validated successfully.')
                 jQuery("#ddlState").find(`option[data-statename=${stateName}]`).prop('selected', true).trigger('change')
                 
                 setTimeout(function () {
@@ -2330,19 +2478,13 @@ function ValidateGST(data) {
                 }, 2000);
                 }
                 else{
-                     $('#divalerterr').html('GST Number could not be validated')
-                     $('#divalerterr').show();
-                     Metronic.scrollTo($('.alert-danger'), -200);
-                     $('.alert-danger').fadeOut(5000);
+                    
+                     alertforerror('GST Number could not be validated')
                      
                 }
             }
             else {
-                $('.alert-danger').html('GST Number could not be validated')
-                $('.alert-danger').show();
-                Metronic.scrollTo($('.alert-danger'), -200);
-                $('.alert-danger').fadeOut(5000);
-                $('.alert-danger').html('')
+               alertforerror('GST Number could not be validated')
                 beforeTaxDisable()
 
             }
@@ -2350,17 +2492,14 @@ function ValidateGST(data) {
 
         },
         error: function (xhr, status, error) {
-           
+           debugger
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                $('.alert-danger').html('')
-                $('.alert-danger').html(err)
-                $('.alert-danger').show();
-                Metronic.scrollTo($('.alert-danger'), -200);
-                $('.alert-danger').fadeOut(5000);
+                
+                alertforerror(err)
                 
             }
             jQuery.unblockUI();
@@ -2773,12 +2912,12 @@ function EditVendorModal(vendorid, vname, emailid, dialingcodephone, phone, dial
     $('#bankForm').hide();
     $('#financeform').hide();
     $("#txtTINNo").removeAttr("onchange");
-    jQuery("#hdnChildID").val(childid)
-    jQuery("#hdnVendorId").val(vendorid)
+    $("#hdnChildID").val(childid)
+    $("#hdnVendorId").val(vendorid)
 
 
     GetFinancialDetail(parseInt(childid), parseInt(vendorid))
-    GetBankDetail(parseInt(childid), customerid,parseInt(vendorid))
+    GetBankDetail(parseInt(childid),customerid,parseInt(vendorid))
 
     GetCustomerSpecificMaster(customerid) //function defined in common.js
     GetCountrySpecificMaster(countryKey)  //function defined in common.js
@@ -2876,11 +3015,11 @@ function GetBankDetail(ChildId, CustId, vendorid) {
                 for (var i = 0; i < childData.length; i++) {
                     isBVerify=childData[i].isVerified;
                     if(isBVerify=="Y"){
-                         $('#tblGetBankDetail').append("<tr onclick=''><td><button type='button' class='btn btn-xs btn-primary' onclick=\"editBankDetail('" + childData[i].bankingId + "','" + childData[i].childId + "','" + childData[i].bankCountryKey + "','" + childData[i].bankRoutingNumber + "','" + childData[i].bankName + "','" + childData[i].cancelledCheckFile + "','" + childData[i].payTerm + "','" + childData[i].bankAccountNumber + "','" + childData[i].accounHolderName + "')\">Edit</button></td><td class='hovertextLeft' data-hover='Click here to see associated customer with this bank account' onclick=\"viewbankcustomer(\'" + "accordion" + childData[i].bankingId + "'\)\">" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "  <img src='assets/img/greenchecktick.svg' width='25px' height='25px' style='{margin-bottom:4px;}'/></td><td>" + childData[i].bankRoutingNumber + "</td></tr>");
+                         $('#tblGetBankDetail').append("<tr onclick=''><td><button type='button' class='btn btn-xs btn-primary' onclick=\"editBankDetail('" + childData[i].bankingId + "','" + childData[i].childId + "','" + childData[i].bankCountryKey + "','" + childData[i].bankRoutingNumber + "','" + childData[i].bankName + "','" + childData[i].cancelledCheckFile + "','" + childData[i].payTerm + "','" + childData[i].bankAccountNumber + "','" + childData[i].accounHolderName + "')\">Edit</button></td><td  onclick=\"viewbankcustomer(\'" + "accordion" + childData[i].bankingId + "'\)\">" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "  <img src='assets/img/greenchecktick.svg' width='25px' height='25px' style='{margin-bottom:4px;}'/></td><td>" + childData[i].bankRoutingNumber + "</td></tr>");
                    
                     }
                     else{
-                        $('#tblGetBankDetail').append("<tr onclick=''><td><button type='button' class='btn btn-xs btn-primary' onclick=\"editBankDetail('" + childData[i].bankingId + "','" + childData[i].childId + "','" + childData[i].bankCountryKey + "','" + childData[i].bankRoutingNumber + "','" + childData[i].bankName + "','" + childData[i].cancelledCheckFile + "','" + childData[i].payTerm + "','" + childData[i].bankAccountNumber + "','" + childData[i].accounHolderName + "')\">Edit</button></td><td class='hovertextLeft' data-hover='Click here to see associated customer with this bank account' onclick=\"viewbankcustomer(\'" + "accordion" + childData[i].bankingId + "'\)\">" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "</td><td>" + childData[i].bankRoutingNumber + "</td></tr>");
+                        $('#tblGetBankDetail').append("<tr onclick=''><td><button type='button' class='btn btn-xs btn-primary' onclick=\"editBankDetail('" + childData[i].bankingId + "','" + childData[i].childId + "','" + childData[i].bankCountryKey + "','" + childData[i].bankRoutingNumber + "','" + childData[i].bankName + "','" + childData[i].cancelledCheckFile + "','" + childData[i].payTerm + "','" + childData[i].bankAccountNumber + "','" + childData[i].accounHolderName + "')\">Edit</button><button type='button' class='btn btn-xs btn-warning hovertextLeft'   data-hover='Click here to verify bank account' onclick=\"IciciBankPennyDropVerify('" + childData[i].childId + "','" + childData[i].bankRoutingNumber + "','" + childData[i].bankName + "','" + childData[i].bankAccountNumber + "','" + childData[i].accounHolderName + "')\">Verify</button></td><td  onclick=\"viewbankcustomer(\'" + "accordion" + childData[i].bankingId + "'\)\">" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "</td><td>" + childData[i].bankRoutingNumber + "</td></tr>");
                    
                     }
                     
@@ -2898,10 +3037,6 @@ function GetBankDetail(ChildId, CustId, vendorid) {
                         $('#tblGetBankDetail').append("<tr style='display:none' class='accordion" + childData[i].bankingId + "'><td colspan='5'>" + childData[i].mappedCustomersList[j].customerName + "</td><td class='hide'>" + childData[i].mappedCustomersList[j].mappingId + "</td><td class='hide'>" + childData[i].mappedCustomersList[j].bankingId + "</td><td class='hide'>" + childData[i].mappedCustomersList[j].associateVendorId + "</td><td class='hide'>" + childData[i].mappedCustomersList[j].customerId + "</td></tr>")
 
                     }
-
-
-
-
 
                 }
 
@@ -3319,9 +3454,9 @@ function PostToExternalSource() {
 
 
 
-    if ($("#bankCountryKey").text() == "" || $("#ifsccode").text() == "" || $("#bankaccount").text() == "") {
+    if ($("#bankCountryKey").val() == "" || $("#ifsccode").val() == "" || $("#bankaccount").val() == "") {
         
-        alertforerror(`Please click on expand button in Bank Details section for your preffered bank account...`)
+        alertforerror(`Please click on edit button in Bank Details section for your preffered bank account...`)
         return false
     }
     
@@ -3370,9 +3505,9 @@ function PostToExternalSource() {
         "FAX_NUM": "",
         "EMAIL": jQuery("#vendorEmailID").text(),
         "BVKID": "",
-        "BANKS": $("#bankCountryKey").text(),
-        "BANKL": $("#ifsccode").text(),
-        "BANKN": $("#bankaccount").text(),
+        "BANKS": 'IN',
+        "BANKL": $("#ifsccode").val(),
+        "BANKN": $("#bankaccount").val(),
         "BKONT": "",
         "BUKRS": jQuery("#CoCd option:selected").val(),
         "AKONT": jQuery("#ReconAcc option:selected").val(),
@@ -3656,7 +3791,7 @@ function sapselection(){
 
 
 function editBankDetail(bankingId, childId, bankCountryKey, bankRoutingNumber, bankName, cancelledCheckFile, payTerm, bankAccountNumber,accountholdername) {
-
+debugger
     $('#bankForm').show();
     $('#hdnBankingId').val(bankingId)
     $('#hdnChildID').val(childId)
@@ -3677,6 +3812,7 @@ function editBankDetail(bankingId, childId, bankCountryKey, bankRoutingNumber, b
 
 
 function Addanotherbank() {
+    debugger
     $('#bankForm').show();
     jQuery("#ifsccode").val("")
     jQuery("#bankaccount").val("")
@@ -3687,79 +3823,7 @@ function Addanotherbank() {
     $('#filecheck').val("");
 }
 
-var formvendorbank = $('#submit_form_bank');
 
-function FormValidateBank() {
-
-    formvendorbank.validate({
-
-        errorElement: 'span',
-        errorClass: 'help-block',
-        focusInvalid: false,
-        ignore: "",
-        rules: {
-
-            accountholder: {
-                required: true,
-            },
-            ifsccode: {
-                required: true,
-            },
-            bankname: {
-                required: true,
-            },
-            bankaccount: {
-                required: true,
-                number:true
-            }
-        },
-        messages: {
-
-            accountholder: {
-                required: "Please Enter Valid account holder",
-            },
-            ifsccode: {
-                required: "Please Enter Valid IFSC code",
-            },
-            bankname: {
-                required: "Please Enter Valid Bank name",
-            },
-            bankaccount: {
-                required: "Please Enter Valid Bank account",
-            }
-
-        },
-        invalidHandler: function (event, validator) {
-            //errorVendor.show()
-            // successVendor.hide();
-            $('#successdivbank').show()
-            $('#successdivbank').hide()
-            $('#successdivbank').html("")
-            $('#errorbank').text("Please Enter all required field to proceed");
-            $('#errordivbank').fadeOut(6000);
-        },
-
-        highlight: function (element) {
-            $(element).closest('.xyz').addClass('has-error');
-
-        },
-
-        unhighlight: function (element) {
-            $(element).closest('.xyz').removeClass('has-error');
-
-        },
-        errorPlacement: function (error, element) {
-            error.insertAfter(element);
-        },
-        success: function (label) {
-        },
-        submitHandler: function (form) {
-            
-
-            UpdateBankDetail()
-        }
-    });
-}
 
 
 
@@ -3785,6 +3849,24 @@ function UpdateBankDetail() {
     let data = "";
     let bankurl = ""
     let encodedbankname=StringEncodingMechanism(jQuery("#bankname").val());
+    
+    if(!jQuery("#ifsccode").val()){
+        
+        alertforerror(`please enter a valid IFSC code`)
+        return false
+    }
+    else if(!$("#bankaccount").val()){
+        alertforerror(`please enter a valid bank account number`)
+        return false
+    }
+    else if(!encodedbankname){
+         alertforerror(`please enter a valid bank name`)
+          return false
+    }
+    else if(!checkfilename){
+         alertforerror(`please upload valid file attachment`)
+         return false
+    }
    
     debugger
     if (ActionType == "Add") {
@@ -3797,7 +3879,6 @@ function UpdateBankDetail() {
             "BankName": encodedbankname,
             "CancelledCheckFile": checkfilename,
             "Currency": $("#ddlcurrencymodal").text(),
-          
             "AccounHolderName":jQuery("#accountholder").val()
         }
     }
@@ -3832,9 +3913,13 @@ function UpdateBankDetail() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
+            $('#hdnBankingId').val(data.returnId)
             debugger
              if ($('#filecheck').val() != '') {
                 fnUploadFilesonAzure('filecheck', checkfilename, 'VR/' + $('#hdnChildID').val());
+            }
+            if (ActionType == "Add"){
+            UpdateBankMapping()
             }
             jQuery("#errordivbank").hide();
             jQuery.unblockUI();
@@ -3845,7 +3930,7 @@ function UpdateBankDetail() {
             $('#buttonbankupdate').removeAttr('disabled');
             setTimeout(function () {
                 $('#bankForm').hide();
-                GetBankDetail(parseInt($('#hdnChildID').val()), customerid, VendorId)
+                GetBankDetail(parseInt($('#hdnChildID').val()), customerid, parseInt($("#hdnVendorId").val()))
                 }, 1500)
            
 
@@ -3854,11 +3939,143 @@ function UpdateBankDetail() {
              debugger
              $('#buttonbankupdate').removeAttr('disabled');
              var err = xhr.responseText
-             jQuery("#error").text(err);
-             profileerror.show();
-             profileerror.fadeOut(5000);
-             App.scrollTo(profileerror, -200);
+            alertforerror(err)
       
+            jQuery.unblockUI();
+        }
+    });
+}
+
+function UpdateBankMapping() {
+   debugger
+    if ($('#mapbankcustomer').val() === '0') {
+
+        jQuery("#errordiv1").show();
+        jQuery("#errordiv1").text("please select valid company to proceed further..");
+
+        setTimeout(function () {
+
+            jQuery("#errordiv1").hide();
+            jQuery("#errordiv1").text("");
+
+
+        }, 2000)
+        return false;
+    }
+  
+    let data = {
+        "AssociatedVendorId": parseInt($('#hdnChildID').val()),
+        "BankingId": parseInt($('#hdnBankingId').val()),
+        "VendorId": parseInt($("#hdnVendorId").val()),
+        "CustomerId":customerid,
+    }
+
+    
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+
+        url: APIPath + "VendorLCM/UpdateBankMapping",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+            debugger
+            if (data.isSuccess !== 0) {
+              
+               
+                alertforinfo("Company is mapped successfully..")
+               
+            }
+            else {
+
+                alertforerror(data.message)
+                
+            }
+
+
+        },
+        error: function (xhr, status, error) {
+
+            jQuery.unblockUI();
+        }
+    });
+}
+
+function editCheck() {
+    $("#checkattach").html("");
+    $("#uploadcheck").hide();
+    $("#filecheck").show();
+}
+
+
+
+//penny testing code
+function IciciBankPennyDropVerify(childId,bankRoutingNumber,bankName,bankAccountNumber,accounHolderName) {
+   debugger
+   if($('#vendoraltmobileno').text()==''){
+               $('#btnmaptoc').attr('disabled','disabled');
+               alertforerror("please fill valid mobile number to proceed")
+               
+                return false
+   }
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    let data = {
+        "BenifAccNo":bankAccountNumber,
+        "BenifIFSC":bankRoutingNumber,
+        "Amount":"1.00",
+        "AcountName":accounHolderName,
+        "Mobile":$('#vendoraltmobileno').text(),
+        "ChildID":parseInt(childId)
+    }
+    console.log(APIPath + "Bank/IciciBankPennyDropVerify")
+    
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        //url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&UserType=" + sessionStorage.getItem('UserType'),
+        url: APIPath + "Bank/IciciBankPennyDropVerify",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+           debugger
+          
+           let ActCode= data.data.actCode
+           if(data.isVeriFy==='Y'){
+               
+                $('#btnmaptoc').removeAttr('disabled');
+                alertforinfo("Banking details verified successfully...");
+                GetBankDetail(parseInt($('#hdnChildID').val()), customerid, parseInt($("#hdnVendorId").val()))
+               
+           }
+           else{
+               
+             if(ActCode=='0') {
+                  $('#btnmaptoc').removeAttr('disabled');
+                  alertforsucess("Banking details verified successfully...");
+                  GetBankDetail(parseInt(childId), customerid, parseInt($("#hdnVendorId").val()))
+             }
+             else{
+                  $('#btnmaptoc').attr('disabled','disabled');
+               
+                alertforerror(`${data.data.response}`)
+                
+             }
+               
+               
+               
+           }
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+            debugger
+            let err=xhr.responseText || `banking details cannot be verified. Please Check!`;
+           alertforerror(err);
             jQuery.unblockUI();
         }
     });
@@ -3867,36 +4084,46 @@ function UpdateBankDetail() {
 
 
 
-
 //pagination
-var currentpage=0
 
-
-var pageNumber = 1; 
-var numberOfPages = 0; 
+var pageNumber = 1;
+var numberOfPages = 0;
+var SearchText = '';
 const prev = document.querySelector('.prev');
 prev.addEventListener('click', (e) => {
-   e.preventDefault();
-if (pageNumber > 1) {
-    pageNumber--;
-       fetchParticipantsVenderTable(pageNumber, SearchText);
-    }
+    //  console.log(pageNumber);
+    e.preventDefault();
+    if (pageNumber > 1) {
+        pageNumber--;
+
+        $('#txtPageNumber').val(pageNumber);
+        fetchParticipantsVenderTableFilter(pageNumber, SearchText);
+    }
 });
 
 const next = document.querySelector(".next");
 next.addEventListener("click", (e) => {
- e.preventDefault();
+    e.preventDefault();
+    //console.log('next ', pageNumber);
+    //console.log('numberOfPages ', numberOfPages);
 
-if (pageNumber < numberOfPages) {
-    pageNumber++;
-     fetchParticipantsVenderTable(pageNumber, SearchText);
+    if (pageNumber < numberOfPages) {
+        pageNumber++;
+
+        $('#txtPageNumber').val(pageNumber);
+        fetchParticipantsVenderTableFilter(pageNumber, SearchText);
     }
 });
 
+
 function replaceQuoutesFromString_PEV2(ele) {
+
 
     var str = '';
     str = ele.value;
+
+    //console.log(str);
+
     str = str.replace(/'/g, '');
     str = str.replace(/"/g, '');
 
@@ -3912,24 +4139,38 @@ function replaceQuoutesFromString_PEV2(ele) {
     str = str.replace(/^/g, '');
     SearchText = str;
     ele.value = str;
-    console.log(str);
-    
-    if (str.length > 4) {
+
+    if (str.length > 2) {
         console.log(str);
-       fetchParticipantsVenderTable(pageNumber, SearchText);
+        fetchParticipantsVenderTable(1, str);
+    }
+    else {
+        if (str == "") {
+            fetchParticipantsVenderTable(1, '');
+        }
     }
     //return val;
 }
 
-function setupPagination() { 
+function setupPagination(pageNumber) {
     const pagination = document.querySelector("#paginationid1");
-    pagination.innerHTML = ""; 
+    pagination.innerHTML = "";
+    var pageno = 0;
+
+    var onelotsize = pageNumber+10;
+    if (pageNumber > numberOfPages) {
+        pageNumber = numberOfPages;
+        onelotsize = numberOfPages;
+    }
+    console.log(pageNumber);
+
+    console.log(onelotsize);
     for (let i = 1; i <= numberOfPages; i++) {
-       // console.log(i);
+        // console.log(i);
         var listart = "<li class=page-item id=" + i + ">";
         var liend = "</li>";
         const li = document.createElement("li");
-        li.id = i;
+        li.id = 'l' + i;
         li.setAttribute("class", "page-link");
         const link = document.createElement("a");
         link.href = "#";
@@ -3942,14 +4183,47 @@ function setupPagination() {
 
         link.addEventListener("click", (event) => {
             event.preventDefault();
-            pageNumber = i; 
-           fetchParticipantsVenderTable(pageNumber, SearchText);
+            pageNumber = i;
+            fetchParticipantsVenderTableFilter(pageNumber, SearchText);
             const currentActive = pagination.querySelector(".active");
             currentActive.classList.remove("active");
             link.classList.add("active");
-        }); 
+        });
         li.appendChild(link);
-        pagination.appendChild(li);
+//        pagination.appendChild(li);
+        pageno = i + 1;
     }
+
+
+  /*  const li = document.createElement("li");
+    li.id = 'l' + pageno;
+    li.setAttribute("class", "page-link");
+    const link = document.createElement("a");
+    link.href = "javascript:void(0)";
+    link.setAttribute("class", "page-link");
+    link.innerText = ".....";
+    link.addEventListener("click", (event) => {
+        event.preventDefault();
+        pageNumber = pageno;
+        fetchParticipantsVenderTableFilter(pageNumber, SearchText);
+        const currentActive = pagination.querySelector(".active");
+        currentActive.classList.remove("active");
+        link.classList.add("active");
+    });*/
+
+   // li.appendChild(link);
+   // pagination.appendChild(li);
+     
+    //var pageDivData = '<li id="l' + numberOfPages +' class="page-link"><a href="javascript:void(0)" class="page-link">....</a></li>';
+    //pageDivData += '<li id="l1' + numberOfPages + ' class="page-link"><a href="javascript:void(0)" class="page-link">(' + numberOfPages + ')</a></li>';
+    //pagination.appendChild(pageDivData);
 }
 
+function gotopage_directly(ele) {
+     pageNumber = ele.value;
+     
+    if (pageNumber > 0) {
+         fetchParticipantsVenderTableFilter(pageNumber, SearchText);
+    }
+     
+}

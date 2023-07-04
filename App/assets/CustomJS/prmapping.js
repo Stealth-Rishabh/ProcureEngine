@@ -54,10 +54,7 @@ function searchPIForm() {
 
 let vendorfrequency=0;
 
-function GetPR2MappingCategory(){
-    
-    
-}
+
 
 function GetPR2Mapping() {
     debugger
@@ -71,6 +68,9 @@ function GetPR2Mapping() {
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
            debugger
+           
+           
+           
            let vendorExternalSource =data.vendorExternalSource,rfqraid =data.sobHeader.eventId,
            eventtype=data.sobHeader.eventType,sobId=data.sobHeader.sobId,eventtypename='',
            truncatedMaterial='',deliverydate='',DCyear="",DCmonth='', DCday='',DCdt;
@@ -104,6 +104,10 @@ function GetPR2Mapping() {
            </div>`
            
            $("#formintro").append(strintro);
+           
+          
+           
+           
            
              //PRMap Category 
              $("#PRMapCategory").empty;
@@ -203,6 +207,15 @@ function GetPR2Mapping() {
             }
             strcat +=`</tr>` 
             
+            //Price Unit
+            strcat +=`<tr><td>Price Unit</td>`;
+            
+            for(var pu=0;pu<data.associatedVendors.length;pu++){
+                       
+                strcat += `<td><input class="form-control priceunit" onkeyup="boolchkup(this)"  id='priceunit${pu}' /></td>`;
+            }
+            strcat +=`</tr>` 
+            
             //company code  
             strcat +=`<tr><td>Company code </td>`;
             for(var qh=0;qh<data.associatedVendors.length;qh++){
@@ -217,18 +230,33 @@ function GetPR2Mapping() {
              
             for(var qi=0;qi<data.associatedVendors.length;qi++){
                        
-                strcat += `<td id='pn${qi}'><input class="form-control partnum" id='partnernumber${qi}' /></td>`;
+                strcat += `<td id='pn${qi}'><input class="form-control partnum" id='partnernumber${qi}' disabled/></td>`;
             }
              strcat +=`</tr>` 
              
              
             strcat +=`<tr><td>PO Number</td>`;
-             
+            let transmsg ='' 
             for(var qj=0;qj<data.associatedVendors.length;qj++){
-                       
-                strcat += `<td id='po${qj}'><input class="form-control ponum" id='ponumber${qj}' disabled/>
-                <span class='hovertext' data-hover='${data.associatedVendors[qj].transactionMessage}'><i class='fa fa-info-circle fa-fw' aria-hidden='true'></i></span>     
+                debugger
+                transmsg =data.associatedVendors[qj].transactionMessage.replace(/(\d+)-/g, "\n$&")
+                if(data.associatedVendors[qj].isTransactionSuccessfull=='Y'){
+                    strcat += `<td id='po${qj}'>
+                <div style="display: flex; justify-content: space-between;">
+                <input class="form-control ponum" id='ponumber${qj}' value='${transmsg}' disabled/>
+                
+                </div>
                 </td>`;
+                }
+                else{
+                     strcat += `<td id='po${qj}'>
+                <div style="display: flex; justify-content: space-between;">
+                <input class="form-control ponum" id='ponumber${qj}' disabled/>
+                <span class='hovertextLeft' data-hover='${transmsg}'><i class='fa fa-exclamation-circle fa-fw' style="color:red !important" aria-hidden='true'></i></span>     
+                </div>
+                </td>`;
+                }
+               
             }
              strcat +=`</tr>` 
              
@@ -251,7 +279,7 @@ function GetPR2Mapping() {
             //tablehead
             strtblH +=`<thead><tr class='hide'><th>PI Number</th><th id='tblpinumber'></th><th>NFA ID</th><th class='bold'>${_EventID}</th><th></th><th></th><th></th><th></th><th></th>`;
              for(var i=0;i<data.associatedVendors.length;i++){
-               
+                      debugger
                        unitallocation=0
                        if(data.sobHeader.sobOn=="P")
                        {
@@ -263,7 +291,7 @@ function GetPR2Mapping() {
                       strtblH +=`<th class='hide' id='vendorMaxAllocate${i}'>${unitallocation}</th>`;
                    }
             strtblH +='</tr>' ;
-            strtblH +='<tr><th class="hide">Line item number</th><th>PR2 Number</th><th>Line Item of requisition</th><th>Material Code</th> <th>Shortname</th><th>Delivery date of product</th><th>Price Unit'+"        "+  '</th><th>Quantity</th>';
+            strtblH +='<tr><th class="hide">Line item number</th><th>PR2 Number</th><th>Line Item of requisition</th><th>Material Code</th> <th>Shortname</th><th>Delivery date of product</th><th>Quantity</th>';
             for(var k=0;k<data.associatedVendors.length;k++){
                        
                       strtblH +=`<th id='vendorName${k}'>${data.associatedVendors[k].vendorName}</th>`;
@@ -271,7 +299,17 @@ function GetPR2Mapping() {
             
             strtblH +='</tr></thead>';
              $("#PRMapTable").append(strtblH);
-             $("#tblpinumber").text(data.resultToReturn[0].bednr);
+             
+             
+             let bednrno
+             debugger
+             if(data.resultToReturn.length>0){
+                bednrno=data.resultToReturn[0].bednr
+             }
+             else{
+                 bednrno=''
+             }
+             $("#tblpinumber").text(bednrno);
             
             //tablebody
             debugger
@@ -288,17 +326,43 @@ function GetPR2Mapping() {
                 else{
                    inD_ITEM_NO="";
                 }
-                strtbl +=`<tbody><tr><td id='poitem${i}' class='hide'>${inD_ITEM_NO}</td><td id='prnumber${i}'>${data.resultToReturn[i].banfn}</td><td id='bannumber${i}'>${data.resultToReturn[i].bnfpo}</td><td id='matcode${i}'>${truncatedMaterial}</td><td id='shortname${i}'>${data.resultToReturn[i].txZ01}</td><td><div class="input-group date form_datetime form_datetime bs-datetime "><input type="text" size="16" value="${DCdt}" class="form-control" id='deliverydate${i}'  name="deliverydate${i}" readonly><span class="input-group-btn"> <button class="btn default date-set btncalandar" type="button" id="btncal${i}"><i class="fa fa-calendar"></i></button></span></div></td><td id='priceunit${i}'><input class='form-control' /></td><td id='vendorQuant${i}'>${data.resultToReturn[i].menge}</td>`;    
+                strtbl +=`<tbody><tr><td id='poitem${i}' class='hide'>${inD_ITEM_NO}</td><td id='prnumber${i}'>${data.resultToReturn[i].banfn}</td><td id='bannumber${i}'>${data.resultToReturn[i].bnfpo}</td><td id='matcode${i}'>${truncatedMaterial}</td><td id='shortname${i}'>${data.resultToReturn[i].txZ01}</td><td><div class="input-group date form_datetime form_datetime bs-datetime "><input type="text" size="16" value="${DCdt}" class="form-control" id='deliverydate${i}'  name="deliverydate${i}" readonly><span class="input-group-btn"> <button class="btn default date-set btncalandar" type="button" id="btncal${i}"><i class="fa fa-calendar"></i></button></span></div></td><td id='vendorQuant${i}'>${data.resultToReturn[i].menge}</td>`;    
                    for(var j=0;j<data.associatedVendors.length;j++){
                        
-                      strtbl +=`<td><input onkeyup='checkPRValidity()' placeholder='enter quantity' class='form-control  vendor${j}' id='vendor${i}${j}'/><input class='form-control' placeholder='enter price' id='unitprice${i}'  value=${data.resultToReturn[i].preis} /></td>`
+                      strtbl +=`<td>
+                      <div style="display: flex; justify-content: space-between;">
+                      <input onkeyup='checkPRValidity(this)'  placeholder='enter quantity' class='form-control  vendor${j}' id='vendor${i}${j}'/>
+                      <input onkeyup='checkPRValidity(this)' class='form-control unitprice${j}' placeholder='enter price' id='unitprice${i}'  value=${data.resultToReturn[i].preis} /></td>
+                      </div>`
                    }
                   strtbl +='</tr>'
                   
              }
               strtbl+='</tbody>'
-              $("#PRMapTable").append(strtbl);   
+              $("#PRMapTable").append(strtbl);  
               
+               //NFA header
+               
+              let strnfa = '';
+              let strnfaH = '';
+              $("#NFAMapTable").empty();
+             debugger;
+
+             strnfaH += `<thead><tr><th>NFA Param Text</th><th>NFA Param Id</th><th>Remark</th></tr></thead>`;
+             $("#NFAMapTable").append(strnfaH);
+
+             strnfa += `<tbody>`;
+            for (let n = 0; n < data.sapFieldsFromNFA.length; n++) {
+              strnfa += `<tr>
+                <td style="width: 25%; word-wrap: break-word;">${data.sapFieldsFromNFA[n].nfaParamText}</td>
+                <td style="width: 25%; word-wrap: break-word;">${data.sapFieldsFromNFA[n].nfaparamId}</td>
+                <td style="width: 50%; word-wrap: break-word;" id="${data.sapFieldsFromNFA[n].sapField}remark">${data.sapFieldsFromNFA[n].remark}</td>
+               
+             </tr>`;
+            }
+            strnfa += `</tbody>`;
+            $("#NFAMapTable").append(strnfa);
+
              ComponentsPickers.init();
              GetCustomerSpecificMaster(CUSTOMERID)
              debugger
@@ -316,7 +380,7 @@ function GetPR2Mapping() {
                 error401Messagebox(err.Message);
             }
             else {
-                fnErrorMessageText('error', '');
+                alertforerror(err)
             }
             jQuery.unblockUI();
             return false;
@@ -327,24 +391,26 @@ function GetPR2Mapping() {
 }
 
 
-function checktotalquant() {
+function checktotalquant(id) {
   
   let TQ = 0;
   let totVendquant
   $('#PRMapTable tbody tr').each(function(i) {
       
-     TQ = parseInt($(`#vendorQuant${i}`).text());
+     TQ = parseFloat(removeThousandSeperator($(`#vendorQuant${i}`).text()));
      totVendquant=0
      for(var j=0;j<vendorfrequency;j++){
-         totVendquant +=parseInt($(`#vendor${i}${j}`).val()||0)
+         totVendquant +=parseFloat(removeThousandSeperator($(`#vendor${i}${j}`).val()||0))
      }
      if(totVendquant>TQ){
-        $('#divalerterr').html(`Please check quantity allocated to vendors is greater than allocated quantity for item ${$(`#shortname${i}`).text()}`);
-        $('.alert-danger').show();
-        Metronic.scrollTo($(".alert-danger"), -200);
-        $('.alert-danger').fadeOut(7000);
+       debugger
+        alertforerror(`Please check quantity allocated to vendors is greater than allocated quantity for item ${$(`#shortname${i}`).text()}`)
+        $(id).val('');
         return false; 
          
+     }
+     else{
+         return true
      }
     
   });
@@ -352,27 +418,28 @@ function checktotalquant() {
  
 }
 
-function checktotalVA() {
+function checktotalVA(id) {
     
     let TMaxAllocate; let TVendAllocate;
     for(var i=0;i<vendorfrequency;i++){
-       
-        TMaxAllocate=parseInt($(`#vendorMaxAllocate${i}`).text());
+       debugger
+        TMaxAllocate=parseFloat(removeThousandSeperator($(`#vendorMaxAllocate${i}`).text()));
         TVendAllocate=0
         $('#PRMapTable tbody tr').each(function(j) {
-           
-          TVendAllocate += parseInt($(this).find(`.vendor${i}`).val()||0) * parseInt($(`#unitprice${j}`).text())
+           debugger
+          TVendAllocate += parseFloat(removeThousandSeperator($(this).find(`.vendor${i}`).val()||0)) * parseFloat(removeThousandSeperator($(this).find(`.unitprice${i}`).val()||0))
             
         })
         
         if(TVendAllocate>TMaxAllocate){
            
-        $('#divalerterr').html(`Please check  allocation for Vendor ${$(`#vendorName${i}`).text()}` );
-        $('.alert-danger').show();
-        Metronic.scrollTo($(".alert-danger"), -200);
-        $('.alert-danger').fadeOut(7000);
+        alertforerror(`Please check  allocation for Vendor ${$(`#vendorName${i}`).text()}`)
+        $(id).val('');
         return false; 
          
+        }
+      else{
+         return true;
      }
         
     }
@@ -381,10 +448,11 @@ function checktotalVA() {
 
 
 
-function checkPRValidity(){
-    
-    checktotalquant()
-    checktotalVA()
+function checkPRValidity(id){
+    debugger
+    localecommaseperator(id)
+    checktotalquant(id)
+    checktotalVA(id)
 }
 
 
@@ -404,7 +472,8 @@ debugger
              debugger
              //document type
             jQuery(".documenttype").empty();
-
+            jQuery(".documenttype").append(jQuery("<option value=''  data-incotermdesc='' >Select</option>"));
+ 
             for (var i = 0; i < data.docType.length; i++) {
 
                 jQuery(".documenttype").append(jQuery("<option value='" + data.docType[i].poDocumentType + "'  data-incotermdesc='" + data.docType[i].description + "' >" + data.docType[i].description + " [" + data.docType[i].poDocumentType + "]" + "</option>"));
@@ -454,6 +523,8 @@ debugger
               
             //tax code
             jQuery(".taxcode").empty();
+            jQuery(".taxcode").append(jQuery("<option value=''>Select</option>"));
+
              for (var i = 0; i < data.taxCode.length; i++) {
                 jQuery(".taxcode").append(jQuery("<option value='"+ data.taxCode[i].taxCode+"'  >" + data.taxCode[i].description + " [" + data.taxCode[i].taxCode + "]" + "</option>"));
 
@@ -499,6 +570,14 @@ function UpdateVCategory(data){
         
      associatevendorid=$(`#vendorName${v}`).data(`vendorid`)
      if(associatevendorid==data[match].vendorId){
+         
+    //tax code     
+    $(`#taxcode${v}`).val(data[match].pOCreationDetails[0].taxCode).trigger('change')
+    
+    //doctype  
+    
+     $(`#doctype${v}`).val(data[match].documentType).trigger('change')
+         
     //incoterm
    
      
@@ -527,7 +606,9 @@ function UpdateVCategory(data){
       $(`#taxcode${v}`).val(data[match].witholdingTaxType).trigger('change')
        
    
+   //price unit
    
+    $(`#priceunit${v}`).val(data[match].price_Unit)
      
        
       
@@ -624,44 +705,64 @@ function GetCurrency(CountryKey) {
 }
 
 
-
+let isPOAPI =''
 function submitPRForm(){
+    debugger
+    
+   
+    
     let eventid=parseInt($('#lbleventidr').text());
     let eventtype= $("#hdneventtype").val();
     let sobid = parseInt($("#hdnsobid").val());
     let nfaid = parseInt(EventID);
     let custid=parseInt(CUSTOMERID);
     let zdata = [],TAXCODEV 
-    let itemdata;
+    let itemdata,priceunit;
+    
+   debugger
+  
+    let currentdatepo = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '.');; 
    
     
     debugger 
     var prcategoryVarray=[];
     var prmappingitemlist=[];
     for(var vf=0;vf<vendorfrequency;vf++){
+        debugger
+        
      prmappingitemlist=[]
-     TAXCODEV =$(`#taxcode${vf} option:selected`).val()
-     
+     TAXCODEV =$(`#taxcode${vf} option:selected`).val();
+     priceunit=String($(`#priceunit${vf}`).val());
+     debugger
+   if($(`#partnernumber${vf}`).val()){  
      $("#PRMapTable>tbody>tr").each(function(i){
-             
-            var prlistV = {
+          
+           let deldat =new Date($(`#deliverydate${i}`).val());
+           let DELIVERY_DATE = deldat.getFullYear() + '.' + ('0' + (deldat.getMonth() + 1)).slice(-2) + '.' + ('0' + deldat.getDate()).slice(-2);  
+           
+          
+               
+             debugger
+           if($(this).find(`.vendor${vf}`).val()){
+              let PBXX_I = String(($(this).find(`.unitprice${vf}`).val() * $(this).find(`.vendor${vf}`).val()))
+                var prlistV = {
                 "EBELN":"",
                 "BANFN":$(`#prnumber${i}`).text(),
                 "BNFPO":$(`#bannumber${i}`).text(),
-                "PO_ITEM":$(`#poitem${i}`).text(),//pe
-                "SHORT_TEXT":$(`#shortname${i}`).text(), 
-                "MATERIAL":$(`#matcode${i}`).text(),
-                "PLANT":"1P03",// 
+                "PO_ITEM":$(`#bannumber${i}`).text(),//pe
+                "SHORT_TEXT":'', 
+                "MATERIAL":'',
+                "PLANT":'',// 
                 "STGE_LOC":"",//
                 "MATL_GROUP":"",//
-                "QUANTITY":$(`#vendorQuant${i}`).text(),//pe
+                "QUANTITY":$(this).find(`.vendor${vf}`).val(),//pe
                 "PO_UNIT":"",
                 "TAX_CODE":TAXCODEV,
                 "RET_ITEM":"",
-                "DELIVERY_DATE":"2023.04.05",//pe
+                "DELIVERY_DATE":'',//pe
                 "FRA1_I": "",
                 "FRB1_I": "",
-                "FRC1_I": "",
+                "FRC1_I": "",//not needed
                 "FRUN_I": "",
                 "RA01_I": "",
                 "RB00_I": "",
@@ -688,9 +789,9 @@ function submitPRForm(){
                 "ZOF1_I": "",
                 "ZSWS_I": "",
                 "PB00_I": "",
-                "PBXX_I": $(`#unitprice${i}`).val(), 
+                "PBXX_I":PBXX_I, //doubt quantity*unitprice
                 "P101_I": "",
-                "I_F01": $(`#shortname${i}`).text(),  
+                "I_F01": '',  
                 "MAT_PO_TXT": "",
                 "CONF_CTRL": "",
                 "ACCAS": "",
@@ -702,40 +803,57 @@ function submitPRForm(){
                 "NETWRK": "",
                 "ASSET_NO": "",
                 "PI": "",//pe dropdown
-                "DIFF_INV": ""
+                "DIFF_INV": "",
             }
-            
-         prmappingitemlist.push(prlistV);  
+            prmappingitemlist.push(prlistV);  
+           }
+           
+     
+         
           
-      })   
+      }) 
+      
+     let H_F01,MOD_DISP,PLC_DLVR,TRM_PYMNT,PRC_BASIS,SPCL_INST,WARRANTY; 
+     $("#NFAMapTable>tbody").each(function () {
+         debugger
+         H_F01=$(`#H_F01remark`).text();
+         MOD_DISP=$(`#MOD_DISPremark`).text();
+         PLC_DLVR=$(`#PLC_DLVRremark`).text();
+         TRM_PYMNT=$(`#TRM_PYMNTremark`).text();
+         PRC_BASIS=$(`#PRC_BASISremark`).text();
+         SPCL_INST=$(`#SPCL_INSTremark`).text();
+         WARRANTY=$(`#WARRANTYremark`).text();
+         
+     }); 
         
     
      $("#PRMapCategory>tbody").each(function () 
      {
          
          let j=vf
-         debugger    
-          ZPO_HEAD={
+         
+         debugger  
+         
+              ZPO_HEAD={
                 "EBELN":"",
                 "BUKRS":$(`#comcode${j} option:selected`).val(),
                 "BSART":$(`#doctype${j} option:selected`).val(),
-                "BEDAT":"19.06.2023",//currentdate
+                "BEDAT":currentdatepo,//currentdate
                 "LIFNR":$(`#partnernumber${j}`).val(),//partnernumber
                 "PWERK":'',
-                "EKORG":$(`#purorg${j} option:selected`).val(),
-                "EKGRP":$(`#purgrp${j} option:selected`).val(),
+                "EKORG":$(`#purorg${j}`).val(),
+                "EKGRP":$(`#purgrp${j}`).val(),
                 "INCO1":$(`#incoterm${j} option:selected`).val(),
                 "ZTERM":$(`#PaymentTerms${j} option:selected`).val(),
                 "WAERS":$(`#Currency${j} option:selected`).val(),
-                "H_F01":"",//nfa
-                "MOD_DISP": "",//nfa
-                "PLC_DLVR": "",//nfa
-                "TRM_PYMNT":"",//nfa
-                "PRC_BASIS":"",//nfa
-                "SPCL_INST":"",//nfa
+                "H_F01":H_F01,//nfa
+                "MOD_DISP":MOD_DISP,//nfa
+                "PLC_DLVR":PLC_DLVR,//nfa
+                "TRM_PYMNT":TRM_PYMNT,//nfa
+                "PRC_BASIS":PRC_BASIS,//nfa
+                "SPCL_INST":SPCL_INST,//nfa
                 "BILL_ADDR":"",//notrequired
-                "WARRANTY":"",//nfa
-                "PRICE_UNIT":"",//pe
+                "WARRANTY":WARRANTY,//nfa
                 "FRA1_H": "",
                 "FRB1_H": "",
                 "FRC1_H": "",
@@ -749,6 +867,7 @@ function submitPRForm(){
                 "ZIN3_H": "",
                 "ZINP_H": "",
                 "ZINT_H": "",
+                "PRICE_UNIT":priceunit,
                 "HDRITEMSNAV":{
                     "ZPO_ITEMS":prmappingitemlist
                     
@@ -766,26 +885,28 @@ function submitPRForm(){
           
               
           }
-               
+         
+         
+            
             
          
          
        }
      );
      
-       if($(`#partnernumber${vf}`).val()){
-             itemdata= {
+       
+       itemdata= {
             "ZPO_HEADSet":{
                  "ZPO_HEAD":ZPO_HEAD
             }
         }
-       }
+       
        
         
-       debugger
-      if($(`#partnernumber${vf}`).val()) {
+       
+     
            zdata.push(itemdata) 
-      }
+      
        
          
    
@@ -805,10 +926,12 @@ function submitPRForm(){
                    "ZPO_HEADSetList":zdata
         }
         
+    console.log(data);
+        
     console.log(sessionStorage.getItem("APIPath") + `SAPIntegration/PostMappingForPOCreation`)
     debugger
-     if($(`#partnernumber${vf}`).val()){
-          jQuery.ajax({
+    
+        jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
         //url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&UserType=" + sessionStorage.getItem('UserType'),
@@ -822,10 +945,18 @@ function submitPRForm(){
         success: function (data) {
            debugger
             jQuery.unblockUI();
+           
+            
         },
         error: function (xhr, status, error) {
             debugger
-             err = `${xhr.responseText}  for - Vendor  ${$(`#vendorName${vf}`).text()}`;
+            if(xhr.responseText){
+              err = `${xhr.responseText}  for - Vendor  ${$(`#vendorName${vf}`).text()}`;  
+            }
+            else{
+               err = `No item is  allocate to Vendor  ${$(`#vendorName${vf}`).text()}`;  
+            }
+             
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
@@ -835,19 +966,28 @@ function submitPRForm(){
                 $(`#divalerterr`).show();
                 $(`#divalerterr`).fadeOut(5000);
                 App.scrollTo($(`#divalerterr`), -200);*/
-                alertforerror(err);
+                alertforerror(err.replace(/(\d+)-/g, "<br>$&"));
             }
+           
             jQuery.unblockUI();
            
         }
     });
          
+     
      }
-   
-    
+    else{
+       
+      if($(`#ponumber${vf}`).val()){
+           alertforerror(` PO Number already exist for - Vendor  ${$(`#vendorName${vf}`).text()}`)
+      }
+      else{
+        alertforerror(` Partner number not exist for - Vendor  ${$(`#vendorName${vf}`).text()}`)
+      }
+    }
     }
  
-    
+  
 }
 
 
@@ -857,7 +997,10 @@ function Selectsearch(){
     $('.PayTerm').select2();
     $('.ddlcurrency').select2();
     $('.PORG').select2();
-     $('.PGRP').select2();
+    $('.PGRP').select2();
+    $('.documenttype').select2();
+    $('.taxcode').select2();
+     
      fetchVendorAutoComplete()
 }
 
@@ -898,22 +1041,16 @@ function fetchVendorAutoComplete() {
 
 
 
-function alertforerror(error) {
+  
+  function boolchkup(id){
+     var value = $(id).val();
+     var isValid = /^[01]$/.test(value); // Use regex to check if the value is either 0 or 1
 
-    bootbox.dialog({
-        message: error,
-        buttons: {
-           
-            ok: {
-                label: "OK",
-                className: "btn-success",
-                callback: function () {
-                    
-                }
-            }
-        }
-    });
-}
+    if (!isValid) {
+      $(id).val(''); // Clear the input if the value is not valid
+    }
+      
+  }
 
 /*
 var allvendorsforinvoice;

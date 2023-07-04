@@ -4,236 +4,135 @@
 <head>
 
     <title></title>
-    <style type="text/css" media="print">
-        @media print {
-            .pagebreak {
-                page-break-before: always;
-            }
-            /* page-break-after works, as well */
-        }
+    <!-- Page Specific CSS-->
+    <link rel="stylesheet" href="assets/CustomCSS/ViewReport2.css">
+    <link rel="stylesheet" href="assets/CustomCSS/common.css">
 
-        @page {
-            size: landscape;
-        }
+    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
 
-        @page {
-            size: A4 landscape;
-            margin: 10%;
-        }
-
-        @media screen {
-            div.divFooter {
-                display: none;
-            }
-        }
-
-        @media print {
-            div.divFooter {
-                position: fixed;
-                bottom: 0;
-            }
-        }
-
-        table, th, td {
-            /* 2.00315px, this does work */
-            border: 0.53mm solid #ddd !important;
-        }
-    </style>
-    <style>
-        * {
-            -webkit-print-color-adjust: exact !important; /* Chrome, Safari */
-            color-adjust: exact !important; /*Firefox*/
-        }
-
-        .mainbody {
-            background: url('../agileapt/assets/aalogo.png');
-            -moz-background-size: cover;
-            -webkit-background-size: cover;
-            background-size: contain;
-            background-position: center !important;
-            background-repeat: repeat-x !important;
-            background-attachment: fixed;
-        }
-
-        .bg-image {
-            /* The image used */
-            background-image: url('../agileapt/assets/aalogo.png');
-            /* Add the blur effect */
-            filter: blur(8px);
-            -webkit-filter: blur(8px);
-            /* Full height */
-            height: 100%;
-            /* Center and scale the image nicely */
-            background-position: center;
-            background-repeat: repeat !important;
-            background-size: cover;
-        }
-
-        .watermark {
-            /*position: fixed;*/
-            position: fixed;
-            left: 0;
-            right: 0;
-            top: 0;
-            bottom: 0;
-            height: auto 100%;
-            /*background-size: contain;*/
-            /*Background-image: url("../agileapt/assets/aalogo.png");*/
-            Background-repeat: repeat;
-            opacity: 0.1;
-            z-index: -999999;
-        }
-    </style>
-   <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="assets/CustomJs/jspdf.debug.js"></script>
-     <script src="assets/CustomJs/html2canvas.js"></script>
-
-   
     <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
-   
+    
+    <script src="assets/CustomJS/jspdf.debug.js"></script>
+    <script src="assets/CustomJS/html2canvas.js"></script>
 
 
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/CustomJS/Common.js"></script>
+
+
+
 </head>
 <body>
     <!--class="mainbody"-->
     <div id="watermark" class="watermark"></div>
-    <div id="divGenerateReport" class="white-back row" style="padding: 1.5rem;">
-        <div id="top-content">
-         
+    <div id="divGenerateReport" class="reportstyle1">
 
-                <table class="table table-striped" width="100%">
-                    <tr>
+        <form action="#" id="form">
 
-                        <td style="width:100%;">
-                            <div style="width:100%;margin-top:10px;font-size:20px;line-height: 30px;padding-bottom: 8px;font-family:Arial, Helvetica, sans-serif; font-weight: 200;text-align: center;">
-                                <div style="float: left;"><img alt="logo" id="logo"></div> <!--src="../assets/images/logo.png"-->
-                                <div style="clear: both;"></div>
-                                <label style="text-align: center;">RFQ Comparative Analysis</label>
-                            </div>
+            <table class="width100">
+                <tr>
 
-                            <table style="width:100%;border-collapse: collapse;" border="1" id="tbldetails" cellpadding="5">
-                                <thead>
-                                    <tr style="background: #44b6ae;">
-                                        <th colspan="2" style="font-size: 19px; text-align: left;color: #FFF;">RFQ Details <label style="width: auto; float: right!important;font-size: 14px!important;">RFQ Configured By:<span id="spnconfiguredby"> </span></label></th>
+                    <td class="width100">
+                        <div class="reportstyle2">
+                            <div class="float-left"><img alt="logo" id="logo"></div> <!--src="../assets/images/logo.png"-->
+                            <div class="clearboth"></div>
+                            <label class="txtaligncentre">RFQ Comparative Analysis</label>
+                        </div>
 
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </td>
+                        <table class="width100collaspe" border="1" id="tbldetails" cellpadding="5">
+                            <thead>
+                                <tr class="bgcolor3">
+                                    <th colspan="2" class="reportstyle5">RFQ Details <label class="reportstyle4">RFQ Configured By:<span id="spnconfiguredby"> </span></label></th>
 
-                    </tr>
-                    <tr><td></td></tr>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </td>
 
-                    <tr>
-                        <td>
-                            <table style="width:100%;border-collapse: collapse;" border="1" id="tblRFQComprative" cellpadding="8">
-                                <thead></thead>
-                                <tbody></tbody>
-                            </table>
-                            <table style="display: none;" id="tblRFQComprativetest"></table>
-                        </td>
-                    </tr>
-                    <tr><td></td></tr>
-                    <tr>
-                        <td>
-                            <table style="width:100%;border-collapse: collapse;" border="1" id="tblRFQComprativeQ" cellpadding="8">
-                                <thead></thead>
-                                <tbody></tbody>
-                            </table>
+                </tr>
+                <tr><td></td></tr>
 
-                            <table style="display: none;" id="tblRFQComprativetestQ"></table>
+                <tr>
+                    <td>
+                        <table class="width100collaspe" border="1" id="tblRFQComprative" cellpadding="8">
+                            <thead></thead>
+                            <tbody></tbody>
+                        </table>
+                        <table class="nodisplay" id="tblRFQComprativetest"></table>
+                    </td>
+                </tr>
+                <tr><td></td></tr>
+                <tr>
+                    <td>
+                        <table class="width100collaspe" border="1" id="tblRFQComprativeQ" cellpadding="8">
+                            <thead></thead>
+                            <tbody></tbody>
+                        </table>
 
-                        </td>
-                    </tr>
-                    <tr><td>&nbsp;</td></tr>
+                        <table class="nodisplay" id="tblRFQComprativetestQ"></table>
 
-                    <tr>
-                        <td>
-                            <table style="width:63%;border-collapse: collapse;" border="1" id="tblAttachments" cellpadding="5">
-                                <thead>
-                                    <tr style="background: #44b6ae;">
-                                        <th colspan="2" style="font-size: 19px; text-align: left;color: #FFF;">RFQ Attachments </th>
+                    </td>
+                </tr>
+                <tr><td>&nbsp;</td></tr>
 
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        <table class="width63collaspe" border="1" id="tblAttachments" cellpadding="5">
+                            <thead>
+                                <tr style="background: #44b6ae;">
+                                    <th colspan="2" class="reportstyle5">RFQ Attachments </th>
 
-                    <tr><td></td></tr>
-                    <tr>
-                        <td>
-                            <table width="100%" cellpadding="8" style="border-collapse: collapse; display: none;" border="1" id="tblapprovalprocess">
-                                <thead>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td colspan="15" style="text-align: center; color: Red">
-                                            No record's found
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr><td></td></tr>
-                    <tr><td></td></tr>
-                    <tr><td></td></tr>
-                    <tr><td></td></tr>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </td>
+                </tr>
 
-                </table>
+                <tr><td></td></tr>
+                <tr>
+                    <td>
+                        <table width="100%" cellpadding="8" class="collaspenone" border="1" id="tblapprovalprocess">
+                            <thead>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="15" class="norecord">
+                                        No record's found
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
+                <tr><td></td></tr>
 
-         <br />
+            </table>
 
-            </div>
-            <div style="width: auto; float: left;">Printed By: <span id="printed_by"></span></div>
-            <div style="width: auto; float: right;">Printed On: <span id="printed_on"></span></div>
-            <div style="clear: both;"></div>
-            <input type="hidden" id="hdnRfqID" value="0" />
-            <input type="hidden" id="hdnversion" value="-1" />
-        </div>
+        </form><br />
 
+        <!--</div>-->
+        <div class="widthautoleft">Printed By: <span id="printed_by"></span></div>
+        <div class="widthautoright">Printed On: <span id="printed_on"></span></div>
+        <div class="clearboth"></div>
+        <input type="hidden" id="hdnRfqID" value="0" />
+        <input type="hidden" id="hdnversion" value="-1" />
+    </div>
 
+    <script type="text/javascript" nonce="pev3">
 
+        $(document).ready(function () {
+            callPagejs('ViewReportRFQ.js');
+        });
 
-        <script type="text/javascript">
-            jQuery(document).ready(function () {
-                callPagejs('ViewReportRFQ.js');
-
-            });
-                    //jQuery(document).ajaxStart(jQuery.blockUI({ message: '<h5><img src="../assets/global/img/loading.gif" /> Please Wait...</h5>' })).ajaxStop(jQuery.unblockUI);
-            /*  $(document).ready(function () {
-
-                  getCurrenttime();
-                  param = getUrlVars()["param"];
-                  decryptedstring = fndecrypt(param);
-                  RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
-                  var FromPage = getUrlVarsURL(decryptedstring)["FromPage"];
-                  var BidID = getUrlVarsURL(decryptedstring)["BidID"];
-                  var Version = getUrlVarsURL(decryptedstring)["Version"];
-                  $('#hdnRfqID').val(RFQID)
-                  $('#hdnversion').val(Version)
-                  fetchReguestforQuotationDetails(RFQID)
-                  if (FromPage == "RASumm") {
-                      fetchrfqcomprativeRA(RFQID, BidID)
-                  }
-                  else
-                  {
-                      fetchrfqcomprative(RFQID)
-                  }
-                  fetchAttachments();
-                  fetchApproverRemarks(RFQID);
-              });*/
-
-        </script>
+    </script>
 </body>
 
 

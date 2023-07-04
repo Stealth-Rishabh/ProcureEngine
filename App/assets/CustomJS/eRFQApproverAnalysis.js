@@ -55,7 +55,7 @@ if (window.location.search) {
     var FwdTo = getUrlVarsURL(decryptedstring)["FwdTo"];
     var AppStatus = getUrlVarsURL(decryptedstring)["AppStatus"];
     var VID = getUrlVarsURL(decryptedstring)["VID"];
-    debugger
+
     var boqReq = false;
     $('#hdnRfqID').val(RFQID);
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -73,7 +73,7 @@ if (window.location.search) {
 
 
         fetchApproverRemarks();
-        fetchAttachments();
+        // fetchAttachments();
     }, 400);
 }
 if (AppType == "C" && AppStatus == 'Approved' && FwdTo == 'Approver') {
@@ -1031,8 +1031,16 @@ function GetQuestions(vendorid) {
     })
 }
 function DownloadFileVendor(aID, vid) {
+
     var version = 0;
+    /*if (sessionStorage.getItem('RFQVersionId') == "99") {
+        version = max;
+    }
+    else {
+        version = sessionStorage.getItem('RFQVersionId');
+    }*/
     version = max;
+    console.log($("#" + aID.id).html(), 'eRFQ/' + $('#hdnRfqID').val() + '/' + vid + '/' + version)
     //fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + $('#hdnRfqID').val() + '/' + $('#hdnvendorid').val() + '/TechQuery');
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + $('#hdnRfqID').val() + '/' + vid + '/' + version);
 }
@@ -1440,22 +1448,22 @@ jQuery("#txtSearch").keyup(function () {
 function fetchReguestforQuotationDetails() {
     var attachment = '';
     var termattach = '';
-    debugger
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + $('#hdnRfqID').val(),
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
+        async: false,
         crossDomain: true,
         dataType: "json",
         success: function (Data) {
-            debugger
             let RFQData = Data.rData
             var replaced1 = '';
             $('#tbldetailsExcel > tbody').empty();
             if (RFQData.length > 0) {
-                debugger
+
                 boqReq = RFQData[0].general[0].boqReq;
                 bidopeningdate = RFQData[0].general[0].bidopeningdate;
                 sessionStorage.setItem("RFQBIDType", RFQData[0].general[0].rfqBidType)
@@ -1739,7 +1747,6 @@ function validateAppsubmitData() {
 function ApprovalCommercialApp() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    debugger
     var approvalbyapp = {
         "ApproverType": "C",
         "FromUserId": sessionStorage.getItem('UserID'),
@@ -1768,7 +1775,6 @@ function ApprovalCommercialApp() {
                  window.location = "index.html";
                 
              });*/
-            debugger
             bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
 
                 window.location = "index.html";
@@ -1777,7 +1783,7 @@ function ApprovalCommercialApp() {
             );
         },
         error: function (xhr, status, error) {
-            debugger
+
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1860,7 +1866,7 @@ function AwardCommeRFQ() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendors = '';
     var rowCount = jQuery('#tblremarksvendorsawared tr').length;
-    debugger
+
 
     if (rowCount > 1) {
         $('#drpVendors').rules('add', {
@@ -1896,9 +1902,7 @@ function AwardCommeRFQ() {
             jQuery.unblockUI();
 
         }
-
         else {
-            debugger
             var approvalbyapp = {
                 "ApproverType": "C",
                 "FromUserId": sessionStorage.getItem('UserID'),
@@ -1926,7 +1930,6 @@ function AwardCommeRFQ() {
                          window.location = "index.html";
                          return false;
                      });*/
-                    debugger
                     bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
                         window.location = "index.html";
                         return false;
@@ -1935,7 +1938,7 @@ function AwardCommeRFQ() {
 
                 },
                 error: function (xhr, status, error) {
-                    debugger
+
                     var err = xhr.responseText // eval("(" + xhr.responseText + ")");
                     if (xhr.status == 401) {
                         error401Messagebox(err.Message);
@@ -2274,8 +2277,6 @@ function fetchrfqcomprativeBoq() {
                 var sheetname;
                 var sheetcount = 0;
 
-
-                console.log(data[0].quotesDetails)
                 for (var i = 0; i < data[0].noofQuotes[0].noofRFQParameter; i++) {
 
                     var flag = 'T';
@@ -2531,6 +2532,7 @@ function fetchrfqcomprativeBoq() {
                         break;
                     }
                 }
+
                 str += "<tr><td colspan=6 style='text-align:center;'><b>Total</b></td><td colspan=1 style='text-align:center;'><b>" + thousands_separators(totaltargetprice) + "</b></td>";
                 strExcel += "<tr><td colspan=7><b>Total</b></td>";
                 for (var k = 0; k < data[0].vendorNames.length; k++) {
@@ -2843,6 +2845,7 @@ function fetchrfqcomprativeBoq() {
 
 
                                     for (var q = 0; q < data[0].vendorNames.length; q++) {
+
                                         if (data[0].questions[s].vendorID == data[0].vendorNames[q].vendorID) {
                                             var attachQA = data[0].questions[s].attachementQA;
 
@@ -3045,46 +3048,3 @@ function fetchrfqcomprativeBoq() {
     jQuery.unblockUI();
 
 }
-
-
-function tblforsob() {
-
-    $("#tblsob").empty();
-    let strtblH = "";
-    let strtbl = "";
-    //table head
-    strtblH += `<thead><tr><th>Item Code</th><th>Shortname</th><th>Quantity</th><th>UOM</th><th>Target/Budget Price</th>`;
-    for (var i = 0; i < 4; i++) {
-
-        strtblH += `<th colspan=2 >Vendor A${i} </th>`;
-    }
-
-
-    strtblH += `</tr><tr><th colspan=5></th>`
-    for (i = 0; i < 4; i++) {
-
-        strtblH += `<th>Quoted Price</th><th>Allocation</th>`;
-    }
-    strtblH += `</tr></thead>`
-    $("#tblsob").append(strtblH);
-
-    //table body
-    debugger
-    strtbl += `<tbody>`
-    for (i = 0; i < 4; i++) {
-
-        strtbl += `<tr><td>IC${i}</td><td>Shortname${i}</td><td>${2 * i}</td><td>kg</td><td>${2000 * i}</td>`;
-        for (var j = 0; j < 4; j++) {
-
-            strtbl += `<td>${3 * j}</td><td><input class='form-control'/></td>`;
-        }
-        strtbl += `</tr>`
-    }
-    strtbl += `</tbody>`
-    $("#tblsob").append(strtbl);
-
-
-}
-
-
-

@@ -530,7 +530,7 @@ $(document).on('keyup', '.form-control', function () {
 
 
 function fncheckItemWiseTC(ver, BoqPID) {
-    debugger
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -539,7 +539,7 @@ function fncheckItemWiseTC(ver, BoqPID) {
         cache: false,
         dataType: "json",
         success: function (data) {
-             debugger
+
             if (data.length > 0) {
                 fetchRFQParameterComponent(ver, BoqPID);
             }
@@ -550,7 +550,7 @@ function fncheckItemWiseTC(ver, BoqPID) {
 
         },
         error: function (xhr, status, error) {
-             debugger
+
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1086,7 +1086,7 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (Data) {
-            debugger
+            
              let RFQData=Data.rData
             if (RFQData[0].general.length) {
                 sessionStorage.setItem('CustomerID', RFQData[0].general[0].customerID)
@@ -1375,7 +1375,6 @@ function fetchRFIParameteronload(ver) {
         async: false,
         dataType: "json",
         success: function (data) {
-            debugger
             jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
             jQuery("#tblServicesProduct").empty();
             jQuery("#tblRFQPrev").empty();
@@ -1662,7 +1661,7 @@ function calPrice(ID, parentid) {
 
 
 function mapQuestionBoq(RFQParameterId, mskwithoutgst, quantity, sheet, version, withgst, basicpriceDB) {
-    debugger
+    
     
     isSaveButtonClicked = "N";
     var basicprice = 0.0;
@@ -2224,7 +2223,7 @@ function DownloadFileVendor(aID, version) {
 }
 
 function mapQuestion(RFQParameterId, mskwithoutgst, quantity, version, withgst, basicprice) {
-   debugger
+
    
     $('#txtbasicPrice').val((basicprice))
     $("#hddnBoqParamQuantity").val(quantity);
@@ -2252,7 +2251,7 @@ var basicprice = 0; var PricewithoutGSTDiscount = 0;
 var validateSubmit = true;
 
 function RFQinsertItemsTC(issubmitbuttonclick) {
-    debugger
+    
     //CHECK HERE 
     validateSubmit = false;
     Price = 0.0;
@@ -2362,7 +2361,7 @@ function RFQinsertItemsTC(issubmitbuttonclick) {
                 data: JSON.stringify(Tab2data),
                 dataType: "json",
                 success: function (data) {
-                    debugger
+
 
                     $("#" + $('#texttblidwithGST').val()).val(Price);
                     $("#" + $('#texttblidwithoutGST').val()).val(PricewithoutGST);
@@ -2473,7 +2472,6 @@ function saveQuotation() {
             attchquery = attchquery + $.trim(this_row.find('td:eq(0)').text()) + '~' + $.trim(this_row.find('td:eq(1)').text()) + '#';
 
         });
-         debugger
 
         var _cleanString2 = StringEncodingMechanism($('#txtvendorremarks').val());
         var Tab2data = {
@@ -2498,7 +2496,7 @@ function saveQuotation() {
             data: JSON.stringify(Tab2data),
             dataType: "json",
             success: function (data) {
-                debugger
+
                 setTimeout(function () {
                     if (parseInt(data) != 0) {
                         fetchRFIParameteronload(sessionStorage.getItem('RFQVersionId'));
@@ -2511,7 +2509,7 @@ function saveQuotation() {
                 }
             },
             error: function (xhr, status, error) {
-                debugger
+
                 var err = xhr.responseText//eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);

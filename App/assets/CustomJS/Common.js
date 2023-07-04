@@ -213,6 +213,7 @@ function callPagejs(pagejs) {
     var $head = $("head");
      
     for (var i = 0; i < js.length; i++) {
+        
         $head.append("<script src=\"" + js[i] + "\"></scr" + "ipt>");
     }
 
@@ -728,6 +729,7 @@ function fnEnryptURL(URL) {
 var key = CryptoJS.enc.Utf8.parse('8080808080808080');
 var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
 function fnencrypt(message) {
+    debugger
     var encryptedtext = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(message), key,
         {
             keySize: 128 / 8,
@@ -738,7 +740,7 @@ function fnencrypt(message) {
     return (encryptedtext)
 }
 function fndecrypt(message) {
-
+     debugger
     var key = CryptoJS.enc.Utf8.parse('8080808080808080');
     var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
 

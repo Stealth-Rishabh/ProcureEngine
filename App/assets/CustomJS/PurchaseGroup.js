@@ -130,7 +130,7 @@ function bindPurchaseGroupData() {
                 else
                     Status = "<span>In-Active</span>";
 
-                $('#tblPurchaseGroupMaster').append('<tr id="rowid_' + value.idx + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;" onClick="onGroupEdit(\'rowid_' + value.idx + '\',' + value.active + ',' + value.orgID + ')"><i class="fa fa-pencil"></i></button></td><td>' + value.orgName + '</td><td>' + value.groupName + '</td><td>' + Status + '</td></tr>')
+                $('#tblPurchaseGroupMaster').append('<tbody><tr id="rowid_' + value.idx + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;" onClick="onGroupEdit(\'rowid_' + value.idx + '\',' + value.active + ',' + value.orgID + ')"><i class="fa fa-pencil"></i></button></td><td>' + value.orgName + '</td><td>' + value.groupName + '</td><td>' + Status + '</td></tr></tbody>')
             });
         }
         else {
@@ -284,7 +284,7 @@ function BindData() {
                 else
                     Status = "<span>In-Active</span>";
 
-                $('#tblmodelPurchaseOrg').append('<tr id="rowid_' + value.purchaseOrgID + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;"  onClick="onEditClick(\'rowid_' + value.purchaseOrgID + '\',' + value.isActive + ')"><i class="fa fa-pencil"></i></button></td><td>' + value.purchaseOrgName + '</td><td>' + Status + '</td></tr>')
+                $('#tblmodelPurchaseOrg').append('<tbody><tr id="rowid_' + value.purchaseOrgID + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;"  onClick="onEditClick(\'rowid_' + value.purchaseOrgID + '\',' + value.isActive + ')"><i class="fa fa-pencil"></i></button></td><td>' + value.purchaseOrgName + '</td><td>' + Status + '</td></tr></tbody>')
             });
         }
         else {

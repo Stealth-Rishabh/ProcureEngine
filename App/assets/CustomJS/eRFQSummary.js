@@ -115,6 +115,9 @@ function formvalidate() {
         rules: {
             ddlconfiguredby: {
                 required: true
+            },
+            ddlbidstatus: {
+                required: true
             }
         },
 
@@ -226,6 +229,7 @@ function fetchRFQVendorSummary() {
         "UserID": sessionStorage.getItem('UserID')
     };
 
+jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     jQuery.ajax({
         type: "POST",
@@ -332,7 +336,7 @@ function fetchRFQVendorSummary() {
 
                 });
                 var tableWrapper = $('#tblVendorSummary_wrapper'); // datatable creates the table wrapper by adding with id {your_table_jd}_wrapper
-
+                 jQuery.unblockUI();    
 
 
             }
@@ -349,6 +353,7 @@ function fetchRFQVendorSummary() {
 
 
                 });
+                 jQuery.unblockUI();
             }
         },
         error: function (xhr, status, error) {
@@ -419,6 +424,8 @@ function fetchBidVendorSummaryDetail() {
         "RFQSubject": subject,
         "UserID": sessionStorage.getItem('UserID')
     };
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -591,8 +598,7 @@ function fetchBidVendorSummaryDetail() {
 
                 });
                 var tableWrapper = $('#tblVendorSummarydetails_wrapper'); // datatable creates the table wrapper by adding with id {your_table_jd}_wrapper
-
-
+                jQuery.unblockUI();
 
             }
             else {
@@ -608,6 +614,7 @@ function fetchBidVendorSummaryDetail() {
 
 
                 });
+                jQuery.unblockUI();
             }
         },
         error: function (xhr, status, error) {
@@ -619,8 +626,8 @@ function fetchBidVendorSummaryDetail() {
             else {
                 fnErrorMessageText('error', '');
             }
-            return false;
             jQuery.unblockUI();
+            return false; 
         }
     });
 }
@@ -744,6 +751,8 @@ function fetchBidVendorSummarySummarization() {
         "RFQSubject": subject,
         "UserID": sessionStorage.getItem('UserID')
     };
+        jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+        
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -879,8 +888,7 @@ function fetchBidVendorSummarySummarization() {
 
                 });
                 var tableWrapper = $('#tblVendorSummarySUmzation_wrapper'); // datatable creates the table wrapper by adding with id {your_table_jd}_wrapper
-
-
+                jQuery.unblockUI();
 
             }
             else {
@@ -896,6 +904,7 @@ function fetchBidVendorSummarySummarization() {
 
 
                 });
+                jQuery.unblockUI();
             }
         },
         error: function (xhr, status, error) {

@@ -421,7 +421,6 @@ function fetchBidSummaryVendorproduct() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {  
-         
             if (data.length > 0) {
                 let TotalBidValue = '';
                 if (_isBidStarted == false) {

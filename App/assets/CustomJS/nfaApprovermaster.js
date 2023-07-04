@@ -20,15 +20,13 @@ jQuery(document).ready(function () {
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     })
-    
-    jQuery('#MatrixExportToExcel').click(function () {
+
+  jQuery('#MatrixExportToExcel').click(function () {
                 downloadNFAMatrix()
                 
                // tableToExcel(['tblAllmatrix'], ['NFAMatrixDetails'], 'NFAMatrix.xls')
 
     });
-
-
     Metronic.init();
     Layout.init();
     FormWizard.init();
@@ -2172,7 +2170,3 @@ function CompleteAprroverSeq() {
         
     })
 };
-
-
-
-
