@@ -2,7 +2,8 @@
 //$("#bid").toggleClass("page-header-fixed page-quick-sidebar-over-content").toggleClass("page-header-fixed page-quick-sidebar-over-content page-sidebar-closed");
 function logoutFunction() {
     sessionStorage.clear();
-    sessionStorage.setItem("APIPath", 'http://localhost:51739/api/');
+    //sessionStorage.setItem("APIPath", 'http://localhost:51739/api/');
+    sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/')
     window.location.href = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1) + 'index.htm';
 }
 function error401Messagebox(error) {

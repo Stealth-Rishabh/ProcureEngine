@@ -1,8 +1,8 @@
 let gstflag=false;
 sessionStorage.clear();
 
-//sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+//setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
 //sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
