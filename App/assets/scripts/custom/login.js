@@ -160,9 +160,9 @@ var Login = function () {
     function validateUser() {
         
         //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
-        sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+        //sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
          //sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
-        //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+        sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
         var path = window.location.pathname;
         var url = '';
         var lastPart = (path.substr(path.length - (path.length - 1))).slice(0, -1);
