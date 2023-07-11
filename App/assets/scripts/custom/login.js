@@ -6,7 +6,7 @@ sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
 
 //sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
-
+debugger
 
 var Token = '';
 var APIPath = sessionStorage.getItem("APIPath");
@@ -158,10 +158,10 @@ var Login = function () {
     }
 
     function validateUser() {
-        
+        debugger
         //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
         sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-         //sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
+        // sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
         //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
         var path = window.location.pathname;
         var url = '';
@@ -173,7 +173,8 @@ var Login = function () {
             var encryptedString = pwd.toString();
             var data = {
                 "LoginID": jQuery("#username").val().trim(),
-                "Password": encryptedString
+                "Password": encryptedString,
+                "DeviceType":"Laptop"
             }
 
             jQuery.ajax({
@@ -251,11 +252,13 @@ var Login = function () {
             //var encryptedString = toUTF8Array(userPass);
             //var decryptedString = (CryptoJS.AES.decrypt(encryptedString, "/")).toString(CryptoJS.enc.Utf8);
             var encryptedString = userPass.toString();
+            debugger
             var data = {
                 "LoginID": jQuery("#username").val().trim(),
                 //"Password": jQuery("#password").val().trim(),
                 "Password": encryptedString,
-                "LinkUrl": LinkUrl
+                "LinkUrl": LinkUrl,
+               /* "DeviceType":"Laptop"*/
             }
             jQuery.ajax({
                 url: APIPath + "User/validate_User",
@@ -264,6 +267,7 @@ var Login = function () {
                 beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
                 contentType: "application/json",
                 success: function (data) {
+                    debugger
                     var successMsg = "";
                     var isSuccess = true;
                     switch (data.responseResult.status) {
@@ -315,6 +319,7 @@ var Login = function () {
                     //fnGetUserBasicDetails(lastPart)
                 },
                 error: function (xhr, status, error) {
+                    debugger
                     sessionStorage.setItem("Token", '')
                     jQuery.unblockUI();
                     $('#alrt1').show();
