@@ -243,19 +243,21 @@ jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />
         dataType: "json",
         success: function (BidData) {
             
-          
+         
 
-            jQuery("#tblVendorSummary").empty();
+             jQuery("#tblVendorSummary").empty();
+             jQuery("#tblVendorSummary").append(`<thead></thead><tbody></tbody>`);
             //jQuery('#tblVendorSummary').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold hide'>RFQ StartDate</th><th class='bold'>RFQ EndDate</th><th class='bold'>Currency</th><th class='bold'>RFQ Status</th></tr></thead>");
             //Sid RFQ Stages
-            jQuery('#tblVendorSummary').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>RFQ Config Date</th><th class='bold'>RFQ StartDate</th><th class='bold'>RFQ EndDate</th><th class='bold'>Currency</th><th class='bold'>RFQ Status</th></tr></thead>");
+            jQuery('#tblVendorSummary>thead').append("<tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>RFQ Config Date</th><th class='bold'>RFQ StartDate</th><th class='bold'>RFQ EndDate</th><th class='bold'>Currency</th><th class='bold'>RFQ Status</th></tr>");
             if (BidData.length > 0) {
                
                 let _subject = "";
+               
                 for (var i = 0; i < BidData.length; i++) {
                    
                     _subject = StringDecodingMechanism(BidData[i].rfqSubject)
-                    var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(_subject) + "'\) href='javascript:;'>" + BidData[i].rfqid + "</a></td>";
+                   var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(_subject) + "'\) href='javascript:;'>" + BidData[i].rfqid + "</a></td>";
                     str += "<td>" + BidData[i].rfqSubject + "</td>";
                     str += "<td>" + BidData[i].rfqConfiguredBy + "</td>";
                     str += "<td>" + fnConverToLocalTime(BidData[i].rfqConfigureDate) + "</td>";
@@ -270,7 +272,7 @@ jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />
                     str += "<td>" + BidData[i].rfqStatus + "</td>";
 
                     str += "</tr>";
-                    jQuery('#tblVendorSummary').append(str);
+                    jQuery('#tblVendorSummary>tbody').append(str);
                 }
                
                 var table = $('#tblVendorSummary');
@@ -341,7 +343,7 @@ jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />
 
             }
             else {
-                jQuery('#tblVendorSummary > tbody').append("<tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr>");
+                jQuery('#tblVendorSummary >tbody').append("<tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr>");
                 $('#tblVendorSummary').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
@@ -442,8 +444,9 @@ function fetchBidVendorSummaryDetail() {
 
             var savinfTR = stringDivider("Total Saving wrt TP", 12, "<br/>\n");
             jQuery("#tblVendorSummarydetails").empty();
+            jQuery("#tblVendorSummarydetails").append(`<thead></thead><tbody></tbody>`);
             //Sid RFQ Stages
-            jQuery('#tblVendorSummarydetails').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>Configure Date</th><th class='bold'>Start Date</th><th class='bold'>RFQ Deadline</th><th class='bold'>Short Name</th><th class='bold'>Quantity</th><th class='bold'>UOM</th><th>Currency</th><th>Vendor</th><th class='bold'>Last Invoice Price (LIP)</th><th class='bold'>Target/Budget Price (TP)</th><th class='bold'>L1 Price</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfTR + "</th></tr></thead>");
+            jQuery('#tblVendorSummarydetails>thead').append("<tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>Configure Date</th><th class='bold'>Start Date</th><th class='bold'>RFQ Deadline</th><th class='bold'>Short Name</th><th class='bold'>Quantity</th><th class='bold'>UOM</th><th>Currency</th><th>Vendor</th><th class='bold'>Last Invoice Price (LIP)</th><th class='bold'>Target/Budget Price (TP)</th><th class='bold'>L1 Price</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfTR + "</th></tr>");
             if (BidData.length > 0) {
                 var bID = 0;
                 let _subject = "";
@@ -533,7 +536,7 @@ function fetchBidVendorSummaryDetail() {
                     }
 
                     str += "</tr>";
-                    jQuery('#tblVendorSummarydetails').append(str);
+                    jQuery('#tblVendorSummarydetails>tbody').append(str);
                 }
                 var table = $('#tblVendorSummarydetails');
                 table.removeAttr('width').dataTable({
@@ -602,7 +605,7 @@ function fetchBidVendorSummaryDetail() {
 
             }
             else {
-                jQuery('#tblVendorSummarydetails > tbody').append("<tr><td colspan='14' style='text-align: center; color:red;'>No record found</td></tr>");
+                jQuery('#tblVendorSummarydetails>tbody').append("<tr><td colspan='14' style='text-align: center; color:red;'>No record found</td></tr>");
                 $('#tblVendorSummarydetails').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
@@ -772,8 +775,10 @@ function fetchBidVendorSummarySummarization() {
             var savinfTR = stringDivider("Total Saving wrt TP", 40, "<br/>\n");
             
             jQuery("#tblVendorSummarySUmzation").empty();
+            jQuery("#tblVendorSummarySUmzation").append(`<thead></thead><tbody></tbody>`);
+            
             //Sid RFQ Stages
-            jQuery('#tblVendorSummarySUmzation').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>Configure Date</th><th class='bold'>Start Date</th><th class='bold'>RFQ Deadline</th><th class='bold'>Currency</th><th class='bold'>" + BidLIP + "</th><th class='bold'>" + BidTP + "</th><th class='bold'>" + BidFinal + "</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfTR + "</th></tr></thead>");
+            jQuery('#tblVendorSummarySUmzation>thead').append("<tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>Configure Date</th><th class='bold'>Start Date</th><th class='bold'>RFQ Deadline</th><th class='bold'>Currency</th><th class='bold'>" + BidLIP + "</th><th class='bold'>" + BidTP + "</th><th class='bold'>" + BidFinal + "</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfTR + "</th></tr>");
 
             if (BidData.length > 0) {
                 let totalSavingLIP = "";
@@ -826,7 +831,7 @@ function fetchBidVendorSummarySummarization() {
 
                     str += "</tr>";
 
-                    jQuery('#tblVendorSummarySUmzation').append(str);
+                    jQuery('#tblVendorSummarySUmzation>tbody').append(str);
                 }
         
                 var table = $('#tblVendorSummarySUmzation');
@@ -892,7 +897,7 @@ function fetchBidVendorSummarySummarization() {
 
             }
             else {
-                jQuery('#tblVendorSummarySUmzation > tbody').append("<tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr>");
+                jQuery('#tblVendorSummarySUmzation>tbody').append("<tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr>");
                 $('#tblVendorSummarySUmzation').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,

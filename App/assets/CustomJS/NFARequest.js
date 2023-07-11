@@ -7,6 +7,7 @@ var idx = 0;
 var isReverted = 'N';
 var ApproverCtr = 0;
 let SOBID=0
+let IsSAPModule='N'
 
 var ApprSeqval = [];
 
@@ -371,13 +372,16 @@ var FormWizard = function () {
                                 BindAttachmentsOfEdit();
                                 
                                if($('#ddlEventType').val()=="1") {
-                                    if(SOBID != 0){
+                                  if(IsSAPModule=='Y'){
+                                       if(SOBID != 0){
                                     GetSOBAllocation()
                                 }
                                 else{
                                    
                                     fetchReguestforQuotationDetails(); 
                                 }
+                                  }
+                                   
                                }
                                else{
                                     $('#PriceType').hide()
@@ -395,12 +399,12 @@ var FormWizard = function () {
                     else if (index == 2) {
                         
                         form.validate();
-                        if($('#ddlEventType').val()=="1"){
+                        /*if($('#ddlEventType').val()=="1"){
                              if(checkSum()== false){
                              form.valid()=false
                          }
                         }
-                        
+                        */
                         
                         // abheedev backlog 286 start
                         $('.paramremark').rules('add', {
@@ -428,20 +432,24 @@ var FormWizard = function () {
 
                         if (flag == "T") {
                             if($('#ddlEventType').val()=="1") {
-                            if(allocateSOB()==false){
+                            /*if(allocateSOB()==false){
                                 alertforerror(`Please fill SOB details Properly.`)
                                 form.valid()=false;
                             }
                             else{
                                allocateSOB() 
-                            }
+                            }*/
                             }
                             Savetab2Data();
                             SaveAttechmentinDB();
                             BindAttachmentsOfEdit();
                             Bindtab3Data();
+                            
                             if($('#ddlEventType').val()=="1") {
-                                GetSOBAllocation() 
+                                 if(IsSAPModule=='Y'){
+                                     GetSOBAllocation() 
+                                 }
+                                
                             }
                            
                         }

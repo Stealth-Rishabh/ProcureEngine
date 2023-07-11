@@ -165,11 +165,11 @@ function fnApproversQuery(EmailID, UserID, UserName) {
         $('#wrap_scrollerPrevApp').show();
         if (!jQuery("#tblapproversPrev thead").length) {
 
-            jQuery("#tblapproversPrev thead").append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
+            jQuery("#tblapproversPrev").append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
             jQuery("#tblapproversPrev").append('<tbody><tr id=trAppidPrev' + rownum + '><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td></tr></tbody>');
         }
         else {
-            jQuery("#tblapproversPrev tbody").append('<tbody><tr id=trAppidPrev' + rownum + '><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td></tr></tbody>');
+            jQuery("#tblapproversPrev").append('<tbody><tr id=trAppidPrev' + rownum + '><td>' + UserName + '</td><td>' + EmailID + '</td><td>' + rowApp + '</td></tr></tbody>');
         }
 
 
@@ -457,7 +457,9 @@ function FetchCurrency(CurrencyID) {
 }
 
 var vCount = 0;
+
 $("#chkAll").click(function () {
+
 
     if ($("#chkAll").is(':checked') == true) {
         $('#divvendorlist').find('span#spandynamic').hide();
@@ -467,13 +469,13 @@ $("#chkAll").click(function () {
         vCount = 0;
         $("#tblvendorlist> tbody > tr").each(function (index) {
             $(this).find("span#spanchecked").addClass("checked");
-            $('#chkvender' + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true);
-            var vendorid = $('#chkvender' + $.trim($(this).find('td:eq(0)').html())).val()
+            $('#chkvender' + vCount).prop("disabled", true);
+            var vendorid = $('#chkvender' + vCount).val()
             var v = vCount;
             vCount = vCount + 1;
-            var vname = $.trim($(this).find('td:eq(2)').html())
-            jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorid + '><td class=hide>' + vendorid + '</td><td>' + vname + '</td><td class=hide>N</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorid + ',SelecetedVendorPrev' + vendorid + ',' + vendorid + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
-            jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorid + '><td class=hide>' + vendorid + '</td><td>' + vname + '</td><td class=hide>N</td></tr>')
+            var vname = $.trim($(this).find('td:eq(1)').html())
+            jQuery('#selectedvendorlists').append('<tbody><tr id=SelecetedVendor' + vendorid + '><td class="hide vendorTblId">' + vendorid + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorid + ',' + 'chkvender' + v + ',SelecetedVendorPrev' + vendorid + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr></tbody>')
+            jQuery('#selectedvendorlistsPrev').append('<tbody><tr id=SelecetedVendorPrev' + vendorid + '><td class="hide vendorTblId">' + vendorid + '</td><td>' + vname + '</td></tr></tbody>')
 
         });
     }
@@ -497,23 +499,25 @@ $("#chkAll").click(function () {
     }
 
 });
-function Check(event, vname, vendorID) {
-
+function Check(event, vname, vendorid, childid) {
 
     if ($(event).closest("span#spanchecked").attr('class') == 'checked') {
+
         $(event).closest("span#spanchecked").removeClass("checked")
+
     }
 
     else {
         vCount = vCount + 1;
-        var EvID = event.id;
+        //var EvID = event.id;
         $(event).prop("disabled", true);
         $(event).closest("span#spanchecked").addClass("checked")
-        jQuery('#selectedvendorlists').append('<tr id=SelecetedVendor' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td class=hide>N</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + vendorID + ',SelecetedVendorPrev' + vendorID + ',' + vendorID + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
-        jQuery('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + vendorID + '><td class=hide>' + vendorID + '</td><td>' + vname + '</td><td class=hide>N</td></tr>')
+        jQuery('#selectedvendorlists').append('<tbody><tr id=SelecetedVendor' + childid + '><td class="hide vendorTblId">' + vendorid + '</td><td class="hide childTblId">' + childid + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + childid + ',SelecetedVendorPrev' + childid + ',' + childid + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr></tbody>')
+        jQuery('#selectedvendorlistsPrev').append('<tbody><tr id=SelecetedVendorPrev' + childid + '><td class="hide vendorTblId">' + vendorid + '</td><td class="hide childTblId">' + childid + '</td><td>' + vname + '</td></tr></tbody>')
         $('#divvendorlist').find('span#spandynamic').hide();
 
         $('table#tblvendorlist').closest('.inputgroup').removeClass('has-error');
+
     }
 
     if (vCount > 0) {
@@ -632,7 +636,7 @@ function fetchRegisterUser() {
 
         },
         error: function (xhr, status, error) {
-            debugger;
+
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1319,6 +1323,7 @@ function ConfigureBidForCoalTab2() {
             if ($.trim(this_row.find('td:eq(14)').html()) != null && $.trim(this_row.find('td:eq(14)').html()) != '') {
                 _gst = parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(14)').html())))
             }
+            debugger
             tab2Items = {
                 "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
                 "ItemCode": $.trim(this_row.find('td:eq(2)').html()),
@@ -1377,6 +1382,7 @@ function ConfigureBidForCoalTab2() {
         data: JSON.stringify(Tab2data),
         dataType: "json",
         success: function (data) {
+            debugger
             if (parseInt(data) > 0) {
                 if ($('#ddlbidclosetype').val() == "S") {
                     $('#txtBidDuration').val(BidDuration)
@@ -1391,6 +1397,7 @@ function ConfigureBidForCoalTab2() {
 
         },
         error: function (xhr, status, error) {
+            debugger
             var err = xhr.responseText //eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1408,15 +1415,23 @@ function ConfigureBidForCoalTab2() {
 }
 
 function ConfigureBidForSeaExportTab3() {
+    let bidvendorsobj = ""
+    let bidvendorsarr = []
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var InsertQuery = '';
     $("#selectedvendorlistsPrev> tbody > tr").each(function (index) {
-        InsertQuery = InsertQuery + $.trim($(this).find('td:eq(0)').html()) + '~0~N#';
-        //InsertQuery = InsertQuery + "select " + sessionStorage.getItem('CurrentBidID') + "," + $.trim($(this).find('td:eq(0)').html()) + "," + $.trim($(this).find('td:eq(2)').html()) + ",'" + $.trim($(this).find('td:eq(3)').html()) + "' union all ";
+        /*InsertQuery = InsertQuery + $.trim($(this).find('td:eq(0)').html()) + '~0~N' + '#';*/
+
+        bidvendorsobj = {
+            "AdvFactor": 0,
+            "VendorId": parseInt($.trim($(this).find('.vendorTblId').html())),
+            "ChildId": parseInt($.trim($(this).find('.childTblId').html())),
+        }
+        bidvendorsarr.push(bidvendorsobj);
     });
 
     var Tab3data = {
-        "BidVendors": InsertQuery,
+        "BidVendors": bidvendorsarr,
         "BidID": parseInt(sessionStorage.getItem('CurrentBidID'))
     };
     console.log(JSON.stringify(Tab3data))
@@ -2054,12 +2069,12 @@ function fetchCoalDetails() {
                 jQuery('#tblapprovers').append(str);
 
                 //** Preview
-                strp = '<tr id=trAppidPrev' + (i + 1) + '>';
+                strp = '<tbody><tr id=trAppidPrev' + (i + 1) + '>';
 
                 strp += '<td>' + BidData[0].bidApproverDetails[i].approverName + '</td>'
                 strp += "<td>" + BidData[0].bidApproverDetails[i].emailID + "</td>";
 
-                strp += "<td>" + BidData[0].bidApproverDetails[i].adMinSrNo + "</td></tr>";
+                strp += "<td>" + BidData[0].bidApproverDetails[i].adMinSrNo + "</td></tr></tbody>";
                 jQuery('#tblapproversPrev').append(strp);
                 /*//** Pre Approver
                 str = '';
@@ -2124,8 +2139,8 @@ function fetchCoalDetails() {
 
                     for (var i = 0; i < BidData[0].bidVendorDetails.length; i++) {
                         vCount = vCount + 1;
-                        jQuery('#selectedvendorlists').append('<tbody><tr id=SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + BidData[0].bidVendorDetails[i].vendorID + ',SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + ',' + BidData[0].bidVendorDetails[i].vendorID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr></tbody>')
-                        jQuery('#selectedvendorlistsPrev').append('<tbody><tr id=SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].vendorID + '><td class=hide>' + BidData[0].bidVendorDetails[i].vendorID + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td></tr></tbody>')
+                        jQuery('#selectedvendorlists').append('<tbody><tr id=SelecetedVendor' + BidData[0].bidVendorDetails[i].associateVendorId + '><td class="hide vendorTblId">' + BidData[0].bidVendorDetails[i].vendorID + '</td><td class="hide childTblId">' + BidData[0].bidVendorDetails[i].associateVendorId + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td width=70><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + BidData[0].bidVendorDetails[i].associateVendorId + ',SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].associateVendorId + ',' + BidData[0].bidVendorDetails[i].associateVendorId + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr></tbody>')
+                        jQuery('#selectedvendorlistsPrev').append('<tbody><tr id=SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].associateVendorId + '><td class="hide vendorTblId">' + BidData[0].bidVendorDetails[i].vendorID + '</td><td class="hide childTblId">' + BidData[0].bidVendorDetails[i].associateVendorId + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td></tr></tbody>')
                     }
                     jQuery('#selectedvendorlists').show()
                     jQuery('#selectedvendorlistsPrev').show()
@@ -2360,6 +2375,7 @@ jQuery("#txtSearch").keyup(function () {
 });
 sessionStorage.setItem('hdnVendorID', 0);
 
+
 jQuery("#txtSearch").typeahead({
     source: function (query, process) {
         var data = allvendorsforautocomplete;
@@ -2368,7 +2384,7 @@ jQuery("#txtSearch").typeahead({
         map = {};
         var username = "";
         jQuery.each(data, function (i, username) {
-            vName = username.participantName + ' (' + username.companyEmail + ')' + " " + (username.stateName).toUpperCase() 
+            vName = username.participantName + ' (' + username.companyEmail + ')' + " " + (username.stateName).toUpperCase()
             map[vName] = username;
             usernames.push(vName);
         });
@@ -2383,21 +2399,21 @@ jQuery("#txtSearch").typeahead({
             //jQuery("#tblvendorlist > tbody").empty();
 
 
-             vName = map[item].participantName + ' (' + map[item].companyEmail + ')' + " " + (map[item].stateName).toUpperCase() 
-     
+            vName = map[item].participantName + ' (' + map[item].companyEmail + ')' + " " + (map[item].stateName).toUpperCase()
 
-            var str = "<tr id=vList" + map[item].associatedVendorID + "><td class='hide'>" + map[item].associatedVendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].associatedVendorID + "'\)\"; id=\"chkvender" + map[item].associatedVendorID + "\" value=" + map[item].associatedVendorID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>";
+
+            var str = "<tr id=vList" + map[item].associatedVendorID + "><td class='hide vendorTblId' id='vendorTblId'>" + map[item].participantID + "</td><td class='hide childTblId' id='childTblId'>" + map[item].associatedVendorID + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\" class=''><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + map[item].participantID + "'\,\'" + map[item].associatedVendorID + "'\)\"; id=\"chkvender" + map[item].associatedVendorID + "\" value=" + map[item].associatedVendorID + " style=\"cursor:pointer\" name=\"chkvender\" /></span></div></td><td> " + vName + " </td></tr>";
             jQuery('#tblvendorlist > tbody').append(str);
 
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
                     //** remove from main table if already selected in selected List
-                    if (map[item].associatedVendorID == $(this).find("td:eq(0)").text()) {
+                    if (map[item].associatedVendorID == $(this).find(".childTblId").text()) {
                         $('#vList' + map[item].associatedVendorID).remove();
 
                     }
-                    $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true);
-                    $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).closest("span#spanchecked").addClass("checked")
+                    $("#chkvender" + $.trim($(this).find('.childTblId').html())).prop("disabled", true);
+                    $("#chkvender" + $.trim($(this).find('.childTblId').html())).closest("span#spanchecked").addClass("checked")
 
                 });
             }
@@ -2427,7 +2443,7 @@ function getCategoryWiseVendors(categoryID) {
             var vName = '';
             for (var i = 0; i < data.length; i++) {
                 vName = data[i].vendorName + " " + data[i].stateName;
-                var str = "<tr id=vList" + data[i].mappedVendorIdentifier + " ><td class='hide'>" + data[i].mappedVendorIdentifier + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].mappedVendorIdentifier + "'\)\"; id=\"chkvender" + data[i].mappedVendorIdentifier + "\" value=" + data[i].mappedVendorIdentifier + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + data[i].vendorName + " " + data[i].stateName +"</td></tr>";
+                var str = "<tr id=vList" + data[i].mappedVendorIdentifier + " ><td class='hide vendorTblId' id='vendorTblId'>" + data[i].vendorID + "</td><td class='hide childTblId' id='childTblId'>" + data[i].mappedVendorIdentifier + "</td><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + vName + "'\,\'" + data[i].vendorID + "'\,\'" + data[i].mappedVendorIdentifier + "'\)\"; id=\"chkvender" + data[i].mappedVendorIdentifier + "\" value=" + data[i].mappedVendorIdentifier + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td><td> " + vName + "</td></tr>";
 
                 jQuery('#tblvendorlist > tbody').append(str);
 
@@ -2436,8 +2452,8 @@ function getCategoryWiseVendors(categoryID) {
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
 
-                    $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true);
-                    $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).closest("span#spanchecked").addClass("checked")
+                    $("#chkvender" + $.trim($(this).find('.childTblId').html())).prop("disabled", true);
+                    $("#chkvender" + $.trim($(this).find('.childTblId').html())).closest("span#spanchecked").addClass("checked")
 
                 });
             }

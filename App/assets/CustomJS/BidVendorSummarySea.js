@@ -38,7 +38,7 @@ function getCurrenttime() {
 }
 
 $(document).ready(function () {
-    debugger
+
     var path = window.location.pathname;
     page = path.split("/").pop();
 
@@ -46,7 +46,7 @@ $(document).ready(function () {
         fnToCheckUserIPaccess();
         $(window).focus(function () {
             if (_bidClosingType == "S" && BidTypeID == "7") {
-                debugger
+
                 fnrefreshStaggerTimerdataonItemClose()
             }
             else {
@@ -490,7 +490,7 @@ function DownloadFile(aID) {
 let configby = ''
 function fetchBidSummary(BidID) {
     var tncAttachment, anyotherAttachment;
-    debugger
+
     console.log(sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails/?BidID=" + BidID + "&VendorID=" + encodeURIComponent(sessionStorage.getItem("UserID")))
     jQuery.ajax({
         type: "GET",
@@ -502,7 +502,7 @@ function fetchBidSummary(BidID) {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            debugger
+
             if (data.length > 0) {
                 BidTypeID = data[0].bidTypeID;
 
@@ -666,7 +666,7 @@ function fetchBidSummary(BidID) {
         },
 
         error: function (xhr, status, error) {
-            debugger
+
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -851,7 +851,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                             str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
 
                             if (data[i].srNo != 'N/A' && data[i].srNo.toLowerCase() != 'not participated' && data[i].srNo.toLowerCase() != 'not quoted' && sessionStorage.getItem("UserID") == configby) {
-                                strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo + '<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a></td>';
+                                strsumm += '<td id=level' + i + ' width="5%" ><span id="levelrank"' + i + '">' + data[i].srNo + '</span><a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a></td>';
                             }
                             else {
                                 strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo + '</td>';
@@ -867,7 +867,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                             str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
 
                             if (data[i].srNo != 'N/A' && data[i].srNo.toLowerCase() != 'not participated' && data[i].srNo.toLowerCase() != 'not quoted' && sessionStorage.getItem("UserID") == configby) {
-                                strsumm += '<td id=level' + i + ' width="5%">' + data[i].srNo + '<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td>';
+                                strsumm += `<td id=level' + i + ' width="5%"><span id="levelrank${i}">` + data[i].srNo + '</span><a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td>';
                             }
                             else {
                                 strsumm += '<td id=level' + i + ' width="5%">' + data[i].srNo + '</td>';
@@ -1242,7 +1242,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                             str += "<td class='text-right' >" + thousands_separators(TotalBidValue) + "</td>";
 
                             if (data[i].srNo != 'N/A' && sessionStorage.getItem("UserID") == configby) {
-                                strsumm += '<td id=level' + i + ' width="5%">' + data[i].srNo + '&nbsp;<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a></td>';
+                                strsumm += `<td id=level' + i + ' width="5%"><span id="levelrank${i}">` + data[i].srNo + '</span>&nbsp;<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a></td>';
                             }
                             else {
                                 strsumm += '<td id=level' + i + ' width="5%">' + data[i].srNo + '</td>';
@@ -1262,7 +1262,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                             str += "<td class=text-right>" + thousands_separators(TotalBidValue) + "</td>";
 
                             if (data[i].srNo != 'N/A' && sessionStorage.getItem("UserID") == configby) {
-                                strsumm += '<td id=level' + i + ' width="5%">' + data[i].srNo + '&nbsp;<a href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a></td>';
+                                strsumm += `<td id=level' + i + ' width="5%"><span id="levelrank${i}">` + data[i].srNo + '</span>&nbsp;<a href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a></td>';
                             }
                             else {
                                 strsumm += '<td id=level' + i + ' width="5%">' + data[i].srNo + '</td>';
@@ -1489,7 +1489,7 @@ function fetchBidSummaryDetails(BidID, BidForID) {
                         //abheedev coal remove quote
 
                         if (data[i].srNo != 'N/A' && data[i].srNo.toLowerCase() != 'not participated' && data[i].srNo.toLowerCase() != 'not quoted' && sessionStorage.getItem("UserID") == configby) {
-                            strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo + '<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a></td>';
+                            strsumm += `<td id=level' + i + ' width="5%"><span id="levelrank${i}">` + data[i].srNo + '</span><a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a></td>';
                         }
                         else {
                             strsumm += '<td id=level' + i + ' width="5%" >' + data[i].srNo + '</td>';
@@ -1669,7 +1669,7 @@ function fngetConnHistory(vendorid) {
 }
 var openlefttime = 0;
 function fnrefreshStaggerTimerdataonItemClose() {
-    debugger
+
     //Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidStagger/?BidID=" + BidID + "&UserID=" + encodeURIComponent(sessionStorage.getItem("UserID"))
     Url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidStagger/?BidID=" + BidID
 
@@ -1686,10 +1686,11 @@ function fnrefreshStaggerTimerdataonItemClose() {
             var TotalBidValue = '';
             var Percentreduction = '', Percentreductionceiling = '', Percentreductioninvoice = '';
             var rowcount = $("#tblbidsummarypercentagewise > tbody > tr").length;
-            debugger
+
             for (var j = 0; j < rowcount; j++) {
+
                 if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
-                    if ($('#level' + j).html() == 'L1') {
+                    if ($('#level' + j).html() == 'L1' || $('#levelrank' + j).html() == 'L1') {
                         $('#low_str' + j).css({
                             'background-color': '#dff0d8!important',
                             'font-weight': 'bold',
@@ -1742,7 +1743,7 @@ function fnrefreshStaggerTimerdataonItemClose() {
                             //$('#level' + j).html(data[i].srNo)
 
                             if (data[i].srNo != 'N/A' && sessionStorage.getItem("UserID") == configby) {
-                                $('#level' + i).html(data[i].srNo + '&nbsp;<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" <i class="glyphicon glyphicon-remove"></i></a>');
+                                $('#level' + i).html(`<span id="levelrank${i}">` + data[i].srNo + '</span>&nbsp;<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" <i class="glyphicon glyphicon-remove"></i></a>');
                             }
                             else {
                                 $('#level' + i).html(data[i].srNo);
@@ -1772,6 +1773,7 @@ function fnrefreshStaggerTimerdataonItemClose() {
 
                             if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
                                 if (data[i].srNo == 'L1' && data[i].itemStatus != 'Open') {
+                                    debugger
                                     $('#low_str' + j).css({
                                         'background-color': '#dff0d8!important',
                                         'font-weight': 'bold',
@@ -1780,6 +1782,7 @@ function fnrefreshStaggerTimerdataonItemClose() {
 
                                 }
                                 if ($('#Sname' + j).text() != "" && data[i].itemStatus == 'Open') {
+                                    debugger
                                     $('#low_str' + j).css({
                                         'background-color': '#32C5D2!important',
                                         'color': '#000000!important'
@@ -1992,7 +1995,7 @@ connection.on("refreshColumnStatus", function (data1) {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            debugger
+
             var TotalBidValue = '';
             var Percentreduction = '', Percentreductionceiling = '', Percentreductioninvoice = '';
 
@@ -2031,7 +2034,7 @@ connection.on("refreshColumnStatus", function (data1) {
                     $('#bidvalue' + i).html(thousands_separators(TotalBidValue))
 
                     if (data[i].srNo != 'N/A' && sessionStorage.getItem("UserID") == configby) {
-                        $('#level' + i).html(data[i].srNo + '&nbsp;<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" <i class="glyphicon glyphicon-remove"></i></a>');
+                        $('#level' + i).html(`<span id="levelrank${i}">` + data[i].srNo + '</span>&nbsp;<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" <i class="glyphicon glyphicon-remove"></i></a>');
                     }
                     else {
                         $('#level' + i).html(data[i].srNo);
@@ -2072,9 +2075,9 @@ connection.on("refreshColumnStatus", function (data1) {
                 var rowcount = $("#tblbidsummarypercentagewise > tbody > tr").length;
                 for (var j = 0; j < rowcount; j++) {
                     if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
-                        if ($('#level' + j).html() == 'L1') {
+                        if ($('#level' + j).html() == 'L1' || $('#levelrank' + j).html() == 'L1') {
                             $('#low_str' + j).css({
-                                'background-color': '#dff0d8!important',
+                                'background-color': '#dff0d8 !important',
                                 'font-weight': 'bold',
                                 'color': '#3c763d'
                             })
@@ -2121,7 +2124,7 @@ connection.on("refreshColumnStatus", function (data1) {
                                 // $('#level' + j).html(data[i].srNo)
 
                                 if (data[i].srNo != 'N/A' && sessionStorage.getItem("UserID") == configby) {
-                                    $('#level' + j).html(data[i].srNo + '&nbsp;<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" <i class="glyphicon glyphicon-remove"></i></a>');
+                                    $('#level' + j).html(`<span id="levelrank${j}">` + data[i].srNo + '</span>&nbsp;<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" <i class="glyphicon glyphicon-remove"></i></a>');
                                 }
                                 else {
                                     $('#level' + j).html(data[i].srNo);
@@ -2236,7 +2239,7 @@ connection.on("refreshColumnStatusFA", function (data1) {
                 }
 
                 if (data[i].srNo != 'N/A' && sessionStorage.getItem("UserID") == configby) {
-                    $('#level' + i).html(data[i].srNo + '&nbsp;<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" <i class="glyphicon glyphicon-remove"></i></a>');
+                    $('#level' + i).html(`<span id="levelrank${i}">` + data[i].srNo + '</span>&nbsp;<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" <i class="glyphicon glyphicon-remove"></i></a>');
                 }
                 else {
                     $('#level' + i).html(data[i].srNo);
@@ -2476,7 +2479,7 @@ connection.on("refreshColumnStatusCoal", function (data1) {
                     //abheedev remove coal quote
 
                     if (data[i].srNo != 'N/A' && data[i].srNo.toLowerCase() != 'not participated' && data[i].srNo.toLowerCase() != 'not quoted' && sessionStorage.getItem("UserID") == configby) {
-                        strsumm += '<td id=level' + i + ' width="5%">' + data[i].srNo + '<a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td>';
+                        strsumm += `<td id=level' + i + ' width="5%"><span id="levelrank${i}">` + data[i].srNo + '</span><a  href="javascript:;" title="remove last quote" onclick="removeQuotationPS(\'' + data[i].rowid + '\')" > <i class="glyphicon glyphicon-remove"></i></a>' + '</td>';
                     }
                     else {
                         strsumm += '<td id=level' + i + ' width="5%">' + data[i].srNo + '</td>';
@@ -3459,17 +3462,17 @@ function fetchGraphData(itemId) {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-
+            debugger
             $("#tblForTrendGraphs").empty();
             if (data) {
                 $("#tblForTrendGraphs").append("<tr><th>Submission Time</th><th>Quoted Price</th><th class'showvendor'>Vendor</th></tr>");
                 for (var i = 0; i < data.length; i++) {
-
+                    let graphVendor = StringDecodingMechanism(data[i].vendorName)
                     _date = new Date(data[i].submissionTime);
                     _date = fnConverToLocalTimeWithSeconds(_date);
 
                     //$("#tblForTrendGraphs").append("<tr><td>" + _date.getDate() + "/" + (_date.getMonth() + 1) + "/" + _date.getFullYear() + " " + minutes_with_leading_zeros(new Date(data[i].submissionTime).getHours()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getMinutes()) + ":" + minutes_with_leading_zeros(new Date(data[i].submissionTime).getSeconds()) + "</td><td>" + data[i].quotedPrice + "</td><td>" + data[i].vendorName + "</td></tr>");
-                    $("#tblForTrendGraphs").append("<tr><td>" + _date + "</td><td>" + data[i].quotedPrice + "</td><td>" + data[i].vendorName + "</td></tr>");
+                    $("#tblForTrendGraphs").append("<tr><td>" + _date + "</td><td>" + data[i].quotedPrice + "</td><td>" + graphVendor + "</td></tr>");
                 }
             }
 
@@ -3583,7 +3586,7 @@ function linegraphsforItems(itemId) {
 
                     Quotes = Quotes.slice(0, -1);
 
-                    Vendorseries = '{ "name" :"' + data[0].vendorNames[i].vendorName + '", "color": "' + colorArray[i] + '","data": [' + Quotes + ']}';
+                    Vendorseries = '{ "name" :"' + StringDecodingMechanism(data[0].vendorNames[i].vendorName) + '", "color": "' + colorArray[i] + '","data": [' + Quotes + ']}';
 
                     Seriesoption.push(JSON.parse(Vendorseries));
 

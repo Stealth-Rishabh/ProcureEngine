@@ -104,10 +104,10 @@ function fnForwardforAllvendorTechnical() {
         }
     });
 }
-function MapApprover() {
+/*function MapApprover() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
+  
     var Approvers = {
         "ApproverType": "T",
         "Approvers": '',
@@ -125,23 +125,51 @@ function MapApprover() {
         data: JSON.stringify(Approvers),
         dataType: "json",
         success: function (data) {
-            jQuery('#btn_techmapaaprover').attr("disabled", "disabled");
-            $('.alert-success').show();
-            $('#success').html('Approver mapped successfully!');
-            Metronic.scrollTo($('alert-success'), -200);
-            $('.alert-success').fadeOut(7000);
+            debugger
+            $('#successapp').show();
+            $('#spansuccessapp').html('Approvers mapped successfully');
+            Metronic.scrollTo($('#successapp'), -200);
+            $('#successapp').fadeOut(3000);
+            bootbox.dialog({
+                message: "Approvers added successfully!",
+                buttons: {
+                    confirm: {
+                        label: "OK",
+                        className: "btn-success",
+                        callback: function () {
+                            $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
+                            setTimeout(function () {
+
+                                $('#addtechnicalapprovers').modal('hide')
+                            }, 700)
+                            if (Type == "Report") {
+                                fetchRFQApproverStatus();
+                                setTimeout(function () {
+
+                                    $('#FwdTechnicalApprover').modal('show')
+                                }, 1500)
+                            }
+                            else {
+                                fetchReguestforQuotationDetails(RFQID)
+                            }
+
+                        }
+                    }
+
+                }
+            });
             jQuery.unblockUI();
-            return true;
 
         },
         error: function (xhr, status, error) {
-
+          
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-                fnErrorMessageText('error', '');
+                 alertforerror(`Approvers cannot be added as the approval cycle is closed`);
+                 $('#addtechnicalapprovers').modal('hide')
             }
             jQuery.unblockUI();
             return false;
@@ -150,9 +178,9 @@ function MapApprover() {
 
     });
 
-}
+}*/
 function fetchApproverRemarks(Type) {
-     debugger
+   
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRFQApproval/FetchApproverRemarks/?RFQID=" + $('#hdnRfqID').val() + "&ApprovalType=" + Type,
@@ -162,7 +190,7 @@ function fetchApproverRemarks(Type) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-            debugger
+           
             $('#tblCommercialApproval').empty()
             $('#tblCommercialApprovalprev').empty()
             if (data.length > 0) {
@@ -186,7 +214,7 @@ function fetchApproverRemarks(Type) {
             }
         },
         error: function (xhr, status, error) {
-           debugger
+           
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1200,7 +1228,7 @@ function MapRFQapprover(Type) {
         data: JSON.stringify(Approvers),
         dataType: "json",
         success: function (data) {
-                debugger
+               
             $('#successapp').show();
             $('#spansuccessapp').html('Approvers added successfully');
             Metronic.scrollTo($('#successapp'), -200);
@@ -1237,7 +1265,7 @@ function MapRFQapprover(Type) {
 
         },
         error: function (xhr, status, error) {
-                debugger
+                
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1398,7 +1426,7 @@ function fnclosepopupApprovers(Type) {
     }
 }
 function fetchRFQApproverStatus(RFQID) {
-debugger
+
     var url = sessionStorage.getItem("APIPath") + "eRFQApproval/GetRFQApproverStatus/?RFQID=" + RFQID
 
     jQuery.ajax({
@@ -1411,7 +1439,7 @@ debugger
         processData: true,
         dataType: "json",
         success: function (data) {
-            debugger
+            
             var status = '';
             var c = 0;
             sessionStorage.setItem("LastApproverStaffCode", data[data.length - 1].approverStaffCode)
@@ -1486,7 +1514,7 @@ debugger
         },
 
         error: function (xhr, status, error) {
-            debugger
+           
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1785,7 +1813,7 @@ function updateLoadingFactor() {
 
 //technical approver Anurag
 function fnOpenPopupTechApprover(Type) {
-    debugger
+   
     TechApp = 0;
     TechSeq = 0;
     delAppTech = '';
@@ -1952,7 +1980,7 @@ function addRFQTechnicalApprovers() {
 var delAppTech = '';
 //deleting approval from the table
 function deleteApprow(rowid, uId) {
-    debugger
+   
     TechSeq = TechSeq - 1;
     $('#' + rowid.id).remove();
     var rowCount = jQuery('#tblRFQtechnicalapprovers tbody tr').length;
@@ -2005,7 +2033,7 @@ function Checktechapp(event, rowid) {
 
 //post request for techincal apoorver
 function MapRFQTechapprover(Type) {
-    debugger
+   
     var RFQID = 0;
     if (Type == "Report") {
         RFQID = $('#hdnRfqID').val()
@@ -2016,11 +2044,11 @@ function MapRFQTechapprover(Type) {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvers = '';
     var rowCount = jQuery('#tblRFQtechnicalapprovers tbody tr').length;
-    debugger
+   
     if (rowCount > 0) {
         var techsno = 0
         $("#tblRFQtechnicalapprovers tbody tr").each(function () {
-            debugger
+           
             var this_row = $(this);
             techsno = techsno + 1;
             // var showPriceyn = 'chkshowp' + $.trim(this_row.find('td:eq(3)').html());
@@ -2105,7 +2133,7 @@ function MapRFQTechapprover(Type) {
                 error401Messagebox(err.Message);
             }
             else {
-                fnErrorMessageText('error', '');
+               fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
             return false;

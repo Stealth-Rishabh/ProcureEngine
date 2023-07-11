@@ -23,6 +23,7 @@ $(document).ready(function () {
 
 });
 function fetchBidTime() {
+    
     var display = document.querySelector('#lblTimeLeft');
 
     jQuery.ajax({

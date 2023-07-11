@@ -1302,7 +1302,7 @@ function addmoreattachments() {
 }
 
 function UpdateRFQOPenDateAfterClose() {
-   debugger
+   
     var BidOpenDate = new Date($('#txtbidopendatetime').val().replace('-', ''));
     var CurDateonly = new Date();
     var EndDate = new Date(jQuery('#RFQEndDate').text().replace('-', ''));
@@ -2162,7 +2162,7 @@ function Dateandtimevalidate(StartDT, istocheck) {
         data: JSON.stringify(Tab1Data),
         dataType: "json",
         success: function (data) {
-            debugger
+           
             if (istocheck == "enddate") {
                 if (data == "1") {
                     ExtendDuration();

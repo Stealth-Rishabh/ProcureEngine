@@ -132,7 +132,7 @@ jQuery("#txtApprover").typeahead({
     minLength: 2,
     updater: function (item) {
         if (map[item].userID != "0") {
-            debugger
+           
             sessionStorage.setItem('hdnApproverid', map[item].userID);
             fnApproversQuery(map[item].emailID, map[item].userID, map[item].userName);
 
@@ -271,7 +271,7 @@ function fnApproversQuery(EmailID, UserID, UserName) {
     }
 }
 function deleteApprow(IDcount) {
-debugger
+
     rowApp = rowApp - 1;
     $('#trAppid' + IDcount).remove();
     $('#trAppidPrev' + IDcount).remove();
@@ -663,7 +663,7 @@ $("#weightageModal").on("hidden.bs.modal", function () {
 });
 
 function removevendor(trid, trprevid, vid) {
-    debugger
+  
     vCount = vCount - 1;
     $('#' + trid.id).remove()
     $('#' + trprevid.id).remove()
@@ -1178,7 +1178,7 @@ var FormWizard = function () {
 
                     }
                     else if (index == 2) {
-                        debugger
+                      
 
                         if ($('#tblServicesProduct >tbody >tr').length == 0) {
                             $('#spandanger').html('please Configure Bid parameters..')
@@ -1552,7 +1552,7 @@ function fileDeletefromdb(closebtnid, fileid, filepath, deletionFor) {
 var totalitemdurationstagger = 0;
 
 function ConfigureBidForSeaExportTab2() {
-    debugger
+   
     var targetPrice;
     var unitrate = 0
     BidDuration = 0;
@@ -1650,7 +1650,7 @@ function ConfigureBidForSeaExportTab2() {
                 BidDuration = $("#txtBidDuration").val();
             }
             $("#tblServicesProduct> tbody > tr").each(function (index) {
-                debugger
+               
                 var this_row = $(this);
                 index = (this_row.closest('tr').attr('id')).substring(4, (this_row.closest('tr').attr('id')).length)
                 targetPrice = 0
@@ -1668,7 +1668,7 @@ function ConfigureBidForSeaExportTab2() {
                 }
                 var remark = StringEncodingMechanism($("#remarks" + index).text().replace(/'/g, ""));
                 var _cleanString = StringEncodingMechanism($("#povendorname" + index).text());
-                debugger
+               
                 tab2Items = {
                     "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
                     "ItemCode": $("#itemcode" + index).text(),
@@ -1725,10 +1725,9 @@ function ConfigureBidForSeaExportTab2() {
         data: JSON.stringify(Tab2data),
         dataType: "json",
         success: function (data) {
-             debugger
+          
             if ($('#hdnRfiRfqID').val() != '0' && $('#hdnRfiRfqID').val() != '' && $('#hdnRfiRfqID').val() != null) {
-                console.log($('#hdnRfiRfqID').val())
-                debugger
+              
                 fnfetchRFQVendor();
             }
             if ($('#ddlbidclosetype').val() == "S") {
@@ -1740,7 +1739,7 @@ function ConfigureBidForSeaExportTab2() {
 
         },
         error: function (xhr, status, error) {
-            debugger
+          
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1764,8 +1763,7 @@ function ConfigureBidForSeaExportTab3() {
     var InsertQuery = '';
     $("#selectedvendorlistsPrev> tbody > tr").each(function (index) {
         if ($.trim($(this).find('td:eq(0)').html()) != 'undefined' && $.trim($(this).find('td:eq(0)').html()) != "" && $.trim($(this).find('td:eq(0)').html()) != null) {
-           // InsertQuery = InsertQuery + $.trim($(this).find('td:eq(0)').html()) + '~' + removeThousandSeperator($.trim($(this).find('td:eq(2)').html())) + '~' + $.trim($(this).find('td:eq(3)').html()) + '#';
-            debugger
+           
             bidvendorsobj = {
                 "AdvFactor": parseInt($.trim($(this).find('.tblcolweightage').html())),
                 "VendorId": parseInt($.trim($(this).find('.vendorTblId').html())),
@@ -1788,7 +1786,7 @@ function ConfigureBidForSeaExportTab3() {
             return false;
         }
     });
-    debugger
+  
     var Tab3data = {
         "BidVendors": bidvendorsarr,
         "BidID": parseInt(sessionStorage.getItem('CurrentBidID'))
@@ -1804,7 +1802,7 @@ function ConfigureBidForSeaExportTab3() {
         data: JSON.stringify(Tab3data),
         dataType: "json",
         success: function (data) {
-            debugger
+           
             if (parseInt(data) > 0) {
                 jQuery.unblockUI();
                 $('#BidPreviewDiv').show();
@@ -1822,7 +1820,7 @@ function ConfigureBidForSeaExportTab3() {
             }
         },
         error: function (xhr, status, error) {
-            debugger
+           
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1855,7 +1853,7 @@ function ConfigureBidForSeaExportandSave() {
             return false;
         }
         else {
-            debugger
+           
             var Tab3data = {
                 "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
                 "UserID": sessionStorage.getItem('UserID'),
@@ -1884,7 +1882,7 @@ function ConfigureBidForSeaExportandSave() {
 
                 },
                 error: function (xhr, status, error) {
-                    debugger
+                   
                     var err = xhr.responseText
                     if (xhr.status == 401) {
                         error401Messagebox(err.Message);
@@ -2389,7 +2387,7 @@ function ParametersQuery() {
         itemBidDuration = $("#txtitembidduration").val()
 
     }
-    debugger
+  
     if ($("#ddlAuctiontype").val() == 81 || $("#ddlAuctiontype").val() == 83) {
         if (!jQuery("#tblServicesProduct thead").length) {
             jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th 'width:20%!important;'></th><th>Item Code</th><th>Item/Service</th><th class=hide>Description</th><th>Remarks</th><th>Target Price</th><th>Quantity</th><th>UOM</th><th>Start Unit Price</th><th>Hide Target Price</th><th>Minimum Decrement</th><th>Decrement On</th><th class=hide>Last Invoice Price</th><th class=itemclass>Bid Duration (in mins)</th><th>Show L1 Price</th><th>Show Start Price</th><th>PO Unit Rate</th><th>PO No.</th><th>PO Vendor Name</th><th>PO Date</th><th>PO Value</th></tr></thead>");
@@ -2877,7 +2875,7 @@ function fetchSeaExportDetails() {
                     }
                 }
                 if (BidData[0].bidVendorDetails.length > 0) {
-                    debugger
+                  
                     fnfetchRFQVendor();
 
                 }
@@ -3243,6 +3241,7 @@ jQuery("#txtVendorGroup").typeahead({
     },
     minLength: 2,
     updater: function (item) {
+        
         if (map[item].categoryID != "0") {
             getCategoryWiseVendors(map[item].categoryID);
         }
@@ -3286,7 +3285,7 @@ jQuery("#txtSearch").typeahead({
         if (map[item].associatedVendorID != "0") {
             // sessionStorage.setItem('hdnVendorID', map[item].participantID);
             //jQuery("#tblvendorlist > tbody").empty();
-            debugger
+          
 
              vName = map[item].participantName + ' (' + map[item].companyEmail + ')' + " " + (map[item].stateName).toUpperCase() 
      
@@ -3296,7 +3295,7 @@ jQuery("#txtSearch").typeahead({
 
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
-                    debugger
+                  
                     //** remove from main table if already selected in selected List
                     if (map[item].associatedVendorID == $(this).find(".childTblId").text()) {
                         $('#vList' + map[item].associatedVendorID).remove();
@@ -3328,7 +3327,7 @@ function getCategoryWiseVendors(categoryID) {
         cache: false,
         dataType: "json",
         success: function (data) {
-            debugger
+          
             jQuery("#tblvendorlist > tbody").empty();
             var vName = '';
             for (var i = 0; i < data.length; i++) {
@@ -3341,7 +3340,7 @@ function getCategoryWiseVendors(categoryID) {
 
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
-                    debugger
+                   
                     $("#chkvender" + $.trim($(this).find('.childTblId').html())).prop("disabled", true);
                     $("#chkvender" + $.trim($(this).find('.childTblId').html())).closest("span#spanchecked").addClass("checked")
 
@@ -3963,7 +3962,7 @@ function fetchRFIRFQSubjectforReport(subjectFor) {
 
 jQuery("#txtrfirfqsubject").typeahead({
     source: function (query, process) {
-        debugger
+      
         var data = sessionStorage.getItem('hdnRfiRfqSubject');
         Subject = [];
         map = {};
@@ -3978,7 +3977,7 @@ jQuery("#txtrfirfqsubject").typeahead({
     },
     minLength: 2,
     updater: function (item) {
-        debugger
+      
         if (map[item].rfqid != '0') {
             $('#hdnRfiRfqID').val(map[item].rfqid);
             fnpulldatafromRFQ();
@@ -4045,7 +4044,7 @@ function populatetablewithRFQData() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            debugger
+          
             if (data.length > 0) {
                 if (ispulledrfqcounter == 0) {
                     jQuery("#tblServicesProduct").empty();
@@ -4058,7 +4057,7 @@ function populatetablewithRFQData() {
 
                 for (var i = 0; i < data.length; i++) {
                     var decrementon = ''
-                    debugger
+                  
                     let podate = (data[i].poDate || "");
                     decrementon = 'Amount'
                     if ($('#ddlAuctiontype').val() == "83") {
@@ -4199,14 +4198,14 @@ function fnfetchRFQVendor() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            debugger
+          
             jQuery('#selectedvendorlists').empty();
             jQuery('#selectedvendorlistsPrev').empty();
             $('#chkAll').closest("span").removeClass("checked")
             $('#chkAll').prop("checked", false);
             jQuery("#tblvendorlist > tbody").empty();
             var vName = ''; var str = '';
-            debugger
+           
 
             
             if (data.length > 0) {
@@ -4419,8 +4418,7 @@ function FetchSAPPI() {
     let CustomerID = parseInt(sessionStorage.getItem('CustomerID'));
     let Eventsource =$("input[name=pullP]:checked").val();
     
-    console.log(sessionStorage.getItem("APIPath") + "SAPIntegration/FetchSAPPI/?PIId=" + PIId + "&CustomerID=" + CustomerID + "&EventID=" + bidId +"&EvType=7" + "&EvSource=I")
-   debugger
+   
     jQuery.ajax({
         //url: sessionStorage.getItem("APIPath") + "eRFQReport/fetchRFQSubjectforReport/?SubjectFor=" + subjectFor + "&Userid=..&CustomerID=" + sessionStorage.getItem('CustomerID'),//UserID =.. for fetch all RFQ
         url: sessionStorage.getItem("APIPath") + "SAPIntegration/FetchSAPPI/?PIId=" + PIId + "&CustomerID=" + CustomerID + "&EventID=" + bidId +"&EvType=7" + "&EvSource=I",//UserID =.. for fetch all RFQ
@@ -4428,7 +4426,7 @@ function FetchSAPPI() {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-               debugger 
+                
                 if (data.status == "E") { 
                      $("#divalerterrpull").show();
                      $("#divalerterrpull").find("span").html('').html(data.error);

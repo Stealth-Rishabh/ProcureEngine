@@ -35,7 +35,7 @@ $(document).ready(function () {
     }
 
     if (idx != null) {
-        if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 1) {// || sessionStorage.getItem('CustomerID') == 29
+        if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 61) {// || sessionStorage.getItem('CustomerID') == 29
             $('#divNFADetails').hide();
             $('#divPPCDetails').show();
             Bindtab2DataforPreview();
@@ -287,7 +287,7 @@ function GetOverviewmasterbyId(idx) {
             if (res.result.length > 0) {
 
 
-                if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 1) { // || sessionStorage.getItem('CustomerID') == 29
+                if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 61) { // || sessionStorage.getItem('CustomerID') == 29
                     if (res.result[0].nfaCategory == "2") {
                         $(".clsHide").hide();
                     }
@@ -1716,7 +1716,7 @@ function fnDownloadZip() {
 
 function fngeneratePDF() {
     var encrypdata = fnencrypt("nfaIdx=" + nfaid + "&FwdTo=View")
-    if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 29 || sessionStorage.getItem('CustomerID') == 1) {
+    if (sessionStorage.getItem('CustomerID') == 32 || sessionStorage.getItem('CustomerID') == 29 || sessionStorage.getItem('CustomerID') == 61) {
         window.open("viewPPCReport.html?param=" + encrypdata, "_blank")
     }
     else {
