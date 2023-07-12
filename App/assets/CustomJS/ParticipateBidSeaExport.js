@@ -126,7 +126,7 @@ connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
 
 });
 connection.on("refreshColumnStatus", function (data) {
-    debugger
+
     var JsonMsz = JSON.parse(data[0]);
     if (JSON.parse(JsonMsz[0]) == "-1" && JSON.parse(JsonMsz[1]) == sessionStorage.getItem('VendorId')) {
 
@@ -158,7 +158,7 @@ connection.on("refreshColumnStatus", function (data) {
             dataType: "json",
 
             success: function (data, status, jqXHR) {
-                debugger
+
                 if (data.length > 0) {
                     jQuery('#tblParticipantsService >tbody >tr').each(function (i) {
 
@@ -932,6 +932,7 @@ function fetchBidSummaryVendorproduct() {
     url = '';
     count = 0;
     url = sessionStorage.getItem("APIPath") + "VendorParticipation/fetchBidSummaryVendorSeaExport/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + sessionStorage.getItem("BidID") + "&UserType=" + sessionStorage.getItem("UserType") + "&_isBidStarted=" + _isBidStarted + "";
+    console.log(url)
     jQuery.ajax({
 
         type: "GET",
@@ -949,6 +950,7 @@ function fetchBidSummaryVendorproduct() {
         dataType: "json",
 
         success: function (data, status, jqXHR) {
+
             if (data.length > 0) {
                 var TotalBidValue = '';
                 if (_isBidStarted == false) {
@@ -963,7 +965,7 @@ function fetchBidSummaryVendorproduct() {
                         jQuery("#tblParticipantsServiceBeforeStartBid").append("<tr><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td class=hide id=ceilingprice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide><span>" + data[i].minimumDecreament + " " + decreamentOn + "</td><td class=hide id=initialquote" + i + ">" + IQuote + "</td><td class=hide id=lastQuote" + i + ">" + LqQuote + "</td><td class=hide id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td class=hide > <input type=text class=form-control autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td class=hide ><button type='button' id=AllItembtn" + i + " class='btn btn-warning' onclick=InsUpdQuoteSeaExport(" + i + ")>Submit</button><br/><span id=spanmszA" + i + " style=color:#a94442></span></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td>" + data[i].remarks + "</td></tr>");
 
                     }
-                   jQuery("#tblParticipantsServiceBeforeStartBid").append(`</tbody>`)
+                    jQuery("#tblParticipantsServiceBeforeStartBid").append(`</tbody>`)
 
                 }
                 else {
@@ -1440,7 +1442,7 @@ function closeBidAir() {
 
             if (data == '1') {
 
-                bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
+                bootbox.alert("Bid time is over. Thanks for Participation.The result of the Reverse Auction is not binding on the company and do not, in any way, create an obligation for issue of Purchase Order in favor of L1/any other participants. The company company reverses the right to announce the successful participants and issue Purchase Orders.", function () {
                     if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
 
                         window.location = sessionStorage.getItem('HomePage');
@@ -1537,7 +1539,7 @@ function fetchBidTime() {
                 if (BidForID == 81 || BidForID == 83) {
                     if (data[0].timeLeft <= 0) {
                         clearInterval(mytime);
-                        bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
+                        bootbox.alert("Bid time is over. Thanks for Participation.The result of the Reverse Auction is not binding on the company and do not, in any way, create an obligation for issue of Purchase Order in favor of L1/any other participants. The company company reverses the right to announce the successful participants and issue Purchase Orders.", function () {
                             if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
                                 window.location = sessionStorage.getItem('HomePage');
                                 sessionStorage.clear();
@@ -1570,7 +1572,7 @@ function fetchBidTime() {
 
                         clearInterval(mytime);
 
-                        bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
+                        bootbox.alert("Bid time is over. Thanks for Participation.The result of the Reverse Auction is not binding on the company and do not, in any way, create an obligation for issue of Purchase Order in favor of L1/any other participants. The company company reverses the right to announce the successful participants and issue Purchase Orders.", function () {
 
 
 
