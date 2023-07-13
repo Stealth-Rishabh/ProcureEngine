@@ -4046,12 +4046,12 @@ function populatetablewithRFQData() {
         success: function (data, status, jqXHR) {
 
             if (data.length > 0) {
-                if (ispulledrfqcounter == 0) {
-                    jQuery("#tblServicesProduct").empty();
-                    jQuery("#tblServicesProductPrev").empty();
-                    rowAppItemsrno = 0;
-                    rowAppItems = 0;
-                }
+                /* if (ispulledrfqcounter == 0) {
+                     jQuery("#tblServicesProduct").empty();
+                     jQuery("#tblServicesProductPrev").empty();
+                     rowAppItemsrno = 0;
+                     rowAppItems = 0;
+                 }*/
 
                 ispulledrfqcounter = ispulledrfqcounter + 1;
 
