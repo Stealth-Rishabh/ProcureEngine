@@ -258,7 +258,7 @@ var Login = function () {
                 //"Password": jQuery("#password").val().trim(),
                 "Password": encryptedString,
                 "LinkUrl": LinkUrl,
-               /* "DeviceType":"Laptop"*/
+                "DeviceType":"Laptop"
             }
             jQuery.ajax({
                 url: APIPath + "User/validate_User",
