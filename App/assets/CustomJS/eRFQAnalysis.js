@@ -33,7 +33,8 @@ jQuery(document).ready(function () {
     formvalidate();
     ComponentsPickers.init();
     fetchMenuItemsFromSession(7, 44);
-    fetchRegisterUser();
+    fetchRegisterUser(); 
+    sessionStorage.setItem("EventType", 'eRFQ');
    
 
 });
@@ -48,13 +49,17 @@ if (window.location.search) {
     var Type = getUrlVarsURL(decryptedstring)["Type"];
 
     $('#hdnRfqID').val(RFQID);
-
+    
     var sub = getUrlVarsURL(decryptedstring)["RFQSubject"].replace(/%20/g, ' ').replace(/%2F/g, '/');
     if (Type != undefined && Type.toLowerCase() == "aw") {
         $('#btn_commercial').addClass('hide');
     }
-
+    
     jQuery("#txtrfirfqsubject").val(sub + ' - ' + RFQID)
+    
+    sessionStorage.setItem("EventId", RFQID);
+    sessionStorage.setItem("EventType", 'eRFQ');
+
     fetchReguestforQuotationDetails()
     fetchRFQApproverStatus(RFQID);
     FetchRFQVersion();
@@ -2328,6 +2333,8 @@ function formvalidate() {
                 else {
                     fetchRFQApproverStatus($('#hdnRfqID').val());
                 }
+                sessionStorage.setItem("EventId", $('#hdnRfqID').val());
+                sessionStorage.setItem("EventType", 'eRFQ');
                 fetchAttachments();
                 fetchApproverRemarks('C');
                 setTimeout(function () {

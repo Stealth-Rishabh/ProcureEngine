@@ -1,8 +1,7 @@
 function logoutFunction() {
     sessionStorage.clear();
-   // sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net');
     sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net');
-    //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+   
     window.location.href = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1) + 'index.htm';
 }
 

@@ -24,6 +24,7 @@ function fetchRFIRFQSubjectforReport(subjectFor) {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
+
             sessionStorage.setItem('hdnRfqSubject', JSON.stringify(data));
         },
         error: function (xhr, status, error) {
@@ -46,13 +47,17 @@ function fetchRFIRFQSubjectforReport(subjectFor) {
 jQuery("#txtrfirfqsubject").typeahead({
     source: function (query, process) {
         var data = sessionStorage.getItem('hdnRfqSubject');
+
         Subject = [];
         map = {};
         var commonsubject = "";
         jQuery.each(jQuery.parseJSON(data), function (i, commonsubject) {
             map[commonsubject.rfqSubject] = commonsubject;
+
             Subject.push(commonsubject.rfqSubject);
+
         });
+
 
         process(Subject);
 
@@ -63,6 +68,8 @@ jQuery("#txtrfirfqsubject").typeahead({
         if (map[item].rfqid != '0') {
 
             $('#hdnRfqID').val(map[item].rfqid);
+            sessionStorage.setItem("EventId", map[item].rfqid);
+            sessionStorage.setItem("EventType", 'eRFQ');
             FetchRFQVersion();
             fetchReguestforQuotationDetails()
             fetchRFQApproverStatus(map[item].rfqid);
@@ -180,7 +187,7 @@ function fnForwardforAllvendorTechnical() {
 
 }*/
 function fetchApproverRemarks(Type) {
-   
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRFQApproval/FetchApproverRemarks/?RFQID=" + $('#hdnRfqID').val() + "&ApprovalType=" + Type,
@@ -190,7 +197,7 @@ function fetchApproverRemarks(Type) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-           
+
             $('#tblCommercialApproval').empty()
             $('#tblCommercialApprovalprev').empty()
             if (data.length > 0) {
@@ -214,7 +221,7 @@ function fetchApproverRemarks(Type) {
             }
         },
         error: function (xhr, status, error) {
-           
+
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -232,7 +239,7 @@ function fetchApproverRemarks(Type) {
 var str = '';
 function checkForSelectedVendors() {
 
-    
+
     //getting value for Checked Checheck boxes
     $(".chkReinvitation:checked").each(function (x, i) {
         str += $(this).val() + ',';
@@ -245,7 +252,7 @@ function checkForSelectedVendors() {
         return false;
     }
     else {
-       
+
         if (sessionStorage.getItem("RFQBidType") == "Closed") {
 
             $("#rfqopendategroup").show()
@@ -324,7 +331,7 @@ function Dateandtimevalidate() {
 }
 
 function ReInviteVendorsForRFQ() {
- 
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     str = str.substring(0, str.length - 1);
     $('#SaveExsist').attr('disabled', 'disabled')
@@ -344,22 +351,22 @@ function ReInviteVendorsForRFQ() {
     ST = ST.substring(0, ST.indexOf("GMT"));
     ST = ST + 'GMT' + sessionStorage.getItem('utcoffset');
     if ($('#txtrfqopenDate').val() != null && $('#txtrfqopenDate').val() != "") {
-      
+
         _bod = $('#txtrfqopenDate').val().replace('-', '');
-       
+
         let BOTime = new Date(_bod.toLocaleString("en", {
             timeZone: sessionStorage.getItem('preferredtimezone')
         }));
         if (BOTime < EtTime) {
-              
-                jQuery.unblockUI();
-                $("#error_deaddate").html("RFQ open date cannot be less than RFQ end date");
-                $("#error_deaddate").show();
-                
-                $("#error_deaddate").fadeOut(7000);
-                $('#SaveExsist').removeAttr('disabled') 
-                return false;
-                       
+
+            jQuery.unblockUI();
+            $("#error_deaddate").html("RFQ open date cannot be less than RFQ end date");
+            $("#error_deaddate").show();
+
+            $("#error_deaddate").fadeOut(7000);
+            $('#SaveExsist').removeAttr('disabled')
+            return false;
+
         }
         BT = new String(BOTime);
         BT = BT.substring(0, BT.indexOf("GMT"));
@@ -384,7 +391,7 @@ function ReInviteVendorsForRFQ() {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-          
+
             $("#modalreInviteDate").modal("hide");
             bootbox.alert("Re-Invitation For RFQ sent successfully", function () {
                 location.reload();
@@ -395,31 +402,32 @@ function ReInviteVendorsForRFQ() {
 
         },
         error: function (xhr, status, error) {
-            
+
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-               
-                
 
-               
-                    $("#error_deaddate").html(err);
-                    $("#error_deaddate").show();
-                    Metronic.scrollTo($(".alert-danger"), -200);
-                    $("#error_deaddate").fadeOut(7000);
-                    $('#SaveExsist').removeAttr('disabled')
 
-               
-               
-                
+
+
+                $("#error_deaddate").html(err);
+                $("#error_deaddate").show();
+                Metronic.scrollTo($(".alert-danger"), -200);
+                $("#error_deaddate").fadeOut(7000);
+                $('#SaveExsist').removeAttr('disabled')
+
+
+
+
             }
             setTimeout(function () {
-            $("#modalreInviteDate").modal("hide");}, 500)
-            
+                $("#modalreInviteDate").modal("hide");
+            }, 500)
+
             jQuery.unblockUI();
-           
+
 
         }
 
@@ -534,7 +542,7 @@ let totalitems
 function fetchReguestforQuotationDetails() {
     var attachment = '';
     var termattach = '';
-   
+    debugger
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + $('#hdnRfqID').val() + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
@@ -545,8 +553,8 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (Data) {
-            
-            let RFQData=Data.rData
+            debugger
+            let RFQData = Data.rData
             totalitems = RFQData[0].parameters.length
             var _curentRFQStatus = '';
             var replaced1 = '';
@@ -588,7 +596,7 @@ function fetchReguestforQuotationDetails() {
                     isboq = "N";
                     fetchrfqcomprative();
                 }
-               
+
                 /*else {
                     $('#cancl_btn').hide();
 
@@ -614,7 +622,7 @@ function fetchReguestforQuotationDetails() {
             }
         },
         error: function (xhr, status, error) {
-          
+
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -690,7 +698,7 @@ function FetchRFQVersion() {
 }
 function RFQFetchL1Package(VendorID, Counter) {
 
-console.log(sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchL1Package/?RFQID=" + $('#hdnRfqID').val() + "&VendorId=" + VendorID + "&RFQVersionId=" + sessionStorage.getItem("RFQVersionId") + "&BidID=0")
+    console.log(sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchL1Package/?RFQID=" + $('#hdnRfqID').val() + "&VendorId=" + VendorID + "&RFQVersionId=" + sessionStorage.getItem("RFQVersionId") + "&BidID=0")
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchL1Package/?RFQID=" + $('#hdnRfqID').val() + "&VendorId=" + VendorID + "&RFQVersionId=" + sessionStorage.getItem("RFQVersionId") + "&BidID=0",
@@ -700,7 +708,7 @@ console.log(sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchL1Package/?
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-            
+
             $("#withoutGSTL1Rank" + VendorID).html(thousands_separators((data[0].totalL1RankWithoutGST).round(2)));
             $("#withoutGSTL1RankExcel" + VendorID).html(thousands_separators((data[0].totalL1RankWithoutGST).round(2)));
             $("#withGSTL1Rank" + VendorID).html(thousands_separators((data[0].totalL1RankWithGST).round(2)));
@@ -874,7 +882,7 @@ $("#editloadingfactor").on("hidden.bs.modal", function () {
 });
 
 function fetchAttachments() {
-  
+
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -885,26 +893,26 @@ function fetchAttachments() {
         crossDomain: true,
         dataType: "json",
         success: function (Data, status, jqXHR) {
-          
-            data=Data.rData;
-            
+
+            data = Data.rData;
+
             jQuery("#tblAttachments").empty();
-            
+
             if (data[0].attachments.length > 0) {
                 jQuery("#tblAttachments").append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:50%!important'>Description</th><th style='width:50%!important'>Attachment</th></tr></thead>")
 
                 for (var i = 0; i < data[0].attachments.length; i++) {
                     var str = "<tr><td style='width:50%!important'>" + data[0].attachments[i].rfqAttachmentDescription + "</td>";
-                   
-                  if(Data.showQuotedPrice.showQoutedPrice=='Y') {
-                     str += '<td class=style="width:50%!important"><a id=eRFqTerm' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFile(this)" href="javascript:;" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
-                     
-                  }
-                  else{
-                     str += '<td class=style="width:50%!important"></td>';
-                      
-                  }
-                    
+
+                    if (Data.showQuotedPrice.showQoutedPrice == 'Y') {
+                        str += '<td class=style="width:50%!important"><a id=eRFqTerm' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFile(this)" href="javascript:;" >' + data[0].attachments[i].rfqAttachment + '</a></td>';
+
+                    }
+                    else {
+                        str += '<td class=style="width:50%!important"></td>';
+
+                    }
+
                     jQuery('#tblAttachments').append(str);
 
                 }
@@ -916,7 +924,7 @@ function fetchAttachments() {
 
         },
         error: function (xhr, status, error) {
-           
+
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -935,7 +943,7 @@ function DownloadFile(aID) {
 }
 function fnDownloadZip() {
     var prefix = 'eRFQ/' + $('#hdnRfqID').val()
-    
+
     fetch(sessionStorage.getItem("APIPath") + "BlobFiles/DownloadZip/?Prefix=" + prefix)
         .then(resp => resp.blob())
         .then(blob => {
@@ -958,7 +966,7 @@ function fnDownloadZip() {
 
 function RFQFetchTotalPriceForReport(VendorID, Counter) {
 
-console.log(sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchTotalPriceForReport/?RFQID=" + $('#hdnRfqID').val() + "&VendorId=" + VendorID + "&RFQVersionId=" + sessionStorage.getItem("RFQVersionId") + "&BidID=0")
+    console.log(sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchTotalPriceForReport/?RFQID=" + $('#hdnRfqID').val() + "&VendorId=" + VendorID + "&RFQVersionId=" + sessionStorage.getItem("RFQVersionId") + "&BidID=0")
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -969,8 +977,8 @@ console.log(sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchTotalPriceF
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-          
-            
+
+
             $("#totBoxwithoutgst" + VendorID).html(thousands_separators((data[0].totalPriceExTax).round(2)) + " &nbsp;<a class='lambdafactor' style='cursor:pointer' onclick=editwithgstlambdafactor(" + data[0].totalPriceExTax + "," + Counter + "," + VendorID + ")><i class='fa fa-pencil'></i></a>");
             $("#totBoxwithoutgstExcel" + VendorID).html(thousands_separators((data[0].totalPriceExTax).round(2)));
             $("#totBoxwithgst" + VendorID).html(thousands_separators((data[0].totalPriceIncTax).round(2)));
@@ -1210,7 +1218,7 @@ function MapRFQapprover(Type) {
 
         })
     }
-   
+
     var Approvers = {
         "RFQID": parseInt(RFQID),
         "QueryRFQApprovers": approvers,
@@ -1228,7 +1236,7 @@ function MapRFQapprover(Type) {
         data: JSON.stringify(Approvers),
         dataType: "json",
         success: function (data) {
-               
+
             $('#successapp').show();
             $('#spansuccessapp').html('Approvers added successfully');
             Metronic.scrollTo($('#successapp'), -200);
@@ -1265,7 +1273,7 @@ function MapRFQapprover(Type) {
 
         },
         error: function (xhr, status, error) {
-                
+
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1308,7 +1316,7 @@ function fnGetRFQApprovers(Type) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-          
+
             var str = "";
             rowRFQApp = 0;
             TechApp = 0;
@@ -1319,9 +1327,9 @@ function fnGetRFQApprovers(Type) {
             jQuery("#tblRFQtechnicalapprovers").empty();
             jQuery("#tblRFQtechnicalapprovers").append("<thead><tr><th colspan=5  style='text-align:center;' class='bold' >Technical Approver(s)</th></tr><tr><th style='width:5%!important'></th><th class='bold' style='width:60%!important'>Approver</th><th class='bold' style='width:15%!important'>Sequence</th><th class='bold' style='width:5%!important'>Show Price</th></tr></thead>");
 
-            
+
             for (var i = 0; i < data.length; i++) {
-                
+
                 if (data[i].approverType != "P" && data[i].approverType != "T") {
                     rowRFQApp = rowRFQApp + 1;
                     str = '<tr id=trAppid' + rowRFQApp + '>';
@@ -1439,7 +1447,7 @@ function fetchRFQApproverStatus(RFQID) {
         processData: true,
         dataType: "json",
         success: function (data) {
-            
+
             var status = '';
             var c = 0;
             sessionStorage.setItem("LastApproverStaffCode", data[data.length - 1].approverStaffCode)
@@ -1514,7 +1522,7 @@ function fetchRFQApproverStatus(RFQID) {
         },
 
         error: function (xhr, status, error) {
-           
+
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1813,7 +1821,7 @@ function updateLoadingFactor() {
 
 //technical approver Anurag
 function fnOpenPopupTechApprover(Type) {
-   
+
     TechApp = 0;
     TechSeq = 0;
     delAppTech = '';
@@ -1928,15 +1936,15 @@ function addRFQTechnicalApprovers() {
         $('.alert-danger').fadeOut(3000);
         return false;
     }
-   /* else if (status == "false") {
-        $('.alert-danger').show();
-        $('#spandangerappTech').html('Approver is already mapped...');
-        Metronic.scrollTo($(".alert-danger"), -200);
-        $('.alert-danger').fadeOut(3000);
-        jQuery("#txtTechincalApproverRFQ").val('')
-        jQuery("#hdnRFQTechApproverID").val('0')
-        return false;
-    }*/
+    /* else if (status == "false") {
+         $('.alert-danger').show();
+         $('#spandangerappTech').html('Approver is already mapped...');
+         Metronic.scrollTo($(".alert-danger"), -200);
+         $('.alert-danger').fadeOut(3000);
+         jQuery("#txtTechincalApproverRFQ").val('')
+         jQuery("#hdnRFQTechApproverID").val('0')
+         return false;
+     }*/
     else {
         {
 
@@ -1980,7 +1988,7 @@ function addRFQTechnicalApprovers() {
 var delAppTech = '';
 //deleting approval from the table
 function deleteApprow(rowid, uId) {
-   
+
     TechSeq = TechSeq - 1;
     $('#' + rowid.id).remove();
     var rowCount = jQuery('#tblRFQtechnicalapprovers tbody tr').length;
@@ -2033,7 +2041,7 @@ function Checktechapp(event, rowid) {
 
 //post request for techincal apoorver
 function MapRFQTechapprover(Type) {
-   
+
     var RFQID = 0;
     if (Type == "Report") {
         RFQID = $('#hdnRfqID').val()
@@ -2044,11 +2052,11 @@ function MapRFQTechapprover(Type) {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvers = '';
     var rowCount = jQuery('#tblRFQtechnicalapprovers tbody tr').length;
-   
+
     if (rowCount > 0) {
         var techsno = 0
         $("#tblRFQtechnicalapprovers tbody tr").each(function () {
-           
+
             var this_row = $(this);
             techsno = techsno + 1;
             // var showPriceyn = 'chkshowp' + $.trim(this_row.find('td:eq(3)').html());
@@ -2068,7 +2076,7 @@ function MapRFQTechapprover(Type) {
             console.log("approvers : ", approvers);
         })
     }
-    
+
     var Approvers = {
         "ApproverType": "T",
         "Approvers": approvers,
@@ -2127,13 +2135,13 @@ function MapRFQTechapprover(Type) {
 
         },
         error: function (xhr) {
-             debugger
+            debugger
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
             }
             else {
-               fnErrorMessageText('error', '');
+                fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
             return false;

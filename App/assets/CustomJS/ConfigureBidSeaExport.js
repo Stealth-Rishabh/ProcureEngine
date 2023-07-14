@@ -1786,7 +1786,7 @@ function ConfigureBidForSeaExportTab3() {
             return false;
         }
     });
-
+    debugger
     var Tab3data = {
         "BidVendors": bidvendorsarr,
         "BidID": parseInt(sessionStorage.getItem('CurrentBidID'))
@@ -1801,8 +1801,8 @@ function ConfigureBidForSeaExportTab3() {
         async: false,
         data: JSON.stringify(Tab3data),
         dataType: "json",
-        success: function (data) {
-
+        success: function (data,xhr) {
+            debugger
             if (parseInt(data) > 0) {
                 jQuery.unblockUI();
                 $('#BidPreviewDiv').show();
@@ -1820,7 +1820,7 @@ function ConfigureBidForSeaExportTab3() {
             }
         },
         error: function (xhr, status, error) {
-
+            debugger
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -4044,7 +4044,7 @@ function populatetablewithRFQData() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+            debugger
             if (data.length > 0) {
                 /* if (ispulledrfqcounter == 0) {
                      jQuery("#tblServicesProduct").empty();

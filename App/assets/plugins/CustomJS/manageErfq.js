@@ -1,7 +1,7 @@
 var dropdownVal = '';
 $("#openquote").hide();
 jQuery(document).ready(function () {
-    
+
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -180,7 +180,7 @@ function formValidation() {
 
         }
     });
-      //form validation for technical approver
+    //form validation for technical approver
     var formaddtechapprover = $('#frmRFQTechnicalApprover');
     var errorapp = $('.alert-danger', formaddtechapprover);
     var successapp = $('.alert-success', formaddtechapprover);
@@ -578,7 +578,9 @@ function InsUpdRFQDEtailTab1() {
 }
 var isrunnigRFQ = 'N';
 function fetchReguestforQuotationDetails(RFQID) {
-
+    //hide sub and desc
+    var RFQCreaterName = "";
+    var userApproverStatus = "";
 
     $("#eventDetailstab_0").show();
     jQuery.ajax({
@@ -591,18 +593,22 @@ function fetchReguestforQuotationDetails(RFQID) {
         crossDomain: true,
         dataType: "json",
         success: function (Data) {
-            let RFQData=Data.rData
-            
+            let RFQData = Data.rData
+
             if (sessionStorage.getItem('CustomerID') == "32") {
                 $('#ctrladdapprovers').addClass('hide')
             }
             else {
                 $('#ctrladdapprovers').removeClass('hide')
             }
-           
+
             var RFQopenDate = "Not Set";
             var _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
             var _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
+
+            //hide sub and desc
+            RFQCreaterName = RFQData[0].general[0].rfqConfigureByName;
+            userApproverStatus = RFQData[0].general[0].finalStatus;
 
             sessionStorage.setItem('hdnRFQBidType', RFQData[0].general[0].rfqBidType)
             _RFQBidType = RFQData[0].general[0].rfqBidType
@@ -613,32 +619,34 @@ function fetchReguestforQuotationDetails(RFQID) {
             jQuery('#RFQSubject').text(_cleanStringSub);
             jQuery('#RFQDescription').html(_cleanStringDesc);
 
+
+
             $('#currencyid').val(RFQData[0].general[0].rfqCurrencyId)
             $('#Currency').html(RFQData[0].general[0].currencyNm)
             jQuery('#ConversionRate').html(RFQData[0].general[0].rfqConversionRate);
             sessionStorage.setItem('techapp', RFQData[0].general[0].technicalApproval)
             if (RFQData[0].general[0].technicalApproval.toLowerCase() == "afterrfq") {
                 jQuery('#lbltechnicalApproval').html("<b>After All RFQ Responses</b>")
-                dropdownVal='afterrfq'
+                dropdownVal = 'afterrfq'
             }
             else if (RFQData[0].general[0].technicalApproval.toLowerCase() == "rfq") {
                 jQuery('#lbltechnicalApproval').html("<b>With individual RFQ Response</b>")
-                 dropdownVal='rfq'
+                dropdownVal = 'rfq'
             }
             else {
                 jQuery('#lbltechnicalApproval').html("Not Required")
-                 dropdownVal=''
+                dropdownVal = ''
             }
             if (_RFQBidType.toLocaleLowerCase() == 'closed') {
                 // let CurDT = new Date();
                 // let BidDT = new Date(fnConverToLocalTime(RFQData[0].general[0].bidopeningdate).replace('-', ''));
-                if(RFQData[0].general[0].bidopeningdate != null){
+                if (RFQData[0].general[0].bidopeningdate != null) {
                     Dateandtimevalidate(fnConverToLocalTime(RFQData[0].general[0].bidopeningdate), 'bidclosdt');
                 }
                 $("#divRFQOpenDate").show();
                 $("#litab2").hide();
                 $("#litab2").attr("disabled", "disabled");
-                 
+
                 if (RFQData[0].general[0].bidopeningdate != null) {
                     RFQopenDate = fnConverToLocalTime(RFQData[0].general[0].bidopeningdate);
                     jQuery('#lblRFQOpenDate').html(RFQopenDate);
@@ -666,13 +674,13 @@ function fetchReguestforQuotationDetails(RFQID) {
 
             }
             //27/03/203 abheedev
-             if(RFQData[0].general[0].openQuotes=="Y"){
-                
+            if (RFQData[0].general[0].openQuotes == "Y") {
+
                 $('#openquote').hide()
                 $('#ctrlRFQOpenDates').hide()
-                
+
             }
-            else{
+            else {
                 $('#openquote').show()
                 $('#ctrlRFQOpenDates').show()
             }
@@ -786,6 +794,16 @@ function fetchReguestforQuotationDetails(RFQID) {
             //else{
             //    $("a.isDisabledOpenClass").removeAttr("onclick");
             //}
+
+            //hide sub and desc
+            let loginUserName = sessionStorage.getItem('UserName');
+            if (RFQCreaterName == loginUserName && userApproverStatus == "Not Forwarded") {
+                $('#RFQSub').show();
+                $('#RFQDesc').show();
+            } else {
+                $('#RFQSub').hide();
+                $('#RFQDesc').hide();
+            }
 
             if (RFQData[0].general[0].finalStatus.toLowerCase() != "not forwarded") {
                 $("a.ctrladdapprovers").removeAttr("onclick");
@@ -1302,7 +1320,7 @@ function addmoreattachments() {
 }
 
 function UpdateRFQOPenDateAfterClose() {
-   debugger
+
     var BidOpenDate = new Date($('#txtbidopendatetime').val().replace('-', ''));
     var CurDateonly = new Date();
     var EndDate = new Date(jQuery('#RFQEndDate').text().replace('-', ''));
@@ -2051,7 +2069,7 @@ function fnremoveVendors(vid) {
     sessionStorage.setItem('hdnVendorID', 0);
 }
 function invitevendors() {
-     var CurDateonly = new Date();
+    var CurDateonly = new Date();
     var EndDate = new Date(jQuery('#RFQEndDate').text().replace('-', ''));
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (sessionStorage.getItem("hdnrfqid") == '0') {
@@ -2064,9 +2082,9 @@ function invitevendors() {
         return false;
 
     }
-    
-     
-    if(EndDate<CurDateonly){
+
+
+    if (EndDate < CurDateonly) {
         error1.show();
         $('#spandanger').html('Vendor cannnot be added after event is ended');
         error1.fadeOut(3000);
@@ -2162,7 +2180,7 @@ function Dateandtimevalidate(StartDT, istocheck) {
         data: JSON.stringify(Tab1Data),
         dataType: "json",
         success: function (data) {
-            debugger
+
             if (istocheck == "enddate") {
                 if (data == "1") {
                     ExtendDuration();

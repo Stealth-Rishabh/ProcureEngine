@@ -3519,6 +3519,7 @@ function linegraphsforItems(itemId) {
     var colorArray = ['#007ED2', '#f15c80', '#90ED7D', '#FF7F50', '#f15c80', '#FF5733', '#96FF33', '#33FFF0', '#F9FF33', '#581845', '#0B0C01', '#0C0109', '#DAF7A6', '#FFC300', '#08010C'];
     var _bidId = getUrlVarsURL(decryptedstring)["BidID"]
     _bidId = parseInt(_bidId)
+    debugger
     var graphDataReqObj = {
         "SeId": itemId,
         "BidId": _bidId,
@@ -3536,6 +3537,7 @@ function linegraphsforItems(itemId) {
         data: JSON.stringify(graphDataReqObj),
         dataType: "json",
         success: function (data, status, jqXHR) {
+            debugger
             minprice = parseInt(data[0].minMaxprice[0].minPrice - 5);
             maxprice = parseInt(data[0].minMaxprice[0].maxPrice + 5);
             var _startDateTime = new Date(data[0].bidStartEndTime[0].bidStartTime);

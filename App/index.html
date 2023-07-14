@@ -72,7 +72,10 @@
 
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/scripts/aes.js"></script>
-    <script src="assets/CustomJS/Common.js"></script>
+    <script src="assets/CustomJS/Common.js?v1"></script>
+    <link <!--for react-->
+<link rel="stylesheet" href="assets/CustomCSS/communicationhub.css">
+<script defer="defer" src="assets/build/static/js/main.2cafa2af.js"></script>
 
 </head>
 <!-- END HEAD -->
@@ -131,6 +134,7 @@
                 </ul>
                 <!-- END TOP NAVIGATION MENU -->
             </div>
+            <div id="root"></div>
         </div>
         <!-- END TOP NAVIGATION BAR -->
     </div>
@@ -438,7 +442,7 @@
                                             </label>
                                             <div class="col-lg-8">
                                                 <div class="xyz">
-                                                    <input type="password" class="form-control input-circle" placeholder="New Password" autocomplete="off" id="nPassword" name="nPassword" />
+                                                    <input type="password" class="form-control input-circle" placeholder="New Password" autocomplete="off" id="nPassword"  name="nPassword" />
 
                                                 </div>
                                             </div>
@@ -549,6 +553,10 @@
     </div>
    
     <script nonce="approvalcoalexport">
+    
+        sessionStorage.setItem("EventId", 0);
+        sessionStorage.setItem("EventType", '');
+        
         jQuery(document).ready(function () {
             callPagejs('Activitydetails.js');
         });

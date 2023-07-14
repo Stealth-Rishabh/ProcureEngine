@@ -1299,6 +1299,7 @@ function ConfigureBidInsFrenchTab3() {
         return false;
     }
     else {
+        
         // if (sessionStorage.getItem("BidPreApp") == "N") {
         var Tab3data = {
             "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
@@ -1319,7 +1320,7 @@ function ConfigureBidInsFrenchTab3() {
             data: JSON.stringify(Tab3data),
             dataType: "json",
             success: function (data) {
-
+                
                 jQuery.unblockUI();
                 bootbox.alert("Bid Configured Successfully.", function () {
                     sessionStorage.removeItem('CurrentBidID');
@@ -1329,7 +1330,7 @@ function ConfigureBidInsFrenchTab3() {
 
             },
             error: function (xhr, status, error) {
-
+                
                 var err = xhr.responseText//eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);

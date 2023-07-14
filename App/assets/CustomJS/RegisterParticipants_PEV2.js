@@ -2978,9 +2978,9 @@ function GetBankDetail(ChildId, CustId, vendorid) {
                 $('#tblGetBankDetail').append("<thead><tr><th>Action</th><th>Bank Name</th><th>Account Number</th><th>IFSC Code</th></tr></thead><tbody>");
                 for (var i = 0; i < childData.length; i++) {
                     isBVerify = childData[i].isVerified;
-                    debugger
+                    
                     if (isBVerify == "Y") {
-                         if (customerid == 29||customerid == 37) {
+                         if (customerid == 37) {
                                $('#tblGetBankDetail').append("<tr onclick=''><td><button type='button' class='btn btn-xs btn-primary' onclick=\"editBankDetail('" + childData[i].bankingId + "','" + childData[i].childId + "','" + childData[i].bankCountryKey + "','" + childData[i].bankRoutingNumber + "','" + childData[i].bankName + "','" + childData[i].cancelledCheckFile + "','" + childData[i].payTerm + "','" + childData[i].bankAccountNumber + "','" + childData[i].accounHolderName + "')\">Edit</button></td><td  onclick=\"viewbankcustomer(\'" + "accordion" + childData[i].bankingId + "'\)\">" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "  <img src='assets/img/greenchecktick.svg' width='25px' height='25px' style='{margin-bottom:4px;}'/></td><td>" + childData[i].bankRoutingNumber + "</td></tr>");
 
                          }
@@ -2991,8 +2991,8 @@ function GetBankDetail(ChildId, CustId, vendorid) {
                       
                     }
                     else {
-                        debugger
-                        if (customerid == 29||customerid == 37) {
+                        
+                        if (customerid == 37) {
                            $('#tblGetBankDetail').append("<tr onclick=''><td><button type='button' class='btn btn-xs btn-primary' onclick=\"editBankDetail('" + childData[i].bankingId + "','" + childData[i].childId + "','" + childData[i].bankCountryKey + "','" + childData[i].bankRoutingNumber + "','" + childData[i].bankName + "','" + childData[i].cancelledCheckFile + "','" + childData[i].payTerm + "','" + childData[i].bankAccountNumber + "','" + childData[i].accounHolderName + "')\">Edit</button><button type='button' class='btn btn-xs btn-warning hovertextLeft '   data-hover='Click here to verify bank account' onclick=\"IciciBankPennyDropVerify('" + childData[i].childId + "','" + childData[i].bankRoutingNumber + "','" + childData[i].bankName + "','" + childData[i].bankAccountNumber + "','" + childData[i].accounHolderName + "')\">Verify</button></td><td  onclick=\"viewbankcustomer(\'" + "accordion" + childData[i].bankingId + "'\)\">" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "</td><td>" + childData[i].bankRoutingNumber + "</td></tr>");
  
                         }

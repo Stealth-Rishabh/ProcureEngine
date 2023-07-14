@@ -69,6 +69,9 @@
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/CustomJS/Common.js"></script>
+    <link <!--for react-->
+<link rel="stylesheet" href="assets/CustomCSS/communicationhub.css">
+<script defer="defer" src="assets/build/static/js/main.2cafa2af.js"></script>
 
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-full-width">
@@ -98,6 +101,7 @@
                     </li>
                 </ul>
             </div>
+             <div id="root"></div>
         </div>
     </div>
 
@@ -923,7 +927,7 @@
                                                 <button id="btnraisequery" type="button" class="btn blue" href="#RaiseQuery" onclick="fnRaisequery()" data-toggle="modal">
                                                     Raise Query
                                                 </button>
-                                                <button id="btnaddapprovers" type="button" class="btn yellow-saffron hide" href="#addNFAApprovers" onclick="fnOpenPopupApprover()">
+                                                <button id="btnaddapprovers" type="button" class="btn yellow-saffron addaprovnew hide" href="#addNFAApprovers" onclick="fnOpenPopupApprover()">
                                                     Add Approvers
                                                 </button>
                                                 <button id="btnBack" type="button" class="btn yellow" onclick="Fnback()">
@@ -957,7 +961,7 @@
                                         <button id="btnsubmitquery" type="button" onclick="fnsubmitQueryByCreator()" class="btn green-haze hide">
                                             Submit Query
                                         </button>
-                                        <button id="btnaddapprovers" type="button" class="btn yellow-saffron " href="#addNFAApprovers" onclick="fnOpenPopupApprover()">
+                                        <button id="btnaddapprovers" type="button" class="btn yellow-saffron addaprovnew" href="#addNFAApprovers" onclick="fnOpenPopupApprover()">
                                             Add Approvers
                                         </button>
                                         <button id="btnCancelbidApp" type="button" class="btn red hide" href="#delegatemodal" data-toggle="modal">

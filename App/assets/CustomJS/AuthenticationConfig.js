@@ -169,7 +169,7 @@ async function isAuthenticated() {
     }
     //if (sessionStorage.getItem('CustomerID') != "32") {
     if (sessionStorage.getItem("IsSSOAuth") == "N") {
-        var urlAc = sessionStorage.getItem("APIPath") + "Token/refresh?DeviceType=Laptop";
+        var urlAc = sessionStorage.getItem("APIPath") + "Token/refresh?DeviceType=laptop";
         try {
 
             //decode(token);

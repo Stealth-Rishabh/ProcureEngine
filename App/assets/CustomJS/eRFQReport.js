@@ -344,7 +344,7 @@ function RFQFetchQuotedPriceReport() {
                 for (var i = 0; i < data[0].questions.length; i++) {
                     var attachQA = data[0].questions[i].attachementQA;
                     //jQuery('<tr id=trid' + i + '><td style="width:30%">' + data[0].questions[i].question + '</td><td>' + data[0].questions[i].requirement + '</td><td>' + data[0].questions[i].answer + '</td></tr>').appendTo("#tblquestions");
-                   if(sessionStorage.getItem('RFQBidType')=='Open'){
+                   if(sessionStorage.getItem('RFQBIDType')=='Open'){
                     jQuery('<tr id=trid' + i + '><td style="width:30%">' + data[0].questions[i].question + '</td><td>' + data[0].questions[i].requirement + '</td><td>' + data[0].questions[i].answer + '<br>  <a id=eRFQVFilesques' + i + ' style="pointer:cursur;text-decoration:none;" href="javascript:;" onclick=DownloadFileVendor(this,' + data[0].questions[i].vendorID + ')>' + attachQA + '</a></td></tr>').appendTo("#tblquestions");
                       
                    }
@@ -372,6 +372,7 @@ function RFQFetchQuotedPriceReport() {
                 jQuery('#tblquestionsprev').append('<tr><td>No Record Found</td></tr>');
             }
             var version = 0;
+            
             if (data[0].attachments.length > 0) {
                 jQuery("#tblAttachments").empty();
                 jQuery("#tblAttachmentsprev").empty();
@@ -381,7 +382,7 @@ function RFQFetchQuotedPriceReport() {
                 jQuery('#tblAttachments').append("<thead><tr  style='background: gray; color: #FFF;'><th class='bold' style='width:30%!important'>Description</th><th class='bold'>Attachment</th></tr></thead>");
                 jQuery('#tblAttachmentsprev').append("<thead><tr><th class='bold' style='width:30%!important'>Description</th><th class='bold'>Attachment</th></tr></thead>");
                 
-                if(sessionStorage.getItem('RFQBidType')=='Open'){
+                if(sessionStorage.getItem('RFQBIDType')=='Open'){
                     jQuery('#tblAttachments').show();
                     jQuery('#tblAttachmentsprev').show();
                      

@@ -1,7 +1,7 @@
-debugger
+
 jQuery(document).ready(function () {
-    //callPagejs('eRFQAzPPCApproval.js');
-    debugger
+    
+    
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
