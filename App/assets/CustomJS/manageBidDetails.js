@@ -316,9 +316,9 @@ function fetchUserBids() {
         cache: false,
         dataType: "json",
         success: function (data) {
-            
+
             if (data.length > 0) {
-                
+
                 //sessionStorage.setItem('hdnAllBids', JSON.stringify(data));
                 hdnAllBids = JSON.stringify(data);
             }
@@ -355,24 +355,24 @@ var connection;
 jQuery("#txtbid").typeahead({
     source: function (query, process) {
         //var data = sessionStorage.getItem('hdnAllBids');
-          var data = hdnAllBids;
-        if(data.length > 0){
-      
-        usernames = [];
-        map = {};
-        var username = "";
-        jQuery.each(jQuery.parseJSON(data), function (i, username) {
-            map[username.bidSubject] = username;
-            usernames.push(username.bidSubject);
-        });
+        var data = hdnAllBids;
+        if (data.length > 0) {
 
-        process(usernames);
+            usernames = [];
+            map = {};
+            var username = "";
+            jQuery.each(jQuery.parseJSON(data), function (i, username) {
+                map[username.bidSubject] = username;
+                usernames.push(username.bidSubject);
+            });
+
+            process(usernames);
         }
     },
     minLength: 2,
     updater: function (item) {
         if (map[item].bidId != "0") {
-           
+
             if (connection != undefined && connection != null) {
                 connection.stop().then(function () {
                     console.log('Closed');
@@ -386,7 +386,7 @@ jQuery("#txtbid").typeahead({
                 connection.start({ transport: ['webSockets', 'serverSentEvents', 'foreverFrame', 'longPolling'] }).then(function () {
                     console.log("connection started")
                 }).catch(function (err) {
-                   
+
                     console.log(err.toString())
                     bootbox.alert("You are not connected to the Bid.Please contact to administrator.")
                 });
@@ -1178,7 +1178,7 @@ function sendremainderstoparicipants() {
             }
 
         });
-        
+
         var data = {
             "QueryString": checkedValue,
             "BidId": parseInt(sessionStorage.getItem("hdnbid")),
@@ -1406,7 +1406,7 @@ function fetchallexportdetails() {
     if (sessionStorage.getItem("hdnbidtypeid") == 9) {
         bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchFrenchConfigurationData/?BidID=" + jQuery('#ddlbid').val();
     }
-
+    debugger
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1416,6 +1416,7 @@ function fetchallexportdetails() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
+            debugger
             var localBidDate = fnConverToLocalTime(BidData[0].bidDetails[0].bidDate)
             $('#BidPreviewDiv').show()
             jQuery('#mapedapproverPrev').html('');
@@ -1970,7 +1971,7 @@ function fetchallexportdetails() {
             }
         },
         error: function (xhr, status, error) {
-
+            debugger
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -2495,7 +2496,7 @@ function fnupdateStaggerReopendatetime() {
         "Action": $('#ddlBidStatus option:selected').text(),//"Open",
         "UserID": sessionStorage.getItem('UserID')
     }
- 
+
     console.log(JSON.stringify(Data))
     connection.invoke("PauseStagger", JSON.stringify(Data)).catch(function (err) {
         return console.error(err.toString());
@@ -2534,7 +2535,7 @@ function fnGetPauseHistory() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-           
+
             $("#tblbidpauseHistory").empty();
             $("#tblbidpauseHistory").append(`<thead></thead><tbody></tbody>`);
             if (data.length > 0) {
@@ -3258,7 +3259,7 @@ function addrowfield() {
     var pricereductionamount = 0;
     var startDateTime = jQuery("#txtbidDatePrevtab_0").html();// + " " + jQuery("#txtbidTimePrevtab_0").html();
     //alert(jQuery("#txtbidDatePrevtab_0").html());
-    
+
 
     if ($('#txttargetprice').val() != '') {
         targetprice = $('#txttargetprice').val();
@@ -4812,7 +4813,7 @@ function fnsubmitRAPrePrices() {
 
                 singleQuery = $.trim($('#seid' + i).text()) + '~' + removeThousandSeperator(quote);
                 HeaderQuery = HeaderQuery + 'exec PE.BidParticipationInsUpdSeaExport ';
-               // HeaderQuery = HeaderQuery + "'" + $.trim($('#vid' + i).text()) + "'," + sessionStorage.getItem('hdnbid') + ",'" + singleQuery + "','" + $.trim($('#vid' + i).text()) + "'," + removeThousandSeperator(quote) + "," + $.trim($('#seid' + i).text()) + "," + $.trim($('#advfactor' + i).text()) + ",'N','Y' ; "
+                // HeaderQuery = HeaderQuery + "'" + $.trim($('#vid' + i).text()) + "'," + sessionStorage.getItem('hdnbid') + ",'" + singleQuery + "','" + $.trim($('#vid' + i).text()) + "'," + removeThousandSeperator(quote) + "," + $.trim($('#seid' + i).text()) + "," + $.trim($('#advfactor' + i).text()) + ",'N','Y' ; "
                 HeaderQuery = HeaderQuery + "'" + $.trim($('#vid' + i).text()) + "'," + sessionStorage.getItem('hdnbid') + ",'" + $.trim($('#vid' + i).text()) + "'," + removeThousandSeperator(quote) + "," + $.trim($('#seid' + i).text()) + "," + $.trim($('#advfactor' + i).text()) + ",'Y' ; "
             }
             i++;
@@ -4823,7 +4824,7 @@ function fnsubmitRAPrePrices() {
         if (BlockQuery != "" && BlockQuery != null) {
             validateSubmit = true;
         }
-        
+
         if (validateSubmit) {
             var Data = {
                 "BlockedItemQuery": BlockQuery,
@@ -5236,5 +5237,5 @@ $("#btndownloadTemplate").click(function (e) {
 
 function preventSubmit(event) {
     event.preventDefault(); // prevent default form submission behavior
-    
+
 }
