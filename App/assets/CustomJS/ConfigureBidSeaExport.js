@@ -605,6 +605,21 @@ $("#chkAll").click(function () {
 function Check(event, vname, vendorid, childid) {
 
 
+    //anurag not more than 75 vendor
+    if (vCount >= 75) {
+        bootbox.dialog({
+            message: "You can not add more than 75 vendors.",
+            buttons: {
+                confirm: {
+                    label: "OK",
+                    className: "btn-danger",
+
+                }
+            }
+        });
+        return false;
+    }
+
     if ($(event).closest("span#spanchecked").attr('class') == 'checked') {
         $(event).closest("span#spanchecked").removeClass("checked")
     }
@@ -3336,7 +3351,18 @@ function getCategoryWiseVendors(categoryID) {
 
                 jQuery('#tblvendorlist > tbody').append(str);
 
+                //anurag starts here
+                if (data.length > 75) {
+                    $(".checkboxinline1").hide();
+
+                } else {
+                    $(".checkboxinline1").show();
+
+                }
+                //anurag ends here
+
             }
+
 
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {

@@ -42,24 +42,7 @@ $('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
 $("#cancelBidBtn").hide();
 
 $('#spinner4').spinner({ value: 1, step: 1, min: 1, max: 10 });
-jQuery(document).ready(function () {
-    /* $("#txtCeilingPrice,#txtquantitiy,#txtmaxquantitiy,#txtminquantitiy,#txtminimumdecreament,#txtStartingPrice,#txtPriceReductionAmount").inputmask({
-         alias: "decimal",
-         rightAlign: true,
-         groupSeparator: ",",
-         radixPoint: ".",
-         autoGroup: true,
-         integerDigits: 40,
-         digitsOptional: true,
-         allowPlus: false,
-         allowMinus: false,
-         clearMaskOnLostFocus: true,
-         supportsInputType: ["text", "tel", "password"],
-         'removeMaskOnSubmit': true,
-         autoUnmask: true
- 
-     });*/
-});
+
 
 var _BidID;
 var _savedDraft = '';
@@ -195,7 +178,7 @@ function fnApproversQuery(EmailID, UserID, UserName) {
                 maxidnum = num;
             }
         });
-      
+
         rownum = parseInt(maxidnum) + 1;
         if (!jQuery("#tblapprovers thead ").length) {
             jQuery("#tblapprovers").append(`<thead></thead><tbody></tbody>`)
@@ -266,10 +249,8 @@ function fnApproversQuery(EmailID, UserID, UserName) {
     }
 }
 function deleteApprow(rowid) {
-   
+
     rowApp = rowApp - 1;
-    // $('#' + rowid.id).remove();
-    //$('#' + rowidPrev.id).remove();
     $('#trAppid' + rowid).remove();
     $('#trAppidPrev' + rowid).remove();
     $('#trpreAppid' + rowid).remove();
@@ -393,7 +374,6 @@ function addBidpreApprovers(EmailID, UserID, UserName) {
 function deletepreApprow(rowid) {
 
     rowpreBidApp = rowpreBidApp - 1;
-    // $('#' + rowid.id).remove();
     $('#trpreAppid' + rowid).remove();
     var rowCount = jQuery('#tblpreBidapprovers >tbody>tr').length;
     var i = 1;
@@ -454,6 +434,24 @@ function FetchCurrency(CurrencyID) {
 }
 var vCount = 0;
 function Check(event, vname, vendorid, childid) {
+    //anurag not more than 75 vendor
+    if (vCount >= 75) {
+        bootbox.dialog({
+            message: "You can not add more than 75 vendors.",
+            buttons: {
+                confirm: {
+                    label: "OK",
+                    className: "btn-danger",
+
+                }
+            }
+        });
+        return false;
+    }
+
+
+
+
 
     if ($(event).closest("span#spanchecked").attr('class') == 'checked') {
 
@@ -463,7 +461,6 @@ function Check(event, vname, vendorid, childid) {
 
     else {
         vCount = vCount + 1;
-        //var EvID = event.id;
         $(event).prop("disabled", true);
         $(event).closest("span#spanchecked").addClass("checked")
         jQuery('#selectedvendorlists').append('<tbody><tr id=SelecetedVendor' + childid + '><td class="hide vendorTblId">' + vendorid + '</td><td class="hide childTblId">' + childid + '</td><td>' + vname + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + childid + ',SelecetedVendorPrev' + childid + ',' + childid + ')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr></tbody>')
@@ -589,7 +586,6 @@ function fetchRegisterUser() {
     }
     var url = sessionStorage.getItem("APIPath") + "RegisterUser/fetchRegisterUser";
     jQuery.ajax({
-        //type: "GET",
         type: "POST",
         contentType: "application/json; charset=utf-8",
         url: url,
@@ -624,7 +620,6 @@ function fetchRegisterUser() {
 
 
     });
-    //allUsers = RegisterUser_fetchRegisterUser(data);
 
 }
 
@@ -1474,13 +1469,13 @@ function InsUpdProductSevices() {
 
     //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />Please Wait...</h5>' });
     if (form.valid() == true) {
-       
+
         var st = "true"
         var i = 0;
         if ($('#add_or').text() == "Modify") {
             st = "true"
             $("#tblServicesProduct tr:gt(0)").each(function () {
-                
+
                 var this_row = $(this);
                 i = (this_row.closest('tr').attr('id')).substring(4);
                 // if ($.trim($('#itemname' + i).html()) == $('#txtshortname').val() && $.trim($('#TP' + i).html()) != $('#txttargetprice').val() && $.trim($('#quan' + i).html()) != $("#txtquantitiy").val() && $.trim($('#uom' + i).html()) != $("#txtUOM").val() && $.trim($('#BSP' + i).html()) != $('#txtCeilingPrice').val() && $.trim($('#maskvendor' + i).html()) != $('#checkmaskvendor option:selected').val() && $.trim($('#mininc' + i).html()) != $('#txtminimumdecreament').val() && $.trim($('#inconval' + i).html()) != $('#drpdecreamenton option:selected').val() && $.trim($('#LIP' + i).html()) != $('#txtlastinvoiceprice').val()) {
@@ -1585,7 +1580,7 @@ function InsUpdProductSevices() {
 
         else {
             st = "true";
-          
+
             if (parseInt(removeThousandSeperator($('#txtminimumdecreament').val())) > parseInt(removeThousandSeperator($('#txtCeilingPrice').val()))) {
                 error.show();
                 $('#spandanger').html('Minimum increment should be less than Start Unit Price.');
@@ -2004,7 +1999,7 @@ function fetchFrenchBidDetails() {
             $('#filepthterms').html(BidData[0].bidDetails[0].termsConditions);
             $('#filepthattach').html(BidData[0].bidDetails[0].attachment);
 
-         
+
             jQuery("#tblapprovers,#tblpreBidapprovers").empty();
             jQuery("#tblapproversPrev,#tblpreBidapprovers1").empty();
             $('#wrap_scrollerPrevApp').show();
@@ -2303,7 +2298,6 @@ function fetchPSBidDetailsForPreview() {
     $("#ddlauctiontypePrev").html($("#ddlAuctiontype option:selected").html())
     jQuery('#txtbiddescriptionPrev').html(StringEncodingMechanism($('#txtbiddescription').val()))
     jQuery('#txtbidDatePrev').html($('#txtbidDate').val())
-    //jQuery('#txtbidTimePrev').html($('#txtbidTime').val())
     jQuery("#dropCurrencyPrev").html($('#dropCurrency option:selected').text())
     jQuery('#txtConversionRatePrev').html($('#txtConversionRate').val())
     jQuery('#noofextensionprev').text($('#txtBidExtension option:selected').text())

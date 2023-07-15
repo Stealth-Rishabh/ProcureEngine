@@ -501,6 +501,21 @@ $("#chkAll").click(function () {
 });
 function Check(event, vname, vendorid, childid) {
 
+    //anurag not more than 75 vendor
+    if (vCount >= 75) {
+        bootbox.dialog({
+            message: "You can not add more than 75 vendors.",
+            buttons: {
+                confirm: {
+                    label: "OK",
+                    className: "btn-danger",
+
+                }
+            }
+        });
+        return false;
+    }
+
     if ($(event).closest("span#spanchecked").attr('class') == 'checked') {
 
         $(event).closest("span#spanchecked").removeClass("checked")
@@ -1323,7 +1338,7 @@ function ConfigureBidForCoalTab2() {
             if ($.trim(this_row.find('td:eq(14)').html()) != null && $.trim(this_row.find('td:eq(14)').html()) != '') {
                 _gst = parseFloat(removeThousandSeperator($.trim(this_row.find('td:eq(14)').html())))
             }
-            debugger
+
             tab2Items = {
                 "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
                 "ItemCode": $.trim(this_row.find('td:eq(2)').html()),
@@ -1382,7 +1397,7 @@ function ConfigureBidForCoalTab2() {
         data: JSON.stringify(Tab2data),
         dataType: "json",
         success: function (data) {
-            debugger
+
             if (parseInt(data) > 0) {
                 if ($('#ddlbidclosetype').val() == "S") {
                     $('#txtBidDuration').val(BidDuration)
@@ -1397,7 +1412,7 @@ function ConfigureBidForCoalTab2() {
 
         },
         error: function (xhr, status, error) {
-            debugger
+
             var err = xhr.responseText //eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -2438,7 +2453,7 @@ function getCategoryWiseVendors(categoryID) {
         cache: false,
         dataType: "json",
         success: function (data) {
-            debugger
+
             jQuery("#tblvendorlist > tbody").empty();
             var vName = '';
             for (var i = 0; i < data.length; i++) {
