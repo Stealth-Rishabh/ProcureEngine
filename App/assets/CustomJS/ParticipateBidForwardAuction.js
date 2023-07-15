@@ -90,7 +90,7 @@ connection.on("disconnectSR", function (connectionId) {
 });*/
 
 connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
-
+    debugger
 
     let data = JSON.parse(rdataJson)
 
