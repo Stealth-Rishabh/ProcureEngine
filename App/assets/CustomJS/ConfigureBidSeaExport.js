@@ -1399,7 +1399,7 @@ function ConfigureBidForSeaExportTab1() {
         success: function (data) {
 
             if ($('#ddlAuctiontype option:selected').val() == "83") {
-                $('#checkmaskL1price').val("Y").attr("disabled", true);
+                $('#checkmaskL1price').val("Y");/*.attr("disabled", true);*/
                 var i = 0;
                 $("#tblServicesProduct tr:gt(0)").each(function () {
 
@@ -1786,7 +1786,7 @@ function ConfigureBidForSeaExportTab3() {
             return false;
         }
     });
-    debugger
+
     var Tab3data = {
         "BidVendors": bidvendorsarr,
         "BidID": parseInt(sessionStorage.getItem('CurrentBidID'))
@@ -1801,8 +1801,8 @@ function ConfigureBidForSeaExportTab3() {
         async: false,
         data: JSON.stringify(Tab3data),
         dataType: "json",
-        success: function (data,xhr) {
-            debugger
+        success: function (data) {
+
             if (parseInt(data) > 0) {
                 jQuery.unblockUI();
                 $('#BidPreviewDiv').show();
@@ -1820,7 +1820,7 @@ function ConfigureBidForSeaExportTab3() {
             }
         },
         error: function (xhr, status, error) {
-            debugger
+
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -2545,7 +2545,7 @@ function resetfun() {
     $('#checkshowstartprice').val('Y');
     showhideItemBidDuration()
     if ($('#ddlAuctiontype option:selected').val() == "83") {
-        $('#checkmaskL1price').val("Y").attr("disabled", true);
+        $('#checkmaskL1price').val("Y")/*.attr("disabled", true);*/
     }
     else {
         $('#checkmaskL1price').val("N").attr("disabled", false);
@@ -2959,7 +2959,7 @@ function hideshowDuration() {
         $("#txtBidDuration").val(0);
         $('#checkmaskL1price').val('Y');
         $('#drpshowL1L2').val('Y');
-        $('#checkmaskL1price').attr('disabled', true);
+        /* $('#checkmaskL1price').attr('disabled', true);*/
         $('#ddlbidclosetype').attr('disabled', false);
         $('#btnexcel').show()
         $('#pullRFQ').show()
@@ -3959,7 +3959,7 @@ function fetchRFIRFQSubjectforReport(subjectFor) {
     });
 
 }
-
+let pullflag = false
 jQuery("#txtrfirfqsubject").typeahead({
     source: function (query, process) {
 
@@ -3979,7 +3979,9 @@ jQuery("#txtrfirfqsubject").typeahead({
     updater: function (item) {
 
         if (map[item].rfqid != '0') {
+            pullflag = true
             $('#hdnRfiRfqID').val(map[item].rfqid);
+
             fnpulldatafromRFQ();
         }
         else {
@@ -3997,12 +3999,21 @@ jQuery("#txtrfirfqsubject").typeahead({
     }
 
 });
+
+
+
+
 jQuery("#txtrfirfqsubject").keyup(function () {
-    $('#hdnRfiRfqID').val(0);
+
+    if (pullflag == false) {
+        $('#hdnRfiRfqID').val(0);
+    }
+
 
 
 });
 function fnpulldatafromRFQ() {
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if ($('#hdnRfiRfqID').val() == "0") {
 
@@ -4016,6 +4027,7 @@ function fnpulldatafromRFQ() {
         return false;
     }
     else {
+
         populatetablewithRFQData();
     }
 }
@@ -4041,10 +4053,9 @@ function populatetablewithRFQData() {
         url: sessionStorage.getItem("APIPath") + "ConfigureBid/FetcheRFQParameterseRAItems/?RFQID=" + $('#hdnRfiRfqID').val() + "&Version=0",// Version is optional if required will use.
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
-        async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            debugger
+            pullflag = false
             if (data.length > 0) {
                 /* if (ispulledrfqcounter == 0) {
                      jQuery("#tblServicesProduct").empty();
@@ -4171,6 +4182,7 @@ function populatetablewithRFQData() {
 
         },
         error: function (xhr) {
+            pullflag = false
             jQuery('#divalerterrpull').slideDown('show');
             $('#spanerterrpull').text('You have error .Please try again after page refresh.')
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
