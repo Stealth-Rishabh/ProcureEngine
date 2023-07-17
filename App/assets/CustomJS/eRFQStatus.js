@@ -42,7 +42,7 @@ sessionStorage.setItem("EventId", RFQID);
 sessionStorage.setItem("EventType", 'eRFQs');
 
 function FetchInvitedVendorsForeRFQ() {
-    debugger
+
     jQuery.ajax({
         //url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchInvitedVendors/?RFQID=" + RFQID + "&Userid=" + encodeURIComponent(sessionStorage.getItem('UserID')) + '&CustomerID=' + sessionStorage.getItem('CustomerID'),
         url: sessionStorage.getItem("APIPath") + "eRFQReport/eRFQFetchInvitedVendors/?RFQID=" + RFQID,
@@ -51,7 +51,7 @@ function FetchInvitedVendorsForeRFQ() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            debugger
+
             if (data.length > 0) {
                 $('#tblVendorSummary tbody').empty();
                 $('#displayTable').show();
@@ -65,10 +65,11 @@ function FetchInvitedVendorsForeRFQ() {
                 //  $('#rq_deadline').html(data[0].deadline);
                 $('#rq_description').html(data[0].rqDescription);
                 $("#deadlineModal").html(fnConverToLocalTime(data[0].deadline));
-
+                let _responsedate = '';
                 for (var i = 0; i < data.length; i++) {
-
-                    $('#tblVendorSummary').append(jQuery('<tr><td class="hide">' + data[i].vendorID + '</td><td>' + data[i].vendorName + ' ( ' + data[i].contactPerson + ' , ' + data[i].vendorEmail + ' , ' + data[i].phoneNo + ' )</td><td>' + data[i].rqStatus + '</td><td>' + fnConverToLocalTime(data[i].responseDate) + '</td><td class=hide>' + data[i].vendorEmail + '</td></tr>')); //<td>' + data[i].ResponseDate + ' - ' + data[i].ResponseTime + '</td>
+                    debugger
+                    _responsedate = data[i].responseDate || '';
+                    $('#tblVendorSummary').append(jQuery('<tr><td class="hide">' + data[i].vendorID + '</td><td>' + data[i].vendorName + ' ( ' + data[i].contactPerson + ' , ' + data[i].vendorEmail + ' , ' + data[i].phoneNo + ' )</td><td>' + data[i].rqStatus + '</td><td>' + _responsedate + '</td><td class=hide>' + data[i].vendorEmail + '</td></tr>')); //<td>' + data[i].ResponseDate + ' - ' + data[i].ResponseTime + '</td>
                     if (data[i].rqStatus.toLowerCase() != 'close' && data[i].rqStatus.toLowerCase != 'regretted') {
                         $('#send_remainder').removeClass('hide')
                     }
@@ -76,7 +77,7 @@ function FetchInvitedVendorsForeRFQ() {
             }
         },
         error: function (xhr, status, error) {
-            debugger
+
             var err = xhr.responseText //eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -237,7 +238,6 @@ function CancelRFIRFQ(MailPermit) {
 
 }
 function ViewReport() {
-    debugger;
     var encrypdata = fnencrypt("RFQID=" + RFQID + "&RFQSubject=" + ($('#rq_subject').text()) + "Type=");//encodeURIComponent
     if (sessionStorage.getItem('CustomerID') != "32") {
 
