@@ -559,53 +559,54 @@ function fetchparticationQuotes() {
         success: function (data) {
             $('#tblquotedprices').show()
             jQuery('#tblquotedprices').empty()
+            jQuery('#tblquotedprices').append(`<thead></thead><tbody></tbody>`)
             var shortname = "";
             if (data.length > 0) {
                 if (sessionStorage.getItem("hdnbidtypeid") == 7) {
                     $('#tbllbl').removeClass('display-none')
                     $('#tbldiv').removeClass('col-lg-12')
                     $('#tbldiv').addClass('col-lg-10')
-                    $('#tblquotedprices').append('<thead><tr style="background: gray; color: #FFF"><th>ShortName</th><th>Quoted Price</th><th>Submission Time</th><th>Action</th></tr></thead>')
+                    $('#tblquotedprices>thead').append('<tr style="background: gray; color: #FFF"><th>ShortName</th><th>Quoted Price</th><th>Submission Time</th><th>Action</th></tr>')
                     for (var i = 0; i < data.length; i++) {
 
                         shortname = (data[i].shortName).replace(/(\r\n|\n|\r)/gm, "");
-                        $('#tblquotedprices').append('<tr><td>' + data[i].shortName + '</td><td>' + data[i].quotedPrice + '</td><td>' + fnConverToLocalTime(data[i].submissionTime) + '</td><td><a href="#" class="btn  btn-icon-only btn-danger" onclick="removeQuote(\'' + data[i].rowid + '\')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+                        $('#tblquotedprices>tbody').append('<tr><td>' + data[i].shortName + '</td><td>' + data[i].quotedPrice + '</td><td>' + fnConverToLocalTime(data[i].submissionTime) + '</td><td><a href="#" class="btn  btn-icon-only btn-danger" onclick="removeQuote(\'' + data[i].rowid + '\')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
                     }
                 }
                 else if (sessionStorage.getItem("hdnbidtypeid") == 8) {
                     $('#tbllbl').removeClass('display-none')
                     $('#tbldiv').removeClass('col-lg-12')
                     $('#tbldiv').addClass('col-lg-10')
-                    $('#tblquotedprices').append('<thead><tr style="background: gray; color: #FFF"><th>ShortName</th><th>Quoted Price</th><th>Submission Time</th><th>Action</th></tr></thead>')
+                    $('#tblquotedprices>thead').append('<tr style="background: gray; color: #FFF"><th>ShortName</th><th>Quoted Price</th><th>Submission Time</th><th>Action</th></tr>')
                     for (var i = 0; i < data.length; i++) {
 
                         shortname = (data[i].shortName).replace(/(\r\n|\n|\r)/gm, "");
-                        $('#tblquotedprices').append('<tr><td>' + data[i].shortName + '</td><td>' + data[i].quotedPrice + '</td><td>' + fnConverToLocalTime(data[i].submissionTime) + '</td><td><a href="#" class="btn  btn-icon-only btn-danger" onclick="removeQuote(\'' + data[i].rowid + '\')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+                        $('#tblquotedprices>tbody').append('<tr><td>' + data[i].shortName + '</td><td>' + data[i].quotedPrice + '</td><td>' + fnConverToLocalTime(data[i].submissionTime) + '</td><td><a href="#" class="btn  btn-icon-only btn-danger" onclick="removeQuote(\'' + data[i].rowid + '\')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
                     }
                 }
                 else if (sessionStorage.getItem("hdnbidtypeid") == 6) {
                     $('#tbllbl').removeClass('display-none')
                     $('#tbldiv').removeClass('col-lg-12')
                     $('#tbldiv').addClass('col-lg-10')
-                    $('#tblquotedprices').append('<thead><tr style="background: gray; color: #FFF"><th>ShortName</th><th>Quoted Price</th><th>Submission Time</th><th>Action</th></tr></thead>')
+                    $('#tblquotedprices>thead').append('<tr style="background: gray; color: #FFF"><th>ShortName</th><th>Quoted Price</th><th>Submission Time</th><th>Action</th></tr>')
                     for (var i = 0; i < data.length; i++) {
                         shortname = (data[i].shortName).replace(/(\r\n|\n|\r)/gm, "");
-                        $('#tblquotedprices').append('<tr><td>' + data[i].shortName + '</td><td>' + data[i].quotedPrice + '</td><td>' + fnConverToLocalTime(data[i].submissionTime) + '</td><td><a href="#" class="btn  btn-icon-only btn-danger" onclick="removeQuote(\'' + data[i].rowid + '\')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+                        $('#tblquotedprices>tbody').append('<tr><td>' + data[i].shortName + '</td><td>' + data[i].quotedPrice + '</td><td>' + fnConverToLocalTime(data[i].submissionTime) + '</td><td><a href="#" class="btn  btn-icon-only btn-danger" onclick="removeQuote(\'' + data[i].rowid + '\')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
                     }
                 }
                 else if (sessionStorage.getItem("hdnbidtypeid") == 9) {
                     $('#tbllbl').removeClass('display-none')
                     $('#tbldiv').removeClass('col-lg-12')
                     $('#tbldiv').addClass('col-lg-10')
-                    $('#tblquotedprices').append('<thead><tr style="background: gray; color: #FFF"><th>ShortName</th><th>Quoted Price</th><th>Submission Time</th><th>Action</th></tr></thead>')
+                    $('#tblquotedprices>thead').append('<tr style="background: gray; color: #FFF"><th>ShortName</th><th>Quoted Price</th><th>Submission Time</th><th>Action</th></tr>')
                     for (var i = 0; i < data.length; i++) {
                         shortname = (data[i].shortName).replace(/(\r\n|\n|\r)/gm, "");
-                        $('#tblquotedprices').append('<tr><td>' + data[i].shortName + '</td><td>' + data[i].quotedPrice + '</td><td>' + fnConverToLocalTime(data[i].submissionTime) + '</td><td><a href="#" class="btn  btn-icon-only btn-danger" onclick="removeQuote(\'' + data[i].frenchDetailRowID + '\')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+                        $('#tblquotedprices>tbody').append('<tr><td>' + data[i].shortName + '</td><td>' + data[i].quotedPrice + '</td><td>' + fnConverToLocalTime(data[i].submissionTime) + '</td><td><a href="#" class="btn  btn-icon-only btn-danger" onclick="removeQuote(\'' + data[i].frenchDetailRowID + '\')"><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
                     }
                 }
             }
             else {
-                $('#tblquotedprices').append('<tr><td>No Record found</td></tr>');
+                $('#tblquotedprices>tbody').append('<tr><td>No Record found</td></tr>');
 
             }
 
@@ -1392,7 +1393,7 @@ var FlagForCheckShowPrice = "N";
 function fetchallexportdetails() {
     var bidTypeFetchUrl = '';
     $('#extendedDurationPara').hide();
-
+    debugger
     if (sessionStorage.getItem("hdnbidtypeid") == 6) {
         //bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchPefaConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val();
         bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchPefaConfigurationData/?BidID=" + jQuery('#ddlbid').val();
