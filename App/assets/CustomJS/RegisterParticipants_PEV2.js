@@ -39,6 +39,7 @@ jQuery(document).ready(function () {
     fetchBidType();// for serach vendor
     clearform();
     fetchCountry();
+    prev_next();
     //abheedev 25/11/2022
 
     $('#txtsearchcat').select2({
@@ -4159,17 +4160,19 @@ function replaceQuoutesFromString_PEV2(ele) {
 }
 
 function setupPagination(pageNumber) {
+    
     const pagination = document.querySelector("#paginationid1");
     pagination.innerHTML = "";
     var pageno = 0;
 
-    /*  var onelotsize = pageNumber+3;
-      if (pageNumber > numberOfPages) {
-          pageNumber = numberOfPages;
-          onelotsize = numberOfPages;
-      }*/
+    if (pageNumber > 1) {
+        $('.previousbtn').show()
+    }
+    else {
+        $('.previousbtn').hide()
+    }
     console.log(pageNumber);
-
+    
     for (let i = 1; i <= numberOfPages; i++) {
         // console.log(i);
         var listart = "<li class=page-item id=" + i + ">";
@@ -4225,10 +4228,22 @@ function setupPagination(pageNumber) {
 }
 
 function gotopage_directly(ele) {
+    debugger
     pageNumber = ele.value;
+    if (pageNumber > 1) {
+        $('.previousbtn').show()
+    }
+    else {
+        $('.previousbtn').hide()
+    }
 
     if (pageNumber > 0) {
         fetchParticipantsVenderTableFilter(pageNumber, SearchText);
     }
 
+}
+
+
+function prev_next() {
+    $('.previousbtn').hide()
 }
