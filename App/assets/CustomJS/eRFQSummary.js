@@ -82,7 +82,7 @@ function fetchregisterusers() {
             }
             if (data[0].role.toLowerCase() == "user" && data[0].roleName.toLowerCase() != "reports") {
                 jQuery("#ddlconfiguredby").select2('val', data[0].userID);
-               // jQuery("#ddlconfiguredby").prop('disabled', true)
+                // jQuery("#ddlconfiguredby").prop('disabled', true)
             }
         },
         error: function (xhr, status, error) {
@@ -115,7 +115,8 @@ function formvalidate() {
         rules: {
             ddlconfiguredby: {
                 required: true
-            },
+            }
+            ,
             ddlbidstatus: {
                 required: true
             }
@@ -229,7 +230,7 @@ function fetchRFQVendorSummary() {
         "UserID": sessionStorage.getItem('UserID')
     };
 
-jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     jQuery.ajax({
         type: "POST",
@@ -242,22 +243,22 @@ jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-            
-         
 
-             jQuery("#tblVendorSummary").empty();
-             jQuery("#tblVendorSummary").append(`<thead></thead><tbody></tbody>`);
+
+
+            jQuery("#tblVendorSummary").empty();
+            jQuery("#tblVendorSummary").append(`<thead></thead><tbody></tbody>`);
             //jQuery('#tblVendorSummary').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold hide'>RFQ StartDate</th><th class='bold'>RFQ EndDate</th><th class='bold'>Currency</th><th class='bold'>RFQ Status</th></tr></thead>");
             //Sid RFQ Stages
             jQuery('#tblVendorSummary>thead').append("<tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>RFQ Config Date</th><th class='bold'>RFQ StartDate</th><th class='bold'>RFQ EndDate</th><th class='bold'>Currency</th><th class='bold'>RFQ Status</th></tr>");
             if (BidData.length > 0) {
-               
+
                 let _subject = "";
-               
+
                 for (var i = 0; i < BidData.length; i++) {
-                   
+
                     _subject = StringDecodingMechanism(BidData[i].rfqSubject)
-                   var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(_subject) + "'\) href='javascript:;'>" + BidData[i].rfqid + "</a></td>";
+                    var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].rfqid + "'\,\'" + encodeURIComponent(_subject) + "'\) href='javascript:;'>" + BidData[i].rfqid + "</a></td>";
                     str += "<td>" + BidData[i].rfqSubject + "</td>";
                     str += "<td>" + BidData[i].rfqConfiguredBy + "</td>";
                     str += "<td>" + fnConverToLocalTime(BidData[i].rfqConfigureDate) + "</td>";
@@ -274,7 +275,7 @@ jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />
                     str += "</tr>";
                     jQuery('#tblVendorSummary>tbody').append(str);
                 }
-               
+
                 var table = $('#tblVendorSummary');
                 table.removeAttr('width').dataTable({
                     "bDestroy": true,
@@ -292,7 +293,7 @@ jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />
                     dom: 'Bfrtip',
                     buttons: [
                         'pageLength',
-                       
+
                         {
                             extend: 'excelHtml5',
                             text: '<i class="fa fa-file-excel-o"></i> Excel',
@@ -300,8 +301,8 @@ jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />
                                 columns: ':visible',
                                 format: {
                                     body: function (data, column, node) {
-                                    
-                                         if (column === 0) {
+
+                                        if (column === 0) {
                                             let text = data.match(/>([^<]+)</)[1];
                                             return parseFloat(text);
                                         }
@@ -338,13 +339,13 @@ jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />
 
                 });
                 var tableWrapper = $('#tblVendorSummary_wrapper'); // datatable creates the table wrapper by adding with id {your_table_jd}_wrapper
-                 jQuery.unblockUI();    
+                jQuery.unblockUI();
 
 
             }
             else {
                 jQuery('#tblVendorSummary >tbody').append("<tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr>");
-                $('#tblVendorSummary').dataTable({
+                /*$('#tblVendorSummary').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
                     "bLengthChange": false,
@@ -354,8 +355,8 @@ jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />
                     "bSort": true
 
 
-                });
-                 jQuery.unblockUI();
+                });*/
+                jQuery.unblockUI();
             }
         },
         error: function (xhr, status, error) {
@@ -373,7 +374,7 @@ jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />
         }
     });
 }
-function getSummary(RFQID,subject) {    
+function getSummary(RFQID, subject) {
     let _subject = StringDecodingMechanism(subject)
     var encrypdata = fnencrypt("RFQID=" + RFQID + "&RFQSubject=" + _subject)
     if (sessionStorage.getItem("CustomerID") != 32) {
@@ -427,7 +428,7 @@ function fetchBidVendorSummaryDetail() {
         "UserID": sessionStorage.getItem('UserID')
     };
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    
+
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -452,7 +453,7 @@ function fetchBidVendorSummaryDetail() {
                 let _subject = "";
                 let totalSavingLIP = "";
                 let totalSavingTP = "";
-              
+
                 for (var i = 0; i < BidData.length; i++) {
                     _subject = StringDecodingMechanism(BidData[i].rfqSubject)
                     totalSavingLIP = ((BidData[i].rfqLastInvoicePrice - BidData[i].minPrice) * BidData[i].quantity).round(2)
@@ -520,7 +521,7 @@ function fetchBidVendorSummaryDetail() {
                         str += '<td class=text-right>' + 0 + '</td>';
                     }
                     if (BidData[i].rfqTargetPrice != 0) {
-                        
+
                         if (totalSavingTP < 0) {
                             str += "<td class=text-right>" + 0 + "</td>"
                         }
@@ -528,7 +529,7 @@ function fetchBidVendorSummaryDetail() {
                             str += "<td class=text-right>" + thousands_separators(totalSavingTP) + "</td>"
                         }
 
-                       
+
                     }
                     else {
 
@@ -552,7 +553,7 @@ function fetchBidVendorSummaryDetail() {
                     dom: 'Bfrtip',
                     buttons: [
                         'pageLength',
-                    
+
                         {
                             extend: 'excelHtml5',
                             exportOptions: {
@@ -606,7 +607,7 @@ function fetchBidVendorSummaryDetail() {
             }
             else {
                 jQuery('#tblVendorSummarydetails>tbody').append("<tr><td colspan='14' style='text-align: center; color:red;'>No record found</td></tr>");
-                $('#tblVendorSummarydetails').dataTable({
+                /*$('#tblVendorSummarydetails').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
                     "bLengthChange": false,
@@ -616,7 +617,7 @@ function fetchBidVendorSummaryDetail() {
                     "bSort": true
 
 
-                });
+                });*/
                 jQuery.unblockUI();
             }
         },
@@ -630,7 +631,7 @@ function fetchBidVendorSummaryDetail() {
                 fnErrorMessageText('error', '');
             }
             jQuery.unblockUI();
-            return false; 
+            return false;
         }
     });
 }
@@ -754,8 +755,8 @@ function fetchBidVendorSummarySummarization() {
         "RFQSubject": subject,
         "UserID": sessionStorage.getItem('UserID')
     };
-        jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-        
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -767,16 +768,16 @@ function fetchBidVendorSummarySummarization() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-           
+
             var BidLIP = stringDivider("RFQ Value at Last Invoice Price(LIP)", 45, "<br/>\n");
             var BidTP = stringDivider("RFQ Value at Target/Budget Price(TP)", 45, "<br/>\n");
             var BidFinal = stringDivider("RFQ Value as per L1", 45, "<br/>\n");
             var savinfLIP = stringDivider("Total Saving wrt LIP", 40, "<br/>\n");
             var savinfTR = stringDivider("Total Saving wrt TP", 40, "<br/>\n");
-            
+
             jQuery("#tblVendorSummarySUmzation").empty();
             jQuery("#tblVendorSummarySUmzation").append(`<thead></thead><tbody></tbody>`);
-            
+
             //Sid RFQ Stages
             jQuery('#tblVendorSummarySUmzation>thead').append("<tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold'>Configure Date</th><th class='bold'>Start Date</th><th class='bold'>RFQ Deadline</th><th class='bold'>Currency</th><th class='bold'>" + BidLIP + "</th><th class='bold'>" + BidTP + "</th><th class='bold'>" + BidFinal + "</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfTR + "</th></tr>");
 
@@ -803,7 +804,7 @@ function fetchBidVendorSummarySummarization() {
                     str += "<td class=text-right>" + thousands_separators(BidData[i].rfqValueAsTargetPrice) + "</td>";
                     str += "<td class=text-right>" + thousands_separators(BidData[i].rfqValueAsMinPrice) + "</td>";
                     if (BidData[i].RFQValueAsLastInvoicePrice != 0) {
-                      
+
                         if (totalSavingLIP < 0) {
                             str += "<td class=text-right>" + 0 + "</td>";
                         }
@@ -816,7 +817,7 @@ function fetchBidVendorSummarySummarization() {
                         str += "<td class=text-right>" + 0 + "</td>"
                     }
                     if (BidData[i].rfqValueAsTargetPrice != 0) {
-                       
+
                         if (totalSavingTP < 0) {
                             str += "<td class=text-right>" + 0 + "</td>";
                         }
@@ -833,7 +834,7 @@ function fetchBidVendorSummarySummarization() {
 
                     jQuery('#tblVendorSummarySUmzation>tbody').append(str);
                 }
-        
+
                 var table = $('#tblVendorSummarySUmzation');
                 table.removeAttr('width').dataTable({
                     "bDestroy": true,
@@ -848,7 +849,7 @@ function fetchBidVendorSummarySummarization() {
                     dom: 'Bfrtip',
                     buttons: [
                         'pageLength',
-                      
+
                         {
                             extend: 'excelHtml5',
                             text: '<i class="fa fa-file-excel-o"></i> Excel',
@@ -898,7 +899,7 @@ function fetchBidVendorSummarySummarization() {
             }
             else {
                 jQuery('#tblVendorSummarySUmzation>tbody').append("<tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr>");
-                $('#tblVendorSummarySUmzation').dataTable({
+                /*$('#tblVendorSummarySUmzation').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
                     "bLengthChange": false,
@@ -908,7 +909,7 @@ function fetchBidVendorSummarySummarization() {
                     "bSort": true
 
 
-                });
+                });*/
                 jQuery.unblockUI();
             }
         },
