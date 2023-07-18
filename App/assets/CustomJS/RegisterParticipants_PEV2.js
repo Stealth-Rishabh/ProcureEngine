@@ -381,6 +381,9 @@ function RegisterParticipants() {
     let cleanTradeName = StringEncodingMechanism(jQuery("#TradeName").val());
 
     var encodedcontactperson = StringEncodingMechanism(jQuery("#ContactName").val());
+    var encodedaltcontactperson = StringEncodingMechanism(jQuery("#AltContactName").val());
+
+    
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
@@ -423,6 +426,7 @@ function RegisterParticipants() {
             "AlternateEmailID": $('#txtAlternateeMailID').val(),
             "ParticipantName": _cleanString,
             "ContactPerson": encodedcontactperson,
+            "ContactPersonAlt": encodedaltcontactperson,
             "MobileNo": jQuery("#txtMobileNo").val(),
             "PhoneNo": jQuery("#txtPhoneNo").val(),
             "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
@@ -463,6 +467,7 @@ function RegisterParticipants() {
             "AlternateEmailID": $('#txtAlternateeMailID').val(),
             "ParticipantName": _cleanString,
             "ContactPerson": encodedcontactperson,
+            "ContactPersonAlt": encodedaltcontactperson,
             "MobileNo": jQuery("#txtMobileNo").val(),
             "PhoneNo": jQuery("#txtPhoneNo").val(),
             "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
@@ -503,6 +508,7 @@ function RegisterParticipants() {
             "AlternateEmailID": $('#txtAlternateeMailID').val(),
             "ParticipantName": _cleanString,
             "ContactPerson": encodedcontactperson,
+            "ContactPersonAlt": encodedaltcontactperson,
             "MobileNo": jQuery("#txtMobileNo").val(),
             "PhoneNo": jQuery("#txtPhoneNo").val(),
             "DialingCode": parseInt(jQuery("#ddlCountryCd option:selected").val()),
@@ -1603,7 +1609,6 @@ function fnfetchfoundVendors() {
             crossDomain: true,
             dataType: "json",
             success: function (data) {
-
                 if (!data.isVendorPresent) {
                     $("#hdnFlagType").val("New")
                     $('#divVendorForm').removeClass('hide')
