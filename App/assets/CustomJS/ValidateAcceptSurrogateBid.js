@@ -2,12 +2,12 @@ var param = getUrlVars()["param"]
 var decryptedstring = fndecrypt(param)
 
 var BIDID = getUrlVarsURL(decryptedstring)["BidID"];
-debugger
+
 
 var BIDTypeID = '';
 var BidClosingType = '';
 sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-
+//sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 //FROM HTML
 jQuery(document).ready(function () {
 
@@ -221,6 +221,7 @@ function validatepassword() {
     }
     else {
         // Get Token For Password Validation
+        debugger
         var url = sessionStorage.getItem("APIPath") + "User/EventSurrogateValidate/?BidId=" + BIDID + "&Password=" + jQuery("#txtpassword").val() + "&EventType=" + ('SurrogateBid').toLowerCase();
         jQuery.ajax({
             type: "GET",
