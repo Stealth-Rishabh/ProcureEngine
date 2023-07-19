@@ -57,7 +57,7 @@ let vendorfrequency=0;
 
 
 function GetPR2Mapping() {
-    debugger
+    
     let _EventID=parseInt(EventID);
     let _CustomerID=parseInt(CUSTOMERID);
     console.log(sessionStorage.getItem("APIPath") + "SAPIntegration/GetPR2Mapping/?NFAId=" +_EventID+'&CustomerId=' + _CustomerID );
@@ -67,7 +67,7 @@ function GetPR2Mapping() {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-           debugger
+           
            
            
            
@@ -238,7 +238,7 @@ function GetPR2Mapping() {
             strcat +=`<tr><td>PO Number</td>`;
             let transmsg ='' 
             for(var qj=0;qj<data.associatedVendors.length;qj++){
-                debugger
+                
                 transmsg =data.associatedVendors[qj].transactionMessage.replace(/(\d+)-/g, "\n$&")
                 if(data.associatedVendors[qj].isTransactionSuccessfull=='Y'){
                     strcat += `<td id='po${qj}'>
@@ -263,13 +263,13 @@ function GetPR2Mapping() {
              $("#PRMapCategory").append(strcat);
              
              
-             debugger
+             
              
              
              
              
              //PR2 Mapping 
-             debugger
+             
              vendorfrequency=parseInt(data.associatedVendors.length)
              $("#PRMapTable").empty;
              $("#PRMapTable").removeClass('hide')
@@ -279,7 +279,7 @@ function GetPR2Mapping() {
             //tablehead
             strtblH +=`<thead><tr class='hide'><th>PI Number</th><th id='tblpinumber'></th><th>NFA ID</th><th class='bold'>${_EventID}</th><th></th><th></th><th></th><th></th><th></th>`;
              for(var i=0;i<data.associatedVendors.length;i++){
-                      debugger
+                      
                        unitallocation=0
                        if(data.sobHeader.sobOn=="P")
                        {
@@ -302,7 +302,7 @@ function GetPR2Mapping() {
              
              
              let bednrno
-             debugger
+             
              if(data.resultToReturn.length>0){
                 bednrno=data.resultToReturn[0].bednr
              }
@@ -312,7 +312,7 @@ function GetPR2Mapping() {
              $("#tblpinumber").text(bednrno);
             
             //tablebody
-            debugger
+            
              for(var i=0;i<data.resultToReturn.length;i++){
                 truncatedMaterial=data.resultToReturn[i].matnr.slice(-8);
                 deliverydate =data.resultToReturn[i].lfdat
@@ -346,7 +346,7 @@ function GetPR2Mapping() {
               let strnfa = '';
               let strnfaH = '';
               $("#NFAMapTable").empty();
-             debugger;
+         
 
              strnfaH += `<thead><tr><th>NFA Param Text</th><th>NFA Param Id</th><th>Remark</th></tr></thead>`;
              $("#NFAMapTable").append(strnfaH);
@@ -365,7 +365,7 @@ function GetPR2Mapping() {
 
              ComponentsPickers.init();
              GetCustomerSpecificMaster(CUSTOMERID)
-             debugger
+             
              UpdateVCategory(vendorExternalSource)
              
             
@@ -374,7 +374,7 @@ function GetPR2Mapping() {
            
         },
         error: function (xhr, status, error) {
-          debugger
+          
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -403,7 +403,7 @@ function checktotalquant(id) {
          totVendquant +=parseFloat(removeThousandSeperator($(`#vendor${i}${j}`).val()||0))
      }
      if(totVendquant>TQ){
-       debugger
+       
         alertforerror(`Please check quantity allocated to vendors is greater than allocated quantity for item ${$(`#shortname${i}`).text()}`)
         $(id).val('');
         return false; 
@@ -422,11 +422,11 @@ function checktotalVA(id) {
     
     let TMaxAllocate; let TVendAllocate;
     for(var i=0;i<vendorfrequency;i++){
-       debugger
+       
         TMaxAllocate=parseFloat(removeThousandSeperator($(`#vendorMaxAllocate${i}`).text()));
         TVendAllocate=0
         $('#PRMapTable tbody tr').each(function(j) {
-           debugger
+           
           TVendAllocate += parseFloat(removeThousandSeperator($(this).find(`.vendor${i}`).val()||0)) * parseFloat(removeThousandSeperator($(this).find(`.unitprice${i}`).val()||0))
             
         })
@@ -449,7 +449,7 @@ function checktotalVA(id) {
 
 
 function checkPRValidity(id){
-    debugger
+    
     localecommaseperator(id)
     checktotalquant(id)
     checktotalVA(id)
@@ -457,7 +457,7 @@ function checkPRValidity(id){
 
 
 function GetCustomerSpecificMaster(custid) {
-debugger
+
     console.log(sessionStorage.getItem("APIPath") + "KDSMaster/GetCustomerSpecificMaster/?Id=" + custid)
     jQuery.ajax({
         type: "GET",
@@ -469,7 +469,7 @@ debugger
         dataType: "json",
         async:false,
         success: function (data) {
-             debugger
+             
              //document type
             jQuery(".documenttype").empty();
             jQuery(".documenttype").append(jQuery("<option value=''  data-incotermdesc='' >Select</option>"));
@@ -539,13 +539,13 @@ debugger
            
            
            
-            debugger
+            
             Selectsearch();
             jQuery.unblockUI();
 
         },
         error: function (xhr, status, error) {
-            debugger
+            
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);
@@ -563,7 +563,7 @@ debugger
 
 
 function UpdateVCategory(data){
-    debugger
+    
     let associatevendorid='';
     let match=0
     for(let v=0;v<vendorfrequency;v++){
@@ -621,7 +621,7 @@ function UpdateVCategory(data){
       $(`#comcode${v}`).val(data[match].coCd).trigger('change')
        
    
-   debugger
+   
     
        
         $(`#partnernumber${v}`).val(data[match].partnerNumber)
@@ -707,7 +707,7 @@ function GetCurrency(CountryKey) {
 
 let isPOAPI =''
 function submitPRForm(){
-    debugger
+    
     
    
     
@@ -719,21 +719,21 @@ function submitPRForm(){
     let zdata = [],TAXCODEV 
     let itemdata,priceunit;
     
-   debugger
+   
   
     let currentdatepo = new Date().toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '.');; 
    
     
-    debugger 
+     
     var prcategoryVarray=[];
     var prmappingitemlist=[];
     for(var vf=0;vf<vendorfrequency;vf++){
-        debugger
+        
         
      prmappingitemlist=[]
      TAXCODEV =$(`#taxcode${vf} option:selected`).val();
      priceunit=String($(`#priceunit${vf}`).val());
-     debugger
+     
    if($(`#partnernumber${vf}`).val()){  
      $("#PRMapTable>tbody>tr").each(function(i){
           
@@ -742,7 +742,7 @@ function submitPRForm(){
            
           
                
-             debugger
+             
            if($(this).find(`.vendor${vf}`).val()){
               let PBXX_I = String(($(this).find(`.unitprice${vf}`).val() * $(this).find(`.vendor${vf}`).val()))
                 var prlistV = {
@@ -815,7 +815,7 @@ function submitPRForm(){
       
      let H_F01,MOD_DISP,PLC_DLVR,TRM_PYMNT,PRC_BASIS,SPCL_INST,WARRANTY; 
      $("#NFAMapTable>tbody").each(function () {
-         debugger
+         
          H_F01=$(`#H_F01remark`).text();
          MOD_DISP=$(`#MOD_DISPremark`).text();
          PLC_DLVR=$(`#PLC_DLVRremark`).text();
@@ -832,7 +832,7 @@ function submitPRForm(){
          
          let j=vf
          
-         debugger  
+           
          
               ZPO_HEAD={
                 "EBELN":"",
@@ -912,11 +912,10 @@ function submitPRForm(){
    
   
      
-     
-    /* */
+  
    
        
-        debugger
+        
         let data={
                    "EventId":eventid,
                    "EventType":eventtype, 
@@ -929,7 +928,7 @@ function submitPRForm(){
     console.log(data);
         
     console.log(sessionStorage.getItem("APIPath") + `SAPIntegration/PostMappingForPOCreation`)
-    debugger
+    
     
         jQuery.ajax({
         type: "POST",
@@ -943,13 +942,13 @@ function submitPRForm(){
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-           debugger
+           
             jQuery.unblockUI();
            
             
         },
         error: function (xhr, status, error) {
-            debugger
+            
             if(xhr.responseText){
               err = `${xhr.responseText}  for - Vendor  ${$(`#vendorName${vf}`).text()}`;  
             }
@@ -992,7 +991,7 @@ function submitPRForm(){
 
 
 function Selectsearch(){
-    debugger
+    
     $('.Incoterm').select2();
     $('.PayTerm').select2();
     $('.ddlcurrency').select2();
@@ -1056,7 +1055,7 @@ function fetchVendorAutoComplete() {
 var allvendorsforinvoice;
 
 function fetchParticipantsVenderinvoice() {
-    debugger
+    
     console.log(sessionStorage.getItem("APIPath") + "SAPIntegration/fetchInvoicingparty/?vendorid=" + sessionStorage.getItem("CustomerID") )
     jQuery.ajax({
         type: "GET",

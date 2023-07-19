@@ -40,7 +40,7 @@ $("#btnvendorsumbit").hide();
 
 // Add email of vendor
 $("#addbtnvendor").click(function () {
-    debugger
+    
     const email = $("#txtInviteVendor").val().trim();
 
     if (isValidEmail(email)) {
@@ -81,7 +81,7 @@ function isValidEmail(email) {
 
 //invite vendor to register
 function InviteVendorsToRegister() {
-    debugger
+    
     let TabDet = [];
     let custId = parseInt(sessionStorage.getItem('CustomerID'));
     console.log(sessionStorage.getItem("APIPath") + "VendorLCM/InviteVendorsToRegister/?Id=" + custId)
@@ -102,7 +102,7 @@ function InviteVendorsToRegister() {
         data: JSON.stringify(TabDet),
         dataType: "json",
         success: function (data) {
-            debugger;
+           
             $("#emailTable tbody").empty();
             $("#createdEmailTable tbody").empty();
             $("#notCreatedEmailTable tbody").empty();
@@ -131,14 +131,14 @@ function InviteVendorsToRegister() {
             bootbox.alert('Check email invitation status below')
         },
         error: function (xhr, status, error) {
-            debugger
+            
             alert(error.toString())
         }
     });
 }
 
 /*function InviteVendorsToRegister() {
-    debugger;
+
     var TabDet = [];
     var custId = parseInt(sessionStorage.getItem('CustomerID'));
     for (var i = 0; i < 5; i++) {
@@ -160,11 +160,11 @@ function InviteVendorsToRegister() {
         dataType: "json",
 
         success: function (data) {
-            debugger;
+           
             alert('YES!!!!')
         },
         error: function (xhr, status, error) {
-            debugger
+            
             alert(error.toString())
         }
     });

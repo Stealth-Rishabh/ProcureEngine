@@ -63,7 +63,7 @@ function getSummary(vendorid, version) {
 }
 var Vendor;
 function fetchrfqcomprative() {
-   debugger
+   
    var x = isAuthenticated();
     sessionStorage.setItem("RFQVersionId", $("#ddlrfqVersion option:selected").val())
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -77,7 +77,7 @@ function fetchrfqcomprative() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (Data, status, jqXHR) {
-            debugger
+            
            let data = Data.rData
             var str = '';
             var strHead = '';
@@ -868,7 +868,7 @@ function fetchrfqcomprative() {
             }
         },
         error: function (xhr, status, error) {
-            debugger
+            
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1337,7 +1337,7 @@ function fetchAzPPcFormDetails() {
     })
 }
 function DownloadFilePPC(aID) {
-    debugger
+    
     console.log($("#" + aID.id).html(), 'eRFQ/' + $('#hdnRfqID').val() + '/PPC')
     fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + $('#hdnRfqID').val() + '/PPC');
 }

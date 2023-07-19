@@ -221,7 +221,7 @@ function validatepassword() {
     }
     else {
         // Get Token For Password Validation
-        debugger
+        
         var url = sessionStorage.getItem("APIPath") + "User/EventSurrogateValidate/?BidId=" + BIDID + "&Password=" + jQuery("#txtpassword").val() + "&EventType=" + ('SurrogateBid').toLowerCase();
         jQuery.ajax({
             type: "GET",

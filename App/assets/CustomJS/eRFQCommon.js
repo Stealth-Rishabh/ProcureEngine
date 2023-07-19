@@ -132,7 +132,7 @@ function fnForwardforAllvendorTechnical() {
         data: JSON.stringify(Approvers),
         dataType: "json",
         success: function (data) {
-            debugger
+            
             $('#successapp').show();
             $('#spansuccessapp').html('Approvers mapped successfully');
             Metronic.scrollTo($('#successapp'), -200);
@@ -542,7 +542,7 @@ let totalitems
 function fetchReguestforQuotationDetails() {
     var attachment = '';
     var termattach = '';
-    debugger
+    
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + $('#hdnRfqID').val() + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
@@ -553,7 +553,7 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (Data) {
-            debugger
+            
             let RFQData = Data.rData
             totalitems = RFQData[0].parameters.length
             var _curentRFQStatus = '';
@@ -2098,7 +2098,7 @@ function MapRFQTechapprover(Type) {
         data: JSON.stringify(Approvers),
         dataType: "json",
         success: function (data) {
-            debugger
+            
             $('#successapp').show();
             $('#spansuccessapp').html('Approvers mapped successfully');
             Metronic.scrollTo($('#successapp'), -200);
@@ -2135,7 +2135,7 @@ function MapRFQTechapprover(Type) {
 
         },
         error: function (xhr) {
-            debugger
+            
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);

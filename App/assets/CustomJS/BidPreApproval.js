@@ -535,7 +535,7 @@ function Dateandtimevalidate(biddate) {
     });
 }
 function ApprovalApp() {
-    debugger
+    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var BidDate = new Date($('#txtbidDate').val().replace('-', ''));
 
@@ -563,7 +563,7 @@ function ApprovalApp() {
         crossDomain: true,
         dataType: "json",
         success: function () {
-            debugger
+            
             if (isLastPreApprover == "N") {
                 bootbox.alert("Transaction Successful..", function () {
                     window.location = "index.html";

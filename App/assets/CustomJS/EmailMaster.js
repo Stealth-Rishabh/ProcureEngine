@@ -220,7 +220,7 @@ function emailMaster() {
 }
 
 function fetchEmailMasters() {
-    //debugger;    
+        
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
@@ -310,7 +310,7 @@ function editemailEvent(emailMstID) {
 function updateEmailMaster() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    debugger;
+    
     var emailSubject_data = $('#emailSubject').val();
     var mailsubdata1 = emailSubject_data.replace(/(<([^>]+)>)/ig, ' ').replace(/\n/g, ' ');
     let regex = /&(nbsp|amp|quot|lt|gt);/g;

@@ -90,7 +90,7 @@ connection.on("disconnectSR", function (connectionId) {
 });*/
 
 connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
-    debugger
+    
 
     let data = JSON.parse(rdataJson)
 
@@ -345,7 +345,7 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
 
     let chat = JSON.parse(objChatmsz)
     //toastr.clear();
-    debugger
+    
     $(".pulsate-regular").css('animation', 'pulse 2s infinite')
     //toastr.success('You have a new message.', 'New Message')
     calltoaster(encodeURIComponent(chat.ChatMsg), chat.ChatMsg, 'success');

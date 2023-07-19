@@ -920,7 +920,7 @@ function startTimerForStaggerItem(duration, displayS) {
 function closeBidforpause() {
     clearInterval(mytimeforSatus)
     clearInterval(mytime)
-    debugger
+    
     bootbox.alert("Bid has been paused. We shall intimate you fresh Start Date/Time separately", function () {
 
         if (sessionStorage.getItem("ISFromSurrogate") == "Y") {

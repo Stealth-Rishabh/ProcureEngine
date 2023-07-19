@@ -1393,7 +1393,7 @@ var FlagForCheckShowPrice = "N";
 function fetchallexportdetails() {
     var bidTypeFetchUrl = '';
     $('#extendedDurationPara').hide();
-    debugger
+    
     if (sessionStorage.getItem("hdnbidtypeid") == 6) {
         //bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchPefaConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val();
         bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchPefaConfigurationData/?BidID=" + jQuery('#ddlbid').val();
@@ -1407,7 +1407,7 @@ function fetchallexportdetails() {
     if (sessionStorage.getItem("hdnbidtypeid") == 9) {
         bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchFrenchConfigurationData/?BidID=" + jQuery('#ddlbid').val();
     }
-    debugger
+    
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1417,7 +1417,7 @@ function fetchallexportdetails() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-            debugger
+            
             var localBidDate = fnConverToLocalTime(BidData[0].bidDetails[0].bidDate)
             $('#BidPreviewDiv').show()
             jQuery('#mapedapproverPrev').html('');
@@ -1972,7 +1972,7 @@ function fetchallexportdetails() {
             }
         },
         error: function (xhr, status, error) {
-            debugger
+            
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);

@@ -3399,7 +3399,7 @@ function IciciBankPennyDropVerify() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-         debugger
+         
          if(data.status==0){
              alertforerror(data.error);
              jQuery.unblockUI();
