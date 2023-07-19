@@ -1,8 +1,7 @@
 function logoutFunction() {
     sessionStorage.clear();
-    //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net');
     sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net');
-    //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+   
     window.location.href = window.location.pathname.substring(0, window.location.pathname.lastIndexOf('/') + 1) + 'index.htm';
 }
 
@@ -481,7 +480,7 @@ function convertTo24Hour(time) {
     return time;
 }
 function CancelBidDuringConfig(_bidId, _for) {
-   debugger
+  
     var x = isAuthenticated();
     var Cancelbid = {
         "BidID": parseInt(_bidId),
@@ -501,7 +500,7 @@ function CancelBidDuringConfig(_bidId, _for) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-          debugger
+         
             if (data == '1' && _for == 'BID') {
                 bootbox.alert("Bid Cancelled successfully.", function () {
                     window.location = "index.html";
@@ -534,7 +533,7 @@ function CancelBidDuringConfig(_bidId, _for) {
             }
         },
         error: function (xhr, status, error) {
-            debugger
+           
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1110,6 +1109,7 @@ function padTo2Digits(num) {
     return num.toString().padStart(2, '0');
 }
 function fnConverToLocalTimeWithSeconds(dttime) {
+    
     if (dttime != null) {
         var theStDate = new Date(dttime)
         theStDate = new Date(theStDate + ' UTC');
@@ -2188,6 +2188,7 @@ function localeseperator(ele) {
 
 function fnConverToLocalTime(dttime) {
     let culturecode = sessionStorage.getItem("culturecode") || "en-IN";
+    
     if (dttime != null) {
         var theStDate = new Date(dttime);
         theStDate = new Date(theStDate + ' UTC');
@@ -2203,7 +2204,7 @@ function fnConverToLocalTime(dttime) {
         if (sessionStorage.getItem('preferredtimezone') != null) {
             options.timeZone = sessionStorage.getItem('preferredtimezone');
         }
-
+      
         theStDate = theStDate.toLocaleDateString(culturecode, options);
         //  theStDate = theStDate.toLocaleDateString("en-US", options);
         return theStDate;
@@ -2211,6 +2212,8 @@ function fnConverToLocalTime(dttime) {
         return '..';
     }
 }
+
+
 
 
 function fnConverToShortDT(dttime) {

@@ -27,6 +27,7 @@
     <link href="assets/global/css/components-md.css" rel="stylesheet" />
     <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
     <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
+
     <link rel="stylesheet" type="text/css" href="assets/global/plugins/select2/select2.css" />
     <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
     <link id="style_color" href="assets/admin/layout/css/themes/default.css" rel="stylesheet"
@@ -48,6 +49,7 @@
     <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="assets/global/plugins/select2/select2.min.js"></script>
+    <script type="text/javascript" src="assets/global/plugins/fuelux/js/spinner.min.js"></script>
     <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
     <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
@@ -76,7 +78,7 @@
     <div class="page-header navbar navbar-fixed-top">
         <div class="page-header-inner">
             <a class="navbar-brand" href="index.html">
-                <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage"/>
+                <img src="assets/img/mmlogo.png" alt="logo" class="img-responsive" id="logoimage" />
             </a>
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
@@ -119,8 +121,8 @@
                             <div class="portlet-title">
                                 <div class="caption">
 
-                                    <i class="fa fa-gift"></i>Bid Summary 
-                                    <label class="control-label bold labelstyle4" id="bid_status" >
+                                    <i class="fa fa-gift"></i>Bid Summary
+                                    <label class="control-label bold labelstyle4" id="bid_status">
                                     </label>
                                 </div>
                                 <!--
@@ -140,7 +142,7 @@
                                                 <label class="col-md-1 control-label">
                                                     Bid Subject:
                                                 </label>
-                                                <label id="lblbidSubject"  class="col-md-10 control-label text-left textalignleft">
+                                                <label id="lblbidSubject" class="col-md-10 control-label text-left textalignleft">
                                                 </label>
                                             </div>
                                         </div>
@@ -152,7 +154,7 @@
                                                     Bid Details:
                                                 </label>
                                                 <!-- <div class="col-md-10"> -->
-                                                <label id="lblbiddetails"  class="col-md-11 control-label text-left txtalignjustify">
+                                                <label id="lblbiddetails" class="col-md-11 control-label text-left txtalignjustify">
                                                 </label>
                                                 <!-- </div> -->
                                             </div>
@@ -225,9 +227,9 @@
                                         </label>
                                         <label id="lblbidprice" class="nodisplay">
                                         </label>
-                                        <div class="col-md-10 nodisplay" id="divTargetPrice" >
+                                        <div class="col-md-10 nodisplay" id="divTargetPrice">
 
-                                            <div class="table-responsive overflowauto" >
+                                            <div class="table-responsive overflowauto">
                                                 <table class="table table-striped table-bordered table-hover" id="tbltargetPrice">
                                                     <thead>
                                                         <tr><th></th><th>Min</th><th>45+</th><th>100+</th><th>300+</th><th>500+</th><th>1000+</th></tr>
@@ -300,7 +302,7 @@
                                 </div>
                             </div>
                             <div class="portlet-body form">
-                                <div class="table-responsive overflowauto"  id="divforBidsummary">
+                                <div class="table-responsive overflowauto" id="divforBidsummary">
                                     <table class="table table-bordered hide" id="tbldetails">
                                         <thead>
                                             <tr>
@@ -333,7 +335,7 @@
                                 </div>
 
 
-                                <div class="table-responsive display-none overflowauto"  id="divfordetailreport">
+                                <div class="table-responsive display-none overflowauto" id="divfordetailreport">
                                     <table class="table table-bordered valign-center-th" id="tblBidSummary">
                                         <thead>
                                         </thead>
@@ -346,14 +348,14 @@
                                         </tbody>
                                     </table>
                                     <h3 class="form-section hide" id="HRTotsumm">Supplier Wise Summary</h3>
-                                    <table class="table table-bordered hide width50"  id="tblbidvendortotalsummary">
+                                    <table class="table table-bordered hide width50" id="tblbidvendortotalsummary">
                                     </table>
                                 </div>
                                 <div class="mt-element-step hide" id="div_statusbar">
                                     <div class="row step-no-background step-line container" id="divappendstatusbar">
                                     </div>
                                 </div>
-                                <div class="table-responsive display-none overflowauto"  id="divforapprovalprocess">
+                                <div class="table-responsive display-none overflowauto" id="divforapprovalprocess">
                                     <table class="table table-bordered" id="tblapprovalprocess">
                                         <thead>
                                         </thead>
@@ -368,10 +370,10 @@
 
                                 </div>
                                 <br />
-                                <div class="form-actions fluid padding105px" >
+                                <div class="form-actions fluid padding105px">
                                     <p class="display-none" id="PPrintBy"><label class="pull-left "><b>Print By :&nbsp;&nbsp;</b></label><label id="lblprintByname" class="control-label pull-left"></label></p>
                                     <p class="display-none" id="Pdate"> <label class="pull-right"><b>Date :&nbsp;&nbsp;</b></label><label id="lbldate" class="control-label pull-right"></label></p>
-                                    <div class="col-md-offset-3 col-md-6 txtaligncentre" >
+                                    <div class="col-md-offset-3 col-md-6 txtaligncentre">
 
                                         <button id="btnExportToExcel" type="button" class="btn blue forbtnpause">
                                             Export To Excel
@@ -413,10 +415,10 @@
                 <div class="portlet-body">
                     <form action="#" class="form-horizontal" id="frmRemarksCancel">
                         <div class="form-body">
-                            <div class="alert alert-danger" id="msgErrorL1" >
+                            <div class="alert alert-danger" id="msgErrorL1">
                                 <span id=""> </span>
                             </div>
-                            <div class="alert alert-success" id="msgSuccessL1" >
+                            <div class="alert alert-success" id="msgSuccessL1">
                                 <span id=""> </span>
                             </div>
                             <div class="form-group">
@@ -430,7 +432,7 @@
                             </div>
                         </div>
                         <div class="form-actions fluid">
-                            <div class="col-md-offset-3 col-md-6 txtaligncentre" >
+                            <div class="col-md-offset-3 col-md-6 txtaligncentre">
                                 <button id="SaveExsist" type="submit" class="btn green">
                                     Submit
                                 </button>
@@ -517,7 +519,7 @@
                         </div>
 
                         <div class="modal-body">
-                            <div class="alert alert-success" >
+                            <div class="alert alert-success">
                                 <span id="spansuccess1"> </span>
                             </div>
                             <div class="alert alert-danger">
@@ -529,7 +531,7 @@
                                 <input type="text" id="search" placeholder="Search..." class="form-control" />
                             </div>
 
-                            <div class="scroller scroller250"  data-always-visible="1" data-rail-visible="0">
+                            <div class="scroller scroller250" data-always-visible="1" data-rail-visible="0">
                                 <table id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content">
                                     <thead class="flip-content">
                                         <tr>
@@ -549,7 +551,7 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="modal-footer padding10px" >
+                        <div class="modal-footer padding10px">
                             <button type="button" class="btn green" onclick="invitevendors()">Invite Vendors</button>
                         </div>
                     </div>
@@ -577,7 +579,7 @@
                             <i class="fa fa-search"></i>
                             <input type="text" id="search" placeholder="Search..." class="form-control" />
                         </div>
-                        <div class="scroller scroller350none"  data-always-visible="1" data-rail-visible="0" id="connscroll">
+                        <div class="scroller scroller350none" data-always-visible="1" data-rail-visible="0" id="connscroll">
                             <div class="col-md-12">
                                 <table class="table table-striped table-bordered table-hover table-condensed flip-content" id="tblIPHistory"></table>
                             </div>
@@ -606,7 +608,7 @@
                 </div>
                 <div class="portlet-body">
                     <div class="row">
-                        
+
                         <div class="col-md-12">
                             <div id="linechart_material"></div><br />
 

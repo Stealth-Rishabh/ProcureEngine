@@ -4,7 +4,8 @@ debugger;
 const myMSALObj = new msal.PublicClientApplication(msalConfig);
 
 let username = "";
-sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/')
+//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/')
+sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/')
 myMSALObj.handleRedirectPromise()
     .then(handleResponse)
     .catch(error => {

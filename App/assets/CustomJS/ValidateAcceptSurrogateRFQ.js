@@ -2,8 +2,8 @@ var param = getUrlVars()["param"]
 var decryptedstring = fndecrypt(param)
 var RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
 
-sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+
+sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 //FROM HTML
 jQuery(document).ready(function () {
 
@@ -33,39 +33,39 @@ function fetchReguestforQuotationDetailseRFQ() {
             sessionStorage.setItem('hddnRFQRFIID', RFQID);
             sessionStorage.setItem('CustomerID', data[0].customerID);
             //var EndDate = new Date(fnConverToLocalTime(data[0].rfqEndDate).replace('-', ''));
-           // var currentTime = new Date();
-           // if (EndDate > currentTime) {
+            // var currentTime = new Date();
+            // if (EndDate > currentTime) {
 
             //** check end Date in valid or not
-           
-                Dateandtimevalidate(fnConverToLocalTime(data[0].rfqEndDate));
-                jQuery('#RFQSubject').text(data[0].rfqSubject)
-                jQuery('#RFQSubjectTT').text(data[0].rfqSubject)
 
-                $('#Currency').html(data[0].currencyNm)
-                $('#CurrencyTT').html(data[0].currencyNm)
-                jQuery('#RFQDescription').text(data[0].rfqDescription)
-                jQuery('#RFQDescriptionTT').text(data[0].rfqDescription)
-                jQuery('#ConversionRate').html(data[0].rfqConversionRate);
-                jQuery('#refno').html(data[0].rfqConversionRate);
-                jQuery('#RFQStartDate').text(fnConverToLocalTime(data[0].rfqStartDate))
-                jQuery('#RFQStartDateTT').text(fnConverToLocalTime(data[0].rfqStartDate))
-                jQuery('#RFQEndDate').text(fnConverToLocalTime(data[0].rfqEndDate))
-                jQuery('#RFQDeadlineTT').text(fnConverToLocalTime(data[0].rfqEndDate))
-                $('#bid_EventID').text(RFQID);
-                $('#lblEventID').text(RFQID);
-                jQuery('#TermCondition').attr("name", data[0].rfqTermandCondition);
-                jQuery('#TermCondition').html(data[0].rfqTermandCondition);
+            Dateandtimevalidate(fnConverToLocalTime(data[0].rfqEndDate));
+            jQuery('#RFQSubject').text(data[0].rfqSubject)
+            jQuery('#RFQSubjectTT').text(data[0].rfqSubject)
 
-             /*  }
-                else {
-                    bootbox.alert("This RFQ has already expired !!!", function () {
-                        //   $('.page-container').hide();
-                        $('#btnpassword').attr('disabled', 'disabled')
-                        $('#txtpassword').attr('disabled', 'disabled')
+            $('#Currency').html(data[0].currencyNm)
+            $('#CurrencyTT').html(data[0].currencyNm)
+            jQuery('#RFQDescription').text(data[0].rfqDescription)
+            jQuery('#RFQDescriptionTT').text(data[0].rfqDescription)
+            jQuery('#ConversionRate').html(data[0].rfqConversionRate);
+            jQuery('#refno').html(data[0].rfqConversionRate);
+            jQuery('#RFQStartDate').text(fnConverToLocalTime(data[0].rfqStartDate))
+            jQuery('#RFQStartDateTT').text(fnConverToLocalTime(data[0].rfqStartDate))
+            jQuery('#RFQEndDate').text(fnConverToLocalTime(data[0].rfqEndDate))
+            jQuery('#RFQDeadlineTT').text(fnConverToLocalTime(data[0].rfqEndDate))
+            $('#bid_EventID').text(RFQID);
+            $('#lblEventID').text(RFQID);
+            jQuery('#TermCondition').attr("name", data[0].rfqTermandCondition);
+            jQuery('#TermCondition').html(data[0].rfqTermandCondition);
 
-                    });
-                }*/
+            /*  }
+               else {
+                   bootbox.alert("This RFQ has already expired !!!", function () {
+                       //   $('.page-container').hide();
+                       $('#btnpassword').attr('disabled', 'disabled')
+                       $('#txtpassword').attr('disabled', 'disabled')
+
+                   });
+               }*/
 
 
         }
@@ -73,11 +73,11 @@ function fetchReguestforQuotationDetailseRFQ() {
     jQuery.unblockUI();
 }
 function getTimezoneOffset() {
-  function z(n){return (n<10? '0' : '') + n}
-  var offset = new Date().getTimezoneOffset();
-  var sign = offset < 0? '+' : '-';
-  offset = Math.abs(offset);
-  return sign + z(offset/60 | 0) + z(offset%60);
+    function z(n) { return (n < 10 ? '0' : '') + n }
+    var offset = new Date().getTimezoneOffset();
+    var sign = offset < 0 ? '+' : '-';
+    offset = Math.abs(offset);
+    return sign + z(offset / 60 | 0) + z(offset % 60);
 }
 
 // +0800 for UTC/GMT + 8hrs
@@ -91,13 +91,13 @@ function Dateandtimevalidate(StartDT) {
 
     ST = new String(StTime);
     ST = ST.substring(0, ST.indexOf("GMT"));
-    ST = ST + 'GMT' +getTimezoneOffset() //sessionStorage.getItem('utcoffset');
+    ST = ST + 'GMT' + getTimezoneOffset() //sessionStorage.getItem('utcoffset');
 
     var Tab1Data = {
         "BidDate": ST
     }
     //console.log(JSON.stringify(Tab1Data))
-   
+
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -155,8 +155,8 @@ var erroropenbid = $('#errorOpenbid');
 var successopenbid = $('#successopenbid');
 
 function validatepassword() {
-    //sessionStorage.setItem("APIPath", 'http://www.support2educate.com/procurengine/API/api/');
-    sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+
+    sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  </h5>' });
     if (jQuery("#txtpassword").val() == "") {

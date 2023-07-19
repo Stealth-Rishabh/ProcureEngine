@@ -217,7 +217,7 @@ function fetNFAReport(dtfrom, dtto, subject) {
         result = result.slice(0, -1)
     }
     //var url = sessionStorage.getItem("APIPath") + "NFA/fetNFAReport/?EventID=" + jQuery("#ddlEventType option:selected").val() + "&OrgID=" + jQuery("#ddlPurchaseOrg option:selected").val() + "&GroupID=" + jQuery("#ddlPurchasegroup option:selected").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&NFASubject=" + subject + "&FinalStatus=" + jQuery("#ddlNFAstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val();
-   debugger
+
     var url = sessionStorage.getItem("APIPath") + "NFA/fetNFAReport/";
     var Tab1Data = {
         "EventID": parseInt(jQuery("#ddlEventType option:selected").val()),
@@ -243,14 +243,15 @@ function fetNFAReport(dtfrom, dtto, subject) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-             debugger
+
             jQuery("#tblNFASummary").empty();
-            jQuery('#tblNFASummary').append("<thead><tr><th class='bold'>ID</th><th class='bold'>Subject</th><th class='bold'>Configured By</th><th class='bold'>Date</th><th class='bold'>Aging</th><th class='bold'>Currency</th><th class='bold'>Purchase Org</th><th class='bold'>Purchase Group</th><th class='bold'>Amount</th><th class='bold'>Budget</th><th class='bold'>Deviation %</th><th class='bold'>Status</th></tr></thead>");
+            jQuery("#tblNFASummary").append(`<thead></thead><tbody></tbody>`);
+            jQuery('#tblNFASummary>thead').append("<tr><th class='bold'>ID</th><th class='bold'>Subject</th><th class='bold'>Configured By</th><th class='bold'>Date</th><th class='bold'>Aging</th><th class='bold'>Currency</th><th class='bold'>Purchase Org</th><th class='bold'>Purchase Group</th><th class='bold'>Amount</th><th class='bold'>Budget</th><th class='bold'>Deviation %</th><th class='bold'>Status</th></tr>");
             if (data.length > 0) {
 
                 for (var i = 0; i < data.length; i++) {
 
-                    var str = "<tbody><tr><td  class=text-right><a onclick=getSummary(\'" + data[i].nfaID + "'\,\'" + data[i].eventID + "'\,\'" + data[i].eventRefernce + "'\) href='javascript:;' >" + data[i].nfaID + "</a></td>";
+                    var str = "<tr><td  class=text-right><a onclick=getSummary(\'" + data[i].nfaID + "'\,\'" + data[i].eventID + "'\,\'" + data[i].eventRefernce + "'\) href='javascript:;' >" + data[i].nfaID + "</a></td>";
                     str += "<td>" + data[i].nfaSubject + "</td>";
                     str += "<td>" + data[i].createdBy + "</td>";
                     BidDate = fnConverToShortDT(data[i].updatedOn);
@@ -268,8 +269,8 @@ function fetNFAReport(dtfrom, dtto, subject) {
                         str += "<td>Budget not defined </td>";
 
                     str += "<td>" + data[i].finalStatus + "</td>";
-                    str += "</tr></tbody>";
-                    jQuery('#tblNFASummary').append(str);
+                    str += "</tr>";
+                    jQuery('#tblNFASummary >tbody').append(str);
                 }
                 var table = $('#tblNFASummary');
                 table.removeAttr('width').dataTable({
@@ -313,7 +314,7 @@ function fetNFAReport(dtfrom, dtto, subject) {
 
             }
             else {
-                jQuery('#tblNFASummary > tbody').append("<tbody><tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr></tbody>");
+                jQuery('#tblNFASummary > tbody').append("<tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr>");
                 $('#tblNFASummary').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
@@ -341,7 +342,7 @@ function fetNFAReport(dtfrom, dtto, subject) {
 function downloadNFAReport() {
 
     if ($("#ddlconfiguredby").val() == "" || $("#ddlconfiguredby").val() == null) {
-        
+
         $(".alert-danger").removeClass("display-hide");
         $("#error").html("please select Configured by to download file...");
         setTimeout(function () {
@@ -396,17 +397,20 @@ function downloadNFAReport() {
         "ConfiguredBy": result == '' ? '0' : result,
 
     };
+    console.log(JSON.stringify(Tab1Data))
     $(".loaderC").removeClass("hide");
     setTimeout(function () {
         fetch(url, {
             method: 'POST',
             body: JSON.stringify(Tab1Data),
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem("Token")
             },
         })
             .then(response => response.blob())
             .then(blob => {
+
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.style.display = 'none';
@@ -416,9 +420,10 @@ function downloadNFAReport() {
                 a.click();
                 window.URL.revokeObjectURL(url);
 
-               
+
             })
             .catch(error => {
+                debugger
                 console.error('Error:', error);
             })
             .finally(() => {
@@ -427,7 +432,7 @@ function downloadNFAReport() {
                 }, 500);
             });
 
-    },500)
+    }, 500)
 }
 
 function getSummary(nfaid) {

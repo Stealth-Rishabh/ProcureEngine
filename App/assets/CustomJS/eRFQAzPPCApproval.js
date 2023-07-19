@@ -1,7 +1,7 @@
 
 jQuery(document).ready(function () {
-    //callPagejs('eRFQAzPPCApproval.js');
-    debugger;
+    
+    
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -915,7 +915,7 @@ function fetchAttachments() {
         crossDomain: true,
         dataType: "json",
         success: function (Data, status, jqXHR) {
-            let data=Data.rData
+            let data = Data.rData
 
             jQuery("#tblAttachments").empty();
 
@@ -964,7 +964,7 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (Data) {
-            let RFQData=Data.rData
+            let RFQData = Data.rData
             var replaced1 = '';
             $('#tbldetailsExcel > tbody').empty();
 
@@ -1167,7 +1167,7 @@ function fetchRegisterUser() {
 
         },
         error: function (xhr, status, error) {
-            debugger;
+
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1570,7 +1570,7 @@ function fnGetApprovers() {
         dataType: "json",
         success: function (Data) {
             var str = "";
-            let data=Data.rData
+            let data = Data.rData
             jQuery("#tblapprovers").empty();
             if (data[0].approvers.length > 0) {
                 for (var i = 0; i < data[0].approvers.length; i++) {

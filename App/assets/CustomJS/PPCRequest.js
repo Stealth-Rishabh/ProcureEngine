@@ -1283,7 +1283,11 @@ function SaveApproversConfirmation() {
 
     });
 
-    var SubmitData = callajaxReturnSuccess(url, "Post", JSON.stringify(approversData));
+    var data = {
+        "uDTApprovers": approversData
+    }
+
+    var SubmitData = callajaxReturnSuccess(url, "Post", JSON.stringify(data));
     SubmitData.success(function (res) {
         SaveActivityDetails(lstActivityData);
         if (res.status == "S") {
@@ -1415,9 +1419,14 @@ function SaveActivityDetails(data) {
     var aquaticCreatures = data.filter(function (details) {
         return details.apprSeq == ApprSeqval.min();
     });
+
+    var data = {
+        "udtActivityDetails": aquaticCreatures
+    }
+
     var url = "NFA/InsUpdateActivityDetails?NFAID=" + parseInt(idx);
     // console.log(JSON.stringify(aquaticCreatures))
-    var SaveActivityDetails = callajaxReturnSuccess(url, "Post", JSON.stringify(aquaticCreatures));
+    var SaveActivityDetails = callajaxReturnSuccess(url, "Post", JSON.stringify(data));
     SaveActivityDetails.success(function (res) {
         lstActivityData = [];
     });
@@ -1750,13 +1759,13 @@ function frmAzurePPCForm() {
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
         "Introduction": jQuery('#txtintroduction').val(),
         "CostBenefitAnalysis": jQuery('#txtcostbenefit').val(),
-        "Budgetavailabilty": jQuery('#txtbudgetavailbilty').val(), 
+        "Budgetavailabilty": jQuery('#txtbudgetavailbilty').val(),
         "Workordergiven": jQuery('#txtpartordergiven').val(),
-        "Completionsechdule": jQuery('#txtcompletionsechdule').val(), 
+        "Completionsechdule": jQuery('#txtcompletionsechdule').val(),
         "Lessthan3Quotes": jQuery('#txtlessthan3quotes').val(),
         "AwardcontractthanL1": jQuery('#txtawardotherthanL1').val(),
         "Splitingorder01Vendor": jQuery('#txtsplitingmorethan01').val(),
-        "GeneralRemarks": jQuery('#txtgemeralremarks').val(), 
+        "GeneralRemarks": jQuery('#txtgemeralremarks').val(),
         "IssuingRFQtoVendor": jQuery('#txtrationalrfqvendor').val(),
         "Enquirynotsentvendors": jQuery('#txtenquirynotsent').val(),
         "EnquiryIssuedOn": EnquiryIssuedOn,
@@ -1765,7 +1774,7 @@ function frmAzurePPCForm() {
         "RecomRepeatOrder": repeatorder,
         "RecomSuppEnclosure": jQuery('#txtsupportedenclosure').val(),
         "RecomCompFinalPrice": jQuery('#tctcomfinalprice').val(),
-        "RecomQuotationofParties":'',
+        "RecomQuotationofParties": '',
         "WorkOrderRecomParty": jQuery('#txtorderrecparty').val(),
         "PurchaseOrder": jQuery('#txtworkordervalue').val(),
         "InternalCostestimate": jQuery('#txtinternalcost').val(),

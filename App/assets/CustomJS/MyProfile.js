@@ -1,4 +1,4 @@
-let gstflag=false;
+let gstflag=true;
 let isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted')
 let mobileNo = sessionStorage.getItem('mobileNo');
 
@@ -1498,7 +1498,7 @@ function fetchMyProfileVendor() {
 
 
             let isactiveUser = parentData.isActive;
-             debugger
+           
            
              $("#personname").val(StringDecodingMechanism(parentData.contactPerson))
             $("#personnamealt").val(StringDecodingMechanism(parentData.contactNameAlt))
@@ -1581,7 +1581,7 @@ function fetchMyProfileVendor() {
 //edit vendor
 
 function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile, taxIdType, taxIdType2, city, regionKey, countryKey, Langu, currency,gstnstatus,einvoicestatus,taxpayertype,legalName) {
-    debugger
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
      
      setTimeout(function() {
@@ -1599,7 +1599,7 @@ function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingco
         gstflag=true;
     }
     else{
-        gstflag=false;
+        gstflag=true;
         $('#txtTINType').removeAttr('disabled')
     }
     $('#childDetailsForm').removeClass('hide')
@@ -1927,7 +1927,7 @@ function UpdateCompanyDetail() {
 
 
 function UpdateBankDetail() {
-    debugger
+   
     $('#buttonbankupdate').attr('disabled','disabled');
     let ActionType = $('#hdnActionType').val()
 
@@ -1949,7 +1949,7 @@ function UpdateBankDetail() {
     let bankurl = ""
     let encodedbankname=StringEncodingMechanism(jQuery("#bankname").val());
    
-    debugger
+   
     if (ActionType == "Add") {
         bankurl = APIPath + "VendorLCM/UpdateBankDetail/?ActionType=Add"
         data = {
@@ -1995,7 +1995,7 @@ function UpdateBankDetail() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-            debugger
+          
              if ($('#filecheck').val() != '') {
                 fnUploadFilesonAzure('filecheck', checkfilename, 'VR/' + $('#hdnChildID').val());
             }
@@ -2014,7 +2014,7 @@ function UpdateBankDetail() {
 
         },
         error: function (xhr, status, error) {
-             debugger
+           
              $('#buttonbankupdate').removeAttr('disabled');
              var err = xhr.responseText
              jQuery("#error").text(err);
@@ -2029,7 +2029,7 @@ function UpdateBankDetail() {
 
 
 function GetBankDetail(ChildId, CustId, vendorid) {
-     debugger
+    
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -2039,7 +2039,7 @@ function GetBankDetail(ChildId, CustId, vendorid) {
         cache: false,
         dataType: "json",
         success: function (childData) {
-               debugger
+             
                
                let isBVerify=""
             $('#mapMN').val($('#vendormobileno').val())
@@ -2179,7 +2179,7 @@ function UpdateFinancialDetail() {
         financefilename = jQuery('#filefinance').val().substring(jQuery('#filefinance').val().lastIndexOf('\\') + 1)
         financefilename = financefilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
     }
-    debugger
+  
     let data = {
         "ChildId": parseInt($('#hdnChildID').val()),
         "FinancialYearFrom": $('#fromFiscalyear').val(),
@@ -2213,7 +2213,7 @@ function UpdateFinancialDetail() {
             }
             
              if ($('#filefinance').val() != '') {
-                 debugger
+               
                 fnUploadFilesonAzure('filefinance', financefilename, 'VR/' + $('#hdnChildID').val());
 
             }
@@ -2256,7 +2256,7 @@ function GetFinancialDetail(ChildId) {
         cache: false,
         dataType: "json",
         success: function (childData) {
-            debugger
+           
             if (childData.length > 0) {
                 $('#tblGetFinancialDetail').empty()
                 $('#tblGetFinancialDetail').append("<thead><tr><th class='hide'></th><th>Turn Over</th><th>Financial Year</th><th>Attachment</th></tr></thead><tbody>")
@@ -2406,7 +2406,7 @@ function AddAssociateVendorDetail() {
 
   let encodedvendoraddress=StringEncodingMechanism($('#vendoraddress').val())
   let cleanTradeName=StringEncodingMechanism(jQuery("#TradeName").val());
- debugger
+
   if(jQuery("#txtTINType option:selected").val()=="" && $("#ddlCountry option:selected").val()=='IN' ){
        data = {
         "Address": encodedvendoraddress,
@@ -2611,24 +2611,24 @@ function cleanAddChild() {
 
 //to validate gst
 
-function extractPan(data) {
-
+function extractPan() {
+    let data = $("#txtTINNo").val();
     $('#txtTINNo').removeClass("gstvalidicon")
     var reggst = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/
 
 
-    if (data.value.length === 15) {
-        if (!reggst.test(data.value)) {
-             gstflag=false;
+    if (data.length === 15) {
+        if (!reggst.test(data)) {
+             gstflag=true;
             bootbox.alert('GST Number Format is not valid. please check it');
             return false;
         }
 
-        ValidateGST(data.value)
+        ValidateGST(data)
 
     }
     else {
-          gstflag=false;
+          gstflag=true;
         $("#vendorpanno").val("");
 
         //beforeTaxDisable()
@@ -2638,9 +2638,9 @@ function extractPan(data) {
 
 
 function ValidateGST(data) {
-
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     let GSTNo = data
-    debugger
+    
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -2648,7 +2648,7 @@ function ValidateGST(data) {
         contentType: "application/json; charset=utf-8",
         async:false,
         success: function (data, status, jqXHR) {
-          debugger
+        
             if (data.status != 'E') {
                 var data = jQuery.parseJSON(data);
                 gstflag=true
@@ -2684,23 +2684,22 @@ function ValidateGST(data) {
                 $("#pincode").val(pincode);
                 
                 
-                
-                jQuery("#ddlState").find(`option[data-statename=${stateName}]`).prop('selected', true).trigger('change')
-                
-                
-                setTimeout(function () {
+                alertforinfo('GST Number is validated successfully.')
+                jQuery.unblockUI();
+                 setTimeout(function () {
                     $('#txtTINNo').removeClass("gstvalidicon");
                 }, 2000);
+                jQuery("#ddlState").find(`option[data-statename='${stateName}']`).prop('selected', true).trigger('change');
+
+                
+               
             }
             else {
-                $('.alert-danger').html('')
-                $('.alert-danger').html('No such GST number exist')
-                $('.alert-danger').show();
-                Metronic.scrollTo($('.alert-danger'), -200);
-                $('.alert-danger').fadeOut(5000);
+              
+                alertforerror(`GST Number could not be validated`);
             }
 
-
+            jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
           
@@ -2709,11 +2708,7 @@ function ValidateGST(data) {
                 error401Messagebox(err.Message);
             }
             else {
-                $('.alert-danger').html('')
-                $('.alert-danger').html(err)
-                $('.alert-danger').show();
-                Metronic.scrollTo($('.alert-danger'), -200);
-                $('.alert-danger').fadeOut(5000);
+                alertforerror(err)
             }
             jQuery.unblockUI();
             return false;
@@ -2771,7 +2766,7 @@ function viewbankcustomer(accordionname) {
 
 
 function GetCustomerForBankMapping(vendid, ChildId, bankingId,accholder,accnum,accifsc,isVerify) {
-    debugger
+   
     $('#hdnBankingId').val(bankingId)
     $('#hdnChildID').val(ChildId)
 
@@ -2786,7 +2781,7 @@ function GetCustomerForBankMapping(vendid, ChildId, bankingId,accholder,accnum,a
         dataType: "json",
         success: function (data) {
             
-            debugger   
+               
             
             jQuery(".verifygroup").hide();
             
@@ -3251,7 +3246,9 @@ $('#txtTINType').on('change', function () {
         $(".nopanhide").show();
         $("#ParticipantName").removeAttr('disabled');
         $("#ddlNatureEstaiblishment").removeAttr('disabled');
-        $("#txtTINNo").attr("onchange","");
+       /* $("#txtTINNo").attr("onchange","");*/
+        $("#btncalgst").attr("onClick", ``);
+        $("#btncalgst").hide()
         $("#txtPanNo").removeAttr('disabled');
         $("#vendorpanno").removeAttr('disabled');
         $("#vendorname").removeAttr('disabled');
@@ -3265,7 +3262,9 @@ $('#txtTINType').on('change', function () {
         $(".newgsthide").hide();
         $("#ParticipantName").removeAttr('disabled');
         $("#ddlNatureEstaiblishment").removeAttr('disabled');
-        $("#txtTINNo").attr("onchange","");
+        /*$("#txtTINNo").attr("onchange","");*/
+        $("#btncalgst").attr("onClick", ``);
+        $("#btncalgst").hide()
         $("#txtPanNo").removeAttr('disabled');
         $("#vendorpanno").removeAttr('disabled');
         $("#vendorname").removeAttr('disabled');
@@ -3280,7 +3279,9 @@ $('#txtTINType').on('change', function () {
          $(".nopanhide").show();
          $("#ParticipantName").attr("disabled", "disabled");
          $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
-         $("#txtTINNo").attr("onchange", "extractPan(this)");
+        /*$("#txtTINNo").attr("onchange", "extractPan(this)");*/
+        $("#btncalgst").attr("onClick", `extractPan()`);
+        $("#btncalgst").show()
          $("#txtPanNo").attr("disabled", "disabled");
          $("#vendorpanno").attr("disabled", "disabled");
          $("#vendorname").attr("disabled", "disabled");
@@ -3290,7 +3291,9 @@ $('#txtTINType').on('change', function () {
          $(".nogsthide").show();
          $(".newgsthide").hide();
          $(".nopanhide").show();
-         $("#txtTINNo").attr("onchange", "");
+        /* $("#txtTINNo").attr("onchange", "");*/
+        $("#btncalgst").attr("onClick", ``);
+        $("#btncalgst").hide()
          $("#ParticipantName").removeAttr("disabled");
          $("#txtPanNo").removeAttr("disabled");
         
@@ -3305,7 +3308,7 @@ $('#txtTINType').on('change', function () {
 
 let vendorchildId='';
 function DownloadFile(aID) {
-     debugger
+   
     vendorchildId = $('#hdnChildID').val()
     fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + vendorchildId);
 }
@@ -3369,7 +3372,7 @@ function validateUserPro(){
 
 //penny testing code
 function IciciBankPennyDropVerify() {
-   debugger
+  
    if($('#mapMN').val()==''){
                $('#btnmaptoc').attr('disabled','disabled');
                 alertforerror("please fill valid mobile number to proceed")
@@ -3396,7 +3399,12 @@ function IciciBankPennyDropVerify() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-           debugger
+         debugger
+         if(data.status==0){
+             alertforerror(data.error);
+             jQuery.unblockUI();
+             return false;
+         }
           
            let ActCode= data.data.actCode
            if(data.isVeriFy==='Y'){
@@ -3427,7 +3435,7 @@ function IciciBankPennyDropVerify() {
         },
         error: function (xhr, status, error) {
 
-           debugger
+          
            let err=xhr.responseText || `banking details cannot be verified. Please Check!`;
           
            alertforerror(err);
@@ -3439,7 +3447,7 @@ function IciciBankPennyDropVerify() {
 
 //dropdown changes for verification
 $('#mapbankcustomer').on('change', function () {
-    debugger
+   
    let isVerify = $('option:selected', this).data('isverify');
    let verification=$('option:selected', this).data('verification');
    if(isVerify=='Y' ){

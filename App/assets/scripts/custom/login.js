@@ -1,11 +1,9 @@
-let gstflag=false;
+let gstflag=true;
 sessionStorage.clear();
 
-//sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
 sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-//sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+//setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 
-//sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
 
 
 var Token = '';
@@ -17,7 +15,7 @@ jQuery(document).ready(function () {
    if(window.location.search){
           var param = getUrlVars()["param"] 
           $('#txtEmail').val(param)
-          $('#txtEmail').attr("disabled", "disabled");
+         $('#txtEmail').attr("disabled", "disabled");
           fnOpenRegisterUser() 
      
    }
@@ -159,10 +157,8 @@ var Login = function () {
 
     function validateUser() {
         
-        //sessionStorage.setItem("APIPath", 'http://localhost:51739/');
+      
         sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
-         //sessionStorage.setItem("APIPath", 'https://pevdevelopment.azurewebsites.net/');
-        //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
         var path = window.location.pathname;
         var url = '';
         var lastPart = (path.substr(path.length - (path.length - 1))).slice(0, -1);
@@ -173,7 +169,8 @@ var Login = function () {
             var encryptedString = pwd.toString();
             var data = {
                 "LoginID": jQuery("#username").val().trim(),
-                "Password": encryptedString
+                "Password": encryptedString,
+                "DeviceType": "Laptop"
             }
 
             jQuery.ajax({
@@ -195,7 +192,7 @@ var Login = function () {
                             sessionStorage.setItem("RefreshToken", data.tokenString.refreshToken);
                             sessionStorage.setItem("IsSSOAuth", "N");
                             sessionStorage.setItem("hasLoggedIn", data.hasLoggedIn);
-                            debugger
+                            
                             SetSessionItems(lastPart, data.userDetails[0]);
                             break;
                         //case "Your account has been Locked. Please contact administrator.":
@@ -245,7 +242,7 @@ var Login = function () {
 
         }
         else {
-            debugger
+           
             var userPass = fnencrypt(jQuery("#password").val().trim());
             //var encryptedString = CryptoJS.AES.encrypt(userPass, "8080808080808080").toString();
             //var encryptedString = toUTF8Array(userPass);
@@ -255,7 +252,8 @@ var Login = function () {
                 "LoginID": jQuery("#username").val().trim(),
                 //"Password": jQuery("#password").val().trim(),
                 "Password": encryptedString,
-                "LinkUrl": LinkUrl
+                "LinkUrl": LinkUrl,
+                "DeviceType": "Laptop"
             }
             jQuery.ajax({
                 url: APIPath + "User/validate_User",
@@ -450,7 +448,7 @@ function Changeforgotpasswordfn() {
             custid = parseInt(sessionStorage.getItem('CustomerID'));
         }
     }
-
+  
     var data = {
         "EmailID": $("#txtemail").val(),
         "UserType": UserType,
@@ -466,6 +464,7 @@ function Changeforgotpasswordfn() {
         type: "POST",
         contentType: "application/json",
         success: function (data) {
+          
             switch (data.successCount) {
                 case 1:
                 case 2:
@@ -611,7 +610,7 @@ function IsAcceptedBidTermsRFIRFQ(Usertype) {
 }
 
 function SetSessionItems(lastPart, value) {
-    debugger
+  
     sessionStorage.setItem("CustomerID", value.customerID);
     sessionStorage.setItem("UserID", value.userID);
     sessionStorage.setItem("UserName", value.userName);
@@ -826,7 +825,7 @@ function fetchCity(stateid) {
 
 function VendorRequestSubmit() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-   debugger
+  
     let data='';
     let gstfilename=jQuery('#filegst').val().substring(jQuery('#filegst').val().lastIndexOf('\\') + 1)
     let panfilename=jQuery('#filepan').val().substring(jQuery('#filepan').val().lastIndexOf('\\') + 1)
@@ -842,7 +841,7 @@ function VendorRequestSubmit() {
         }
 
         if (gstfilename == "" || panfilename == "") {
-            debugger
+           
             jQuery.unblockUI();
             alertforerror('please attach GST/PAN Files to proceed...')
             return false;
@@ -989,7 +988,7 @@ function VendorRequestSubmit() {
         dataType: "json",
         success: function (data) {
             
-           debugger
+           
             if ($('#filegst').val() != '') {
                 fnUploadFilesonAzure('filegst', gstfilename, data.childId);
 
@@ -1000,8 +999,7 @@ function VendorRequestSubmit() {
 
             }
 
-            
-            debugger
+           
             
             $('#buttoncompanyupdate').attr("disabled", "disabled");
             jQuery.unblockUI();
@@ -1013,7 +1011,7 @@ function VendorRequestSubmit() {
 
         },
         error: function (xhr, status, error) {
-            debugger
+           
             alertforerror(xhr.responseText)
             jQuery.unblockUI();
         }
@@ -1050,7 +1048,7 @@ function extractPan(data) {
 }
 
 function ValidateGST(data) {
-    debugger
+    
     let GSTNo = data
     console.log(sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo);
     jQuery.ajax({
@@ -1059,7 +1057,7 @@ function ValidateGST(data) {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            debugger
+            
             if (data.status != 'E') {
                 var data = jQuery.parseJSON(data);
                 let panNumber = "";
