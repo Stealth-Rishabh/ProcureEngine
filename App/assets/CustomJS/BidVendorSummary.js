@@ -530,17 +530,17 @@ function fetchBidVendorSummary(dtfrom, dtto, subject) {
             }
             else {
                 jQuery('#tblVendorSummary > tbody').append("<tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr>");
-                $('#tblVendorSummary').dataTable({
-                    "bDestroy": true,
-                    "bPaginate": false,
-                    "bLengthChange": false,
-                    "bFilter": false,
-                    "bInfo": false,
-                    "bAutoWidth": false,
-                    "bSort": true
-
-
-                });
+                /* $('#tblVendorSummary').dataTable({
+                     "bDestroy": true,
+                     "bPaginate": false,
+                     "bLengthChange": false,
+                     "bFilter": false,
+                     "bInfo": false,
+                     "bAutoWidth": false,
+                     "bSort": true
+ 
+ 
+                 });*/
             }
         },
         error: function (xhr, status, error) {
@@ -785,17 +785,17 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
             }
             else {
                 jQuery('#tblVendorSummarydetails > tbody').append("<tr><td colspan='17' style='text-align: center; color:red;'>No record found</td></tr>");
-                $('#tblVendorSummarydetails').dataTable({
-                    "bDestroy": true,
-                    "bPaginate": false,
-                    "bLengthChange": false,
-                    "bFilter": false,
-                    "bInfo": false,
-                    "bAutoWidth": false,
-                    "bSort": true
-
-
-                });
+                /* $('#tblVendorSummarydetails').dataTable({
+                     "bDestroy": true,
+                     "bPaginate": false,
+                     "bLengthChange": false,
+                     "bFilter": false,
+                     "bInfo": false,
+                     "bAutoWidth": false,
+                     "bSort": true
+ 
+ 
+                 });*/
             }
             jQuery.unblockUI();
         },
@@ -989,7 +989,7 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
             }
             else {
                 jQuery('#tblVendorSummarySUmzation > tbody').append("<tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr>");
-                $('#tblVendorSummarySUmzation').dataTable({
+                /*$('#tblVendorSummarySUmzation').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
                     "bLengthChange": false,
@@ -997,7 +997,7 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
                     "bInfo": false,
                     "bAutoWidth": false,
                     "bSort": true
-                });
+                });*/
             }
         },
         error: function (xhr, status, error) {
@@ -1283,7 +1283,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
             }
             else {
                 jQuery('#tblVendorSummarydetails > tbody').append("<tr><td colspan='17' style='text-align: center; color:red;'>No record found</td></tr>");
-                $('#tblVendorSummarydetails').dataTable({
+                /*$('#tblVendorSummarydetails').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
                     "bLengthChange": false,
@@ -1293,7 +1293,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
                     "bSort": true
 
 
-                });
+                });*/
             }
         },
         error: function (xhr, status, error) {
@@ -1534,7 +1534,7 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
             }
             else {
                 jQuery('#tblVendorSummarySUmzation > tbody').append("<tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr>");
-                $('#tblVendorSummarySUmzation').dataTable({
+                /*$('#tblVendorSummarySUmzation').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
                     "bLengthChange": false,
@@ -1544,7 +1544,7 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
                     "bSort": true
 
 
-                });
+                });*/
             }
         },
         error: function (xhr, status, error) {
