@@ -1079,7 +1079,7 @@ function fetchReguestforQuotationDetails() {
                         //fetchRFQResponseTocheckVersion('Attachment', RFQData[0].vendors[i].version);
                         fetchRFQResponse('Question', RFQData[0].vendors[i].version);
                         fetchRFQResponse('Attachment', RFQData[0].vendors[i].version)
-                        debugger;
+                       
                         sessionStorage.setItem('RFQVersionId', RFQData[0].vendors[i].version)
                     }
                 }

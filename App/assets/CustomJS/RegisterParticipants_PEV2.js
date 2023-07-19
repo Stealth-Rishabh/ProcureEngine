@@ -4228,7 +4228,7 @@ function setupPagination(pageNumber) {
 }
 
 function gotopage_directly(ele) {
-    debugger
+   
     pageNumber = ele.value;
     if (pageNumber > 1) {
         $('.previousbtn').show()

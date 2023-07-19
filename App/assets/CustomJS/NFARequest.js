@@ -370,14 +370,14 @@ var FormWizard = function () {
                             if (idx != 0) {
                                 BindSaveparams();
                                 BindAttachmentsOfEdit();
-                                debugger
+                                
                                 if ($('#ddlEventType').val() == "1") {
                                     if (IsSAPModule == 'Y') {
                                         if (SOBID != 0) {
                                             GetSOBAllocation()
                                         }
                                         else {
-                                            debugger
+                                            
                                             fetchReguestforQuotationDetails();
                                         }
                                     }
@@ -450,7 +450,7 @@ var FormWizard = function () {
                             SaveAttechmentinDB();
                             BindAttachmentsOfEdit();
                             Bindtab3Data();
-                            debugger
+                            
                             if ($('#ddlEventType').val() == "1") {
                                 if (IsSAPModule == 'Y') {
                                     GetSOBAllocation()
@@ -789,7 +789,7 @@ function fnaddQuestion() {
 }
 
 function fnApproversNBQuery(rownum, question) {
-    debugger
+    
     if (jQuery("#ddlNFAParam").val() == "0" || jQuery("#ddlNFAParam").val() == "") {
         $('#errordivSeq').show();
         $('#errorSeq').html('Response not selected. Please press + Button after selecting Response');
@@ -1121,7 +1121,7 @@ function Savedata() {
         _budget = $("#txtBudget").val();
     }
     var p_Budget = removeThousandSeperator(_budget);
-    debugger
+    
     var p_category = $("#ddlCategory option:selected").val();
     var p_currency = $("#dropCurrency option:selected").val();
     var p_projectname = $("#txtProjectName option:selected").text();
@@ -1237,13 +1237,13 @@ function GetNfaOverviewParams() {
     })
 }
 function BindSaveparams() {
-    debugger
+    
     var x = isAuthenticated();
     var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx) + "&For=nfrequest&Purchaseorg=" + $('#ddlPurchaseOrg option:selected').val();
 
     var ParamData = callajaxReturnSuccess(url, "Get", {})
     ParamData.success(function (res) {
-        debugger
+        
         if (res != null) {
 
             $("#tblNFAOverviewParam").empty();
@@ -1422,7 +1422,7 @@ function SaveApproversConfirmation() {
     var approversData = [];
     var _data = {};
 
-    debugger
+    
     var url = "NFA/InsUpdateOverViewApprovers?NfaIdx=" + parseInt(idx);
 
     $("#tblApproversPrev tr:gt(0)").each(function () {
@@ -1438,7 +1438,7 @@ function SaveApproversConfirmation() {
             apprEmail: $.trim(this_row.find('td:eq(1)').html()),
             apprStatus: "P",
         }
-        debugger
+        
         approversData.push(_data);
         objActivity = {
             CustomerID: parseInt(CurrentCustomer),
@@ -1459,7 +1459,7 @@ function SaveApproversConfirmation() {
         ApprSeqval.push(Seq);
 
     });
-    debugger
+    
 
     var data = {
         "uDTApprovers": approversData
@@ -1467,7 +1467,7 @@ function SaveApproversConfirmation() {
 
     var SubmitData = callajaxReturnSuccess(url, "Post", JSON.stringify(data));
     SubmitData.success(function (res) {
-        debugger
+        
         SaveActivityDetails(lstActivityData);
         if (res.status == "S") {
             bootbox.alert("NFA Request Submitted Successfully.", function () {
@@ -1483,7 +1483,7 @@ function SaveApproversConfirmation() {
         jQuery.unblockUI();
     });
     SubmitData.error(function (error) {
-        debugger
+        
         bootbox.alert("Error: " + error, function () {
             return false;
         });
@@ -1601,7 +1601,7 @@ function SaveActivityDetails(data) {
     var aquaticCreatures = data.filter(function (details) {
         return details.apprSeq == ApprSeqval.min();
     });
-    debugger
+    
     var data = {
         "udtActivityDetails": aquaticCreatures
     }
@@ -1610,7 +1610,7 @@ function SaveActivityDetails(data) {
 
     var SaveActivityDetails = callajaxReturnSuccess(url, "Post", JSON.stringify(data));
     SaveActivityDetails.success(function (res) {
-        debugger
+        
         lstActivityData = [];
     });
     SaveActivityDetails.error(function (error) {
@@ -1821,7 +1821,7 @@ function viewallmatrix() {
 
 function fetchReguestforQuotationDetails() {
     console.log(sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativerank/?RFQID=" + sessionStorage.getItem('hdnEventrefId'))
-    debugger
+    
     var x = isAuthenticated();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -1834,7 +1834,7 @@ function fetchReguestforQuotationDetails() {
         dataType: "json",
         success: function (RFQData) {
             $('#PriceType').show()
-            debugger
+            
 
             let dt = JSON.parse(RFQData[0].jsondata);
             $('#tblvendors').empty();
@@ -1849,7 +1849,7 @@ function fetchReguestforQuotationDetails() {
             }
         },
         error: function (xhr, status, error) {
-            debugger
+            
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1881,7 +1881,7 @@ function fetchProjectMaster() {
         async: false,
         dataType: "json",
         success: function (data) {
-            debugger
+            
             jQuery("#txtProjectName").empty();
             jQuery("#txtProjectName").append(jQuery("<option></option>").val("").html("Select Project"));
             if (data.length > 0) {
@@ -1919,16 +1919,16 @@ function fetchProjectMaster() {
 //SOB Changes
 
 function allocateSOB() {
-    debugger
+    
 
     let SOBDetailsArray = []
     let i = ''
 
     $('#tblvendors tbody tr').each(function (i) {
-        debugger
+        
         let price = 0
         if ($(`#checkv${i}`).is(':checked')) {
-            debugger
+            
             if ($(`#TDPrice${i} input`).val()) {
                 price = parseInt($(`#TDPrice${i} input`).val());
             }
@@ -1954,7 +1954,7 @@ function allocateSOB() {
             SOBDetailsArray.push(SOBDetailsunit);
         }
     })
-    debugger
+    
     if (SOBDetailsArray.length === 0) {
         return false
     }
@@ -1981,7 +1981,7 @@ function allocateSOB() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            debugger
+            
             if (data.returnId == 0) {
 
                 $('.alert-danger').show();
@@ -2029,7 +2029,7 @@ function GetSOBAllocation() {
         async: false,
         dataType: "json",
         success: function (data) {
-            debugger
+            
             $('#PriceType').show()
             $('#PriceTypeP').show()
             $('#ddlPriceType').val(data.sobOn).trigger('change');

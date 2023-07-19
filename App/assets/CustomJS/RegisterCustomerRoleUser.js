@@ -771,7 +771,7 @@ function ins_updCustomer() {
     if ($('#pincode').val() != "" && $('#pincode').val() != null) {
         pincode = $('#pincode').val()
     }
-    debugger
+    
     if (checkimageExtension(logo)) {
         var data = {
             //'CustomerName': $('#txtcustomername').val(),
@@ -818,7 +818,7 @@ function ins_updCustomer() {
 
     }
     console.log(JSON.stringify(data))
-    debugger;
+   
     jQuery.ajax({
         url: APIPath + "CustomerRegistration/InsCustomerRegistration",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -826,7 +826,7 @@ function ins_updCustomer() {
         type: "POST",
         contentType: "application/json",
         success: function (data) {
-           debugger;
+         
             if (data.isSuccess == '1') {
                 sessionStorage.setItem("hdnCustomerID", data.customerID)
                 sessionStorage.setItem("hdnAdminID", data.adminID)

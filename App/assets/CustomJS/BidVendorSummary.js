@@ -529,18 +529,11 @@ function fetchBidVendorSummary(dtfrom, dtto, subject) {
 
             }
             else {
+                $('.dt-buttons').hide();
+                $('.dataTables_info').hide();
+                $('.dataTables_paginate').hide();
                 jQuery('#tblVendorSummary > tbody').append("<tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr>");
-                /* $('#tblVendorSummary').dataTable({
-                     "bDestroy": true,
-                     "bPaginate": false,
-                     "bLengthChange": false,
-                     "bFilter": false,
-                     "bInfo": false,
-                     "bAutoWidth": false,
-                     "bSort": true
- 
- 
-                 });*/
+
             }
         },
         error: function (xhr, status, error) {
@@ -784,18 +777,11 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
 
             }
             else {
+                $('.dt-buttons').hide();
+                $('.dataTables_info').hide();
+                $('.dataTables_paginate').hide();
                 jQuery('#tblVendorSummarydetails > tbody').append("<tr><td colspan='17' style='text-align: center; color:red;'>No record found</td></tr>");
-                /* $('#tblVendorSummarydetails').dataTable({
-                     "bDestroy": true,
-                     "bPaginate": false,
-                     "bLengthChange": false,
-                     "bFilter": false,
-                     "bInfo": false,
-                     "bAutoWidth": false,
-                     "bSort": true
- 
- 
-                 });*/
+
             }
             jQuery.unblockUI();
         },
@@ -988,16 +974,11 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
                 var tableWrapper = $('#tblVendorSummarySUmzation_wrapper'); // datatable creates the table wrapper by adding with id {your_table_jd}_wrapper
             }
             else {
+                $('.dt-buttons').hide();
+                $('.dataTables_info').hide();
+                $('.dataTables_paginate').hide();
                 jQuery('#tblVendorSummarySUmzation > tbody').append("<tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr>");
-                /*$('#tblVendorSummarySUmzation').dataTable({
-                    "bDestroy": true,
-                    "bPaginate": false,
-                    "bLengthChange": false,
-                    "bFilter": false,
-                    "bInfo": false,
-                    "bAutoWidth": false,
-                    "bSort": true
-                });*/
+
             }
         },
         error: function (xhr, status, error) {
@@ -1282,18 +1263,11 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
 
             }
             else {
+                $('.dt-buttons').hide();
+                $('.dataTables_info').hide();
+                $('.dataTables_paginate').hide();
                 jQuery('#tblVendorSummarydetails > tbody').append("<tr><td colspan='17' style='text-align: center; color:red;'>No record found</td></tr>");
-                /*$('#tblVendorSummarydetails').dataTable({
-                    "bDestroy": true,
-                    "bPaginate": false,
-                    "bLengthChange": false,
-                    "bFilter": false,
-                    "bInfo": false,
-                    "bAutoWidth": false,
-                    "bSort": true
 
-
-                });*/
             }
         },
         error: function (xhr, status, error) {
@@ -1533,18 +1507,11 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
 
             }
             else {
+                $('.dt-buttons').hide();
+                $('.dataTables_info').hide();
+                $('.dataTables_paginate').hide();
                 jQuery('#tblVendorSummarySUmzation > tbody').append("<tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr>");
-                /*$('#tblVendorSummarySUmzation').dataTable({
-                    "bDestroy": true,
-                    "bPaginate": false,
-                    "bLengthChange": false,
-                    "bFilter": false,
-                    "bInfo": false,
-                    "bAutoWidth": false,
-                    "bSort": true
 
-
-                });*/
             }
         },
         error: function (xhr, status, error) {

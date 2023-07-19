@@ -1062,7 +1062,7 @@ function Savedata() {
     if ($("#txtBudget").val() != '') {
         _budget = removeThousandSeperator($("#txtBudget").val());
     }
-    debugger
+    
     var p_Budget = removeThousandSeperator(_budget);
     var p_category = $("#ddlCategory option:selected").val();
     var p_currency = $("#dropCurrency option:selected").val();
@@ -1751,7 +1751,7 @@ function frmAzurePPCForm() {
 
     var LowestPriceOffer = $("input[name='LowestPriceOffer']:checked").val();
     var repeatorder = $("input[name='repeatorder']:checked").val();
-    debugger
+    
     var Data = {
         "nfaID": parseInt(idx),
         "RFQID": parseInt(RFQID),
@@ -1790,7 +1790,7 @@ function frmAzurePPCForm() {
         "BiddingVendorDetails": AzurevendorDetails
 
     };
-    debugger
+    
     // console.log(JSON.stringify(Data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Azure/insPPC/",
@@ -1799,13 +1799,13 @@ function frmAzurePPCForm() {
         data: JSON.stringify(Data),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            debugger
+            
             jQuery.unblockUI();
             return true;
 
         },
         error: function (xhr, status, error) {
-            debugger
+            
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);

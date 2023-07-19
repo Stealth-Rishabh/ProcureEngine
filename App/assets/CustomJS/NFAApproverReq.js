@@ -999,7 +999,7 @@ function ApprovalApp() {
     var x = isAuthenticated();
     var _cleanString = StringEncodingMechanism(jQuery("#txtRemarksApp").val());
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-   debugger
+   
     var approvalbyapp = {
         "NFAID": parseInt(idx),
         "FromUserId": sessionStorage.getItem("UserID"),
@@ -1020,7 +1020,7 @@ function ApprovalApp() {
         crossDomain: true,
         dataType: "json",
         success: function () {
-           debugger
+           
             bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
 
                 window.location = "index.html";
@@ -1031,7 +1031,7 @@ function ApprovalApp() {
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
-            debugger
+            
             var err = xhr.responseText;
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);

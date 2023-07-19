@@ -157,7 +157,7 @@ function fetchrfqcomprative() {
 
             var ShowPrice = Data.showQuotedPrice.showQoutedPrice
             var _CurrentDate = new Date();
-            debugger
+            
             if (_rfqBidType == 'Closed') {
                 if (_openQuotes == 'Y') {
                     // ShowPrice = showQuotedPrice;

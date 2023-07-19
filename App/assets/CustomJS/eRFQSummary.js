@@ -244,8 +244,8 @@ function fetchRFQVendorSummary() {
         dataType: "json",
         success: function (BidData) {
 
-
-
+            
+           
             jQuery("#tblVendorSummary").empty();
             jQuery("#tblVendorSummary").append(`<thead></thead><tbody></tbody>`);
             //jQuery('#tblVendorSummary').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>RFQ Subject</th><th class='bold'>Configured By</th><th class='bold hide'>RFQ StartDate</th><th class='bold'>RFQ EndDate</th><th class='bold'>Currency</th><th class='bold'>RFQ Status</th></tr></thead>");
@@ -344,18 +344,11 @@ function fetchRFQVendorSummary() {
 
             }
             else {
-                jQuery('#tblVendorSummary >tbody').append("<tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr>");
-                /*$('#tblVendorSummary').dataTable({
-                    "bDestroy": true,
-                    "bPaginate": false,
-                    "bLengthChange": false,
-                    "bFilter": false,
-                    "bInfo": false,
-                    "bAutoWidth": false,
-                    "bSort": true
-
-
-                });*/
+                
+                $('.dt-buttons').hide();
+                $('.dataTables_info').hide();
+                $('.dataTables_paginate').hide();
+                jQuery('#tblVendorSummary >tbody').append("<tr><td colspan=8 style='text-align: center; color:red;'>No record found</td></tr>");
                 jQuery.unblockUI();
             }
         },
@@ -444,6 +437,7 @@ function fetchBidVendorSummaryDetail() {
             var savinfLIP = stringDivider("Total Saving wrt LIP", 12, "<br/>\n");
 
             var savinfTR = stringDivider("Total Saving wrt TP", 12, "<br/>\n");
+            
             jQuery("#tblVendorSummarydetails").empty();
             jQuery("#tblVendorSummarydetails").append(`<thead></thead><tbody></tbody>`);
             //Sid RFQ Stages
@@ -606,18 +600,11 @@ function fetchBidVendorSummaryDetail() {
 
             }
             else {
+                
+                $('.dt-buttons').hide();
+                $('.dataTables_info').hide();
+                $('.dataTables_paginate').hide();
                 jQuery('#tblVendorSummarydetails>tbody').append("<tr><td colspan='14' style='text-align: center; color:red;'>No record found</td></tr>");
-                /*$('#tblVendorSummarydetails').dataTable({
-                    "bDestroy": true,
-                    "bPaginate": false,
-                    "bLengthChange": false,
-                    "bFilter": false,
-                    "bInfo": false,
-                    "bAutoWidth": false,
-                    "bSort": true
-
-
-                });*/
                 jQuery.unblockUI();
             }
         },
@@ -775,6 +762,7 @@ function fetchBidVendorSummarySummarization() {
             var savinfLIP = stringDivider("Total Saving wrt LIP", 40, "<br/>\n");
             var savinfTR = stringDivider("Total Saving wrt TP", 40, "<br/>\n");
 
+           
             jQuery("#tblVendorSummarySUmzation").empty();
             jQuery("#tblVendorSummarySUmzation").append(`<thead></thead><tbody></tbody>`);
 
@@ -898,18 +886,11 @@ function fetchBidVendorSummarySummarization() {
 
             }
             else {
-                jQuery('#tblVendorSummarySUmzation>tbody').append("<tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr>");
-                /*$('#tblVendorSummarySUmzation').dataTable({
-                    "bDestroy": true,
-                    "bPaginate": false,
-                    "bLengthChange": false,
-                    "bFilter": false,
-                    "bInfo": false,
-                    "bAutoWidth": false,
-                    "bSort": true
-
-
-                });*/
+                $('.dt-buttons').hide();
+                $('.dataTables_info').hide();
+                $('.dataTables_paginate').hide();
+                jQuery('#tblVendorSummarySUmzation>tbody').append("<tr><td colspan='12' style='text-align: center; color:red;'>No record found</td></tr>");
+                
                 jQuery.unblockUI();
             }
         },

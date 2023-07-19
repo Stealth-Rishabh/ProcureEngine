@@ -299,7 +299,7 @@ function insPoDetails() {
         }
         
         //481
-       debugger
+       
         rowCount = jQuery('#tblapprovers>tbody> tr').length;
         var ccEmails = "";
        
@@ -320,7 +320,7 @@ function insPoDetails() {
                 ObserverDetails.push(items)
             })
         }
-        debugger;
+       
         
 
         var Tab2data = {
@@ -1357,7 +1357,7 @@ function fetchRegisterUser() {
 
         },
         error: function (xhr, status, error) {
-            debugger;
+          
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);

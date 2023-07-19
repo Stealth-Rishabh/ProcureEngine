@@ -1314,7 +1314,7 @@ function ConfigureBidInsPefaTab1() {
 }
 
 function ConfigureBidInsPefaTab2() {
-    debugger;
+   
     var targetPrice;
     var lastInvoiceprice = 0;
     var mininc = 0; i = 0;
@@ -1342,7 +1342,7 @@ function ConfigureBidInsPefaTab2() {
                 }
 
                 var _cleanString3 = StringEncodingMechanism($.trim($('#shortname' + i).text()));
-                debugger
+                
                 tab2Items = {
                     "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
                     //"ItemName": $.trim($('#shortname' + i).html()),
@@ -1387,7 +1387,7 @@ function ConfigureBidInsPefaTab2() {
                 }
 
                 var _cleanString4 = StringEncodingMechanism($.trim($('#shortname' + i).text()));
-                debugger
+                
                 tab2Items = {
                     "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
                     //"ItemName": $.trim($('#shortname' + i).html()),
@@ -1411,7 +1411,7 @@ function ConfigureBidInsPefaTab2() {
         }
     }
 
-    debugger
+    
     var Tab2data = {
         "ProductDetails": PriceDetails,
         "bidID": parseInt(sessionStorage.getItem('CurrentBidID')),
@@ -1433,7 +1433,7 @@ function ConfigureBidInsPefaTab2() {
         data: JSON.stringify(Tab2data),
         dataType: "json",
         success: function (data) {
-            debugger
+            
             if (parseInt(data) > 0) {
 
                 return true;
@@ -1445,7 +1445,7 @@ function ConfigureBidInsPefaTab2() {
 
         },
         error: function (xhr, status, error) {
-            debugger
+            
 
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
@@ -1478,7 +1478,7 @@ function ConfigurePEFAVendorsave() {
         }
         bidvendorsarr.push(bidvendorsobj);
     });
-    debugger
+    
     var data = {
         "BidVendors": bidvendorsarr,
         "BidID": parseInt(sessionStorage.getItem('CurrentBidID'))
@@ -1494,7 +1494,7 @@ function ConfigurePEFAVendorsave() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-            debugger
+            
             if (parseInt(data) > 0) {
                 jQuery.unblockUI();
                 $('#BidPreviewDiv').show();
@@ -1512,7 +1512,7 @@ function ConfigurePEFAVendorsave() {
             }
         },
         error: function (xhr, status, error) {
-            debugger
+            
             var err = xhr.responseText // eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1546,7 +1546,7 @@ function ConfigureBidInsPefaTab3() {
     }
     else {
         if (sessionStorage.getItem("BidPreApp") == "N") {
-            debugger
+            
             var Tab3data = {
 
                 "BidID": parseInt(sessionStorage.getItem('CurrentBidID')),
@@ -1554,7 +1554,7 @@ function ConfigureBidInsPefaTab3() {
                 "BidTypeID": 6,
                 "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
             };
-            //alert(JSON.stringify(Tab3data))
+            
 
             jQuery.ajax({
 
@@ -1567,7 +1567,7 @@ function ConfigureBidInsPefaTab3() {
                 data: JSON.stringify(Tab3data),
                 dataType: "json",
                 success: function (data) {
-                    debugger
+                    
                     jQuery.unblockUI();
                     bootbox.alert("Bid Configured Successfully.", function () {
                         sessionStorage.removeItem('CurrentBidID');
@@ -1578,7 +1578,7 @@ function ConfigureBidInsPefaTab3() {
 
                 },
                 error: function (xhr, status, error) {
-                    debugger
+                    
                     var err = xhr.responseText//eval("(" + xhr.responseText + ")");
                     if (xhr.status == 401) {
                         error401Messagebox(err.Message);
@@ -2429,7 +2429,7 @@ function fetchScrapSalesBidDetails() {
 
             }
             if (BidData[0].bidVendorDetails.length > 0) {
-                debugger
+                
                 for (var i = 0; i < BidData[0].bidVendorDetails.length; i++) {
                     vCount = vCount + 1;
                     jQuery('#selectedvendorlists').append('<tbody><tr id=SelecetedVendor' + BidData[0].bidVendorDetails[i].associateVendorId + '><td class="hide vendorTblId">' + BidData[0].bidVendorDetails[i].vendorID + '</td><td class="hide childTblId">' + BidData[0].bidVendorDetails[i].associateVendorId + '</td><td>' + BidData[0].bidVendorDetails[i].vendorName + '</td><td><a href="javascript:;" class="btn btn-xs btn-danger" onclick="removevendor(SelecetedVendor' + BidData[0].bidVendorDetails[i].associateVendorId + ',SelecetedVendorPrev' + BidData[0].bidVendorDetails[i].associateVendorId + ',' + BidData[0].bidVendorDetails[i].associateVendorId + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr></tbody>')
@@ -2961,7 +2961,7 @@ function getCategoryWiseVendors(categoryID) {
         cache: false,
         dataType: "json",
         success: function (data) {
-            debugger
+            
             jQuery("#tblvendorlist > tbody").empty();
             var vName = '';
             for (var i = 0; i < data.length; i++) {
