@@ -1,8 +1,7 @@
 
     jQuery(document).ready(function () {
         
-        Pageloaded()
-        var x = isAuthenticated();
+    Pageloaded()
     setInterval(function () {Pageloaded()}, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -192,12 +191,12 @@ function insupdCategorymaster() {
 
                      for (var i = 0; i < data.length; i++) {
 
-                         jQuery('<tr><td><button class="btn yellow " onclick="updateType(\'' + data[i].categoryName + '\',\'' + data[i].isActive + '\',\'' + data[i].categoryID + '\')"><i class="fa fa-pencil"></i></button></td><td> ' + data[i].categoryName + '</td><td>' + data[i].status + '</td></tr>').appendTo("#tblPlaceMaster");
+                         jQuery('<tbody><tr><td><button class="btn yellow " onclick="updateType(\'' + data[i].categoryName + '\',\'' + data[i].isActive + '\',\'' + data[i].categoryID + '\')"><i class="fa fa-pencil"></i></button></td><td> ' + data[i].categoryName + '</td><td>' + data[i].status + '</td></tr></tbody>').appendTo("#tblPlaceMaster");
 
                     }
                  }
                  else { 
-                     jQuery("#tblPlaceMaster").append('<tr><td>No Information is there..</td></tr>');
+                     jQuery("#tblPlaceMaster").append('<tbody><tr><td>No Information is there..</td></tr></tbody>');
                  }
                 jQuery.unblockUI();
             },

@@ -1,12 +1,22 @@
+let gstflag=true;
+let isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted')
+let mobileNo = sessionStorage.getItem('mobileNo');
 
+//let mobileNo = "9821250345";
 function onloadcalls() {
     Pageloaded();
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     App.init();
     setCommonData();
     numberonly();
-    formvalidate();
+    //formvalidate();
+    FormValidateContact();
+    FormValidateCompany();
+    validateUserPro()
+    FormValidateBank();
+    
+    
+
 
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -25,12 +35,23 @@ function onloadcalls() {
             $('#bid').removeClass('page-sidebar-closed page-full-width');
         }
         else if (sessionStorage.getItem("UserType") == "V") {
+
             fetchMasters();
+            fetchCountry();
+            
             prefferedTimezone();
-            fetchMyProfileVendor();
             $('#ddlCountryCd').select2();
-            $('#ddlCountryAltCd').select2();
+            $('#ddlCountryCdPhone').select2();
             $('#ddlpreferredTime').select2();
+            $('#ddlcurrency').select2();
+            $('#currencyFiscalupdate').select2();
+
+            setTimeout(function () {
+
+                fetchMyProfileVendor()
+            }, 800)
+
+
         }
     }
     $(".thousand").inputmask({
@@ -52,7 +73,9 @@ function onloadcalls() {
 
 var APIPath = sessionStorage.getItem("APIPath");
 var cc = 0;
-function fetchUserDetails() { 
+function fetchUserDetails() {
+    
+    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var userReqObj = {
         "UserID": sessionStorage.getItem('UserID'),
@@ -69,7 +92,7 @@ function fetchUserDetails() {
         data: JSON.stringify(userReqObj),
         dataType: "json",
         success: function (data) {
-          
+
             cc = 0;
             if (data.length > 0) {
                 let userdetails = JSON.parse(data[0].jsondata);
@@ -85,7 +108,7 @@ function fetchUserDetails() {
                     $('#ddlpreferredTime').val(userdetails[0].preferredtimezone).trigger('change')
                 }, 800)
                 if (userdetails[0].DialingCodeMobile != "" && userdetails[0].DialingCodeMobile != undefined && userdetails[0].DialingCodeMobile != null) {
-                  
+
                     setTimeout(function () {
                         $('#ddlCountryCd').val(userdetails[0].DialingCodeMobile).trigger('change')
 
@@ -109,7 +132,7 @@ function fetchUserDetails() {
                         else {
                             $('#theadgroup').addClass('hide');
                         }
-                        
+
                     }
                     else {
                         $('#userOrg').addClass('hide')
@@ -151,8 +174,8 @@ function deleterow(trid, rowcount, gid) {
 }
 //vendor myprofile.html
 function fetchVendorDetails() {
-
-    //jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var userReqObj = {
         "UserID": sessionStorage.getItem('VendorId'),
         "UserType": sessionStorage.getItem('UserType')
@@ -176,7 +199,7 @@ function fetchVendorDetails() {
             $('#vendorEmailID').html(detail[0].EmailID)
             $('#vendoraddress').val(StringDecodingMechanism(detail[0].Address1))
             $('#vendorCity').val(StringDecodingMechanism(detail[0].CityName))
-            $('#ddlCountryAltCd').val(detail[0].DialingCodePhone)
+            $('#ddlCountryCdPhone').val(detail[0].DialingCodePhone)
             $('#vendorphone').val(detail[0].Phone)
             $('#vendorpanno').html(detail[0].PANNo)
             $('#vendorservicetaxno').html(detail[0].ServiceTaxNo)
@@ -210,8 +233,8 @@ function fetchVendorDetails() {
 
 
 //vendor myprofile_vendor.html
-function fetchMyProfileVendor() {
-
+/*function fetchMyProfileVendor() {
+   
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var tzID = parseInt(sessionStorage.getItem("timezoneid"));
     var userReqObj = {
@@ -219,6 +242,15 @@ function fetchMyProfileVendor() {
         "UserType": sessionStorage.getItem('UserType')
     }
     $("#ddlpreferredTime").val(tzID)
+    //dummy code for table
+    let childdata = {
+        "childId": 8989,
+        "companyName":"ASPL PVT limited"
+        }
+    $('#tblCompaniesFoundDetails').empty();
+    $('#tblCompaniesFoundDetails').append("<thead><tr><th class='hide'></th><th>Company Name</th><th>Address</th><th>Tax Identification Number</th><th></th></tr></thead><tbody>")
+    $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData.childId + "</td><td>" + childData.companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"ExtendVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + childData[i].address + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || 111) + "'\,\'" + (childData[i].stateID || 3508) + "'\,\'" + parentData.preferredtimezone + "'\,\'" + (childData[i].cityID || 33110) + "'\,\'" + (childData[i].childId || "") + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Extend</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -230,7 +262,7 @@ function fetchMyProfileVendor() {
         data: JSON.stringify(userReqObj),
         dataType: "json",
         success: function (data) {
-
+            
             var vendordetails = JSON.parse(data[0].jsondata);
             var vendorComps = JSON.parse(data[1].jsondata);
             var CompPer = JSON.parse(data[2].jsondata);
@@ -242,6 +274,15 @@ function fetchMyProfileVendor() {
             }
 
             $('#vendorComp').val(vendorCompstxt.slice(0, -1));
+            //code written for whatsapp notification
+
+            if (isWhatsappOpted === 'Y' || isWhatsappOpted === 'N') {
+
+
+                $('#uniform-whatsappAlert' + isWhatsappOpted).find('span').addClass('checked');
+
+            }
+
 
             if (vendordetails[0].tmpVendorID != '' && vendordetails[0].tmpVendorID != null && vendordetails[0].tmpVendorID != undefined) {
                 sessionStorage.setItem('tmpVendorID', vendordetails[0].tmpVendorID);
@@ -377,11 +418,17 @@ function fetchMyProfileVendor() {
                 }
             }, 800)
             if (vendordetails[0].CountryID !== "" && vendordetails[0].CountryID != null && vendordetails[0].CountryID != undefined) {
-                $('#ddlCountry').val(vendordetails[0].CountryID)
+
                 setTimeout(function () {
+
+                    $('#ddlCountry').val(vendordetails[0].CountryID).trigger('change')
+                }, 1500)
+                setTimeout(function () {
+
                     $('#ddlState').val(vendordetails[0].StateID).trigger('change')
-                }, 900)
+                }, 1500)
                 setTimeout(function () {
+
                     $('#ddlCity').val(vendordetails[0].CityID).trigger('change')
 
                 }, 1500)
@@ -509,7 +556,7 @@ function fetchMyProfileVendor() {
     });
 
 }
-
+*/
 var profileerror = $('#errordiv');
 var profilesuccess = $('#successdiv');
 profilesuccess.hide();
@@ -534,7 +581,7 @@ jQuery.validator.addMethod(
     "This field is required."
 );
 
-function formvalidate() {
+/*function formvalidate() {
 
     $('#frmprofile').validate({
         errorElement: 'span', //default input error message container
@@ -546,7 +593,7 @@ function formvalidate() {
                 required: true
             },
             ddlCountryCd: {
-                required: true                
+                required: true
             }
 
         },
@@ -600,7 +647,7 @@ function formvalidate() {
                 required: true
             },
 
-            /* txtUdyam: {
+            *//* txtUdyam: {
                  required: true,
              },
              filemsme: {
@@ -609,7 +656,7 @@ function formvalidate() {
              ddlMSMEClass: {
                  required: true,
                  notEqualTo: 0
-             }*/
+             }*//*
         },
         messages: {
             ddlMSMEClass: {
@@ -648,16 +695,16 @@ function formvalidate() {
             updateVendor();
         }
     });
-}
+}*/
 
 //vendor profile.html vendor form
 
 function updMobileNo() {
 
-    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    
     var _cleanString = StringEncodingMechanism($('#vendoraddress').val());
-    var _cleanString1 = StringEncodingMechanism($('#vendorCity').val());
+    var _cleanString1 = StringEncodingMechanism(($('#vendorCity').val()).replace(/[,|-]/g, " "));
     var data = {
         "UserID": sessionStorage.getItem("UserID"),
         "UserType": sessionStorage.getItem('UserType'),
@@ -716,7 +763,7 @@ function updMobileNo() {
 
 
 function updateVendor() {
-
+    
     var _cleanString5 = StringEncodingMechanism(jQuery("#vendorname").text().trim());
     var _cleanString6 = StringEncodingMechanism(jQuery("#vendoraddress").val().trim());
     var _cleanString7 = StringEncodingMechanism(jQuery("#bankname").val().trim());
@@ -733,7 +780,7 @@ function updateVendor() {
     var cityname = jQuery("#ddlCity option:selected").text().trim();
 
     var dialingCd = jQuery("#ddlCountryCd option:selected").val().trim();
-    var dialingCdAlt = jQuery("#ddlCountryAltCd option:selected").val().trim();
+    var dialingCdAlt = jQuery("#ddlCountryCdPhone option:selected").val().trim();
     var tdstype = 0;
     var tdsname = '';
     var paymenttermvalue = 0;
@@ -867,7 +914,7 @@ function updateVendor() {
         "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime option:selected").val())
 
     }
-
+  
     sessionStorage.setItem("timezoneid", parseInt(jQuery("#ddlpreferredTime option:selected").val()))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "VendorRequest/VendorProfileUpdate",
@@ -876,24 +923,24 @@ function updateVendor() {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-
+            
             if ($('#filegst').val() != '') {
-                fnUploadFilesonAzure('filegst', gstfilename, 'VR/' + sessionStorage.getItem('VendorId'));
+                fnUploadFilesonAzure('filegst', gstfilename, 'VR/' + $('#hdnChildID').val());
 
             }
 
             if ($('#filepan').val() != '') {
-                fnUploadFilesonAzure('filepan', panfilename, 'VR/' + sessionStorage.getItem('VendorId'));
+                fnUploadFilesonAzure('filepan', panfilename, 'VR/' + $('#hdnChildID').val());
 
             }
 
             if ($('#filemsme').val() != '') {
-                fnUploadFilesonAzure('filemsme', msmefilename, 'VR/' + sessionStorage.getItem('VendorId'));
+                fnUploadFilesonAzure('filemsme', msmefilename, 'VR/' + $('#hdnChildID').val());
 
             }
 
             if ($('#filecheck').val() != '') {
-                fnUploadFilesonAzure('filecheck', checkfilename, 'VR/' + sessionStorage.getItem('VendorId'));
+                fnUploadFilesonAzure('filecheck', checkfilename, 'VR/' + $('#hdnChildID').val());
 
             }
 
@@ -909,6 +956,7 @@ function updateVendor() {
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
+         
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -943,11 +991,12 @@ function fetchMsme() {
         });
 
 
-    } else {
+    }
+    else {
         $('.hideInput').addClass('hide');
         $('input[name="filemsme"]').rules('remove');
         $('input[name="txtUdyam"]').rules('remove');
-        $('input[name="ddlMSMEClass"]').rules('remove');
+        // $('input[name="ddlMSMEClass"]').rules('remove');
     }
 }
 $("#txtUdyam").keyup(function () {
@@ -1218,7 +1267,7 @@ $("#chkAll").click(function () {
 function sendToCompanies() {
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    
+
     var custids = [];
     if ($("#selectedcompanieslists > tbody > tr").length > 0) {
         $("#selectedcompanieslists> tbody > tr").each(function (index) {
@@ -1331,3 +1380,2092 @@ function multilingualLanguage() {
     });
 
 }
+//whatsapp notification changes
+
+$('input[name="whatsappAlert"]').change(function () {
+
+    if ($(this).val() == "Y") {
+        $.ajax({
+            url: sessionStorage.getItem("APIPath") + "User/UpdateWhatsApp/?IsWhatsappOpted=Y",
+            type: "POST",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            data: [],
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                SendWhatsApp()
+                sessionStorage.setItem('isWhatsappOpted', 'Y');
+                isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted');
+                
+            },
+            error: function (error) {
+                console.error("Error sending WhatsApp message:", error);
+            }
+        });
+    }
+    else {
+        $.ajax({
+            url: sessionStorage.getItem("APIPath") + "User/UpdateWhatsApp/?IsWhatsappOpted=N",
+            type: "POST",
+            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+            data: [],
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                sessionStorage.setItem('isWhatsappOpted', 'N');
+                isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted');
+                
+            },
+            error: function (error) {
+                console.error("Error sending WhatsApp message:", error);
+            }
+        });
+    }
+});
+
+
+
+
+
+function SendWhatsApp() {
+
+    let data = {
+        "tonumber": mobileNo,
+        "template": "vendorwelcome"
+    }
+    $.ajax({
+        url: sessionStorage.getItem("APIPath") + "BlobFiles/SendWhatsApp",
+        type: "POST",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+
+            bootbox.alert("You are successfully subscribed to Whatsapp", function () {
+                return true;
+            });
+        },
+        error: function (error) {
+            console.error("Error sending WhatsApp message:", error);
+        }
+    });
+}
+
+//fetch profile by email
+
+
+
+
+//myprofile changes based on email
+let VendorId = parseInt(sessionStorage.getItem('VendorId'));
+let customerid = parseInt(sessionStorage.getItem('CustomerID'));
+function fetchMyProfileVendor() {
+   
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        //url: sessionStorage.getItem("APIPath") + "RegisterParticipants/GetVendors/?FieldName=" + $('#ddlUI').val() + "&FieldValue=" + $('#txtUI').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
+        url: sessionStorage.getItem("APIPath") + "VendorLCM/GetVendorById/?Id=" + VendorId + "&CustomerId=" + customerid,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        async: false,
+        success: function (data) {
+           
+            /* if (!data.isVendorPresent) {
+                 $("#hdnFlagType").val("New")
+                 $('#divVendorForm').removeClass('hide')
+                 $('#divVendorCompaniesForm').removeClass('hide')
+                 $('#divVendorFormbtn').removeClass('hide')
+                 $('#divVendorContactForm').removeClass('hide')
+                 $('#txtcompanyemail').val($('#txtUI').val())
+                 $('#txtAlternateeMailID').val($('#txtUI').val())
+                 $('#txtcompanyemail').attr('disabled', 'disabled')
+                 return true
+
+             }*/
+            $('.coun_stat_city_select').show()
+            $('.coun_stat_city').hide();
+
+
+            let parentData = data.vendorMasterToReturn;
+            let childData = data.vendorChildrenToReturn;
+            ParticipantID = parentData.vendorID;
+
+
+            let isactiveUser = parentData.isActive;
+           
+           
+             $("#personname").val(StringDecodingMechanism(parentData.contactPerson))
+            $("#personnamealt").val(StringDecodingMechanism(parentData.contactNameAlt))
+
+            $("#vendormobileno").val(parentData.mobileNo)
+            $("#vendoraltmobileno").val(parentData.phone)
+            $("#ddlCountryCd").val(parentData.dialingCodeMobile).trigger("change")
+            $("#ddlCountryCdPhone").val(parentData.dialingCodePhone).trigger("change")
+            $("#ddlpreferredTime").val(parentData.preferredtimezone).trigger("change")
+            $("#vendorEmailID").val(parentData.emailID)
+            if (parentData.alternateEmailID == "") {
+                $("#vendorAltEmailID").val(parentData.emailID)
+            }
+            else {
+                $("#vendorAltEmailID").val(parentData.alternateEmailID)
+            }
+
+            if (isWhatsappOpted === 'Y' || isWhatsappOpted === 'N') {
+
+
+                $('#uniform-whatsappAlert' + isWhatsappOpted).find('span').addClass('checked');
+
+            }
+
+
+            $("#hdnParticipantID").val(parentData.vendorID)
+
+
+
+            $('#tblCompaniesFoundDetails').empty();
+            var addr1 = "";
+            var addr2 = "";
+            let taxIdNo = "";
+            let addrC = "";
+            if (childData.length > 0) {
+
+                $('#tblCompaniesFoundDetails').append("<thead><tr><th class='hide'></th><th>Company Name</th><th>Address</th><th>Tax Identification Number</th><th></th></tr></thead><tbody>")
+
+                for (var i = 0; i < childData.length; i++) {
+
+                    //AssociatedVendorID = childData[i].childId;
+                    addr1 = (childData[i].address1 || "").replace(/\n/g, " ");
+                    addr2 = (childData[i].address2 || "").replace(/\n/g, " ");
+                    taxIdNo = childData[i].taxId;
+                    addrC = childData[i].address + " " + childData[i].city + " " + childData[i].state + " " + childData[i].country;
+
+
+                    $('#tblCompaniesFoundDetails').append("<tr><td class='hide'>" + childData[i].childId + "</td><td>" + childData[i].companyName + "</td><td>" + addrC + "</td><td>" + taxIdNo + "</td><td><a href=\"#\"   onclick=\"EditVendor(\'" + parentData.vendorID + "'\,\'" + childData[i].companyName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCodeMobile + "'\,\'" + parentData.mobileNo + "'\,\'" + encodeURIComponent(StringDecodingMechanism(childData[i].address)) + "'\,\'" + childData[i].zipCode + "'\,\'" + (childData[i].taxId || "").toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + parentData.action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID ) + "'\,\'" + childData[i].stateID + "'\,\'" + parentData.preferredtimezone + "'\,\'" + childData[i].cityId + "'\,\'" + (childData[i].childId ) + "'\,\'" + (childData[i].supplierType || "0") + "'\,\'" + (childData[i].msmeCheck || "N") + "'\,\'" + (childData[i].msmeType || "0") + "'\,\'" + (childData[i].msme || "") + "'\,\'" + (childData[i].msmeFile || "") + "'\,\'" + (childData[i].taxIdFile || "") + "'\,\'" + (childData[i].taxId2File || "") + "'\,\'" + (childData[i].payTerm || "0") + "'\,\'" + (childData[i].bankName || "") + "'\,\'" + (childData[i].bankRoutingNumber || "") + "'\,\'" + (childData[i].bankAccountNumber || "") + "'\,\'" + (childData[i].cancelledCheckFile || "") + "'\,\'" + childData[i].taxIdType + "'\,\'" + childData[i].taxIdType2 + "'\,\'" + childData[i].city + "'\,\'" + childData[i].regionKey + "'\,\'" + childData[i].countryKey + "'\,\'" + childData[i].langu + "'\,\'" + childData[i].currency + "'\,\'" + childData[i].gstnStatus + "'\,\'" + childData[i].eInvoiceStatus + "'\,\'" + childData[i].taxpayerType   + "'\,\'" + childData[i].legalName + "'\)\" class=\"btn btn-xs yellow\"><i class=\"fa fa-edit\"></i>Edit</a>&nbsp;<a href=\"#\"   onclick=\"AddVendor(\'" + parentData.vendorID + "'\,\'" + parentData.vendorName + "'\,\'" + parentData.emailID + "'\,\'" + parentData.dialingCodePhone + "'\,\'" + parentData.phone + "'\,\'" + parentData.dialingCode + "'\,\'" + parentData.mobileNo + "'\,\'" + addr1 + "'\,\'" + addr2 + "'\,\'" + childData[i].zipCode + "'\,\'" + childData[i].taxId.toUpperCase() + "'\,\'" + (childData[i].isActive || "") + "'\,\'" + childData[i].taxId2.toUpperCase() + "'\,\'" + childData[i].action + "'\,\'" + parentData.vendorCode + "'\,\'" + parentData.alternateEmailID + "'\,\'" + (childData[i].countryID || "") + "'\,\'" + (childData[i].stateID || "") + "'\,\'" + (childData[i].cityID || "") + "'\)\" class=\"btn btn-xs green hide\"><i class=\"fa fa-plus\"></i>Add</a></td></tr>");
+                    $('#btnAddAnother').removeClass('hide');
+
+                }
+
+            }
+            jQuery.unblockUI();
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spanerterr', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+
+    })
+
+    
+   
+    setTimeout(function () {
+        jQuery('#divalerterr').css('display', 'none');
+    }, 5000);
+}
+
+
+//edit vendor
+
+function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingcode, mobile, addr, zipcode, gst, isactive, pan, buttonname, vendorcode, alternateemailid, countryid, stateid, prefferredTZ, cityid, childid, supplierType, msmeCheck, msmeType, msmeNo, msmeFile, taxIdFile, taxId2File, payTerm, bankName, bankRoutingNumber, bankAccountNumber, cancelledCheckFile, taxIdType, taxIdType2, city, regionKey, countryKey, Langu, currency,gstnstatus,einvoicestatus,taxpayertype,legalName) {
+   
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+     
+     setTimeout(function() {
+         
+           
+    let customerid = parseInt(sessionStorage.getItem('CustomerID'));
+    $("#filegst").hide()
+    $("#filepan").hide()
+
+
+    /* $('.coun_stat_city_select').hide()
+     $('.coun_stat_city').show();*/
+   
+    if(taxIdType=="IN3") {
+        gstflag=true;
+    }
+    else{
+        gstflag=true;
+        $('#txtTINType').removeAttr('disabled')
+    }
+    $('#childDetailsForm').removeClass('hide')
+    $("#bankaccordion").show()
+    $("#financeaccordion").show()
+    /* $('#ddlCountrylabel').text(country)
+     $('#ddlStatelabel').text(state)
+     $('#ddlCitylabel').text(city)*/
+
+    $('#hdnFlagType').val(buttonname);
+    $('#hdnChildID').val(childid);
+
+    jQuery("#hdnParticipantID").val(vendorid);
+    $("#hdnParticipantCode").val(vendorcode);
+    jQuery("#vendorname").val(legalName);
+    jQuery("#TradeName").val(vname);
+    jQuery("#vendoraddress").val(decodeURIComponent(addr));
+    
+    jQuery("#gstnStatus").val(gstnstatus);
+    jQuery("#eInvoiceStatus").val(einvoicestatus);
+    jQuery("#taxpayerType").val(taxpayertype);
+
+    jQuery("#vendorpanno").val(pan);
+
+    jQuery("#txtTINNo").val(gst);
+    jQuery("#txtPhoneNo").val(phone);
+    jQuery("#txtMobileNo").val(mobile);
+    jQuery("#txtcompanyemail").val(emailid);
+    jQuery("#txtAlternateeMailID").val(alternateemailid);
+    jQuery("#pincode").val(zipcode)
+
+     $('#ddlCountry').val(countryKey||"IN").trigger('change')
+
+
+    //company specific
+    
+    jQuery("#ddlNatureEstaiblishment").val("Private Limited Company");
+    $('#ddlVendorType').val(supplierType).trigger('change')
+    $('#ddlMSME').val(msmeCheck).trigger('change')
+    $('#ddlMSMEClass').val(msmeType).trigger('change')
+
+    $('#txtUdyam').val(msmeNo)
+    $('#msmeattach').html(msmeFile)
+    $('#gstattach').html(taxIdFile)
+    $('#panattach').html(taxId2File)
+
+    //Bank specific
+    $('#ddPayTerms').val("0").trigger('change')
+    $('#ifsccode').val("")
+    $('#bankname').val("")
+    $('#bankaccount').val("")
+    $('#accountholder').val("")
+    $('#checkattach').html("")
+
+    //finance specific
+
+
+
+
+    $('#ddlCountry').attr('disabled', 'disabled');
+    $('#vendorpanno').attr('disabled', 'disabled');
+    
+    $('#txtTINNo').removeAttr('disabled');
+    
+
+    $('#vendorname').attr('disabled', 'disabled');
+    $('#ddlNatureEstaiblishment').attr('disabled', 'disabled');
+
+    //hide tags
+    $('#bankForm').hide();
+    $('#financeform').hide();
+
+    $('#ddlpreferredTime').val(prefferredTZ).trigger('change') //abheedev 28/11/2022 bug 530
+    GetFinancialDetail(parseInt(childid))
+    GetBankDetail(parseInt(childid), customerid, parseInt(vendorid))
+
+
+   
+    
+     setTimeout(function () {
+        
+        $('#ddlState').val(regionKey).trigger('change')
+    }, 2000)
+    
+
+    setTimeout(function () {
+
+        $('#ddlCity').val(cityid).trigger('change')
+    }, 2000)
+   
+
+    $('#ddllanguage').val(Langu).trigger('change')
+    $('#ddlcurrency').val(currency).trigger('change')
+    $('#txtTINType').val(taxIdType).trigger('change')
+    $('#txtTINType2').val(taxIdType2).trigger('change')
+    
+    showGST()
+    showPAN()
+    
+    $('#AddAssociate').addClass('hide');
+    $('#buttoncompanyupdate').show();
+    
+    jQuery.unblockUI();
+    
+    
+  }, 500); 
+ 
+   
+}
+
+
+
+
+
+//update contact detail
+function updateVendorContactDetails() {
+    var encodevendorName = StringEncodingMechanism($('#personnamealt').val());
+    var encodeContactPerson = StringEncodingMechanism($('#personname').val());
+
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    let data = {
+        "VendorID": parseInt(sessionStorage.getItem('VendorId')),
+        "EmailID": $('#vendorEmailID').val(),
+        "AlternateEmailID": $('#vendorAltEmailID').val(),
+        "ContactNameAlt": encodevendorName,
+        "ContactPerson": encodeContactPerson,
+        "MobileNo": $('#vendormobileno').val(),
+        "Phone": $('#vendoraltmobileno').val(),
+        "DialingCodeMobile": parseInt($('#ddlCountryCd').val()),
+        "DialingCodePhone": parseInt($('#ddlCountryCdPhone').val()),
+        "preferredtimezone": parseInt($('#ddlpreferredTime').val())
+    }
+
+
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        //url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&UserType=" + sessionStorage.getItem('UserType'),
+        url: APIPath + "VendorLCM/UpdatePrimaryDetail",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+
+            
+            
+            profileerror.hide();
+            jQuery.unblockUI();
+            jQuery("#success").text("Your Contact details updated successfully..");
+            profilesuccess.show();
+            profilesuccess.fadeOut(5000);
+            App.scrollTo(profilesuccess, -200);
+          //  setTimeout(function () { location.reload() }, 2000)
+          setTimeout(function () { fetchMyProfileVendor() }, 2000)
+           
+        },
+        error: function (xhr, status, error) {
+
+           
+            jQuery.unblockUI();
+        }
+    });
+}
+
+
+function UpdateCompanyDetail() {
+  
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    
+    
+    
+   
+
+    if ($('#gstattach').html() !== '') {
+        gstfilename = $('#gstattach').html();
+
+    }
+    else {
+        gstfilename = jQuery('#filegst').val().substring(jQuery('#filegst').val().lastIndexOf('\\') + 1)
+        gstfilename = gstfilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    }
+
+
+    if ($('#panattach').html() !== '') {
+        panfilename = $('#panattach').html();
+    }
+    else {
+        panfilename = jQuery('#filepan').val().substring(jQuery('#filepan').val().lastIndexOf('\\') + 1)
+        panfilename = panfilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    }
+    if ($('#msmeattach').html() !== '') {
+        msmefilename = $('#msmeattach').html();
+    } else {
+        msmefilename = jQuery('#filemsme').val().substring(jQuery('#filemsme').val().lastIndexOf('\\') + 1)
+        msmefilename = msmefilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    }
+    if (jQuery("#txtTINType option:selected").val() == "IN3") {
+        if(gstflag==false){
+            jQuery("#errordiv").text("Please select valid GST to proceed");
+            profileerror.show();
+            profileerror.fadeOut(5000);
+            App.scrollTo(profileerror, -200);
+            jQuery.unblockUI();
+            return false;  
+        }
+        if (gstfilename == "" || panfilename == "") {
+            jQuery("#errordiv").text("please attach GST/PAN attach to proceed...");
+            profileerror.show();
+            profileerror.fadeOut(5000);
+            App.scrollTo(profileerror, -200);
+            jQuery.unblockUI();
+            return false;
+           
+        }
+    }
+    else if (jQuery("#txtTINType option:selected").val() == "" && $("#ddlCountry option:selected").val()=='IN'){
+        
+       if ( panfilename == ""||jQuery("#vendorpanno").val()=="") {
+            jQuery("#errordiv").text("please attach PAN details to proceed...");
+            profileerror.show();
+            profileerror.fadeOut(5000);
+            App.scrollTo(profileerror, -200);
+            jQuery.unblockUI();
+            return false;
+           
+        }
+        
+        
+        
+    }
+
+    let encodedvendoraddress=StringEncodingMechanism($('#vendoraddress').val());
+    let cleanTradeName=StringEncodingMechanism(jQuery("#TradeName").val());
+    
+    let data = {
+        "ChildId": parseInt($('#hdnChildID').val()),
+        "Address":encodedvendoraddress ,
+        "City": jQuery("#ddlCity option:selected").text(),
+        "State": jQuery("#ddlState option:selected").data('statename'),
+        "Country": jQuery("#ddlCountry option:selected").text(),
+        "ZipCode": $('#pincode').val(),
+        "TaxId": $('#txtTINNo').val(),
+        "TaxIdType": jQuery("#txtTINType option:selected").val(),
+        "TaxId2": $('#vendorpanno').val() || "",
+        "TaxIdType2": jQuery("#txtTINType2 option:selected").val(),
+        "MSME": jQuery("#txtUdyam").val(),
+        "MSMEType": jQuery("#ddlMSMEClass option:selected").val(),
+        "MSMECheck": jQuery("#ddlMSME option:selected").val(),
+        "CompanyName": $('#vendorname').val(),
+        "TaxIdFile": gstfilename,
+        "TaxId2File": panfilename,
+        "MSMEFile": msmefilename,
+        "CityId": parseInt(jQuery("#ddlCity option:selected").val()),
+        "StateId": parseInt(jQuery("#ddlState option:selected").data('stateid')),
+        "CountryId": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
+        "SupplierType": jQuery("#ddlVendorType option:selected").val(),
+        "CountryKey": jQuery("#ddlCountry option:selected").val(),
+        "RegionKey": jQuery("#ddlState option:selected").val(),
+        "Langu": jQuery("#ddllanguage option:selected").val(),
+        "Currency": jQuery("#ddlcurrency option:selected").val(),
+        "TradeName":cleanTradeName,
+        "GSTNStatus":$('#gstnStatus').val(),
+        "EInvoiceStatus":$('#eInvoiceStatus').val(),
+        "TaxpayerType":$('#taxpayerType').val(),
+    }
+
+   
+   
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        //url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&UserType=" + sessionStorage.getItem('UserType'),
+        url: APIPath + "VendorLCM/UpdateCompanyDetail/?Id=" + VendorId,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+        
+             if ($('#filegst').val() != '') {
+                fnUploadFilesonAzure('filegst', gstfilename, 'VR/' + $('#hdnChildID').val());
+
+            }
+
+            if ($('#filepan').val() != '') {
+                fnUploadFilesonAzure('filepan', panfilename, 'VR/' + $('#hdnChildID').val());
+
+            }
+
+            if ($('#filemsme').val() != '') {
+                fnUploadFilesonAzure('filemsme', msmefilename, 'VR/' + $('#hdnChildID').val());
+
+            }
+
+           
+            
+            profileerror.hide();
+            jQuery.unblockUI();
+            jQuery("#success").text("Your Company specific details updated successfully..");
+            profilesuccess.show();
+            profilesuccess.fadeOut(5000);
+            App.scrollTo(profilesuccess, -200);
+            setTimeout(function () { fetchMyProfileVendor() }, 1500)
+           
+        },
+        error: function (xhr, status, error) {
+             
+             var err = xhr.responseText
+             jQuery("#error").text(err);
+             profileerror.show();
+             profileerror.fadeOut(5000);
+             App.scrollTo(profileerror, -200);
+      
+            jQuery.unblockUI();
+        }
+    });
+    
+}
+
+
+
+
+function UpdateBankDetail() {
+   
+    $('#buttonbankupdate').attr('disabled','disabled');
+    let ActionType = $('#hdnActionType').val()
+
+    if ($('#checkattach').html() !== '') {
+        checkfilename = $('#checkattach').html();
+    }
+    else {
+        checkfilename = jQuery('#filecheck').val().substring(jQuery('#filecheck').val().lastIndexOf('\\') + 1)
+        checkfilename = checkfilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    }
+
+    if (checkfilename == "") {
+        $('#buttonbankupdate').removeAttr('disabled');
+       
+        alertforerror('please attach valid Check file to proceed...')
+        return false;
+    }
+    let data = "";
+    let bankurl = ""
+    let encodedbankname=StringEncodingMechanism(jQuery("#bankname").val());
+   
+   
+    if (ActionType == "Add") {
+        bankurl = APIPath + "VendorLCM/UpdateBankDetail/?ActionType=Add"
+        data = {
+            "ChildId": parseInt($('#hdnChildID').val()),
+            "BankCountryKey": "IN",
+            "BankRoutingNumber": jQuery("#ifsccode").val(),
+            "BankAccountNumber": jQuery("#bankaccount").val(),
+            "BankName": encodedbankname,
+            "CancelledCheckFile": checkfilename,
+            "Currency": jQuery("#ddlcurrency option:selected").val(),
+           /* "PayTerm": jQuery("#ddPayTerms option:selected").val(),*/
+            "AccounHolderName":jQuery("#accountholder").val()
+        }
+    }
+    else {
+        bankurl = APIPath + "VendorLCM/UpdateBankDetail/?ActionType=Update"
+        data = {
+            "BankingId": parseInt($('#hdnBankingId').val()),
+            "ChildId": parseInt($('#hdnChildID').val()),
+            "BankCountryKey": "IN",
+            "BankRoutingNumber": jQuery("#ifsccode").val(),
+            "BankAccountNumber":jQuery("#bankaccount").val(),
+            "BankName": encodedbankname,
+            "CancelledCheckFile": checkfilename,
+            "Currency": jQuery("#ddlcurrency option:selected").val(),
+            /*"PayTerm": jQuery("#ddPayTerms option:selected").val(),*/
+            "AccounHolderName":jQuery("#accountholder").val()
+        }
+
+    }
+
+
+    
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        //url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&UserType=" + sessionStorage.getItem('UserType'),
+        url: bankurl,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+          
+             if ($('#filecheck').val() != '') {
+                fnUploadFilesonAzure('filecheck', checkfilename, 'VR/' + $('#hdnChildID').val());
+            }
+            jQuery("#errordivbank").hide();
+            jQuery.unblockUI();
+            jQuery("#successdivbank").text("Your Bank specific details added successfully..");
+            jQuery("#successdivbank").show();
+            jQuery("#successdivbank").fadeOut(5000);
+            App.scrollTo(jQuery("#successdivbank"), -200);
+            $('#buttonbankupdate').removeAttr('disabled');
+            setTimeout(function () {
+                $('#bankForm').hide();
+                GetBankDetail(parseInt($('#hdnChildID').val()), customerid, VendorId)
+                }, 1500)
+           
+
+        },
+        error: function (xhr, status, error) {
+           
+             $('#buttonbankupdate').removeAttr('disabled');
+             var err = xhr.responseText
+             jQuery("#error").text(err);
+             profileerror.show();
+             profileerror.fadeOut(5000);
+             App.scrollTo(profileerror, -200);
+      
+            jQuery.unblockUI();
+        }
+    });
+}
+
+
+function GetBankDetail(ChildId, CustId, vendorid) {
+    
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "VendorLCM/GetBankDetail/?ChildId=" + ChildId + "&CustomerId=" + CustId,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        dataType: "json",
+        success: function (childData) {
+             
+               
+               let isBVerify=""
+            $('#mapMN').val($('#vendormobileno').val())
+            if (childData.length > 0) {
+                $('#tblGetBankDetail').empty();
+
+
+                $('#tblGetBankDetail').append("<thead><tr><th>Action</th><th>Bank Name</th><th>Account Number</th><th>IFSC Code</th></tr></thead><tbody>");
+                for (var i = 0; i < childData.length; i++) {
+                    isBVerify=childData[i].isVerified;
+                    if(isBVerify=="Y"){
+                         $('#tblGetBankDetail').append("<tr onclick=''><td><button type='button' class='btn btn-xs btn-primary' onclick=\"editBankDetail('" + childData[i].bankingId + "','" + childData[i].childId + "','" + childData[i].bankCountryKey + "','" + childData[i].bankRoutingNumber + "','" + childData[i].bankName + "','" + childData[i].cancelledCheckFile + "','" + childData[i].payTerm + "','" + childData[i].bankAccountNumber + "','" + childData[i].accounHolderName + "')\">Edit</button><button type='button' class='btn btn-xs yellow' onclick=\"GetCustomerForBankMapping(\'" + vendorid + "','" + childData[i].childId + "','" + childData[i].bankingId + "',\'" + childData[i].accounHolderName + "'\,\'" + childData[i].bankAccountNumber + "',\'" + childData[i].bankRoutingNumber + "',\'" + isBVerify + "')\">Map Customer</button></td><td class='hovertextLeft' data-hover='Click here to see associated customer with this bank account' onclick=\"viewbankcustomer(\'" + "accordion" + childData[i].bankingId + "'\)\">" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "  <img src='assets/img/greenchecktick.svg' width='25px' height='25px' style='{margin-bottom:4px;}'/></td><td>" + childData[i].bankRoutingNumber + "</td></tr>");
+                   
+                    }
+                    else{
+                        $('#tblGetBankDetail').append("<tr onclick=''><td><button type='button' class='btn btn-xs btn-primary' onclick=\"editBankDetail('" + childData[i].bankingId + "','" + childData[i].childId + "','" + childData[i].bankCountryKey + "','" + childData[i].bankRoutingNumber + "','" + childData[i].bankName + "','" + childData[i].cancelledCheckFile + "','" + childData[i].payTerm + "','" + childData[i].bankAccountNumber + "','" + childData[i].accounHolderName + "')\">Edit</button><button type='button' class='btn btn-xs yellow' onclick=\"GetCustomerForBankMapping(\'" + vendorid + "','" + childData[i].childId + "','" + childData[i].bankingId + "',\'" + childData[i].accounHolderName + "'\,\'" + childData[i].bankAccountNumber + "',\'" + childData[i].bankRoutingNumber + "',\'" + isBVerify + "')\">Map Customer</button></td><td class='hovertextLeft' data-hover='Click here to see associated customer with this bank account' onclick=\"viewbankcustomer(\'" + "accordion" + childData[i].bankingId + "'\)\">" + childData[i].bankName + "</td><td>" + childData[i].bankAccountNumber + "</td><td>" + childData[i].bankRoutingNumber + "</td></tr>");
+                   
+                    }
+                    
+                    if (childData[i].mappedCustomersList.length > 0) {
+                        
+                            $('#tblGetBankDetail').append("<tr style='display:none' class='accordion" + childData[i].bankingId + "'><th colspan='5'>Customer list</th></tr>");
+                        
+                    }
+                    else {
+                        $('#tblGetBankDetail').append("<tr style='display:none' class='accordion" + childData[i].bankingId + "'><th colspan='5'>No customer is associated with this bank account</th></tr>");
+
+                    }
+                    for (var j = 0; j < childData[i].mappedCustomersList.length; j++) {
+
+                        $('#tblGetBankDetail').append("<tr style='display:none' class='accordion" + childData[i].bankingId + "'><td colspan='5'>" + childData[i].mappedCustomersList[j].customerName + "</td><td class='hide'>" + childData[i].mappedCustomersList[j].mappingId + "</td><td class='hide'>" + childData[i].mappedCustomersList[j].bankingId + "</td><td class='hide'>" + childData[i].mappedCustomersList[j].associateVendorId + "</td><td class='hide'>" + childData[i].mappedCustomersList[j].customerId + "</td></tr>")
+
+                    }
+
+
+
+
+
+                }
+
+                jQuery.unblockUI();
+
+            }
+            else {
+                $('#tblGetBankDetail').empty();
+            }
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+}
+
+
+
+
+function editBankDetail(bankingId, childId, bankCountryKey, bankRoutingNumber, bankName, cancelledCheckFile, payTerm, bankAccountNumber,accountholdername) {
+
+    $('#bankForm').show();
+    $('#hdnBankingId').val(bankingId)
+    $('#hdnChildID').val(childId)
+    jQuery("#ifsccode").val(bankRoutingNumber)
+    jQuery("#bankaccount").val(bankAccountNumber)
+    jQuery("#bankname").val(StringDecodingMechanism(bankName))
+    jQuery("#accountholder").val(accountholdername)
+   
+    jQuery("#ddPayTerms").val(payTerm).trigger('change')
+    $('#hdnActionType').val("Update")
+
+    $('#filecheck').hide()
+    $('#checkattach').show()
+    $('#checkattach').html(cancelledCheckFile);
+}
+
+
+
+function Addanotherbank() {
+    $('#bankForm').show();
+    jQuery("#ifsccode").val("")
+    jQuery("#bankaccount").val("")
+    jQuery("#bankname").val("")
+    jQuery("#accountholder").val("")
+    jQuery("#ddPayTerms").val("0").trigger('change')
+    $('#hdnActionType').val("Add")
+    $('#filecheck').val("");
+}
+
+function Addanotherfinance() {
+     
+    $('#turnoverfiscal').val('')
+    $('#fromFiscalyear').val('')
+    $('#toFiscalyear').val('')
+    $('#filefinance').val('')
+    
+    $('#financeform').show();
+
+}
+
+function UpdateFinancialDetail() {
+
+
+    let financialyearfrom = parseInt($('#fromFiscalyear').val())
+    let financialyearto = parseInt($('#toFiscalyear').val())
+
+    if (financialyearto - financialyearfrom < 0) {
+        $("#errordivfinance").text("From financial year cannot be less than To financial year");
+        $("#errordivfinance").show();
+        $("#errordivfinance").fadeOut(5000);
+        App.scrollTo($("#errordivfinance"), -200);
+        return false;
+
+    }
+    else if (financialyearto - financialyearfrom !== 1) {
+        $("#errordivfinance").text("Turnover for particular financial year can only be updated");
+        $("#errordivfinance").show();
+        $("#errordivfinance").fadeOut(5000);
+        App.scrollTo($("#errordivfinance"), -200);
+        return false;
+    }
+    
+    if ($('#checkattach').html() !== '') {
+        financefilename = $('#financeattach').html();
+    }
+    else {
+        financefilename = jQuery('#filefinance').val().substring(jQuery('#filefinance').val().lastIndexOf('\\') + 1)
+        financefilename = financefilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    }
+  
+    let data = {
+        "ChildId": parseInt($('#hdnChildID').val()),
+        "FinancialYearFrom": $('#fromFiscalyear').val(),
+        "FinancialYearTo": $('#toFiscalyear').val(),
+        "Turnover": parseInt($('#turnoverfiscal').val()),
+        "Currency": jQuery("#currencyFiscalupdate option:selected").val(),
+        "AttachmentName":financefilename,
+    }
+
+    
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        //url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&UserType=" + sessionStorage.getItem('UserType'),
+        url: APIPath + "VendorLCM/UpdateFinancialDetail/?Id=" + VendorId + "&ActionType=Add",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+            
+           
+           
+            if (data.isSuccess == "2") {
+                $("#errordivfinance").text("Turnover for the said financial year already updated..");
+                $("#errordivfinance").show();
+                $("#errordivfinance").fadeOut(5000);
+                App.scrollTo($("#errordivfinance"), -200);
+                return false;
+            }
+            
+             if ($('#filefinance').val() != '') {
+               
+                fnUploadFilesonAzure('filefinance', financefilename, 'VR/' + $('#hdnChildID').val());
+
+            }
+
+
+            $("#errordivfinance").hide();
+            jQuery.unblockUI();
+            $("#successdivfinance").text("Your Finance specific details added successfully..");
+            $("#successdivfinance").show();
+            $("#successdivfinance").fadeOut(5000);
+            App.scrollTo($("#successdivfinance"), -200);
+            setTimeout(function () { 
+                
+                $("#financeform").hide();
+                GetFinancialDetail(parseInt($('#hdnChildID').val())) }, 1500)
+           
+        },
+        error: function (xhr, status, error) {
+             var err = xhr.responseText
+             jQuery("#error").text(err);
+             profileerror.show();
+             profileerror.fadeOut(5000);
+             App.scrollTo(profileerror, -200);
+      
+            jQuery.unblockUI();
+        }
+    });
+}
+
+
+function GetFinancialDetail(ChildId) {
+
+   
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "VendorLCM/GetFinancialDetail/?Id=" + VendorId + "&ChildId=" + ChildId,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        dataType: "json",
+        success: function (childData) {
+           
+            if (childData.length > 0) {
+                $('#tblGetFinancialDetail').empty()
+                $('#tblGetFinancialDetail').append("<thead><tr><th class='hide'></th><th>Turn Over</th><th>Financial Year</th><th>Attachment</th></tr></thead><tbody>")
+                for (var i = 0; i < childData.length; i++) {
+  
+                    if(childData[i].attachmentName){
+                        $('#tblGetFinancialDetail').append(`<tr><td class='hide'>${childData[i].financialDetailId}</td><td>${thousands_separators(childData[i].turnover)}  ${childData[i].currency}</td><td>${childData[i].financialYearFrom}  - ${childData[i].financialYearTo} </td><td><a href="javascript:;" onclick="DownloadFile(this)" id="financeattach${i}" class="txtleftnone">${(childData[i].attachmentName)}</a></td></tr>`)
+ 
+                    }
+                    else{
+                        $('#tblGetFinancialDetail').append(`<tr><td class='hide'>${childData[i].financialDetailId}</td><td>${thousands_separators(childData[i].turnover)}  ${childData[i].currency}</td><td>${childData[i].financialYearFrom}  - ${childData[i].financialYearTo} </td><td></td></tr>`)
+ 
+                    }
+                   
+
+                }
+
+                jQuery.unblockUI();
+            }
+            else {
+                $('#tblGetFinancialDetail').empty()
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+}
+
+
+
+function Addanother() {
+    
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    
+     setTimeout(function () { 
+    $("#bankaccordion").hide()
+    $("#financeaccordion").hide()
+    $('#hdnFlagType').val("Add");
+    $("#childDetailsForm").removeClass('hide')
+    $("#AddAssociate").removeClass('hide');
+    $("#buttoncompanyupdate").hide()
+    $("#buttonbankupdate").hide()
+    $("#buttonfinancialupdate").hide()
+    $("#tblGetBankDetail").hide()
+    $("#tblGetFinancialDetail").hide()
+    $("#btnAddBank").hide()
+    $("#btnAddFinance").hide()
+    $("#editgst").hide()
+    $("#editpan").hide()
+    $("#bankForm").show()
+    $("#financeform").show()
+    cleanAddChild()
+
+    $("#txtTINNo").attr("onchange", ""); 
+    jQuery.unblockUI()    
+     }, 400)
+   
+}
+
+
+function AddAssociateVendorDetail() {
+
+
+
+     
+     /*if (jQuery("#txtTINType option:selected").val() == "IN3"){
+        ValidateGST($('#txtTINNo').val())  
+     }*/
+   
+    let data='';
+    if ($('#gstattach').html() !== '') {
+        gstfilename = $('#gstattach').html();
+
+    }
+    else {
+        gstfilename = jQuery('#filegst').val().substring(jQuery('#filegst').val().lastIndexOf('\\') + 1)
+        gstfilename = gstfilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    }
+
+    if ($('#panattach').html() !== '') {
+        panfilename = $('#panattach').html();
+    }
+    else {
+        panfilename = jQuery('#filepan').val().substring(jQuery('#filepan').val().lastIndexOf('\\') + 1)
+        panfilename = panfilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    }
+    if ($('#msmeattach').html() !== '') {
+        msmefilename = $('#msmeattach').html();
+    } else {
+        msmefilename = jQuery('#filemsme').val().substring(jQuery('#filemsme').val().lastIndexOf('\\') + 1)
+        msmefilename = msmefilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    }
+    if ($('#checkattach').html() !== '') {
+        checkfilename = $('#checkattach').html();
+    }
+    else {
+        checkfilename = jQuery('#filecheck').val().substring(jQuery('#filecheck').val().lastIndexOf('\\') + 1)
+        checkfilename = checkfilename.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_');
+    }
+    
+    if (jQuery("#txtTINType option:selected").val() == "IN3") {
+        if(gstflag==false){
+            jQuery("#errordiv").text("Please select valid GST to proceed");
+            profileerror.show();
+            profileerror.fadeOut(5000);
+            App.scrollTo(profileerror, -200);
+            jQuery.unblockUI();
+            return false;  
+        }
+        if (gstfilename == "" || panfilename == "") {
+            jQuery("#errordiv").text("please attach GST/PAN attach to proceed...");
+            profileerror.show();
+            profileerror.fadeOut(5000);
+            App.scrollTo(profileerror, -200);
+            jQuery.unblockUI();
+            return false;
+           
+        }
+    }
+    else if (jQuery("#txtTINType option:selected").val() == "" && jQuery("#ddlCountry option:selected").val()=='IN'){
+        
+        if ( panfilename == ""||jQuery("#vendorpanno").val()=="") {
+            jQuery("#errordiv").text("please attach PAN details to proceed...");
+            profileerror.show();
+            profileerror.fadeOut(5000);
+            App.scrollTo(profileerror, -200);
+            jQuery.unblockUI();
+            return false;
+           
+        }
+        
+        
+        
+    }
+
+  let encodedvendoraddress=StringEncodingMechanism($('#vendoraddress').val())
+  let cleanTradeName=StringEncodingMechanism(jQuery("#TradeName").val());
+
+  if(jQuery("#txtTINType option:selected").val()=="" && $("#ddlCountry option:selected").val()=='IN' ){
+       data = {
+        "Address": encodedvendoraddress,
+        "City": $("#ddlCity option:selected").text().trim(),
+        "State": jQuery("#ddlState option:selected").data('statename'),
+        "Country": $("#ddlCountry option:selected").text().trim(),
+        "ZipCode": $('#pincode').val(),
+        "TaxId": "",
+        "TaxIdType": "",
+        "TaxId2": $('#vendorpanno').val() || "",
+        "TaxIdType2": "",
+        "MSME": jQuery("#txtUdyam").val(),
+        "MSMEType": jQuery("#ddlMSMEClass option:selected").val().trim(),
+        "MSMECheck": jQuery("#ddlMSME option:selected").val(),
+        "CompanyName": $('#vendorname').val(),
+        "TaxIdFile": "",
+        "TaxId2File": panfilename,
+        "MSMEFile": msmefilename,
+        "SupplierType": jQuery("#ddlVendorType option:selected").val(),
+        "CityId": parseInt(jQuery("#ddlCity option:selected").val()),
+        "StateId": parseInt(jQuery("#ddlState option:selected").data('stateid')),
+        "CountryId": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
+        "SupplierType": jQuery("#ddlVendorType option:selected").val(),
+        "CountryKey": jQuery("#ddlCountry option:selected").val(),
+        "RegionKey": jQuery("#ddlState option:selected").val(),
+        "Langu": jQuery("#ddllanguage option:selected").val(),
+        "Currency": jQuery("#ddlcurrency option:selected").val(),
+        "TradeName":cleanTradeName,
+        "GSTNStatus":"",
+        "EInvoiceStatus":"",
+        "TaxpayerType":"",
+
+    }
+      
+  }
+   
+  else if(jQuery("#txtTINType option:selected").val()=="IN3"){
+     data = {
+        "Address": encodedvendoraddress,
+        "City": $("#ddlCity option:selected").text().trim(),
+        "State": jQuery("#ddlState option:selected").data('statename'),
+        "Country": $("#ddlCountry option:selected").text().trim(),
+        "ZipCode": $('#pincode').val(),
+        "TaxId": $('#txtTINNo').val(),
+        "TaxIdType": jQuery("#txtTINType option:selected").val(),
+        "TaxId2": $('#vendorpanno').val() || "",
+        "TaxIdType2": jQuery("#txtTINType2 option:selected").val(),
+        "MSME": jQuery("#txtUdyam").val(),
+        "MSMEType": jQuery("#ddlMSMEClass option:selected").val().trim(),
+        "MSMECheck": jQuery("#ddlMSME option:selected").val(),
+        "CompanyName": $('#vendorname').val(),
+        "TaxIdFile": gstfilename,
+        "TaxId2File": panfilename,
+        "MSMEFile": msmefilename,
+        "SupplierType": jQuery("#ddlVendorType option:selected").val(),
+        "CityId": parseInt(jQuery("#ddlCity option:selected").val()),
+        "StateId": parseInt(jQuery("#ddlState option:selected").data('stateid')),
+        "CountryId": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
+        "SupplierType": jQuery("#ddlVendorType option:selected").val(),
+        "CountryKey": jQuery("#ddlCountry option:selected").val(),
+        "RegionKey": jQuery("#ddlState option:selected").val(),
+        "Langu": jQuery("#ddllanguage option:selected").val(),
+        "Currency": jQuery("#ddlcurrency option:selected").val(),
+        "TradeName":cleanTradeName,
+        "GSTNStatus":$('#gstnStatus').val(),
+        "EInvoiceStatus":$('#eInvoiceStatus').val(),
+        "TaxpayerType":$('#taxpayerType').val(),
+
+    } 
+  }
+  else {
+       data = {
+        "Address": encodedvendoraddress,
+        "City": $("#ddlCity option:selected").text().trim(),
+        "State": jQuery("#ddlState option:selected").data('statename'),
+        "Country": $("#ddlCountry option:selected").text().trim(),
+        "ZipCode": $('#pincode').val(),
+        "TaxId": "",
+        "TaxIdType": "",
+        "TaxId2": "",
+        "TaxIdType2": "",
+        "MSME": jQuery("#txtUdyam").val(),
+        "MSMEType": jQuery("#ddlMSMEClass option:selected").val().trim(),
+        "MSMECheck": jQuery("#ddlMSME option:selected").val(),
+        "CompanyName": $('#vendorname').val(),
+        "TaxIdFile": "",
+        "TaxId2File": "",
+        "MSMEFile": msmefilename,
+        "SupplierType": jQuery("#ddlVendorType option:selected").val(),
+        "CityId": parseInt(jQuery("#ddlCity option:selected").val()),
+        "StateId": parseInt(jQuery("#ddlState option:selected").data('stateid')),
+        "CountryId": parseInt(jQuery("#ddlCountry option:selected").data('countryid')),
+        "SupplierType": jQuery("#ddlVendorType option:selected").val(),
+        "CountryKey": jQuery("#ddlCountry option:selected").val(),
+        "RegionKey": jQuery("#ddlState option:selected").val(),
+        "Langu": jQuery("#ddllanguage option:selected").val(),
+        "Currency": jQuery("#ddlcurrency option:selected").val(),
+        "TradeName":cleanTradeName,
+        "GSTNStatus":"",
+        "EInvoiceStatus":"",
+        "TaxpayerType":"",
+
+    }
+      
+  }
+    
+    
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "VendorLCM/AddAssociateVendorDetail/?Id=" + VendorId,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "POST",
+        async: false,
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success: function (data, status, jqXHR) {
+           
+              if ($('#filegst').val() != '') {
+                fnUploadFilesonAzure('filegst', gstfilename, 'VR/' + data.returnId);
+
+            }
+
+            if ($('#filepan').val() != '') {
+                fnUploadFilesonAzure('filepan', panfilename, 'VR/' +  data.returnId);
+
+            }
+
+            if ($('#filemsme').val() != '') {
+                fnUploadFilesonAzure('filemsme', msmefilename, 'VR/' +  data.returnId);
+
+            }
+            profileerror.hide();
+            jQuery.unblockUI();
+            jQuery("#success").text("Your New Company is added successfully..");
+            profilesuccess.show();
+            profilesuccess.fadeOut(5000);
+            App.scrollTo(profilesuccess, -200);
+            setTimeout(function () { 
+                $("#AddAssociate").hide()
+                fetchMyProfileVendor() 
+                
+            }, 2000)
+
+        },
+        error: function (xhr, status, error) {
+         
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                var err = xhr.responseText
+                jQuery("#error").text(err);
+                profileerror.show();
+                profileerror.fadeOut(5000);
+                App.scrollTo(profileerror, -200);
+      
+               }
+            jQuery.unblockUI();
+            return false;
+        }
+
+    })
+}
+
+function cleanAddChild() {
+
+    $("#txtTINNo").val("")
+    $("#vendorpanno").val("")
+    $("#vendorname").val("")
+    $("#ddlNatureEstaiblishment").val("")
+    $("#vendoraddress").val("")
+    $("#pincode").val("")
+    $("#gstattach").html("")
+    $("#panattach").html("")
+    $("#msmeattach").html("")
+    $("#checkattach").html("")
+    $("#ddlCountry").val('IN').trigger('change');
+
+
+
+    $("#ddlVendorType").val('0');
+    $("#ddlMSME").val('0');
+    $("#ddlMSMEClass").val('0');
+    $("#ddPayTerms").val('0').trigger('change');
+    $("#txtUdyam").val('');
+    $("#ifsccode").val('');
+    $("#bankname").val('');
+    $("#bankaccount").val('');
+    $("#accountholder").val('');
+     $('#txtTINType').removeAttr('disabled');
+    $('#txtTINNo').removeAttr('disabled');
+    $("#ddlCountry").removeAttr('disabled');
+   
+    $('#txtTINType').val("").trigger('change')
+    editGST()
+    editPAN()
+    
+   
+}
+
+
+
+//to validate gst
+
+function extractPan() {
+    let data = $("#txtTINNo").val();
+    $('#txtTINNo').removeClass("gstvalidicon")
+    var reggst = /^([0-9]{2}[a-zA-Z]{4}([a-zA-Z]{1}|[0-9]{1})[0-9]{4}[a-zA-Z]{1}([a-zA-Z]|[0-9]){3}){0,15}$/
+
+
+    if (data.length === 15) {
+        if (!reggst.test(data)) {
+             gstflag=true;
+            bootbox.alert('GST Number Format is not valid. please check it');
+            return false;
+        }
+
+        ValidateGST(data)
+
+    }
+    else {
+          gstflag=true;
+        $("#vendorpanno").val("");
+
+        //beforeTaxDisable()
+    }
+
+}
+
+
+function ValidateGST(data) {
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    let GSTNo = data
+    
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "BlobFiles/ValidateGST/?GSTNo=" + GSTNo,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        async:false,
+        success: function (data, status, jqXHR) {
+        
+            if (data.status != 'E') {
+                var data = jQuery.parseJSON(data);
+                gstflag=true
+                let panNumber = ""
+                let legalName = data.legalNameOfBusiness
+                let tradeName=data.tradeName
+                let companytype = data.constitutionOfBusiness
+                let tradeaddress=`${data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.buildingName} ${data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.buildingNumber} ${data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.streetName} ${data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.location} ${data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.districtName} `
+                let gststatus = data.gstnStatus
+                let eInvoiceStatus=data.eInvoiceStatus
+                let taxpayerType=data.taxpayerType
+                let stateName=data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.stateName
+                let pincode =data.principalPlaceOfBusinessFields.principalPlaceOfBusinessAddress.pincode
+                  
+               
+                $('#txtTINNo').addClass("gstvalidicon")
+
+
+                panNumber = data.gstIdentificationNumber.substring(2, 12);
+                $("#vendorpanno").val(panNumber);
+                $("#vendorpanno").attr("disabled", "disabled");
+                //afterTaxEnable()
+                $("#vendorname").val(legalName);
+                $("#vendorname").attr("disabled", "disabled");
+                $("#ddlNatureEstaiblishment").val(companytype);
+                $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
+                $("#TradeName").val(tradeName);
+                $("#vendoraddress").val(tradeaddress);
+                
+                $("#gstnStatus").val(gststatus);
+                $("#eInvoiceStatus").val(eInvoiceStatus);
+                $("#taxpayerType").val(taxpayerType);
+                $("#pincode").val(pincode);
+                
+                
+                alertforinfo('GST Number is validated successfully.')
+                jQuery.unblockUI();
+                 setTimeout(function () {
+                    $('#txtTINNo').removeClass("gstvalidicon");
+                }, 2000);
+                jQuery("#ddlState").find(`option[data-statename='${stateName}']`).prop('selected', true).trigger('change');
+
+                
+               
+            }
+            else {
+              
+                alertforerror(`GST Number could not be validated`);
+            }
+
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+          
+            var err = xhr.responseText// eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                alertforerror(err)
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+
+    })
+}
+
+//edit options for files
+
+function editCheck() {
+    $("#checkattach").html("");
+    $("#uploadcheck").hide();
+    $("#filecheck").show();
+}
+
+
+function editFinance() {
+    $("#financeattach").html("");
+    $("#uploadfinance").hide();
+    $("#filefinance").show();
+}
+
+function editGST() {
+    $("#gstattach").html("");
+    $("#uploadgst").hide();
+    $("#filegst").show();
+}
+
+
+function showGST() {
+    $("#uploadgst").show();
+    $("#filegst").hide();
+    $("#editgst").show()
+    
+}
+
+function editPAN() {
+    $("#panattach").html("");
+    $("#uploadpan").hide();
+    $("#filepan").show();
+}
+
+function showPAN() {
+    $("#uploadpan").show();
+    $("#filepan").hide();
+    $("#editpan").show()
+}
+
+
+function viewbankcustomer(accordionname) {
+
+    $('.' + accordionname).toggle();
+}
+
+
+function GetCustomerForBankMapping(vendid, ChildId, bankingId,accholder,accnum,accifsc,isVerify) {
+   
+    $('#hdnBankingId').val(bankingId)
+    $('#hdnChildID').val(ChildId)
+
+   
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "VendorLCM/GetCustomerForBankMapping/?Id=" + vendid + "&ChildId=" + ChildId,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        dataType: "json",
+        success: function (data) {
+            
+               
+            
+            jQuery(".verifygroup").hide();
+            
+            
+            jQuery("#mapbankcustomer").empty();
+            jQuery("#mapbankcustomer").append(jQuery("<option></option>").val(0).html("Select"));
+            for (var i = 0; i < data.length; i++) {
+                jQuery("#mapbankcustomer").append(jQuery(`<option data-isverify='${data[i].showVerification}' data-verification='${isVerify}'></option>`).val(data[i].customerId).html(data[i].customerName));
+            }
+            $('#mapAH').html(accholder);
+            $('#mapAN').html(accnum);
+            $('#mapIC').html(accifsc);
+            if(isVerify=='Y'){
+                
+                $('#btnVerifyBank').hide()
+                $('#btnmaptoc').removeAttr('disabled')
+                
+            }
+            else{
+                $('#btnVerifyBank').show()
+                $('#btnmaptoc').attr('disabled','disabled')
+            }
+            $('#bankcustomermap').show();
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval(`( ${xhr.responseText} )`);
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+}
+
+
+
+function UpdateBankMapping() {
+   
+    if ($('#mapbankcustomer').val() === '0') {
+
+        jQuery("#errordiv1").show();
+        jQuery("#errordiv1").text("please select valid company to proceed further..");
+
+        setTimeout(function () {
+
+            jQuery("#errordiv1").hide();
+            jQuery("#errordiv1").text("");
+
+
+        }, 2000)
+        return false;
+    }
+  
+    let data = {
+        "AssociatedVendorId": parseInt($('#hdnChildID').val()),
+        "BankingId": parseInt($('#hdnBankingId').val()),
+        "VendorId": parseInt(sessionStorage.getItem('VendorId')),
+        "CustomerId": parseInt($('#mapbankcustomer').val()),
+    }
+
+    
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+
+        url: APIPath + "VendorLCM/UpdateBankMapping",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+            if (data.isSuccess !== 0) {
+              
+                jQuery("#successdiv1").show();
+                jQuery("#successdiv1").text("Company is mapped successfully..");
+
+                setTimeout(function () {
+                    jQuery("#successdiv1").hide();
+                    jQuery("#successdiv1").text("");
+                    hideModal()
+                }, 2000)
+            }
+            else {
+
+                jQuery("#errordiv1").show();
+                jQuery("#errordiv1").text(data.message);
+
+                setTimeout(function () {
+
+                    jQuery("#errordiv1").hide();
+                    jQuery("#errordiv1").text("");
+
+                }, 2000)
+            }
+
+
+        },
+        error: function (xhr, status, error) {
+
+            jQuery.unblockUI();
+        }
+    });
+}
+
+
+function hideModal() {
+
+    $('.modal').hide();
+}
+
+
+//fetchcountrywise tax
+
+
+$('#ddlCountry').on('change', function () {
+
+    let CountryKey = $(this).val() || "IN";
+
+    GetCountrySpecificMaster(CountryKey)
+
+
+
+}
+)
+
+
+$('#ddlState').on('change', function () {
+
+    let stateidentity = $('option:selected', this).data('stateid');
+   
+    fetchCity(parseInt(stateidentity));
+});
+
+
+
+
+
+
+
+
+
+function fetchCity(stateid) {
+      
+    if (stateid == null) {
+        stateid = 0;
+    }
+    jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "CustomerRegistration/City/?StateID= " + stateid + "&CityID=0",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        async: false,
+        dataType: "json",
+        success: function (data) {
+            
+            $("#ddlCity").empty();
+            if (data.length > 0) {
+                $("#ddlCity").append("<option value=0>Select City</option>");
+                for (var i = 0; i < data.length; i++) {
+                    $("#ddlCity").append("<option value=" + data[i].cityID + ">" + data[i].cityName + "</option>");
+                }
+                $("#ddlCity").val('0').trigger("change");
+            }
+            else {
+                $("#ddlCity").append('<tr><td>No city found..</td></tr>');
+            }
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+}
+var formvendorcontact = $('#submit_form_contact');
+var formvendorcompany = $('#submit_form_company'); 
+var formvendorbank = $('#submit_form_bank');
+
+function FormValidateContact() {
+
+    formvendorcontact.validate({
+
+        errorElement: 'span',
+        errorClass: 'help-block',
+        focusInvalid: false,
+        ignore: "",
+        rules: {
+
+            personname: {
+                required: true,
+            },
+            vendormobileno: {
+                required: true,
+                number:true
+            },
+            vendoraltmobileno: {
+                number:true
+            },
+            vendorEmailID: {
+                required: true,
+                email: true
+            },
+            vendorAltEmailID: {
+                email: true
+            },
+            ddlpreferredTime: {
+                required: true
+            },
+
+
+        },
+        messages: {
+
+            personname: {
+                required: "Please Enter Valid name",
+            },
+            vendormobileno: {
+                required: "Please Enter Valid Mobile No"
+            },
+            vendorEmailID: {
+                required: "Please Enter Valid Email Id"
+            },
+            ddlpreferredTime: {
+                required: "Please Enter Valid Preffered time"
+            }
+
+        },
+        invalidHandler: function (event, validator) {
+            //errorVendor.show()
+            // successVendor.hide();
+            $('#successdiv').show()
+            $('#successdiv').hide()
+            $('#successdiv').html("")
+            $('#error').text("Please Enter all required field to proceed");
+            $('#errordiv').fadeOut(6000);
+        },
+
+        highlight: function (element) {
+            $(element).closest('.xyz').addClass('has-error');
+
+        },
+
+        unhighlight: function (element) {
+            $(element).closest('.xyz').removeClass('has-error');
+
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element);
+        },
+        success: function (label) {
+        },
+        submitHandler: function (form) {
+    
+
+            updateVendorContactDetails()
+        }
+    });
+}
+
+
+function FormValidateCompany() {
+
+    formvendorcompany.validate({
+
+        errorElement: 'span',
+        errorClass: 'help-block',
+        focusInvalid: false,
+        ignore: "",
+        rules: {
+
+            ddlCountry: {
+                required: true,
+            },
+            vendorname: {
+                required: true
+            },
+            vendoraddress: {
+                required: true
+            },
+            pincode: {
+                required: true
+            },
+            ddlState: {
+                required: true
+            }, 
+            ddlCity: {
+                required: true
+            },
+            ddllanguage: {
+                required: true
+            },
+            ddlcurrency: {
+                required: true
+            },
+
+
+        },
+        messages: {
+
+            ddlCountry: {
+                required: "Please Enter Valid Country",
+            },
+            vendorname: {
+                required: "Please Enter Valid vendor name"
+            },
+            vendoraddress: {
+                required: "Please Enter Valid address"
+            },
+            pincode: {
+                required: "Please Enter Valid pincode"
+            },
+            ddlState: {
+                required: "Please Enter Valid State"
+            },
+            ddlCity: {
+                required: "Please Enter Valid City"
+            },
+            ddllanguage: {
+                required: "Please Enter Valid Language"
+            },
+            ddlcurrency: {
+                required: "Please Enter Valid Currency"
+            },
+
+        },
+        invalidHandler: function (event, validator) {
+            //errorVendor.show()
+            // successVendor.hide();
+            $('#companiessuccessdiv').show()
+            $('#companiessuccessdiv').hide()
+            $('#companiessuccessdiv').html("")
+            $('#sendcompanieserror').text("Please Enter all required field to proceed");
+            $('#companieserrordiv').fadeOut(6000);
+        },
+
+        highlight: function (element) {
+            $(element).closest('.xyz').addClass('has-error');
+
+        },
+
+        unhighlight: function (element) {
+            $(element).closest('.xyz').removeClass('has-error');
+
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element);
+        },
+        success: function (label) {
+        },
+        submitHandler: function (form) {
+            
+        
+            AddAssociateVendorDetail()
+        }
+    });
+}
+
+
+
+function FormValidateBank() {
+
+    formvendorbank.validate({
+
+        errorElement: 'span',
+        errorClass: 'help-block',
+        focusInvalid: false,
+        ignore: "",
+        rules: {
+
+            accountholder: {
+                required: true,
+            },
+            ifsccode: {
+                required: true,
+            },
+            bankname: {
+                required: true,
+            },
+            bankaccount: {
+                required: true,
+                number:true
+            }
+        },
+        messages: {
+
+            accountholder: {
+                required: "Please Enter Valid account holder",
+            },
+            ifsccode: {
+                required: "Please Enter Valid IFSC code",
+            },
+            bankname: {
+                required: "Please Enter Valid Bank name",
+            },
+            bankaccount: {
+                required: "Please Enter Valid Bank account",
+            }
+
+        },
+        invalidHandler: function (event, validator) {
+            //errorVendor.show()
+            // successVendor.hide();
+            $('#successdivbank').show()
+            $('#successdivbank').hide()
+            $('#successdivbank').html("")
+            $('#errorbank').text("Please Enter all required field to proceed");
+            $('#errordivbank').fadeOut(6000);
+        },
+
+        highlight: function (element) {
+            $(element).closest('.xyz').addClass('has-error');
+
+        },
+
+        unhighlight: function (element) {
+            $(element).closest('.xyz').removeClass('has-error');
+
+        },
+        errorPlacement: function (error, element) {
+            error.insertAfter(element);
+        },
+        success: function (label) {
+        },
+        submitHandler: function (form) {
+            
+
+            UpdateBankDetail()
+        }
+    });
+}
+
+//unregistered vendor
+
+$('#txtTINType').on('change', function () {
+  
+    let Taxtype = $(this).val() ;
+    if(Taxtype==""&&  $("#ddlCountry option:selected").val()=='IN'){
+       
+        
+        $(".nogsthide").hide();
+        $(".newgsthide").hide();
+        $(".nopanhide").show();
+        $("#ParticipantName").removeAttr('disabled');
+        $("#ddlNatureEstaiblishment").removeAttr('disabled');
+       /* $("#txtTINNo").attr("onchange","");*/
+        $("#btncalgst").attr("onClick", ``);
+        $("#btncalgst").hide()
+        $("#txtPanNo").removeAttr('disabled');
+        $("#vendorpanno").removeAttr('disabled');
+        $("#vendorname").removeAttr('disabled');
+    }
+    
+    else if(Taxtype=="" && $("#ddlCountry option:selected").val()!='IN'){
+       
+        
+         $(".nogsthide").hide();
+        $(".nopanhide").hide();
+        $(".newgsthide").hide();
+        $("#ParticipantName").removeAttr('disabled');
+        $("#ddlNatureEstaiblishment").removeAttr('disabled');
+        /*$("#txtTINNo").attr("onchange","");*/
+        $("#btncalgst").attr("onClick", ``);
+        $("#btncalgst").hide()
+        $("#txtPanNo").removeAttr('disabled');
+        $("#vendorpanno").removeAttr('disabled');
+        $("#vendorname").removeAttr('disabled');
+    }
+    
+    
+  
+     else if(Taxtype=="IN3"){
+         
+         $(".nogsthide").show();
+         $(".newgsthide").show();
+         $(".nopanhide").show();
+         $("#ParticipantName").attr("disabled", "disabled");
+         $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
+        /*$("#txtTINNo").attr("onchange", "extractPan(this)");*/
+        $("#btncalgst").attr("onClick", `extractPan()`);
+        $("#btncalgst").show()
+         $("#txtPanNo").attr("disabled", "disabled");
+         $("#vendorpanno").attr("disabled", "disabled");
+         $("#vendorname").attr("disabled", "disabled");
+    }
+    
+    else{
+         $(".nogsthide").show();
+         $(".newgsthide").hide();
+         $(".nopanhide").show();
+        /* $("#txtTINNo").attr("onchange", "");*/
+        $("#btncalgst").attr("onClick", ``);
+        $("#btncalgst").hide()
+         $("#ParticipantName").removeAttr("disabled");
+         $("#txtPanNo").removeAttr("disabled");
+        
+        
+    }
+
+   
+
+
+}
+)
+
+let vendorchildId='';
+function DownloadFile(aID) {
+   
+    vendorchildId = $('#hdnChildID').val()
+    fnDownloadAttachments($("#" + aID.id).html(), 'VR/' + vendorchildId);
+}
+
+function validateUserPro(){
+    $('#frmprofile').validate({
+        errorElement: 'span', //default input error message container
+        errorClass: 'help-block', // default input error message class
+        focusInvalid: false, // do not focus the last invalid input
+
+        rules: {
+            usermobileno: {
+                required: true
+            },
+            ddlCountryCd: {
+                required: true
+            }
+
+        },
+        messages: {
+            usermobileno: {
+                required: "Mobile No is required."
+            }
+        },
+        invalidHandler: function (event, validator) { //display error alert on form submit   
+            profilesuccess.hide();
+            jQuery("#error").text("You have some form errors. Please check below.");
+            profileerror.show();
+            profileerror.fadeOut(5000);
+            App.scrollTo(profileerror, -200);
+        },
+
+        highlight: function (element) { // hightlight error inputs
+            $(element)
+                .closest('.form-group').addClass('has-error'); // set error class to the control group
+        },
+        unhighlight: function (element) { // revert the change done by hightlight
+            $(element)
+                .closest('.form-group').removeClass('has-error'); // set error class to the control group
+        },
+
+        success: function (label) {
+            label.closest('.form-group').removeClass('has-error');
+            label.remove();
+        },
+
+        errorPlacement: function (error, element) {
+            profileerror.insertAfter(element.closest('.xyz'));
+        },
+
+        submitHandler: function (form) {
+
+            updMobileNo();
+        }
+    });
+    
+
+    
+    
+}
+
+//penny testing code
+function IciciBankPennyDropVerify() {
+  
+   if($('#mapMN').val()==''){
+               $('#btnmaptoc').attr('disabled','disabled');
+                alertforerror("please fill valid mobile number to proceed")
+                return false
+   }
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    let data = {
+        "BenifAccNo":$('#mapAN').html(),
+        "BenifIFSC":$('#mapIC').html(),
+        "Amount":"1.00",
+        "AcountName":$('#mapAH').html(),
+        "Mobile":$('#mapMN').val(),
+        "ChildID":parseInt($('#hdnChildID').val())
+    }
+    
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        //url: APIPath + "ChangeForgotPassword/fetchMyprofileDetails/?UserID=" + encodeURIComponent(sessionStorage.getItem('VendorId')) + "&UserType=" + sessionStorage.getItem('UserType'),
+        url: APIPath + "Bank/IciciBankPennyDropVerify",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        data: JSON.stringify(data),
+        dataType: "json",
+        success: function (data) {
+         debugger
+         if(data.status==0){
+             alertforerror(data.error);
+             jQuery.unblockUI();
+             return false;
+         }
+          
+           let ActCode= data.data.actCode
+           if(data.isVeriFy==='Y'){
+               
+                $('#btnmaptoc').removeAttr('disabled');
+                alertforinfo("Banking details verified successfully...");
+                GetBankDetail(parseInt($('#hdnChildID').val()), customerid, VendorId)
+               
+           }
+           else{
+               
+             if(ActCode=='0') {
+                  $('#btnmaptoc').removeAttr('disabled');
+                  alertforsucess("Banking details verified successfully...");
+                  GetBankDetail(parseInt($('#hdnChildID').val()), customerid, VendorId)
+             }
+             else{
+                  $('#btnmaptoc').attr('disabled','disabled');
+               
+                  alertforerror(`${data.data.response}. Please check details.`)
+                
+             }
+               
+               
+               
+           }
+            jQuery.unblockUI();
+        },
+        error: function (xhr, status, error) {
+
+          
+           let err=xhr.responseText || `banking details cannot be verified. Please Check!`;
+          
+           alertforerror(err);
+            jQuery.unblockUI();
+        }
+    });
+}
+
+
+//dropdown changes for verification
+$('#mapbankcustomer').on('change', function () {
+   
+   let isVerify = $('option:selected', this).data('isverify');
+   let verification=$('option:selected', this).data('verification');
+   if(isVerify=='Y' ){
+       if(verification=='Y'){
+            $('#btnmaptoc').removeAttr('disabled');
+            $('.verifygroup').show();
+       }
+           
+       else{
+            $('#btnmaptoc').attr('disabled','disabled');
+            $('.verifygroup').show();
+       }
+      
+   }
+   else{
+       $('#btnmaptoc').removeAttr('disabled');
+       $('.verifygroup').hide();
+   }
+
+    
+});

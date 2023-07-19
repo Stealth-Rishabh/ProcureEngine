@@ -1,8 +1,8 @@
 
 jQuery(document).ready(function () {
-    callPagejs('eRFQAzPPCApproval.js');
+    
+    
     Pageloaded()
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
@@ -914,7 +914,8 @@ function fetchAttachments() {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (data, status, jqXHR) {
+        success: function (Data, status, jqXHR) {
+            let data = Data.rData
 
             jQuery("#tblAttachments").empty();
 
@@ -962,7 +963,8 @@ function fetchReguestforQuotationDetails() {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (RFQData) {
+        success: function (Data) {
+            let RFQData = Data.rData
             var replaced1 = '';
             $('#tbldetailsExcel > tbody').empty();
 
@@ -1165,7 +1167,7 @@ function fetchRegisterUser() {
 
         },
         error: function (xhr, status, error) {
-            debugger;
+
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1566,9 +1568,9 @@ function fnGetApprovers() {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (data) {
+        success: function (Data) {
             var str = "";
-
+            let data = Data.rData
             jQuery("#tblapprovers").empty();
             if (data[0].approvers.length > 0) {
                 for (var i = 0; i < data[0].approvers.length; i++) {

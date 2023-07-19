@@ -1,5 +1,10 @@
 var Changepassworderror = $('#errordivChangePassword');
 var Changepasswordsuccess = $('#successdivChangePassword');
+let isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted')
+let mobileNo = sessionStorage.getItem('mobileNo');
+let hasLoggedIn= sessionStorage.getItem('hasLoggedIn');
+//let mobileNo = "9506902863";
+
 Changepassworderror.hide();
 Changepasswordsuccess.hide();
 //FROM HTML
@@ -22,6 +27,13 @@ jQuery(document).ready(function () {
             });
         }
     }
+   if(hasLoggedIn=="N"){
+       profileAlert()
+       
+   }    
+   if (isWhatsappOpted == "") {
+        whatsappAlert()
+   }   
     setCommonData();
     App.init();
     //  multilingualLanguage()
@@ -232,6 +244,7 @@ function GetDataForCust() {
     }, 400)
 }
 function fetchPendingBid() {
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     if ($('#ULCustomers').val() == null) {
@@ -543,8 +556,8 @@ function fetchReguestforQuotationDetailseRFQ() {
         cache: false,
         crossDomain: true,
         dataType: "json",
-        success: function (RFQData) {
-            debugger
+        success: function (Data) {
+            let RFQData=Data.rData
             let _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
             let _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
             sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
@@ -1075,7 +1088,7 @@ function fetchBidHeaderDetails() {
     var url = '';
 
     url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor/?BidID=" + sessionStorage.getItem('BidID') + "&VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId"))
-
+     
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1085,7 +1098,7 @@ function fetchBidHeaderDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-
+              
             if (data.length == 1) {
                 var localBidDate = fnConverToLocalTime(data[0].bidDate);
                 jQuery('#bid_EventID').html("Event ID : " + sessionStorage.getItem("BidID"));
@@ -1123,6 +1136,7 @@ function fetchBidHeaderDetails() {
             }
         },
         error: function (xhr, status, error) {
+             
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
 
             if (xhr.status == 401) {
@@ -1276,6 +1290,93 @@ jQuery('#bidchkIsAccepted').click(function () {
     }
 });
 
+//whatsapp message to vendor
+let whatsappdialog
+function whatsappAlert() {
+    
+    bootbox.dialog({
+        title: "Now get alerts on WhatsApp!",
+        message: "We'll send you important updates and notifications on Whatsapp",
+        closeButton: false,
+        buttons: {
+            ok: {
+                label: "Yes, opt in",
+                className: "btn-success",
+                callback: function () {
+                    $.ajax({
+                        url: sessionStorage.getItem("APIPath") + "User/UpdateWhatsApp/?IsWhatsappOpted=Y",
+                        type: "POST",
+                        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+                        data: [],
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data) {
+                            SendWhatsApp()
+                            sessionStorage.setItem('isWhatsappOpted', 'Y');
+                            isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted');
+                        },
+                        error: function (error) {
+                            console.error("Error sending WhatsApp message:", error);
+                        }
+                    });
+
+
+                }
+            },
+            cancel: {
+                label: "Skip",
+                className: "btn-danger",
+                callback: function () {
+                    $.ajax({
+                        url: sessionStorage.getItem("APIPath") + "User/UpdateWhatsApp/?IsWhatsappOpted=N",
+                        type: "POST",
+                        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+                        data: [],
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data) {
+                            
+                            sessionStorage.setItem('isWhatsappOpted', 'N');
+                            isWhatsappOpted = sessionStorage.getItem('isWhatsappOpted');
+
+                        },
+                        error: function (error) {
+                            console.error("Error sending WhatsApp message:", error);
+                        }
+
+                    });
+                }
+            }
+           
+        }
+        
+     });
+   
+}
+
+
+function SendWhatsApp() {
+    let data = {
+        "tonumber": mobileNo,
+        "template": "vendorwelcome"
+    }
+    $.ajax({
+        url: sessionStorage.getItem("APIPath") + "BlobFiles/SendWhatsApp",
+        type: "POST",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            bootbox.alert("You are successfully subscribed to Whatsapp", function () {
+                return true;
+            });          
+        },
+        error: function (error) {
+            console.error("Error sending WhatsApp message:", error);
+        }
+    });
+}
 
 /*function multilingualLanguage() {
 
@@ -1345,3 +1446,29 @@ else {
 
 
 }*/
+
+
+
+
+function profileAlert() {
+    
+    bootbox.dialog({
+        title: "Complete your Profile",
+        message: "Please complete your profile and all further details on Myprofile page",
+        closeButton: false,
+        buttons: {
+            ok: {
+                label: "OK",
+                className: "btn-success",
+                callback: function () {
+                   
+                      sessionStorage.setItem('hasLoggedIn','Y');
+
+                }
+            }
+           
+        }
+        
+     });
+   
+}

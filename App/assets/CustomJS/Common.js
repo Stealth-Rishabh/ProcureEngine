@@ -6,6 +6,7 @@ var CurrentCustomer = sessionStorage.getItem("CustomerID");
 var LoadingMessage = '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>';
 var DefaultCurrency = sessionStorage.getItem("DefaultCurrency");
 
+
 $('.MaxLength').maxlength({
     limitReachedClass: "label label-danger",
     alwaysShow: true
@@ -198,21 +199,28 @@ function onlyNumberKey(evt) {
     return true;
 }
 function callPagejs(pagejs) {
-
+   
     var js = [];
+    if (sessionStorage.getItem("ISFromSurrogate") != "Y") {
+        js.push("assets/SSO/msalHead.js");
+        js.push("assets/CustomJS/AuthenticationConfig.js");
+    }
     js.push("assets/CustomJS/Auction.js?v=" + Math.random());
     var Pages = pagejs.split(',')
     for (var i = 0; i < Pages.length; i++) {
         js.push("assets/CustomJS/" + Pages[i] + "?v=" + Math.random());
     }
     var $head = $("head");
-
+     
     for (var i = 0; i < js.length; i++) {
+        
         $head.append("<script src=\"" + js[i] + "\"></scr" + "ipt>");
     }
 
 }
+
 function handleDateTimepicker(locale) {
+    
     //var locale = sessionStorage.getItem("localcode")
     //var tz = moment().tz('Asia/Baghdad').format();
     //alert(GetCurrentDateTime())
@@ -234,6 +242,7 @@ function handleDateTimepicker(locale) {
           })
 
       }*/
+      
     if (jQuery().datepicker) {
         $('.date-picker').datepicker({
             locale: locale,
@@ -243,6 +252,7 @@ function handleDateTimepicker(locale) {
         $(".form_datetime").datetimepicker({
             locale: locale,
             language: locale,
+           
             // startDate: theStDate
         });
 
@@ -261,6 +271,7 @@ function setCommonData() {
 }
 
 function fetchCountry() {
+    
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
@@ -272,31 +283,39 @@ function fetchCountry() {
         async: false,
         dataType: "json",
         success: function (data) {
+
             $("#ddlCountry").empty();
             $("#ddlCountryCd").empty();
             $("#ddlCountryCdPhone").empty();
+
             var vlal = new Array();
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
-                    $("#ddlCountry").append("<option value=" + data[i].countryID + ">" + data[i].countryName + "</option>");
+                    $("#ddlCountry").append("<option value='" + data[i].countryKey + "' data-countryid='" + data[i].countryID + "'>" + data[i].countryName + "</option>");
                     $("#ddlCountryCd").append(jQuery("<option></option>").val(data[i].countryID).html(data[i].dialingCode));
                     $("#ddlCountryCdPhone").append("<option value=" + data[i].countryID + ">" + data[i].dialingCode + "</option>");
                 }
+                
+                $("#ddlCountry").val('IN').trigger("change");
 
-                $("#ddlCountry").val('111').trigger("change");
                 $("#ddlCountryCd").val('111');
+
                 $("#ddlCountryCdPhone").val('111');
+
+
+
+
             }
             else {
                 $("#ddlCountry").append('<tr><td>No countries found..</td></tr>');
             }
-            jQuery.unblockUI();
+
         },
         error: function (xhr, status, error) {
-
+    
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status === 401) {
-                error401Messagebox(err.Message);
+                // error401Messagebox(err.Message);
             }
             else {
                 fnErrorMessageText('errormsg', '');
@@ -304,7 +323,7 @@ function fetchCountry() {
             return false;
             jQuery.unblockUI();
         }
-       
+
     });
 
     jQuery.ajax({
@@ -314,15 +333,22 @@ function fetchCountry() {
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         dataType: "json",
+        async:false,
         success: function (data) {
 
             let lstTZ = JSON.parse(data[0].jsondata);
-
+            
             jQuery("#ddlpreferredTime").empty();
             jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val("").html("Select"));
             for (var i = 0; i < lstTZ.length; i++) {
 
                 jQuery("#ddlpreferredTime").append(jQuery("<option ></option>").val(lstTZ[i].id).html(lstTZ[i].timezonelong));
+            }
+            jQuery("#ddlpreferredTimem").empty();
+            jQuery("#ddlpreferredTimem").append(jQuery("<option ></option>").val("").html("Select"));
+            for (var i = 0; i < lstTZ.length; i++) {
+
+                jQuery("#ddlpreferredTimem").append(jQuery("<option ></option>").val(lstTZ[i].id).html(lstTZ[i].timezonelong));
             }
         },
         error: function (xhr, status, error) {
@@ -339,7 +365,6 @@ function fetchCountry() {
         }
     });
 }
-
 function fetchState() {
 
     var countryid = $('#ddlCountry option:selected').val();
@@ -355,17 +380,20 @@ function fetchState() {
         dataType: "json",
         success: function (data) {
             $("#ddlState").empty();
-            if (data.length > 0) {
+            if (data.stateAndRegion.length > 0) {
 
-                $("#ddlState").append("<option value=0>Select State</option>");
-                for (var i = 0; i < data.length; i++) {
-                    $("#ddlState").append("<option value=" + data[i].stateID + ">" + data[i].stateName + "</option>");
+                $("#ddlState").append("<option value=''>Select State</option>");
+                for (var i = 0; i < data.stateAndRegion.length; i++) {
+                    $("#ddlState").append("<option value='" + data.stateAndRegion[i].regionKey + "' data-stateid='" + data.stateAndRegion[i].stateID + "'>" + data.stateAndRegion[i].stateName + "</option>");
+
                 }
-                //   $("#ddlState").trigger("change");
+
+
             }
             else {
                 $("#ddlState").append('<tr><td>No state found..</td></tr>');
             }
+
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
@@ -384,9 +412,11 @@ function fetchState() {
     });
 }
 
-function fetchCity() {
+function fetchCity(stateid) {
 
-    var stateid = $('#ddlState').val();
+    if (stateid == null) {
+        stateid = 0;
+    }
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     jQuery.ajax({
         type: "GET",
@@ -398,13 +428,14 @@ function fetchCity() {
         async: false,
         dataType: "json",
         success: function (data) {
+
             $("#ddlCity").empty();
             if (data.length > 0) {
-                $("#ddlCity").append("<option value=0>Select City</option>");
+                $("#ddlCity").append("<option value=''>Select City</option>");
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlCity").append("<option value=" + data[i].cityID + ">" + data[i].cityName + "</option>");
                 }
-                //   $("#ddlCity").val('0').trigger("change");
+                $("#ddlCity").val('0').trigger("change");
             }
             else {
                 $("#ddlCity").append('<tr><td>No city found..</td></tr>');
@@ -425,6 +456,7 @@ function fetchCity() {
 
     });
 }
+
 
 function fetchProduct() {
     jQuery.blockUI({ message: '<h5><img src="../assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -502,8 +534,8 @@ function fetchMasters() {
         cache: false,
         dataType: "json",
         success: function (data) {
-            $("#ddlCountry").empty();
-
+            /*$("#ddlCountry").empty();
+          
             if (data.result.lstCountry.length > 0) {
 
                 for (var i = 0; i < data.result.lstCountry.length; i++) {
@@ -516,7 +548,8 @@ function fetchMasters() {
             }
             else {
                 $("#ddlCountry").append('<tr><td>No countries found..</td></tr>');
-            }
+            }*/
+
 
 
             $("#ddlTypeofProduct").empty();
@@ -574,17 +607,17 @@ function fetchMasters() {
 
 
 function prefferedTimezone() {
-
+    
 
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "UOM/fetchTimezoneLst/",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        /* beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },*/
         cache: false,
         dataType: "json",
         success: function (data) {
-
+        
             let lstTZ = JSON.parse(data[0].jsondata);
 
             jQuery("#ddlpreferredTime").empty();
@@ -595,10 +628,10 @@ function prefferedTimezone() {
             }
         },
         error: function (xhr, status, error) {
-
+            
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
-                error401Messagebox(err.Message);
+                //error401Messagebox(err.Message);
             }
             else {
                 fnErrorMessageText('spanerror1', '');
@@ -696,6 +729,7 @@ function fnEnryptURL(URL) {
 var key = CryptoJS.enc.Utf8.parse('8080808080808080');
 var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
 function fnencrypt(message) {
+   
     var encryptedtext = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(message), key,
         {
             keySize: 128 / 8,
@@ -706,7 +740,7 @@ function fnencrypt(message) {
     return (encryptedtext)
 }
 function fndecrypt(message) {
-
+    
     var key = CryptoJS.enc.Utf8.parse('8080808080808080');
     var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
 
@@ -754,67 +788,432 @@ function _base64ToArrayBuffer(base64) {
     return bytes.buffer;
 }
 
-//Check JWT Validity
-function isAuthenticated() {
-    var token = sessionStorage.getItem("Token");
-    var refreshToken = sessionStorage.getItem("RefreshToken");
-    var isValid = true;
-    var ClaimsToken = {
-        "AccessToken": token,
-        "RefreshToken": refreshToken
-
+function isNumeric(str) {
+    if (typeof str != "string") {
+        return false
     }
-    if (sessionStorage.getItem('CustomerID' != '32')) {
-        var urlAc = sessionStorage.getItem("APIPath") + "Token/refresh";
-        try {
+    return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+        !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+}
 
-            //decode(token);
-            //const { exp } = decode(refreshToken);
-            //if (Date.now() >= exp * 1000) {
-            if (isTokenExpired(token)) {
-                jQuery.ajax({
-                    url: urlAc,
-                    data: JSON.stringify(ClaimsToken),
-                    type: "POST",
-                    async: false,
-                    beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-                    contentType: "application/json",
-                    success: function (data) {
-                        sessionStorage.setItem("Token", data.accessToken)
-                        sessionStorage.setItem("RefreshToken", data.refreshToken);
-                        isValid = true
-                    },
-                    error: function (xhr, status, error) {
-                        error401Messagebox(error.Message);
-                        isValid = false;
-                    }
-                });
-                return isValid;
+//sap master related apis
+function GetCustomerSpecificMaster(CustId) {
+
+    console.log(sessionStorage.getItem("APIPath") + "KDSMaster/GetCustomerSpecificMaster/?Id=" + CustId)
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "KDSMaster/GetCustomerSpecificMaster/?Id=" + CustId,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        dataType: "json",
+        success: function (childData) {
+
+            jQuery.unblockUI();
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
             }
-        } catch (err) {
-            error401Messagebox(err.Message);
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+
             return false;
+            jQuery.unblockUI();
         }
-    }
-    else {
-        isValid = true;
-    }
-    return isValid;
+
+    });
 }
 
-function isTokenExpired(token) {
-    const base64Url = token.split(".")[1];
-    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-    const jsonPayload = decodeURIComponent(
-        atob(base64)
-            .split("")
-            .map(function (c) {
-                return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+
+//KDSMaster / GetCountrySpecificMaster = string CountryKey
+function GetCustomerSpecificMaster(CustId) {
+
+    console.log(sessionStorage.getItem("APIPath") + "KDSMaster/GetCustomerSpecificMaster/?Id=" + CustId)
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "KDSMaster/GetCustomerSpecificMaster/?Id=" + CustId,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        data: "{}",
+        cache: false,
+        async:false,
+        dataType: "json",
+        success: function (data) {
+             
+             //Authentication Group
+            jQuery("#authGrp").empty();
+            jQuery("#authGrp").append(jQuery("<option value=''>Select</option>"));
+            for (var i = 0; i < data.authGrp.length; i++) {
+                jQuery("#authGrp").append(jQuery("<option value='" + data.authGrp[i].authorizationGroup + "'>" + data.authGrp[i].description + " [" + data.authGrp[i].authorizationGroup + "]" + "</option>"));
+
+            }
+            $("#authGrp").val('').trigger("change");
+             
+              //GST Vendor Classification
+            jQuery("#gstVendClass").empty();
+            for (var i = 0; i < data.gstVendClass.length; i++) {
+                jQuery("#gstVendClass").append(jQuery("<option value='" + data.gstVendClass[i].gstVendClassification + "'>" + data.gstVendClass[i].description + "</option>"));
+
+            }
+            
+            if ($("#txtTINNom").text().trim()==""){
+            $("#gstVendClass").val('0').trigger("change");
+            }
+            else{
+                $("#gstVendClass").val('').trigger("change");
+            }
+             
+             
+             
+            //reconcillationaccount
+            jQuery("#ReconAcc").empty();
+            jQuery("#ReconAcc").append(jQuery("<option value=''>Select</option>"));
+            for (var i = 0; i < data.reconAcc.length; i++) {
+                jQuery("#ReconAcc").append(jQuery("<option value='" + data.reconAcc[i].reconAccount + "'>" + data.reconAcc[i].description + " [" + data.reconAcc[i].reconAccount + "]" + "</option>"));
+
+            }
+            $("#ReconAcc").val('').trigger("change");
+            
+            //Witholding tax type
+            jQuery("#WitholdingTaxType").empty();
+            jQuery("#WitholdingTaxType").append(jQuery("<option value='0' data-subjectToTDS='' data-typeOfReceipt='' data-witholdingTaxCode=''>Select</option>"));
+            for (var i = 0; i < data.witholdingTax.length; i++) {
+                jQuery("#WitholdingTaxType").append(jQuery("<option value='" + data.witholdingTax[i].witholdingTaxType + "'  data-subjectToTDS='" + data.witholdingTax[i].subjectToTDS + "'   data-typeOfReceipt='" + data.witholdingTax[i].typeOfReceipt + "'  data-witholdingTaxCode='" + data.witholdingTax[i].witholdingTaxCode + "'>" + data.witholdingTax[i].description + " [" + data.witholdingTax[i].witholdingTaxType + "]" + "</option>"));
+
+            }
+            $("#WitholdingTaxType").val('0').trigger("change");
+
+            //vendor account group
+            jQuery("#VendorAccGrp").empty();
+
+            for (var i = 0; i < data.accountGroup.length; i++) {
+                jQuery("#VendorAccGrp").append(jQuery("<option></option>").val(data.accountGroup[i].bpGrouping).html(data.accountGroup[i].shortName + " [" + data.accountGroup[i].bpGrouping + "]"));
+            }
+            $("#VendorAccGrp").val('ZDOM').trigger("change");
+            //cocd
+            jQuery("#CoCd").empty();
+            jQuery("#CoCd").append(jQuery("<option></option>").val(0).html("Select"));
+            for (var i = 0; i < data.coCd.length; i++) {
+                jQuery("#CoCd").append(jQuery("<option></option>").val(data.coCd[i].companyCode).html(data.coCd[i].description + " [" + data.coCd[i].companyCode + "]"));
+            }
+
+            //income term
+            jQuery("#Incoterm").empty();
+
+            for (var i = 0; i < data.incoTerm.length; i++) {
+
+                jQuery("#Incoterm").append(jQuery("<option value='" + data.incoTerm[i].incoTerms + "'  data-incotermdesc='" + data.incoTerm[i].description + "' >" + data.incoTerm[i].description + " [" + data.incoTerm[i].incoTerms + "]" + "</option>"));
+
+            }
+
+            //PayTerm
+            jQuery("#PayTerm").empty();
+            jQuery("#PayTerm").append(jQuery("<option></option>").val(0).html("Select"));
+            for (var i = 0; i < data.paymentTerms.length; i++) {
+                jQuery("#PayTerm").append(jQuery("<option></option>").val(data.paymentTerms[i].termsOfPayment).html(data.paymentTerms[i].newPaymentTerms + " [" + data.paymentTerms[i].termsOfPayment + "]"));
+            }
+            //Purchase ORG
+            jQuery("#PORG").empty();
+            jQuery("#PORG").append(jQuery("<option></option>").val(0).html("Select"));
+            for (var i = 0; i < data.porg.length; i++) {
+                jQuery("#PORG").append(jQuery("<option></option>").val(data.porg[i].purchaseOrganization).html(data.porg[i].description + " [" + data.porg[i].purchaseOrganization + "]"));
+            }
+            //Schema Group
+            jQuery("#SchemaGrp").empty();
+            jQuery("#SchemaGrp").append(jQuery("<option></option>").val(0).html("Select"));
+            for (var i = 0; i < data.schemaGroup.length; i++) {
+                jQuery("#SchemaGrp").append(jQuery("<option></option>").val(data.schemaGroup[i].schemaGrp).html(data.schemaGroup[i].description + " [" + data.schemaGroup[i].schemaGrp + "]"));
+            }
+            jQuery.unblockUI();
+
+        },
+        error: function (xhr, status, error) {
+            
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+}
+
+function GetCountrySpecificMaster(CountryKey) {
+
+    console.log(sessionStorage.getItem("APIPath") + "KDSMaster/GetCountrySpecificMaster/?CountryKey=" + CountryKey)
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "KDSMaster/GetCountrySpecificMaster/?CountryKey=" + CountryKey,
+        /*beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },*/
+        data: "{}",
+        cache: false,
+        dataType: "json",
+        async: false,
+        success: function (data) {
+         
+            
+
+            //currency
+            jQuery("#ddlcurrency").empty();
+            jQuery("#ddlcurrency").append(jQuery("<option></option>").val('').html("Select Currency"));
+            for (var i = 0; i < data.currency.length; i++) {
+                jQuery("#ddlcurrency").append(jQuery("<option></option>").val(data.currency[i].currency).html(data.currency[i].longText));
+            }
+
+
+            //currency
+            jQuery("#currencyFiscalupdate").empty();
+            jQuery("#currencyFiscalupdate").append(jQuery("<option></option>").val('').html("Select Currency"));
+            for (var i = 0; i < data.currency.length; i++) {
+                jQuery("#currencyFiscalupdate").append(jQuery("<option></option>").val(data.currency[i].currency).html(data.currency[i].longText));
+            }
+
+            //language
+            jQuery("#ddllanguage").empty();
+            jQuery("#ddllanguage").append(jQuery("<option></option>").val('').html("Select"));
+            for (var i = 0; i < data.language.length; i++) {
+                jQuery("#ddllanguage").append(jQuery("<option></option>").val(data.language[i].langu).html(data.language[i].description));
+            }
+
+
+            jQuery("#txtTINType").empty();
+            for (var i = 0; i < data.taxTypeMaster.length; i++) {
+                jQuery("#txtTINType").append(jQuery("<option></option>").val(data.taxTypeMaster[i].taxType).html(data.taxTypeMaster[i].description));
+            }
+
+            $(".nogsthide").show();
+            
+            if (CountryKey === "IN") {
+                
+                
+                 $(".nopanhide").show();
+                 $(".newgsthide").show();
+                jQuery("#txtTINType").append(jQuery("<option></option>").val('').html("Unregistered"));
+                
+               //$("#txtTINNo").attr("onchange", "extractPan(this)");
+                $("#btncalgst").attr("onClick", `extractPan()`);
+                $("#btncalgst").show()
+                $("#txtPanNo").attr("disabled", "disabled");
+                $("#vendorpanno").attr("disabled", "disabled");
+                $("#vendorname").attr("disabled", "disabled");
+                $("#ParticipantName").attr("disabled", "disabled");
+                $("#ddlNatureEstaiblishment").attr("disabled", "disabled");
+
+                $("#txtTINType2").empty();
+                $("#txtTINType2").append(jQuery("<option></option>").val("PAN").html("PAN Number"));
+                 /*if(CountryKey === "MU") {
+                    jQuery("#txtTINType").val('').trigger('change')
+                }*/
+            }
+            else {
+                $(".newgsthide").hide();
+                jQuery("#txtTINType").append(jQuery("<option></option>").val('').html("Unregistered"));
+                jQuery("#txtTINType2").empty();
+               // $("#txtTINNo").attr("onchange", "");
+                $("#btncalgst").attr("onClick", ``);
+                $("#btncalgst").hide()
+                $("#txtPanNo").removeAttr("disabled");
+                $("#vendorpanno").removeAttr("disabled");
+                $("#ddlNatureEstaiblishment").removeAttr("disabled");
+                $("#vendorname").removeAttr("disabled");
+                $("#ParticipantName").removeAttr("disabled");
+
+                for (var i = 0; i < data.taxTypeMaster.length; i++) {
+                    jQuery("#txtTINType2").append(jQuery("<option></option>").val(data.taxTypeMaster[i].taxType).html(data.taxTypeMaster[i].description));
+                }
+                // afterTaxEnable()
+            }
+          
+            $("#ddlState").empty();
+            if (data.stateAndRegion.length > 0) {
+
+                $("#ddlState").append("<option value='' data-stateid=0>Select State</option>");
+                for (var i = 0; i < data.stateAndRegion.length; i++) {
+                    $("#ddlState").append("<option value='" + data.stateAndRegion[i].regionKey + "' data-stateid='" + data.stateAndRegion[i].stateID + "' data-statename='" + data.stateAndRegion[i].stateName + "'>" + data.stateAndRegion[i].stateName +" [" + data.stateAndRegion[i].regionKey +"]"+ "</option>");
+
+                }
+                 $("#ddlState").val('').trigger("change");
+
+
+            }
+            else {
+                $("#ddlState").append('<tr><td>No state found..</td></tr>');
+            }
+
+            jQuery.unblockUI();
+
+        },
+        error: function (xhr, status, error) {
+            
+            var err = eval("(" + xhr.responseText + ")");
+            if (xhr.status === 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('errormsg', '');
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+
+    });
+
+
+
+}
+
+
+
+function onlynumeric(ele) {
+
+    ele.value = ele.value.replace(/[^0-9]/g, '');
+}
+
+function downloadNFAMatrix() {
+    
+    var x = isAuthenticated();
+    var url = sessionStorage.getItem("APIPath") + "NFA/downloadNFAMatrix/";
+    var Tab1Data = {
+   "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
+  
+    };
+    $(".loaderC").removeClass("hide");
+    setTimeout(function () {
+        fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(Tab1Data),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem("Token")
+            },
+           })
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+                a.download = 'NFAMatrix.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+
+                bootbox.alert("File downloaded Successfully.", function () {
+                    $("#MatrixExportToExcel").removeAttr("disabled");
+                    return true;
+                });
+                console.log(a)
             })
-            .join("")
-    );
+            .catch(error => {
+                console.error('Error:', error);
+            })
+            .finally(() => {
+                setTimeout(function () {
+                    $(".loaderC").addClass("hide");
+                }, 500);
+            });
 
-    const { exp } = JSON.parse(jsonPayload);
-    const expired = Date.now() >= exp * 1000
-    return expired
+    }, 500)
 }
+
+//loader
+function loadingEngine(){
+    
+    // Create the blocking overlay element
+const overlay = $('<div id="loadingEngine"></div>');
+
+// Create the loading GIF element
+const loadingGif = $('<img src="assets/img/loadingengine.gif" alt="Loading...">'); // Replace with the path to your loading GIF
+
+// Append the loading GIF to the overlay
+overlay.append(loadingGif);
+
+// Append the overlay to the container
+$('body').append(overlay);
+
+// To remove the blocking overlay after some time (e.g., when content is loaded), you can use:
+// overlay.remove();
+
+    
+}
+
+function unloadingEngine(){
+    $('#loadingEngine').remove();
+}
+
+//alertpopupgroup
+function alertforerror(error) {
+
+    bootbox.dialog({
+        message: error,
+        buttons: {
+           
+            ok: {
+                label: "OK",
+                className: "btn-danger",
+                callback: function () {
+                   
+                }
+            }
+        }
+    });
+}
+
+
+
+function alertforinfo(info) {
+
+    bootbox.dialog({
+        message: info,
+        buttons: {
+           
+            ok: {
+                label: "OK",
+                className: "btn-warning",
+                callback: function () {
+                   
+                }
+            }
+        }
+    });
+}
+
+
+
+function alertforsucess(sucess) {
+
+    bootbox.dialog({
+        message: sucess,
+        buttons: {
+           
+            ok: {
+                label: "OK",
+                className: "btn-success",
+                callback: function () {
+                    hideModal()
+                }
+            }
+        }
+    });
+}
+
+
+function hideModal() {
+
+    $('.modal').modal("hide");
+}
+

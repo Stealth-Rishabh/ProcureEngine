@@ -1,7 +1,6 @@
 
 jQuery(document).ready(function () {
     Pageloaded()
-    var x = isAuthenticated();
     Metronic.init();
     fetchCategorymaster1();
     $('#ddlTypeofProduct').select2({
@@ -9,7 +8,6 @@ jQuery(document).ready(function () {
         allowClear: true
     });
     Layout.init();
-
     var param = getUrlVars()["param"];
     var decryptedstring = fndecrypt(param);
     var _tmpVendorID = getUrlVarsURL(decryptedstring)["tmpVendorID"];
@@ -51,7 +49,7 @@ function fetchCategorymaster1() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&For=M&MappedBy=a&VendorID=0",
+        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem("CustomerID") + "&For=M&MappedBy=a&ChildId=0",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,
@@ -59,8 +57,7 @@ function fetchCategorymaster1() {
         success: function (data) {
             $("#ddlTypeofProduct").empty();
             var vlal = new Array();
-            if (data.length > 0) {
-                fetchVendorRegistrationDetails
+            if (data.length > 0) {fetchVendorRegistrationDetails
 
                 for (var i = 0; i < data.length; i++) {
                     $("#ddlTypeofProduct").append("<option value=" + data[i].categoryID + ">" + data[i].categoryName + "</option>");
@@ -196,7 +193,7 @@ function fetchVendorRegistrationDetails() {
                 jQuery('#seclastFY').html();
             }
 
-
+            
             if (companydetails[0].pinCode != "" && companydetails[0].pinCode != null && companydetails[0].pinCode != undefined) {
                 jQuery('#pincode').html(companydetails[0].pinCode);
             }
@@ -261,7 +258,7 @@ function DownloadFile(aID) {
 }
 
 function ApproveRFI(For) {
-
+    debugger;
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var selected = [];
     var selectedid = [];
@@ -292,9 +289,9 @@ function ApproveRFI(For) {
 
         });
         straddedproduct = result.slice('#', -1);
-        var VRID = 0
-        if (sessionStorage.getItem('VRID') != null) {
-            VRID = sessionStorage.getItem('VRID');
+        var VRID=0
+        if(sessionStorage.getItem('VRID')!=null){
+            VRID=sessionStorage.getItem('VRID');
         }
         var data = {
             "tmpVendorID": parseInt(sessionStorage.getItem('tmpVendorID')),
@@ -307,7 +304,7 @@ function ApproveRFI(For) {
             'productCat': straddedproduct
 
         }
-        // alert(JSON.stringify(data))
+       // alert(JSON.stringify(data))
         console.log(JSON.stringify(data));
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "VendorRequest/VRApproval_Reject",

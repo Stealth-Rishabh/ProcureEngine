@@ -15,7 +15,6 @@ jQuery(document).ready(function () {
         }
     });
     Pageloaded()
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
@@ -73,8 +72,8 @@ function FetchVendors(BidID) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-			
-            jQuery("#ddlVendors,#ddlVendorsAdmin,#drpVendors").empty();
+           
+			jQuery("#ddlVendors,#ddlVendorsAdmin,#drpVendors").empty();
             jQuery("#ddlVendors,#ddlVendorsAdmin").append(jQuery("<option ></option>").val("").html("Select"));
             jQuery("#drpVendors").append(jQuery("<option ></option>").val("").html("Only for auto PO confirmation"));
             for (var i = 0; i < data.length; i++) {

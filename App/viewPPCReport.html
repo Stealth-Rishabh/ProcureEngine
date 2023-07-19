@@ -310,15 +310,22 @@
                             </div>
                             <div class="portlet-body">
                                 <div class="row">
-
-                                    <div class="col-md-12" id="divPPCDetails">
+                                    <div class="col-md-12 display-none" id="divNFADetails">
+                                        <div class="form-group">
+                                            <div class="col-md-10">
+                                                <table id="tblNFAOverviewParam" class="table table-striped table-bordered table-hover">
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <div class="col-md-12 display-none" id="divPPCDetails">
                                         <h5 class="form-section bold">PPC Responses</h5>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4" style="text-align:left">
 
-                                                        Introduction:
+                                                       Detail/Description:
                                                     </label>
                                                     <div class="col-md-8">
                                                         <label id="lblintroduction" class="control-label" style="text-align:left">
@@ -343,21 +350,21 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-6">
+                                             <div class="col-md-6">
                                                 <div class="form-group">
-                                                    <label class="control-label col-md-4" style="text-align:left">
-                                                        Budget Availabilty:
-                                                    </label>
-                                                    <div class="col-md-8">
-                                                        <label id="lblbudgetavail" style="text-align:left" class="control-label">
-                                                        </label>
-                                                    </div>
+                                                     <label class="control-label col-md-4" style="text-align:left">
+                                                              Budget Availabilty:
+                                                     </label>
+                                                <div class="col-md-8">
+                                                      <label id="lblbudgetavail" style="text-align:left" class="control-label">
+                                                   </label>
                                                 </div>
-                                            </div>
+                                             </div>
+                                         </div>
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4" style="text-align:left">
-                                                        Party to whom Work order is given:
+                                                        Proposed Bidder name:
                                                     </label>
                                                     <div class="col-md-8">
                                                         <label id="lblpartyordergiven" style="text-align:left" class="control-label">
@@ -365,8 +372,10 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                           
                                         </div>
                                         <div class="row">
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4" style="text-align:left">
@@ -380,6 +389,7 @@
 
                                                 </div>
                                             </div>
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4" style="text-align:left">
@@ -392,8 +402,6 @@
                                                 </div>
 
                                             </div>
-                                        </div>
-                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4" style="text-align:left">
@@ -422,8 +430,12 @@
 
                                             </div>
 
+
                                         </div>
                                         <div class="row">
+                                           
+
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4" style="text-align:left">
@@ -436,11 +448,10 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4" style="text-align:left">
-                                                        Enquiry not sent to these Vendors (with reasons):
+                                                        Warranty/DLP Clause:
                                                     </label>
                                                     <div class="col-md-8">
                                                         <label id="lblenquirynotsent" class="control-label" style="text-align:left">
@@ -449,8 +460,12 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+
                                         </div>
                                         <div class="row">
+
+                                           
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4" style="text-align:left">
@@ -463,6 +478,9 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                        <div class="row">
+                                           
 
 
                                         </div>
@@ -555,7 +573,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                       <!-- <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4" style="text-align:left">
@@ -570,7 +588,7 @@
                                             </div>
 
 
-                                        </div>
+                                        </div>-->
                                         <h5 class="form-section bold">Purchase Order/Work Order Details</h5>
                                         <div class="row">
                                             <div class="col-md-6">
@@ -615,7 +633,7 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4" style="text-align:left">
-                                                        Terms (Ex- works/ FOR/ FOB/ CIF):
+                                                        Delivery Terms (Ex- works/ FOB/ CIF/FOR/DAS/SER):
                                                     </label>
                                                     <div class="col-md-8">
                                                         <label id="lblterms" class="control-label" style="text-align:left">
@@ -639,7 +657,7 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                          <!--  <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4" style="text-align:left">
                                                         Deliverables:
@@ -650,10 +668,7 @@
                                                         </label>
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                        </div>
-                                        <div class="row">
+                                            </div>-->
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4" style="text-align:left">
@@ -666,10 +681,14 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                        </div>
+                                        <div class="row">
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4" style="text-align:left">
-                                                        Applicable taxes & duties and their applicability:
+                                                        Tax Details:
                                                     </label>
                                                     <div class="col-md-8">
                                                         <label id="lbltaxesduties" class="control-label" style="text-align:left">
@@ -678,9 +697,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-                                        </div>
-                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4" style="text-align:left">
@@ -693,10 +709,14 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                        </div>
+                                        <div class="row">
+
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4" style="text-align:left">
-                                                        Whether CPBG applicable:
+                                                        Applicable BG Details:
                                                     </label>
                                                     <div class="col-md-8">
                                                         <label id="lblCPBG" class="control-label" style="text-align:left">
@@ -705,9 +725,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
-                                        </div>
-                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label class="control-label col-md-4" style="text-align:left">
@@ -721,6 +738,10 @@
                                                 </div>
                                             </div>
 
+
+                                        </div>
+                                        <div class="row">
+                                            
 
                                         </div>
 
@@ -826,7 +847,7 @@
             callPagejs('viewPPCReport.js');
             $('[data-toggle="popover"]').popover({})
             Pageloaded()
-            var x = isAuthenticated();
+
             setInterval(function () { Pageloaded() }, 15000);
             if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
                 window.location = sessionStorage.getItem('MainUrl');

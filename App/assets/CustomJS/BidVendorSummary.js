@@ -40,7 +40,7 @@ $('#ddlconfiguredby').on('change', function (e) {
 });
 
 function fetchregisterusers() {
-    
+
     var userData = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
@@ -66,7 +66,7 @@ function fetchregisterusers() {
             }
             if (data[0].role.toLowerCase() == "user" && data[0].roleName.toLowerCase() != "reports") {
                 jQuery("#ddlconfiguredby").select2('val', data[0].userID);
-               // jQuery("#ddlconfiguredby").prop('disabled', true)
+                // jQuery("#ddlconfiguredby").prop('disabled', true)
             }
         },
         error: function (xhr, status, error) {
@@ -380,6 +380,7 @@ function formvalidate() {
 var BidDate = "";
 var result = '';
 function fetchBidVendorSummary(dtfrom, dtto, subject) {
+    var x = isAuthenticated();
     var url = '';
 
     result = '';
@@ -432,8 +433,9 @@ function fetchBidVendorSummary(dtfrom, dtto, subject) {
         success: function (BidData) {
 
             jQuery("#tblVendorSummary").empty();
+            jQuery("#tblVendorSummary").append(`<thead></thead><tbody></tbody>`);
             //jQuery('#tblVendorSummary').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>Bid Subject</th><th class='bold'>Configured By</th><th class='bold'>Bid Date</th><th class='bold'>Bid Time</th><th class='bold'>Bid Duration</th><th class='bold'>Currency</th><th class='bold'>Bid Status</th></tr></thead>");
-            jQuery('#tblVendorSummary').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>Bid Subject</th><th class='bold'>Configured By</th><th class='bold'>Bid Date/Time</th><th class='bold'>Bid Duration</th><th class='bold'>Currency</th><th class='bold'>Bid Status</th></tr></thead>");
+            jQuery('#tblVendorSummary>thead').append("<tr><th class='bold'>Event ID</th><th class='bold'>Bid Subject</th><th class='bold'>Configured By</th><th class='bold'>Bid Date/Time</th><th class='bold'>Bid Duration</th><th class='bold'>Currency</th><th class='bold'>Bid Status</th></tr>");
             if (BidData.length > 0) {
 
                 for (var i = 0; i < BidData.length; i++) {
@@ -465,9 +467,9 @@ function fetchBidVendorSummary(dtfrom, dtto, subject) {
                     str += "<td>" + BidData[i].finalStatus + "</td>";
 
                     str += "</tr>";
-                    jQuery('#tblVendorSummary').append(str);
+                    jQuery('#tblVendorSummary>tbody').append(str);
                 }
-            
+
                 var table = $('#tblVendorSummary');
                 table.removeAttr('width').dataTable({
                     "bDestroy": true,
@@ -483,7 +485,7 @@ function fetchBidVendorSummary(dtfrom, dtto, subject) {
                     dom: 'Bfrtip',
                     buttons: [
                         'pageLength',
-                       
+
                         {
                             extend: 'excelHtml5',
                             text: '<i class="fa fa-file-excel-o"></i> Excel',
@@ -491,7 +493,7 @@ function fetchBidVendorSummary(dtfrom, dtto, subject) {
                                 columns: ':visible',
                                 format: {
                                     body: function (data, column, node) {
-                                
+
                                         if (column === 0) {
                                             let text = data.match(/>([^<]+)</)[1];
                                             return parseFloat(text);
@@ -528,17 +530,17 @@ function fetchBidVendorSummary(dtfrom, dtto, subject) {
             }
             else {
                 jQuery('#tblVendorSummary > tbody').append("<tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr>");
-                $('#tblVendorSummary').dataTable({
-                    "bDestroy": true,
-                    "bPaginate": false,
-                    "bLengthChange": false,
-                    "bFilter": false,
-                    "bInfo": false,
-                    "bAutoWidth": false,
-                    "bSort": true
-
-
-                });
+                /* $('#tblVendorSummary').dataTable({
+                     "bDestroy": true,
+                     "bPaginate": false,
+                     "bLengthChange": false,
+                     "bFilter": false,
+                     "bInfo": false,
+                     "bAutoWidth": false,
+                     "bSort": true
+ 
+ 
+                 });*/
             }
         },
         error: function (xhr, status, error) {
@@ -554,6 +556,7 @@ function fetchBidVendorSummary(dtfrom, dtto, subject) {
     });
 }
 function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (jQuery("#ddlBidFor option:selected").val() == 81) {
         jQuery("#ddlBidFor option:selected").val(0)
@@ -593,15 +596,21 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
         success: function (BidData) {
             var LastHD = stringDivider("Last Invoice Price (LIP)", 45, "<br/>\n");
             var savinfLIP = stringDivider("Total Saving wrt LIP", 40, "<br/>\n");
-            var savinfstart = stringDivider("Total Saving wrt SP",40, "<br/>\n");
+            var savinfstart = stringDivider("Total Saving wrt SP", 40, "<br/>\n");
             var savinfTR = stringDivider("Total Saving wrt TP", 40, "<br/>\n");
             jQuery("#tblVendorSummarydetails").empty();
-
-            jQuery('#tblVendorSummarydetails').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>Bid Subject</th><th class='bold'>Configured By</th><th class='bold'>Bid Date</th><th class='bold'>Item/Service</th><th class='bold'>Quantity</th><th class='bold'>UOM</th><th class='bold'>Currency</th><th>Vendor</th><th class='bold'>" + LastHD + "</th><th class='bold'>Start Price (SP)</th><th class='bold'>Target Price (TP)</th><th class='bold'>Initial Quote</th><th class='bold'>L1 Price</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfstart + "</th><th class='bold'>" + savinfTR + "</th><th>Bid Status</th></tr></thead>");
+            jQuery("#tblVendorSummarydetails").append(`<thead></thead><tbody></tbody>`);
+            jQuery('#tblVendorSummarydetails>thead').append("<tr><th class='bold'>Event ID</th><th class='bold'>Bid Subject</th><th class='bold'>Configured By</th><th class='bold'>Bid Date</th><th class='bold'>Item/Service</th><th class='bold'>Quantity</th><th class='bold'>UOM</th><th class='bold'>Currency</th><th>Vendor</th><th class='bold'>" + LastHD + "</th><th class='bold'>Start Price (SP)</th><th class='bold'>Target Price (TP)</th><th class='bold'>Initial Quote</th><th class='bold'>L1 Price</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfstart + "</th><th class='bold'>" + savinfTR + "</th><th>Bid Status</th></tr>");
             if (BidData.length > 0) {
                 var bID = 0;
+                let totalSavingLIP = "";
+                let totalSavingSP = "";
+                let totalSavingTP = "";
 
                 for (var i = 0; i < BidData.length; i++) {
+                    totalSavingLIP = ((BidData[i].lastInvoicePrice - BidData[i].minPrice) * BidData[i].quantity).round(2)
+                    totalSavingSP = ((BidData[i].startPrice - BidData[i].minPrice) * BidData[i].quantity).round(2)
+                    totalSavingTP = ((BidData[i].targetprice - BidData[i].minPrice) * BidData[i].quantity).round(2)
                     var encrypdata = fnencrypt("BidID=" + BidData[i].bidID + "&BidTypeID=" + BidData[i].bidTypeID + "&BidForID=" + BidData[i].bidForID)
 
                     var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].bidID + "'\,\'" + BidData[i].bidForID + "'\,\'0'\) href='javascript:;' >" + BidData[i].bidID + "</a></td>";
@@ -660,26 +669,42 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
 
                     str += "<td class=text-right>" + thousands_separators(BidData[i].initialQuote) + "</td>";
                     str += "<td class=text-right>" + thousands_separators(BidData[i].minPrice) + "</td>";
-                    if (BidData[i].lastInvoicePrice != 0) {
 
-                        str += "<td class=text-right>" + thousands_separators(((BidData[i].lastInvoicePrice - BidData[i].minPrice) * BidData[i].quantity).round(2)) + "</td>"
+                    if (BidData[i].lastInvoicePrice != 0) {
+                        if (totalSavingLIP < 0) {
+                            str += "<td class=text-right>" + 0 + "</td>"
+                        }
+                        else {
+                            str += "<td class=text-right>" + thousands_separators(totalSavingLIP) + "</td>"
+                        }
+
                     }
                     else {
 
                         str += '<td class=text-right>' + 0 + '</td>';
                     }
 
-
-                    str += "<td class=text-right>" + thousands_separators(((BidData[i].startPrice - BidData[i].minPrice) * BidData[i].quantity).round(2)) + "</td>";
+                    if (totalSavingSP < 0) {
+                        str += "<td class=text-right>" + 0 + "</td>";
+                    }
+                    else {
+                        str += "<td class=text-right>" + thousands_separators(totalSavingSP) + "</td>";
+                    }
                     if (BidData[i].targetprice != 0) {
-                        str += "<td class=text-right>" + thousands_separators(((BidData[i].targetprice - BidData[i].minPrice) * BidData[i].quantity).round(2)) + "</td>";
+
+                        if (totalSavingTP < 0) {
+                            str += "<td class=text-right>" + 0 + "</td>"
+                        }
+                        else {
+                            str += "<td class=text-right>" + thousands_separators(totalSavingTP) + "</td>"
+                        }
                     }
                     else {
                         str += "<td class=text-right>" + 0 + "</td>";
                     }
                     str += "<td>" + BidData[i].finalStatus + "</td>";
                     str += "</tr>";
-                    jQuery('#tblVendorSummarydetails').append(str);
+                    jQuery('#tblVendorSummarydetails>tbody').append(str);
                 }
                 var table = $('#tblVendorSummarydetails');
                 table.removeAttr('width').dataTable({
@@ -702,23 +727,32 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
                                 columns: ':visible',
                                 format: {
                                     body: function (data, column, node) {
+
                                         if (column === 4) {
                                             return column === 4 ? data.replace(/[$,.]/g, '') : data.replace(/(&nbsp;|<([^>]+)>)/ig, "");
                                             data.replace(/<br\s*\/?>/ig, "\r\n");
                                             data;
                                         }
-                                        else if (column === 9 || column === 11 || column === 0) {                                           
-                                            let text = data.match(/>([^<]+)</)[1];
+                                        else if (column === 9 || column === 11 || column === 0) {
+
+                                            let text
+
+                                            if (data.match(/>([^<]+)</) != null) {
+                                                text = data.match(/>([^<]+)</)[1];
+                                            }
+                                            else {
+                                                text = removeThousandSeperator(data)
+                                            }
                                             return parseFloat(text);
                                         }
-                                        else if (column === 5 || column === 10 || (column >= 12 && column <= 16)) {                                          
-                                            let text =removeThousandSeperator(data) ;
+                                        else if (column === 5 || column === 10 || (column >= 12 && column <= 16)) {
+                                            let text = removeThousandSeperator(data);
                                             return parseFloat(text);
-                                        } 
+                                        }
                                         else {
                                             return data;
                                         }
-                                        
+
                                     }
 
                                 }
@@ -751,17 +785,17 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
             }
             else {
                 jQuery('#tblVendorSummarydetails > tbody').append("<tr><td colspan='17' style='text-align: center; color:red;'>No record found</td></tr>");
-                $('#tblVendorSummarydetails').dataTable({
-                    "bDestroy": true,
-                    "bPaginate": false,
-                    "bLengthChange": false,
-                    "bFilter": false,
-                    "bInfo": false,
-                    "bAutoWidth": false,
-                    "bSort": true
-
-
-                });
+                /* $('#tblVendorSummarydetails').dataTable({
+                     "bDestroy": true,
+                     "bPaginate": false,
+                     "bLengthChange": false,
+                     "bFilter": false,
+                     "bInfo": false,
+                     "bAutoWidth": false,
+                     "bSort": true
+ 
+ 
+                 });*/
             }
             jQuery.unblockUI();
         },
@@ -780,6 +814,7 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
 
 }
 function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
+    var x = isAuthenticated();
     result = '';
     if (jQuery("#ddlBidFor option:selected").val() == 81) {
         jQuery("#ddlBidFor option:selected").val(0)
@@ -824,12 +859,19 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
             var savinfstart = stringDivider("Total Saving wrt SP", 40, "<br/>\n");
             var savinfTR = stringDivider("Total Saving wrt TP", 40, "<br/>\n");
             jQuery("#tblVendorSummarySUmzation").empty();
+            jQuery("#tblVendorSummarySUmzation").append(`<thead></thead><tbody></tbody>`);
 
-            jQuery('#tblVendorSummarySUmzation').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>Bid Subject</th><th class='bold'>Configured By</th><th class='bold'>Bid Date</th><th class='bold'>Currency</th><th class='bold'>" + BidLIP + "</th><th class='bold'>" + BidSP + "</th><th class='bold'>" + BidTP + "</th><th class='bold'>" + BidFinal + "</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfstart + "</th><th class='bold'>" + savinfTR + "</th></tr></thead>");
+
+            jQuery('#tblVendorSummarySUmzation>thead').append("<tr><th class='bold'>Event ID</th><th class='bold'>Bid Subject</th><th class='bold'>Configured By</th><th class='bold'>Bid Date</th><th class='bold'>Currency</th><th class='bold'>" + BidLIP + "</th><th class='bold'>" + BidSP + "</th><th class='bold'>" + BidTP + "</th><th class='bold'>" + BidFinal + "</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfstart + "</th><th class='bold'>" + savinfTR + "</th></tr>");
             if (BidData.length > 0) {
                 var bID = 0;
+                let totalSavingLIP = "";
+                let totalSavingSP = "";
+                let totalSavingTP = "";
                 for (var i = 0; i < BidData.length; i++) {
-
+                    totalSavingLIP = (BidData[i].bidValueAsLIP - BidData[i].bidValueAsPrice).round(2)
+                    totalSavingSP = (BidData[i].bidValueAsStartPrice - BidData[i].bidValueAsPrice).round(2)
+                    totalSavingTP = (BidData[i].bidValueAsTargetPrice - BidData[i].bidValueAsPrice).round(2)
                     var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].bidID + "'\,\'" + BidData[i].bidForID + "'\,\'0'\) href='javascript:;' >" + BidData[i].bidID + "</a></td>";
                     str += "<td>" + BidData[i].bidSubject + "</td>";
                     str += "<td>" + BidData[i].configuredBy + "</td>";
@@ -851,24 +893,39 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
 
                     if (BidData[i].bidValueAsLIP != 0) {
 
-                        str += "<td class=text-right>" + thousands_separators((BidData[i].bidValueAsLIP - BidData[i].bidValueAsPrice).round(2)) + "</td>"
+                        if (totalSavingLIP < 0) {
+                            str += "<td class=text-right>" + 0 + "</td>"
+                        }
+                        else {
+                            str += "<td class=text-right>" + thousands_separators(totalSavingLIP) + "</td>"
+                        }
                     }
                     else {
                         str += "<td class=text-right>" + 0 + "</td>"
                     }
 
+                    if (totalSavingSP < 0) {
+                        str += "<td class=text-right>" + 0 + "</td>"
+                    }
+                    else {
+                        str += "<td class=text-right>" + thousands_separators(totalSavingSP) + "</td>";
+                    }
 
-                    str += "<td class=text-right>" + thousands_separators((BidData[i].bidValueAsStartPrice - BidData[i].bidValueAsPrice).round(2)) + "</td>";
                     if (BidData[i].bidValueAsTargetPrice != 0) {
 
-                        str += "<td class=text-right>" + thousands_separators((BidData[i].bidValueAsTargetPrice - BidData[i].bidValueAsPrice).round(2)) + "</td>";
+                        if (totalSavingTP < 0) {
+                            str += "<td class=text-right>" + 0 + "</td>"
+                        }
+                        else {
+                            str += "<td class=text-right>" + thousands_separators(totalSavingTP) + "</td>"
+                        }
                     }
                     else {
                         str += "<td class=text-right>" + 0 + "</td>"
                     }
 
                     str += "</tr>";
-                    jQuery('#tblVendorSummarySUmzation').append(str);
+                    jQuery('#tblVendorSummarySUmzation>tbody').append(str);
                 }
                 var table = $('#tblVendorSummarySUmzation');
                 table.removeAttr('width').dataTable({
@@ -891,7 +948,7 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
                                 columns: ':visible',
                                 format: {
                                     body: function (data, column, node) {
-                                     
+
                                         if (column >= 5 && column <= 11) {
                                             let text = removeThousandSeperator(data);
                                             return parseFloat(text);
@@ -932,7 +989,7 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
             }
             else {
                 jQuery('#tblVendorSummarySUmzation > tbody').append("<tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr>");
-                $('#tblVendorSummarySUmzation').dataTable({
+                /*$('#tblVendorSummarySUmzation').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
                     "bLengthChange": false,
@@ -940,7 +997,7 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
                     "bInfo": false,
                     "bAutoWidth": false,
                     "bSort": true
-                });
+                });*/
             }
         },
         error: function (xhr, status, error) {
@@ -956,6 +1013,7 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
 
 }
 function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
+    var x = isAuthenticated();
     result = '';
     if ($("#ddlconfiguredby").select2('data').length) {
         $.each($("#ddlconfiguredby").select2('data'), function (key, item) {
@@ -1011,14 +1069,19 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
 
 
             jQuery("#tblVendorSummarydetails").empty();
+            jQuery("#tblVendorSummarydetails").append(`<thead></thead><tbody></tbody>`);
 
 
 
             // jQuery("#tblVendorSummarydetails >tbody").empty();
 
-            jQuery('#tblVendorSummarydetails').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>Bid Subject</th><th class='bold'>Configured By</th><th class='bold'>Bid Date</th><th class='bold'>Item/Product</th><th class='bold'>Quantity</th><th class='bold'>UOM</th><th class='bold'>Currency</th><th>Vendor</th><th class='bold'>" + LastHD + "</th><th class='bold'>" + startPrice + "</th><th class='bold'>Target Price (TP)</th><th class='bold'>Initial Quote</th><th class='bold'>" + PriceFor + "</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfstart + "</th><th class='bold'>" + savinfTR + "</th><th>Bid Status</th></tr></thead>");
+            jQuery('#tblVendorSummarydetails>thead').append("<tr><th class='bold'>Event ID</th><th class='bold'>Bid Subject</th><th class='bold'>Configured By</th><th class='bold'>Bid Date</th><th class='bold'>Item/Product</th><th class='bold'>Quantity</th><th class='bold'>UOM</th><th class='bold'>Currency</th><th>Vendor</th><th class='bold'>" + LastHD + "</th><th class='bold'>" + startPrice + "</th><th class='bold'>Target Price (TP)</th><th class='bold'>Initial Quote</th><th class='bold'>" + PriceFor + "</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfstart + "</th><th class='bold'>" + savinfTR + "</th><th>Bid Status</th></tr>");
             if (BidData.length > 0) {
+
                 var bID = 0;
+                let totalSavingLIP = "";
+                let totalSavingSP = "";
+                let totalSavingTP = "";
                 for (var i = 0; i < BidData.length; i++) {
 
                     var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].bidID + "'\,\'" + BidData[i].bidForID + "'\,\'0'\) href='javascript:;'>" + BidData[i].bidID + "</a></td>";
@@ -1071,36 +1134,72 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
                     str += "<td class=text-right>" + thousands_separators(BidData[i].minPrice) + "</td>";
 
                     if (jQuery("#ddlBidFor option:selected").val() == "81" || jQuery("#ddlBidFor option:selected").val() == "83") {
+                        totalSavingLIP = ((BidData[i].minPrice - BidData[i].lastInvoicePrice) * BidData[i].quantity).round(2)
+                        totalSavingSP = ((BidData[i].minPrice - BidData[i].startPrice) * BidData[i].quantity).round(2)
+                        totalSavingTP = ((BidData[i].minPrice - BidData[i].targetprice) * BidData[i].quantity).round(2)
                         if (BidData[i].lastInvoicePrice != 0) {
 
-                            str += "<td class=text-right>" + thousands_separators(((BidData[i].minPrice - BidData[i].lastInvoicePrice) * BidData[i].quantity).round(2)) + "</td>"
+                            if (totalSavingLIP < 0) {
+                                str += "<td class=text-right>" + 0 + "</td>"
+                            }
+                            else {
+                                str += "<td class=text-right>" + thousands_separators(totalSavingLIP) + "</td>"
+                            }
                         }
                         else {
                             str += "<td class=text-right>" + 0 + "</td>"
                         }
 
-
-                        str += "<td class=text-right>" + thousands_separators(((BidData[i].minPrice - BidData[i].startPrice) * BidData[i].quantity).round(2)) + "</td>";
+                        if (totalSavingSP < 0) {
+                            str += "<td class=text-right>" + 0 + "</td>"
+                        }
+                        else {
+                            str += "<td class=text-right>" + thousands_separators(totalSavingSP) + "</td>";
+                        }
                         if (BidData[i].targetprice != 0) {
-                            str += "<td class=text-right>" + thousands_separators(((BidData[i].minPrice - BidData[i].targetprice) * BidData[i].quantity).round(2)) + "</td>";
+                            if (totalSavingTP < 0) {
+                                str += "<td class=text-right>" + 0 + "</td>"
+                            }
+                            else {
+                                str += "<td class=text-right>" + thousands_separators(totalSavingTP) + "</td>"
+                            }
+
                         }
                         else {
                             str += "<td class=text-right>" + 0 + "</td>";
                         }
                     }
                     else {
+                        totalSavingLIP = ((BidData[i].lastInvoicePrice - BidData[i].minPrice) * BidData[i].quantity).round(2)
+                        totalSavingSP = ((BidData[i].startPrice - BidData[i].minPrice) * BidData[i].quantity).round(2)
+                        totalSavingTP = ((BidData[i].targetprice - BidData[i].minPrice) * BidData[i].quantity).round(2)
                         if (BidData[i].lastInvoicePrice != 0) {
 
-                            str += "<td class=text-right>" + thousands_separators(((BidData[i].lastInvoicePrice - BidData[i].minPrice) * BidData[i].quantity).round(2)) + "</td>"
+                            if (totalSavingLIP < 0) {
+                                str += "<td class=text-right>" + 0 + "</td>"
+                            }
+                            else {
+                                str += "<td class=text-right>" + thousands_separators(totalSavingLIP) + "</td>"
+                            }
                         }
                         else {
                             str += "<td class=text-right>" + 0 + "</td>"
                         }
+                        if (totalSavingSP < 0) {
+                            str += "<td class=text-right>" + 0 + "</td>"
+                        }
+                        else {
+                            str += "<td class=text-right>" + thousands_separators(totalSavingSP) + "</td>";
+                        }
 
 
-                        str += "<td class=text-right>" + thousands_separators(((BidData[i].startPrice - BidData[i].minPrice) * BidData[i].quantity).round(2)) + "</td>";
                         if (BidData[i].targetprice != 0) {
-                            str += "<td class=text-right>" + thousands_separators(((BidData[i].targetprice - BidData[i].minPrice) * BidData[i].quantity).round(2)) + "</td>";
+                            if (totalSavingTP < 0) {
+                                str += "<td class=text-right>" + 0 + "</td>"
+                            }
+                            else {
+                                str += "<td class=text-right>" + thousands_separators(totalSavingTP) + "</td>"
+                            }
                         }
                         else {
                             str += "<td class=text-right>" + 0 + "</td>";
@@ -1109,7 +1208,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
                     }
                     str += "<td>" + BidData[i].finalStatus + "</td>";
                     str += "</tr>";
-                    jQuery('#tblVendorSummarydetails').append(str);
+                    jQuery('#tblVendorSummarydetails>tbody').append(str);
                 }
                 var table = $('#tblVendorSummarydetails');
                 table.removeAttr('width').dataTable({
@@ -1133,7 +1232,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
                                 columns: ':visible',
                                 format: {
                                     body: function (data, column, node) {
-                                        
+
                                         if (column === 5 || column === 10 || (column >= 12 && column <= 16)) {
                                             let text = removeThousandSeperator(data);
                                             return parseFloat(text);
@@ -1184,7 +1283,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
             }
             else {
                 jQuery('#tblVendorSummarydetails > tbody').append("<tr><td colspan='17' style='text-align: center; color:red;'>No record found</td></tr>");
-                $('#tblVendorSummarydetails').dataTable({
+                /*$('#tblVendorSummarydetails').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
                     "bLengthChange": false,
@@ -1194,7 +1293,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
                     "bSort": true
 
 
-                });
+                });*/
             }
         },
         error: function (xhr, status, error) {
@@ -1210,6 +1309,7 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
     });
 }
 function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
+    var x = isAuthenticated();
     result = '';
     if ($("#ddlconfiguredby").select2('data').length) {
         $.each($("#ddlconfiguredby").select2('data'), function (key, item) {
@@ -1254,8 +1354,8 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
             if (jQuery("#ddlBidFor option:selected").val() == "81" || jQuery("#ddlBidFor option:selected").val() == "83") {
 
                 var BidFinal = stringDivider("Bid Value as per H1", 40, "<br/>\n");
-                var BidSP = stringDivider("Bid Value at Start Price(SP)",40, "<br/>\n");
-                var savinfstart = stringDivider("Total Saving wrt SP",40, "<br/>\n");
+                var BidSP = stringDivider("Bid Value at Start Price(SP)", 40, "<br/>\n");
+                var savinfstart = stringDivider("Total Saving wrt SP", 40, "<br/>\n");
             }
             else {
                 var BidFinal = stringDivider("Bid Value as per L1", 45, "<br/>\n");
@@ -1264,10 +1364,15 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
             }
 
             jQuery("#tblVendorSummarySUmzation").empty();
+            jQuery("#tblVendorSummarySUmzation").append(`<thead></thead><tbody></tbody>`);
 
-            jQuery('#tblVendorSummarySUmzation').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>Bid Subject</th><th class='bold'>Configured By</th><th class='bold'>Bid Date</th><th class='bold'>Currency</th><th class='bold'>" + BidLIP + "</th><th class='bold'>" + BidSP + "</th><th class='bold'>" + BidTP + "</th><th class='bold'>" + BidFinal + "</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfstart + "</th><th class='bold'>" + savinfTR + "</th></tr></thead>");
+            jQuery('#tblVendorSummarySUmzation>thead').append("<tr><th class='bold'>Event ID</th><th class='bold'>Bid Subject</th><th class='bold'>Configured By</th><th class='bold'>Bid Date</th><th class='bold'>Currency</th><th class='bold'>" + BidLIP + "</th><th class='bold'>" + BidSP + "</th><th class='bold'>" + BidTP + "</th><th class='bold'>" + BidFinal + "</th><th class='bold'>" + savinfLIP + "</th><th class='bold'>" + savinfstart + "</th><th class='bold'>" + savinfTR + "</th></tr>");
             if (BidData.length > 0) {
+
                 var bID = 0;
+                let totalSavingLIP = "";
+                let totalSavingSP = "";
+                let totalSavingTP = "";
                 for (var i = 0; i < BidData.length; i++) {
 
                     var str = "<tr><td class=text-right><a onclick=getSummary(\'" + BidData[i].bidID + "'\,\'" + BidData[i].bidForID + "'\,\'0'\) href='javascript:;'>" + BidData[i].bidID + "</a></td>";
@@ -1356,9 +1461,9 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
                     }
 
                     str += "</tr>";
-                    jQuery('#tblVendorSummarySUmzation').append(str);
+                    jQuery('#tblVendorSummarySUmzation>tbody').append(str);
                 }
-              
+
                 var table = $('#tblVendorSummarySUmzation');
                 table.removeAttr('width').dataTable({
                     "bDestroy": true,
@@ -1380,7 +1485,7 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
                                 columns: ':visible',
                                 format: {
                                     body: function (data, column, node) {
-                                  
+
                                         if ((column >= 5 && column <= 11)) {
                                             let text = removeThousandSeperator(data);
                                             return parseFloat(text);
@@ -1388,7 +1493,7 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
                                         else if (column === 0) {
                                             let text = data.match(/>([^<]+)</)[1];
                                             return parseFloat(text);
-                                        }                                       
+                                        }
                                         else {
                                             return data;
                                         }
@@ -1429,7 +1534,7 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
             }
             else {
                 jQuery('#tblVendorSummarySUmzation > tbody').append("<tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr>");
-                $('#tblVendorSummarySUmzation').dataTable({
+                /*$('#tblVendorSummarySUmzation').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
                     "bLengthChange": false,
@@ -1439,7 +1544,7 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
                     "bSort": true
 
 
-                });
+                });*/
             }
         },
         error: function (xhr, status, error) {

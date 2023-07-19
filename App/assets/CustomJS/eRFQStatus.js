@@ -38,6 +38,8 @@ jQuery(document).ready(function () {
 param = getUrlVars()["param"]
 decryptedstring = fndecrypt(param)
 var RFQID = getUrlVarsURL(decryptedstring)["RFQID"]
+sessionStorage.setItem("EventId", RFQID);
+sessionStorage.setItem("EventType", 'eRFQs');
 
 function FetchInvitedVendorsForeRFQ() {
 
@@ -49,12 +51,13 @@ function FetchInvitedVendorsForeRFQ() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
+
             if (data.length > 0) {
                 $('#tblVendorSummary tbody').empty();
                 $('#displayTable').show();
                 jQuery('#lbl_configuredBy').html("RFQ Configured By: " + data[0].configuredByName);
 
-                $('#rq_subject').html('<b>' + data[0].rqSubject + '</b>');
+                $('#rq_subject').html('<b>' + data[0].rfqSubject + '</b>');
                 $('#rq_deadline').html(fnConverToLocalTime(data[0].deadline))
                 $('#rq_STdate').html(fnConverToLocalTime(data[0].rfqStartDate))
 
@@ -62,10 +65,11 @@ function FetchInvitedVendorsForeRFQ() {
                 //  $('#rq_deadline').html(data[0].deadline);
                 $('#rq_description').html(data[0].rqDescription);
                 $("#deadlineModal").html(fnConverToLocalTime(data[0].deadline));
-
+                let _responsedate = '';
                 for (var i = 0; i < data.length; i++) {
-
-                    $('#tblVendorSummary').append(jQuery('<tr><td class="hide">' + data[i].vendorID + '</td><td>' + data[i].vendorName + ' ( ' + data[i].contactPerson + ' , ' + data[i].vendorEmail + ' , ' + data[i].phoneNo + ' )</td><td>' + data[i].rqStatus + '</td><td>' + fnConverToLocalTime(data[i].responseDate) + '</td><td class=hide>' + data[i].vendorEmail + '</td></tr>')); //<td>' + data[i].ResponseDate + ' - ' + data[i].ResponseTime + '</td>
+                    debugger
+                    _responsedate = data[i].responseDate || '';
+                    $('#tblVendorSummary').append(jQuery('<tr><td class="hide">' + data[i].vendorID + '</td><td>' + data[i].vendorName + ' ( ' + data[i].contactPerson + ' , ' + data[i].vendorEmail + ' , ' + data[i].phoneNo + ' )</td><td>' + data[i].rqStatus + '</td><td>' + _responsedate + '</td><td class=hide>' + data[i].vendorEmail + '</td></tr>')); //<td>' + data[i].ResponseDate + ' - ' + data[i].ResponseTime + '</td>
                     if (data[i].rqStatus.toLowerCase() != 'close' && data[i].rqStatus.toLowerCase != 'regretted') {
                         $('#send_remainder').removeClass('hide')
                     }
@@ -348,6 +352,8 @@ function ExtendDuration() {
         "ExtendedDateST": ST,// $("#txtextendDate").val(),
         "ExtendedBy": sessionStorage.getItem('UserID')
     }
+    //alert(JSON.stringify(RFQData));
+    console.log(JSON.stringify(RFQData))
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",

@@ -2,8 +2,8 @@ var param = getUrlVars()["param"]
 var decryptedstring = fndecrypt(param)
 var RFQID = getUrlVarsURL(decryptedstring)["RFQID"];
 
-sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
-//sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
+
+sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 //FROM HTML
 jQuery(document).ready(function () {
 
@@ -20,8 +20,6 @@ jQuery(document).ready(function () {
 //
 function fetchReguestforQuotationDetailseRFQ() {
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
-
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetailsForSurrogate/?RFQID=" + RFQID,
@@ -31,7 +29,6 @@ function fetchReguestforQuotationDetailseRFQ() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-
             sessionStorage.setItem("preferredtimezone", data[0].preferredtimezone);
             sessionStorage.setItem('hddnRFQRFIID', RFQID);
             sessionStorage.setItem('CustomerID', data[0].customerID);
@@ -85,7 +82,6 @@ function getTimezoneOffset() {
 
 // +0800 for UTC/GMT + 8hrs
 function Dateandtimevalidate(StartDT) {
-
     var StartDT = StartDT.replace('-', '');
 
     let StTime =
@@ -159,8 +155,8 @@ var erroropenbid = $('#errorOpenbid');
 var successopenbid = $('#successopenbid');
 
 function validatepassword() {
-    //sessionStorage.setItem("APIPath", 'http://www.support2educate.com/procurengine/API/api/');
-    sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
+
+    sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  </h5>' });
     if (jQuery("#txtpassword").val() == "") {
@@ -182,7 +178,6 @@ function validatepassword() {
             crossDomain: true,
             dataType: "json",
             success: function (response) {
-
                 sessionStorage.setItem("Token", response.token)
                 fnGtrTokenValidatePassword()
 
@@ -216,7 +211,6 @@ function validatepassword() {
             crossDomain: true,
             dataType: "json",
             success: function (data) {
-
                 if (data[0].flagStatus == "1") {
                     fetchReguestforQuotationDetailseRFQ();
                     sessionStorage.setItem("VendorId", data[0].vendorID)
@@ -228,7 +222,7 @@ function validatepassword() {
                     sessionStorage.setItem("RFQID", RFQID)
                     sessionStorage.setItem("ISFromSurrogateRFQ", "Y")
                     //sessionStorage.setItem("HomePage", "http://www.support2educate.com/pev2/")
-                    sessionStorage.setItem("HomePage", "https://pev3proapi.azurewebsites.net/")
+                    sessionStorage.setItem("HomePage", "https://pev3proapp.azurewebsites.net/")
 
                     if (data[0].isTermsConditionsAccepted == "N" || data[0].isTermsConditionsAccepted == "NO") {
                         setTimeout(function () {

@@ -21,8 +21,8 @@
           type="text/css" />
     <link href="assets/global/plugins/uniform/css/uniform.default.css" rel="stylesheet"
           type="text/css" />
-    <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
-    <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/select2/select2.css" />
+    <link rel="stylesheet" type="text/css" href="assets/global/plugins/select2/select2-metronic.css" />
     <link href="assets/global/plugins/bootstrap-toastr/toastr.css" rel="stylesheet" />
     <link href="assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css"
           rel="stylesheet" type="text/css" />
@@ -34,10 +34,12 @@
     <link href="assets/admin/layout/css/custom.css" rel="stylesheet" type="text/css" />
 
     <link rel="shortcut icon" href="../favicon.ico" />
-
-    <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
+    <!-- <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>-->
+    <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+    <!-- <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>-->
+    <script src="assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
+    <!--<script src="assets/global/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>-->
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.8.1.custom.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js"
             type="text/javascript"></script>
@@ -57,7 +59,7 @@
     <script src="assets/global/plugins/highcharts/js/modules/exporting.js"></script>
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
-    <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
 
     <script src="assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
     <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
@@ -69,7 +71,7 @@
     <script src="assets/admin/pages/scripts/index.js" type="text/javascript"></script>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script src="assets/CustomJS/Common.js"></script>
+    <script src="assets/CustomJS/Common.js?v1"></script>
     <link rel="shortcut icon" href="../favicon.ico" />
     <style>
         .container {
@@ -200,6 +202,7 @@
         .vendorlist {
             padding: 12px 10px 11px 10px;
         }
+
         .graphwidth {
             width: 100%;
             height: 100%;
@@ -211,10 +214,9 @@
         /*mobile specific css*/
 
         @media only screen and (max-width:900px) {
-            
+
 
             div {
-               
                 text-overflow: ellipsis;
                 white-space: nowrap;
             }
@@ -297,7 +299,7 @@
                     </li>
                     <li class="dropdown dropdown-quick-sidebar-toggler" id="lichat">
                         <div class="pulsate-regular" style="padding:12px;">
-                            <a href="javascript:void(0);" class="dropdown-toggle" title="Chat">
+                            <a href="javascript:void(0);" class="dropdown-toggle" title="Chat" onclick="fetchvendor()">
                                 <i class="fa fa-wechat" style="color:#ffb848;"></i>
                             </a>
                         </div>
@@ -701,10 +703,10 @@
         </div>
     </div>
 
-    
-    <div id="graphModalLine" class="modal fade bs-modal-lg resizeable" tabindex="-1"  aria-hidden="true">
+
+    <div id="graphModalLine" class="modal fade bs-modal-lg resizeable" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg ">
-            <div class="portlet box blue graphwidth" >
+            <div class="portlet box blue graphwidth">
                 <div class="portlet-title">
                     <div class="caption">
                         <i class="fa fa-reorder"></i>Bidding Trend
@@ -716,9 +718,9 @@
                 </div>
                 <div class="portlet-body">
                     <div class="row">
-                        
+
                         <div class="col-md-12">
-                            <div id="linechart_material" ></div>
+                            <div id="linechart_material"></div>
                         </div>
                     </div>
                     <div class="row">
@@ -849,18 +851,6 @@
     <script>
         jQuery(document).ready(function () {
             callPagejs('BidAdmin.js,BidVendorSummary.js,BidVendorSummarySea.js');
-            fnToCheckUserIPaccess();
-            $(window).focus(function () {
-
-                if (_bidClosingType == "S" && BidForID == "7") {
-                    fnrefreshStaggerTimerdataonItemClose()
-                }
-                else {
-                    fetchBidTime();
-                }
-
-                $(window).blur();
-            });
             $('ul#chatList').slimScroll({
                 height: '250px'
             });
@@ -873,7 +863,6 @@
                 }
             });
             setInterval(function () { Pageloaded() }, 15000);
-            var x = isAuthenticated();
             Metronic.init();
             Layout.init();
 

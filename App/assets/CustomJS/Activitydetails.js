@@ -2,13 +2,14 @@ var Changepassworderror = $('#errordivChangePassword');
 var Changepasswordsuccess = $('#successdivChangePassword');
 Changepassworderror.hide();
 Changepasswordsuccess.hide();
-jQuery(document).ready(function () {   
+jQuery(document).ready(function () {
+
     Pageloaded()
     var x = isAuthenticated();
     sessionStorage.setItem('CurrentBidID', 0);
     sessionStorage.setItem('hddnRFQID', 0);
     sessionStorage.setItem('CurrentRFIID', 0);
-    setInterval(function () { Pageloaded() }, 15000);
+    //setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
 
@@ -28,11 +29,10 @@ jQuery(document).ready(function () {
     setCommonData();
     App.init();
     Tasks.initDashboardWidget();
-
-     if (sessionStorage.getItem('UserType') == 'E') {
-         fetchMenuItemsFromSession(0, 0);
- 
-     }
+    
+    if (sessionStorage.getItem('UserType') == 'E') {
+        fetchMenuItemsFromSession(0, 0);
+    }
 
     fetchDashboardData();
     handleChangePasword();
@@ -50,10 +50,14 @@ function handleChangePasword() {
                 required: true
             },
             nPassword: {
-                required: true
+                required: true,
+                maxlength:15,
+                minlength:6
             },
             reEnterPass: {
-                required: true
+                required: true,
+                maxlength:15,
+                minlength:6
             }
 
 
@@ -102,9 +106,7 @@ function handleChangePasword() {
 
 }
 function ChangePassword() {
-    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    debugger;
     var isSubmit = true;
     var successMsg = "";
     if ($("#nPassword").val() != $("#reEnterPass").val()) {
@@ -121,6 +123,7 @@ function ChangePassword() {
         }
     }
     if (isSubmit) {
+        var x = isAuthenticated();
         var data = {
             //"EmailID": sessionStorage.getItem("EmailID"),
             "OldPassword": $("#oPassword").val(),
@@ -218,7 +221,6 @@ function fnConfirmArchive(RFQID) {
 
 }
 function fnArchive(RFQID) {
-    var x = isAuthenticated();
     var Data = {
         "RFQID": parseInt(RFQID),
         "UserID": sessionStorage.getItem('UserID'),
@@ -251,8 +253,8 @@ function fnArchive(RFQID) {
 
 
 function fetchDashboardData() {
-    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var x = isAuthenticated();
     var custId = parseInt(sessionStorage.getItem('CustomerID'));
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -264,7 +266,7 @@ function fetchDashboardData() {
         //data: JSON.stringify(userData),
         dataType: "json",
         success: function (BidData) {
-
+            
             if (BidData[0].bidcnt != "") {
                 jQuery('#lblTodayBidCount').text(BidData[0].bidcnt[0].todayBid)
                 jQuery('#lblNotForwardedBidCount').text(BidData[0].bidcnt[0].notForwarded)
@@ -275,6 +277,10 @@ function fetchDashboardData() {
                 jQuery('#lblNotFwRFQCount').text(BidData[0].rFxcnt[0].notForwardedRFx)
                 jQuery('#lblFwRFQCount').text(BidData[0].rFxcnt[0].forwardedRFx)
                 jQuery('#lblAwRFQCount').text(BidData[0].rFxcnt[0].awardedRFx)
+                
+                jQuery('#lblopenNFACount').text(BidData[0].nfAcnt[0].todayNFA)
+                jQuery('#lblFwNFACount').text(BidData[0].nfAcnt[0].forwardedNFA)
+                jQuery('#lblAwNFACount').text(BidData[0].nfAcnt[0].awardedNFA)
             }
 
 
@@ -331,7 +337,7 @@ function fetchDashboardData() {
 
                     }
 
-
+                    
                 }
             }
             else {
@@ -492,8 +498,9 @@ function fetchDashboardData() {
     });
 }
 function fetchBidDataDashboard(requesttype) {
-    var x = isAuthenticated();
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var x = isAuthenticated();
     if (requesttype == 'Today') {
         jQuery('#spanPanelCaption').html("Open Bids");
     } else if (requesttype == 'Not Forwarded') {
@@ -515,8 +522,17 @@ function fetchBidDataDashboard(requesttype) {
     else if (requesttype == 'AwardedRFQ') {
         jQuery('#spanPanelCaption').html("Approved RFx");
     }
-
-
+     else if (requesttype == 'TodayNFA') {
+        jQuery('#spanPanelCaption').html("Open NFA");
+    }
+    else if (requesttype == 'ForwardedNFA') {
+        jQuery('#spanPanelCaption').html("Pending NFA");
+    }
+    else if (requesttype == 'AwardedNFA') {
+        jQuery('#spanPanelCaption').html("Approved NFA");
+    }
+  
+  
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "Activities/fetchDashboardBidDetails/?RequestType=" + requesttype + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
@@ -526,7 +542,7 @@ function fetchBidDataDashboard(requesttype) {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-
+        
             jQuery("#ulList").empty();
             $('#spanPanelCaptioncount').text("(" + BidData.length + ")")
             if (BidData.length > 0) {

@@ -3,6 +3,7 @@ var decryptedstring = fndecrypt(param)
 
 var BIDID = getUrlVarsURL(decryptedstring)["BidID"];
 
+
 var BIDTypeID = '';
 var BidClosingType = '';
 sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
@@ -84,7 +85,38 @@ function fetchBidHeaderDetails() {
                 jQuery("#lblConvRate").text(data[0].conversionRate);
                 jQuery('#TermandCondition').attr("name", data[0].termsConditions)
                 jQuery('#bidTermandCondition').attr("name", data[0].termsConditions);
-                
+                /*  jQuery('#lblEventID').html(BIDID);
+                   jQuery('#bid_EventID').html("Event ID : " + BIDID);
+
+                   jQuery("#lblbidsubject").text(data[0].bidSubject);
+                   jQuery("#lblbidDetails").text(data[0].bidDetails);
+                   //jQuery("#lblbiddate").text(data[0].bidDate);
+                   jQuery("#lblbiddate").text(BidStartDatetime);
+                   //jQuery("#lblbidtime").text(data[0].bidTime);
+                   jQuery("#lblbidtype").text(data[0].bidTypeName);
+                   jQuery("#lblbidfor").text(data[0].bidFor);
+                   jQuery("#lblbidsubjectTT").text(data[0].bidSubject);
+                   jQuery("#lblbidDetailsTT").text(data[0].bidDetails);
+                   //jQuery("#lblbiddateTT").text(data[0].bidDate);
+                   jQuery("#lblbiddateTT").text(BidStartDatetime);
+                   //jQuery("#lblbidtimeTT").text(data[0].bidTime);
+                   jQuery("#lblbidtypeTT").text(data[0].bidTypeName);
+                   jQuery("#lblbidforTT").text(data[0].bidFor);
+                   BIDTypeID = data[0].bidTypeID;
+                   BidClosingType = data[0].bidClosingType;
+
+                   jQuery("#lnkTermsAttachment").html(data[0].termsConditions);
+                   jQuery("#lnkAnyOtherAttachment").html(data[0].attachment);
+
+
+                   jQuery("#lblbidduration").text(data[0].bidDuration);
+                   jQuery("#lblcurrency").text(data[0].currencyName);
+                   jQuery("#lblbiddurationTT").text(data[0].bidDuration);
+                   jQuery("#lblcurrencyTT").text(data[0].currencyName);
+                   jQuery("#lblConvRate").text(data[0].conversionRate);
+                   jQuery("#lblstatus").text(data[0].conversionRate);
+                   jQuery("#lblConvRate").text(data[0].conversionRate);
+               }*/
 
             }
         },
@@ -177,7 +209,6 @@ var successopenbid = $('#successopenbid');
 function validatepassword() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-    //sessionStorage.setItem("APIPath", 'https://pev3proapi.azurewebsites.net/');
     sessionStorage.setItem("APIPath", 'https://pev3qaapi.azurewebsites.net/');
 
     if (jQuery("#txtpassword").val() == "") {
@@ -190,6 +221,7 @@ function validatepassword() {
     }
     else {
         // Get Token For Password Validation
+        debugger
         var url = sessionStorage.getItem("APIPath") + "User/EventSurrogateValidate/?BidId=" + BIDID + "&Password=" + jQuery("#txtpassword").val() + "&EventType=" + ('SurrogateBid').toLowerCase();
         jQuery.ajax({
             type: "GET",
@@ -255,6 +287,9 @@ function fnGtrTokenValidatePassword() {
                         else if (BIDTypeID == "7" && BidClosingType == 'S') {
                             window.location = "ParticipateBidStagger.html";
                         }
+                        else if (BIDTypeID == "8") {
+                            window.location = "ParticipateBidCoalExport.html";
+                        }
                         else if (BIDTypeID == "9") {
                             window.location = "ParticipateBidFrenchAuction.html";
                         }
@@ -298,14 +333,7 @@ function fnGtrTokenValidatePassword() {
     })
 }
 
-jQuery('#bidchkIsAccepted').click(function () {
-    if (jQuery('#bidchkIsAccepted').is(':checked') == true) {
-        $('#btnContinue').attr("disabled", false);
-    }
-    else {
-        $('#btnContinue').attr("disabled", true);
-    }
-});
+
 function formvalidate() {
     $('#AccprtGNc').validate({
         errorElement: 'span', //default input error message container
@@ -379,4 +407,23 @@ function acceptBidTermsAuction() {
         }
 
     });
+}
+
+/*jQuery('#bidchkIsAccepted').click(function () {
+    
+    if (jQuery('#bidchkIsAccepted').is(':checked') == true) {
+        $('#btnContinue').removeAttr("disabled");
+    }
+    else {
+        $('#btnContinue').attr("disabled", "disabled");
+    }
+});*/
+
+function IsTermAcceppeted() {
+    if (jQuery('#bidchkIsAccepted').is(':checked') == true) {
+        $('#btnContinue').removeAttr("disabled");
+    }
+    else {
+        $('#btnContinue').attr("disabled", "disabled");
+    }
 }

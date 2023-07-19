@@ -5,7 +5,6 @@ body {
     overflow-wrap: break-word;
 }
 
-
 .form-horizontal .form-control-static {
     padding-top: 7px;
     width: 100%;
@@ -39,7 +38,7 @@ body {
 }
 
 .fontSizeCount {
-    font-size: 18px;
+    font-size: 20px;
     width: 12% !important;
     text-align: right !important;
 }

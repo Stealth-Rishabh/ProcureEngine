@@ -1,7 +1,7 @@
 jQuery(document).ready(function () {
 
     Pageloaded()
-    var x = isAuthenticated();
+
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -485,14 +485,15 @@ function mandatoryChange() {
 
 
 function insupdRFIQuestionMaster() {
-    
+  
    var CriteriaDetails = [];
+   /*
     $('#tblvendorlist >tbody> tr').each(function () {
         var Criteria = $('#txtCriteria', this).val();
         var Score = parseFloat($('#txtScore', this).val());
         var item = { Criteria, Score }; 
         CriteriaDetails.push(item);
-    });
+    });*/
        jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
         var status = "";
         if (jQuery("#chkattachment").is(':checked')) {
@@ -528,7 +529,7 @@ function insupdRFIQuestionMaster() {
             dataType: "json",
             contentType: "application/json",
             success: function (data) {
-               
+         
                 if (data== "1") {
                     error.hide();
                     $("#success").html("Transaction Successful.");
@@ -771,7 +772,7 @@ function fetchCategorymaster() {
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=M&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&VendorID=0",
+        url: sessionStorage.getItem("APIPath") + "ProductandServiceCategory/fetchProductCategory/?CustomerID=" + sessionStorage.getItem('CustomerID') + "&For=M&MappedBy=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&ChildId=0",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         data: "{}",
         cache: false,

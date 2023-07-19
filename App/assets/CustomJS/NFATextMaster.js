@@ -3,8 +3,7 @@ $(document).ready(function () {
     BindData();
 });
 function BindPurchaseOrg() {
-
-
+    var x = isAuthenticated();
     var url = "NFA/GetPurchaseOrg?CustomerId=" + parseInt(CurrentCustomer) + "&IsActive=0";
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
@@ -90,6 +89,7 @@ function Validate() {
     }
 };
 function BindData() {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var url = "NFA/GetNFAText?CustomerID=" + parseInt(CurrentCustomer) + "&Isactive=2";
@@ -116,7 +116,7 @@ function BindData() {
                     porg = 'ALL';
                 else
                     porg = value.purchaseOrgName;
-                $('#tblFetchParamMaster').append('<tr id="rowid_' + value.nfaParamID + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;" onClick="onEditClick(\'rowid_' + value.nfaParamID + '\',\'' + value.isActive + '\',\'' + value.flDefault + '\',\'' + value.purchaseOrg + '\')"><i class="fa fa-pencil"></i></button></td><td>' + porg + '</td><td>' + value.nfaParamText + '</td><td>' + isdefault + '</td><td>' + Status + '</td></tr>')
+                $('#tblFetchParamMaster').append('<tbody><tr id="rowid_' + value.nfaParamID + '"><td>' + ++key + '</td><td><button class="btn  btn-xs btn-success" href="javascript:;" onClick="onEditClick(\'rowid_' + value.nfaParamID + '\',\'' + value.isActive + '\',\'' + value.flDefault + '\',\'' + value.purchaseOrg + '\')"><i class="fa fa-pencil"></i></button></td><td>' + porg + '</td><td>' + value.nfaParamText + '</td><td>' + isdefault + '</td><td>' + Status + '</td></tr></tbody>')
             });
         }
         else {
@@ -172,7 +172,7 @@ function onEditClick(idx, checked, isdefault, Porgid) {
 };
 
 function SaveUpdate() {
-
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var isdefault = 'N'
     var url = "NFA/CreateUpdateNfaParam";

@@ -4,7 +4,6 @@ var cc = 0;
 //FROM HTML
 jQuery(document).ready(function () {
     Pageloaded()
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -21,7 +20,7 @@ jQuery(document).ready(function () {
         }
     }
     App.init();
-
+   
     fetchMenuItemsFromSession(9, 14);
     setCommonData();
     FormValidation.init();
@@ -58,7 +57,7 @@ function fnaddPurchaseOrg() {
     }
     else if (selectedgroupid.length > 0) {
         for (var i = 0; i < selectedgroupid.length; i++) {
-            $('#tblpurchaseOrg').append('<tr id=TRgroup' + cc + '><td id=OrgId' + cc + ' class=hide >' + $('#ddlPurchaseOrg option:selected').val() + '</td><td class=hide id=GrpId' + cc + '>' + selectedgroupid[i] + '</td><td>' + $('#ddlPurchaseOrg option:selected').text() + '</td><td>' + selectedgroup[i] + '</td><td style="width:5%"><a class="btn  btn-xs btn-danger"  onclick="deleterow(TRgroup' + cc + ',' + cc + ',' + selectedgroupid[i] + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+            $('#tblpurchaseOrg').append('<tbody><tr id=TRgroup' + cc + '><td id=OrgId' + cc + ' class=hide >' + $('#ddlPurchaseOrg option:selected').val() + '</td><td class=hide id=GrpId' + cc + '>' + selectedgroupid[i] + '</td><td>' + $('#ddlPurchaseOrg option:selected').text() + '</td><td>' + selectedgroup[i] + '</td><td style="width:5%"><a class="btn  btn-xs btn-danger"  onclick="deleterow(TRgroup' + cc + ',' + cc + ',' + selectedgroupid[i] + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr></tbody>')
             cc = cc + 1;
         }
 
@@ -175,7 +174,6 @@ function BindPurchaseOrg() {
 
 
 function RegisterUser() {
-    debugger
     var _cleanString = StringEncodingMechanism(jQuery("#txtUsername").val());
     var _cleanString2 = StringEncodingMechanism(jQuery('#txtdesignation').val());
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -220,7 +218,6 @@ function RegisterUser() {
         "PrefferedTZ": parseInt(jQuery("#ddlpreferredTime").val()),
         "purOrg": purOrg
     };
-    alert(JSON.stringify(RegisterUser))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "RegisterUser/RegisterUser/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -269,6 +266,7 @@ function RegisterUser() {
 
 
 function fetchRegisterUser() {
+  
     var data = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
@@ -285,7 +283,7 @@ function fetchRegisterUser() {
         data: JSON.stringify(data),
         dataType: "json",
         success: function (data) {
-            debugger
+         
             jQuery("#tblRegisterUsers > tbody").empty();
             if (data.length > 0) {
                 jQuery.each(data, function (key, value) {  
@@ -299,7 +297,9 @@ function fetchRegisterUser() {
             }
             else {
                 jQuery('#tblRegisterUsers > tbody').append("<tr><td colspan='8' style='text-align: center; color:red;'>No User found</td></tr>");
+                
             }
+            jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
 
@@ -320,10 +320,10 @@ function fetchRegisterUser() {
     }, 2000);
 }
 let ddlCountryCd;
-function EditUser(ctrl) {     
+function EditUser(ctrl) {
     ddlCountryCd = jQuery(ctrl).closest('tr').find("td:last-child").html()
-    if (ddlCountryCd =="0") {
-        ddlCountryCd =="111";
+    if(ddlCountryCd == '0'){
+        ddlCountryCd = '111';
     }
     jQuery("#txtUsername").val(StringDecodingMechanism(jQuery(ctrl).closest('tr').find("td").eq(1).html()));
     jQuery("#txtUsername").closest('.form-group').removeClass('has-error').find('span').hide();   
@@ -342,6 +342,7 @@ function EditUser(ctrl) {
     $('#ddlCountryCd').select2();
     $("#ddlCountryCd").val(ddlCountryCd).trigger("change");
     if (isActivie == 'Yes') {
+
         jQuery('#chkIsActive').attr('checked', true);
         jQuery('#chkIsActive').closest('span').attr('class', 'checked');
     }
@@ -354,6 +355,9 @@ function EditUser(ctrl) {
     var UserID = jQuery(ctrl).closest('tr').find("td").eq(0).html();
     $('#hdnUserID').val(UserID);
     fetchUserDetails(UserID);
+
+
+
 
 }
 
@@ -422,7 +426,7 @@ function fetchRoleMaster() {
     });
 }
 
-function clearform() {   
+function clearform() {
     jQuery("#txtUsername").val('');
     jQuery("#txtemail").val('');
     $("#ddlCountryCd").val("111").trigger("change");
@@ -608,7 +612,7 @@ function fetchUserDetails(UserID) {
                 if (userdetails.length > 0 && userdetails != null) {
                     $('#tblpurchaseOrg').append('<thead class=hide id=theadgroup><tr><th>Purchase org</th><th>Purchase Group</th><th></th></tr></thead>');
                     for (var i = 0; i < userdetails.length; i++) {
-                        $('#tblpurchaseOrg').append('<tr id=TRgroup' + cc + '><td id=OrgId' + cc + ' class=hide >' + userdetails[i].PurchaseOrgID + '</td><td class=hide id=GrpId' + cc + '>' + userdetails[i].PurchaseGrpID + '</td><td>' + userdetails[i].PurchaseOrgName + '</td><td>' + userdetails[i].PurchaseGrpName + '</td><td style="width:5%"><a   class="btn  btn-xs btn-danger" onclick="deleterow(TRgroup' + cc + ',' + cc + ',' + userdetails[0].PurchaseGrpID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr>')
+                        $('#tblpurchaseOrg').append('<tbody><tr id=TRgroup' + cc + '><td id=OrgId' + cc + ' class=hide >' + userdetails[i].PurchaseOrgID + '</td><td class=hide id=GrpId' + cc + '>' + userdetails[i].PurchaseGrpID + '</td><td>' + userdetails[i].PurchaseOrgName + '</td><td>' + userdetails[i].PurchaseGrpName + '</td><td style="width:5%"><a   class="btn  btn-xs btn-danger" onclick="deleterow(TRgroup' + cc + ',' + cc + ',' + userdetails[0].PurchaseGrpID + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td></tr></tbody>')
                         cc = cc + 1;
                     }
                     if (jQuery('#tblpurchaseOrg tr').length > 0) {

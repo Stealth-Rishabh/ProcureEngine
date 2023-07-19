@@ -10,7 +10,7 @@
     <meta content="" name="description" />
     <meta content="" name="author" />
     <!--Google Fonts-->
-    <link rel="stylesheet" href="assets/CustomCSS/googlefocnt.css">
+    <link rel="stylesheet" href="assets/CustomCSS/googlefont.css">
     <link href="assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet"
           type="text/css" />
     <link href="assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet"
@@ -25,7 +25,7 @@
           rel="stylesheet" type="text/css" />
 
     <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2.css" />
-    <link rel="stylesheet" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
+    <link rel="stylesheer" type="text/css" href="assets/plugins/select2/select2-metronic.css" />
     <link href="assets/global/css/components.css" rel="stylesheet" type="text/css" />
     <link href="assets/global/css/plugins.css" rel="stylesheet" type="text/css" />
     <link href="assets/admin/layout/css/layout.css" rel="stylesheet" type="text/css" />
@@ -42,6 +42,9 @@
     <!-- Page Specific CSS-->
     <link rel="stylesheet" href="assets/CustomCSS/common.css">
     <link rel="stylesheet" href="assets/CustomCSS/erfq.css">
+
+    <!--for react-->
+    <!--  <link href="assets/build/static/css/main.cda89e40.css" rel="stylesheet">-->
 
     <script src="assets/global/plugins/jquery-1.11.0.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
@@ -66,6 +69,10 @@
     <script src="assets/global/plugins/bootstrap-switch/js/bootstrap-switch.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="assets/global/plugins/jquery-validation/js/jquery.validate.min.js"></script>
     <script type="text/javascript" src="assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+
+    
+
+
 
     <script type="text/javascript" src="assets/plugins/select2/select2.min.js"></script>
     <script src="assets/global/scripts/metronic.js" type="text/javascript"></script>
@@ -164,6 +171,7 @@
                         <li><a href="#">Request For Quotation</a> </li>
                     </ul>
                     <div class="page-toolbar">
+                        
                         <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
                             <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help </a>
                         </div>
@@ -222,9 +230,6 @@
                                                         <span class="desc"><i class="fa fa-check"></i>Invite Vendor </span>
                                                     </a>
                                                 </li>
-
-
-
                                             </ul>
                                             <div id="bar" class="progress progress-striped" role="progressbar">
                                                 <div class="progress-bar progress-bar-success">
@@ -238,6 +243,10 @@
                                                     <span id="spandanger"> </span>
                                                 </div>
                                                 <div class="tab-pane active" id="tab1">
+
+
+
+
                                                     <div class="form-group">
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
@@ -246,7 +255,7 @@
                                                             </label>
                                                             <div class="col-md-4">
                                                                 <input type="text" class="form-control" placeholder="Enter RFQ Subject" id="txtrfqSubject"
-                                                                       maxlength="50" autocomplete="off" name="txtrfqSubject" tabindex='1' onkeyup="replaceQuoutesFromString(this)" />
+                                                                       maxlength="100" autocomplete="off" name="txtrfqSubject" tabindex='1' onkeyup="replaceQuoutesFromString(this)" />
                                                             </div>
                                                         </div>
 
@@ -282,6 +291,8 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+
+
                                                         <div class="inputgroup">
                                                             <label class="control-label col-md-2">
                                                                 End Date/Time<span class="required"> *</span>
@@ -330,10 +341,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group">
+                                                    <div class="form-group display-none" id="divBoqUpload">
                                                         <div class="inputgroup">
                                                             <label class="col-md-3 control-label">
-                                                                Boq required
+                                                                BOQ/BOM Required
                                                             </label>
                                                             <div class="col-md-2">
                                                                 <input name="chkboq" id="chkboq" type="checkbox" class="icheck" data-checkbox="icheckbox_minimal-blue" onclick="fncheckboq()" />
@@ -514,7 +525,7 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label class="control-label  col-md-2">
-                                                                Target Price
+                                                                Target/Budget Price
                                                             </label>
                                                             <div class="col-md-4 xyz">
                                                                 <input type="tel" class="form-control text-right" id="txttargetprice"
@@ -603,6 +614,7 @@
                                                             <div class="col-md-offset-9 col-md-5" id="btnrowid">
                                                                 <input type="hidden" id="rowid" />
                                                                 <input type="hidden" id="validattachmentSize" />
+                                                                <button type="button" class="btn btn-success " data-toggle="modal" href="#RFQPullSAPModal" id="RFQPullSAP">Pull SAP Data</button>
                                                                 <button type="button" class="btn btn-info display-none" data-toggle="modal" href="#RfqParameterexcelBoq" id="boqbtnexcel">Boq Excel Upload</button>
                                                                 <span id="spninfoboq" class="hovertext display-none" data-hover="click Excel button to upload BoQ File">
                                                                     <i class="fa fa-question-circle fa-fw" aria-hidden="true"></i>
@@ -625,423 +637,7 @@
                                                     <div class="table-scrollable">
 
                                                         <table class="table table-striped table-bordered table-hover" id="tblServicesProduct"></table>
-                                                        <table class="table table-condensed table table-striped table-bordered table-hover display-none" cellpadding="0" cellspacing="0" id="tblServicesProductboq">
-                                                            <thead>
-                                                                <tr style="background: gray; color: #FFF;">
-                                                                    <th style="width:5%!important"></th>
-                                                                    <th style="width:10%!important">Item/Service</th>
-                                                                    <th style="width:5%!important">UOM</th>
-                                                                    <th style="width:5%!important">Qty</th>
-                                                                    <th style="width:5%!important">Currency</th>
-                                                                    <th style="width:10%!important">Target Price</th>
-                                                                    <th class="hide" style="width:10%!important">Landed Unit Price<br>(Without GST)</th>
-                                                                    <th class="hide" style="width:10%!important">Landed Unit Price<br>(With GST)</th>
-                                                                    <th class="hide" style="width:10%!important">Amount<br>(Without GST)</th>
-                                                                    <th style="width:30%!important">Last Invoice Price</th>
-                                                                    <th style="width:15%!important">Delivery Location</th>
-
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td data-toggle="collapse" data-target="#demo121" class="accordion-toggle"><button type="button" class="btn btn-default btn-xs" onclick="fncollapse('hvbcicon1')"><span class="glyphicon glyphicon-plus" id="hvbcicon1"></span></button></td>
-                                                                    <td><b>HVAC</b></td>
-                                                                    <td>Number</td>
-                                                                    <td></td>
-                                                                    <td>INR</td>
-                                                                    <td>75,000</td>
-                                                                    <td>0</td>
-                                                                    <td>New Delhi</td>
-
-                                                                </tr>
-                                                                <tr>
-                                                                    <td colspan="10" class="hiddenRow">
-                                                                        <div class="accordian-body collapse" id="demo121" style="padding-left:73px!important">
-                                                                            <table class="table table-condensed table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0">
-
-
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td data-toggle="collapse" class="accordion-toggle" data-target="#demo1201" style="width:1%!important"><button type="button" class="btn btn-default btn-xs" onclick="fncollapse('highsideicon1')"><span class="glyphicon glyphicon-plus" id="highsideicon1"></span></button></td>
-                                                                                        <td style="width:15%!important" colspan="10">HIGH SIDE AIR CONDITIONING WORKS</td>
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <td colspan="9" class="hiddenRow">
-                                                                                            <div class="accordian-body collapse" id="demo1201" style="padding-left:75px!important">
-                                                                                                <table class="table table-condensed table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0">
-                                                                                                    <thead>
-                                                                                                        <tr>
-                                                                                                            <th style="width:20%!important">Item Name</th>
-                                                                                                            <th style="width:5%!important" class="hide">UOM</th>
-                                                                                                            <th style="width:5%!important">Quantity</th>
-                                                                                                            <th style="width:10%!important">Currency</th>
-                                                                                                            <th style="width:20%!important">Target Price</th>
-                                                                                                            <th style="width:20%!important">Last Invoice Price</th>
-                                                                                                            <th style="width:20%!important" class="hide">Location</th>
-
-
-                                                                                                        </tr>
-
-                                                                                                    </thead>
-                                                                                                    <tbody>
-                                                                                                        <tr>
-                                                                                                            <td>CTI APPROVED COOLING TOWER: </td>
-                                                                                                            <td class="hide">Number</td>
-                                                                                                            <td></td>
-                                                                                                            <td>INR</td>
-                                                                                                            <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
-                                                                                                            <td>61,000</td>
-                                                                                                            <td>0</td>
-                                                                                                            <td class="hide">New delhi</td>
-
-
-                                                                                                        </tr>
-                                                                                                        <tr>
-                                                                                                            <!-- <td style="width:1%!important"><button class="btn btn-default btn-xs" onclick="fncollapse('pumpseticon')"><span class="glyphicon glyphicon-plus" id="pumpseticon"></span></button></td>-->
-                                                                                                            <td data-toggle="collapse" class="accordion-toggle" data-target="#demo1211" style="width:15%!important" colspan="10"> <button type="button" class="btn btn-default btn-xs" onclick="fncollapse('pumpseticon1')"><span class="glyphicon glyphicon-plus" id="pumpseticon1"></span></button> PUMPSETS:(VERTICAL INLINE / BACK PULLOUT)</td>
-                                                                                                        </tr>
-                                                                                                        <tr>
-                                                                                                            <td colspan="9" class="hiddenRow">
-                                                                                                                <div class="accordian-body collapse" id="demo1211" style="padding-left:75px!important">
-                                                                                                                    <table class="table table-condensed table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0">
-                                                                                                                        <thead>
-                                                                                                                            <tr>
-                                                                                                                                <th style="width:20%!important">Item Name</th>
-                                                                                                                                <th style="width:5%!important" class="hide">UOM</th>
-                                                                                                                                <th style="width:5%!important">Quantity</th>
-                                                                                                                                <th style="width:10%!important">Currency</th>
-                                                                                                                                <th style="width:20%!important">Target Price</th>
-                                                                                                                                <th style="width:20%!important">Last Invoice Price</th>
-                                                                                                                                <th style="width:20%!important" class="hide">Location</th>
-
-                                                                                                                            </tr>
-
-                                                                                                                        </thead>
-                                                                                                                        <tbody>
-                                                                                                                            <tr>
-                                                                                                                                <td>Primary Chilled Water Pumps with DOL/Star-Delta (cost of starter will be part of  panel) </td>
-                                                                                                                                <td class="hide">Number</td>
-                                                                                                                                <td>10</td>
-                                                                                                                                <td>INR</td>
-                                                                                                                                <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
-                                                                                                                                <td>1,000</td>
-                                                                                                                                <td>0</td>
-                                                                                                                                <td class="hide">New delhi</td>
-
-
-                                                                                                                            </tr>
-                                                                                                                            <tr>
-                                                                                                                                <td>Secondary Chilled Water Pumps with VFD (cost of VFD will be part of  micro processor controller) </td>
-                                                                                                                                <td class="hide">Number</td>
-                                                                                                                                <td>10</td>
-                                                                                                                                <td>INR</td>
-                                                                                                                                <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
-                                                                                                                                <td>2,000</td>
-                                                                                                                                <td>0</td>
-
-                                                                                                                                <td class="hide">New delhi</td>
-
-
-                                                                                                                            </tr>
-                                                                                                                            <tr>
-                                                                                                                                <td>Condenser Water Pumps with VFD (cost of VFD will be part of  panel) </td>
-                                                                                                                                <td class="hide">Number</td>
-                                                                                                                                <td>10</td>
-                                                                                                                                <td>INR</td>
-                                                                                                                                <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
-                                                                                                                                <td>3,000</td>
-                                                                                                                                <td>0</td>
-
-                                                                                                                                <td class="hide">New delhi</td>
-
-
-                                                                                                                            </tr>
-                                                                                                                        </tbody>
-                                                                                                                    </table>
-                                                                                                                </div>
-                                                                                                            </td>
-                                                                                                        </tr>
-                                                                                                        <tr>
-                                                                                                            <!-- <td style="width:1%!important"><button class="btn btn-default btn-xs" onclick="fncollapse('doubleicon')"><span class="glyphicon glyphicon-plus" id="doubleicon"></span></button></td>-->
-                                                                                                            <td data-toggle="collapse" class="accordion-toggle" data-target="#demo1221" style="width:15%!important" colspan="10"><button type="button" class="btn btn-default btn-xs" onclick="fncollapse('doubleicon1')"><span class="glyphicon glyphicon-plus" id="doubleicon1"></span></button> DOUBLE SKIN CABINET TYPE AIR HANDLING UNITS WITH EC FANS </td>
-                                                                                                        </tr>
-                                                                                                        <tr>
-                                                                                                            <td colspan="9" class="hiddenRow">
-                                                                                                                <div class="accordian-body collapse" id="demo1221" style="padding-left:75px!important">
-                                                                                                                    <table class="table table-condensed table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0">
-                                                                                                                        <thead>
-                                                                                                                            <tr>
-                                                                                                                                <th style="width:20%!important">Item Name</th>
-                                                                                                                                <th style="width:5%!important" class="hide">UOM</th>
-                                                                                                                                <th style="width:5%!important">Quantity</th>
-                                                                                                                                <th style="width:10%!important">Currency</th>
-                                                                                                                                <th style="width:20%!important">Target Price</th>
-                                                                                                                                <th style="width:20%!important">Last Invoice Price</th>
-                                                                                                                                <th style="width:20%!important" class="hide">Location</th>
-
-                                                                                                                            </tr>
-
-                                                                                                                        </thead>
-                                                                                                                        <tbody>
-                                                                                                                            <tr>
-                                                                                                                                <td>AHU - Type 1 Serving Main Electrical Room</td>
-                                                                                                                                <td class="hide">Number</td>
-                                                                                                                                <td>10</td>
-                                                                                                                                <td>INR</td>
-                                                                                                                                <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
-                                                                                                                                <td>100</td>
-                                                                                                                                <td>0</td>
-
-                                                                                                                                <td class="hide">New delhi</td>
-
-
-                                                                                                                            </tr>
-                                                                                                                        </tbody>
-                                                                                                                    </table>
-                                                                                                                </div>
-                                                                                                            </td>
-                                                                                                        </tr>
-                                                                                                        <tr>
-
-                                                                                                            <td>AIR SEPEARATOR</td>
-                                                                                                            <td class="hide">Number</td>
-                                                                                                            <td>10</td>
-                                                                                                            <td class="fit">INR</td>
-                                                                                                            <td>1,400</td>
-                                                                                                            <td>0</td>
-
-                                                                                                            <td class="hide">Delhi</td>
-
-                                                                                                        </tr>
-
-                                                                                                    </tbody>
-                                                                                                </table>
-                                                                                            </div>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                </tbody>
-                                                                            </table>
-                                                                        </div>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td data-toggle="collapse" data-target="#demo11" class="accordion-toggle"><button type="button" class="btn btn-default btn-xs" onclick="fncollapse('cpuicon1')"><span class="glyphicon glyphicon-plus" id="cpuicon1"></span></button></td>
-                                                                    <td><b>Electrical</b></td>
-                                                                    <td>Number</td>
-                                                                    <td>200</td>
-                                                                    <td>INR</td>
-                                                                    <td>766,000</td>
-                                                                    <td>0</td>
-                                                                    <td>Banglore</td>
-                                                                </tr>
-
-                                                                <tr>
-                                                                    <td colspan="10" class="hiddenRow">
-                                                                        <div class="accordian-body collapse" id="demo11" style="padding-left:73px!important">
-                                                                            <table class="table table-condensed table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0">
-
-
-                                                                                <tbody>
-                                                                                    <tr>
-                                                                                        <td data-toggle="collapse" class="accordion-toggle" data-target="#demo101" style="width:1%!important"><button type="button" class="btn btn-default btn-xs" onclick="fncollapse('mothericon1')"><span class="glyphicon glyphicon-plus" id="mothericon1"></span></button></td>
-                                                                                        <td style="width:15%!important" colspan="10"> HT Panel Supply</td>
-
-
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <td colspan="9" class="hiddenRow">
-                                                                                            <div class="accordian-body collapse" id="demo101" style="padding-left:97px!important">
-                                                                                                <table class="table table-condensed table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0">
-
-                                                                                                    <tbody>
-                                                                                                        <tr>
-                                                                                                            <td data-toggle="collapse" class="accordion-toggle" data-target="#demo1001" style="width:1%!important"><button type="button" class="btn btn-default btn-xs" onclick="fncollapse('htpanelicon1')"><span class="glyphicon glyphicon-plus" id="htpanelicon1"></span></button></td>
-                                                                                                            <td style="width:15%!important" colspan="10"> HT Panel</td>
-                                                                                                        </tr>
-                                                                                                        <tr>
-                                                                                                            <td colspan="9" class="hiddenRow">
-                                                                                                                <div class="accordian-body collapse" id="demo1001" style="padding-left:70px!important">
-                                                                                                                    <table class="table table-condensed table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0">
-                                                                                                                        <thead>
-                                                                                                                            <tr>
-                                                                                                                                <th style="width:20%!important">Item Name</th>
-                                                                                                                                <th style="width:5%!important" class="hide">UOM</th>
-                                                                                                                                <th style="width:5%!important">Quantity</th>
-                                                                                                                                <th style="width:10%!important">Currency</th>
-                                                                                                                                <th style="width:20%!important">Target Price</th>
-                                                                                                                                <th style="width:20%!important">Last Invoice Price</th>
-                                                                                                                                <th style="width:20%!important" class="hide">Location</th>
-
-                                                                                                                            </tr>
-
-                                                                                                                        </thead>
-                                                                                                                        <tbody>
-                                                                                                                            <tr>
-                                                                                                                                <td>11 KV 630A - Ring Main Unit -3 Module Outdoor (Full DAS) </td>
-                                                                                                                                <td class="hide">Number</td>
-                                                                                                                                <td>10</td>
-                                                                                                                                <td>INR</td>
-                                                                                                                                <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
-                                                                                                                                <td>1,400</td>
-                                                                                                                                <td>0</td>
-
-                                                                                                                                <td class="hide">New delhi</td>
-
-
-                                                                                                                            </tr>
-                                                                                                                            <tr>
-                                                                                                                                <td>11KV HT Metering Cubicle (Relavent CT & PT ratings will be considered against power sanction letter From BESCOM) PT shall be drawout type</td>
-                                                                                                                                <td class="hide">Number</td>
-                                                                                                                                <td>10</td>
-                                                                                                                                <td>INR</td>
-                                                                                                                                <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
-                                                                                                                                <td>1,200</td>
-                                                                                                                                <td>0</td>
-
-                                                                                                                                <td class="hide">CP</td>
-
-
-                                                                                                                            </tr>
-                                                                                                                            <tr>
-                                                                                                                                <td>11 kV - 3 Module HT Panel - Outdoor</td>
-                                                                                                                                <td class="hide">Number</td>
-                                                                                                                                <td>10</td>
-                                                                                                                                <td>INR</td>
-                                                                                                                                <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
-                                                                                                                                <td>1,0000</td>
-                                                                                                                                <td>0</td>
-                                                                                                                                <td class="hide">Nehru Place</td>
-
-
-                                                                                                                            </tr>
-                                                                                                                        </tbody>
-                                                                                                                    </table>
-
-                                                                                                                </div>
-                                                                                                            </td>
-                                                                                                        </tr>
-                                                                                                    </tbody>
-                                                                                                </table>
-                                                                                            </div>
-                                                                                        </td>
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <td data-toggle="collapse" class="accordion-toggle" data-target="#demo1011" style="width:1%!important"><button type="button" class="btn btn-default btn-xs" onclick="fncollapse('Transsuppicon1')"><span class="glyphicon glyphicon-plus" id="Transsuppicon1"></span></button></td>
-                                                                                        <td style="width:15%!important" colspan="10"> Transformer supply</td>
-                                                                                    </tr>
-                                                                                    <tr>
-                                                                                        <td colspan="9" class="hiddenRow">
-                                                                                            <div class="accordian-body collapse" id="demo1011" style="padding-left:75px!important">
-                                                                                                <table class="table table-condensed table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0">
-                                                                                                    <thead>
-                                                                                                        <tr>
-                                                                                                            <th style="width:20%!important">Item Name</th>
-                                                                                                            <th style="width:5%!important" class="hide">UOM</th>
-                                                                                                            <th style="width:5%!important">Quantity</th>
-                                                                                                            <th style="width:10%!important">Currency</th>
-                                                                                                            <th style="width:20%!important">Target Price</th>
-                                                                                                            <th style="width:20%!important">Last Invoice Price</th>
-                                                                                                            <th style="width:20%!important" class="hide">Location</th>
-
-                                                                                                        </tr>
-
-                                                                                                    </thead>
-                                                                                                    <tbody>
-                                                                                                        <tr>
-                                                                                                            <td>2500 kVA  - 11/0.415KV -Outdoor Type</td>
-                                                                                                            <td class="hide">Number</td>
-                                                                                                            <td>10</td>
-                                                                                                            <td>INR</td>
-                                                                                                            <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
-                                                                                                            <td>1,0000</td>
-                                                                                                            <td>0</td>
-
-                                                                                                            <td class="hide">New delhi</td>
-
-
-                                                                                                        </tr>
-                                                                                                        <tr>
-                                                                                                            <!-- <td style="width:1%!important"><button class="btn btn-default btn-xs" onclick="fncollapse('typetesticon')"><span class="glyphicon glyphicon-plus" id="typetesticon"></span></button></td>-->
-                                                                                                            <td data-toggle="collapse" class="accordion-toggle" data-target="#demo1021" style="width:15%!important" colspan="10"> <button type="button" class="btn btn-default btn-xs" onclick="fncollapse('typetesticon1')"><span class="glyphicon glyphicon-plus" id="typetesticon1"></span></button> Type Tests - For One Transformer</td>
-                                                                                                        </tr>
-                                                                                                        <tr>
-                                                                                                            <td colspan="9" class="hiddenRow">
-                                                                                                                <div class="accordian-body collapse" id="demo1021" style="padding-left:100px!important">
-                                                                                                                    <table class="table table-condensed table table-striped table-bordered table-hover" cellpadding="0" cellspacing="0">
-                                                                                                                        <thead>
-                                                                                                                            <tr>
-                                                                                                                                <th style="width:20%!important">Item Name</th>
-                                                                                                                                <th style="width:5%!important" class="hide">UOM</th>
-                                                                                                                                <th style="width:5%!important">Quantity</th>
-                                                                                                                                <th style="width:10%!important">Currency</th>
-                                                                                                                                <th style="width:20%!important">Target Price</th>
-                                                                                                                                <th style="width:20%!important">Last Invoice Price</th>
-                                                                                                                                <th style="width:20%!important" class="hide">Location</th>
-
-                                                                                                                            </tr>
-
-                                                                                                                        </thead>
-                                                                                                                        <tbody>
-                                                                                                                            <tr>
-                                                                                                                                <td>Temperature Rise Test </td>
-                                                                                                                                <td class="hide">Number</td>
-                                                                                                                                <td>10</td>
-                                                                                                                                <td>INR</td>
-                                                                                                                                <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
-                                                                                                                                <td>1,8000</td>
-                                                                                                                                <td>0</td>
-                                                                                                                                <td class="hide">New delhi</td>
-
-
-                                                                                                                            </tr>
-                                                                                                                            <tr>
-                                                                                                                                <td>Lightning Impulse Test</td>
-                                                                                                                                <td class="hide">Number</td>
-                                                                                                                                <td>10</td>
-                                                                                                                                <td>INR</td>
-                                                                                                                                <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
-                                                                                                                                <td>1,8000</td>
-                                                                                                                                <td>0</td>
-
-                                                                                                                                <td class="hide">New delhi</td>
-
-                                                                                                                            </tr>
-                                                                                                                            <tr>
-                                                                                                                                <td>Partial-discharge measuremen</td>
-                                                                                                                                <td class="hide">Number</td>
-                                                                                                                                <td>10</td>
-                                                                                                                                <td>INR</td>
-                                                                                                                                <!-- <td><button type="button" class="btn default btn-xs green-haze-stripe" data-toggle="modal" href="#responsive" onclick="mapQuestion('2373','mkswithoutgst2','30','0','mkswithgst2','500')">Submit Price</button></td>-->
-                                                                                                                                <td>1,8000</td>
-                                                                                                                                <td>0</td>
-
-                                                                                                                                <td class="hide">New delhi</td>
-
-
-                                                                                                                            </tr>
-                                                                                                                        </tbody>
-                                                                                                                    </table>
-                                                                                                                </div>
-                                                                                                            </td>
-                                                                                                        </tr>
-                                                                                                    </tbody>
-                                                                                                </table>
-
-                                                                                            </div>
-                                                                                        </td>
-                                                                                    </tr>
-
-
-                                                                                </tbody>
-                                                                            </table>
-
-                                                                        </div>
-                                                                    </td>
-                                                                </tr>
-
-
-
-                                                            </tbody>
+                                                        <table class="table table-condensed table-bordered display-none" cellpadding="0" cellspacing="0" id="tblServicesProductboq" style="display: table !important;">
                                                         </table>
 
                                                     </div>
@@ -1221,9 +817,10 @@
 
                                                                     <div class="col-md-8">
 
-
-                                                                        <input type="text" class="form-control" placeholder="Select Vendor Group" id="txtVendorGroup"
-                                                                               data-provide="typeahead" autocomplete="off" name="txtVendorGroup" />
+                                                                        <!--abheedev 11/03/2023 -->
+                                                                        <select class="form-control" autocomplete="off" data-placeholder="Search Vendor Group" name="txtVendorGroup" id="txtVendorGroup" tabindex="4">
+                                                                            <option></option>
+                                                                        </select>
                                                                         <input type="text" autocomplete="off" class="form-control" placeholder="Search Vendor Name" id="txtSearch" name="txtSearch">
                                                                     </div>
                                                                     <!--bug388 abheedev start-->
@@ -1283,7 +880,7 @@
                                                         Save And Continue <i class="m-icon-swapright m-icon-white">
                                                         </i>
                                                     </a><a href="javascript:;" class="btn green button-submit">
-                                                        Preview
+                                                        Save and Preview
 
                                                     </a>
                                                 </div>
@@ -1437,7 +1034,7 @@
                                             <div class="col-md-12">
                                                 <div class="display-none" id="wrap_scrollerPrev">
                                                     <table class="table table-striped table-bordered table-hover" id="tblRFQPrev"></table>
-                                                    <table class="table table-condensed table table-striped table-bordered table-hover display-none" cellpadding="0" cellspacing="0" id="tblboqparamprev">
+                                                    <table class="table table-condensed table table-striped table-bordered table-hover display-none" cellpadding="0" cellspacing="0" id="tblServicesProductboqp">
                                                     </table>
 
                                                 </div>
@@ -1520,7 +1117,79 @@
             <i class="icon-arrow-up"></i>
         </div>
     </div>
+    <div id="RFQPullSAPModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Pull RFQ data from SAP
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <form action="#" id="ChangePasswordfrm" class="form-horizontal" role="form">
+                        <div id="divalertpull" class="alert alert-success">
+                            <span id="spansuccess1pull"></span>
+                        </div>
+                        <div id="divalerterrpull" class="alert alert-danger divalertstyle">
+                            <span id="spanerterrpull"></span>
+                        </div>
+                        <div class="form-body">
+                            <div class="form-group">
+                                <div class="Controlgroup col-md-12">
+                                    <label class="col-md-3 control-label" id="lblsbjct">
+                                        Source
+                                    </label>
+                                    <div class="col-md-3">
+                                        <div class="radio-list">
+                                            <label class="radio-inline">
+                                                <input type="radio" id="pullPI" name="pullP" value="I" class="form-control" checked> Indent
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" id="pullPR" name="pullP" value="R" class="form-control"> PR
+                                            </label>
+                                        </div>
+                                    </div>
 
+
+
+                                    <div class="col-md-3 paddingleft7px">
+                                        <input type="hidden" id="hdnRfiRfqID" value='0' />
+
+                                        <input type="text" class="form-control" id="txtrfirfqsubject"
+                                               name="txtrfirfqsubject"
+                                               data-provide="typeahead" autocomplete="off" maxlength="120"
+                                               placeholder="Subject" onkeyup="replaceQuoutesFromString(this)" />
+                                    </div>
+                                    <div class="col-md-3 paddingleft7px">
+                                        <button type="button" class="btn btn-primary" onclick="FetchSAPPI()">Go</button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <div class="Controlgroup col-md-12">
+                                    <div class="table-scrollable display-none">
+                                        <table class=" table table-striped table-bordered table-hover" id="tblServicesProductFromRFQ"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-actions fluid hide">
+                            <div class="col-md-offset-3 col-md-6 txtaligncentre">
+                                <button type="button" id="btnrfirfq" class="btn btn-primary" onclick="fnpulldatafromRFQ()"> Go</button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
     <div id="RfqParameterexcel" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="portlet box blue">
@@ -1542,7 +1211,7 @@
 
                                 <div class="col-md-offset-3 col-md-6">
                                     <p id="loader-msgparameter">
-
+                                        Processing. Please Wait...!
                                     </p>
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-striped active width100" role="progressbar" aria-valuemin="0" aria-valuemax="100">
@@ -1599,7 +1268,7 @@
                                                         <li>ItemCode</li>
                                                         <li>ItemService</li>
                                                         <li>Description</li>
-                                                        <li>TargetPrice</li>
+                                                        <li>Target/Budget Price</li>
                                                         <li>Remarks</li>
                                                         <li>Quantity</li>
                                                         <li>UOM</li>
@@ -1627,7 +1296,8 @@
                                                     <br />
                                                 </div>
                                             </div>
-                                            3. Please ensure Target price and Quantity and TAT should be in numbers only.
+                                            3. Please ensure Target/Budget Price and Quantity and TAT should be in numbers only.
+
                                         </span>
                                     </div>
                                     <table class="table table-striped table-bordered table-hover display-none" id="temptableForExcelDataparameter"></table>
@@ -1657,11 +1327,11 @@
 
                     <form action="#" id="uploadexcelrfqBoq" class="form-horizontal" role="form">
                         <div class="form-body">
-                                <div class="progress-form display-none" id="modalLoaderparameterBoq">
+                            <div class="progress-form display-none" id="modalLoaderparameterBoq">
 
                                 <div class="col-md-offset-3 col-md-6">
-                                    <p id="loader-msgparameter">
-
+                                    <p id="loader-msgparameterBoq">
+                                        Processing. Please Wait...!
                                     </p>
                                     <div class="progress">
                                         <div class="progress-bar progress-bar-striped active width100" role="progressbar" aria-valuemin="0" aria-valuemax="100">
@@ -1696,10 +1366,10 @@
                                     <div class="alert alert-success display-hide" id="success-excelparameterB">
                                         <button class="close" data-close="alert"></button>
                                         <span id="succspan-excelparameterB" class="text-center"></span><br />
-                                        <div class="col-md-12 col-md-offset-5" id="btnsforYesNo">
-                                           
-                                            <button class="btn green" type="button" onclick="fnSeteRFQparameterTable()">Yes</button>
-                                            <button class="btn yellow" type="button" onclick="fnNoExcelUpload()">No</button>
+                                        <div class="col-md-12 col-md-offset-5" id="btnsforYesNoB">
+
+                                            <button class="btn green" type="button" onclick="fninsBoqfile()">Yes</button>
+                                            <button class="btn yellow" type="button" onclick="fnNoExcelUploadB()">No</button>
                                         </div>
                                         <div class="clearfix"></div>
                                     </div>
@@ -1714,6 +1384,7 @@
                                                     <br /><br />
                                                     <!--abheedev bug 479-->
                                                     <ul class='no-padding col-md-6 text-left'>
+                                                        <li>Srno</li>
                                                         <li>ItemCode</li>
                                                         <li>ItemService</li>
                                                         <li>Description</li>
@@ -1721,14 +1392,8 @@
                                                         <li>Remarks</li>
                                                         <li>Quantity</li>
                                                         <li>UOM</li>
-
-                                                        <li>TAT</li>
                                                         <li>DeliveryLocation</li>
-                                                        <li>PoNo</li>
-                                                        <li>PoVendorName</li>
-                                                        <li>UnitRate</li>
-                                                        <li>PoDate (MM/DD/YYYY)</li>
-                                                        <li>PoValue</li>
+
                                                     </ul>
                                                     <div class='clearfix'></div>
                                                     <br />
@@ -1745,10 +1410,21 @@
                                                     <br />
                                                 </div>
                                             </div>
-                                            3. Please ensure Target price and Quantity and TAT should be in numbers only.
+                                            3. Please ensure <b>Target/Budget Price</b> and <b>Quantity</b> should be in numbers only.<br />
+                                            4. <b>UOM/Quantity</b> should be on child level item only.<br />
+                                            5. <b>Item service</b>length should be 200 characters only.<br />
+                                            6. The <b>UOM</b> and <b>quantity</b> fields should not be left blank in the child level item field .  <br />
+                                            7. You may check the <b>UOM</b> in the instructions page. <br />
+                                            8. While creating a <b>BOQ sheet</b>, no fields should be left <b>blank</b>.<br />
+                                            9. The <b>serial number</b> must be in a <b>numeric</b> and <b>synchronized</b> sequence manner. <br />
+                                            10.The <b>BOQ spreadsheet</b> must be in <b>Excel workbook format</b>(.xlsx). <br />
+                                            11.<b>Serial Number</b>,<b>Item Service</b> and <b>Description</b> is a mandatory field. <br />
+                                            12.Please do not change the <b>formating</b> of <b>BOQ file</b>. <br />
+                                            13.<b>Description</b> length should be <b>200</b> characters only.<br />
+
                                         </span>
                                     </div>
-                                    <table class="table table-striped table-bordered table-hover display-none" id="temptableForExcelDataparameter"></table>
+                                    <table class="table table-striped table-bordered table-hover display-none" id="temptableForExcelDataparameterBOQ"></table>
                                 </div>
                             </div>
 
@@ -1765,13 +1441,15 @@
         <table id="tbleRFQdetails" class="table table-striped table-bordered table-hover hide">
             <thead>
                 <tr id="Trhead">
+
                     <th data-style="NonMandatory">ItemCode</th>
                     <th data-style="Mandatory">ItemService</th>
                     <th data-style="Mandatory">Description</th>
                     <th data-style="NonMandatory">TargetPrice</th>
-                    <th data-style="Mandatory">Remarks</th>
+                    <th data-style="NonMandatory">Remarks</th>
                     <th data-style="Mandatory">Quantity</th>
                     <th data-style="Mandatory">UOM</th>
+
                     <th data-style="NonMandatory">TAT</th>
                     <th data-style="Mandatory">DeliveryLocation</th>
                     <th data-style="NonMandatory">PoNo</th>
@@ -1783,8 +1461,36 @@
                 </tr>
             </thead>
         </table>
+        <table id="tbleRFQdetailsBoq" class="table table-striped table-bordered table-hover hide">
+            <thead>
+                <tr id="TrheadBoq">
+
+                    <th data-style="Mandatory">SrNo</th>
+                    <th data-style="NonMandatory">ItemCode</th>
+                    <th data-style="Mandatory">ItemService</th>
+                    <th data-style="Mandatory">Description</th>
+                    <th data-style="NonMandatory">TargetPrice</th>
+                    <th data-style="NonMandatory">Remarks</th>
+                    <th data-style="Mandatory">Quantity</th>
+                    <th data-style="Mandatory">UOM</th>
+                    <th data-style="Mandatory">DeliveryLocation</th>
+
+                </tr>
+            </thead>
+        </table>
 
         <table class="table table-bordered" id="tblUOM"></table>
+        <table class="table table-bordered" id="tblBoqSummary">
+            <thead>
+                <tr>
+                    <th data-style="Mandatory">SrNo</th>
+                    <th data-style="Mandatory">Item</th>
+                    <th data-style="Mandatory">Sheetname</th>
+
+
+                </tr>
+            </thead>
+        </table>
 
     </div>
     <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
@@ -1830,7 +1536,7 @@
                             <p class="ppolicy-text"><b>Step-2: "RFQ Parameters"–</b>In this step user needs to fill item/product details against which vendors will be quoting prices/rates. Individual columns with their relevance are given below.</p>
                             <ul>
                                 <li><b>Short Name: </b>Specify short name of product/services, which would be visible at the time of bid participation.</li>
-                                <li><b>Target Price: </b>Unit price, which we expect to reach as a result of RFQ process, this is a non-mandatory field.</li>
+                                <li><b>Target/Budget Price: </b>Unit price, which we expect to reach as a result of RFQ process, this is a non-mandatory field.</li>
                                 <li><b>Quantity: </b>Specify number of units required.</li>
                                 <li><b>UOM: </b>Select unit of measurement like number, kg, liter etc.</li>
                                 <li><b>Description: </b>Detailed information about the product/services.</li>
@@ -1897,7 +1603,7 @@
 
 
                                     <div class="col-lg-1 col-lg-offset-2 margintop4px" id="collgstyle">
-                                        <button type="button" class="btn btn-sm btn-primary" id="btnvendor" onclick="fnfetchCatVendors()">Go</button>
+                                        <button type="button" class="btn btn-sm btn-primary" id="btnvendor" onclick="fetchAdvanceSearch()">Go</button>
                                     </div>
                                 </div>
 
@@ -1928,8 +1634,35 @@
             </div>
         </div>
     </div>
+    <div id="commuhub" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="portlet box blue">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="fa fa-reorder"></i>Help
+                    </div>
+                    <div class="tools">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    </div>
+                </div>
+                <div class="portlet-body form">
+                    <div class="alert alert-danger display-hide" id="errordiv1">
+                        <button class="close" data-close="alert"></button>
+                        <span id="errormsg"></span>
+                    </div>
+                    <div class="alert alert-success display-hide" id="successdiv1">
+                        <button class="close" data-close="alert"></button>
+                        <span id="successmsg"></span>
+                    </div>
+                    <div class="modal-body">
+                        <div id="root"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-
+   
 
     <script nonce="pE90">
 

@@ -61,7 +61,7 @@ $(document).ready(function () {
 });
 function fetchPPCApproverDetails() {
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
+    var x = isAuthenticated();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "Azure/eRFQAzureDetails/?RFQID=" + PPCID + "&BidID=-1",
@@ -458,7 +458,7 @@ function deleteLFrow(rowid) {
 }
 
 function BindApprovers() {
-
+    var x = isAuthenticated();
     var amount = removeThousandSeperator($("#txtAmountFrom").val());
     var budget = 0;
     if ($("#txtBudget").val() != '') {
@@ -474,7 +474,7 @@ function BindApprovers() {
     GetData.success(function (res) {
         // $("#tblApproversPrev").empty();
         if (res.result != null) {
-            debugger;
+          
             if (res.result.length > 0) {
                 $("#errorApproverdivSeq").hide();
                 //  $("#tblApproversPrev").append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:5%!important'>Sequence</th></tr></thead>");
@@ -605,7 +605,7 @@ function frmApprovalPPCForm(nfagroupid) {
             "NFAAppGroupID": nfagroupid
         };
 
-        console.log(JSON.stringify(Data))
+      //  console.log(JSON.stringify(Data))
         jQuery.ajax({
             url: sessionStorage.getItem("APIPath") + "Azure/insPPCnew/",
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -667,8 +667,7 @@ function frmApprovalPPCForm(nfagroupid) {
 }
 var orgData = [];
 function BindPurchaseOrg() {
-
-
+    var x = isAuthenticated();
     var url = "NFA/GetPurchaseOrgByUserid?CustomerId=" + parseInt(CurrentCustomer) + "&UserId=" + encodeURIComponent(UserID);
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
     GetNFAPARAM.success(function (res) {
@@ -696,6 +695,7 @@ function BindPurchaseOrg() {
 
 };
 function bindPurchaseGroupDDL() {
+    var x = isAuthenticated();
     var url = "NFA/GetPurchaseGroupByUserID?CustomerId=" + parseInt(CurrentCustomer) + "&OrgId=" + parseInt($('#ddlPurchaseOrg option:selected').val()) + "&UserID=" + encodeURIComponent(UserID);
 
     var GetNFAPARAM = callajaxReturnSuccess(url, "Get", {});
@@ -790,7 +790,7 @@ function addmoreattachments() {
 }
 
 function fetchAttachments() {
-
+    var x = isAuthenticated();
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -881,7 +881,7 @@ function fnRemoveAttachment(POID, deletionfor) {
     })
 }
 function FetchCurrency(CurrencyID) {
-
+    var x = isAuthenticated();
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",

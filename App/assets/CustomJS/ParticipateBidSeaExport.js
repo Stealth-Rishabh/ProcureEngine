@@ -1,6 +1,5 @@
 jQuery(document).ready(function () {
     Pageloaded()
-    var x = isAuthenticated();
     $('ul#chatList').slimScroll({
         height: '250px'
     });
@@ -95,7 +94,7 @@ connection.on("disconnectSR", function (connectionId) {
 
 connection.on("refreshRAQuotes", function (data) {
 
-    console.log(BidForID)
+
     if (BidForID == 81 || BidForID == 83) {
         fetchBidSummaryVendorproduct();
     }
@@ -103,9 +102,31 @@ connection.on("refreshRAQuotes", function (data) {
         fetchBidSummaryVendorSeaExportDutch();
     }
 });
+connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
 
+
+    let data = JSON.parse(rdataJson)
+    if (data[0].VendorID == "0") {
+        $('#hddnadminConnection').val(connectionId)
+        if (flag == false) {
+            $('#adminconn').removeClass('badge-success').addClass('badge-danger')
+            $('#admstatus').text("Buyer Offline")
+            $('#chatbtn').addClass('hide')
+            $('#txtChatMsg').addClass('hide')
+        }
+        else {
+            $('#adminconn').removeClass('badge-danger').addClass('badge-success')
+            $('#admstatus').text("Buyer Online")
+            $('#chatbtn').removeClass('hide')
+            $('#txtChatMsg').removeClass('hide')
+        }
+
+    }
+
+
+});
 connection.on("refreshColumnStatus", function (data) {
-
+    
     var JsonMsz = JSON.parse(data[0]);
     if (JSON.parse(JsonMsz[0]) == "-1" && JSON.parse(JsonMsz[1]) == sessionStorage.getItem('VendorId')) {
 
@@ -137,9 +158,10 @@ connection.on("refreshColumnStatus", function (data) {
             dataType: "json",
 
             success: function (data, status, jqXHR) {
+               
                 if (data.length > 0) {
                     jQuery('#tblParticipantsService >tbody >tr').each(function (i) {
-                      
+
                         let TotalBidValue = '';
                         TotalBidValue = removeThousandSeperator(parseFloat(removeThousandSeperator($("#quantity" + i).text()))) * parseFloat(removeThousandSeperator(data[0].lowestQuotedPrice));
                         TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue : TotalBidValue;
@@ -162,30 +184,16 @@ connection.on("refreshColumnStatus", function (data) {
                             display = document.querySelector('#lblTimeLeft');
 
                             startTimer(data[0].timeLeft, display);
-
-
-
                             $("#initialquote" + i).html(data[0].initialQuotedPrice == '0' ? '' : thousands_separators(data[0].initialQuotedPrice))
-
                             $("#iqquote" + i).html(data[0].initialQuotedPrice == '0' ? '' : thousands_separators(data[0].initialQuotedPrice))
-
-
-
-
-
                             $("#lastQuote" + i).html(data[0].lowestQuotedPrice == '0' ? '' : thousands_separators(data[0].lowestQuotedPrice))
-                            $("#totalbidvalue"+i).html(TotalBidValue % 1 != 0 ? thousands_separators(TotalBidValue) : thousands_separators(TotalBidValue))
-
-
+                            $("#totalbidvalue" + i).html(TotalBidValue % 1 != 0 ? thousands_separators(TotalBidValue) : thousands_separators(TotalBidValue))
                             $("#lblstatus" + i).html(data[0].vendorRank)
 
                             var L1Quote = data[0].l1Quote == '0' ? '' : thousands_separators(data[0].l1Quote)
 
 
                             $("#L1Price" + i).html(L1Quote)
-
-
-
                             if (data[0].vendorRank == 'L1') {
 
                                 jQuery('#lblstatus' + i).css('color', 'Blue');
@@ -422,11 +430,8 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
         + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
 
         + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;">' + new Date().toLocaleTimeString() + '</span>'
-
         + '<span class="body" style="color: #c3c3c3;">' + chat.ChatMsg + '</span>'
-
         + '</div>'
-
         + '</div>');
 
     //  }
@@ -436,7 +441,9 @@ connection.on("ReceiveBroadcastMessage", function (objChatmsz) {
 });
 
 
-
+function openForm() {
+    fetchUserChats(sessionStorage.getItem("UserID"), "T");//T stands for both single & Broadcast
+}
 function sendChatMsgs() {
     if ($("#txtChatMsg").val() != '' && $("#txtChatMsg").val() != null) {
         var _cleanString = StringEncodingMechanism($("#txtChatMsg").val());
@@ -444,31 +451,20 @@ function sendChatMsgs() {
         var data = {
 
             "ChatMsg": _cleanString,
-
             "fromID": sessionStorage.getItem("UserID"),
-
             "BidId": (sessionStorage.getItem("BidID") == '0' || sessionStorage.getItem("BidID") == null) ? parseInt(getUrlVarsURL(decryptedstring)["BidID"]) : parseInt(sessionStorage.getItem("BidID")),
-
             "msgType": 'S',
-
-            "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : ''
-
-
+            "toID": (sessionStorage.getItem("UserType") == 'E') ? $("#hddnVendorId").val() : '',
+            "fromconnectionID": $('#hddnadminConnection').val()
 
         }
 
         $("#chatList").append('<div class="post in">'
 
             + '<div class="message">'
-
             + '<span class="arrow"></span>'
-
-            + '<!--<a href="javascript:;" class="name">Bob Nilson</a>-->'
-
             + '<span class="datetime" style="font-size: 12px;font-weight: 300;color: #8496a7;"></span>'//time
-
             + '<span class="body" style="color: #c3c3c3;">' + $("#txtChatMsg").val() + '</span>'
-
             + '</div>'
 
             + '</div>');
@@ -479,12 +475,12 @@ function sendChatMsgs() {
 
             return console.error(err.toString());
 
-
-
         });
 
         $("#txtChatMsg").val('')
     }
+
+
 }
 
 
@@ -520,7 +516,7 @@ var displayForS = "";
 
 
 function fetchBidHeaderDetails(bidId) {
-   
+
     var tncAttachment = '';
 
     var anyotherAttachment = '';
@@ -551,8 +547,8 @@ function fetchBidHeaderDetails(bidId) {
 
         success: function (data, status, jqXHR) {
 
-
            
+
             if (data.length == 1) {
                 let _cleanStringSub = StringDecodingMechanism(data[0].bidSubject);
                 let _cleanStringDet = StringDecodingMechanism(data[0].bidDetails);
@@ -746,7 +742,7 @@ function DownloadFile(aID) {
 }
 
 function fetchVendorDetails() {
-
+  
 
 
     var url = '';
@@ -772,7 +768,7 @@ function fetchVendorDetails() {
         dataType: "json",
 
         success: function (data, status, jqXHR) {
-
+                 
 
             if (data.length == 1) {
                 let _cleanStringSub = StringDecodingMechanism(data[0].bidSubject);
@@ -894,7 +890,7 @@ function fetchVendorDetails() {
 
         error: function (xhr) {
 
-
+           
 
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
 
@@ -931,11 +927,12 @@ var count;
 var url = '';
 
 function fetchBidSummaryVendorproduct() {
-
+    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     url = '';
     count = 0;
     url = sessionStorage.getItem("APIPath") + "VendorParticipation/fetchBidSummaryVendorSeaExport/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + sessionStorage.getItem("BidID") + "&UserType=" + sessionStorage.getItem("UserType") + "&_isBidStarted=" + _isBidStarted + "";
+    console.log(url)
     jQuery.ajax({
 
         type: "GET",
@@ -953,6 +950,7 @@ function fetchBidSummaryVendorproduct() {
         dataType: "json",
 
         success: function (data, status, jqXHR) {
+           
             if (data.length > 0) {
                 var TotalBidValue = '';
                 if (_isBidStarted == false) {
@@ -960,11 +958,14 @@ function fetchBidSummaryVendorproduct() {
                     jQuery("#tblParticipantsServiceBeforeStartBid").show();
                     jQuery("#tblParticipantsServiceBeforeStartBid").empty()
                     jQuery("#tblParticipantsServiceBeforeStartBid").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th class=hide id='bidStartPrice'>Start Unit price</th><th class=hide>Target Price</th><th class=hide>Minimum Decrement</th><th class=hide>Initial Quote</th><th class=hide>Last Quote</th><th class=hide> Status </th><th class=hide>Enter_Unit_uote</th><th class=hide>Action</th><th>Remarks</th></thead>");
+
+                    jQuery("#tblParticipantsServiceBeforeStartBid").append(`<tbody>`);
                     for (var i = 0; i < data.length; i++) {
 
                         jQuery("#tblParticipantsServiceBeforeStartBid").append("<tr><td>" + (i + 1) + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td class='hide'>" + data[i].uom + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td class=hide id=ceilingprice" + i + ">" + thousands_separators(data[i].ceilingPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide id=targetprice" + i + ">" + thousands_separators(data[i].targetPrice) + " " + jQuery("#lblcurrency").text() + "</td><td class=hide><span>" + data[i].minimumDecreament + " " + decreamentOn + "</td><td class=hide id=initialquote" + i + ">" + IQuote + "</td><td class=hide id=lastQuote" + i + ">" + LqQuote + "</td><td class=hide id=lblstatus" + i + ">" + data[i].loQuotedPrice + "</td><td class=hide > <input type=text class=form-control autocomplete=off  id=txtquote" + i + " name=txtquote" + i + " /> <span id=spanamount" + i + "   style=color:#a94442></span></td><td class=hide ><button type='button' id=AllItembtn" + i + " class='btn btn-warning' onclick=InsUpdQuoteSeaExport(" + i + ")>Submit</button><br/><span id=spanmszA" + i + " style=color:#a94442></span></td><td class=hide id=chkMaskVendor" + i + ">" + data[i].maskVendor + "</td><td>" + data[i].remarks + "</td></tr>");
 
                     }
+                   jQuery("#tblParticipantsServiceBeforeStartBid").append(`</tbody>`)
 
                 }
                 else {
@@ -977,11 +978,12 @@ function fetchBidSummaryVendorproduct() {
 
                     if (data[0].bidClosingType == 'A') {
                         jQuery("#tblParticipantsService").append("<thead><tr style='background: gray; color: #FFF'><th>S No</th><th>Item/Product/Service</th><th>Quantity</th><th>UOM</th><th id='bidStartPrice'>Start Unit price</th><th>Target Price</th><th>Minimum Decrement</th><th>Initial Quote</th><th>Last Quote</th><th>L1 Quote</th><th> Status </th><th>Bid Value</th><th>Enter_Unit_quote</th><th>Action</th></thead>");
+                        jQuery("#tblParticipantsService").append(`<tbody>`);
                         for (var i = 0; i < data.length; i++) {
-                        
+
                             TotalBidValue = parseFloat(data[i].quantity) * parseFloat(data[i].lqQuotedPrice);
                             TotalBidValue = TotalBidValue % 1 != 0 ? TotalBidValue : TotalBidValue;
-                           
+
 
                             var IQuote = data[i].iqQuotedPrice == '0' ? '' : data[i].iqQuotedPrice;
                             var LqQuote = data[i].lqQuotedPrice == '0' ? '' : data[i].lqQuotedPrice;
@@ -1075,7 +1077,7 @@ function fetchBidSummaryVendorproduct() {
 
                         }
 
-
+                        jQuery("#tblParticipantsService").append(`</tbody>`);
 
                     }
 
@@ -1100,7 +1102,7 @@ function fetchBidSummaryVendorproduct() {
         },
 
         error: function (xhr, status, error) {
-
+            
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
 
             if (xhr.status == 401) {
@@ -1125,12 +1127,12 @@ function fetchBidSummaryVendorproduct() {
 
 }
 function InsUpdQuoteSeaExport(index) {
-    
-   
-  
-   
+
+
+
+
     var vendorID = 0;
-    
+
 
     vendorID = sessionStorage.getItem('VendorId');
 
@@ -1147,7 +1149,7 @@ function InsUpdQuoteSeaExport(index) {
     var Amount = $('#minimumdec' + index).text()
 
 
-  
+
     if ($('#decon' + index).text() == "A") {
 
         if (jQuery("#lastQuote" + index).text() == '' || jQuery("#lastQuote" + index).text() == '0') {
@@ -1155,8 +1157,6 @@ function InsUpdQuoteSeaExport(index) {
             value = parseFloat(removeThousandSeperator($('#txtquote' + index).val()))
 
             valuejap = parseFloat(removeThousandSeperator($('#txtquote' + index).val()))
-
-
 
         }
 
@@ -1239,11 +1239,7 @@ function InsUpdQuoteSeaExport(index) {
 
     else if (jQuery("#L1Price" + index).text() != "" && jQuery("#L1Price" + index).text() != "0" && BidForID == "83" && valdiff < parseFloat(Amount) && $('#decon' + index).text() == "A") {
 
-        console.log(jQuery("#L1Price" + index).text())
 
-        console.log(valdiff)
-
-        console.log(Amount)
 
         $('#spanamount' + index).removeClass('hide')
 
@@ -1295,30 +1291,24 @@ function InsUpdQuoteSeaExport(index) {
 
     else {
 
-
-        
-        insertquery = $('#seid' + index).html() + '~' + removeThousandSeperator($('#txtquote' + index).val());
+        //  insertquery = $('#seid' + index).html() + '~' + removeThousandSeperator($('#txtquote' + index).val());
 
         var QuoteProduct = {
 
             "VendorID": vendorID,
             "BidID": parseInt(sessionStorage.getItem("BidID")),
-            "insertQuery": insertquery,
-            "EnteredBy": vendorID,
+            //   "insertQuery": insertquery,
+            //    "EnteredBy": vendorID,
             "Quote": parseFloat(removeThousandSeperator($('#txtquote' + index).val())),
             "SEID": parseInt($('#seid' + index).html()),
             "AdvFactor": parseFloat($("#hdnAdvFactor").val()),
-            "ForRFQ": "N",
+            //  "ForRFQ": "N",
             "extendTime": parseInt($('#hdnval').val()),
             "BidClosingType": "A",
             "isPrePricing": "N"
-
         }
 
         $('#hdnselectedindex').val(index);
-
-       
-        
         connection.invoke("RefreshBidParticipation", JSON.stringify(QuoteProduct)).catch(function (err) {
 
             return console.error(err.toString());
@@ -1342,7 +1332,7 @@ var mytimeforSatus = 0;
 var coutercall = 0;
 
 function startTimer(duration, display) {
-
+    let thisC;
     clearInterval(mytime)
 
     var timer = duration, hours, minutes, seconds;
@@ -1394,12 +1384,22 @@ function startTimer(duration, display) {
 
         }
 
-        if (timer <= 0) {
+        $('.clsdisable').each(function () {
+            thisC = $(this);
+            if (timer <= 0) {
+                thisC.attr('disabled', 'disabled');
+            }
+            else if (timer > 0 && !thisC.is(':disabled') && thisC.closest('input').val() !== "Restricted") {
+                thisC.removeAttr('disabled');
+            }
+        });
+
+        /*if (timer <= 0) {
             $('.clsdisable').attr('disabled', 'disabled')
         }
         else if (timer > 0 && $('.clsdisable').is(':disabled') && $('.clsdisable').closest('input').val() !== "Restricted") {
             $('.clsdisable').removeAttr('disabled')
-        }
+        }*/
         if (--timer < -3) {
             timer = -3;
             if (timer == -3) {
@@ -1439,10 +1439,10 @@ function closeBidAir() {
 
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            console.log(data)
+
             if (data == '1') {
 
-                bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
+                bootbox.alert("Bid time is over. Thanks for Participation.The result of the Reverse Auction is not binding on the company and do not, in any way, create an obligation for issue of Purchase Order in favor of L1/any other participants. The company company reverses the right to announce the successful participants and issue Purchase Orders.", function () {
                     if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
 
                         window.location = sessionStorage.getItem('HomePage');
@@ -1533,13 +1533,13 @@ function fetchBidTime() {
 
         success: function (data, status, jqXHR) {
 
-            console.log("Time Left:" + data[0].timeLeft)
+
             if (data.length > 0) {
 
                 if (BidForID == 81 || BidForID == 83) {
                     if (data[0].timeLeft <= 0) {
                         clearInterval(mytime);
-                        bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
+                        bootbox.alert("Bid time is over. Thanks for Participation.The result of the Reverse Auction is not binding on the company and do not, in any way, create an obligation for issue of Purchase Order in favor of L1/any other participants. The company company reverses the right to announce the successful participants and issue Purchase Orders.", function () {
                             if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
                                 window.location = sessionStorage.getItem('HomePage');
                                 sessionStorage.clear();
@@ -1572,7 +1572,7 @@ function fetchBidTime() {
 
                         clearInterval(mytime);
 
-                        bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
+                        bootbox.alert("Bid time is over. Thanks for Participation.The result of the Reverse Auction is not binding on the company and do not, in any way, create an obligation for issue of Purchase Order in favor of L1/any other participants. The company company reverses the right to announce the successful participants and issue Purchase Orders.", function () {
 
 
 
@@ -1683,7 +1683,7 @@ function fetchBidSummaryVendorSeaExportDutch() {
                     jQuery("#tblParticipantsService").append("<thead> <tr style='background: gray; color: #FFF'><th>Item/Product</th><th>Quantity</th><th>UOM</th><th class=hide>Offered Unit Price (" + $('#lblcurrency').text() + ")</th></thead>");
 
 
-
+                    jQuery("#tblParticipantsService").append(`<tbody>`);
                     for (var i = 0; i < data.length; i++) {
 
                         _offeredPrice = (data[i].offeredPrice < 0) ? 'NA' : thousands_separators(data[i].offeredPrice);
@@ -1691,6 +1691,7 @@ function fetchBidSummaryVendorSeaExportDutch() {
                         jQuery("#tblParticipantsService").append("<tr><td class=hide id=ceilingprice" + i + ">" + data[i].ceilingPrice + "</td><td class=hide id=minimumdec" + i + ">" + data[i].minimumDecreament + "</td><td class=hide id=decon" + i + ">" + data[i].decreamentOn + "</td><td class=hide id=seid" + i + ">" + data[i].seid + "</td><td>" + data[i].destinationPort + "</td><td>" + thousands_separators(data[i].quantity) + "</td><td>" + data[i].uom + "</td><td id='offeredprice" + i + "' class=hide>" + _offeredPrice + "</td></tr>");
 
                     }
+                    jQuery("#tblParticipantsService").append(`</tbody>`);
 
                     $(".lbltimetextdutch").hide()
 
@@ -1701,7 +1702,7 @@ function fetchBidSummaryVendorSeaExportDutch() {
 
 
                     jQuery("#tblParticipantsService").append("<thead> <tr style='background: gray; color: #FFF'><th>Item/Product</th><th>Quantity</th><th>UOM</th><th id=THTarget>Target Price</th><th class=hide>Show L1 Price</th><th style='width:20%!important'>Offered Unit Price (" + $('#lblcurrency').text() + ")</th><th>Action</th></thead>");
-
+                    jQuery("#tblParticipantsService").append(`<tbody>`);
                     for (var i = 0; i < data.length; i++) {
 
                         _offeredPrice = (data[i].offeredPrice < 0) ? 'NA' : thousands_separators(data[i].offeredPrice);
@@ -1763,7 +1764,7 @@ function fetchBidSummaryVendorSeaExportDutch() {
                         }
 
                     }
-
+                    jQuery("#tblParticipantsService").append(`</tbody>`);
                 }
 
 
@@ -1961,19 +1962,19 @@ function startTimerDutch(duration, display) {
 
         }
 
-        
+
         if ((seconds.toString().substring(1, 2) == '0') || (seconds.toString().substring(1, 2) == '5')) {
 
-            
+
             fetchBidSummaryVendorSeaExportDutch();
 
-            
+
 
         }
 
 
 
-        
+
         if (--timer <= 0) {
 
             closeBidAir();

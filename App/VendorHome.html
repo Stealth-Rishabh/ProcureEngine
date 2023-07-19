@@ -35,16 +35,25 @@
     <!-- Page Specific CSS-->
     <link rel="stylesheet" href="assets/CustomCSS/VendorHome.css">
     <link rel="stylesheet" href="assets/CustomCSS/common.css">
-    <script src="assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    
+    <script src="assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+   <!--<script src="assets/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>-->
+    <script src="assets/global/plugins/jquery-migrate.min.js" type="text/javascript"></script>
+    <!--<script src="assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>-->
     <!-- IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
-    <script src="assets/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <!--<script src="assets/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>-->
+    <script src="assets/global/plugins/jquery-ui/jquery-ui-1.8.1.custom.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<!--<script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>-->
     <script src="assets/plugins/bootstrap-hover-dropdown/bootstrap-hover-dropdown.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery.cokie.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+    <script src="assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+<!--<script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>-->
+        <script src="assets/global/plugins/jquery.blockui.min.js" type="text/javascript"></script>
+<!--<script src="assets/plugins/jquery.blockui.min.js" type="text/javascript"></script>-->
+    <script src="assets/global/plugins/jquery.cokie.min.js" type="text/javascript"></script>
+ <!--<script src="assets/plugins/jquery.cokie.min.js" type="text/javascript"></script>-->
+     <script src="assets/global/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
+<!--<script src="assets/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>-->
     <script src="assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
     <script src="assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js" type="text/javascript"></script>
     <script src="assets/global/plugins/jquery-inputmask/jquery.inputmask.bundle.min.js" type="text/javascript"></script>
@@ -66,7 +75,9 @@
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/Common.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
-
+<link <!--for react-->
+<link rel="stylesheet" href="assets/CustomCSS/communicationhub.css">
+<script defer="defer" src="assets/build/static/js/main.2cafa2af.js"></script>
 
 
 
@@ -97,7 +108,8 @@
 
             </div>
             <!--@abheedev-->
-            <div class="changeLanguage">
+          
+            <!--<div class="changeLanguage">
                 <select class="navbar-language" href="index.html">
                     <option data-locale="en" value="en">English</option>
                     <option data-locale="fr" value="fr">French</option>
@@ -105,11 +117,11 @@
 
                 </select>
 
-            </div>
+            </div>-->
 
 
 
-            <div class="top-menu">
+            <div class="top-menu ">
 
                 <ul class="nav navbar-nav pull-right">
                     <li class="dropdown dropdown-user">
@@ -134,6 +146,7 @@
                     </li>
                 </ul>
             </div>
+            <div id="root"></div>
         </div>
     </div>
     <div class="clearfix">
@@ -826,7 +839,10 @@
 
 
     <script nonce="pev3">
-
+        
+        sessionStorage.setItem("EventId", 0);
+        sessionStorage.setItem("EventType", '');
+        
         jQuery(document).ready(function () {
             callPagejs('VendorHome.js');
         });

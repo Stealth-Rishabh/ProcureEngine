@@ -5,7 +5,6 @@ var form = $('#submit_form');
 //FROM HTML
 jQuery(document).ready(function () {
     Pageloaded()
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -723,7 +722,6 @@ function paintmenus() {
 sessionStorage.setItem("hdnCustomerID", 0)
 sessionStorage.setItem("hdnAdminID", 0)
 function ins_updCustomer() {
-
     var _cleanString = StringEncodingMechanism($('#txtcustomername').val());
     var _cleanString2 = StringEncodingMechanism($('#txtAddress1').val());
     var _cleanString3 = StringEncodingMechanism($('#txtadminfirstname').val());
@@ -734,10 +732,10 @@ function ins_updCustomer() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var logo = '';
     var noofbids = ''; var state = 0; var city = 0; var pincode = 0;
-    var dateParts = $("#from").val().split("/");
-    var dtfrom = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
-    var dateParts = $("#to").val().split("/");
-    var dtto = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
+    var dateParts = $("#from").val().split("T")[0].split("-");
+    var dtfrom = new Date(+dateParts[0], dateParts[1] - 1, +dateParts[2]);
+    var dateParts = $("#to").val().split("T")[0].split("-");
+    var dtto = new Date(+dateParts[0], dateParts[1] - 1, +dateParts[2]);
     
     if ($('#filepthterms').html() != '' && ($('#file1').val() == '')) {
         logo = jQuery('#filepthterms').html();
@@ -773,6 +771,7 @@ function ins_updCustomer() {
     if ($('#pincode').val() != "" && $('#pincode').val() != null) {
         pincode = $('#pincode').val()
     }
+    debugger
     if (checkimageExtension(logo)) {
         var data = {
             //'CustomerName': $('#txtcustomername').val(),

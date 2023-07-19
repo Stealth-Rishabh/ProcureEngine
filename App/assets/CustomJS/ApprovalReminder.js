@@ -1,5 +1,4 @@
 jQuery(document).ready(function () {
-    var x = isAuthenticated();
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
@@ -154,13 +153,13 @@ function FetchViewAllPendingBids() {
                 jQuery('#tbldetails').append("<thead><tr><th class='bold text-left'>Event ID</th><th class='bold'>Event Subject</th><th class='bold'>Event Closing Date</th><th class='bold'>Pending With</th><th class='bold'>Pending Since</th></tr></thead>");
                 for (var i = 0; i < BidData.length; i++) {
                    
-                    var str = "<tr><td class='text-left'>" + BidData[i].bidID + "</td>";
+                    var str = "<tbody><tr><td class='text-left'>" + BidData[i].bidID + "</td>";
                     str += "<td>" + BidData[i].bidSubject + "</td>";
 
                     str += "<td>" + BidData[i].bidCloseDate + "</td>";
                     str += "<td>" + BidData[i].pendingOn + "</td>";
                     str += "<td>" + BidData[i].pendingSince + "</td>";
-                    str += "</tr>";
+                    str += "</tr></tbody>";
                     jQuery('#tbldetails').append(str);
 
                 }
@@ -214,7 +213,7 @@ function FetchViewAllPendingBids() {
             }
             else {
                 jQuery('#tbldetails').append("<thead><tr><th>All</th><th class='bold text-left'>Event ID</th><th class='bold'>Event Subject</th><th class='bold'>Event Closing Date</th><th class='bold'>Pending With</th><th class='bold'>Pending Since</th></tr></thead>");
-                jQuery('#tbldetails > tbody').append("<tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr>");
+                jQuery('#tbldetails > tbody').append("<tbody><tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr></tbody>");
                 $('#tbldetails').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
@@ -271,7 +270,7 @@ function FetchAllCloseBids() {
                 jQuery('#tblVendorSummary').append("<thead><tr><th><label class='checkbox-inline checker'><input type='checkbox' id='chkAll' value='All' name='chkAll' onclick='fnheckAll()' /> All</label></th><th class='bold text-left'>Event ID</th><th class='bold'>Event Subject</th><th class='bold'>Event Closing Date</th><th class=hide></th><th class='bold'>Pending With</th><th class='bold'>Pending Since</th></tr></thead>");
                 for (var i = 0; i < BidData.length; i++) {
                   
-                    var str = "<tr><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + BidData[i].BidID + "'\,\'" + BidData[i].toUserId + "'\)\";  id=\"chkvender\" value=" + (BidData[i].bidID) + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td>";
+                    var str = "<tbody><tr><td><div class=\"checker\" id=\"uniform-chkbidTypes\"><span  id=\"spanchecked\"><input type=\"checkbox\" Onclick=\"Check(this,\'" + BidData[i].BidID + "'\,\'" + BidData[i].toUserId + "'\)\";  id=\"chkvender\" value=" + (BidData[i].bidID) + " style=\"cursor:pointer\" name=\"chkvender\"/></span></div></td>";
                   
                     str += "<td class='text-left'>" + BidData[i].bidID + "</td>";
                     str += "<td>" + BidData[i].bidSubject + "</td>";
@@ -281,7 +280,7 @@ function FetchAllCloseBids() {
                     str += "<td class=hide id=pendingon"+i+">" + BidData[i].toUserId + "</td>";
                     str += "<td>" + BidData[i].pendingOn + "</td>";
                     str += "<td>" + BidData[i].pendingSince + "</td>";
-                    str += "</tr>";
+                    str += "</tr></tbody>";
                     jQuery('#tblVendorSummary').append(str);
 
                 }
@@ -335,7 +334,7 @@ function FetchAllCloseBids() {
             }
             else {
                 jQuery('#tblVendorSummary').append("<thead><tr><th>All</th><th class='bold text-left'>Event ID</th><th class='bold'>Event Subject</th><th class='bold'>Event Closing Date</th><th class='bold'>Pending With</th><th class='bold'>Pending Since</th></tr></thead>");
-                jQuery('#tblVendorSummary > tbody').append("<tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr>");
+                jQuery('#tblVendorSummary > tbody').append("<tbody><tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr></tbody>");
                 $('#tblVendorSummary').dataTable({
                     "bDestroy": true,
                     "bPaginate": false,
@@ -437,7 +436,6 @@ function ValidateVendor() {
     return status;
 }
 function fnCloseBids() {
-    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     if (ValidateVendor() == 'false') {
         jQuery.unblockUI();

@@ -17,7 +17,6 @@ jQuery(document).ready(function () {
         }
     });
     Pageloaded()
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         bootbox.alert("<br />Oops! Your session has been expired. Please re-login to continue.", function () {
@@ -60,7 +59,7 @@ $('#txtRemarks,#txtbidspecification,#txtRemarksAward,#txtRemarksApp').maxlength(
     alwaysShow: true
 });
 function FetchVendors(BidID) {
-	debugger;
+	
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",

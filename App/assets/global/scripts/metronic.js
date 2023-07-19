@@ -160,9 +160,9 @@ var Metronic = function() {
             return;
         }
         var test = $("input[type=checkbox]:not(.toggle, .make-switch), input[type=radio]:not(.toggle, .star, .make-switch)");
-        if (test.size() > 0) {
+        if (test.length > 0) {
             test.each(function() {
-                if ($(this).parents(".checker").size() === 0) {
+                if ($(this).parents(".checker").length === 0) {
                     $(this).show();
                     $(this).uniform();
                 }
@@ -201,9 +201,9 @@ var Metronic = function() {
     var handleModals = function() {
         // fix stackable modal issue: when 2 or more modals opened, closing one of modal will remove .modal-open class. 
         $('body').on('hide.bs.modal', function() {
-            if ($('.modal:visible').size() > 1 && $('html').hasClass('modal-open') === false) {
+            if ($('.modal:visible').length > 1 && $('html').hasClass('modal-open') === false) {
                 $('html').addClass('modal-open');
-            } else if ($('.modal:visible').size() <= 1) {
+            } else if ($('.modal:visible').length <= 1) {
                 $('html').removeClass('modal-open');
             }
         });
@@ -274,7 +274,7 @@ var Metronic = function() {
             return;
         }
 
-        if ($(".fancybox-button").size() > 0) {
+        if ($(".fancybox-button").length > 0) {
             $(".fancybox-button").fancybox({
                 groupAttr: 'data-rel',
                 prevEffect: 'none',
@@ -387,7 +387,7 @@ var Metronic = function() {
 
         // wrMetronicer function to scroll(focus) to an element
         scrollTo: function(el, offeset) {
-            var pos = (el && el.size() > 0) ? el.offset().top : 0;
+            var pos = (el && el.length > 0) ? el.offset().top : 0;
 
             if (el) {
                 if ($('body').hasClass('page-header-fixed')) {
@@ -605,7 +605,7 @@ var Metronic = function() {
         initUniform: function(els) {
             if (els) {
                 $(els).each(function() {
-                    if ($(this).parents(".checker").size() === 0) {
+                    if ($(this).parents(".checker").length === 0) {
                         $(this).show();
                         $(this).uniform();
                     }

@@ -125,6 +125,7 @@ jQuery(document).ready(function () {
 });
 
 function fetchAzPPcFormDetails() {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     jQuery.ajax({
@@ -335,6 +336,7 @@ function validateAppsubmitData() {
     });
 }
 function ApprovalRejectPPCApp() {
+    var x = isAuthenticated();
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
     var Approvers = {
@@ -348,7 +350,7 @@ function ApprovalRejectPPCApp() {
         "Remarks": jQuery("#txtRemarksApp").val()
     }
     //alert(JSON.stringify(approvalbyapp))
-    console.log(JSON.stringify(Approvers))
+ //   console.log(JSON.stringify(Approvers))
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         url: sessionStorage.getItem("APIPath") + "Azure/ins_BidPPCApproval",

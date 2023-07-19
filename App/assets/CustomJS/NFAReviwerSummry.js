@@ -3,6 +3,7 @@ var allUsers = [];
 
 
 function fetchRegisterUser() {
+    var x = isAuthenticated();
     var data = {
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
         "UserID": sessionStorage.getItem('UserID'),
@@ -48,7 +49,7 @@ function fetchRegisterUser() {
 
 }
 function GetOverviewmasterbyId(idx) {
-    debugger;
+    var x = isAuthenticated();
     var url = "NFA/GetNFAOverViewsById?CustomerID=" + parseInt(CurrentCustomer) + "&idx=" + parseInt(idx);
     var GetData = callajaxReturnSuccess(url, "Get", {});
     GetData.success(function (res) {
@@ -93,6 +94,7 @@ function GetOverviewmasterbyId(idx) {
 
 
 function BindAttachmentsOfEdit() {
+    var x = isAuthenticated();
     var url = "NFA/FetchNFaFiles?CustomerId=" + parseInt(CurrentCustomer) + "&NfaId=" + parseInt(idx);
 
     var GetFilesData = callajaxReturnSuccess(url, "Get", {})
@@ -132,6 +134,7 @@ function BindAttachmentsOfEdit() {
 };
 
 function BindSaveparams() {
+    var x = isAuthenticated();
     var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx);
 
     var ParamData = callajaxReturnSuccess(url, "Get", {})
@@ -165,7 +168,7 @@ function DownloadFile(aID) {
 }
 
 function fetchApproverStatus() {
-
+    var x = isAuthenticated();
     //jQuery.blockUI({ message: '<h5><img src="assets_1/layouts/layout/img/loading.gif" />  Please Wait...</h5>' });
     var url = sessionStorage.getItem("APIPath") + "NFA/GetNFAApproverStatus/?NFaIdx=" + idx
 

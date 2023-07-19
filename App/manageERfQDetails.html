@@ -90,7 +90,7 @@
                     <li class="dropdown dropdown-user">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"
                            data-hover="dropdown" data-close-others="true">
-                            
+
                             <b>
                                 <span id="spanUserName" class="username username-hide-on-mobile">
                                 </span>
@@ -107,7 +107,7 @@
     </div>
     <div class="clearfix">
     </div>
-    <div class="page-container nodisplay" >
+    <div class="page-container nodisplay">
         <!-- BEGIN SIDEBAR -->
         <div class="page-sidebar-wrapper">
             <div class="page-sidebar navbar-collapse collapse">
@@ -154,7 +154,7 @@
                             </i>
                         </li>
                         <li><a href="javascript:;" class="notextdeco">Manage </a><i class="fa fa-angle-right"></i></li>
-                        <li><a href="javascript:;"class="notextdeco"> Add Vendors | Reset Password | Reopen Quotes </a></li>
+                        <li><a href="javascript:;" class="notextdeco"> Add Vendors | Reset Password | Reopen Quotes </a></li>
                     </ul>
                     <div class="page-toolbar">
                         <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
@@ -179,16 +179,16 @@
                             <div class="portlet-body">
                                 <!-- BEGIN FORM-->
 
-                                <div class="alert alert-success" >
+                                <div class="alert alert-success">
                                     <span id="spansuccess1"> </span>
                                 </div>
-                                <div class="alert alert-danger" >
+                                <div class="alert alert-danger">
                                     <span id="spandanger"> </span>
                                 </div>
 
                                 <div class="clearfix"></div>
 
-                                </br>
+                                <br/>
                                 <div class="form-group col-lg-10">
 
                                     <label class="col-lg-2  control-label">
@@ -200,7 +200,7 @@
                                         <input type="hidden" value="0" id="ddlrfq" />
                                         <input type="hidden" value="0" id="hdnDeadline" />
                                         <input type="text" class="form-control margin0auto" id="txtRFQ" name="txtRFQ"
-                                                data-provide="typeahead" autocomplete="off" maxlength="200" placeholder="Type RFQ" onkeyup="replaceQuoutesFromString(this)"/>
+                                               data-provide="typeahead" autocomplete="off" maxlength="200" placeholder="Type RFQ" onkeyup="replaceQuoutesFromString(this)" />
 
                                     </div>
 
@@ -266,10 +266,13 @@
                                                                                         <label class="control-label col-md-4">
                                                                                             RFQ Subject:
                                                                                         </label>
-                                                                                        <div class="col-md-8">
-                                                                                            <label id="RFQSubject" class="control-label txtalignleft">
-                                                                                            </label>
+                                                                                        <div class="col-md-8" style="display:flex;align-items:center;gap:5px;">
+                                                                                            <label id="RFQSubject" class="control-label txtalignleft rfqsub"></label>
+                                                                                            <a class="isDisabledClass cursorpointer" id="RFQSub"><i class="fa fa-pencil" style="margin-top:10px"></i></a>
+                                                                                            <button style="display:none; width: 80px; height: 35px; border-radius: 10px !important; text-align: center !important; margin-top:5px;" type="button" id="subRfqID" class="btn btn-primary" onclick="updateRFQField('subject')">Update</button>
                                                                                         </div>
+
+                                                                                        
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="col-md-6">
@@ -293,9 +296,10 @@
                                                                                         <label class="control-label col-md-2">
                                                                                             RFQ Description:
                                                                                         </label>
-                                                                                        <div class="col-md-10">
-                                                                                            <label id="RFQDescription"  class="control-label txtalignleft">
-                                                                                            </label>
+                                                                                       <div class="col-md-10" style="display:flex;align-items:center;gap:5px;">
+                                                                                            <label id="RFQDescription" class="control-label txtalignleft rfqdesc"></label>
+                                                                                            <a class="isDisabledClass cursorpointer" id="RFQDesc"><i class="fa fa-pencil" style="margin-top:10px"></i></a>
+                                                                                            <button style="display:none; width: 80px; height: 35px; border-radius: 10px !important; text-align: center !important; margin-top:5px" type="button" id="descRfqID" class="btn btn-primary" onclick="updateRFQField('description')">Update</button>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -346,7 +350,7 @@
                                                                                             Currency:
                                                                                         </label>
                                                                                         <div class="col-md-2">
-                                                                                            <label id="Currency" class="control-label txtalignleft" >
+                                                                                            <label id="Currency" class="control-label txtalignleft">
                                                                                             </label>
                                                                                             <input type="hidden" id="currencyid" />
                                                                                         </div>
@@ -367,7 +371,7 @@
                                                                                         <label class="control-label col-md-4">Approvers:</label>
                                                                                         <div class="col-md-8">
                                                                                             <label class="form-control-static" id="mapedapproverPrevtab_0"></label>
-                                                                                            <a class="isDisabledClass cursorpointer" id="ctrladdapprovers" ><i class="fa fa-pencil" onclick="fnOpenPopupApprover('manage')"></i></a>
+                                                                                            <a class="isDisabledClass cursorpointer" id="ctrladdapprovers"><i class="fa fa-pencil" onclick="fnOpenPopupApprover('manage')"></i></a>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -376,7 +380,7 @@
                                                                                         <label class="control-label col-md-4">Technical Approval:</label>
                                                                                         <div class="col-md-8">
                                                                                             <p class="form-control-static" id="lbltechnicalApproval"></p>
-
+                                                                                            <a class="isDisabledClass cursorpointer" id="ctrladdapprovers"><i class="fa fa-pencil" onclick="fnOpenPopupTechApprover('manage')"></i></a>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -391,16 +395,16 @@
                                                                                             <label id="lblRFQOpenDate" class="control-label txtalignleft">
                                                                                             </label>&nbsp;
                                                                                             <a class="isDisabledOpenClass cursorpointer" id="ctrlRFQOpenDates" data-toggle="modal"><i class="fa fa-pencil"></i></a>
-                                                                                           
+
                                                                                             <button id="openquote" type="button" class="btn btn-primary marginleft5px" onclick="OpenQuotes()">Go</button>
-                                                                                           
+
                                                                                         </div>
-                                                                                       
+
                                                                                     </div>
 
                                                                                 </div>
                                                                                 <div class="col-md-2">
-                                                                                    
+
 
                                                                                 </div>
                                                                             </div>
@@ -434,7 +438,7 @@
 
 
                                                                             <div class="col-md-4">
-                                                                                <span  class="btn blue width390px"><input type="file" id="fileToUpload1" name="fileToUpload1" onchange="checkfilesize(this);" /></span>
+                                                                                <span class="btn blue width390px"><input type="file" id="fileToUpload1" name="fileToUpload1" onchange="checkfilesize(this);" /></span>
                                                                             </div>
 
 
@@ -531,7 +535,7 @@
                                                                             <div class="col-lg-10">
 
                                                                                 <input type="text" class="form-control margin0auto" id="txtvendor" name="txtvendor"
-                                                                                        data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Select Vendor" onkeyup="replaceQuoutesFromString(this)"/>
+                                                                                       data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Select Vendor" onkeyup="replaceQuoutesFromString(this)" />
 
                                                                             </div>
                                                                         </div>
@@ -565,7 +569,7 @@
                                                                     <div class="input-icon">
                                                                         <i class="fa fa-search"></i>
                                                                         <!--<input type="text" id="search" placeholder="Search..." class="form-control" />-->
-                                                                        <input type="text" class="form-control" placeholder="Search Vendor Name" autocomplete="off" id="txtSearch" name="txtSearch" onkeyup="replaceQuoutesFromString(this)"/>
+                                                                        <input type="text" class="form-control" placeholder="Search Vendor Name" autocomplete="off" id="txtSearch" name="txtSearch" onkeyup="replaceQuoutesFromString(this)" />
                                                                     </div>
                                                                 </div>
                                                                 </br></br></br>
@@ -575,10 +579,10 @@
                                                                         <div class="col-md-12">
 
                                                                             <div id="divvendorlist" class="portlet-body flip-scroll ">
-                                                                                <table  align="left" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content width620px">
+                                                                                <table align="left" id="tblvendorlist" class="table table-bordered table-striped table-condensed flip-content width620px">
                                                                                     <thead class="flip-content">
                                                                                         <tr>
-                                                                                            
+
                                                                                             <th width="100%">
                                                                                                 Vendors
                                                                                             </th>
@@ -624,7 +628,7 @@
                                                                                 </label>
                                                                                 <div class="col-lg-4">
 
-                                                                                    <select class="form-control margin0auto" disabled id="ddlrfqVersion" name="ddlrfqVersion" ></select>
+                                                                                    <select class="form-control margin0auto" disabled id="ddlrfqVersion" name="ddlrfqVersion"></select>
 
                                                                                 </div>
                                                                             </div>
@@ -641,7 +645,7 @@
                                                                                             <tr>
                                                                                                 <th>
                                                                                                     <div class="col-md-10 checkbox-list">
-                                                                                                        <label class="checkbox-inline checkboxinline1" >
+                                                                                                        <label class="checkbox-inline checkboxinline1">
 
                                                                                                         </label>
                                                                                                     </div>
@@ -726,7 +730,7 @@
 
 
                                                                     </div>
-                                                                    <div class="form-actions fluid padding5px" >
+                                                                    <div class="form-actions fluid padding5px">
                                                                         <div class="col-md-offset-4 col-md-6">
                                                                             <button type="submit" class="btn green">
                                                                                 Update <!--& Send Email-->
@@ -762,7 +766,7 @@
                                                                             <div class="col-lg-10">
 
                                                                                 <input type="text" class="form-control margin0auto" id="txtvendorSurrogateBid" name="txtvendorSurrogateBid"
-                                                                                       data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Select Vendor" onkeyup="replaceQuoutesFromString(this)"/>
+                                                                                       data-provide="typeahead" autocomplete="off" maxlength="64" placeholder="Select Vendor" onkeyup="replaceQuoutesFromString(this)" />
 
                                                                             </div>
                                                                         </div>
@@ -829,7 +833,7 @@
                                                                         <div class="col-md-12">
 
                                                                             <div id="divvendorlistremainder" class="portlet-body flip-scroll ">
-                                                                                <table  align="left" id="tblparicipantslists" class="table table-bordered table-striped table-condensed flip-content width500px">
+                                                                                <table align="left" id="tblparicipantslists" class="table table-bordered table-striped table-condensed flip-content width500px">
                                                                                     <thead>
                                                                                         <tr>
                                                                                             <th>
@@ -980,7 +984,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label  col-md-2">
-                                        Target Price
+                                        Target/Budget Price
                                     </label>
                                     <div class="col-md-4 xyz">
                                         <input type="tel" class="form-control thousandseparated" id="txttargetprice"
@@ -1068,7 +1072,7 @@
                                         Term & Condition<span class="required"> *</span>
                                     </label>
                                     <div class="col-md-3">
-                                        <span  class="btn blue width390px"><input type="file" id="file1" name="file1" onchange="checkfilesize(this);" /></span>
+                                        <span class="btn blue width390px"><input type="file" id="file1" name="file1" onchange="checkfilesize(this);" /></span>
 
 
                                     </div>
@@ -1160,10 +1164,10 @@
                     </div>
 
                     <div class="portlet-body form">
-                        <div class="alert alert-success" id="successapp" >
+                        <div class="alert alert-success" id="successapp">
                             <span id="spansuccessapp"> </span>
                         </div>
-                        <div class="alert alert-danger" id="diverrorapp" >
+                        <div class="alert alert-danger" id="diverrorapp">
                             <span id="spandangerapp"> </span>
                         </div>
                         <form action="#" id="frmRFQApprover" class="form-horizontal" role="form">
@@ -1214,16 +1218,99 @@
             </div>
         </div>
     </div>
+    
+    
+    <!--technical approver-->
+    <div id="addtechnicalapprovers" class="modal fade bs-modal-md" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="row">
+                <div class="col-md-12"></div>
+                <div class="portlet box green-haze">
+
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-reorder"></i>Add Technical Approvers
+                        </div>
+                        <div class="tools">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body form">
+                        <div class="alert alert-success" id="successapp">
+                            <span id="spansuccessapp"> </span>
+                        </div>
+                        <div class="alert alert-danger" id="diverrorapp">
+                            <span id="spandangerappTech"> </span>
+                        </div>
+                        <form action="#" id="frmRFQTechnicalApprover" class="form-horizontal" role="form">
+                            <div class="form-body" id="hideDDLTech">
+                                <div class="inputgroup">
+                                    <label class="control-label col-md-3">
+                                        Approval Type
+                                    </label>
+                                    <div class="col-md-8" style="margin-bottom:10px;">
+                                        <select class="form-control" id="drp_TechnicalApp" name="drp_TechnicalApp">
+                                            <option value="">Select</option>
+                                            <option value="RFQ">With individual RFQ Response</option>
+                                            <option value="AfterRFQ">After All RFQ Responses</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-body">
+                                <input type="hidden" id="hdnRFQTechApproverID" value="0" />
+                                <input type="hidden" id="hdnRFQTechApproverEmailID" value="0" />
+                                <input type="hidden" id="hdnRFQTechApproverusername" value="0" />
+                                <div class="row">
+                                    <label class="col-md-3 control-label">
+                                        Select Technical Approvers
+                                    </label>
+                                    <label class="col-md-7">
+                                        <input type="text" class="form-control pull-right" placeholder="Select Technical Approver" id="txtTechincalApproverRFQ"
+                                               data-provide="typeahead" autocomplete="off" name="txtTechincalApproverRFQ" />
+                                    </label>
+                                    <div class="col-md-1 ">
+                                        <button type="button" id="AddTechbtn1" onclick="addRFQTechnicalApprovers()" class="btn green-haze btn-sm"><i class="fa fa-plus"></i></button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-striped table-bordered table-hover" id="tblRFQtechnicalapprovers"></table>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="row">
+                                            <div class="col-md-offset-4 col-md-9">
+                                                <button type="submit" class="btn green" id="btnrfqtechnicalapproversubmit">Submit</button>
+                                                <button type="button" class="btn yellow-crusta" onclick="fnclosepopupTechnicalApprovers('manage')" id="btnClose">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6"> </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--technical approver-->
 
     <script type="text/javascript" nonce="maerde">
 
         jQuery(document).ready(function () {
             callPagejs('eRFQCommon.js,manageErfq.js');
-           
+
         });
     </script>
     <!-- END JAVASCRIPTS -->
 </body>
-
-
 </html>

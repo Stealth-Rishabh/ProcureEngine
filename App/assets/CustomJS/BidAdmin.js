@@ -23,6 +23,7 @@ $(document).ready(function () {
 
 });
 function fetchBidTime() {
+    
     var display = document.querySelector('#lblTimeLeft');
 
     jQuery.ajax({
@@ -104,19 +105,19 @@ function startTimer(duration, display) {
     }, 1000);
 }
 var mytimeforSatus = 0;
-function startTimerForStaggerItem(duration1, displayS) {
+/*function startTimerForStaggerItem(duration1, displayS) {
     clearInterval(mytimeforSatus)
-
+    
     var timer1 = duration1, hours1, minutes1, seconds1;
     mytimeforSatus = setInterval(function () {
-
-        hours1 = parseInt(timer1 / 3600, 10)
+   debugger
+        hours1 = parseFloat(timer1 / 3600, 10)
         minutes1 = parseInt(timer1 / 60, 10) - (hours1 * 60)
         seconds1 = parseInt(timer1 % 60, 10);
 
-        hours1 = hours1 < 10 ? "0" + hours1 : hours1;
-        minutes1 = minutes1 < 10 ? "0" + minutes1 : minutes1;
-        seconds1 = seconds1 < 10 ? "0" + seconds1 : seconds1;
+        hours1 = parseInt(hours1 < 10 ? "0" + hours1 : hours1);
+        minutes1 = parseInt(minutes1 < 10 ? "0" + minutes1 : minutes1);
+        seconds1 = parseInt(seconds1 < 10 ? "0" + seconds1 : seconds1);
 
         if (hours1 > 0) {
             displayS.textContent = hours1 + ":" + minutes1 + ":" + seconds1;
@@ -124,21 +125,53 @@ function startTimerForStaggerItem(duration1, displayS) {
         else {
             displayS.textContent = minutes1 + ":" + seconds1;
         }
-        //console.log(TotalTimer)
-
-        if (--timer1 <= 0 && TotalTimer > 0) {
+       
+        if (--timer1 <= 0   && TotalTimer > 0) {
             timer1 = 0;
             if (timer1 == 0) {
                 fnrefreshStaggerTimerdataonItemClose();
             }
         }
+       
+    }, 1000);
+}*/
 
+function startTimerForStaggerItem(duration1, displayS) {
+    clearInterval(mytimeforSatus);
+
+    var timer1 = duration1;
+    mytimeforSatus = setInterval(function () {
+        
+        var hours1 = Math.floor(timer1 / 3600);
+        var minutes1 = Math.floor((timer1 % 3600) / 60);
+        var seconds1 = timer1 % 60;
+
+        hours1 = hours1 < 10 ? "0" + hours1 : hours1;
+        minutes1 = minutes1 < 10 ? "0" + minutes1 : minutes1;
+        seconds1 = seconds1 < 10 ? "0" + seconds1 : seconds1;
+
+        displayS.textContent = hours1 + ":" + minutes1 + ":" + seconds1;
+
+        if (--timer1 < 0) {
+            clearInterval(mytimeforSatus);
+            fnrefreshStaggerTimerdataonItemClose();
+        }
     }, 1000);
 }
+
+
 ///** on enter submit form
 $("#txtChatMsg").keypress(function (e) {
     if (e.which == 13) {
         sendChatMsgs();
+
+    }
+})
+
+
+$("#txtBroadcastMsg").keypress(function (e) {
+    if (e.which == 13) {
+        sendBroadCastChatMsgs();
 
     }
 })

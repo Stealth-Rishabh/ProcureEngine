@@ -1,8 +1,3 @@
-﻿a {
-    /* overflow: hidden;*/
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
 
 /*mobile specific css*/
 
@@ -11,9 +6,23 @@
         margin-bottom: 4px !important;
     }
 
-    a {
+    div {
         /* overflow: hidden;*/
         text-overflow: ellipsis;
         white-space: nowrap;
     }
+}
+
+
+.delegatebtn:hover {
+    background-color: bisque;
+}
+
+
+.container {
+    display: block !important;
+}
+
+.msg-button {
+    position: absolute !important;
 }

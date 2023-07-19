@@ -1,6 +1,6 @@
-﻿jQuery(document).ready(function () {   
+jQuery(document).ready(function () {
+   
     Pageloaded()
-    var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -92,7 +92,7 @@ function FormValidate() {
 }
 
 function insupdconditionmaster() {
-
+    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
     if (jQuery("#checkboxactive").is(':checked')) {
@@ -107,7 +107,8 @@ function insupdconditionmaster() {
         "conditionName": $('#conditionName').val(),
         "IsActive": status,
         "CustomerID": parseInt(sessionStorage.getItem("CustomerID")),
-        "conditionSr": $('#conditionSr').val()
+        "conditionSr": $('#conditionSr').val(),
+        "createdBy" : sessionStorage.getItem('UserID')
     }
     //alert(JSON.stringify(data))
     jQuery.ajax({
@@ -166,7 +167,6 @@ function insupdconditionmaster() {
 
 function fetchConditionmaster() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -197,7 +197,6 @@ function fetchConditionmaster() {
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
-
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
