@@ -1088,7 +1088,7 @@ function fetchBidHeaderDetails() {
     var url = '';
 
     url = sessionStorage.getItem("APIPath") + "BidVendorSummary/FetchBidDetails_Vendor/?BidID=" + sessionStorage.getItem('BidID') + "&VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId"))
-
+     
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -1098,7 +1098,7 @@ function fetchBidHeaderDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-
+              
             if (data.length == 1) {
                 var localBidDate = fnConverToLocalTime(data[0].bidDate);
                 jQuery('#bid_EventID').html("Event ID : " + sessionStorage.getItem("BidID"));
@@ -1136,6 +1136,7 @@ function fetchBidHeaderDetails() {
             }
         },
         error: function (xhr, status, error) {
+             
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
 
             if (xhr.status == 401) {

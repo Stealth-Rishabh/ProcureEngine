@@ -126,7 +126,7 @@ connection.on("refreshChatUsers", function (rdataJson, connectionId, flag) {
 
 });
 connection.on("refreshColumnStatus", function (data) {
-    debugger
+    
     var JsonMsz = JSON.parse(data[0]);
     if (JSON.parse(JsonMsz[0]) == "-1" && JSON.parse(JsonMsz[1]) == sessionStorage.getItem('VendorId')) {
 
@@ -158,7 +158,7 @@ connection.on("refreshColumnStatus", function (data) {
             dataType: "json",
 
             success: function (data, status, jqXHR) {
-                debugger
+               
                 if (data.length > 0) {
                     jQuery('#tblParticipantsService >tbody >tr').each(function (i) {
 
@@ -547,7 +547,7 @@ function fetchBidHeaderDetails(bidId) {
 
         success: function (data, status, jqXHR) {
 
-
+           
 
             if (data.length == 1) {
                 let _cleanStringSub = StringDecodingMechanism(data[0].bidSubject);
@@ -742,7 +742,7 @@ function DownloadFile(aID) {
 }
 
 function fetchVendorDetails() {
-
+  
 
 
     var url = '';
@@ -768,7 +768,7 @@ function fetchVendorDetails() {
         dataType: "json",
 
         success: function (data, status, jqXHR) {
-
+                 
 
             if (data.length == 1) {
                 let _cleanStringSub = StringDecodingMechanism(data[0].bidSubject);
@@ -890,7 +890,7 @@ function fetchVendorDetails() {
 
         error: function (xhr) {
 
-
+           
 
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
 
@@ -927,11 +927,12 @@ var count;
 var url = '';
 
 function fetchBidSummaryVendorproduct() {
-
+    
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     url = '';
     count = 0;
     url = sessionStorage.getItem("APIPath") + "VendorParticipation/fetchBidSummaryVendorSeaExport/?VendorID=" + encodeURIComponent(sessionStorage.getItem("VendorId")) + "&BidID=" + sessionStorage.getItem("BidID") + "&UserType=" + sessionStorage.getItem("UserType") + "&_isBidStarted=" + _isBidStarted + "";
+    console.log(url)
     jQuery.ajax({
 
         type: "GET",
@@ -949,6 +950,7 @@ function fetchBidSummaryVendorproduct() {
         dataType: "json",
 
         success: function (data, status, jqXHR) {
+           
             if (data.length > 0) {
                 var TotalBidValue = '';
                 if (_isBidStarted == false) {
@@ -1100,7 +1102,7 @@ function fetchBidSummaryVendorproduct() {
         },
 
         error: function (xhr, status, error) {
-
+            
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
 
             if (xhr.status == 401) {
@@ -1440,7 +1442,7 @@ function closeBidAir() {
 
             if (data == '1') {
 
-                bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
+                bootbox.alert("Bid time is over. Thanks for Participation.The result of the Reverse Auction is not binding on the company and do not, in any way, create an obligation for issue of Purchase Order in favor of L1/any other participants. The company company reverses the right to announce the successful participants and issue Purchase Orders.", function () {
                     if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
 
                         window.location = sessionStorage.getItem('HomePage');
@@ -1537,7 +1539,7 @@ function fetchBidTime() {
                 if (BidForID == 81 || BidForID == 83) {
                     if (data[0].timeLeft <= 0) {
                         clearInterval(mytime);
-                        bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
+                        bootbox.alert("Bid time is over. Thanks for Participation.The result of the Reverse Auction is not binding on the company and do not, in any way, create an obligation for issue of Purchase Order in favor of L1/any other participants. The company company reverses the right to announce the successful participants and issue Purchase Orders.", function () {
                             if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
                                 window.location = sessionStorage.getItem('HomePage');
                                 sessionStorage.clear();
@@ -1570,7 +1572,7 @@ function fetchBidTime() {
 
                         clearInterval(mytime);
 
-                        bootbox.alert("Bid time has been over. Thanks for Participation.", function () {
+                        bootbox.alert("Bid time is over. Thanks for Participation.The result of the Reverse Auction is not binding on the company and do not, in any way, create an obligation for issue of Purchase Order in favor of L1/any other participants. The company company reverses the right to announce the successful participants and issue Purchase Orders.", function () {
 
 
 

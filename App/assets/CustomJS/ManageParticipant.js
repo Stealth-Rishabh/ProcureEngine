@@ -204,7 +204,7 @@ $("#btnExport").click(function (e) {
 
 
             submitHandler: function (form) {
-                   debugger
+                  
                 RegisterParticipants();
                 App.scrollTo(error1, -100);
             }
@@ -494,7 +494,7 @@ function fetchParticipantsVenderTable() {
         crossDomain: true,
         dataType: "json",
         success: function (Venderdata) {
-             debugger
+            
             jQuery("#tblParticipantsVender > tbody").empty();
             $('#lblTotallength').html("<b>Total Record : </b>" + Venderdata.length)
             if (Venderdata.length > 0) {

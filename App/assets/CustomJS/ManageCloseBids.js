@@ -67,7 +67,7 @@ function FetchAllCustomer() {
 
 }
 function FetchAllOpenBids() {
-    debugger;
+  
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     
     var Fromdate = new Date("2000-01-01 01:00:00");
@@ -96,7 +96,7 @@ function FetchAllOpenBids() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-            debugger;
+         
             jQuery("#tblVendorSummary").empty();
             if (BidData.length > 0) {
                 $('#divsubmitbutton').removeClass('hide');

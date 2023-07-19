@@ -6,12 +6,12 @@
     display: none;
 }
 
-.modal-xl{
-    width:1200px !important;
+.modal-xl {
+    width: 1200px !important;
 }
 
-.margin9{
-    margin:9px;
+.margin9 {
+    margin: 9px;
 }
 
 .notextdeco {
@@ -89,3 +89,7 @@ a:active, a:focus {
     }
 
 
+.inlineblock {
+    display: flex;
+    align-items: center;
+}

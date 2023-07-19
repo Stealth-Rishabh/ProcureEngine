@@ -213,7 +213,7 @@
 
                                                         </div>
                                                         <form action="#" id="submit_form_contact" class="form-horizontal">
-                                                            <div id="collapse2" class="panel-collapse active noheight" seqno="3">
+                                                            <div id="collapse2" class="panel-collapse collapse in height-auto" seqno="3">
                                                                 <div class="panel-body">
                                                                     <div class="row" id="tab1check">
                                                                         <div class="col-md-12">
@@ -368,7 +368,7 @@
                                                         </div>
                                                         
                                                            
-                                                            <div id="collapse0" class="panel-collapse collapse">
+                                                            <div id="collapse0" class="panel-collapse collapse in height-auto">
                                                                 <div class="panel-body">
 
                                                                     <div class="panel-group accordion" id="accordion2">
@@ -445,8 +445,14 @@
                                                                                                             <label class="col-md-2 control-label" data-i18n="state">
                                                                                                                 Tax Id  <span class="required">*</span> 
                                                                                                             </label>
-                                                                                                            <div class="col-md-4 xyz">
+                                                                                                            <div class="col-md-4 xyz inlineblock">
                                                                                                                 <input type="text" class="form-control" id="txtTINNo" name="txtTINNo" autocomplete="off" tabindex="1" onkeyup="replaceQuoutesFromString(this)" disabled>
+                                                                                                                <span>
+                                                                                                                    <button class="btn default tooltips" data-placement="top" data-original-title="Click to verify GST" type="button" id="btncalgst">
+                                                                                                                        <!--<i class="fa fa-check"></i>-->
+                                                                                                                        <img src='assets/img/gstchk.svg' width='25px' height='18px' style='{margin-bottom:4px;}'/>
+                                                                                                                    </button>
+                                                                                                                </span>
                                                                                                             </div>
                                                                                                         </span>
 

@@ -474,7 +474,7 @@ function BindApprovers() {
     GetData.success(function (res) {
         // $("#tblApproversPrev").empty();
         if (res.result != null) {
-            debugger;
+          
             if (res.result.length > 0) {
                 $("#errorApproverdivSeq").hide();
                 //  $("#tblApproversPrev").append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:5%!important'>Sequence</th></tr></thead>");

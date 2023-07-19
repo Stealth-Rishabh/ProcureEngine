@@ -59,7 +59,7 @@ $('#txtRemarks,#txtbidspecification,#txtRemarksAward,#txtRemarksApp').maxlength(
     alwaysShow: true
 });
 function FetchVendors(BidID) {
-	debugger;
+	
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",

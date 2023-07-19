@@ -23,6 +23,9 @@ jQuery(document).ready(function () {
     if (_RFQid == null)
         sessionStorage.setItem('hddnRFQID', 0)
     else {
+        sessionStorage.setItem("EventId", _RFQid);
+        sessionStorage.setItem("EventType", 'eRFQv');
+        
         var version = 0;
 
         if (sessionStorage.getItem('RFQVersionId') > 0) {
@@ -357,7 +360,7 @@ var FormWizard = function () {
                 },
 
                 onNext: function (tab, navigation, index) {
-
+                       
                     if (index == 1) {
                         $("#LIVendor").find("a").attr("onclick", "warnforsubmit()");
                         // $('#form_wizard_1').find('.button-cal').show();
@@ -438,6 +441,7 @@ var FormWizard = function () {
                 },
 
                 onPrevious: function (tab, navigation, index) {
+                    
                     success.hide();
                     error.hide();
                     handleTitle(tab, navigation, index);
@@ -469,12 +473,12 @@ var FormWizard = function () {
                  $('#downBOQ').hide();
                  
              }
-            
+           
             $('#form_wizard_1 .button-submit').click(function () {
                 var flagQ = "T";
                 var rowCountQ = jQuery('#tblquestions >tbody>tr').length;
 
-
+            
                 for (i = 0; i < rowCountQ; i++) {
                     if ($("#answers" + i).val() == "") {
                         $('#answers' + i).removeClass('has-success')
@@ -550,7 +554,7 @@ function fncheckItemWiseTC(ver, BoqPID) {
 
         },
         error: function (xhr, status, error) {
-
+            
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -606,7 +610,7 @@ function fetchAttachments() {
 
         },
         error: function (xhr, status, error) {
-
+          
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -665,7 +669,7 @@ function fetchRFQLevelTC(ver) {
             }
         },
         error: function (xhr, status, error) {
-
+           
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -799,7 +803,7 @@ function fileDeletefromdb(srno, deletionFor) {
             return;
         },
         error: function (xhr, status, error) {
-
+           
             var err = xhr.responseText //eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -904,7 +908,7 @@ function fetchRFQResponse(Flag, version) {
 
         },
         error: function (xhr, status, error) {
-
+            
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -978,7 +982,7 @@ function fnsaveAttachmentsquestions() {
                 fetchRFQResponse('Question', sessionStorage.getItem('RFQVersionId'))
             },
             error: function (xhr, status, error) {
-
+                
                 var err = xhr.responseText//eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
                     error401Messagebox(err.Message);

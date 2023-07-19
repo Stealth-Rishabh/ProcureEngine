@@ -729,7 +729,7 @@ function fnEnryptURL(URL) {
 var key = CryptoJS.enc.Utf8.parse('8080808080808080');
 var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
 function fnencrypt(message) {
-    debugger
+   
     var encryptedtext = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(message), key,
         {
             keySize: 128 / 8,
@@ -740,7 +740,7 @@ function fnencrypt(message) {
     return (encryptedtext)
 }
 function fndecrypt(message) {
-     debugger
+    
     var key = CryptoJS.enc.Utf8.parse('8080808080808080');
     var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
 
@@ -1002,8 +1002,10 @@ function GetCountrySpecificMaster(CountryKey) {
                  $(".nopanhide").show();
                  $(".newgsthide").show();
                 jQuery("#txtTINType").append(jQuery("<option></option>").val('').html("Unregistered"));
-               
-                $("#txtTINNo").attr("onchange", "extractPan(this)");
+                
+               //$("#txtTINNo").attr("onchange", "extractPan(this)");
+                $("#btncalgst").attr("onClick", `extractPan()`);
+                $("#btncalgst").show()
                 $("#txtPanNo").attr("disabled", "disabled");
                 $("#vendorpanno").attr("disabled", "disabled");
                 $("#vendorname").attr("disabled", "disabled");
@@ -1020,7 +1022,9 @@ function GetCountrySpecificMaster(CountryKey) {
                 $(".newgsthide").hide();
                 jQuery("#txtTINType").append(jQuery("<option></option>").val('').html("Unregistered"));
                 jQuery("#txtTINType2").empty();
-                $("#txtTINNo").attr("onchange", "");
+               // $("#txtTINNo").attr("onchange", "");
+                $("#btncalgst").attr("onClick", ``);
+                $("#btncalgst").hide()
                 $("#txtPanNo").removeAttr("disabled");
                 $("#vendorpanno").removeAttr("disabled");
                 $("#ddlNatureEstaiblishment").removeAttr("disabled");

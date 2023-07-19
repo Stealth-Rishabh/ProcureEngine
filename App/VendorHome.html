@@ -75,7 +75,9 @@
     <script src="assets/scripts/aes.js"></script>
     <script src="assets/CustomJS/Common.js"></script>
     <script src="assets/CustomJS/TypeaHead.js"></script>
-
+<link <!--for react-->
+<link rel="stylesheet" href="assets/CustomCSS/communicationhub.css">
+<script defer="defer" src="assets/build/static/js/main.2cafa2af.js"></script>
 
 
 
@@ -144,7 +146,7 @@
                     </li>
                 </ul>
             </div>
-            
+            <div id="root"></div>
         </div>
     </div>
     <div class="clearfix">
@@ -837,7 +839,10 @@
 
 
     <script nonce="pev3">
-
+        
+        sessionStorage.setItem("EventId", 0);
+        sessionStorage.setItem("EventType", '');
+        
         jQuery(document).ready(function () {
             callPagejs('VendorHome.js');
         });

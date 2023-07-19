@@ -929,7 +929,7 @@ function InsUpdRFQDEtailTab2() {
     let i = 0;
     if (rowCount > 1) {
         $("#tblServicesProduct tr:gt(0)").each(function (i) {
-           debugger
+           
             
             targetPrice = 0, TAT = 0;
             unitrate = 0;
@@ -963,7 +963,7 @@ function InsUpdRFQDEtailTab2() {
 
             var remark = $.trim(this_row.find(`#remarks${i}`).html()).replace(/'/g, "");
             var description = $.trim(this_row.find(`#desc${i}`).html()).replace(/'/g, "");
-            debugger
+            
             tab2Items = {
                  "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
                  "ItemCode": $.trim(this_row.find(`#itemcode${i}`).html()),
@@ -1426,7 +1426,7 @@ function fetchAttachments() {
         crossDomain: true,
         dataType: "json",
         success: function (Data, status, jqXHR) {
-            debugger
+            
             let data=Data.rData
             var attach = "";
             rowAttach = 0;
@@ -2069,7 +2069,7 @@ function fetchRFIParameteronload() {
                     {
                      $('#divnonBoqForm').hide()
                     jQuery('<tr id=trid' + i + '><td>' + (i + 1) + '</td><td id=itemcode' + i + '>' + data[0].parameters[i].rfqItemCode + '</td><td><textarea id=sname' + i + '>'+data[0].parameters[i].rfqShortName+'</textarea></td><td id=SAPDesc' + i + '>' + data[0].parameters[i].externalSourceShortDesc + '</td><td class=text-right id=TP' + i + '>' + thousands_separators(data[0].parameters[i].rfqTargetPrice) + '</td><td class=text-right id=quan' + i + '>' + thousands_separators(data[0].parameters[i].rfQuantity) + '</td><td id=uom' + i + '>' + data[0].parameters[i].rfqUomId + '</td><td id=desc' + i + '>' + data[0].parameters[i].rfqDescription + '</td><td id=delivery' + i + '>' + data[0].parameters[i].rfqDelivery + '</td><td class=text-right id=tat' + i + '>' + data[0].parameters[i].tat + '</td><td id=remarks' + i + '>' + data[0].parameters[i].rfqRemark + '</td><td id=pono' + i + '>' + data[0].parameters[i].rfqPoNo + '</td><td id=povname' + i + '>' + data[0].parameters[i].rfqVendorName + '</td><td class=text-right id=unitrate' + i + '>' + thousands_separators(data[0].parameters[i].rfqUnitRate) + '</td><td id=podate' + i + '>' + data[0].parameters[i].rfqpoDate + '</td><td id=povalue' + i + ' class=text-right>' + thousands_separators(data[0].parameters[i].rfqpoValue) + '</td><td class=hide>' + data[0].parameters[i].rfqParameterId + '</td></tr>').appendTo("#tblServicesProduct");
-                    debugger
+                    
                    
                     jQuery('<tr id=tridprev' + i + '><td>' + (i + 1) + '</td><td id=itemcodeprev' + i + '>' +data[0].parameters[i].rfqItemCode  + '</td><td id=snameprev' + i + '>' + data[0].parameters[i].rfqShortName + '</td><td id=snameprev' + i + '>' + data[0].parameters[i].externalSourceShortDesc + '</td><td class=text-right id=TPPrev' + i + '>' + thousands_separators(data[0].parameters[i].rfqTargetPrice) + '</td><td class=text-right id=quanprev' + i + '>' + thousands_separators(data[0].parameters[i].rfQuantity) + '</td><td id=uomprev' + i + '>' + data[0].parameters[i].rfqUomId + '</td><td id=descprev' + i + '>' + data[0].parameters[i].rfqDescription + '</td><td id=deliveryprev' + i + '>' + data[0].parameters[i].rfqDelivery + '</td><td class=text-right id=tatprev' + i + '>' + data[0].parameters[i].tat + '</td><td id=remarksprev' + i + '>' + data[0].parameters[i].rfqRemark + '</td><td id=ponoprev' + i + '>' + data[0].parameters[i].rfqPoNo + '</td><td id=povnameprev' + i + '>' + data[0].parameters[i].rfqVendorName + '</td><td class=text-right id=unitrateprev' + i + '>' + thousands_separators(data[0].parameters[i].rfqUnitRate) + '</td><td id=podateprev' + i + '>' + data[0].parameters[i].rfqpoDate + '</td><td id=povalueprev' + i + ' class=text-right>' + thousands_separators(data[0].parameters[i].rfqpoValue) + '</td></tr>').appendTo("#tblRFQPrev");
                     //abheedev bug 388 end

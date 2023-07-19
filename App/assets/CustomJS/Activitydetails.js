@@ -50,10 +50,14 @@ function handleChangePasword() {
                 required: true
             },
             nPassword: {
-                required: true
+                required: true,
+                maxlength:15,
+                minlength:6
             },
             reEnterPass: {
-                required: true
+                required: true,
+                maxlength:15,
+                minlength:6
             }
 
 

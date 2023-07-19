@@ -73,6 +73,7 @@ function FetchVendors(BidID,Type) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
+            
             if (Type == 'Yes') {
                 $('#tblvendors > tbody').empty();
                 $('#tblvendors > thead').empty();
@@ -106,7 +107,7 @@ function FetchVendors(BidID,Type) {
             FetchRecomendedVendor(BidID)
         },
         error: function (xhr, status, error) {
-
+            
             var err = eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
