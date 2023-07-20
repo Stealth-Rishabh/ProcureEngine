@@ -1,5 +1,5 @@
 jQuery(document).ready(function () {
-  
+
     $('.maxlength').maxlength({
         limitReachedClass: "label label-danger",
         alwaysShow: true
@@ -254,7 +254,10 @@ function acceptRevertPO() {
                 msz = "This PO is now reverted to User.";
             }
             //** Upload Files on Azure PortalDocs folder first Time
-            fnUploadFilesonAzure('file1', attchname, 'PO/' + sessionStorage.getItem('hddnPOHID') + '/' + sessionStorage.getItem('VendorId'));
+            if (attchname) {
+                fnUploadFilesonAzure('file1', attchname, 'PO/' + sessionStorage.getItem('hddnPOHID') + '/' + sessionStorage.getItem('VendorId'));
+
+            }
 
             bootbox.alert(msz, function () {
                 window.location = "VendorHome.html";

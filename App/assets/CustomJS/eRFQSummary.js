@@ -117,9 +117,9 @@ function formvalidate() {
                 required: true
             }
             ,
-            ddlbidstatus: {
+           /* ddlbidstatus: {
                 required: true
-            }
+            }*/
         },
 
         messages: {
