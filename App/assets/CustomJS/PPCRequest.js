@@ -393,7 +393,8 @@ var FormWizard = function () {
                         }
                         else {
 
-                            Savedata();
+
+
                             var PreviewHtml = "Preview <i class='fa fa-eye' aria-hidden='true'></i>";
                             $(".button-next").html(PreviewHtml);
 
@@ -421,7 +422,7 @@ var FormWizard = function () {
                                     FetchBidVendors();
                                 }
                             }
-
+                            Savedata();
                             SaveFirstTabActivity();
 
                         }
@@ -1062,7 +1063,7 @@ function Savedata() {
     if ($("#txtBudget").val() != '') {
         _budget = removeThousandSeperator($("#txtBudget").val());
     }
-    
+
     var p_Budget = removeThousandSeperator(_budget);
     var p_category = $("#ddlCategory option:selected").val();
     var p_currency = $("#dropCurrency option:selected").val();
@@ -1751,7 +1752,7 @@ function frmAzurePPCForm() {
 
     var LowestPriceOffer = $("input[name='LowestPriceOffer']:checked").val();
     var repeatorder = $("input[name='repeatorder']:checked").val();
-    
+
     var Data = {
         "nfaID": parseInt(idx),
         "RFQID": parseInt(RFQID),
@@ -1790,7 +1791,7 @@ function frmAzurePPCForm() {
         "BiddingVendorDetails": AzurevendorDetails
 
     };
-    
+
     // console.log(JSON.stringify(Data))
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "Azure/insPPC/",
@@ -1799,13 +1800,13 @@ function frmAzurePPCForm() {
         data: JSON.stringify(Data),
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            
+
             jQuery.unblockUI();
             return true;
 
         },
         error: function (xhr, status, error) {
-            
+
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1823,6 +1824,7 @@ function frmAzurePPCForm() {
 }
 
 function fetchAzPPcFormDetails() {
+
     // jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var x = isAuthenticated();
     jQuery.ajax({
@@ -1979,13 +1981,13 @@ function fetchAzPPcFormDetails() {
                             $('#TDvalidatescm' + i).append('<div> <label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="Y" id=QuotedSCMY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="N"  id=QuotedSCMN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=QuotedSCM' + i + ' value="NA"  id=QuotedSCMNA' + i + ' />NA</label></div>')
                             $('#TPI' + i).append('<div> <label class="radio-inline"><input type="radio" name=TPI' + i + ' value="Y" id=TPIY' + i + ' /> Yes</label><label class="radio-inline"><input type="radio" name=TPI' + i + ' value="N"  id=TPIN' + i + ' />No</label><label class="radio-inline"><input type="radio" name=TPI' + i + ' value="NA"  id=TPINA' + i + ' />NA</label></div>')
 
-                            if ((data[0].biddingVendor[i].quotationReceived).trim() == "Y") {
+                            if ((data[0].biddingVendor[i].quotationReceived || '').trim() == "Y") {
                                 $("#OpQuotationY" + i).attr("checked", "checked");
                                 $("#OpQuotationN" + i).removeAttr("checked");
                                 $("#OpQuotationNA" + i).removeAttr("checked");
                                 QR = "Yes";
                             }
-                            else if ((data[0].biddingVendor[i].quotationReceived).trim() == "NA") {
+                            else if ((data[0].biddingVendor[i].quotationReceived || '').trim() == "NA") {
                                 $("#OpQuotationNA" + i).attr("checked", "checked");
                                 $("#OpQuotationN" + i).removeAttr("checked");
                                 $("#OpQuotationY" + i).removeAttr("checked");
@@ -1997,13 +1999,14 @@ function fetchAzPPcFormDetails() {
                                 $("#OpQuotationNA" + i).removeAttr("checked");
                                 QR = "No";
                             }
-                            if ((data[0].biddingVendor[i].tpi).trim() == "Y") {
+
+                            if ((data[0].biddingVendor[i].tpi || '').trim() == "Y") {
                                 $("#TPIY" + i).attr("checked", "checked");
                                 $("#TPIN" + i).removeAttr("checked");
                                 $("#TPINA" + i).removeAttr("checked");
                                 TPI = "Yes";
                             }
-                            else if ((data[0].biddingVendor[i].tpi).trim() == "NA") {
+                            else if ((data[0].biddingVendor[i].tpi || '').trim() == "NA") {
                                 $("#TPINA" + i).attr("checked", "checked");
                                 $("#TPIN" + i).removeAttr("checked");
                                 $("#TPIY" + i).removeAttr("checked");
@@ -2016,13 +2019,13 @@ function fetchAzPPcFormDetails() {
                                 $("#TPINA" + i).removeAttr("checked");
                                 TPI = "No";
                             }
-                            if ((data[0].biddingVendor[i].texhnicallyAcceptable).trim() == "Y") {
+                            if ((data[0].biddingVendor[i].texhnicallyAcceptable || '').trim() == "Y") {
                                 $("#OpTechAccepY" + i).attr("checked", "checked");
                                 $("#OpTechAccepN" + i).removeAttr("checked");
                                 $("#OpTechAccepNA" + i).removeAttr("checked");
                                 TA = "Yes";
                             }
-                            else if ((data[0].biddingVendor[i].texhnicallyAcceptable).trim() == "NA") {
+                            else if ((data[0].biddingVendor[i].texhnicallyAcceptable || '').trim() == "NA") {
                                 $("#OpTechAccepNA" + i).attr("checked", "checked");
                                 $("#OpTechAccepN" + i).removeAttr("checked");
                                 $("#OpTechAccepY" + i).removeAttr("checked");
@@ -2035,13 +2038,13 @@ function fetchAzPPcFormDetails() {
                                 $("#OpTechAccepNA" + i).removeAttr("checked");
                                 TA = "No";
                             }
-                            if ((data[0].biddingVendor[i].politicallyExposed).trim() == "Y") {
+                            if ((data[0].biddingVendor[i].politicallyExposed || '').trim() == "Y") {
                                 $("#politicalyexpY" + i).attr("checked", "checked");
                                 $("#politicalyexpN" + i).removeAttr("checked");
                                 $("#politicalyexpNA" + i).removeAttr("checked");
                                 PE = "Yes";
                             }
-                            else if ((data[0].biddingVendor[i].politicallyExposed).trim() == "NA") {
+                            else if ((data[0].biddingVendor[i].politicallyExposed || '').trim() == "NA") {
                                 $("#politicalyexpNA" + i).attr("checked", "checked");
                                 $("#politicalyexpN" + i).removeAttr("checked");
                                 $("#politicalyexpY" + i).removeAttr("checked");
@@ -2054,13 +2057,13 @@ function fetchAzPPcFormDetails() {
                                 $("#politicalyexpNA" + i).removeAttr("checked");
                                 PE = "No";
                             }
-                            if ((data[0].biddingVendor[i].quotedValidatedSCM).trim() == "Y") {
+                            if ((data[0].biddingVendor[i].quotedValidatedSCM || '').trim() == "Y") {
                                 $("#QuotedSCMY" + i).attr("checked", "checked");
                                 $("#QuotedSCMN" + i).removeAttr("checked");
                                 $("#QuotedSCMNA" + i).removeAttr("checked");
                                 validatescm = "Yes";
                             }
-                            else if ((data[0].biddingVendor[i].quotedValidatedSCM).trim() == "NA") {
+                            else if ((data[0].biddingVendor[i].quotedValidatedSCM || '').trim() == "NA") {
                                 $("#QuotedSCMNA" + i).attr("checked", "checked");
                                 $("#QuotedSCMY" + i).removeAttr("checked");
                                 $("#QuotedSCMN" + i).removeAttr("checked");
@@ -2082,12 +2085,12 @@ function fetchAzPPcFormDetails() {
                             $('#vendoridrow' + i).text(data[0].biddingVendor[i].vendorID);
                             $('#vendorSearch' + i).val(data[0].biddingVendor[i].vendorName);
                             //quotationrecieved
-                            if ((data[0].biddingVendor[i].quotationReceived).trim() == "Y") {
+                            if ((data[0].biddingVendor[i].quotationReceived || '').trim() == "Y") {
                                 $("#OpQuotationYOP" + i).attr("checked", "checked");
                                 $("#OpQuotationNOP" + i).removeAttr("checked");
                                 $("#OpQuotationNAOP" + i).removeAttr("checked");
                             }
-                            else if ((data[0].biddingVendor[i].quotationReceived).trim() == "NA") {
+                            else if ((data[0].biddingVendor[i].quotationReceived || '').trim() == "NA") {
                                 $("#OpQuotationNAOP" + i).attr("checked", "checked");
                                 $("#OpQuotationNOP" + i).removeAttr("checked");
                                 $("#OpQuotationYOP" + i).removeAttr("checked");
@@ -2099,13 +2102,13 @@ function fetchAzPPcFormDetails() {
                                 $("#OpQuotationNAOP" + i).removeAttr("checked");
                             }
                             //tpi
-                            if ((data[0].biddingVendor[i].tpi).trim() == "Y") {
+                            if ((data[0].biddingVendor[i].tpi || '').trim() == "Y") {
                                 $("#TPIYOP" + i).attr("checked", "checked");
                                 $("#TPINOP" + i).removeAttr("checked");
                                 $("#TPINAOP" + i).removeAttr("checked");
                                 TPI = "Yes";
                             }
-                            else if ((data[0].biddingVendor[i].tpi).trim() == "NA") {
+                            else if ((data[0].biddingVendor[i].tpi || '').trim() == "NA") {
                                 $("#TPINAOP" + i).attr("checked", "checked");
                                 $("#TPINOP" + i).removeAttr("checked");
                                 $("#TPIYOP" + i).removeAttr("checked");
@@ -2119,12 +2122,12 @@ function fetchAzPPcFormDetails() {
                                 TPI = "No";
                             }
                             //technicall acceptable
-                            if ((data[0].biddingVendor[i].texhnicallyAcceptable).trim() == "Y") {
+                            if ((data[0].biddingVendor[i].texhnicallyAcceptable || '').trim() == "Y") {
                                 $("#OpTechAccepYOP" + i).attr("checked", "checked");
                                 $("#OpTechAccepNOP" + i).removeAttr("checked");
                                 $("#OpTechAccepNAOP" + i).removeAttr("checked");
                             }
-                            else if ((data[0].biddingVendor[i].texhnicallyAcceptable).trim() == "NA") {
+                            else if ((data[0].biddingVendor[i].texhnicallyAcceptable || '').trim() == "NA") {
                                 $("#OpTechAccepNAOP" + i).attr("checked", "checked");
                                 $("#OpTechAccepNOP" + i).removeAttr("checked");
                                 $("#OpTechAccepYOP" + i).removeAttr("checked");
@@ -2136,12 +2139,12 @@ function fetchAzPPcFormDetails() {
                                 $("#OpTechAccepNAOP" + i).removeAttr("checked");
                             }
                             //politically exposed
-                            if ((data[0].biddingVendor[i].politicallyExposed).trim() == "Y") {
+                            if ((data[0].biddingVendor[i].politicallyExposed || '').trim() == "Y") {
                                 $("#politicalyexpYOP" + i).attr("checked", "checked");
                                 $("#politicalyexpNOP" + i).removeAttr("checked");
                                 $("#politicalyexpNA" + i).removeAttr("checked");
                             }
-                            else if ((data[0].biddingVendor[i].politicallyExposed).trim() == "NA") {
+                            else if ((data[0].biddingVendor[i].politicallyExposed || '').trim() == "NA") {
                                 $("#politicalyexpNAOP" + i).attr("checked", "checked");
                                 $("#politicalyexpNOP" + i).removeAttr("checked");
                                 $("#politicalyexpYOP" + i).removeAttr("checked");
@@ -2153,14 +2156,14 @@ function fetchAzPPcFormDetails() {
                                 $("#politicalyexpNAOP" + i).removeAttr("checked");
                             }
                             //qualityvalidated
-                            if ((data[0].biddingVendor[i].quotedValidatedSCM).trim() == "Y") {
+                            if ((data[0].biddingVendor[i].quotedValidatedSCM || '').trim() == "Y") {
                                 $("#QuotedSCMYOP" + i).attr("checked", "checked");
                                 $("#QuotedSCMNOP" + i).removeAttr("checked");
                                 $("#QuotedSCMNAOP" + i).removeAttr("checked");
 
                                 validatescm = "Yes";
                             }
-                            else if ((data[0].biddingVendor[i].quotedValidatedSCM).trim() == "NA") {
+                            else if ((data[0].biddingVendor[i].quotedValidatedSCM || '').trim() == "NA") {
                                 $("#QuotedSCMNAOP" + i).attr("checked", "checked");
                                 $("#QuotedSCMNOP" + i).removeAttr("checked");
                                 $("#QuotedSCMYOP" + i).removeAttr("checked");
