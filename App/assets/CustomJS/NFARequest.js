@@ -370,21 +370,27 @@ var FormWizard = function () {
                             if (idx != 0) {
                                 BindSaveparams();
                                 BindAttachmentsOfEdit();
-                                
+
                                 if ($('#ddlEventType').val() == "1") {
                                     if (IsSAPModule == 'Y') {
+                                        $('#biddingTab').show()
                                         if (SOBID != 0) {
                                             GetSOBAllocation()
                                         }
                                         else {
-                                            
+
                                             fetchReguestforQuotationDetails();
                                         }
+                                    }
+                                    else {
+                                        debugger
+                                        $('#biddingTab').hide()
                                     }
 
                                 }
                                 else {
                                     $('#PriceType').hide()
+                                    $('#biddingTab').hide()
 
                                 }
 
@@ -450,7 +456,7 @@ var FormWizard = function () {
                             SaveAttechmentinDB();
                             BindAttachmentsOfEdit();
                             Bindtab3Data();
-                            
+
                             if ($('#ddlEventType').val() == "1") {
                                 if (IsSAPModule == 'Y') {
                                     GetSOBAllocation()
@@ -789,7 +795,7 @@ function fnaddQuestion() {
 }
 
 function fnApproversNBQuery(rownum, question) {
-    
+
     if (jQuery("#ddlNFAParam").val() == "0" || jQuery("#ddlNFAParam").val() == "") {
         $('#errordivSeq').show();
         $('#errorSeq').html('Response not selected. Please press + Button after selecting Response');
@@ -1121,7 +1127,6 @@ function Savedata() {
         _budget = $("#txtBudget").val();
     }
     var p_Budget = removeThousandSeperator(_budget);
-    
     var p_category = $("#ddlCategory option:selected").val();
     var p_currency = $("#dropCurrency option:selected").val();
     var p_projectname = $("#txtProjectName option:selected").text();
@@ -1237,13 +1242,11 @@ function GetNfaOverviewParams() {
     })
 }
 function BindSaveparams() {
-    
     var x = isAuthenticated();
     var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx) + "&For=nfrequest&Purchaseorg=" + $('#ddlPurchaseOrg option:selected').val();
 
     var ParamData = callajaxReturnSuccess(url, "Get", {})
     ParamData.success(function (res) {
-        
         if (res != null) {
 
             $("#tblNFAOverviewParam").empty();
@@ -1421,8 +1424,6 @@ function SaveApproversConfirmation() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approversData = [];
     var _data = {};
-
-    
     var url = "NFA/InsUpdateOverViewApprovers?NfaIdx=" + parseInt(idx);
 
     $("#tblApproversPrev tr:gt(0)").each(function () {
@@ -1438,7 +1439,6 @@ function SaveApproversConfirmation() {
             apprEmail: $.trim(this_row.find('td:eq(1)').html()),
             apprStatus: "P",
         }
-        
         approversData.push(_data);
         objActivity = {
             CustomerID: parseInt(CurrentCustomer),
@@ -1459,15 +1459,12 @@ function SaveApproversConfirmation() {
         ApprSeqval.push(Seq);
 
     });
-    
-
     var data = {
         "uDTApprovers": approversData
     }
 
     var SubmitData = callajaxReturnSuccess(url, "Post", JSON.stringify(data));
     SubmitData.success(function (res) {
-        
         SaveActivityDetails(lstActivityData);
         if (res.status == "S") {
             bootbox.alert("NFA Request Submitted Successfully.", function () {
@@ -1483,7 +1480,6 @@ function SaveApproversConfirmation() {
         jQuery.unblockUI();
     });
     SubmitData.error(function (error) {
-        
         bootbox.alert("Error: " + error, function () {
             return false;
         });
@@ -1601,7 +1597,6 @@ function SaveActivityDetails(data) {
     var aquaticCreatures = data.filter(function (details) {
         return details.apprSeq == ApprSeqval.min();
     });
-    
     var data = {
         "udtActivityDetails": aquaticCreatures
     }
@@ -1610,7 +1605,6 @@ function SaveActivityDetails(data) {
 
     var SaveActivityDetails = callajaxReturnSuccess(url, "Post", JSON.stringify(data));
     SaveActivityDetails.success(function (res) {
-        
         lstActivityData = [];
     });
     SaveActivityDetails.error(function (error) {
@@ -1820,8 +1814,6 @@ function viewallmatrix() {
 
 
 function fetchReguestforQuotationDetails() {
-    console.log(sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativerank/?RFQID=" + sessionStorage.getItem('hdnEventrefId'))
-    
     var x = isAuthenticated();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -1834,8 +1826,6 @@ function fetchReguestforQuotationDetails() {
         dataType: "json",
         success: function (RFQData) {
             $('#PriceType').show()
-            
-
             let dt = JSON.parse(RFQData[0].jsondata);
             $('#tblvendors').empty();
             if (dt.length > 0) {
@@ -1849,7 +1839,6 @@ function fetchReguestforQuotationDetails() {
             }
         },
         error: function (xhr, status, error) {
-            
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1881,7 +1870,6 @@ function fetchProjectMaster() {
         async: false,
         dataType: "json",
         success: function (data) {
-            
             jQuery("#txtProjectName").empty();
             jQuery("#txtProjectName").append(jQuery("<option></option>").val("").html("Select Project"));
             if (data.length > 0) {
@@ -1919,16 +1907,12 @@ function fetchProjectMaster() {
 //SOB Changes
 
 function allocateSOB() {
-    
-
     let SOBDetailsArray = []
     let i = ''
 
     $('#tblvendors tbody tr').each(function (i) {
-        
         let price = 0
         if ($(`#checkv${i}`).is(':checked')) {
-            
             if ($(`#TDPrice${i} input`).val()) {
                 price = parseInt($(`#TDPrice${i} input`).val());
             }
@@ -1954,7 +1938,6 @@ function allocateSOB() {
             SOBDetailsArray.push(SOBDetailsunit);
         }
     })
-    
     if (SOBDetailsArray.length === 0) {
         return false
     }
@@ -1981,7 +1964,6 @@ function allocateSOB() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            
             if (data.returnId == 0) {
 
                 $('.alert-danger').show();
@@ -2029,7 +2011,6 @@ function GetSOBAllocation() {
         async: false,
         dataType: "json",
         success: function (data) {
-            
             $('#PriceType').show()
             $('#PriceTypeP').show()
             $('#ddlPriceType').val(data.sobOn).trigger('change');
