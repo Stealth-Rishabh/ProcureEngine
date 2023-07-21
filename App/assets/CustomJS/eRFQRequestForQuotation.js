@@ -71,7 +71,7 @@ jQuery(document).ready(function () {
     else {
         sessionStorage.setItem('hddnRFQID', _RFQid)
         fetchReguestforQuotationDetails();
-        fnGetTermsCondition();
+        /* fnGetTermsCondition();*/
         fetchAttachments();
         fnGetApprovers();
         GetQuestions();
@@ -887,7 +887,7 @@ function InsUpdRFQDEtailTab1() {
 
     };
 
-    
+
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -994,7 +994,7 @@ function InsUpdRFQDEtailTab2() {
         })
     }
 
-   
+
 
     var Tab2data = {
         "ProductDetails": ItemDetails,
@@ -1050,6 +1050,7 @@ function InsUpdRFQDEtailTab2() {
 
 
 function fnGetTermsCondition() {
+    debugger
 
     jQuery.ajax({
         type: "GET",
@@ -1060,9 +1061,10 @@ function fnGetTermsCondition() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
+            debugger
 
             jQuery("#tblTermsCondition").empty();
-            jQuery("#tbltermscondition").append(`<thead></thead><tbody></tbody>`);
+            jQuery("#tblTermsCondition").append(`<thead></thead><tbody></tbody>`);
 
 
             jQuery("#tbltermsconditionprev").empty();
@@ -1072,10 +1074,14 @@ function fnGetTermsCondition() {
 
 
             if (data.length > 0) {
+                debugger
                 $('#btnS').removeAttr('disabled')
-                jQuery('#tbltermsconditionprev thead').append("<tr><th class='bold hide'>Type</th><th class='bold'>Name</th><th>Level</th></tr>");
-                for (var i = 0; i < data.length; i++) {
+                // jQuery('#tblTermsCondition>thead').append("<tr><th class='bold hide'>Type</th><th class='bold'>Name</th><th>Level</th></tr>");
 
+                jQuery('#tbltermsconditionprev>thead').append("<tr><th class='bold hide'>Type</th><th class='bold'>Name</th><th>Level</th></tr>");
+
+                for (var i = 0; i < data.length; i++) {
+                    debugger
                     var str = "<tr id=tr" + i + "><td class=hide>" + data[i].id + "</td><td class=hide>" + data[i].level + "</td>";
                     if (data[i].id != 0) {
                         str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + data[i].id + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + data[i].id + "'\)\"; id=\"chkTerms" + data[i].id + "\" value=" + (data[i].id) + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></div></td>";
@@ -1088,6 +1094,7 @@ function fnGetTermsCondition() {
                         str += "<td>" + data[i].name + "</td>";
                     }
                     else {
+                        debugger
                         str += "<td><input type='text' name=terms" + i + " id=terms" + i + " class='form-control maxlength' placeholder='Your requirement' maxlength=50 value='" + data[i].name + "'   autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td>";
                     }
 
@@ -1099,7 +1106,7 @@ function fnGetTermsCondition() {
 
 
                     if (data[i].isDefault == "N" || data[i].isDefault == "Y") {
-                        jQuery('#tblTermsCondition tbody').append(str);
+                        jQuery('#tblTermsCondition>tbody').append(str);
 
                     }
                     $('.maxlength').maxlength({
@@ -1121,7 +1128,7 @@ function fnGetTermsCondition() {
 
                     if (data[i].isChecked == "Y") {
                         $("#spancheckedTerms" + data[i].id).addClass("checked");
-                        jQuery('#tbltermsconditionprev tbody').append(strPrev);
+                        jQuery('#tbltermsconditionprev>tbody ').append(strPrev);
                     }
                     else {
                         $("#spancheckedTerms" + data[i].id).removeClass("checked");
@@ -1141,6 +1148,7 @@ function fnGetTermsCondition() {
             }
         },
         error: function (xhr, status, error) {
+            debugger
 
             var err = xhr.responseText;// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
@@ -1249,6 +1257,7 @@ function fnsavetermscondition(isbuttonclick) {
             data: JSON.stringify(Attachments),
             dataType: "json",
             success: function (data) {
+                debugger
 
 
                 fnGetTermsCondition();
@@ -1263,6 +1272,7 @@ function fnsavetermscondition(isbuttonclick) {
 
             },
             error: function (xhr, status, error) {
+                debugger
 
                 var err = xhr.responseText //eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
@@ -2476,7 +2486,7 @@ function ParametersQuery() {
         }
     });
     i = parseInt(maxinum) + 1;
-    
+
     if (!jQuery("#tblServicesProduct thead tr").length) {
         //abheedev bug 388 start
         // jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:100px;'></th><th>Item Code</th><th>Item/Service</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr></thead>");
@@ -3884,7 +3894,7 @@ function handleFileparameterBoq(e) {
 
                     var sheet1 = y;//workbook.SheetNames[y];
                     var roa = XLSX.utils.sheet_to_json(workbook.Sheets[y]);
-                   
+
                     if (sheet1 == "Summary") {
                         sheetcount = roa.length;
                         if (totalsheets != sheetcount) {
@@ -3897,10 +3907,10 @@ function handleFileparameterBoq(e) {
                         }
                     }
                     if (sheet1 != "Summary" && sheet1 != "Instructions") {
-                       
+
                         if (roa.length > 0) {
                             result = roa;
-                           
+
                             if (st == true) {
 
                                 printDataparameterBoq(result, sheet1)
@@ -3956,7 +3966,7 @@ function printDataparameterBoq(result, sheet) {
             }
 
 
-           
+
             if (!$.trim(result[i].SrNo).match(srnoonly) && $.trim(result[i].SrNo) != "" && $.trim(result[i].SrNo) != undefined) {
 
                 $("#error-excelparameterB").html('Srno should be in numbers of <b>' + sheet + '</b> of line no ' + (i + 2) + '. Please fill and upload the file again.');
@@ -3966,7 +3976,7 @@ function printDataparameterBoq(result, sheet) {
                 return false;
             }
             else if ($.trim(result[i].ItemService) == undefined || $.trim(result[i].ItemService) == '' || $.trim(result[i].ItemService).length > 200) {
-               
+
 
                 $("#error-excelparameterB").html('Item/Service can not be blank or length should be 200 characters of <b>' + sheet + '</b> of line no ' + (i + 1) + '. Please fill and upload the file again.');
                 $("#error-excelparameterB").show();
@@ -4158,7 +4168,7 @@ function fninsBoqfile() {
     formData.append('RFQId', sessionStorage.getItem('hddnRFQID'));
     formData.append('customerId', sessionStorage.getItem('CustomerID'));
 
-    
+
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/BOQUpload/",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -4477,7 +4487,8 @@ function fnfillInstructionExcel() {
 }
 
 function addMoreTermsCondition() {
-
+    jQuery('#tblTermsCondition').empty();
+    jQuery('#tblTermsCondition').append(`<thead></thead><tbody></tbody>`);
     var num = 0, i = 0;
     var maxinum = -1;
     $("#tblTermsCondition tr:gt(0)").each(function () {
@@ -4496,7 +4507,7 @@ function addMoreTermsCondition() {
     str += "<td><input type='text' name=terms" + i + " id=terms" + i + " class='form-control maxlength' placeholder='Others' maxlength=50  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td>";
     str += "<td style='width:20%'><div class='md-radio-list'><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' name=level" + i + " id=levelR" + i + " class='md-radio' disabled checked/></label> &nbsp;<span>RFQ</span><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><label class='md-radio-inline'><input style='width:16px!important;height:16px!important;' type='radio' class='md-radio' name=level" + i + " id=levelI" + i + " disabled/></label> &nbsp;<span>Item</span></div></td>"
     str += "<td><input type='text' name=rem" + i + " id=rem" + i + " class='form-control maxlength' placeholder='Your requirement' maxlength=100  autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td></tr>"
-    jQuery('#tblTermsCondition').append(str);
+    jQuery('#tblTermsCondition tbody').append(str);
     $('.maxlength').maxlength({
         limitReachedClass: "label label-danger",
         alwaysShow: true
@@ -4528,7 +4539,7 @@ function FetchSAPPI() {
         return false;
 
     }
-    
+
     jQuery.ajax({
         url: sessionStorage.getItem("APIPath") + "SAPIntegration/FetchSAPPI/?PIId=" + PIId + "&CustomerID=" + CustomerID + "&EvSource=" + Eventsource + "&EventID=" + rfqId + "&EvType=1",//UserID =.. for fetch all RFQ
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
