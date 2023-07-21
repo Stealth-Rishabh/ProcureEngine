@@ -1389,8 +1389,8 @@ function saveAspdf() {
     // pdf.setLineWidth(2);
     // pdf.rect(10, 20, 150, 75);
     pdf.addHTML(document.body, options, function () {
-        //  pdf.save('ComprativeAnalysis.pdf');
-        // window.close();
+        pdf.save('ComprativeAnalysis.pdf');
+        window.close();
 
     });
 
