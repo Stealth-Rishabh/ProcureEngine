@@ -2228,11 +2228,3 @@ function fnclearcss(index) {
 
 
 
-/*
- downloadNFAMatrix starts anurag
- */
-
-
-/*
- downloadNFAMatrix end
- */
