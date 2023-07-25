@@ -326,9 +326,20 @@
                                                         </div>
                                                         <div class="inputgroup">
                                                             <label class="col-md-2 control-label">
-                                                                Category<span class="required"> *</span>
+                                                                Saving
                                                             </label>
                                                             <div class="col-md-3">
+                                                                <input type="tel" id="txtSaving" name="txtSaving" autocomplete="off" class="text-right form-control MaxLength " maxlength="18" onkeyup="localecommaseperator(this)" disabled/>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
+                                                                Category<span class="required"> *</span>
+                                                            </label>
+                                                            <div class="col-md-8">
                                                                 <select id="ddlCategory" name="ddlCategory" class="form-control">
                                                                     <option value="">Please Select</option>
                                                                     <option value="0">Project</option>
@@ -1013,7 +1024,12 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-12">
+                                                            <label class="col-12 col-md-2 control-label">Saving :</label>
+                                                            <div class="col-12 col-md-2">
+                                                                <p class="form-control-static thousandsep" id="lblSaving">
 
+                                                                </p>
+                                                            </div>
                                                             <label class="col-12 col-md-2 control-label">Project :</label>
                                                             <div class="col-12 col-md-2">
                                                                 <p class="form-control-static" id="lblProjectName">
@@ -1021,36 +1037,38 @@
                                                                 </p>
                                                             </div>
 
+
+
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
                                                             <label class="col-12 col-md-2 control-label">Category :</label>
                                                             <div class="col-12 col-md-2">
                                                                 <p class="form-control-static" id="lblCategory">
 
                                                                 </p>
                                                             </div>
-
-
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
                                                             <label class="col-12 col-md-2 control-label">Budget Status :</label>
                                                             <div class="col-12 col-md-2">
                                                                 <p class="form-control-static" id="lblbudget">
 
                                                                 </p>
                                                             </div>
-                                                            <label class="col-12 col-md-2 control-label">Exeption :</label>
-                                                            <div class="col-12 col-md-6">
-                                                                <p class="form-control-static" id="lblCondition">
 
-                                                                </p>
-                                                            </div>
 
 
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-12">
+                                                            <label class="col-12 col-md-2 control-label">Exeption :</label>
+                                                            <div class="col-12 col-md-2">
+                                                                <p class="form-control-static" id="lblCondition">
+
+                                                                </p>
+                                                            </div>
 
                                                             <label class="col-12 col-md-2 control-label">Purchase Org :</label>
                                                             <div class="col-12 col-md-2">
@@ -1058,496 +1076,504 @@
 
                                                                 </p>
                                                             </div>
-                                                            <label class="col-12 col-md-2 control-label">Purchase Group :</label>
-                                                            <div class="col-12 col-md-6">
-                                                                <p class="form-control-static" id="lblGroup">
 
-                                                                </p>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-12">
+                                                            <label class="col-12 col-md-2 control-label">Purchase Group :</label>
+                                                            <div class="col-12 col-md-2">
+                                                                <p class="form-control-static" id="lblGroup">
+
+                                                                </p>
+                                                            </div>
                                                             <label class="col-12 col-md-2 control-label">Event Type :</label>
                                                             <div class="col-12 col-md-2">
                                                                 <p class="form-control-static" id="lblEventType">
 
                                                                 </p>
                                                             </div>
+                                                           
+
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
                                                             <label class="col-12 col-md-2 control-label">Event ID :</label>
-                                                            <div class="col-12 col-md-6">
+                                                            <div class="col-12 col-md-2">
                                                                 <p class="form-control-static" id="lblEventId">
 
                                                                 </p>
                                                             </div>
-
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-
-                                                            <label class="col-12 col-md-2 control-label">Additional Remarks :</label>
-                                                            <div class="col-12 col-md-10">
-                                                                <p class="form-control-static " id="lblRemark">
-
-                                                                </p>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                    <!--ppc preview-->
-                                                    <h4 class="form-section">PPC Responses</h4>
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft ">
-
-                                                                    Detail/Description:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblintroduction" class="control-label txtalignleft" >
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
-                                                                    Cost Benefit Analysis:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblcostbenfit" class="control-label txtalignleft" >
-                                                                    </label>
-
-                                                                </div>
-
-                                                            </div>
-
                                                         </div>
                                                     </div>
-                                                    <div class="row">
-                                                         <div class="col-md-6">
-                                                               <div class="form-group">
-                                                                  <label class="control-label col-md-4 bold txtalignleft " >
-                                                                            Budget Availabilty:
-                                                                  </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblbudgetavail"  class="control-label txtalignleft ">
-                                                                     </label>
-                                                                </div>
-                                                                </div>
-                                                         </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft">
-                                                                    Proposed Bidder name:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblpartyordergiven" class="control-label txtalignleft ">
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                       
-                                                    </div>
-                                                    <div class="row">
 
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft ">
-                                                                    Justification for award of contract other than L1 :
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblawardL1" class="control-label txtalignleft ">
-                                                                    </label>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
 
+                                                                    <label class="col-12 col-md-2 control-label">Additional Remarks :</label>
+                                                                    <div class="col-12 col-md-10">
+                                                                        <p class="form-control-static " id="lblRemark">
+
+                                                                        </p>
+                                                                    </div>
                                                                 </div>
 
                                                             </div>
-                                                        </div>
 
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft">
-                                                                    Justification for Less than 3 Quotes:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lbllessthan3quotes" class="control-label txtalignleft ">
-                                                                    </label>
-                                                                </div>
-                                                            </div>
+                                                            <!--ppc preview-->
+                                                            <h4 class="form-section">PPC Responses</h4>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft ">
 
-                                                        </div>
-
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft ">
-                                                                    Completion Schedule:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblcompletionsechdule" class="control-label txtalignleft ">
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft ">
-                                                                    Rational for spliting the order:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label class="control-label">
-                                                                        <label id="lblrationalspliting" class="control-label txtalignleft ">
-
+                                                                            Detail/Description:
                                                                         </label>
-                                                                    </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblintroduction" class="control-label txtalignleft">
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
 
-                                                        </div>
+                                                                        <label class="control-label col-md-4 bold txtalignleft">
+                                                                            Cost Benefit Analysis:
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblcostbenfit" class="control-label txtalignleft">
+                                                                            </label>
 
-                                                    </div>
-                                                    <div class="row">
+                                                                        </div>
 
-
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft ">
-                                                                    Rational for issuing RFQ to vendors:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblissuingrfqtovendor" class="control-label txtalignleft ">
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft">
-                                                                    Warranty/DLP Clause:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblenquirynotsent" class="control-label txtalignleft ">
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                   <!-- <div class="row">
-                                                       
-
-                                                        
-                                                    </div>-->
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
-                                                                    General Remarks:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblgeneralremarks" class="control-label txtalignleft " >
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-                                                    </div>
-                                                    <h3 class="form-section">Bidding Details</h3>
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
-                                                                    Enquiry Issued on :
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblenquiryissuedon" class="control-label txtalignleft " >
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
-                                                                    Enquiry Issued through :
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblenquiryissuedthrough" class="control-label txtalignleft " >
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <table id="tblvendorsprev" class="table table-bordered " border="0" cellpadding="1" cellspacing="1"></table>
-                                                        </div>
-                                                    </div>
-
-                                                    <h4 class="form-section">Recommendation</h4>
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
-                                                                    Lowest Price Offer:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lbllowestpriceoffer" class="control-label txtalignleft " >
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
-                                                                    Repeat Order :
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblrepeatorder" class="control-label txtalignleft " >
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
-                                                                    Supported enclosure(Please specify):
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblsupportedenclosure" class="control-label txtalignleft " >
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
-                                                                    Comparatives statement of final  price :
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblfinalprice" class="control-label txtalignleft " >
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                  <!--  <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
-                                                                    Quotations of the parties:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblquotationparties" class="control-label txtalignleft" >
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-                                                    </div>-->
-                                                    <h3 class="form-section">Purchase Order/Work Order Details</h3>
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
-                                                                    Order recommended on (Party):
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblorderrecomparty" class="control-label txtalignleft" >
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
-                                                                    Purchase Order/Work Order Value:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblpurchaseorder" class="control-label txtalignleft" >
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
-                                                                    Internal Cost Estimate:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblinternalcost" class="control-label txtalignleft" >
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
-                                                                    Delivery Terms (Ex- works/ FOB/ CIF/FOR/DAS/SER):
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblterms" class="control-label txtalignleft " >
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
-                                                                    Scope of Work:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblscopeofwork" class="control-label txtalignleft " >
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                       <!-- <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
-                                                                    Deliverables:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lbldeliverables" class="control-label txtalignleft" >
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>-->
-
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
-                                                                    Payment terms:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblapymentterms" class="control-label txtalignleft" >
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
-                                                                    Tax Details:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lbltaxesduties" class="control-label txtalignleft " >
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
-                                                                    Whether LD applicable:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblLD" class="control-label txtalignleft " >
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft " >
-                                                                    Applicable BG Details:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblCPBG" class="control-label txtalignleft" >
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div class="form-group">
-                                                                <label class="control-label col-md-4 bold txtalignleft" >
-                                                                    PR Details:
-                                                                </label>
-                                                                <div class="col-md-8">
-                                                                    <label id="lblPRDetails" class="control-label txtalignleft " >
-
-                                                                    </label>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-
-                                                    </div>
-                                                    <h4 class="form-section">Attachment(s)</h4>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <div class="col-md-9">
-                                                                    <table id="tblAttachmentsPrev" class="table table-striped table-bordered table-hover">
-                                                                    </table>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <h4 class="form-section">Approvers</h4>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                <div class="col-md-9">
-                                                                    <table id="tblApproversPrev" class="table table-striped table-bordered table-hover">
-                                                                    </table>
+                                                                    </div>
 
                                                                 </div>
                                                             </div>
-                                                            <div class="alert alert-block alert-danger" id="errorApproverdivSeq" >
-                                                                <span id="errorApproverSeq"></span>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft ">
+                                                                            Budget Availabilty:
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblbudgetavail" class="control-label txtalignleft ">
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft">
+                                                                            Proposed Bidder name:
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblpartyordergiven" class="control-label txtalignleft ">
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row">
+
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft ">
+                                                                            Justification for award of contract other than L1 :
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblawardL1" class="control-label txtalignleft ">
+                                                                            </label>
+
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft">
+                                                                            Justification for Less than 3 Quotes:
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lbllessthan3quotes" class="control-label txtalignleft ">
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft ">
+                                                                            Completion Schedule:
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblcompletionsechdule" class="control-label txtalignleft ">
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft ">
+                                                                            Rational for spliting the order:
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label class="control-label">
+                                                                                <label id="lblrationalspliting" class="control-label txtalignleft ">
+
+                                                                                </label>
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row">
+
+
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft ">
+                                                                            Rational for issuing RFQ to vendors:
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblissuingrfqtovendor" class="control-label txtalignleft ">
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft">
+                                                                            Warranty/DLP Clause:
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblenquirynotsent" class="control-label txtalignleft ">
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <!-- <div class="row">
+
+
+
+             </div>-->
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft ">
+                                                                            General Remarks:
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblgeneralremarks" class="control-label txtalignleft ">
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </div>
+                                                            <h3 class="form-section">Bidding Details</h3>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft ">
+                                                                            Enquiry Issued on :
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblenquiryissuedon" class="control-label txtalignleft ">
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft ">
+                                                                            Enquiry Issued through :
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblenquiryissuedthrough" class="control-label txtalignleft ">
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <table id="tblvendorsprev" class="table table-bordered " border="0" cellpadding="1" cellspacing="1"></table>
+                                                                </div>
                                                             </div>
 
+                                                            <h4 class="form-section">Recommendation</h4>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft ">
+                                                                            Lowest Price Offer:
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lbllowestpriceoffer" class="control-label txtalignleft ">
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft ">
+                                                                            Repeat Order :
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblrepeatorder" class="control-label txtalignleft ">
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft ">
+                                                                            Supported enclosure(Please specify):
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblsupportedenclosure" class="control-label txtalignleft ">
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft ">
+                                                                            Comparatives statement of final  price :
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblfinalprice" class="control-label txtalignleft ">
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!--  <div class="row">
+                  <div class="col-md-6">
+                      <div class="form-group">
+                          <label class="control-label col-md-4 bold txtalignleft " >
+                              Quotations of the parties:
+                          </label>
+                          <div class="col-md-8">
+                              <label id="lblquotationparties" class="control-label txtalignleft" >
+
+                              </label>
+                          </div>
+                      </div>
+                  </div>
+
+
+              </div>-->
+                                                            <h3 class="form-section">Purchase Order/Work Order Details</h3>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft">
+                                                                            Order recommended on (Party):
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblorderrecomparty" class="control-label txtalignleft">
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft">
+                                                                            Purchase Order/Work Order Value:
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblpurchaseorder" class="control-label txtalignleft">
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft">
+                                                                            Internal Cost Estimate:
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblinternalcost" class="control-label txtalignleft">
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft">
+                                                                            Delivery Terms (Ex- works/ FOB/ CIF/FOR/DAS/SER):
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblterms" class="control-label txtalignleft ">
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft">
+                                                                            Scope of Work:
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblscopeofwork" class="control-label txtalignleft ">
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- <div class="col-md-6">
+                     <div class="form-group">
+                         <label class="control-label col-md-4 bold txtalignleft " >
+                             Deliverables:
+                         </label>
+                         <div class="col-md-8">
+                             <label id="lbldeliverables" class="control-label txtalignleft" >
+
+                             </label>
+                         </div>
+                     </div>
+                 </div>-->
+
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft">
+                                                                            Payment terms:
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblapymentterms" class="control-label txtalignleft">
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft ">
+                                                                            Tax Details:
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lbltaxesduties" class="control-label txtalignleft ">
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft">
+                                                                            Whether LD applicable:
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblLD" class="control-label txtalignleft ">
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft ">
+                                                                            Applicable BG Details:
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblCPBG" class="control-label txtalignleft">
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label class="control-label col-md-4 bold txtalignleft">
+                                                                            PR Details:
+                                                                        </label>
+                                                                        <div class="col-md-8">
+                                                                            <label id="lblPRDetails" class="control-label txtalignleft ">
+
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </div>
+                                                            <h4 class="form-section">Attachment(s)</h4>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-9">
+                                                                            <table id="tblAttachmentsPrev" class="table table-striped table-bordered table-hover">
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <h4 class="form-section">Approvers</h4>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <div class="col-md-9">
+                                                                            <table id="tblApproversPrev" class="table table-striped table-bordered table-hover">
+                                                                            </table>
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="alert alert-block alert-danger" id="errorApproverdivSeq">
+                                                                        <span id="errorApproverSeq"></span>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
                                         <div class="form-actions">
                                             <div class="row">
                                                 <div class="col-md-offset-5 col-md-9">
