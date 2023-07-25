@@ -1,4 +1,3 @@
-
 var gstflag = true
 var APIPath = sessionStorage.getItem("APIPath");
 let beforeActionType = '';
@@ -40,6 +39,8 @@ jQuery(document).ready(function () {
     clearform();
     fetchCountry();
     prev_next();
+    GetInvitedVendors();
+  
     //abheedev 25/11/2022
 
     $('#txtsearchcat').select2({
@@ -289,8 +290,6 @@ var FormValidation = function () {
             submitHandler: function (form) {
 
                 var flag = "T";
-
-
                 if (validateVendorCategory() == 'false') {
                     jQuery('#spanerterr').text('Please select at least one Group')
                     jQuery('#divalerterr').slideDown('show');
@@ -4246,4 +4245,60 @@ function gotopage_directly(ele) {
 
 function prev_next() {
     $('.previousbtn').hide()
+}
+
+
+
+
+function GetInvitedVendors() {
+    
+    let url = sessionStorage.getItem("APIPath") + "VendorLCM/GetInvitedVendors/?Id=" + sessionStorage.getItem("CustomerID");
+    jQuery.ajax({
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: url,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data) {
+            
+           let Venderdata=data.invitedVendorList
+
+            $('#tblInvitedStatus').empty();
+            $('#tblInvitedStatus').append(`<thead></thead><tbody></tbody>`);
+            $('#tblInvitedStatus>thead').append(`<tr><th class="hide">Invitaion ID</th><th>Vendor Email</th><th>Invitation Date</th><th>Registered</th><th>Registration Date</th><th>Invited By</th><th> Approval status</th><th>ApprovalDate</th></tr>`);
+            if (Venderdata.length > 1) {
+                let hasRegistered = '';
+                for (let i = 0; i < Venderdata.length; i++) {
+                    if (Venderdata[i].hasRegistered == true) {
+                        hasRegistered = 'Yes';
+                    }
+                    else {
+                        hasRegistered = 'No'
+                    }
+                    $('#tblInvitedStatus>tbody').append(`<tr><td class="hide">${Venderdata[i].invitaionID}</td><td>${Venderdata[i].vendorEmail}</td><td>${fnConverToLocalTime(Venderdata[i].invitationDate)}</td><td>${hasRegistered}</td><td>${fnConverToLocalTime(Venderdata[i].registrationDate)}</td><td>${Venderdata[i].invitedBy}</td><td> ${Venderdata[i].status}</td><td>${fnConverToLocalTime(Venderdata[i].approvalDate)}</td></tr>`);
+
+                }
+
+            }
+            else {
+                $('#tblInvitedStatus>tbody').append(`<tr><td>No record found</td></tr>`);
+
+            }
+            
+        },
+        error: function (xhr, status, error) {
+            
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                alertforerror(err)
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+    });
 }
