@@ -327,9 +327,19 @@
                                                         </div>
                                                         <div class="inputgroup">
                                                             <label class="col-md-2 control-label">
+                                                                Saving
+                                                            </label>
+                                                            <div class="col-md-3">  
+                                                                    <input type="tel" id="txtSaving" name="txtSaving" autocomplete="off" class="text-right form-control MaxLength " maxlength="18" onkeyup="localecommaseperator(this)"  disabled/>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <div class="inputgroup">
+                                                            <label class="col-md-3 control-label">
                                                                 Category<span class="required"> *</span>
                                                             </label>
-                                                            <div class="col-md-3">
+                                                            <div class="col-md-8">
                                                                 <select id="ddlCategory" name="ddlCategory" class="form-control">
                                                                     <option value="0">Project</option>
                                                                     <option value="1">Other</option>
@@ -602,8 +612,14 @@
                                                     <div class="row">
                                                         <div class="col-md-12">
                                                             <label class="col-12 col-md-2 control-label">Detail/Description :</label>
-                                                            <div class="col-12 col-md-10">
+                                                            <div class="col-12 col-md-2">
                                                                 <p class="form-control-static" id="lblDetails">
+
+                                                                </p>
+                                                            </div>
+                                                            <label class="col-12 col-md-2 control-label">Amount :</label>
+                                                            <div class="col-12 col-md-2">
+                                                                <p class="form-control-static thousandsep" id="lblAmount">
 
                                                                 </p>
                                                             </div>
@@ -613,17 +629,18 @@
 
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                            <label class="col-12 col-md-2 control-label">Amount :</label>
-                                                            <div class="col-12 col-md-2">
-                                                                <p class="form-control-static thousandsep" id="lblAmount">
 
-                                                                </p>
-                                                            </div>
                                                             <label class="col-12 col-md-2 control-label ">Budget :</label>
                                                             <div class="col-12 col-md-2">
                                                                 <p class="form-control-static" id="lblbudgetamount">
                                                                 </p>&nbsp;
                                                                 <p class="form-control-static" id="lblCurrency">
+
+                                                                </p>
+                                                            </div>
+                                                            <label class="col-12 col-md-2 control-label">Saving :</label>
+                                                            <div class="col-12 col-md-2">
+                                                                <p class="form-control-static thousandsep" id="lblSaving">
 
                                                                 </p>
                                                             </div>

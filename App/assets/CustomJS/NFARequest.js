@@ -383,7 +383,7 @@ var FormWizard = function () {
                                         }
                                     }
                                     else {
-                                        debugger
+                                        
                                         $('#biddingTab').hide()
                                     }
 
@@ -621,6 +621,7 @@ function GetOverviewmasterbyId(idx) {
 
                 let _cleanStringSub = StringDecodingMechanism(res.result[0].nfaSubject);
                 let _cleanStringDet = StringDecodingMechanism(res.result[0].nfaDescription);
+                let Saving = res.result[0].nfaBudget - res.result[0].nfaAmount;
                 SOBID = res.result[0].sobId || 0;
 
                 $("#txtEventref").val(res.result[0].eventReftext);
@@ -640,6 +641,7 @@ function GetOverviewmasterbyId(idx) {
                 //abheedev bug385 start
                 $("#txtAmountFrom").val(res.result[0].nfaAmount.toLocaleString(sessionStorage.getItem("culturecode")));
                 $("#txtBudget").val(res.result[0].nfaBudget.toLocaleString(sessionStorage.getItem("culturecode")));
+                $("#txtSaving").val(Saving.toLocaleString(sessionStorage.getItem("culturecode")));
                 //abheedev bug385 end
                 $("#ddlCategory").val(res.result[0].nfaCategory);
                 $("#dropCurrency").val(res.result[0].nfaCurrency);
@@ -722,31 +724,43 @@ $("#txtEventref").keyup(function () {
     $("#txtEventref").css("border-color", "");
 });
 //abheedev amountbudget start
+let Savings =''
 $("#txtBudget").focusout(function () {
 
     if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
+        $('#txtSaving').val('0');
         $('#ddlBudget').val('NB');
-
+        
+        
     }
     //abheedev bug 385 start
     else if (parseFloat(removeThousandSeperator($('#txtBudget').val())) < parseFloat(removeThousandSeperator($('#txtAmountFrom').val()))) {
-
+        Savings = parseFloat(removeThousandSeperator($('#txtBudget').val())) - parseFloat(removeThousandSeperator($('#txtAmountFrom').val()));        
+        $('#txtSaving').val(thousands_separators(parseFloat(Savings)));
         $('#ddlBudget').val('OB');
+
 
     }
     else {
+        Savings = parseFloat(removeThousandSeperator($('#txtBudget').val())) - parseFloat(removeThousandSeperator($('#txtAmountFrom').val()))
+        $('#txtSaving').val(thousands_separators(parseFloat(Savings)));
         $('#ddlBudget').val('WB');
 
     }
 });//abheedev bug 385 end
 $("#txtAmountFrom").focusout(function () {
     if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
+        $('#txtSaving').val('0');
         $('#ddlBudget').val('NB');
     }
     else if (parseFloat(removeThousandSeperator($('#txtBudget').val())) < parseFloat(removeThousandSeperator($('#txtAmountFrom').val()))) {
+        Savings = parseFloat(removeThousandSeperator($('#txtBudget').val())) - parseFloat(removeThousandSeperator($('#txtAmountFrom').val()));
+        $('#txtSaving').val(thousands_separators(parseFloat(Savings)));
         $('#ddlBudget').val('OB');
     }
     else {
+        Savings = parseFloat(removeThousandSeperator($('#txtBudget').val())) - parseFloat(removeThousandSeperator($('#txtAmountFrom').val()));
+        $('#txtSaving').val(thousands_separators(parseFloat(Savings)));
         $('#ddlBudget').val('WB');
 
     }
@@ -1142,7 +1156,7 @@ function Savedata() {
         NfaSubject: p_title,
         NfaDescription: p_descript,
         NfaAmount: parseFloat(p_amount),
-        NfaBudget: parseFloat(p_Budget),
+        NfaBudget: parseFloat(p_Budget),  
         NfaCurrency: p_currency,
         NfaCategory: p_category,
         ProjectName: p_projectname,
@@ -1310,6 +1324,7 @@ function Bindtab1DataforPreview() {
     //abheedev bug 385 start
     $("#lblAmount").text($("#txtAmountFrom").val().toLocaleString(sessionStorage.getItem("culturecode")));
     $("#lblbudgetamount").text($("#txtBudget").val().toLocaleString(sessionStorage.getItem("culturecode")));
+    $("#lblSaving").text($("#txtSaving").val().toLocaleString(sessionStorage.getItem("culturecode")));
     //abheedev bug 385 end
     $("#lblCurrency").text($("#dropCurrency option:selected").text());
     $("#lblCategory").text($("#ddlCategory option:selected").text());
@@ -1941,7 +1956,7 @@ function allocateSOB() {
     if (SOBDetailsArray.length === 0) {
         return false
     }
-
+    
     let data = {
         "SOBId": parseInt(SOBID),
         "NFAId": parseInt(sessionStorage.getItem("hdnNFAID")),
