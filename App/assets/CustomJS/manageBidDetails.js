@@ -1,5 +1,4 @@
 jQuery(document).ready(function () {
-
     $('.thousandseparated').inputmask();
     Pageloaded()
     setInterval(function () { Pageloaded() }, 15000);
@@ -372,7 +371,7 @@ jQuery("#txtbid").typeahead({
     minLength: 2,
     updater: function (item) {
         if (map[item].bidId != "0") {
-
+            
             if (connection != undefined && connection != null) {
                 connection.stop().then(function () {
                     console.log('Closed');
@@ -862,6 +861,8 @@ function deleteRAquote() {
             $('#deletepopup').modal('hide')
             $('#txtremarks').val('')
             $('#fileToUpload').val('')
+            
+            dutchflag = false;
         }
         else if (JsonMsz[0] == "99" && data[1] == sessionStorage.getItem('UserID')) {
             $('#deletepopup').modal('hide')
@@ -1390,6 +1391,7 @@ jQuery("#search").keyup(function () {
 var SeId = 0;
 var BidForID = 0;
 var FlagForCheckShowPrice = "N";
+let dutchflag = false;
 function fetchallexportdetails() {
     var bidTypeFetchUrl = '';
     $('#extendedDurationPara').hide();
@@ -1417,6 +1419,20 @@ function fetchallexportdetails() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
+            
+            if (BidData[0].bidDetails[0].bidForID == '82' && sessionStorage.getItem("hdnbidtypeid") == 7) {
+                if (BidData[0].bidSeaExportParticipationDetails.length > 0) {
+                    dutchflag = true;
+                }
+                else {
+                    dutchflag = false;
+                }
+
+            }
+            else {
+                dutchflag = false;
+            }
+           
             
             var localBidDate = fnConverToLocalTime(BidData[0].bidDetails[0].bidDate)
             $('#BidPreviewDiv').show()
@@ -2357,6 +2373,11 @@ function fnTimeUpdateS(index, seaid) {
 
 
 function DateandtimevalidateForBidOpen(ismailsend) {
+    
+    if (dutchflag == true) {
+        alertforerror(`please remove vendor quote to reopen these bid`);
+        return false;
+    }
 
     if (jQuery("#txtbidDate").val() == "" || jQuery("#txtbidDate").val() == null || jQuery("#txtBidDurationForBidOpen").val() == "" || jQuery("#txtBidDurationForBidOpen").val() == "0") {
 
