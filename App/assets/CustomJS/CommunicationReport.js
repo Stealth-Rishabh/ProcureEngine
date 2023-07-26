@@ -1,9 +1,5 @@
 ﻿
 let hdneventid = 0;
-
-
-
-
 $(document).ready(function () {
 
 
@@ -14,12 +10,12 @@ $(document).ready(function () {
 
 
     if (window.location.search) {
-
+        debugger
         const url = window.location.href;
         const params = new URLSearchParams(url.split('?')[1]);
         const eventId = params.get('EventId');
         const eventType = params.get('EventType');
-
+        $('#ddlEventtype').val(eventType).trigger('change');
         hdneventid = eventId;
 
         fetchAllMessages()
@@ -165,7 +161,7 @@ jQuery("#txteventsubject").typeahead({
     source: function (query, process) {
 
         var alleventdata = ''
-        if ($('#ddlEventtype').val() == 'eRFQ' || $('#ddlEventtype').val() == 'NFA') {
+        if ($('#ddlEventtype').val() == 'RFQ' || $('#ddlEventtype').val() == 'NFA') {
             alleventdata = sessionStorage.getItem('hdnAllRFQNFA');
         }
 
@@ -186,7 +182,7 @@ jQuery("#txteventsubject").typeahead({
     minLength: 2,
     updater: function (item) {
 
-        if ($('#ddlEventtype').val() == 'eRFQ' || $('#ddlEventtype').val() == 'NFA') {
+        if ($('#ddlEventtype').val() == 'RFQ' || $('#ddlEventtype').val() == 'NFA') {
             if (map[item].RFQID != "0") {
                 //sessionStorage.setItem('hdneventID', map[item].RFQID);
                 hdneventid = map[item].RFQID;
@@ -261,7 +257,7 @@ function fetchAllRFQNFA() {
 
 $('#ddlEventtype').on('change', function (e) {
 
-    if ($('#ddlEventtype option:selected').val() == 'eRFQ') {
+    if ($('#ddlEventtype option:selected').val() == 'RFQ') {
         CEventType = 'eRFQ';
         $('#txteventsubject').val('');
         fetchAllRFQNFA()
@@ -344,10 +340,12 @@ function fetchAllMessages() {
         cache: false,
         dataType: "json",
         success: function (data) {
-
+            console.log("data", data);
             let Data = ''
             if (data.length > 0) {
-                Data = jQuery.parseJSON(data[0].jsondata);
+                if (data[0].jsondata != null) {
+                    Data = jQuery.parseJSON(data[0].jsondata);
+                }
             }
             else {
                 Data = '';
@@ -355,12 +353,12 @@ function fetchAllMessages() {
             jQuery("#tblCommunicationSummary").empty();
             jQuery("#tblCommunicationSummary").append(`<thead></thead><tbody></tbody>`);
 
-            jQuery('#tblCommunicationSummary>thead').append(`<tr><th class='bold'>Thread ID</th><th class='bold'>Event Subject</th><th class='bold'>Configured By</th><th class='bold'>Thread Date/Time</th><th class='bold'>Event Type</th></tr>`);
+            jQuery('#tblCommunicationSummary>thead').append(`<tr><th class='bold hide'>Thread ID</th><th class='bold'>Event Subject</th><th class='bold'>Configured By</th><th class='bold'>Thread Date/Time</th><th class='bold'>Event Type</th></tr>`);
 
 
             if (Data.length > 0) {
                 for (let i = 0; i < Data.length; i++) {
-                    jQuery('#tblCommunicationSummary>tbody').append(`<tr><td><a onclick="getCommunication('${Data[i].Link}')"  href="javascript:;">${Data[i].QueryId}</a></td><td>${Data[i].EventName} | ${Data[i].EventId}</td><td>${Data[i].UserName}</td><td>${fnConverToLocalTime(`${Data[i].CreatedDate}`)}</td><td>${Data[i].EventType}</td></tr>`);
+                    jQuery('#tblCommunicationSummary>tbody').append(`<tr><td class='hide'>${Data[i].QueryId}</td><td><a onclick="getCommunication('${Data[i].Link}')"  href="javascript:;">${Data[i].EventName} | ${Data[i].EventId}</a></td><td>${Data[i].UserName}</td><td>${fnConverToLocalTime(`${Data[i].CreatedDate}`)}</td><td>${Data[i].EventType}</td></tr>`);
                 }
 
                 var table = $('#tblCommunicationSummary');
@@ -453,5 +451,3 @@ function fetchAllMessages() {
 function getCommunication(url) {
     window.open(url, "_blank")
 }
-
-

@@ -178,7 +178,7 @@
                                                 <div class="col-md-8">
                                                     <select class="form-control" id="ddlEventtype" name="ddlEventtype">
                                                         <option value="">Select</option>
-                                                        <option value="eRFQ">E-RFQ</option>
+                                                        <option value="RFQ">E-RFQ</option>
                                                         <option value="NFA">NFA</option>
                                                     </select>
                                                 </div>
@@ -300,6 +300,7 @@
             Metronic.init(); Layout.init(); ComponentsPickers.init(); setCommonData();
             fetchMenuItemsFromSession(7, 8);
             $('#ddlconfiguredby').select2({
+                // allSelectedText: 'All',
                 placeholder: "Select Users",
                 allowClear: true
             });
