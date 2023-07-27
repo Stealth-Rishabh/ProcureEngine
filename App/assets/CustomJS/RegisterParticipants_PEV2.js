@@ -4,6 +4,8 @@ let beforeActionType = '';
 var pageNumber = 1;
 var numberOfPages = 0;
 var SearchText = '';
+let RoleName = sessionStorage.getItem("roleName");
+let customerid = parseInt(sessionStorage.getItem('CustomerID'));
 jQuery(document).ready(function () {
     //loadingEngine()
     //FROM HTML
@@ -40,7 +42,7 @@ jQuery(document).ready(function () {
     fetchCountry();
     prev_next();
     GetInvitedVendors();
-  
+
     //abheedev 25/11/2022
 
     $('#txtsearchcat').select2({
@@ -383,7 +385,7 @@ function RegisterParticipants() {
     var encodedcontactperson = StringEncodingMechanism(jQuery("#ContactName").val());
     var encodedaltcontactperson = StringEncodingMechanism(jQuery("#AltContactName").val());
 
-    
+
 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var status = "";
@@ -575,7 +577,8 @@ function RegisterParticipants() {
 
             setTimeout(function () {
                 jQuery('#divalertsucess').css('display', 'none');
-                jQuery('#divalerterr').css('display', 'none');
+                jQuery('#divalerterr').css('display', 'none');   
+                jQuery('#txtUI').val(jQuery("#txtcompanyemail").val().trim().toLowerCase())
                 fnfetchfoundVendors()
                 if (beforeActionType == 'New') {
                     window.location.reload();
@@ -583,6 +586,7 @@ function RegisterParticipants() {
             }, 3000)
 
             jQuery.unblockUI();
+            
         },
         error: function (xhr, status, error) {
 
@@ -783,8 +787,7 @@ function fetchParticipantsVenderTable(PageNo, searchText) {
 
                 jQuery.each(Venderdatalistfilter, function (key, value) {
 
-                    console.log(value);
-                    //console.log(1)
+                
                     var str = "";
                     var addr1 = (value.address).replace(/\n/g, " ");
 
@@ -866,7 +869,7 @@ function fetchParticipantsVenderTable(PageNo, searchText) {
 
 /* by Bijendra Singh*/
 function fetchParticipantsVenderTableFilter(PageNo, searchText) {
-    //console.log("data", VenderdataList);
+   
     console.log("PageNo", PageNo);
     currentpage = PageNo;
     jQuery("#tblParticipantsVender > tbody").empty();
@@ -1032,7 +1035,7 @@ function fetchParticipantsparked() {
         }
     });
 }
-let customerid = parseInt(sessionStorage.getItem('CustomerID'));
+
 function fnViewDetails(tmpvendorid, vendorid) {
 
     $('#viewalldetails').modal('show');
@@ -1042,161 +1045,7 @@ function fnViewDetails(tmpvendorid, vendorid) {
 
 
 }
-/*function fetchVendorRegistrationDetails(tmpvendorid, vendorid) {
-   
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 
-
-    jQuery.ajax({
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "VendorRequest/FetchVendorRequest?tmpVendorID=" + tmpvendorid + "&VendorID=" + vendorid,
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        type: "GET",
-        cache: false,
-        crossDomain: true,
-        dataType: "json",
-        success: function (json) {
-            
-            var companydetails = JSON.parse(json[0].jsondata);
-            if (json.length > 1) {
-
-                var categorydetails = JSON.parse(json[1].jsondata);
-               
-            }
-            _vendorId = companydetails[0].VendorID;
-            sessionStorage.setItem('tmpVendorID', companydetails[0].tmpVendorID);
-            if (companydetails[0].PM[0].paymentTerm != "" && companydetails[0].PM[0].paymentTerm != null && companydetails[0].PM[0].paymentTerm != undefined) {
-                jQuery('#paymentterms').html(companydetails[0].PM[0].paymentTerm);
-            }
-            else {
-                jQuery('#paymentterms').html();
-            }
-
-            if (companydetails[0].VendorCode != "" && companydetails[0].VendorCode != null && companydetails[0].VendorCode != undefined) {
-                $('#hdnvendorCode').val(companydetails[0].VendorCode);
-                $('#spnvendorcode').text(companydetails[0].VendorCode)
-            } else {
-                var vendorCode = '';
-                $('#hdnvendorCode').val(vendorCode);
-                $('#spnvendorcode').text('')
-            }
-
-            if (companydetails[0].GSTFile != "" && companydetails[0].GSTFile != null && companydetails[0].GSTFile != undefined) {
-                $('#gstattach').show();
-                $('#gstattach').html(companydetails[0].GSTFile);
-
-            } else {
-
-                $('#gstattach').hide();
-            }
-
-            if (companydetails[0].PANFile != "" && companydetails[0].PANFile != null && companydetails[0].PANFile != undefined) {
-                $('#panattach').show();
-                $('#panattach').html(companydetails[0].PANFile);
-
-            } else {
-
-                $('#panattach').hide();
-            }
-
-            if (companydetails[0].MSMEFile != "" && companydetails[0].MSMEFile != null && companydetails[0].MSMEFile != undefined) {
-                $('#msmeattach').show();
-                $('#msmeattach').html(companydetails[0].MSMEFile);
-
-            } else {
-
-                $('#msmeattach').hide();
-            }
-
-            if (companydetails[0].cancelledCheck != "" && companydetails[0].cancelledCheck != null && companydetails[0].cancelledCheck != undefined) {
-                $('#checkattach').show();
-                $('#checkattach').html(companydetails[0].cancelledCheck);
-
-            } else {
-
-                $('#checkattach').hide();
-            }
-
-            if (companydetails[0].MSMECheck == 'Y') {
-                $('.hideInput').removeClass('hide');
-            } else {
-                $('.hideInput').addClass('hide');
-            }
-
-            if (companydetails[0].GSTClass == 0) {
-                var gstclass = '';
-            } else {
-                var gstclass = companydetails[0].GSTClass;
-            }
-
-            if (companydetails[0].PreviousTurnover != "" && companydetails[0].PreviousTurnover != null && companydetails[0].PreviousTurnover != undefined) {
-                jQuery('#lastFY').html(companydetails[0].currencyLastFY + ' ' + companydetails[0].PreviousTurnover);
-            }
-            else {
-                jQuery('#lastFY').html();
-            }
-
-            if (companydetails[0].SecondLastTurnover != "" && companydetails[0].SecondLastTurnover != null && companydetails[0].SecondLastTurnover != undefined) {
-                jQuery('#seclastFY').html(companydetails[0].currencyLast2FY + ' ' + companydetails[0].SecondLastTurnover);
-            }
-            else {
-            }
-
-
-            if (companydetails[0].pinCode != "" && companydetails[0].pinCode != null && companydetails[0].pinCode != undefined) {
-                jQuery('#pincode').html(companydetails[0].pinCode);
-            }
-            else {
-                jQuery('#pincode').html('');
-            }
-
-
-            jQuery('#gstvendorclass').html(gstclass);
-            jQuery('#ddlTypeofproduct').html(categorydetails);
-            jQuery('#gstno').html(companydetails[0].ServiceTaxNo);
-            jQuery('#natureofest').html(companydetails[0].EstName);
-            jQuery('#vendortype').html(companydetails[0].VendorCatName);
-            jQuery('#product').html(companydetails[0].product);
-            jQuery('#companyname').html(companydetails[0].VendorName);
-            jQuery('#address').html(companydetails[0].Address1);
-            jQuery('#country').html(companydetails[0].CountryName);
-            jQuery('#state').html(companydetails[0].StateName);
-            jQuery('#city').html(companydetails[0].CityName);
-           
-            jQuery('#panno').html(companydetails[0].PANNo);
-            jQuery('#panfilename').html(companydetails[0].PANFile);
-            jQuery('#TDStype').html(companydetails[0].TDSTypeName);
-            jQuery('#tanno').html(companydetails[0].TAN);
-            jQuery('#bankname').html(companydetails[0].BankName);
-            jQuery('#bankaccountno').html(companydetails[0].BankAccount);
-            jQuery('#ifsccode').html(companydetails[0].IFSCCode);
-            jQuery('#accountholdername').html(companydetails[0].AccountName);
-            jQuery('#primaryname').html(companydetails[0].ContactPerson);
-            jQuery('#primarymobile').html(companydetails[0].MobileNo);
-            jQuery('#primaryemail').html(companydetails[0].EmailID);
-            jQuery('#altname').html(companydetails[0].ContactNameAlt);
-            jQuery('#altmobile').html(companydetails[0].Phone);
-            jQuery('#altemail').html(companydetails[0].AlternateEmailID);
-            jQuery('#msme').html(companydetails[0].MSMECheck);
-            jQuery('#msmeclass').html(companydetails[0].MSMEType);
-            jQuery('#msmeno').html(companydetails[0].MSMENo);
-            jQuery('#msmeattach').html(companydetails[0].MSMEFile);
-            jQuery('#txtLastFiscalyear').html(companydetails[0].PreviousTurnoverYear);
-            jQuery('#SecondLastTurnoverYear').html(companydetails[0].SecondLastTurnoverYear);
-            jQuery.unblockUI();
-        },
-        error: function (xhr, status, error) {
-           
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status === 401) {
-                error401Messagebox(err.Message);
-            }
-            return false;
-            jQuery.unblockUI();
-        }
-    });
-
-}*/
 function fnApprove_reject(linkurl) {
     window.open(linkurl);
 
@@ -1602,13 +1451,13 @@ function fnfetchfoundVendors() {
         jQuery.ajax({
             type: "GET",
             contentType: "application/json; charset=utf-8",
-            //url: sessionStorage.getItem("APIPath") + "RegisterParticipants/GetVendors/?FieldName=" + $('#ddlUI').val() + "&FieldValue=" + $('#txtUI').val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID'),
             url: sessionStorage.getItem("APIPath") + "VendorLCM/GetVendorByEmail/?Email=" + emailid + "&CustomerId=" + customerid,
             beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
             cache: false,
             crossDomain: true,
             dataType: "json",
             success: function (data) {
+                
                 if (!data.isVendorPresent) {
                     $("#hdnFlagType").val("New")
                     $('#divVendorForm').removeClass('hide')
@@ -1657,7 +1506,15 @@ function fnfetchfoundVendors() {
                 $('#divVendorContactForm').removeClass('hide')
                 $('#div_tableVendor').removeClass('hide');
 
+                if (parentData.customerID == customerid) {
 
+                    if (RoleName == 'Administrator') {
+                        $("#txtcompanyemail").removeAttr('disabled');
+                    }
+                    else {
+                        $("#txtcompanyemail").attr('disabled', 'disabled');
+                    }
+                }
 
 
 
@@ -1839,16 +1696,12 @@ function EditVendor(vendorid, vname, emailid, dialingcodephone, phone, dialingco
     jQuery("#txtPanNo").val(pan);
     jQuery("#txtTINNo").val(gst);
     jQuery("#txtPhoneNo").val(phone);
-    jQuery("#txtMobileNo").val(mobile);
-    jQuery("#txtcompanyemail").val(emailid);
-    jQuery("#txtAlternateeMailID").val(alternateemailid);
+
     jQuery("#txtZipCd").val(zipcode)
 
-    /*$('#ddlpreferredTime').val(prefferredTZ).trigger('change') */
 
-    //@abheedev
 
-    $('#ddlCountryCd').val(dialingcode).trigger('change')
+
     $('#ddlCountryCdPhone').val(dialingcodephone).trigger('change')
 
     if (taxIdType == "") {
@@ -1978,11 +1831,8 @@ function ExtendVendor(vendorid, vname, emailid, dialingcodephone, phone, dialing
 
 
 
-    jQuery("#txtcompanyemail").val(emailid);
-    jQuery("#txtAlternateeMailID").val(alternateemailid);
-    //abheedev
 
-    $('#ddlCountryCd').val(dialingcode)//.trigger('change')
+
     $('#ddlCountryCdPhone').val(dialingcodephone)//.trigger('change')
     $("#txtTINNo").val(gst);
     $("#txtPanNo").val(pan);
@@ -2667,7 +2517,6 @@ function fetchAdvanceSearch() {
 
 function fetchVendorRegistrationDetails(custid, vendId) {
 
-    console.log(sessionStorage.getItem("APIPath") + "VendorLCM/GetVendorById/?Id=" + vendId + "&CustomerId=" + custid)
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
@@ -3389,7 +3238,7 @@ function UpdateExternalSourceUser() {
 
     };
 
-    console.log(sessionStorage.getItem("APIPath") + "VendorLCM/UpdateExternalSource/?ActionType=" + externalactiontype)
+   
     jQuery.ajax({
 
         // url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RegParticpants_PEV2/",
@@ -3535,11 +3384,10 @@ function PostToExternalSource() {
 
     };
 
-    console.log(sessionStorage.getItem("APIPath") + "SAPintegration/PostToExternalSource/?Id=" + vendId + "&ChildId=" + ChildId + "&CustomerId=" + CustId + "&SourceId=" + sourceid)
-
+   
     jQuery.ajax({
 
-        // url: sessionStorage.getItem("APIPath") + "RegisterParticipants/RegParticpants_PEV2/",
+       
         url: sessionStorage.getItem("APIPath") + "SAPintegration/PostToExternalSource/?Id=" + vendId + "&ChildId=" + ChildId + "&CustomerId=" + CustId + "&SourceId=" + sourceid,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "POST",
@@ -4034,8 +3882,7 @@ function IciciBankPennyDropVerify(childId, bankRoutingNumber, bankName, bankAcco
         "Mobile": $('#vendoraltmobileno').text(),
         "ChildID": parseInt(childId)
     }
-    console.log(APIPath + "Bank/IciciBankPennyDropVerify")
-
+   
     jQuery.ajax({
         type: "POST",
         contentType: "application/json; charset=utf-8",
@@ -4097,7 +3944,7 @@ function IciciBankPennyDropVerify(childId, bankRoutingNumber, bankName, bankAcco
 
 const prev = document.querySelector('.prev');
 prev.addEventListener('click', (e) => {
-    //  console.log(pageNumber);
+   
     e.preventDefault();
     if (pageNumber > 1) {
         pageNumber--;
@@ -4159,7 +4006,7 @@ function replaceQuoutesFromString_PEV2(ele) {
 }
 
 function setupPagination(pageNumber) {
-    
+
     const pagination = document.querySelector("#paginationid1");
     pagination.innerHTML = "";
     var pageno = 0;
@@ -4171,7 +4018,7 @@ function setupPagination(pageNumber) {
         $('.previousbtn').hide()
     }
     console.log(pageNumber);
-    
+
     for (let i = 1; i <= numberOfPages; i++) {
         // console.log(i);
         var listart = "<li class=page-item id=" + i + ">";
@@ -4197,37 +4044,16 @@ function setupPagination(pageNumber) {
             link.classList.add("active");
         });
         li.appendChild(link);
-        //        pagination.appendChild(li);
+       
         pageno = i + 1;
     }
 
 
-    /*  const li = document.createElement("li");
-      li.id = 'l' + pageno;
-      li.setAttribute("class", "page-link");
-      const link = document.createElement("a");
-      link.href = "javascript:void(0)";
-      link.setAttribute("class", "page-link");
-      link.innerText = ".....";
-      link.addEventListener("click", (event) => {
-          event.preventDefault();
-          pageNumber = pageno;
-          fetchParticipantsVenderTableFilter(pageNumber, SearchText);
-          const currentActive = pagination.querySelector(".active");
-          currentActive.classList.remove("active");
-          link.classList.add("active");
-      });*/
-
-    // li.appendChild(link);
-    // pagination.appendChild(li);
-
-    //var pageDivData = '<li id="l' + numberOfPages +' class="page-link"><a href="javascript:void(0)" class="page-link">....</a></li>';
-    //pageDivData += '<li id="l1' + numberOfPages + ' class="page-link"><a href="javascript:void(0)" class="page-link">(' + numberOfPages + ')</a></li>';
-    //pagination.appendChild(pageDivData);
+   
 }
 
 function gotopage_directly(ele) {
-   
+
     pageNumber = ele.value;
     if (pageNumber > 1) {
         $('.previousbtn').show()
@@ -4251,7 +4077,7 @@ function prev_next() {
 
 
 function GetInvitedVendors() {
-    
+
     let url = sessionStorage.getItem("APIPath") + "VendorLCM/GetInvitedVendors/?Id=" + sessionStorage.getItem("CustomerID");
     jQuery.ajax({
         type: "GET",
@@ -4262,8 +4088,8 @@ function GetInvitedVendors() {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-            
-           let Venderdata=data.invitedVendorList
+
+            let Venderdata = data.invitedVendorList
 
             $('#tblInvitedStatus').empty();
             $('#tblInvitedStatus').append(`<thead></thead><tbody></tbody>`);
@@ -4286,10 +4112,10 @@ function GetInvitedVendors() {
                 $('#tblInvitedStatus>tbody').append(`<tr><td>No record found</td></tr>`);
 
             }
-            
+
         },
         error: function (xhr, status, error) {
-            
+
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
