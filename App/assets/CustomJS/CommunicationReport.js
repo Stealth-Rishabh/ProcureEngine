@@ -1,5 +1,9 @@
 ﻿
 let hdneventid = 0;
+
+
+
+
 $(document).ready(function () {
 
 
@@ -10,11 +14,17 @@ $(document).ready(function () {
 
 
     if (window.location.search) {
-        debugger
+
         const url = window.location.href;
         const params = new URLSearchParams(url.split('?')[1]);
         const eventId = params.get('EventId');
-        const eventType = params.get('EventType');
+        let eventType = params.get('EventType');
+        if (eventType == 'eRFQc' || eventType == 'eRFQ' || eventType == 'RFQ' || eventType == 'eRFQv' || eventType == 'eRFQs') {
+            eventType = 'RFQ'
+        }
+        else {
+            eventType = 'NFA'
+        }
         $('#ddlEventtype').val(eventType).trigger('change');
         hdneventid = eventId;
 
@@ -358,7 +368,7 @@ function fetchAllMessages() {
 
             if (Data.length > 0) {
                 for (let i = 0; i < Data.length; i++) {
-                    jQuery('#tblCommunicationSummary>tbody').append(`<tr><td class='hide'>${Data[i].QueryId}</td><td><a onclick="getCommunication('${Data[i].Link}')"  href="javascript:;">${Data[i].EventName} | ${Data[i].EventId}</a></td><td>${Data[i].UserName}</td><td>${fnConverToLocalTime(`${Data[i].CreatedDate}`)}</td><td>${Data[i].EventType}</td></tr>`);
+                    jQuery('#tblCommunicationSummary>tbody').append(`<tr><td class='hide'>${Data[i].QueryId}</td><td><a onclick="getCommunication('${Data[i].Link}')"  href="javascript:;">${Data[i].EventName} </a></td><td>${Data[i].UserName}</td><td>${fnConverToLocalTime(`${Data[i].CreatedDate}`)}</td><td>${Data[i].EventType}</td></tr>`);
                 }
 
                 var table = $('#tblCommunicationSummary');
@@ -451,3 +461,5 @@ function fetchAllMessages() {
 function getCommunication(url) {
     window.open(url, "_blank")
 }
+
+
