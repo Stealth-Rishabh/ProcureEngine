@@ -32,20 +32,17 @@ function fetchReguestforQuotationDetailseRFQ() {
             sessionStorage.setItem("preferredtimezone", data[0].preferredtimezone);
             sessionStorage.setItem('hddnRFQRFIID', RFQID);
             sessionStorage.setItem('CustomerID', data[0].customerID);
-            //var EndDate = new Date(fnConverToLocalTime(data[0].rfqEndDate).replace('-', ''));
-            // var currentTime = new Date();
-            // if (EndDate > currentTime) {
 
             //** check end Date in valid or not
 
             Dateandtimevalidate(fnConverToLocalTime(data[0].rfqEndDate));
-            jQuery('#RFQSubject').text(data[0].rfqSubject)
-            jQuery('#RFQSubjectTT').text(data[0].rfqSubject)
+            jQuery('#RFQSubject').text(StringDecodingMechanism(data[0].rfqSubject))
+            jQuery('#RFQSubjectTT').text(StringDecodingMechanism(data[0].rfqSubject))
 
             $('#Currency').html(data[0].currencyNm)
             $('#CurrencyTT').html(data[0].currencyNm)
-            jQuery('#RFQDescription').text(data[0].rfqDescription)
-            jQuery('#RFQDescriptionTT').text(data[0].rfqDescription)
+            jQuery('#RFQDescription').text(StringDecodingMechanism(data[0].rfqDescription))
+            jQuery('#RFQDescriptionTT').text(StringDecodingMechanism(data[0].rfqDescription))
             jQuery('#ConversionRate').html(data[0].rfqConversionRate);
             jQuery('#refno').html(data[0].rfqConversionRate);
             jQuery('#RFQStartDate').text(fnConverToLocalTime(data[0].rfqStartDate))
@@ -57,15 +54,6 @@ function fetchReguestforQuotationDetailseRFQ() {
             jQuery('#TermCondition').attr("name", data[0].rfqTermandCondition);
             jQuery('#TermCondition').html(data[0].rfqTermandCondition);
 
-            /*  }
-               else {
-                   bootbox.alert("This RFQ has already expired !!!", function () {
-                       //   $('.page-container').hide();
-                       $('#btnpassword').attr('disabled', 'disabled')
-                       $('#txtpassword').attr('disabled', 'disabled')
-
-                   });
-               }*/
 
 
         }

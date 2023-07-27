@@ -317,7 +317,7 @@ function GetOverviewmasterbyId(idx) {
 
                 let userType = sessionStorage.getItem("roleName");
                 let loginuserName=sessionStorage.getItem("UserName");
-              
+                let Saving = res.result[0].nfaBudget - res.result[0].nfaAmount; 
                 console.log(userType)
                 console.log(loginuserName)  
                  if (userType == 'Administrator' || userType == 'Admin' || NFACreatedBy == loginuserName) {
@@ -353,7 +353,9 @@ function GetOverviewmasterbyId(idx) {
                 $("#lblDetails").text(res.result[0].nfaDescription);
                 $("#lblAmount").text(thousands_separators(res.result[0].nfaAmount))//+ " " + res.result[0].currencyNm);
 
-                $("#lblbudgetamount").text(thousands_separators(res.result[0].nfaBudget))
+                $("#lblbudgetamount").text(thousands_separators(res.result[0].nfaBudget));
+
+                $("#lblSaving").text(thousands_separators(Saving));
 
                 $("#lblCurrency,#lblCurrencybud").text(res.result[0].currencyNm);
                 $("#lblCategory").text(res.result[0].categoryName);

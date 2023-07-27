@@ -275,9 +275,24 @@ h3 {
     height: 100%;
 }
 
+.FromUsername {
+    font-weight: bold;
+}
+
+.tousername {
+    font-weight: bold;
+}
+
+#msgIt {
+    font-weight: bold;
+}
+
+.msgthread {
+    font-weight: normal !important;
+}
 
 #cht {
-    font-weight: bold;
+    /*font-weight: bold;*/
     background-color: #EEEEEE;
 }
 
@@ -285,7 +300,7 @@ h3 {
     display: flex;
     flex-direction: column;
     gap: 3px;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .heading {
@@ -509,7 +524,7 @@ hr {
     width: 25px;
     height: 25px;
     top: 10px;
-    background: rgb(223, 240, 216) !important;
+    background: transparent !important;
 }
 
     #crsbtn::before,
@@ -638,7 +653,7 @@ textarea {
 
 .flexsetup {
     background-color: #1f1f1f;
-    height: 55px !important;
+    height: 46px !important;
 }
 
     .flexsetup .heading {
@@ -652,12 +667,12 @@ textarea {
         right: 10px;
         border-radius: 50% !important;
         padding: 15px;
-        top: 7px;
+        top: 1px !important;
         border: 0px !important;
     }
 
 .crossclass {
-    background: rgb(223, 240, 216) !important;
+    background: transparent !important;
 }
 
 #optioncontainer {
@@ -837,6 +852,38 @@ textarea {
 .read-besge {
     margin-left: 12px;
 }
+
+
+#messageallid {
+    margin-top: 23px;
+    position: relative !important;
+    background: white !important;
+    z-index: 10050 !important;
+    outline: none !important;
+    overflow-y: auto !important;
+}
+
+.css-y28f86 {
+    position: fixed;
+    inset: 0px;
+    z-index: 12000 !important;
+}
+
+@media (min-width: 1200px) {
+    .css-1m6l8cf {
+        width: 450px !important;
+        margin: 15px !important;
+    }
+}
+
+
+#more {
+    top: 2% !important;
+    position: relative !important;
+    left: 78% !important;
+    border: none !important;
+}
+
 
 /*.inmsg{
     
