@@ -173,7 +173,9 @@ function GetOverviewmasterbyId(idx) {
         if (res.result != null) {
 
             nfaid = res.result[0].nfaID
+           
             if (res.result.length > 0) {
+                let Saving = res.result[0].nfaBudget - res.result[0].nfaAmount;
                 if (res.result[0].nfaCategory == "2") {
                     $(".clsHide").hide();
                 }
@@ -189,6 +191,7 @@ function GetOverviewmasterbyId(idx) {
                 $("#lblAmount").text(thousands_separators(res.result[0].nfaAmount))//+ " " + res.result[0].currencyNm);
 
                 $("#lblbudgetamount").text(thousands_separators(res.result[0].nfaBudget))
+                $("#lblSaving").text(thousands_separators(Saving))
                 $('#logoimg').attr("src", res.result[0].logoImage);
                 $("#lblCurrency,#lblCurrencybud").text(res.result[0].currencyNm);
                 $("#lblCategory").text(res.result[0].categoryName);

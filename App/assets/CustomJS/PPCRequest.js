@@ -1,4 +1,5 @@
 let projectnamestatus = false;
+let Savings = ''
 jQuery(document).ready(function () {
 
 
@@ -624,7 +625,7 @@ function GetOverviewmasterbyId(idx) {
         if (res.result != null) {
 
             if (res.result.length > 0) {
-
+                let Saving = res.result[0].nfaBudget - res.result[0].nfaAmount;
                 $("#txtEventref").val(res.result[0].eventReftext);
                 $("#txtTitle").val(res.result[0].nfaSubject);
                 $("#txtNFADetail").val(res.result[0].nfaDescription);
@@ -642,7 +643,7 @@ function GetOverviewmasterbyId(idx) {
 
                 $("#txtAmountFrom").val(res.result[0].nfaAmount.toLocaleString(sessionStorage.getItem("culturecode")));
                 $("#txtBudget").val(res.result[0].nfaBudget.toLocaleString(sessionStorage.getItem("culturecode")));
-
+                $("#txtSaving").val(Saving.toLocaleString(sessionStorage.getItem("culturecode")));
                 $("#ddlCategory").val(res.result[0].nfaCategory);
                 $("#dropCurrency").val(res.result[0].nfaCurrency);
 
@@ -771,27 +772,36 @@ $("#txtEventref").keyup(function () {
 $("#txtBudget").focusout(function () {
 
     if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
+        $('#txtSaving').val('0');
         $('#ddlBudget').val('NB');
 
     }
     else if (parseFloat(removeThousandSeperator($('#txtBudget').val())) < parseFloat(removeThousandSeperator($('#txtAmountFrom').val()))) {
-
+        Savings = parseFloat(removeThousandSeperator($('#txtBudget').val())) - parseFloat(removeThousandSeperator($('#txtAmountFrom').val()));
+        $('#txtSaving').val(thousands_separators(parseFloat(Savings)));
         $('#ddlBudget').val('OB');
 
     }
     else {
+        Savings = parseFloat(removeThousandSeperator($('#txtBudget').val())) - parseFloat(removeThousandSeperator($('#txtAmountFrom').val()))
+        $('#txtSaving').val(thousands_separators(parseFloat(Savings)));
         $('#ddlBudget').val('WB');
 
     }
 });
 $("#txtAmountFrom").focusout(function () {
     if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
+        $('#txtSaving').val('0');
         $('#ddlBudget').val('NB');
     }
     else if (parseFloat(removeThousandSeperator($('#txtBudget').val())) < parseFloat(removeThousandSeperator($('#txtAmountFrom').val()))) {
+        Savings = parseFloat(removeThousandSeperator($('#txtBudget').val())) - parseFloat(removeThousandSeperator($('#txtAmountFrom').val()))
+        $('#txtSaving').val(thousands_separators(parseFloat(Savings)));
         $('#ddlBudget').val('OB');
     }
     else {
+        Savings = parseFloat(removeThousandSeperator($('#txtBudget').val())) - parseFloat(removeThousandSeperator($('#txtAmountFrom').val()))
+        $('#txtSaving').val(thousands_separators(parseFloat(Savings)));
         $('#ddlBudget').val('WB');
 
     }
@@ -1132,6 +1142,7 @@ function Bindtab1DataforPreview() {
     //abheedev bug 385 start
     $("#lblAmount").text($("#txtAmountFrom").val().toLocaleString(sessionStorage.getItem("culturecode")));
     $("#lblbudgetamount").text($("#txtBudget").val().toLocaleString(sessionStorage.getItem("culturecode")));
+    $("#lblSaving").text($("#txtSaving").val().toLocaleString(sessionStorage.getItem("culturecode")));
     //abheedev bug 385 end
     $("#lblCurrency").text($("#dropCurrency option:selected").text());
 

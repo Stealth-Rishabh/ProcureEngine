@@ -4750,8 +4750,8 @@ function getCategoryWiseVendors(categoryID) {
             if ($("#selectedvendorlists > tbody > tr").length > 0) {
                 $("#selectedvendorlists> tbody > tr").each(function (index) {
 
-                    $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).prop("disabled", true);
-                    $("#chkvender" + $.trim($(this).find('td:eq(0)').html())).closest("span#spanchecked").addClass("checked")
+                    $("#chkvender" + $.trim($(this).find('td:eq(1)').html())).prop("disabled", true);
+                    $("#chkvender" + $.trim($(this).find('td:eq(1)').html())).closest("span#spanchecked").addClass("checked")
 
                 });
             }
