@@ -371,7 +371,7 @@ jQuery("#txtbid").typeahead({
     minLength: 2,
     updater: function (item) {
         if (map[item].bidId != "0") {
-            
+
             if (connection != undefined && connection != null) {
                 connection.stop().then(function () {
                     console.log('Closed');
@@ -861,7 +861,7 @@ function deleteRAquote() {
             $('#deletepopup').modal('hide')
             $('#txtremarks').val('')
             $('#fileToUpload').val('')
-            
+
             dutchflag = false;
         }
         else if (JsonMsz[0] == "99" && data[1] == sessionStorage.getItem('UserID')) {
@@ -1394,8 +1394,11 @@ var FlagForCheckShowPrice = "N";
 let dutchflag = false;
 function fetchallexportdetails() {
     var bidTypeFetchUrl = '';
+    //hide sub and desc anurag
+    var BidCreaterName = "";
+    var BidApproverStatus = "";
     $('#extendedDurationPara').hide();
-    
+
     if (sessionStorage.getItem("hdnbidtypeid") == 6) {
         //bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchPefaConfigurationData/?UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&BidID=" + jQuery('#ddlbid').val();
         bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchPefaConfigurationData/?BidID=" + jQuery('#ddlbid').val();
@@ -1409,7 +1412,7 @@ function fetchallexportdetails() {
     if (sessionStorage.getItem("hdnbidtypeid") == 9) {
         bidTypeFetchUrl = sessionStorage.getItem("APIPath") + "ConfigureBid/fetchFrenchConfigurationData/?BidID=" + jQuery('#ddlbid').val();
     }
-    
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
@@ -1419,7 +1422,7 @@ function fetchallexportdetails() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-            
+
             if (BidData[0].bidDetails[0].bidForID == '82' && sessionStorage.getItem("hdnbidtypeid") == 7) {
                 if (BidData[0].bidSeaExportParticipationDetails.length > 0) {
                     dutchflag = true;
@@ -1432,8 +1435,8 @@ function fetchallexportdetails() {
             else {
                 dutchflag = false;
             }
-           
-            
+
+
             var localBidDate = fnConverToLocalTime(BidData[0].bidDetails[0].bidDate)
             $('#BidPreviewDiv').show()
             jQuery('#mapedapproverPrev').html('');
@@ -1449,6 +1452,18 @@ function fetchallexportdetails() {
             jQuery('#txtConversionRatePrev').html(BidData[0].bidDetails[0].conversionRate)
             jQuery('#txtConversionRatePrevtab_0').html(BidData[0].bidDetails[0].conversionRate)
             _finalStatus = BidData[0].bidDetails[0].finalStatus
+            //hide sub and desc anurag
+            BidCreaterName = BidData[0].bidDetails[0].configureByName;
+            BidApproverStatus = BidData[0].bidDetails[0].finalStatus;
+            //hide sub and desc anurag 
+            let loginUserName = sessionStorage.getItem('UserName');
+            if (BidCreaterName == loginUserName && BidApproverStatus == "Not forwarded") {
+                $('#BIDSub').show();
+                $('#BIDDesc').show();
+            } else {
+                $('#BIDSub').hide();
+                $('#BIDDesc').hide();
+            }
             if (BidData[0].bidDetails[0].isRunningBid.toLowerCase() == 'notrunningbid') {
                 if (BidData[0].bidDetails[0].status == 'Pause') {
                     isRunningBid = 'Y';
@@ -1988,7 +2003,7 @@ function fetchallexportdetails() {
             }
         },
         error: function (xhr, status, error) {
-            
+
             var err = xhr.responseText// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -2373,7 +2388,7 @@ function fnTimeUpdateS(index, seaid) {
 
 
 function DateandtimevalidateForBidOpen(ismailsend) {
-    
+
     if (dutchflag == true) {
         alertforerror(`please remove vendor quote to reopen these bid`);
         return false;
@@ -5260,4 +5275,129 @@ $("#btndownloadTemplate").click(function (e) {
 function preventSubmit(event) {
     event.preventDefault(); // prevent default form submission behavior
 
+}
+
+
+
+
+//edit options for subject and description by anurag
+
+$('#BIDSub').click(function () {
+    console.log("Hii");
+    var text = $('.bidsub').text();
+    var input = $('<input id="attributeSub" name="subj" type="text" value="' + text + '" />')
+    $('.bidsub').text('').append(input);
+    input.select();
+    var x = document.getElementById("subBidID");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+});
+
+
+$('#BIDDesc').click(function () {
+    console.log("Byy");
+    var text = $('.biddesc').text();
+    var input = $('<input id="attributeDesc" name="descptn" type="text" value="' + text + '" />')
+    $('.biddesc').text('').append(input);
+    input.select();
+    var x = document.getElementById("descBidID");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+    } else {
+        x.style.display = "none";
+    }
+});
+
+
+//post request for updation of subject and description
+
+function updateBidField(updateType) {
+    var BIDSubject = '';
+    var BIDDescription = '';
+
+    if (updateType == "subject") {
+        var BIDSubject = $('#attributeSub').val();
+        console.log("BIDSubject:", BIDSubject);
+        if (document.getElementById("attributeSub").value.length == 0) {
+            bootbox.dialog({
+                message: "Subject Cannot Be Empty!",
+                buttons: {
+                    confirm: {
+                        label: "OK",
+                        className: "btn-danger"
+                    }
+                }
+            });
+            return false;
+        }
+    }
+
+    if (updateType == "description") {
+        var BIDDescription = $('#attributeDesc').val();
+        console.log("BIDDescription:", BIDDescription);
+        if (document.getElementById("attributeDesc").value.length == 0) {
+            bootbox.dialog({
+                message: "Description Cannot Be Empty!",
+                buttons: {
+                    confirm: {
+                        label: "OK",
+                        className: "btn-danger"
+                    }
+                }
+            });
+            return false;
+        }
+    }
+    var UpdateBidData = {
+        "BidID": parseInt(sessionStorage.getItem("hdnbid")),
+        "BidSubject": BIDSubject,
+        "BidDescription": BIDDescription,
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "updateType": updateType
+    };
+    console.log("UpdateBidData:", UpdateBidData);
+
+
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "ConfigureBid/BidUpdateForQuotation",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        crossDomain: true,
+        async: false,
+        data: JSON.stringify(UpdateBidData),
+        dataType: "json",
+        success: function (data) {
+
+            bootbox.dialog({
+                message: "Updated Successfully!",
+                buttons: {
+                    confirm: {
+                        label: "OK",
+                        className: "btn-success",
+                    }
+                }
+            });
+            setTimeout(() => {
+                document.location.reload();
+            }, 3000);
+            jQuery.unblockUI();
+        },
+        error: function (xhr) {
+
+            var err = xhr.responseText
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+    });
 }
