@@ -29,6 +29,7 @@ jQuery(document).ready(function () {
     setCommonData();
     fetchMenuItemsFromSession(1, 24);
 
+    
     FetchCurrency('0');
 
     FetchUOM(sessionStorage.getItem("CustomerID"));
@@ -58,7 +59,9 @@ jQuery(document).ready(function () {
     }
 
     if (_RFQid == null) {
+
         sessionStorage.setItem('hddnRFQID', 0)
+        fnGetTermsCondition();
         if (sessionStorage.getItem('BoqUpload')) {
             $('#divBoqUpload').show()
         }
@@ -67,6 +70,7 @@ jQuery(document).ready(function () {
         }
     }
     else {
+
         sessionStorage.setItem('hddnRFQID', _RFQid)
         fetchReguestforQuotationDetails();
         fnGetTermsCondition();
@@ -1048,7 +1052,7 @@ function InsUpdRFQDEtailTab2() {
 
 
 function fnGetTermsCondition() {
-
+ 
     let urlT = sessionStorage.getItem("APIPath") + "eRequestForQuotation/efetchRFQTermsANDCondition/?ConditionType=" + $('#ddlConditiontype option:selected').val() + "&RFQID=" + sessionStorage.getItem('hddnRFQID') + "&RFQType=Open";
     jQuery.ajax({
         type: "GET",
@@ -1059,7 +1063,7 @@ function fnGetTermsCondition() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-
+      
 
             jQuery("#tblTermsCondition").empty();
             jQuery("#tblTermsCondition").append(`<thead></thead><tbody></tbody>`);
@@ -2076,7 +2080,7 @@ function fetchRFIParameteronload() {
             jQuery("#tblServicesProduct").append(`<thead></thead><tbody></tbody>`);
             jQuery("#tblRFQPrev").append(`<thead></thead><tbody></tbody>`);
             $('#scrolr').show();
-
+       
             if (data[0].parameters.length > 0) {
                 //for external Sourcee
                 if (IsSAPModule == 'Y') {
