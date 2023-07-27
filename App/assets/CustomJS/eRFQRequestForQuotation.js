@@ -7,7 +7,6 @@ jQuery(document).ready(function () {
     date.setDate(date.getDate() - 1);
     $('#txtPODate').datepicker({ startDate: "-1d" });
     Pageloaded()
-    // var x = isAuthenticated();
     setInterval(function () { Pageloaded() }, 15000);
     if (sessionStorage.getItem('UserID') == null || sessionStorage.getItem('UserID') == "") {
         window.location = sessionStorage.getItem('MainUrl');
@@ -28,7 +27,6 @@ jQuery(document).ready(function () {
     FormWizard.init();
     ComponentsPickers.init();
     setCommonData();
-    fnGetTermsCondition();
     fetchMenuItemsFromSession(1, 24);
 
     FetchCurrency('0');
@@ -39,7 +37,7 @@ jQuery(document).ready(function () {
     fetchVendorGroup('M', 0);
     fetchParticipantsVender();// fetch all vendors for advance search
     setTimeout(function () {
-        //  $('#dropCurrency').val(sessionStorage.getItem("DefaultCurrency"))
+
         $('#txtConversionRate').val(1);
         fnfillInstructionExcel();
     }, 2000);
@@ -71,7 +69,7 @@ jQuery(document).ready(function () {
     else {
         sessionStorage.setItem('hddnRFQID', _RFQid)
         fetchReguestforQuotationDetails();
-        /* fnGetTermsCondition();*/
+        fnGetTermsCondition();
         fetchAttachments();
         fnGetApprovers();
         GetQuestions();
@@ -1050,18 +1048,18 @@ function InsUpdRFQDEtailTab2() {
 
 
 function fnGetTermsCondition() {
-    debugger
 
+    let urlT = sessionStorage.getItem("APIPath") + "eRequestForQuotation/efetchRFQTermsANDCondition/?ConditionType=" + $('#ddlConditiontype option:selected').val() + "&RFQID=" + sessionStorage.getItem('hddnRFQID') + "&RFQType=Open";
     jQuery.ajax({
         type: "GET",
         contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/efetchRFQTermsANDCondition/?ConditionType=" + $('#ddlConditiontype option:selected').val() + "&RFQID=" + sessionStorage.getItem('hddnRFQID') + "&RFQType=Open",
+        url: urlT,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            debugger
+
 
             jQuery("#tblTermsCondition").empty();
             jQuery("#tblTermsCondition").append(`<thead></thead><tbody></tbody>`);
@@ -1074,14 +1072,14 @@ function fnGetTermsCondition() {
 
 
             if (data.length > 0) {
-                debugger
+
                 $('#btnS').removeAttr('disabled')
                 // jQuery('#tblTermsCondition>thead').append("<tr><th class='bold hide'>Type</th><th class='bold'>Name</th><th>Level</th></tr>");
 
                 jQuery('#tbltermsconditionprev>thead').append("<tr><th class='bold hide'>Type</th><th class='bold'>Name</th><th>Level</th></tr>");
 
                 for (var i = 0; i < data.length; i++) {
-                    debugger
+
                     var str = "<tr id=tr" + i + "><td class=hide>" + data[i].id + "</td><td class=hide>" + data[i].level + "</td>";
                     if (data[i].id != 0) {
                         str += "<td style='width:10%'><div class=\"checker\" id=\"uniform-chkbidTypesTerms\"><span  class='checked' id=\"spancheckedTerms" + data[i].id + "\" ><input type=\"checkbox\" Onclick=\"CheckTerms(this,\'" + data[i].id + "'\)\"; id=\"chkTerms" + data[i].id + "\" value=" + (data[i].id) + " style=\"cursor:pointer\" name=\"chkvenderTerms\" checked /></span></div></td>";
@@ -1094,7 +1092,7 @@ function fnGetTermsCondition() {
                         str += "<td>" + data[i].name + "</td>";
                     }
                     else {
-                        debugger
+
                         str += "<td><input type='text' name=terms" + i + " id=terms" + i + " class='form-control maxlength' placeholder='Your requirement' maxlength=50 value='" + data[i].name + "'   autocomplete='off'  onkeyup='replaceQuoutesFromString(this)' /></td>";
                     }
 
@@ -1148,8 +1146,6 @@ function fnGetTermsCondition() {
             }
         },
         error: function (xhr, status, error) {
-            debugger
-
             var err = xhr.responseText;// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1227,8 +1223,10 @@ function fnsavetermscondition(isbuttonclick) {
                 isOtherTerms = "N";
                 $('#terms' + index).css("border", "1px solid red")
             }
-            //checkedValue = checkedValue + "  select " + sessionStorage.getItem('hddnRFQID') + ",'" + jQuery("#ddlConditiontype").val() + "'," + $.trim(this_row.find('td:eq(0)').html()) + ",'" + $.trim(this_row.find('td:eq(1)').html()) + "','" + $.trim(this_row.find('td:eq(5) input[type="text"]').val()) + "' union all ";
+
         }
+
+
     });
 
     if (isOtherTerms == "N" && isbuttonclick == "Y") {
@@ -1257,8 +1255,6 @@ function fnsavetermscondition(isbuttonclick) {
             data: JSON.stringify(Attachments),
             dataType: "json",
             success: function (data) {
-                debugger
-
 
                 fnGetTermsCondition();
                 if (isbuttonclick == 'Y') {
@@ -1272,7 +1268,6 @@ function fnsavetermscondition(isbuttonclick) {
 
             },
             error: function (xhr, status, error) {
-                debugger
 
                 var err = xhr.responseText //eval("(" + xhr.responseText + ")");
                 if (xhr.status == 401) {
@@ -2086,12 +2081,12 @@ function fetchRFIParameteronload() {
                 //for external Sourcee
                 if (IsSAPModule == 'Y') {
                     jQuery("#tblServicesProduct>thead").append("<tr style='background: gray; color: #FFF;'><th>S No</th><th></th><th>Item Code</th><th>Item/Service</th><th>SAP Short Desc</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th><th>Source ID</th></tr>");
-                    jQuery('#tblRFQPrev>thead').append('<tr style="background: grey; color:light black;"><th>S No</th><th>Item Code</th><th>Item/Service</th><th>SAP Short Desc</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th><th>Source ID</th></tr>');
+                    jQuery('#tblRFQPrev>tbody').append('<tr style="background: grey; color:light black;"><th>S No</th><th>Item Code</th><th>Item/Service</th><th>SAP Short Desc</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th><th>Source ID</th></tr>');
 
                 }
                 else {
                     jQuery("#tblServicesProduct>thead").append("<tr style='background: gray; color: #FFF;'><th>S No</th><th></th><th>Item Code</th><th>Item/Service</th><th class='hide'>SAP Short Desc</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th><th class='hide'>Source ID</th></tr>");
-                    jQuery('#tblRFQPrev>thead').append('<tr style="background: grey; color:light black;"><th>S No</th><th>Item Code</th><th>Item/Service</th><th class="hide">SAP Short Desc</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th><th class="hide">Source ID</th></tr>');
+                    jQuery('#tblRFQPrev>tbody').append('<tr style="background: grey; color:light black;"><th>S No</th><th>Item Code</th><th>Item/Service</th><th class="hide">SAP Short Desc</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th><th class="hide">Source ID</th></tr>');
 
                 }
 
@@ -2211,8 +2206,8 @@ function fetchBoqParameters() {
             var srno, sheet, parentid;
             if (data[0].parameters.length > 0) {
                 //table-display
-                jQuery("#tblServicesProductboq thead").append('<tr style="background: gray; color: #FFF;" colspan=10><th style="width:10%!important"></th><th style="width:10%!important">S No</th><th colspan=6 style="width:80%!important">Item Name</th></tr><tbody>');
-                jQuery("#tblServicesProductboqp thead").append('<tr style="background: gray; color: #FFF;" colspan=10><th style="width:10%!important"></th><th style="width:10%!important">S No</th><th colspan=6 style="width:80%!important">Item Name</th></tr><tbody>');
+                jQuery("#tblServicesProductboq thead").append('<tr style="background: gray; color: #FFF;" colspan=10><th style="width:10%!important"></th><th style="width:10%!important">S No</th><th colspan=6 style="width:80%!important">Item Name</th></tr>');
+                jQuery("#tblServicesProductboqp thead").append('<tr style="background: gray; color: #FFF;" colspan=10><th style="width:10%!important"></th><th style="width:10%!important">S No</th><th colspan=6 style="width:80%!important">Item Name</th></tr>');
 
                 for (var i = 0; i < data[0].parameters.length; i++) {
                     srno = data[0].parameters[i].srno;
@@ -2263,11 +2258,11 @@ function fetchBoqParameters() {
                         sheetcount++
                         sheet = data[0].parameters[i].boqsheetName;
                         //  $("#tblServicesProductboq").append('<tr><td style="width:10%!important"><button style="background-color: white!important;"  type=button data-toggle=collapse data-target=#itemDiv' + sheetcount + '  class="btn iconbtn accordion-toggle" onclick="fncollapse(MainItem' + sheetcount + ')"><span class="glyphicon glyphicon-plus" id=MainItem' + sheetcount + ' ></span></button></td><td style="width:10%!important" class=text-right>' + sheetcount + '</td><td style="width:80%!important" colspan=6><b>' + sheet + '</b></td></tr>');
-                        $("#tblServicesProductboq tbody").append("<tr><td colspan=10 class='hiddenRow' style='border:none !important'><div  id='itemDiv" + sheetcount + "'></div></tr>");
+                        $("#tblServicesProductboq thead").append("<tr><td colspan=10 class='hiddenRow' style='border:none !important'><div  id='itemDiv" + sheetcount + "'></div></tr>");
                         $("#itemDiv" + sheetcount).append("<table id=itemTbl" + data[0].parameters[i].rfqParameterId + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0></table>");
                         $('#itemTbl' + data[0].parameters[i].rfqParameterId).append("<tbody><tr><td style='width:10%!important' class=border-none><button style='background-color:white !important; margin-left:5%' type='button'  data-toggle=collapse   id='btn" + data[0].parameters[i].rfqParameterId + "'  class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItem" + i + ")'><i class='glyphicon glyphicon-plus' id='mainItem" + i + "'></i></button></td><td  style='width:10%!important' class='text-right'>" + sheetcount + " </td><td style='width:80%!important'>" + data[0].parameters[i].rfqShortName + "</td></tr></tbody>")
 
-                        $("#tblServicesProductboqp tbody").append("<tr><td colspan=10 class='hiddenRow' style='border:none !important'><div  id='itemDivp" + sheetcount + "'></div></tr>");
+                        $("#tblServicesProductboqp thead").append("<tr><td colspan=10 class='hiddenRow' style='border:none !important'><div  id='itemDivp" + sheetcount + "'></div></tr>");
                         $("#itemDivp" + sheetcount).append("<table id=itemTblp" + data[0].parameters[i].rfqParameterId + " class='table table-bordered table-condensed  BoqTable' style='margin-bottom:0px !important;' cellpadding=0 cellspacing=0></table>");
                         $('#itemTblp' + data[0].parameters[i].rfqParameterId).append("<tbody><tr><td style='width:10%!important' class=border-none><button style='background-color:white !important; margin-left:5%' type='button'  data-toggle=collapse   id='btnp" + data[0].parameters[i].rfqParameterId + "'  class='btn iconbtn accordion-toggle' onclick='fncollapse(mainItemp" + i + ")'><i class='glyphicon glyphicon-plus' id='mainItem" + i + "'></i></button></td><td  style='width:10%!important' class='text-right'>" + sheetcount + " </td><td style='width:80%!important'>" + data[0].parameters[i].rfqShortName + "</td></tr></tbody>")
 
@@ -2534,11 +2529,11 @@ function ParametersQuery() {
         if (IsSAPModule == 'Y') {
             jQuery("#tblRFQPrev thead").append("<tr style='background: gray; color: #FFF;'><th>S No</th><th>Item Code</th><th>Item/Service</th><th>SAP Short Desc</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th><th>Source ID</th></tr>");
 
-            jQuery("#tblRFQPrev thead").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td  style="width:20%!important;" id=itemcodeprev' + i + '>' + $('#txtItemCode').val() + '</td><td id=snameprev' + i + '>' + $('#txtshortname').val() + '</td><td></td><td class=text-right id=TPPrev' + i + '>' + thousands_separators(parseFloat(removeThousandSeperator(TP)).round(2)) + '</td><td class=text-right id=quanprev' + i + '>' + quan + '</td><td id=uomprev' + i + '>' + $("#dropuom").val() + '</td><td id=descprev' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=deliveryprev' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tatprev' + i + '>' + $('#txttat').val() + '</td><td id=remarksprev' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=ponoprev' + i + '>' + $("#txtPono").val() + '</td><td id=povnameprev' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrateprev' + i + '>' + unitrate + '</td><td id=podateprev' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalueprev' + i + '>' + Povalue + '</td><td></td></tr>');
+            jQuery("#tblRFQPrev tbody").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td  style="width:20%!important;" id=itemcodeprev' + i + '>' + $('#txtItemCode').val() + '</td><td id=snameprev' + i + '>' + $('#txtshortname').val() + '</td><td></td><td class=text-right id=TPPrev' + i + '>' + thousands_separators(parseFloat(removeThousandSeperator(TP)).round(2)) + '</td><td class=text-right id=quanprev' + i + '>' + quan + '</td><td id=uomprev' + i + '>' + $("#dropuom").val() + '</td><td id=descprev' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=deliveryprev' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tatprev' + i + '>' + $('#txttat').val() + '</td><td id=remarksprev' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=ponoprev' + i + '>' + $("#txtPono").val() + '</td><td id=povnameprev' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrateprev' + i + '>' + unitrate + '</td><td id=podateprev' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalueprev' + i + '>' + Povalue + '</td><td></td></tr>');
         }
         else {
 
-            jQuery("#tblRFQPrev tbody").append("<tr style='background: gray; color: #FFF;'><th>S No</th><th>Item Code</th><th>Item/Service</th><th class='hide'>SAP Short Desc</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr>");
+            jQuery("#tblRFQPrev thead").append("<tr style='background: gray; color: #FFF;'><th>S No</th><th>Item Code</th><th>Item/Service</th><th class='hide'>SAP Short Desc</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th></tr>");
 
             jQuery("#tblRFQPrev tbody").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td  style="width:20%!important;" id=itemcodeprev' + i + '>' + $('#txtItemCode').val() + '</td><td id=snameprev' + i + '>' + $('#txtshortname').val() + '</td><td class="hide"></td><td class=text-right id=TPPrev' + i + '>' + thousands_separators(parseFloat(removeThousandSeperator(TP)).round(2)) + '</td><td class=text-right id=quanprev' + i + '>' + quan + '</td><td id=uomprev' + i + '>' + $("#dropuom").val() + '</td><td id=descprev' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=deliveryprev' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tatprev' + i + '>' + $('#txttat').val() + '</td><td id=remarksprev' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=ponoprev' + i + '>' + $("#txtPono").val() + '</td><td id=povnameprev' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrateprev' + i + '>' + unitrate + '</td><td id=podateprev' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalueprev' + i + '>' + Povalue + '</td></tr>');
 
@@ -2546,12 +2541,12 @@ function ParametersQuery() {
     }
     else {
         if (IsSAPModule == 'Y') {
-            jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td class="itemcode" id=itemcodeprev' + i + '>' + $('#txtItemCode').val() + '</td><td class="sname" id=snameprev' + i + '>' + $('#txtshortname').val() + '</td><td class="SAPDesc" id=SAPDescprev' + i + '></td><td class="text-right TP" id=TPprev' + i + '>' + thousands_separators(parseFloat(removeThousandSeperator(TP)).round(2)) + '</td><td class="text-right quan" id=quanprev' + i + '>' + quan + '</td><td class="uom" id=uomprev' + i + '>' + $("#dropuom").val() + '</td><td class="desc" id=descprev' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td class="delivery" id=deliveryprev' + i + '>' + $('#txtedelivery').val() + '</td><td  class="text-right tat" id=tatprev' + i + '>' + $('#txttat').val() + '</td><td class="remarks" id=remarksprev' + i + '>' + $("#txtItemRemarks").val() + '</td><td  class="pono" id=ponoprev' + i + '>' + $("#txtPono").val() + '</td><td  class="povname" id=povnameprev' + i + '>' + $("#txtvendorname").val() + '</td><td class="text-right unitrate" id=unitrateprev' + i + '>' + unitrate + '</td><td  class="podate"  id=podateprev' + i + '>' + $("#txtPODate").val() + '</td><td class="povalue" id=povalueprev' + i + ' class=text-right>' + Povalue + '</td><td></td></tr>');
+            jQuery("#tblRFQPrev tbody").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td class="itemcode" id=itemcodeprev' + i + '>' + $('#txtItemCode').val() + '</td><td class="sname" id=snameprev' + i + '>' + $('#txtshortname').val() + '</td><td class="SAPDesc" id=SAPDescprev' + i + '></td><td class="text-right TP" id=TPprev' + i + '>' + thousands_separators(parseFloat(removeThousandSeperator(TP)).round(2)) + '</td><td class="text-right quan" id=quanprev' + i + '>' + quan + '</td><td class="uom" id=uomprev' + i + '>' + $("#dropuom").val() + '</td><td class="desc" id=descprev' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td class="delivery" id=deliveryprev' + i + '>' + $('#txtedelivery').val() + '</td><td  class="text-right tat" id=tatprev' + i + '>' + $('#txttat').val() + '</td><td class="remarks" id=remarksprev' + i + '>' + $("#txtItemRemarks").val() + '</td><td  class="pono" id=ponoprev' + i + '>' + $("#txtPono").val() + '</td><td  class="povname" id=povnameprev' + i + '>' + $("#txtvendorname").val() + '</td><td class="text-right unitrate" id=unitrateprev' + i + '>' + unitrate + '</td><td  class="podate"  id=podateprev' + i + '>' + $("#txtPODate").val() + '</td><td class="povalue" id=povalueprev' + i + ' class=text-right>' + Povalue + '</td><td></td></tr>');
 
 
         }
         else {
-            jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td class="itemcode" id=itemcodeprev' + i + '>' + $('#txtItemCode').val() + '</td><td class="sname" id=snameprev' + i + '>' + $('#txtshortname').val() + '</td><td class="SAPDesc hide" id=SAPDescprev' + i + '></td><td class="text-right TP" id=TPprev' + i + '>' + thousands_separators(parseFloat(removeThousandSeperator(TP)).round(2)) + '</td><td class="text-right quan" id=quanprev' + i + '>' + quan + '</td><td class="uom" id=uomprev' + i + '>' + $("#dropuom").val() + '</td><td class="desc" id=descprev' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td class="delivery" id=deliveryprev' + i + '>' + $('#txtedelivery').val() + '</td><td  class="text-right tat" id=tatprev' + i + '>' + $('#txttat').val() + '</td><td class="remarks" id=remarksprev' + i + '>' + $("#txtItemRemarks").val() + '</td><td  class="pono" id=ponoprev' + i + '>' + $("#txtPono").val() + '</td><td  class="povname" id=povnameprev' + i + '>' + $("#txtvendorname").val() + '</td><td class="text-right unitrate" id=unitrateprev' + i + '>' + unitrate + '</td><td  class="podate"  id=podateprev' + i + '>' + $("#txtPODate").val() + '</td><td class="povalue" id=povalueprev' + i + ' class=text-right>' + Povalue + '</td></tr>');
+            jQuery("#tblRFQPrev tbody").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td class="itemcode" id=itemcodeprev' + i + '>' + $('#txtItemCode').val() + '</td><td class="sname" id=snameprev' + i + '>' + $('#txtshortname').val() + '</td><td class="SAPDesc hide" id=SAPDescprev' + i + '></td><td class="text-right TP" id=TPprev' + i + '>' + thousands_separators(parseFloat(removeThousandSeperator(TP)).round(2)) + '</td><td class="text-right quan" id=quanprev' + i + '>' + quan + '</td><td class="uom" id=uomprev' + i + '>' + $("#dropuom").val() + '</td><td class="desc" id=descprev' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td class="delivery" id=deliveryprev' + i + '>' + $('#txtedelivery').val() + '</td><td  class="text-right tat" id=tatprev' + i + '>' + $('#txttat').val() + '</td><td class="remarks" id=remarksprev' + i + '>' + $("#txtItemRemarks").val() + '</td><td  class="pono" id=ponoprev' + i + '>' + $("#txtPono").val() + '</td><td  class="povname" id=povnameprev' + i + '>' + $("#txtvendorname").val() + '</td><td class="text-right unitrate" id=unitrateprev' + i + '>' + unitrate + '</td><td  class="podate"  id=podateprev' + i + '>' + $("#txtPODate").val() + '</td><td class="povalue" id=povalueprev' + i + ' class=text-right>' + Povalue + '</td></tr>');
 
 
         }
@@ -3796,11 +3791,11 @@ function fnSeteRFQparameterTable() {
             else {
 
                 if (IsSAPModule == 'Y') {
-                    jQuery("#tblRFQPrev ").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td class="itemcode" id=itemcodeprev' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td class="sname" id=snameprev' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class="SAPDesc" id=SAPDescprev' + i + '></td><td class="text-right TP" id=TPprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class="text-right quan" id=quanprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td class="uom" id=uomprev' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td class="desc" id=descprev' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td class="delivery" id=deliveryprev' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td  class="text-right tat" id=tatprev' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td class="remarks" id=remarksprev' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td  class="pono" id=ponoprev' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td  class="povname" id=povnameprev' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class="text-right unitrate" id=unitrateprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td  class="podate"  id=podateprev' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class="povalue" id=povalueprev' + i + ' class=text-right>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td></tr>');
+                    jQuery("#tblRFQPrev tbody").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td class="itemcode" id=itemcodeprev' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td class="sname" id=snameprev' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class="SAPDesc" id=SAPDescprev' + i + '></td><td class="text-right TP" id=TPprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class="text-right quan" id=quanprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td class="uom" id=uomprev' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td class="desc" id=descprev' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td class="delivery" id=deliveryprev' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td  class="text-right tat" id=tatprev' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td class="remarks" id=remarksprev' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td  class="pono" id=ponoprev' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td  class="povname" id=povnameprev' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class="text-right unitrate" id=unitrateprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td  class="podate"  id=podateprev' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class="povalue" id=povalueprev' + i + ' class=text-right>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td></tr>');
 
                 }
                 else {
-                    jQuery("#tblRFQPrev ").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td class="itemcode" id=itemcodeprev' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td class="sname" id=snameprev' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class="SAPDesc hide" id=SAPDescprev' + i + '></td><td class="text-right TP" id=TPprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class="text-right quan" id=quanprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td class="uom" id=uomprev' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td class="desc" id=descprev' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td class="delivery" id=deliveryprev' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td  class="text-right tat" id=tatprev' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td class="remarks" id=remarksprev' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td  class="pono" id=ponoprev' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td  class="povname" id=povnameprev' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class="text-right unitrate" id=unitrateprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td  class="podate"  id=podateprev' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class="povalue" id=povalueprev' + i + ' class=text-right>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td></tr>');
+                    jQuery("#tblRFQPrev tbody").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td class="itemcode" id=itemcodeprev' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td class="sname" id=snameprev' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class="SAPDesc hide" id=SAPDescprev' + i + '></td><td class="text-right TP" id=TPprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class="text-right quan" id=quanprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td class="uom" id=uomprev' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td class="desc" id=descprev' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td class="delivery" id=deliveryprev' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td  class="text-right tat" id=tatprev' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td class="remarks" id=remarksprev' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td  class="pono" id=ponoprev' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td  class="povname" id=povnameprev' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class="text-right unitrate" id=unitrateprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td  class="podate"  id=podateprev' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class="povalue" id=povalueprev' + i + ' class=text-right>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td></tr>');
 
                 }
 
@@ -4567,8 +4562,8 @@ function FetchSAPPI() {
                 if ($(`#tblServicesProduct thead`).length < 1) {
 
                     if (IsSAPModule == 'Y') {
-                        jQuery("#tblServicesProduct").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:100px;'></th><th>Item Code</th><th>Item/Service</th><th>SAP Short Desc</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th><th>Source ID</th></tr></thead>");
-                        jQuery("#tblRFQPrev").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:10%!important;'></th><th  style='width:20%!important;'>Item Code</th><th>Item/Service</th><th>Target/Budget Price</th><th>SAP Short Desc</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remark</th><th>PO Number</th><th>VendorName</th><th>Unit Rate</th><th>PO No.</th><th> Vendor Name</th><th>unit rate</th><th>PO Date</th><th>PO Value</th><th>Source ID</th></tr></thead>");
+                        jQuery("#tblServicesProduct ").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:100px;'></th><th>Item Code</th><th>Item/Service</th><th>SAP Short Desc</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th><th>Source ID</th></tr></thead>");
+                        jQuery("#tblRFQPrev ").append("<thead><tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:10%!important;'></th><th  style='width:20%!important;'>Item Code</th><th>Item/Service</th><th>Target/Budget Price</th><th>SAP Short Desc</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remark</th><th>PO Number</th><th>VendorName</th><th>Unit Rate</th><th>PO No.</th><th> Vendor Name</th><th>unit rate</th><th>PO Date</th><th>PO Value</th><th>Source ID</th></tr></thead>");
 
                     }
 
