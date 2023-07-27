@@ -1631,6 +1631,7 @@ jQuery("#txtvendor,#txtvendorSurrogateBid").keyup(function () {
 
 jQuery("#txtvendor,#txtvendorSurrogateBid").typeahead({
     source: function (query, process) {
+
         var data = sessionStorage.getItem('hdnAllRFQInvitedVendorNotSubmitQ');
         usernames = [];
         map = {};
@@ -1645,6 +1646,7 @@ jQuery("#txtvendor,#txtvendorSurrogateBid").typeahead({
     },
     minLength: 2,
     updater: function (item) {
+        
         if (map[item].vendorID != "0") {
 
             sessionStorage.setItem('hdnselectedvendor', map[item].vendorID);
@@ -2408,7 +2410,7 @@ function saveBidSurrogate() {
         "EncryptedLink": "RFQID=" + sessionStorage.getItem('hdnrfqid'),
         "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
     }
-    alert(JSON.stringify(Data))
+   
     if (Data != '' || Data != null) {
 
         jQuery.ajax({
