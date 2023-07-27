@@ -28,7 +28,7 @@ jQuery(document).ready(function () {
     ComponentsPickers.init();
     setCommonData();
     fetchMenuItemsFromSession(1, 24);
-
+    fnGetTermsCondition();
     
     FetchCurrency('0');
 
@@ -61,7 +61,7 @@ jQuery(document).ready(function () {
     if (_RFQid == null) {
 
         sessionStorage.setItem('hddnRFQID', 0)
-        fnGetTermsCondition();
+        
         if (sessionStorage.getItem('BoqUpload')) {
             $('#divBoqUpload').show()
         }
@@ -1060,10 +1060,11 @@ function fnGetTermsCondition() {
         url: urlT,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
+        async:false,
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-      
+            
 
             jQuery("#tblTermsCondition").empty();
             jQuery("#tblTermsCondition").append(`<thead></thead><tbody></tbody>`);
@@ -1150,6 +1151,7 @@ function fnGetTermsCondition() {
             }
         },
         error: function (xhr, status, error) {
+      
             var err = xhr.responseText;// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -2071,7 +2073,7 @@ function fetchRFIParameteronload() {
         cache: false,
         dataType: "json",
         success: function (Data) {
-
+            
             let data = Data.rData
             sessionStorage.setItem("IsPullIndent", 'Y')
             jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
@@ -4486,8 +4488,7 @@ function fnfillInstructionExcel() {
 }
 
 function addMoreTermsCondition() {
-    jQuery('#tblTermsCondition').empty();
-    jQuery('#tblTermsCondition').append(`<thead></thead><tbody></tbody>`);
+  
     var num = 0, i = 0;
     var maxinum = -1;
     $("#tblTermsCondition tr:gt(0)").each(function () {
