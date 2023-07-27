@@ -111,6 +111,7 @@ function FetchContinent(ContinentID) {
 }
 
 jQuery("#ddlBidtype").change(function () {
+    
     var BidTypeID = $("#ddlBidtype option:selected").val();
     jQuery("#ddlBidFor").empty();
 
@@ -122,14 +123,15 @@ jQuery("#ddlBidtype").change(function () {
 
     }
     else if (BidTypeID == 7) {
-        $('#opntionRFQ').addClass('hide')
+        $('#opntionRFQ').removeClass('hide')
         jQuery("#ddlBidFor").append(jQuery("<option></option>").val("81").html("English"));
         jQuery("#ddlBidFor").append(jQuery("<option ></option>").val("83").html("Japanese"));
         jQuery("#ddlBidFor").append(jQuery("<option></option>").val("82").html("Dutch(FA)"));
 
     }
     else {
-        $('#opntionRFQ').removeClass('hide')
+        
+        $('#opntionRFQ').addClass('hide')
         jQuery("#ddlBidFor").append(jQuery("<option ></option>").val("0").html("Select"));
         jQuery("#ddlBidFor").append(jQuery("<option ></option>").val("81").html("English"));
         jQuery("#ddlBidFor").append(jQuery("<option ></option>").val("83").html("Japanese"));
@@ -309,6 +311,7 @@ function formvalidate() {
             if (jQuery("#txtbidsubject").val() != null && jQuery("#txtbidsubject").val() != "") {
                 subject = jQuery("#txtbidsubject").val()
             }
+            
             if ($('#ddlBidtype option:selected').val() == 7) {
                 if ($('#ddlreporttype option:selected').val() == "List" || $('#ddlreporttype').val() == "ListRFQ") {
                     fetchBidVendorSummary(dtfrom, dtto, subject);
@@ -380,6 +383,7 @@ function formvalidate() {
 var BidDate = "";
 var result = '';
 function fetchBidVendorSummary(dtfrom, dtto, subject) {
+    
     var x = isAuthenticated();
     var url = '';
 
@@ -397,7 +401,7 @@ function fetchBidVendorSummary(dtfrom, dtto, subject) {
         });
         result = result.slice(0, -1)
     }
-
+    
     if ($('#ddlreporttype option:selected').val() == "List") {
         //url = sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummary/?BidTypeID=" + jQuery("#ddlBidtype option:selected").val() + "&BidForID=" + jQuery("#ddlBidFor option:selected").val() + "&VendorId=" + jQuery("#hdnVendorID").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&BidSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val();
         url = sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummary/";
@@ -406,7 +410,7 @@ function fetchBidVendorSummary(dtfrom, dtto, subject) {
         //url = sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummaryRFQ/?BidTypeID=" + jQuery("#ddlBidtype option:selected").val() + "&BidForID=" + jQuery("#ddlBidFor option:selected").val() + "&VendorId=" + jQuery("#hdnVendorID").val() + "&FromDate=" + dtfrom + "&ToDate=" + dtto + "&BidSubject=" + subject + "&FinalStatus=" + jQuery("#ddlbidstatus option:selected").val() + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')) + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&ConfiguredBy=" + jQuery("#ddlconfiguredby option:selected").val();
         url = sessionStorage.getItem("APIPath") + "BidVendorSummary/fetchAdminBidSummaryRFQ/";
     }
-
+    
     var Tab1Data = {
         "BidTypeID": parseInt(jQuery("#ddlBidtype option:selected").val()),
         "BidForID": parseInt(jQuery("#ddlBidFor option:selected").val()),
@@ -431,7 +435,7 @@ function fetchBidVendorSummary(dtfrom, dtto, subject) {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-
+        
             jQuery("#tblVendorSummary").empty();
             jQuery("#tblVendorSummary").append(`<thead></thead><tbody></tbody>`);
             //jQuery('#tblVendorSummary').append("<thead><tr><th class='bold'>Event ID</th><th class='bold'>Bid Subject</th><th class='bold'>Configured By</th><th class='bold'>Bid Date</th><th class='bold'>Bid Time</th><th class='bold'>Bid Duration</th><th class='bold'>Currency</th><th class='bold'>Bid Status</th></tr></thead>");
@@ -529,18 +533,11 @@ function fetchBidVendorSummary(dtfrom, dtto, subject) {
 
             }
             else {
+                $('.dt-buttons').hide();
+                $('.dataTables_info').hide();
+                $('.dataTables_paginate').hide();
                 jQuery('#tblVendorSummary > tbody').append("<tr><td colspan='8' style='text-align: center; color:red;'>No record found</td></tr>");
-                /* $('#tblVendorSummary').dataTable({
-                     "bDestroy": true,
-                     "bPaginate": false,
-                     "bLengthChange": false,
-                     "bFilter": false,
-                     "bInfo": false,
-                     "bAutoWidth": false,
-                     "bSort": true
- 
- 
-                 });*/
+
             }
         },
         error: function (xhr, status, error) {
@@ -784,18 +781,11 @@ function fetchBidVendorSummaryDetail(dtfrom, dtto, subject) {
 
             }
             else {
+                $('.dt-buttons').hide();
+                $('.dataTables_info').hide();
+                $('.dataTables_paginate').hide();
                 jQuery('#tblVendorSummarydetails > tbody').append("<tr><td colspan='17' style='text-align: center; color:red;'>No record found</td></tr>");
-                /* $('#tblVendorSummarydetails').dataTable({
-                     "bDestroy": true,
-                     "bPaginate": false,
-                     "bLengthChange": false,
-                     "bFilter": false,
-                     "bInfo": false,
-                     "bAutoWidth": false,
-                     "bSort": true
- 
- 
-                 });*/
+
             }
             jQuery.unblockUI();
         },
@@ -988,16 +978,11 @@ function fetchBidVendorSummarySummarization(dtfrom, dtto, subject) {
                 var tableWrapper = $('#tblVendorSummarySUmzation_wrapper'); // datatable creates the table wrapper by adding with id {your_table_jd}_wrapper
             }
             else {
+                $('.dt-buttons').hide();
+                $('.dataTables_info').hide();
+                $('.dataTables_paginate').hide();
                 jQuery('#tblVendorSummarySUmzation > tbody').append("<tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr>");
-                /*$('#tblVendorSummarySUmzation').dataTable({
-                    "bDestroy": true,
-                    "bPaginate": false,
-                    "bLengthChange": false,
-                    "bFilter": false,
-                    "bInfo": false,
-                    "bAutoWidth": false,
-                    "bSort": true
-                });*/
+
             }
         },
         error: function (xhr, status, error) {
@@ -1282,18 +1267,11 @@ function fetchBidVendorSummaryDetailFA(dtfrom, dtto, subject) {
 
             }
             else {
+                $('.dt-buttons').hide();
+                $('.dataTables_info').hide();
+                $('.dataTables_paginate').hide();
                 jQuery('#tblVendorSummarydetails > tbody').append("<tr><td colspan='17' style='text-align: center; color:red;'>No record found</td></tr>");
-                /*$('#tblVendorSummarydetails').dataTable({
-                    "bDestroy": true,
-                    "bPaginate": false,
-                    "bLengthChange": false,
-                    "bFilter": false,
-                    "bInfo": false,
-                    "bAutoWidth": false,
-                    "bSort": true
 
-
-                });*/
             }
         },
         error: function (xhr, status, error) {
@@ -1533,18 +1511,11 @@ function fetchBidVendorSummarySummarizationFA(dtfrom, dtto, subject) {
 
             }
             else {
+                $('.dt-buttons').hide();
+                $('.dataTables_info').hide();
+                $('.dataTables_paginate').hide();
                 jQuery('#tblVendorSummarySUmzation > tbody').append("<tr><td colspan='11' style='text-align: center; color:red;'>No record found</td></tr>");
-                /*$('#tblVendorSummarySUmzation').dataTable({
-                    "bDestroy": true,
-                    "bPaginate": false,
-                    "bLengthChange": false,
-                    "bFilter": false,
-                    "bInfo": false,
-                    "bAutoWidth": false,
-                    "bSort": true
 
-
-                });*/
             }
         },
         error: function (xhr, status, error) {

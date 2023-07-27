@@ -423,7 +423,7 @@ function downloadNFAReport() {
 
             })
             .catch(error => {
-                debugger
+                
                 console.error('Error:', error);
             })
             .finally(() => {

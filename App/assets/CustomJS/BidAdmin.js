@@ -110,7 +110,7 @@ var mytimeforSatus = 0;
     
     var timer1 = duration1, hours1, minutes1, seconds1;
     mytimeforSatus = setInterval(function () {
-   debugger
+   
         hours1 = parseFloat(timer1 / 3600, 10)
         minutes1 = parseInt(timer1 / 60, 10) - (hours1 * 60)
         seconds1 = parseInt(timer1 % 60, 10);

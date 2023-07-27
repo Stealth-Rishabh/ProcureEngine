@@ -370,21 +370,27 @@ var FormWizard = function () {
                             if (idx != 0) {
                                 BindSaveparams();
                                 BindAttachmentsOfEdit();
-                                debugger
+
                                 if ($('#ddlEventType').val() == "1") {
                                     if (IsSAPModule == 'Y') {
+                                        $('#biddingTab').show()
                                         if (SOBID != 0) {
                                             GetSOBAllocation()
                                         }
                                         else {
-                                            debugger
+
                                             fetchReguestforQuotationDetails();
                                         }
+                                    }
+                                    else {
+                                        
+                                        $('#biddingTab').hide()
                                     }
 
                                 }
                                 else {
                                     $('#PriceType').hide()
+                                    $('#biddingTab').hide()
 
                                 }
 
@@ -450,7 +456,7 @@ var FormWizard = function () {
                             SaveAttechmentinDB();
                             BindAttachmentsOfEdit();
                             Bindtab3Data();
-                            debugger
+
                             if ($('#ddlEventType').val() == "1") {
                                 if (IsSAPModule == 'Y') {
                                     GetSOBAllocation()
@@ -615,6 +621,7 @@ function GetOverviewmasterbyId(idx) {
 
                 let _cleanStringSub = StringDecodingMechanism(res.result[0].nfaSubject);
                 let _cleanStringDet = StringDecodingMechanism(res.result[0].nfaDescription);
+                let Saving = res.result[0].nfaBudget - res.result[0].nfaAmount;
                 SOBID = res.result[0].sobId || 0;
 
                 $("#txtEventref").val(res.result[0].eventReftext);
@@ -634,6 +641,7 @@ function GetOverviewmasterbyId(idx) {
                 //abheedev bug385 start
                 $("#txtAmountFrom").val(res.result[0].nfaAmount.toLocaleString(sessionStorage.getItem("culturecode")));
                 $("#txtBudget").val(res.result[0].nfaBudget.toLocaleString(sessionStorage.getItem("culturecode")));
+                $("#txtSaving").val(Saving.toLocaleString(sessionStorage.getItem("culturecode")));
                 //abheedev bug385 end
                 $("#ddlCategory").val(res.result[0].nfaCategory);
                 $("#dropCurrency").val(res.result[0].nfaCurrency);
@@ -716,31 +724,43 @@ $("#txtEventref").keyup(function () {
     $("#txtEventref").css("border-color", "");
 });
 //abheedev amountbudget start
+let Savings =''
 $("#txtBudget").focusout(function () {
 
     if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
+        $('#txtSaving').val('0');
         $('#ddlBudget').val('NB');
-
+        
+        
     }
     //abheedev bug 385 start
     else if (parseFloat(removeThousandSeperator($('#txtBudget').val())) < parseFloat(removeThousandSeperator($('#txtAmountFrom').val()))) {
-
+        Savings = parseFloat(removeThousandSeperator($('#txtBudget').val())) - parseFloat(removeThousandSeperator($('#txtAmountFrom').val()));        
+        $('#txtSaving').val(thousands_separators(parseFloat(Savings)));
         $('#ddlBudget').val('OB');
+
 
     }
     else {
+        Savings = parseFloat(removeThousandSeperator($('#txtBudget').val())) - parseFloat(removeThousandSeperator($('#txtAmountFrom').val()))
+        $('#txtSaving').val(thousands_separators(parseFloat(Savings)));
         $('#ddlBudget').val('WB');
 
     }
 });//abheedev bug 385 end
 $("#txtAmountFrom").focusout(function () {
     if ($('#txtBudget').val() == "" || $('#txtBudget').val() == null) {
+        $('#txtSaving').val('0');
         $('#ddlBudget').val('NB');
     }
     else if (parseFloat(removeThousandSeperator($('#txtBudget').val())) < parseFloat(removeThousandSeperator($('#txtAmountFrom').val()))) {
+        Savings = parseFloat(removeThousandSeperator($('#txtBudget').val())) - parseFloat(removeThousandSeperator($('#txtAmountFrom').val()));
+        $('#txtSaving').val(thousands_separators(parseFloat(Savings)));
         $('#ddlBudget').val('OB');
     }
     else {
+        Savings = parseFloat(removeThousandSeperator($('#txtBudget').val())) - parseFloat(removeThousandSeperator($('#txtAmountFrom').val()));
+        $('#txtSaving').val(thousands_separators(parseFloat(Savings)));
         $('#ddlBudget').val('WB');
 
     }
@@ -789,7 +809,7 @@ function fnaddQuestion() {
 }
 
 function fnApproversNBQuery(rownum, question) {
-    debugger
+
     if (jQuery("#ddlNFAParam").val() == "0" || jQuery("#ddlNFAParam").val() == "") {
         $('#errordivSeq').show();
         $('#errorSeq').html('Response not selected. Please press + Button after selecting Response');
@@ -1121,7 +1141,6 @@ function Savedata() {
         _budget = $("#txtBudget").val();
     }
     var p_Budget = removeThousandSeperator(_budget);
-    debugger
     var p_category = $("#ddlCategory option:selected").val();
     var p_currency = $("#dropCurrency option:selected").val();
     var p_projectname = $("#txtProjectName option:selected").text();
@@ -1137,7 +1156,7 @@ function Savedata() {
         NfaSubject: p_title,
         NfaDescription: p_descript,
         NfaAmount: parseFloat(p_amount),
-        NfaBudget: parseFloat(p_Budget),
+        NfaBudget: parseFloat(p_Budget),  
         NfaCurrency: p_currency,
         NfaCategory: p_category,
         ProjectName: p_projectname,
@@ -1237,13 +1256,11 @@ function GetNfaOverviewParams() {
     })
 }
 function BindSaveparams() {
-    debugger
     var x = isAuthenticated();
     var url = "NFA/FetchSavedOverviewParam?customerid=" + parseInt(CurrentCustomer) + "&nfaidx=" + parseInt(idx) + "&For=nfrequest&Purchaseorg=" + $('#ddlPurchaseOrg option:selected').val();
 
     var ParamData = callajaxReturnSuccess(url, "Get", {})
     ParamData.success(function (res) {
-        debugger
         if (res != null) {
 
             $("#tblNFAOverviewParam").empty();
@@ -1307,6 +1324,7 @@ function Bindtab1DataforPreview() {
     //abheedev bug 385 start
     $("#lblAmount").text($("#txtAmountFrom").val().toLocaleString(sessionStorage.getItem("culturecode")));
     $("#lblbudgetamount").text($("#txtBudget").val().toLocaleString(sessionStorage.getItem("culturecode")));
+    $("#lblSaving").text($("#txtSaving").val().toLocaleString(sessionStorage.getItem("culturecode")));
     //abheedev bug 385 end
     $("#lblCurrency").text($("#dropCurrency option:selected").text());
     $("#lblCategory").text($("#ddlCategory option:selected").text());
@@ -1421,8 +1439,6 @@ function SaveApproversConfirmation() {
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approversData = [];
     var _data = {};
-
-    debugger
     var url = "NFA/InsUpdateOverViewApprovers?NfaIdx=" + parseInt(idx);
 
     $("#tblApproversPrev tr:gt(0)").each(function () {
@@ -1438,7 +1454,6 @@ function SaveApproversConfirmation() {
             apprEmail: $.trim(this_row.find('td:eq(1)').html()),
             apprStatus: "P",
         }
-        debugger
         approversData.push(_data);
         objActivity = {
             CustomerID: parseInt(CurrentCustomer),
@@ -1459,15 +1474,12 @@ function SaveApproversConfirmation() {
         ApprSeqval.push(Seq);
 
     });
-    debugger
-
     var data = {
         "uDTApprovers": approversData
     }
 
     var SubmitData = callajaxReturnSuccess(url, "Post", JSON.stringify(data));
     SubmitData.success(function (res) {
-        debugger
         SaveActivityDetails(lstActivityData);
         if (res.status == "S") {
             bootbox.alert("NFA Request Submitted Successfully.", function () {
@@ -1483,7 +1495,6 @@ function SaveApproversConfirmation() {
         jQuery.unblockUI();
     });
     SubmitData.error(function (error) {
-        debugger
         bootbox.alert("Error: " + error, function () {
             return false;
         });
@@ -1601,7 +1612,6 @@ function SaveActivityDetails(data) {
     var aquaticCreatures = data.filter(function (details) {
         return details.apprSeq == ApprSeqval.min();
     });
-    debugger
     var data = {
         "udtActivityDetails": aquaticCreatures
     }
@@ -1610,7 +1620,6 @@ function SaveActivityDetails(data) {
 
     var SaveActivityDetails = callajaxReturnSuccess(url, "Post", JSON.stringify(data));
     SaveActivityDetails.success(function (res) {
-        debugger
         lstActivityData = [];
     });
     SaveActivityDetails.error(function (error) {
@@ -1820,8 +1829,6 @@ function viewallmatrix() {
 
 
 function fetchReguestforQuotationDetails() {
-    console.log(sessionStorage.getItem("APIPath") + "eRFQReport/efetchRFQComprativerank/?RFQID=" + sessionStorage.getItem('hdnEventrefId'))
-    debugger
     var x = isAuthenticated();
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
@@ -1834,8 +1841,6 @@ function fetchReguestforQuotationDetails() {
         dataType: "json",
         success: function (RFQData) {
             $('#PriceType').show()
-            debugger
-
             let dt = JSON.parse(RFQData[0].jsondata);
             $('#tblvendors').empty();
             if (dt.length > 0) {
@@ -1849,7 +1854,6 @@ function fetchReguestforQuotationDetails() {
             }
         },
         error: function (xhr, status, error) {
-            debugger
             var err = xhr.responseText//eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1881,7 +1885,6 @@ function fetchProjectMaster() {
         async: false,
         dataType: "json",
         success: function (data) {
-            debugger
             jQuery("#txtProjectName").empty();
             jQuery("#txtProjectName").append(jQuery("<option></option>").val("").html("Select Project"));
             if (data.length > 0) {
@@ -1919,16 +1922,12 @@ function fetchProjectMaster() {
 //SOB Changes
 
 function allocateSOB() {
-    debugger
-
     let SOBDetailsArray = []
     let i = ''
 
     $('#tblvendors tbody tr').each(function (i) {
-        debugger
         let price = 0
         if ($(`#checkv${i}`).is(':checked')) {
-            debugger
             if ($(`#TDPrice${i} input`).val()) {
                 price = parseInt($(`#TDPrice${i} input`).val());
             }
@@ -1954,11 +1953,10 @@ function allocateSOB() {
             SOBDetailsArray.push(SOBDetailsunit);
         }
     })
-    debugger
     if (SOBDetailsArray.length === 0) {
         return false
     }
-
+    
     let data = {
         "SOBId": parseInt(SOBID),
         "NFAId": parseInt(sessionStorage.getItem("hdnNFAID")),
@@ -1981,7 +1979,6 @@ function allocateSOB() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
-            debugger
             if (data.returnId == 0) {
 
                 $('.alert-danger').show();
@@ -2029,7 +2026,6 @@ function GetSOBAllocation() {
         async: false,
         dataType: "json",
         success: function (data) {
-            debugger
             $('#PriceType').show()
             $('#PriceTypeP').show()
             $('#ddlPriceType').val(data.sobOn).trigger('change');
@@ -2232,11 +2228,3 @@ function fnclearcss(index) {
 
 
 
-/*
- downloadNFAMatrix starts anurag
- */
-
-
-/*
- downloadNFAMatrix end
- */

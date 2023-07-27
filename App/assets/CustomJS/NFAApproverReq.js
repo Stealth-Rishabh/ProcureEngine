@@ -317,7 +317,7 @@ function GetOverviewmasterbyId(idx) {
 
                 let userType = sessionStorage.getItem("roleName");
                 let loginuserName=sessionStorage.getItem("UserName");
-              
+                let Saving = res.result[0].nfaBudget - res.result[0].nfaAmount; 
                 console.log(userType)
                 console.log(loginuserName)  
                  if (userType == 'Administrator' || userType == 'Admin' || NFACreatedBy == loginuserName) {
@@ -353,7 +353,9 @@ function GetOverviewmasterbyId(idx) {
                 $("#lblDetails").text(res.result[0].nfaDescription);
                 $("#lblAmount").text(thousands_separators(res.result[0].nfaAmount))//+ " " + res.result[0].currencyNm);
 
-                $("#lblbudgetamount").text(thousands_separators(res.result[0].nfaBudget))
+                $("#lblbudgetamount").text(thousands_separators(res.result[0].nfaBudget));
+
+                $("#lblSaving").text(thousands_separators(Saving));
 
                 $("#lblCurrency,#lblCurrencybud").text(res.result[0].currencyNm);
                 $("#lblCategory").text(res.result[0].categoryName);
@@ -999,7 +1001,7 @@ function ApprovalApp() {
     var x = isAuthenticated();
     var _cleanString = StringEncodingMechanism(jQuery("#txtRemarksApp").val());
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-   debugger
+   
     var approvalbyapp = {
         "NFAID": parseInt(idx),
         "FromUserId": sessionStorage.getItem("UserID"),
@@ -1020,7 +1022,7 @@ function ApprovalApp() {
         crossDomain: true,
         dataType: "json",
         success: function () {
-           debugger
+           
             bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
 
                 window.location = "index.html";
@@ -1031,7 +1033,7 @@ function ApprovalApp() {
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
-            debugger
+            
             var err = xhr.responseText;
             if (xhr.status === 401) {
                 error401Messagebox(err.Message);

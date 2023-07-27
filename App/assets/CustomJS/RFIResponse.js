@@ -503,7 +503,7 @@ function Filltblfinancedetails() {
 function ApproveRFI(For) {
     var _cleanString = StringEncodingMechanism($('#txtrejectreason').val());
     
-    debugger
+    
     
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
 

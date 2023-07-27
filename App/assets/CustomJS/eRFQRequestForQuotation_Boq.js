@@ -988,7 +988,7 @@ function fnGetTermsCondition() {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            debugger
+            
             jQuery("#tblTermsCondition").empty();
             jQuery("#tbltermsconditionprev").empty();
             if (data.length > 0) {
@@ -1120,7 +1120,7 @@ $(document).on('keyup', '.form-control', function () {
     }
 });
 function fnsavetermscondition(isbuttonclick) {
-    debugger
+    
     var checkedValue = '2~I~#';
     var checkedOtherTerms = '', isOtherTerms = "Y";
     $("#tblTermsCondition> tbody > tr").each(function (index) {

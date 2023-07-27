@@ -163,7 +163,8 @@
                     <div class="page-toolbar">
                         <!--invite vendor-->
                         <div id="dashboard-report-range" class="pull-right btn btn-fit-height">
-                            <button onclick="routeToInviteVendor()" type="button" class="tooltips btn btn-xs btn-success" data-placement="left" data-original-title="Click to Invite Vendors"><i class="fa fa-plus-circle"></i> Invite</button>
+                            
+                            <button onclick="routeToInviteVendor()" type="button" class="tooltips btn btn-xs btn-success" data-placement="left" data-original-title="Click to Invite Vendors"><i class="fa fa-arrow-circle-right"></i> Invite</button>
                             <a href="#HelpModal" data-toggle="modal" class="tooltips btn btn-xs btn-primary" data-placement="left" data-original-title="Click to see help"><i class="fa fa-question-circle"></i> Help</a>
                         </div>
                     </div>
@@ -293,7 +294,7 @@
 
                                                                                             <div class="form-group">
                                                                                                 <label class="col-md-3 control-label">
-                                                                                                   Alternate Contact Person <span class="required">*</span>
+                                                                                                    Alternate Contact Person <span class="required">*</span>
                                                                                                 </label>
                                                                                                 <div class="col-md-4">
                                                                                                     <input type="text" class="form-control" placeholder="Enter Alternate Contact Person Name" id="AltContactName"
@@ -440,12 +441,12 @@
                                                                                                 </label>
                                                                                                 <div class="col-md-6 inlineblock">
                                                                                                     <input type="text" class="form-control" placeholder="Enter Tax No." id="txtTINNo" name="txtTINNo" maxlength="15" autocomplete="off" />
-                                                                                                   <span>
-                                                                                                     <button class="btn default tooltips" data-placement="top" data-original-title="Click to verify GST" type="button" id="btncalgst">
-                                                                                                      
-                                                                                                        <img src='assets/img/gstchk.svg' width='25px' height='18px' style='{margin-bottom:4px;}'/>
-                                                                                                     </button>
-                                                                                                   </span>
+                                                                                                    <span>
+                                                                                                        <button class="btn default tooltips" data-placement="top" data-original-title="Click to verify GST" type="button" id="btncalgst">
+
+                                                                                                            <img src='assets/img/gstchk.svg' width='25px' height='18px' style='{margin-bottom:4px;}' />
+                                                                                                        </button>
+                                                                                                    </span>
 
                                                                                                 </div>
 
@@ -581,16 +582,16 @@
 
                                                                                             <!--   <div class="form-group">
 
-                                                                                                   <label class="col-md-3 control-label">
-                                                                                                       Active
-                                                                                                   </label>
-                                                                                                   <div class="col-md-1 checkbox-list">
-                                                                                                       <label class="checkbox-inline">
-                                                                                                           <input type="checkbox" id="chkIsActiveparticipant" checked="checked" name="chkIsActiveparticipant" />
-                                                                                                       </label>
-                                                                                                   </div>
+                                                                                        <label class="col-md-3 control-label">
+                                                                                            Active
+                                                                                        </label>
+                                                                                        <div class="col-md-1 checkbox-list">
+                                                                                            <label class="checkbox-inline">
+                                                                                                <input type="checkbox" id="chkIsActiveparticipant" checked="checked" name="chkIsActiveparticipant" />
+                                                                                            </label>
+                                                                                        </div>
 
-                                                                                               </div>-->
+                                                                                    </div>-->
 
                                                                                             <div class="form-group col-md-12 hide" id="lbl_panmsz">
                                                                                                 <label class="col-md-3 control-label">
@@ -688,6 +689,11 @@
                                                                 Park Vendors
                                                             </a>
                                                         </li>
+                                                        <li id="litab2">
+                                                            <a href="#tab_2" data-toggle="tab">
+                                                                Invited Vendors Status
+                                                            </a>
+                                                        </li>
                                                     </ul>
                                                     <div class="tab-content">
 
@@ -783,7 +789,15 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div class="tab-pane " id="tab_2">
+                                                            <div class="col-md-12">
+                                                                <div class="table-scrollable">
+                                                                    <table class="table table-striped table-bordered table-hover" id="tblInvitedStatus"></table>
+                                                                </div>
 
+                                                               
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
 
@@ -814,6 +828,7 @@
                     <i class="icon-arrow-up"></i>
                 </div>
             </div>
+            
             <div id="HelpModal" class="modal fade bs-modal-lg in" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="portlet box blue">
@@ -1433,81 +1448,81 @@
                                                                                     </div>
                                                                                     <!--<div class="row" id="bankForm">
 
-                                                                                        <div class="form-group hide">
-                                                                                            <div class="col-md-12">
-                                                                                                <label class="col-md-2 control-label txtalignleft">
-                                                                                                    Bank Country key
-                                                                                                </label>
-                                                                                                <div class="col-md-4">
-                                                                                                    <label class="control-label" name="bankCountryKey" id="bankCountryKey"></label>
+                                                                                <div class="form-group hide">
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="col-md-2 control-label txtalignleft">
+                                                                                            Bank Country key
+                                                                                        </label>
+                                                                                        <div class="col-md-4">
+                                                                                            <label class="control-label" name="bankCountryKey" id="bankCountryKey"></label>
 
-                                                                                                </div>
-
-                                                                                            </div>
                                                                                         </div>
 
+                                                                                    </div>
+                                                                                </div>
 
-                                                                                        <div class="form-group">
-                                                                                            <div class="col-md-12">
-                                                                                                <label class="col-md-2 control-label txtalignleft">
-                                                                                                    IFSC Code
-                                                                                                </label>
-                                                                                                <div class="col-md-4">
-                                                                                                    <label class="control-label" name="ifsccode" id="ifsccode"></label>
 
-                                                                                                </div>
-                                                                                                <label class="col-md-2 control-label txtalignleft">
-                                                                                                    Name of Bank
-                                                                                                </label>
-                                                                                                <div class="col-md-4 ">
-                                                                                                    <label class="control-label" name="bankname" id="bankname"></label>
+                                                                                <div class="form-group">
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="col-md-2 control-label txtalignleft">
+                                                                                            IFSC Code
+                                                                                        </label>
+                                                                                        <div class="col-md-4">
+                                                                                            <label class="control-label" name="ifsccode" id="ifsccode"></label>
 
-                                                                                                </div>
-                                                                                            </div>
+                                                                                        </div>
+                                                                                        <label class="col-md-2 control-label txtalignleft">
+                                                                                            Name of Bank
+                                                                                        </label>
+                                                                                        <div class="col-md-4 ">
+                                                                                            <label class="control-label" name="bankname" id="bankname"></label>
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+
+                                                                                <div class="form-group">
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="col-md-2 control-label txtalignleft">
+                                                                                            Bank A/c No
+                                                                                        </label>
+                                                                                        <div class="col-md-4 ">
+                                                                                            <label class="control-label" name="bankaccount" id="bankaccount"></label>
+
                                                                                         </div>
 
+                                                                                        <label class="col-md-2 control-label txtalignleft">
+                                                                                            Account Holder Name
+                                                                                        </label>
+                                                                                        <div class="col-md-4 ">
+                                                                                            <label class="control-label" name="accountholder" id="accountholder"></label>
 
-                                                                                        <div class="form-group">
-                                                                                            <div class="col-md-12">
-                                                                                                <label class="col-md-2 control-label txtalignleft">
-                                                                                                    Bank A/c No
-                                                                                                </label>
-                                                                                                <div class="col-md-4 ">
-                                                                                                    <label class="control-label" name="bankaccount" id="bankaccount"></label>
-
-                                                                                                </div>
-
-                                                                                                <label class="col-md-2 control-label txtalignleft">
-                                                                                                    Account Holder Name
-                                                                                                </label>
-                                                                                                <div class="col-md-4 ">
-                                                                                                    <label class="control-label" name="accountholder" id="accountholder"></label>
-
-                                                                                                </div>
-
-                                                                                            </div>
                                                                                         </div>
-                                                                                        <div class="form-group">
-                                                                                            <div class="col-md-12">
-                                                                                                <label class="col-md-2 control-label txtalignleft">
-                                                                                                    Attach Cancelled Cheque
-                                                                                                </label>
-                                                                                                <div class="col-md-4">
 
-                                                                                                    <div class="inputgroup">
-                                                                                                        <div class="att_input">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <div class="col-md-12">
+                                                                                        <label class="col-md-2 control-label txtalignleft">
+                                                                                            Attach Cancelled Cheque
+                                                                                        </label>
+                                                                                        <div class="col-md-4">
+
+                                                                                            <div class="inputgroup">
+                                                                                                <div class="att_input">
 
 
 
-                                                                                                            <span class="help-block uploadedfile"><a href="javascript:;" onclick="DownloadFile(this)" id="checkattach" class="txtleftnone"></a></span>
-                                                                                                        </div>
-                                                                                                    </div>
-
+                                                                                                    <span class="help-block uploadedfile"><a href="javascript:;" onclick="DownloadFile(this)" id="checkattach" class="txtleftnone"></a></span>
                                                                                                 </div>
                                                                                             </div>
 
                                                                                         </div>
-                                                                                    </div>-->
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>-->
 
                                                                                     <div class="row" id="bankForm">
 
@@ -1869,6 +1884,7 @@
 
 
             </div>
+
 
         </div>
     </div>

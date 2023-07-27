@@ -360,7 +360,7 @@ var FormWizard = function () {
                 },
 
                 onNext: function (tab, navigation, index) {
-                       debugger
+                       
                     if (index == 1) {
                         $("#LIVendor").find("a").attr("onclick", "warnforsubmit()");
                         // $('#form_wizard_1').find('.button-cal').show();
@@ -445,7 +445,7 @@ var FormWizard = function () {
                     success.hide();
                     error.hide();
                     handleTitle(tab, navigation, index);
-                     debugger
+                     
                     if (index == 0) {
                         $("#LIVendor").find("a").attr("onclick", "fnRedirectToHome()")
                     }
