@@ -577,10 +577,11 @@ function InsUpdRFQDEtailTab1() {
     jQuery.unblockUI();
 }
 var isrunnigRFQ = 'N';
+var userApproverStatus = "";
 function fetchReguestforQuotationDetails(RFQID) {
     //hide sub and desc
     var RFQCreaterName = "";
-    var userApproverStatus = "";
+    
 
     $("#eventDetailstab_0").show();
     jQuery.ajax({
@@ -593,6 +594,7 @@ function fetchReguestforQuotationDetails(RFQID) {
         crossDomain: true,
         dataType: "json",
         success: function (Data) {
+           
             let RFQData = Data.rData
 
             if (sessionStorage.getItem('CustomerID') == "32") {
@@ -609,6 +611,7 @@ function fetchReguestforQuotationDetails(RFQID) {
             //hide sub and desc
             RFQCreaterName = RFQData[0].general[0].rfqConfigureByName;
             userApproverStatus = RFQData[0].general[0].finalStatus;
+           
 
             sessionStorage.setItem('hdnRFQBidType', RFQData[0].general[0].rfqBidType)
             _RFQBidType = RFQData[0].general[0].rfqBidType
@@ -2082,7 +2085,11 @@ function invitevendors() {
         return false;
 
     }
-
+    if (userApproverStatus == 'Awarded') {
+        jQuery.unblockUI();
+        alertforerror(`Vendor cannot be added after event is ended`);
+        return false;
+    }
 
     if (EndDate < CurDateonly) {
         error1.show();
@@ -2093,6 +2100,8 @@ function invitevendors() {
         gritternotification('Vendor cannnot be added after event is ended');
         return false;
     }
+    
+   
 
     else {
         var checkedValue = '';
