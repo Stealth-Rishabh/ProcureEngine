@@ -64,7 +64,7 @@ if (window.location.search) {
       else if (_BidTypeID == "6") {
          // fetchScrapSalesBidDetails(_BidID)
       }*/
-    // FetchRecomendedVendor(_BidID);
+    FetchRFQActionHistory(_BidID);
     setTimeout(function () {
         //if (isLastPreApprover == "Y") {
         //    $('#txtbidDate').rules('add', {
@@ -590,83 +590,41 @@ function ApprovalApp() {
     });
 }
 
-function FetchRecomendedVendor(bidid) {
+function FetchRFQActionHistory(RFQID) {
 
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
-        //url: sessionStorage.getItem("APIPath") + "ApprovalAir/fetpreApprovalHistory/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&BidID=" + bidid,
-        url: sessionStorage.getItem("APIPath") + "ApprovalAir/fetpreApprovalHistory/?BidID=" + bidid,
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/FetchRFQActionHistory/?BIDID=" + RFQID,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         type: "GET",
         cache: false,
         crossDomain: true,
         dataType: "json",
         success: function (data) {
+            debugger
 
+            $('#tblremarksapprover').empty();
+            $('#tblremarksapprover').append(`<thead></thead><tbody></tbody>`)
+            $('#tblremarksapprover>thead').append('<tr><th>Action</th><th>Remarks</th><th class=hide>Action Type</th><th>Completion DT</th></tr>')
 
-            $('#tblremarksapprover').empty()
-            $('#tblBidPreapprovalHistory').empty()
 
             if (data.length > 0) {
 
-                if (AppStatus == 'Reverted') {
-
-                    $("#lblrevertedComment").text(data[0].remarks);
-                    $("#RevertComment").show();
-                    $('#frmdivremarksforward').removeClass('col-md-12');
-                    $('#frmdivremarksforward').addClass('col-md-6');
-                    $('#frmdivforward').show();
-                    for (var i = 0; i < data.length; i++) {
-                        if (data[i].vendorName != "") {
-                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + data[i].vendorName + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
-                            $('#thforward').removeClass('hide')
-                        }
-                        else {
-                            $('#tblremarksforward').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td class=hide>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
-                            $('#thforward').addClass('hide')
-                        }
-
-
-                    }
-                }
-                $('#frmdivremarksapprover').removeClass('col-md-6');
-                $('#frmdivremarksapprover').addClass('col-md-12');
-                $('#frmdivapprove').addClass('hide');
-                var counthead = 0;
                 for (var i = 0; i < data.length; i++) {
-                    if (data[i].finalStatus == "A") {
+                    $('#tblremarksapprover>tbody').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
 
-                        if (!$("#tblremarksapprover thead").length && counthead == 0) {
-                            counthead = counthead + 1;
-                            $('#frmdivremarksapprover').removeClass('col-md-12');
-                            $('#frmdivremarksapprover').addClass('col-md-6');
-                            $('#frmdivapprove').removeClass('hide');
-                            $('#tblremarksapprover').append('<tr><th>Action</th><th>Remarks</th><th class=hide>Action Type</th><th>Completion DT</th></tr>')
-                        }
-                        $('#tblremarksapprover').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
-                        counthead = counthead + 1;
-                    }
                 }
-                counthead = 0;
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].finalStatus == "H") {
-                        if (!$("#tblBidPreapprovalHistory thead").length && counthead == 0) {
-                            $('#tblBidPreapprovalHistory').append('<tr><th>Action</th><th>Remarks</th><th class=hide>Action Type</th><th> Action Taken On</th></tr>')
-                        }
-                        $('#tblBidPreapprovalHistory').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
-                        counthead = counthead + 1;
 
-                    }
-                }
-                $('#frmdivapprove').show()
-                $("#lblLastcomments").text(data[0].remarks);
 
             }
-
             else {
-                $('#divRemarksApp').removeClass('col-md-6');
-                $('#divRemarksApp').addClass('col-md-12');
+                $('#tblremarksapprover>tbody').append('<tr colspan=3><td>No Record Found.</td></tr>')
+
             }
+
+
+
+
 
 
         },
@@ -683,3 +641,5 @@ function FetchRecomendedVendor(bidid) {
     });
 
 }
+
+

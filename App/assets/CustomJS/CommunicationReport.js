@@ -20,10 +20,13 @@ $(document).ready(function () {
         const eventId = params.get('EventId');
         let eventType = params.get('EventType');
         if (eventType == 'eRFQc' || eventType == 'eRFQ' || eventType == 'RFQ' || eventType == 'eRFQv' || eventType == 'eRFQs') {
-            eventType = 'RFQ'
+            eventType = 'RFQ';
+        }
+        else if (eventType == 'NFAApp') {
+            eventType = 'NFA';
         }
         else {
-            eventType = 'NFA'
+            eventType = '';
         }
         $('#ddlEventtype').val(eventType).trigger('change');
         hdneventid = eventId;

@@ -1,11 +1,11 @@
 ﻿
 let hdneventid = 0;
 
-debugger
+
 
 
 $(document).ready(function () {
-    debugger
+
 
 
     formvalidate()
@@ -16,10 +16,13 @@ $(document).ready(function () {
         const eventId = params.get('EventId');
         let eventType = params.get('EventType');
         if (eventType == 'eRFQc' || eventType == 'eRFQ' || eventType == 'RFQ' || eventType == 'eRFQv' || eventType == 'eRFQs') {
-            eventType = 'RFQ'
+            eventType = 'RFQ';
+        }
+        else if (eventType == 'NFAApp') {
+            eventType = 'NFA';
         }
         else {
-            eventType = 'NFA'
+            eventType = '';
         }
         $('#ddlEventtype').val(eventType).trigger('change');
         hdneventid = eventId;
@@ -280,10 +283,10 @@ function fetchAllMessages() {
         "ToDate": dtto,
         "SearchText": _SearchText,
         "page": '0',
-        "ConfiguredBy": _ConfiguredBy,
+        "ConfiguredBy": '0',
         "CustomerID": sessionStorage.getItem('CustomerID')
     }
-    debugger
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     let urllink = apiURL + "Comm/fetchAllMessages";
     jQuery.ajax({
@@ -295,7 +298,7 @@ function fetchAllMessages() {
         cache: false,
         dataType: "json",
         success: function (data) {
-            debugger
+
             console.log("data", data);
             let Data = ''
             if (data.length > 0) {
