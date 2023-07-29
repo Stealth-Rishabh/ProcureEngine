@@ -9,10 +9,6 @@ $(document).ready(function () {
 
 
     formvalidate()
-    fetchregisterusers();
-
-
-
     if (window.location.search) {
 
         const url = window.location.href;
@@ -52,54 +48,6 @@ $('#ddlconfiguredby').on('change', function (e) {
 
 });
 
-function fetchregisterusers() {
-
-    var userData = {
-        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
-        "UserID": sessionStorage.getItem('UserID'),
-        "Isactive": 'N'
-    }
-    jQuery.ajax({
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        //url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchUserForReports/?UserID=" + encodeURIComponent(sessionStorage.getItem("UserID")) + "&Isactive=N&CustomerID=" + sessionStorage.getItem("CustomerID"),
-        url: sessionStorage.getItem("APIPath") + "RegisterUser/fetchUserForReports",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        cache: false,
-        data: JSON.stringify(userData),
-        async: false,
-        dataType: "json",
-        success: function (data) {
-
-            jQuery("#ddlconfiguredby").empty();
-            jQuery("#ddlconfiguredby").prop('disabled', false)
-            if (data[0].roleName.toLowerCase() == "reports" || data[0].role.toLowerCase() == "administrator") {
-                jQuery("#ddlconfiguredby").append(jQuery("<option ></option>").val("0").html("All"));
-            }
-            for (var i = 0; i < data.length; i++) {
-                jQuery("#ddlconfiguredby").append(jQuery("<option></option>").val(data[i].userID).html(data[i].userName));
-            }
-            if (data[0].role.toLowerCase() == "user" && data[0].roleName.toLowerCase() != "reports") {
-                jQuery("#ddlconfiguredby").select2('val', data[0].userID);
-                // jQuery("#ddlconfiguredby").prop('disabled', true)
-            }
-            if (data[0].role.toLowerCase() == "administrator" && data[0].roleName.toLowerCase() != "reports") {
-                jQuery("#ddlconfiguredby").select2('val', 0);
-                // jQuery("#ddlconfiguredby").prop('disabled', true)
-            }
-        },
-        error: function (xhr, status, error) {
-
-            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-
-            return false;
-            jQuery.unblockUI();
-        }
-    });
-}
 
 
 //communication hub
@@ -122,10 +70,8 @@ function formvalidate() {
 
             ddlBidtype: {
                 required: true
-            },
-            ddlconfiguredby: {
-                required: true
             }
+
         },
 
         messages: {
@@ -242,6 +188,7 @@ function fetchAllRFQNFA() {
             }
             else {
 
+
                 alertforerror(`No Open ${CEventType} for which you can invite vendors.!`)
 
             }
@@ -282,6 +229,7 @@ $('#ddlEventtype').on('change', function (e) {
 
 
 //for fetching all messages on submission
+
 
 function fetchAllMessages() {
 
@@ -335,7 +283,7 @@ function fetchAllMessages() {
         "ToDate": dtto,
         "SearchText": _SearchText,
         "page": '0',
-        "ConfiguredBy": _ConfiguredBy,
+        "ConfiguredBy": '0',
         "CustomerID": sessionStorage.getItem('CustomerID')
     }
 
@@ -350,6 +298,7 @@ function fetchAllMessages() {
         cache: false,
         dataType: "json",
         success: function (data) {
+
             console.log("data", data);
             let Data = ''
             if (data.length > 0) {

@@ -97,7 +97,8 @@ function fnForwardforAllvendorTechnical() {
                 className: "btn-success",
                 callback: function () {
                     $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
-                    MapApprover();
+                    MapRFQTechapprover();
+                    //MapApprover();
                 }
             },
             cancel: {
@@ -111,81 +112,7 @@ function fnForwardforAllvendorTechnical() {
         }
     });
 }
-/*function MapApprover() {
 
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-  
-    var Approvers = {
-        "ApproverType": "T",
-        "Approvers": '',
-        "RFQID": parseInt($('#hdnRfqID').val()),
-        "CreatedBy": sessionStorage.getItem('UserID'),
-        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
-    }
-    jQuery.ajax({
-        type: "POST",
-        contentType: "application/json; charset=utf-8",
-        url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQTechInsApprover",
-        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-        crossDomain: true,
-        async: false,
-        data: JSON.stringify(Approvers),
-        dataType: "json",
-        success: function (data) {
-            
-            $('#successapp').show();
-            $('#spansuccessapp').html('Approvers mapped successfully');
-            Metronic.scrollTo($('#successapp'), -200);
-            $('#successapp').fadeOut(3000);
-            bootbox.dialog({
-                message: "Approvers added successfully!",
-                buttons: {
-                    confirm: {
-                        label: "OK",
-                        className: "btn-success",
-                        callback: function () {
-                            $('.modal-footer .btn-success').prop('disabled', true); //abheedev button duplicate
-                            setTimeout(function () {
-
-                                $('#addtechnicalapprovers').modal('hide')
-                            }, 700)
-                            if (Type == "Report") {
-                                fetchRFQApproverStatus();
-                                setTimeout(function () {
-
-                                    $('#FwdTechnicalApprover').modal('show')
-                                }, 1500)
-                            }
-                            else {
-                                fetchReguestforQuotationDetails(RFQID)
-                            }
-
-                        }
-                    }
-
-                }
-            });
-            jQuery.unblockUI();
-
-        },
-        error: function (xhr, status, error) {
-          
-            var err = eval("(" + xhr.responseText + ")");
-            if (xhr.status == 401) {
-                error401Messagebox(err.Message);
-            }
-            else {
-                 alertforerror(`Approvers cannot be added as the approval cycle is closed`);
-                 $('#addtechnicalapprovers').modal('hide')
-            }
-            jQuery.unblockUI();
-            return false;
-
-        }
-
-    });
-
-}*/
 function fetchApproverRemarks(Type) {
 
     jQuery.ajax({
@@ -539,10 +466,14 @@ var _openQuotes = '';
 var isboq = 'N';
 var ShowPrice = 'Y';
 let totalitems
+
+var userApproverStatus = ''
+
+
 function fetchReguestforQuotationDetails() {
     var attachment = '';
     var termattach = '';
-    
+
     jQuery.ajax({
         contentType: "application/json; charset=utf-8",
         //url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + $('#hdnRfqID').val() + "&CustomerID=" + sessionStorage.getItem('CustomerID') + "&UserID=" + encodeURIComponent(sessionStorage.getItem('UserID')),
@@ -553,7 +484,7 @@ function fetchReguestforQuotationDetails() {
         crossDomain: true,
         dataType: "json",
         success: function (Data) {
-            
+
             let RFQData = Data.rData
             totalitems = RFQData[0].parameters.length
             var _curentRFQStatus = '';
@@ -566,6 +497,7 @@ function fetchReguestforQuotationDetails() {
                 sessionStorage.setItem('RFQBidType', _rfqBidType);
                 sessionStorage.setItem('OpenQuotes', _openQuotes);
                 _curentRFQStatus = RFQData[0].general[0].rfqStatus;
+                userApproverStatus = RFQData[0].general[0].finalStatus;
 
                 ShowPrice = RFQData[0].general[0].showQuotedPrice;
 
@@ -597,11 +529,7 @@ function fetchReguestforQuotationDetails() {
                     fetchrfqcomprative();
                 }
 
-                /*else {
-                    $('#cancl_btn').hide();
 
-                }*/
-                //abheedev 26/12/2022
                 let _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
                 let _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
                 jQuery('#RFQSubject').text(_cleanStringSub)
@@ -2047,7 +1975,7 @@ function MapRFQTechapprover(Type) {
         RFQID = $('#hdnRfqID').val()
     }
     else {
-        RFQID = sessionStorage.getItem("hdnrfqid")
+        RFQID = sessionStorage.getItem("EventId") //hdnrfqid
     }
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var approvers = '';
@@ -2098,7 +2026,7 @@ function MapRFQTechapprover(Type) {
         data: JSON.stringify(Approvers),
         dataType: "json",
         success: function (data) {
-            
+
             $('#successapp').show();
             $('#spansuccessapp').html('Approvers mapped successfully');
             Metronic.scrollTo($('#successapp'), -200);
@@ -2135,7 +2063,7 @@ function MapRFQTechapprover(Type) {
 
         },
         error: function (xhr) {
-            
+
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);

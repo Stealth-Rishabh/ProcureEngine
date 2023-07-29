@@ -866,6 +866,8 @@
                                                                                 <th>Actions</th>
                                                                             </tr>
                                                                         </thead>
+                                                                        <tbody>
+                                                                        </tbody>
                                                                     </table>
                                                                 </div>
                                                             </div>
@@ -1080,6 +1082,8 @@
 
                                                             </tr>
                                                         </thead>
+                                                        <tbody>
+                                                        </tbody>
                                                     </table>
                                                 </div>
                                             </div>
@@ -1091,7 +1095,7 @@
                                                 <div class="row">
                                                     <div class="col-md-offset-11 col-md-9">
                                                         <button type="button" class="btn default" id="back_prev_btn">Back</button>
-                                                        <button type="button" class="btn green" onclick="fnsubmitRFQ()"> Submit&nbsp;<i class="m-icon-swapright m-icon-white"></i></button>
+                                                        <button type="button" id="btnsubmit" class="btn green" onclick="fnsubmitRFQ()"> Submit&nbsp;<i class="m-icon-swapright m-icon-white"></i></button>
 
                                                     </div>
                                                 </div>
@@ -1661,6 +1665,110 @@
                     <div class="modal-body">
                         <div id="root"></div>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="addapprovers" class="modal fade bs-modal-md" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="row">
+                <div class="col-md-12"></div>
+                <div class="portlet box green-haze">
+
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <i class="fa fa-reorder"></i>Add Approvers
+                        </div>
+                        <div class="tools">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        </div>
+                    </div>
+
+                    <div class="portlet-body form">
+                        <div class="alert alert-success" id="successapp">
+                            <span id="spansuccessapp"> </span>
+                        </div>
+                        <div class="alert alert-danger" id="diverrorapp">
+                            <span id="spandangerapp"> </span>
+                        </div>
+                        <form action="#" id="frmApprover" class="form-horizontal" role="form">
+                            <div id="frmapproverbody" class="hide">
+                                <div class="form-body">
+                                    <input type="hidden" id="hdnRFQApproverID" value="0" />
+                                    <input type="hidden" id="hdnRFQApproverEmailID" value="0" />
+                                    <input type="hidden" id="hdnRFQApproverusername" value="0" />
+
+                                    <div class="row">
+                                        <label class="col-md-3 control-label">
+                                            Select Approvers
+                                        </label>
+                                        <label class="col-md-7">
+                                            <input type="text" class="form-control pull-right" placeholder="Select Approver" id="txtpreApproverBid"
+                                                   data-provide="typeahead" autocomplete="off" name="txtpreApproverBid" />
+                                        </label>
+                                        <div class="col-md-1 ">
+                                            <button type="button" id="Addbtn1" onclick="addBidpreApprovers()" class="btn green-haze btn-sm hide"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-striped table-bordered table-hover" id="tblpreBidapprovers"></table>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-offset-4 col-md-9">
+                                                    <button type="button" class="btn green" id="btnbidapproversubmit" onclick="fncheckbtntext(this)">Submit</button>
+                                                    <button type="button" class="btn yellow-crusta" data-dismiss="modal" aria-hidden="true" id="btnClose">Close</button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="frmapproverbodymsz" class="hide">
+                                <div class="form-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-striped table-bordered table-hover" id="tblpreBidapprovers1"></table>
+
+                                        </div>
+                                    </div>
+                                    <div>&nbsp;</div>
+                                    <div class="row">
+                                        <label class="col-md-8 control-label">
+                                            Do you want change Approver for RFQ Pre Approval ?
+                                        </label>
+                                    </div>
+
+                                </div>
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div class="col-md-offset-4 col-md-9">
+                                                    <button type="button" class="btn green" id="btnbidapproversamesubmit" onclick="fncheckbtntext(this)">Keep same</button>
+                                                    <button type="button" class="btn yellow-crusta" onclick="fnyeschangeapprovers()" id="btnyeschangeapprrover">Yes</button>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6"> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    <!-- /.modal-content -->
                 </div>
             </div>
         </div>

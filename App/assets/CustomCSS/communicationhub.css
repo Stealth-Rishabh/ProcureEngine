@@ -27,7 +27,7 @@ body {
 }
 
 #notif {
-    background-color: #1f1f1f !important;
+    background-color: transparent !important;
     /* margin-right: -20px !important;*/
 }
 
@@ -54,7 +54,7 @@ body {
     left: 65%;
     position: absolute;
     top: 2px;
-    background-color: #1f1f1f !important;
+    background-color: transparent !important;
 }
 
 #unread {
@@ -641,7 +641,6 @@ textarea {
     right: 200px;
     position: absolute;
     top: 6px;
-    background-color: #1f1f1f !important;
 }
 
 #outer {
@@ -882,6 +881,11 @@ textarea {
     position: relative !important;
     left: 78% !important;
     border: none !important;
+}
+
+#successmsg {
+    font-weight: bolder !important;
+    color: #48c948 !important;
 }
 
 

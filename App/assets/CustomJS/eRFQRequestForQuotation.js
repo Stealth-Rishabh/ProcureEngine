@@ -29,7 +29,7 @@ jQuery(document).ready(function () {
     setCommonData();
     fetchMenuItemsFromSession(1, 24);
     fnGetTermsCondition();
-    
+
     FetchCurrency('0');
 
     FetchUOM(sessionStorage.getItem("CustomerID"));
@@ -61,7 +61,7 @@ jQuery(document).ready(function () {
     if (_RFQid == null) {
 
         sessionStorage.setItem('hddnRFQID', 0)
-        
+
         if (sessionStorage.getItem('BoqUpload')) {
             $('#divBoqUpload').show()
         }
@@ -632,6 +632,7 @@ var FormWizard = function () {
                 }
                 else {
                     RFQInviteVendorTab3();
+                    fetchRFQdetails();
                     fetchPSBidDetailsForPreview()
                     return true;
                 }
@@ -1052,7 +1053,7 @@ function InsUpdRFQDEtailTab2() {
 
 
 function fnGetTermsCondition() {
- 
+
     let urlT = sessionStorage.getItem("APIPath") + "eRequestForQuotation/efetchRFQTermsANDCondition/?ConditionType=" + $('#ddlConditiontype option:selected').val() + "&RFQID=" + sessionStorage.getItem('hddnRFQID') + "&RFQType=Open";
     jQuery.ajax({
         type: "GET",
@@ -1060,11 +1061,11 @@ function fnGetTermsCondition() {
         url: urlT,
         beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
         cache: false,
-        async:false,
+        async: false,
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            
+
 
             jQuery("#tblTermsCondition").empty();
             jQuery("#tblTermsCondition").append(`<thead></thead><tbody></tbody>`);
@@ -1151,7 +1152,7 @@ function fnGetTermsCondition() {
             }
         },
         error: function (xhr, status, error) {
-      
+
             var err = xhr.responseText;// eval("(" + xhr.responseText + ")");
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
@@ -1722,7 +1723,9 @@ function deleteTechnicalApprovers() {
 var commApp = 0;
 var TechApp = 0;
 var commAppsrno = 0;
+var rowpreBidApp = 0;
 var TechAppsrno = 0;
+var rownumprebid = 0;
 function fnApproversQuery() {
 
     var num = 0;
@@ -2073,7 +2076,7 @@ function fetchRFIParameteronload() {
         cache: false,
         dataType: "json",
         success: function (Data) {
-            
+
             let data = Data.rData
             sessionStorage.setItem("IsPullIndent", 'Y')
             jQuery('#icon').html('<i class="fa fa-list-ul"></i>');
@@ -2082,7 +2085,7 @@ function fetchRFIParameteronload() {
             jQuery("#tblServicesProduct").append(`<thead></thead><tbody></tbody>`);
             jQuery("#tblRFQPrev").append(`<thead></thead><tbody></tbody>`);
             $('#scrolr').show();
-       
+
             if (data[0].parameters.length > 0) {
                 //for external Sourcee
                 if (IsSAPModule == 'Y') {
@@ -2861,6 +2864,14 @@ function RFQInviteVendorTab3() {
     ET = ET.substring(0, ET.indexOf("GMT"));
     ET = ET + 'GMT' + sessionStorage.getItem('utcoffset');
 
+
+    if (sessionStorage.getItem("RFQPreApp") == "N" || sessionStorage.getItem("RFQPreApp") == undefined || sessionStorage.getItem("RFQPreApp") == null) {
+        $('#btnsubmit').text("Submit")
+    }
+    else {
+        $('#btnsubmit').text("Submit for PreApproval")
+    }
+
     var Tab3data = {
         "BidVendors": Vendorlist,
         "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
@@ -2880,7 +2891,6 @@ function RFQInviteVendorTab3() {
         data: JSON.stringify(Tab3data),
         dataType: "json",
         success: function (data) {
-
 
             $('#BidPreviewDiv').show();
             $('#form_wizard_1').hide();
@@ -2907,58 +2917,64 @@ function fnsubmitRFQ() {
 
     var _cleanString4 = StringEncodingMechanism(jQuery('#txtrfqSubject').val());
     var _cleanString5 = StringEncodingMechanism(jQuery('#txtrfqdescription').val());
+    if (sessionStorage.getItem("RFQPreApp") == "N") {
+        jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+        if (sessionStorage.getItem("hddnRFQID") != '' && sessionStorage.getItem("hddnRFQID") != null) {
+            var Tab3data = {
 
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    if (sessionStorage.getItem("hddnRFQID") != '' && sessionStorage.getItem("hddnRFQID") != null) {
-        var Tab3data = {
+                "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
+                "UserID": sessionStorage.getItem('UserID'),
 
-            "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
-            "UserID": sessionStorage.getItem('UserID'),
+                "subject": _cleanString4,
+                "RFQEndDate": jQuery('#txtenddatettime').val(),
 
-            "subject": _cleanString4,
-            "RFQEndDate": jQuery('#txtenddatettime').val(),
+                "RFQDescription": _cleanString5,
+                "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
+            };
+            jQuery.ajax({
 
-            "RFQDescription": _cleanString5,
-            "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
-        };
-        jQuery.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQSubmit/",
+                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+                crossDomain: true,
+                async: false,
+                data: JSON.stringify(Tab3data),
+                dataType: "json",
+                success: function (data) {
 
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQSubmit/",
-            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-            crossDomain: true,
-            async: false,
-            data: JSON.stringify(Tab3data),
-            dataType: "json",
-            success: function (data) {
+                    jQuery.unblockUI();
+                    bootbox.alert("Request for Quotation Submitted Successfully.", function () {
+                        sessionStorage.removeItem('CurrentBidID');
+                        window.location = sessionStorage.getItem("HomePage")
+                        return false;
 
-                jQuery.unblockUI();
-                bootbox.alert("Request for Quotation Submitted Successfully.", function () {
-                    sessionStorage.removeItem('CurrentBidID');
-                    window.location = sessionStorage.getItem("HomePage")
+                    });
+
+                },
+                error: function (xhr, status, error) {
+
+                    var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+                    if (xhr.status == 401) {
+                        error401Messagebox(err.Message);
+                    }
+                    else {
+                        fnErrorMessageText('spandanger', 'form_wizard_1');
+                    }
+                    jQuery.unblockUI();
                     return false;
 
-                });
-
-            },
-            error: function (xhr, status, error) {
-
-                var err = xhr.responseText //eval("(" + xhr.responseText + ")");
-                if (xhr.status == 401) {
-                    error401Messagebox(err.Message);
                 }
-                else {
-                    fnErrorMessageText('spandanger', 'form_wizard_1');
-                }
-                jQuery.unblockUI();
-                return false;
+            });
+        }
+        else {
+            window.location = sessionStorage.getItem("HomePage");
+        }
 
-            }
-        });
     }
     else {
-        window.location = sessionStorage.getItem("HomePage");
+        fnOpenPopupBidpreApprover();
+        jQuery.unblockUI();
     }
 }
 
@@ -3115,6 +3131,7 @@ function fetchReguestforQuotationDetails() {
             let _cleanStringSub = StringDecodingMechanism(RFQData[0].general[0].rfqSubject);
             let _cleanStringDesc = StringDecodingMechanism(RFQData[0].general[0].rfqDescription);
             sessionStorage.setItem('hddnRFQID', RFQData[0].general[0].rfqId)
+            sessionStorage.setItem("RFQPreApp", RFQData[0].general[0].rfqPreApproval)
             jQuery('#txtrfqSubject').val(_cleanStringSub)
             $('#dropCurrency').val(RFQData[0].general[0].rfqCurrencyId).trigger('change');
             jQuery('#txtrfqdescription').val(_cleanStringDesc)
@@ -3160,6 +3177,7 @@ function fetchReguestforQuotationDetails() {
                 fetchRFIParameteronload();
             }
             fncheckboq();
+
             //Vendor Details
             if (RFQData[0].vendors.length > 0) {
 
@@ -3771,7 +3789,7 @@ function fnSeteRFQparameterTable() {
             }
 
             $('#scrolr').show();
-            jQuery("#tblRFQPrev").append(`<thead></thead><tbody></tbody>`);
+
 
 
             if (!jQuery("#tblRFQPrev thead ").length) {
@@ -3784,6 +3802,7 @@ function fnSeteRFQparameterTable() {
 
                     jQuery("#tblRFQPrev tbody").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td class="itemcode" id=itemcodeprev' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td class="sname" id=snameprev' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class="SAPDesc" id=SAPDescprev' + i + '></td><td class="text-right TP" id=TPprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class="text-right quan" id=quanprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td class="uom" id=uomprev' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td class="desc" id=descprev' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td class="delivery" id=deliveryprev' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td  class="text-right tat" id=tatprev' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td class="remarks" id=remarksprev' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td  class="pono" id=ponoprev' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td  class="povname" id=povnameprev' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class="text-right unitrate" id=unitrateprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td  class="podate"  id=podateprev' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class="povalue" id=povalueprev' + i + ' class=text-right>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td></tr>');
                 }
+
                 else {
                     jQuery("#tblRFQPrev thead").append("<tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:20%!important;'>Item Code</th><th>Item/Service</th><th class='hide'>SAP Short Desc</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th><th>Source ID</th></tr>");
 
@@ -4488,7 +4507,7 @@ function fnfillInstructionExcel() {
 }
 
 function addMoreTermsCondition() {
-  
+
     var num = 0, i = 0;
     var maxinum = -1;
     $("#tblTermsCondition tr:gt(0)").each(function () {
@@ -4613,4 +4632,358 @@ function FetchSAPPI() {
             }
         }
     });
+}
+
+
+/*BEGIN updated BY Bijendra SIngh */
+
+
+jQuery("#txtpreApproverBid").keyup(function () {
+    sessionStorage.setItem('hdnpreApproverid', '0');
+
+});
+sessionStorage.setItem('hdnpreApproverid', 0);
+
+
+jQuery("#txtpreApproverBid").typeahead({
+    source: function (query, process) {
+        var data = allUsers;
+        usernames = [];
+        map = {};
+        var username = "";
+        jQuery.each(data, function (i, username) {
+            map[username.userName] = username;
+            usernames.push(username.userName);
+        });
+
+        process(usernames);
+
+    },
+    minLength: 2,
+    updater: function (item) {
+
+        if (map[item].userID != "0") {
+            sessionStorage.setItem('hdnpreApproverid', map[item].userID);
+            addBidpreApprovers(map[item].emailID, map[item].userID, map[item].userName);
+
+        }
+        else {
+            gritternotification('Approver not selected. Please press + Button after selecting Approver!!!');
+        }
+
+        return item;
+    }
+
+});
+
+
+
+function addBidpreApprovers(EmailID, UserID, UserName) {
+
+    var status = "true";
+    $("#tblpreBidapprovers tr:gt(0)").each(function () {
+        var this_row = $(this);
+        if ($.trim(this_row.find('td:eq(4)').html()) == sessionStorage.getItem('hdnpreApproverid')) {
+            status = "false"
+        }
+    });
+
+    if (UserID == "0" || jQuery("#txtpreApproverBid").val() == "") {
+        $('.alert-danger').show();
+        $('#spandangerapp').html('Approver not selected. Please press + Button after selecting Approver');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        return false;
+    }
+    else if (status == "false") {
+        $('.alert-danger').show();
+        $('#spandangerapp').html('Approver is already mapped for this Reverse Auction.');
+        Metronic.scrollTo($(".alert-danger"), -200);
+        $('.alert-danger').fadeOut(7000);
+        return false;
+    }
+    else {
+        rowpreBidApp = rowpreBidApp + 1;
+        num = 0;
+        maxidnum = 0;
+        $("#tblpreBidapprovers tr:gt(0)").each(function () {
+            var this_row = $(this);
+            num = (this_row.closest('tr').attr('id')).substring(10, (this_row.closest('tr').attr('id')).length)
+            if (parseInt(num) > parseInt(maxidnum)) {
+                maxidnum = num;
+            }
+        });
+        rownumprebid = parseInt(maxidnum) + 1;
+
+        if (!jQuery("#tblpreBidapprovers thead").length) {
+            jQuery("#tblpreBidapprovers").empty()
+            jQuery("#tblpreBidapprovers").append(`<thead></thead><tbody></tbody>`)
+            jQuery("#tblpreBidapprovers>thead").append("<tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr>");
+            jQuery("#tblpreBidapprovers>tbody").append('<tr id=trpreAppid' + rownumprebid + '><td><a class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rownumprebid + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
+        }
+        else {
+            jQuery("#tblpreBidapprovers>tbody").append('<tr id=trpreAppid' + rownumprebid + '><td><a class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rownumprebid + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
+        }
+        var rowcountPre = jQuery('#tblpreBidapprovers >tbody>tr').length;
+        if (rowcountPre >= 1) {
+            $("#tblpreBidapprovers tr:gt(0)").each(function (index) {
+                var this_row = $(this);
+                $.trim(this_row.find('td:eq(3)').html(index + 1));
+            });
+            $("#tblpreBidapprovers1 tr:gt(0)").each(function (index) {
+                var this_row = $(this);
+                $.trim(this_row.find('td:eq(3)').html(index + 1));
+            });
+        }
+
+    }
+}
+function deletepreApprow(IDcount) {
+    rowpreBidApp = rowpreBidApp - 1;
+    $('#trpreAppidPrev' + IDcount).remove();
+    $('#trpreAppid' + IDcount).remove();
+
+    var i = 1;
+    var rowcountPre = jQuery('#tblpreBidapprovers >tbody>tr').length;
+    if (rowcountPre >= 1) {
+        i = 1;
+        $("#tblpreBidapprovers tr:gt(0)").each(function () {
+            var this_row = $(this);
+            $.trim(this_row.find('td:eq(3)').html(i));
+            i++;
+        });
+        i = 1;
+
+    }
+}
+
+
+function fnOpenPopupBidpreApprover() {
+    $('#addapprovers').modal('show');
+    fnyeschangeapprovers()
+    // $('#frmapproverbodymsz').removeClass('hide')
+
+    // fetchRFQApproverDetails();
+}
+
+
+function fnyeschangeapprovers() {
+    $('#frmapproverbodymsz').addClass('hide')
+    $('#frmapproverbody').removeClass('hide')
+}
+$('#addapprovers').on("hidden.bs.modal", function () {
+    $('#frmapproverbodymsz').removeClass('hide')
+    $('#frmapproverbody').addClass('hide')
+    $('#txtpreApproverBid').val('')
+    sessionStorage.setItem('hdnpreApproverid', '0');
+
+})
+function fnclosepopupApprovers() {
+
+}
+
+
+var _bidType;
+var BidItemslength = 0;
+function fetchRFQApproverDetails() {
+    jQuery.ajax({
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQPreApprover/?RFQID=" + sessionStorage.getItem('hddnRFQID'),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (BidData) {
+            var str = '';
+            var strp = '';
+            console.log(BidData)
+
+            jQuery("#tblapprovers,#tblpreBidapprovers").empty();
+            jQuery("#tblapproversPrev,#tblpreBidapprovers1").empty();
+            $('#wrap_scrollerPrevApp').show();
+            jQuery('#tblapprovers,#tblpreBidapprovers').append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
+            jQuery('#tblapproversPrev,#tblpreBidapprovers1').append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
+            rowpreBidApp = 0;
+            rowApp = 0;
+            for (var i = 0; i < BidData[0].length; i++) {
+
+                str = '<tbody><tr id=trAppid' + (i + 1) + '>';
+                str += '<td><a type=button class="btn btn-xs btn-danger" id=Removebtn' + i + ' onclick="deleteApprow(' + (i + 1) + ')"  ><i class="glyphicon glyphicon-remove-circle"></i></a></td>';
+                str += '<td>' + BidData[0].userName + '</td>'
+                str += "<td>" + BidData[0].emailID + "</td>";
+
+                str += "<td>" + BidData[0].adminSrNo + "</td>";
+                str += "<td class=hide>" + BidData[0].userID + "</td></tr>";
+
+                jQuery('#tblapprovers').append(str);
+
+
+
+                strp = '<tr id=trAppidPrev' + (i + 1) + '>';
+                strp += '<td>' + BidData[0].userName + '</td>'
+                strp += "<td>" + BidData[0].emailID + "</td>";
+                strp += "<td class=hide>" + BidData[0].userID + "</td>";
+                strp += "<td>" + BidData[0].adMinSrNo + "</td></tr></tbody>";
+                jQuery('#tblapproversPrev').append(strp);
+
+                //** Pre Approver
+                str = '';
+
+
+                str = '<tbody><tr id=trpreAppid' + (i + 1) + '>';
+                str += '<td><a type=button class="btn btn-xs btn-danger" id=Removebtn' + i + ' onclick="deletepreApprow(' + (i + 1) + ')"  ><i class="glyphicon glyphicon-remove-circle"></i></a></td>';
+                str += '<td>' + BidData[0].bidApproverDetails[i].approverName + '</td>'
+                str += "<td>" + BidData[0].bidApproverDetails[i].emailID + "</td>";
+                str += "<td>" + BidData[0].bidApproverDetails[i].adMinSrNo + "</td>";
+                str += "<td class=hide>" + BidData[0].bidApproverDetails[i].userID + "</td></tr>";
+                jQuery('#tblpreBidapprovers').append(str);
+
+                strp = '';
+                strp = '<tr id=trpreAppidPrev' + (i + 1) + '>';
+                strp += '<td>' + BidData[0].bidApproverDetails[i].approverName + '</td>'
+                strp += "<td>" + BidData[0].bidApproverDetails[i].emailID + "</td>";
+                strp += "<td class=hide>" + BidData[0].bidApproverDetails[i].userID + "</td>";
+                strp += "<td>" + BidData[0].bidApproverDetails[i].adMinSrNo + "</td></tr></tbody>";
+                jQuery('#tblpreBidapprovers1').append(strp);
+
+            }
+
+        },
+        error: function (xhr, status, error) {
+            var err = xhr.responseText
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('spandanger', 'form_wizard_1');
+            }
+            jQuery.unblockUI();
+        }
+    });
+
+
+}
+
+
+function fncheckbtntext(btnid) {
+    console.log(btnid);
+    if ($('#' + btnid.id).text().toLowerCase() != "keep same") {
+        appbtnTypeSubmit = "submitpreapproval"
+    }
+    if ($('#tblpreBidapprovers >tbody >tr').length == 0) {
+        $('.alert-danger').show();
+        $('#spandangerapp').html('Please Map Approver.');
+        $('.alert-danger').fadeOut(5000);
+        return false;
+
+    }
+    else {
+        MapBidapprover();
+    }
+}
+function MapBidapprover() {
+
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+    var approvers = '';
+    if (appbtnTypeSubmit == "keepsame") {
+        var rowCount = jQuery('#tblpreBidapprovers1 >tbody>tr').length;
+        if (rowCount >= 1) {
+            $("#tblpreBidapprovers1 tr:gt(0)").each(function () {
+                var this_row = $(this);
+                approvers = approvers + $.trim(this_row.find('td:eq(2)').html()) + '~' + $.trim(this_row.find('td:eq(3)').html()) + '#';
+
+            })
+        }
+    }
+    else {
+        var rowCount = jQuery('#tblpreBidapprovers>tbody tr').length;
+        if (rowCount >= 1) {
+            $("#tblpreBidapprovers tr:gt(0)").each(function () {
+                var this_row = $(this);
+                approvers = approvers + $.trim(this_row.find('td:eq(4)').html()) + '~' + $.trim(this_row.find('td:eq(3)').html()) + '#';
+
+            })
+        }
+    }
+
+    var Approvers = {
+        "RFQID": parseInt(sessionStorage.getItem('hddnRFQID')),
+        "QueryRFQApprovers": approvers,
+        "CreatedBy": sessionStorage.getItem('UserID'),
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "ApproverType": "7",
+    }
+
+    console.log(JSON.stringify(Approvers))
+    jQuery.ajax({
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/AddRFQpreApprover",
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        crossDomain: true,
+        async: false,
+        data: JSON.stringify(Approvers),
+        dataType: "json",
+        success: function (data) {
+            console.log(data);
+            $('#successapp').show();
+            $('#spansuccessapp').html('RFQ submitted for pre-approval.');
+            Metronic.scrollTo($('#successapp'), -200);
+            $('#successapp').fadeOut(7000);
+            bootbox.alert("RFQ submitted for pre-approval.", function () {
+                sessionStorage.removeItem('CurrentBidID');
+                window.location = sessionStorage.getItem("HomePage")
+                return false;
+            });
+            jQuery.unblockUI();
+
+        },
+        error: function (xhr, status, error) {
+            var err = xhr.responseText
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
+
+        }
+    });
+}
+
+
+
+function fetchRFQdetails() {
+    jQuery.ajax({
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQDetails/?RFQID=" + sessionStorage.getItem('hddnRFQID'),
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (Data) {
+            let RFQData = Data.rData
+            console.log(RFQData);
+            sessionStorage.setItem("RFQPreApp", RFQData[0].general[0].rfqPreApproval)
+            if (RFQData[0].general[0].rfqPreApproval == "N" || sessionStorageRFQData[0].general[0].rfqPreApproval == undefined || RFQData[0].general[0].rfqPreApproval == null) {
+                $('#btnsubmit').text("Submit")
+            }
+            else {
+                $('#btnsubmit').text("Submit for PreApproval")
+            }
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+
+            jQuery.unblockUI();
+            return false;
+
+        }
+    });
+    jQuery.unblockUI();
 }
