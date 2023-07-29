@@ -105,6 +105,7 @@ function fetchRFQDetails(RFQID) {
         crossDomain: true,
         dataType: "json",
         success: function (Data) {
+
             // debugger;
             BidData = Data.rData;
             console.log(BidData);
@@ -156,11 +157,11 @@ function fetchRFQDetails(RFQID) {
 
             }
             //** Pre Approver
-
-            $("#tblapproversPrePrev").empty();
             $('#wrap_scrollerprePrevApp').show();
-            $('#tblapproversPrePrev').append("<thead><tr><th class='bold text-center' colspan=3>Pre Approvers</th></tr></thead>");
-            $('#tblapproversPrePrev').append("<thead><tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
+            $("#tblapproversPrePrev").empty();
+            $("#tblapproversPrePrev").append('<thead></thead><tbody></tbody>');
+            $('#tblapproversPrePrev>thead').append("<tr><th class='bold text-center' colspan=3>Pre Approvers</th></tr>");
+            $('#tblapproversPrePrev>thead').append("<tr><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr>");
             strp = '';
             for (var i = 0; i < BidData[0].rfqApproverViewDet.length; i++) {
 
@@ -168,7 +169,7 @@ function fetchRFQDetails(RFQID) {
                 strp += '<td>' + BidData[0].rfqApproverViewDet[i].approverName + '</td>'
                 strp += "<td>" + BidData[0].rfqApproverViewDet[i].emailID + "</td>";
                 strp += "<td>" + BidData[0].rfqApproverViewDet[i].adMinSrNo + "</td></tr>";
-                $('#tblapproversPrePrev').append(strp);
+                $('#tblapproversPrePrev>tbody').append(strp);
 
 
             }
