@@ -1392,6 +1392,7 @@ var SeId = 0;
 var BidForID = 0;
 var FlagForCheckShowPrice = "N";
 let dutchflag = false;
+let loginUserName = sessionStorage.getItem('UserID');
 function fetchallexportdetails() {
     debugger
     var bidTypeFetchUrl = '';
@@ -1456,12 +1457,22 @@ function fetchallexportdetails() {
             //hide sub and desc anurag
             BidCreaterName = BidData[0].bidDetails[0].decryptedConfiguredBy;
             BidApproverStatus = BidData[0].bidDetails[0].finalStatus;
+            BidStatus = BidData[0].bidDetails[0].status;
             //hide sub and desc anurag 
-            let loginUserName = sessionStorage.getItem('UserID');
+
             if (BidCreaterName == loginUserName && BidApproverStatus == "Not forwarded") {
-                $('#BIDSub').show();
-                $('#BIDDesc').show();
-            } else {
+                if (BidStatus == "OPEN") {
+                    $('#BIDSub').show();
+                    $('#BIDDesc').show();
+                }
+                else {
+                    $('#BIDSub').hide();
+                    $('#BIDDesc').hide();
+
+                }
+
+            }
+            else {
                 $('#BIDSub').hide();
                 $('#BIDDesc').hide();
             }
