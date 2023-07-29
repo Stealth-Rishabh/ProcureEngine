@@ -1394,7 +1394,7 @@ var FlagForCheckShowPrice = "N";
 let dutchflag = false;
 let loginUserName = sessionStorage.getItem('UserID');
 function fetchallexportdetails() {
-    debugger
+
     var bidTypeFetchUrl = '';
     //hide sub and desc anurag
     var BidCreaterName = "";
@@ -1424,7 +1424,7 @@ function fetchallexportdetails() {
         crossDomain: true,
         dataType: "json",
         success: function (BidData) {
-            debugger
+
             if (BidData[0].bidDetails[0].bidForID == '82' && sessionStorage.getItem("hdnbidtypeid") == 7) {
                 if (BidData[0].bidSeaExportParticipationDetails.length > 0) {
                     dutchflag = true;
@@ -5295,7 +5295,6 @@ function preventSubmit(event) {
 //edit options for subject and description by anurag
 
 $('#BIDSub').click(function () {
-    debugger
 
     var text = $('.bidsub').text();
     var input = $('<input id="attributeSub" name="subj" type="text" value="' + text + '" />')
@@ -5311,7 +5310,6 @@ $('#BIDSub').click(function () {
 
 
 $('#BIDDesc').click(function () {
-    debugger
 
     var text = $('.biddesc').text();
     var input = $('<input id="attributeDesc" name="descptn" type="text" value="' + text + '" />')
@@ -5331,7 +5329,7 @@ $('#BIDDesc').click(function () {
 function updateBidField(updateType) {
     var BIDSubject = '';
     var BIDDescription = '';
-    debugger
+
     if (updateType == "subject") {
         var BIDSubject = $('#attributeSub').val();
         console.log("BIDSubject:", BIDSubject);
@@ -5365,7 +5363,7 @@ function updateBidField(updateType) {
             return false;
         }
     }
-    debugger
+
     var UpdateBidData = {
         "BidID": parseInt(sessionStorage.getItem("hdnbid")),
         "BidSubject": BIDSubject,
@@ -5386,7 +5384,7 @@ function updateBidField(updateType) {
         data: JSON.stringify(UpdateBidData),
         dataType: "json",
         success: function (data) {
-            debugger
+
             bootbox.dialog({
                 message: "Updated Successfully!",
                 buttons: {
@@ -5402,7 +5400,6 @@ function updateBidField(updateType) {
             jQuery.unblockUI();
         },
         error: function (xhr) {
-            debugger
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
