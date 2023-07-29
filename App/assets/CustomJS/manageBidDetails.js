@@ -1392,7 +1392,9 @@ var SeId = 0;
 var BidForID = 0;
 var FlagForCheckShowPrice = "N";
 let dutchflag = false;
+let loginUserName = sessionStorage.getItem('UserID');
 function fetchallexportdetails() {
+
     var bidTypeFetchUrl = '';
     //hide sub and desc anurag
     var BidCreaterName = "";
@@ -1453,14 +1455,24 @@ function fetchallexportdetails() {
             jQuery('#txtConversionRatePrevtab_0').html(BidData[0].bidDetails[0].conversionRate)
             _finalStatus = BidData[0].bidDetails[0].finalStatus
             //hide sub and desc anurag
-            BidCreaterName = BidData[0].bidDetails[0].configureByName;
+            BidCreaterName = BidData[0].bidDetails[0].decryptedConfiguredBy;
             BidApproverStatus = BidData[0].bidDetails[0].finalStatus;
+            BidStatus = BidData[0].bidDetails[0].status;
             //hide sub and desc anurag 
-            let loginUserName = sessionStorage.getItem('UserName');
+
             if (BidCreaterName == loginUserName && BidApproverStatus == "Not forwarded") {
-                $('#BIDSub').show();
-                $('#BIDDesc').show();
-            } else {
+                if (BidStatus == "OPEN") {
+                    $('#BIDSub').show();
+                    $('#BIDDesc').show();
+                }
+                else {
+                    $('#BIDSub').hide();
+                    $('#BIDDesc').hide();
+
+                }
+
+            }
+            else {
                 $('#BIDSub').hide();
                 $('#BIDDesc').hide();
             }
@@ -5283,7 +5295,7 @@ function preventSubmit(event) {
 //edit options for subject and description by anurag
 
 $('#BIDSub').click(function () {
-    console.log("Hii");
+
     var text = $('.bidsub').text();
     var input = $('<input id="attributeSub" name="subj" type="text" value="' + text + '" />')
     $('.bidsub').text('').append(input);
@@ -5298,7 +5310,7 @@ $('#BIDSub').click(function () {
 
 
 $('#BIDDesc').click(function () {
-    console.log("Byy");
+
     var text = $('.biddesc').text();
     var input = $('<input id="attributeDesc" name="descptn" type="text" value="' + text + '" />')
     $('.biddesc').text('').append(input);
@@ -5351,6 +5363,7 @@ function updateBidField(updateType) {
             return false;
         }
     }
+
     var UpdateBidData = {
         "BidID": parseInt(sessionStorage.getItem("hdnbid")),
         "BidSubject": BIDSubject,
@@ -5387,7 +5400,6 @@ function updateBidField(updateType) {
             jQuery.unblockUI();
         },
         error: function (xhr) {
-
             var err = xhr.responseText
             if (xhr.status == 401) {
                 error401Messagebox(err.Message);
