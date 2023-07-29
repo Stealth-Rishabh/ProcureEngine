@@ -2871,7 +2871,7 @@ function RFQInviteVendorTab3() {
     else {
         $('#btnsubmit').text("Submit for PreApproval")
     }
-    debugger
+
     var Tab3data = {
         "BidVendors": Vendorlist,
         "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
@@ -2891,7 +2891,6 @@ function RFQInviteVendorTab3() {
         data: JSON.stringify(Tab3data),
         dataType: "json",
         success: function (data) {
-            debugger
 
             $('#BidPreviewDiv').show();
             $('#form_wizard_1').hide();
@@ -3178,7 +3177,7 @@ function fetchReguestforQuotationDetails() {
                 fetchRFIParameteronload();
             }
             fncheckboq();
-            debugger
+
             //Vendor Details
             if (RFQData[0].vendors.length > 0) {
 
@@ -3790,7 +3789,7 @@ function fnSeteRFQparameterTable() {
             }
 
             $('#scrolr').show();
-            jQuery("#tblRFQPrev").append(`<thead></thead><tbody></tbody>`);
+
 
 
             if (!jQuery("#tblRFQPrev thead ").length) {
@@ -3803,6 +3802,7 @@ function fnSeteRFQparameterTable() {
 
                     jQuery("#tblRFQPrev tbody").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td class="itemcode" id=itemcodeprev' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td class="sname" id=snameprev' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class="SAPDesc" id=SAPDescprev' + i + '></td><td class="text-right TP" id=TPprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class="text-right quan" id=quanprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td class="uom" id=uomprev' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td class="desc" id=descprev' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td class="delivery" id=deliveryprev' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td  class="text-right tat" id=tatprev' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td class="remarks" id=remarksprev' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td  class="pono" id=ponoprev' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td  class="povname" id=povnameprev' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class="text-right unitrate" id=unitrateprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td  class="podate"  id=podateprev' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class="povalue" id=povalueprev' + i + ' class=text-right>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td></tr>');
                 }
+
                 else {
                     jQuery("#tblRFQPrev thead").append("<tr style='background: gray; color: #FFF;'><th>S No</th><th style='width:20%!important;'>Item Code</th><th>Item/Service</th><th class='hide'>SAP Short Desc</th><th>Target/Budget Price</th><th>Quantity</th><th>UOM</th><th>Description</th><th>Delivery Location</th><th>TAT</th><th>Remarks</th><th>PO No.</th><th>Vendor Name</th><th>Unit Rate</th><th>PO Date</th><th>PO Value</th><th>Source ID</th></tr>");
 
@@ -4679,7 +4679,7 @@ jQuery("#txtpreApproverBid").typeahead({
 
 
 function addBidpreApprovers(EmailID, UserID, UserName) {
-    debugger
+
     var status = "true";
     $("#tblpreBidapprovers tr:gt(0)").each(function () {
         var this_row = $(this);
@@ -4714,7 +4714,7 @@ function addBidpreApprovers(EmailID, UserID, UserName) {
             }
         });
         rownumprebid = parseInt(maxidnum) + 1;
-        debugger
+
         if (!jQuery("#tblpreBidapprovers thead").length) {
             jQuery("#tblpreBidapprovers").empty()
             jQuery("#tblpreBidapprovers").append(`<thead></thead><tbody></tbody>`)
