@@ -1723,7 +1723,9 @@ function deleteTechnicalApprovers() {
 var commApp = 0;
 var TechApp = 0;
 var commAppsrno = 0;
+var rowpreBidApp = 0;
 var TechAppsrno = 0;
+var rownumprebid = 0;
 function fnApproversQuery() {
 
     var num = 0;
@@ -2869,7 +2871,7 @@ function RFQInviteVendorTab3() {
     else {
         $('#btnsubmit').text("Submit for PreApproval")
     }
-
+    debugger
     var Tab3data = {
         "BidVendors": Vendorlist,
         "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
@@ -2889,7 +2891,7 @@ function RFQInviteVendorTab3() {
         data: JSON.stringify(Tab3data),
         dataType: "json",
         success: function (data) {
-
+            debugger
 
             $('#BidPreviewDiv').show();
             $('#form_wizard_1').hide();
@@ -2916,58 +2918,64 @@ function fnsubmitRFQ() {
 
     var _cleanString4 = StringEncodingMechanism(jQuery('#txtrfqSubject').val());
     var _cleanString5 = StringEncodingMechanism(jQuery('#txtrfqdescription').val());
+    if (sessionStorage.getItem("RFQPreApp") == "N") {
+        jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
+        if (sessionStorage.getItem("hddnRFQID") != '' && sessionStorage.getItem("hddnRFQID") != null) {
+            var Tab3data = {
 
-    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
-    if (sessionStorage.getItem("hddnRFQID") != '' && sessionStorage.getItem("hddnRFQID") != null) {
-        var Tab3data = {
+                "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
+                "UserID": sessionStorage.getItem('UserID'),
 
-            "RFQId": parseInt(sessionStorage.getItem("hddnRFQID")),
-            "UserID": sessionStorage.getItem('UserID'),
+                "subject": _cleanString4,
+                "RFQEndDate": jQuery('#txtenddatettime').val(),
 
-            "subject": _cleanString4,
-            "RFQEndDate": jQuery('#txtenddatettime').val(),
+                "RFQDescription": _cleanString5,
+                "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
+            };
+            jQuery.ajax({
 
-            "RFQDescription": _cleanString5,
-            "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
-        };
-        jQuery.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQSubmit/",
+                beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+                crossDomain: true,
+                async: false,
+                data: JSON.stringify(Tab3data),
+                dataType: "json",
+                success: function (data) {
 
-            type: "POST",
-            contentType: "application/json; charset=utf-8",
-            url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/eRFQSubmit/",
-            beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
-            crossDomain: true,
-            async: false,
-            data: JSON.stringify(Tab3data),
-            dataType: "json",
-            success: function (data) {
+                    jQuery.unblockUI();
+                    bootbox.alert("Request for Quotation Submitted Successfully.", function () {
+                        sessionStorage.removeItem('CurrentBidID');
+                        window.location = sessionStorage.getItem("HomePage")
+                        return false;
 
-                jQuery.unblockUI();
-                bootbox.alert("Request for Quotation Submitted Successfully.", function () {
-                    sessionStorage.removeItem('CurrentBidID');
-                    window.location = sessionStorage.getItem("HomePage")
+                    });
+
+                },
+                error: function (xhr, status, error) {
+
+                    var err = xhr.responseText //eval("(" + xhr.responseText + ")");
+                    if (xhr.status == 401) {
+                        error401Messagebox(err.Message);
+                    }
+                    else {
+                        fnErrorMessageText('spandanger', 'form_wizard_1');
+                    }
+                    jQuery.unblockUI();
                     return false;
 
-                });
-
-            },
-            error: function (xhr, status, error) {
-
-                var err = xhr.responseText //eval("(" + xhr.responseText + ")");
-                if (xhr.status == 401) {
-                    error401Messagebox(err.Message);
                 }
-                else {
-                    fnErrorMessageText('spandanger', 'form_wizard_1');
-                }
-                jQuery.unblockUI();
-                return false;
+            });
+        }
+        else {
+            window.location = sessionStorage.getItem("HomePage");
+        }
 
-            }
-        });
     }
     else {
-        window.location = sessionStorage.getItem("HomePage");
+        fnOpenPopupBidpreApprover();
+        jQuery.unblockUI();
     }
 }
 
@@ -3170,6 +3178,7 @@ function fetchReguestforQuotationDetails() {
                 fetchRFIParameteronload();
             }
             fncheckboq();
+            debugger
             //Vendor Details
             if (RFQData[0].vendors.length > 0) {
 
@@ -4652,6 +4661,7 @@ jQuery("#txtpreApproverBid").typeahead({
     },
     minLength: 2,
     updater: function (item) {
+
         if (map[item].userID != "0") {
             sessionStorage.setItem('hdnpreApproverid', map[item].userID);
             addBidpreApprovers(map[item].emailID, map[item].userID, map[item].userName);
@@ -4669,6 +4679,7 @@ jQuery("#txtpreApproverBid").typeahead({
 
 
 function addBidpreApprovers(EmailID, UserID, UserName) {
+    debugger
     var status = "true";
     $("#tblpreBidapprovers tr:gt(0)").each(function () {
         var this_row = $(this);
@@ -4703,12 +4714,15 @@ function addBidpreApprovers(EmailID, UserID, UserName) {
             }
         });
         rownumprebid = parseInt(maxidnum) + 1;
+        debugger
         if (!jQuery("#tblpreBidapprovers thead").length) {
-            jQuery("#tblpreBidapprovers").append("<thead><tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr></thead>");
-            jQuery("#tblpreBidapprovers").append('<tr id=trpreAppid' + rownumprebid + '><td><a class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rownumprebid + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
+            jQuery("#tblpreBidapprovers").empty()
+            jQuery("#tblpreBidapprovers").append(`<thead></thead><tbody></tbody>`)
+            jQuery("#tblpreBidapprovers>thead").append("<tr><th style='width:5%!important'></th><th class='bold' style='width:30%!important'>Approver</th><th class='bold' style='width:30%!important'>Email</th><th class='bold' style='width:15%!important'>Sequence</th></tr>");
+            jQuery("#tblpreBidapprovers>tbody").append('<tr id=trpreAppid' + rownumprebid + '><td><a class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rownumprebid + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
         }
         else {
-            jQuery("#tblpreBidapprovers").append('<tr id=trpreAppid' + rownumprebid + '><td><a class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rownumprebid + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
+            jQuery("#tblpreBidapprovers>tbody").append('<tr id=trpreAppid' + rownumprebid + '><td><a class="btn  btn-xs btn-danger" onclick="deletepreApprow(' + rownumprebid + ')" ><i class="glyphicon glyphicon-remove-circle"></i></a></td><td>' + UserName + '</td><td>' + EmailID + '</td><td></td><td class=hide>' + UserID + '</td></tr>');
         }
         var rowcountPre = jQuery('#tblpreBidapprovers >tbody>tr').length;
         if (rowcountPre >= 1) {
@@ -4746,9 +4760,10 @@ function deletepreApprow(IDcount) {
 
 function fnOpenPopupBidpreApprover() {
     $('#addapprovers').modal('show');
-    $('#frmapproverbodymsz').removeClass('hide')
+    fnyeschangeapprovers()
+    // $('#frmapproverbodymsz').removeClass('hide')
 
-    fetchRFQApproverDetails();
+    // fetchRFQApproverDetails();
 }
 
 
@@ -4954,6 +4969,12 @@ function fetchRFQdetails() {
             let RFQData = Data.rData
             console.log(RFQData);
             sessionStorage.setItem("RFQPreApp", RFQData[0].general[0].rfqPreApproval)
+            if (RFQData[0].general[0].rfqPreApproval == "N" || sessionStorageRFQData[0].general[0].rfqPreApproval == undefined || RFQData[0].general[0].rfqPreApproval == null) {
+                $('#btnsubmit').text("Submit")
+            }
+            else {
+                $('#btnsubmit').text("Submit for PreApproval")
+            }
         },
         error: function (xhr, status, error) {
 
