@@ -2864,13 +2864,17 @@ function RFQInviteVendorTab3() {
     ET = ET.substring(0, ET.indexOf("GMT"));
     ET = ET + 'GMT' + sessionStorage.getItem('utcoffset');
 
+    setTimeout(function () {
+        if (sessionStorage.getItem("RFQPreApp") == "N" || sessionStorage.getItem("RFQPreApp") == undefined || sessionStorage.getItem("RFQPreApp") == null) {
+            $('#btnsubmit').text("Submit")
+        }
+        else {
+            $('#btnsubmit').text("Submit for PreApproval")
+        }
 
-    if (sessionStorage.getItem("RFQPreApp") == "N" || sessionStorage.getItem("RFQPreApp") == undefined || sessionStorage.getItem("RFQPreApp") == null) {
-        $('#btnsubmit').text("Submit")
-    }
-    else {
-        $('#btnsubmit').text("Submit for PreApproval")
-    }
+
+    }, 500)
+
 
     var Tab3data = {
         "BidVendors": Vendorlist,
@@ -2917,7 +2921,7 @@ function fnsubmitRFQ() {
 
     var _cleanString4 = StringEncodingMechanism(jQuery('#txtrfqSubject').val());
     var _cleanString5 = StringEncodingMechanism(jQuery('#txtrfqdescription').val());
-    if (sessionStorage.getItem("RFQPreApp") == "N") {
+    if (sessionStorage.getItem("RFQPreApp") == "N" || sessionStorage.getItem("RFQPreApp") == undefined || sessionStorage.getItem("RFQPreApp") == null) {
         jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
         if (sessionStorage.getItem("hddnRFQID") != '' && sessionStorage.getItem("hddnRFQID") != null) {
             var Tab3data = {
@@ -3792,7 +3796,7 @@ function fnSeteRFQparameterTable() {
 
 
 
-            if (!jQuery("#tblRFQPrev thead ").length) {
+            if (!jQuery("#tblRFQPrev thead tr").length) {
 
                 //   jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td  style="width:20%!important;" id=itemcodeprev' + i + '>' + $('#txtItemCode').val() + '</td><td id=snameprev' + i + '>' + $('#txtshortname').val() + '</td><td class=text-right id=TPPrev' + i + '>' + thousands_separators(parseFloat(removeThousandSeperator(TP)).round(2)) + '</td><td class=text-right id=quanprev' + i + '>' + quan + '</td><td id=uomprev' + i + '>' + $("#dropuom").val() + '</td><td id=descprev' + i + '>' + $('#txtbiddescriptionP').val() + '</td><td id=deliveryprev' + i + '>' + $('#txtedelivery').val() + '</td><td class=text-right id=tatprev' + i + '>' + $('#txttat').val() + '</td><td id=remarksprev' + i + '>' + $("#txtItemRemarks").val() + '</td><td id=ponoprev' + i + '>' + $("#txtPono").val() + '</td><td id=povnameprev' + i + '>' + $("#txtvendorname").val() + '</td><td class=text-right id=unitrateprev' + i + '>' + unitrate + '</td><td id=podateprev' + i + '>' + $("#txtPODate").val() + '</td><td class=text-right id=povalueprev' + i + '>' + Povalue + '</td></tr>');
                 //  jQuery("#tblRFQPrev").append('<tr id=tridprev' + i + '><td>' + (rowAppItemsrno + 1) + '</td><td class="itemcode" id=itemcodeprev' + i + '>' + $.trim(this_row.find('td:eq(1)').html()) + '</td><td class="sname" id=snameprev' + i + '>' + $.trim(this_row.find('td:eq(0)').html()) + '</td><td class="SAPDesc" id=SAPDescprev' + i + '></td><td class="text-right TP" id=TPprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(2)').html())) + '</td><td class="text-right quan" id=quanprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(3)').html())) + '</td><td class="uom" id=uomprev' + i + '>' + $.trim(this_row.find('td:eq(4)').html()) + '</td><td class="desc" id=descprev' + i + '>' + $.trim(this_row.find('td:eq(5)').html()) + '</td><td class="delivery" id=deliveryprev' + i + '>' + $.trim(this_row.find('td:eq(7)').html()) + '</td><td  class="text-right tat" id=tatprev' + i + '>' + $.trim(this_row.find('td:eq(6)').html()) + '</td><td class="remarks" id=remarksprev' + i + '>' + $.trim(this_row.find('td:eq(8)').html()) + '</td><td  class="pono" id=ponoprev' + i + '>' + $.trim(this_row.find('td:eq(9)').html()) + '</td><td  class="povname" id=povnameprev' + i + '>' + $.trim(this_row.find('td:eq(10)').html()) + '</td><td class="text-right unitrate" id=unitrateprev' + i + '>' + thousands_separators($.trim(this_row.find('td:eq(11)').html())) + '</td><td  class="podate"  id=podateprev' + i + '>' + $.trim(this_row.find('td:eq(12)').html()) + '</td><td class="povalue" id=povalueprev' + i + ' class=text-right>' + thousands_separators($.trim(this_row.find('td:eq(13)').html())) + '</td></tr>');
@@ -4967,14 +4971,17 @@ function fetchRFQdetails() {
         dataType: "json",
         success: function (Data) {
             let RFQData = Data.rData
-            console.log(RFQData);
+           
             sessionStorage.setItem("RFQPreApp", RFQData[0].general[0].rfqPreApproval)
-            if (RFQData[0].general[0].rfqPreApproval == "N" || sessionStorageRFQData[0].general[0].rfqPreApproval == undefined || RFQData[0].general[0].rfqPreApproval == null) {
-                $('#btnsubmit').text("Submit")
-            }
-            else {
-                $('#btnsubmit').text("Submit for PreApproval")
-            }
+
+            setTimeout(function () {
+                if (sessionStorage.getItem("RFQPreApp") == "N" || sessionStorage.getItem("RFQPreApp") == undefined || sessionStorage.getItem("RFQPreApp") == null) {
+                    $('#btnsubmit').text("Submit")
+                }
+                else {
+                    $('#btnsubmit').text("Submit for PreApproval")
+                }
+            }, 500)
         },
         error: function (xhr, status, error) {
 
