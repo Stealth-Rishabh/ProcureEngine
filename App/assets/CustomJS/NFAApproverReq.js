@@ -1022,16 +1022,20 @@ function ApprovalApp() {
         dataType: "json",
         success: function () {
 
-            bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
 
-                window.location = "index.html";
-                return false;
-            }, 2000)
-            );
+            bootbox.alert("Transaction Successful..")
+                .on("shown.bs.modal", function (e) {
+
+                    setTimeout(function () {
+
+                        window.location = "index.html";
+                    }, 2000);
+                });
 
             jQuery.unblockUI();
         },
         error: function (xhr, status, error) {
+
 
             var err = xhr.responseText;
             if (xhr.status === 401) {
@@ -1085,13 +1089,20 @@ function DelegateUser() {
             crossDomain: true,
             dataType: "json",
             success: function () {
-                bootbox.alert("Transaction Successful..", function () {
-                    window.location = "index.html";
-                    return false;
-                });
+
+
+                bootbox.alert("Transaction Successful..")
+                    .on("shown.bs.modal", function (e) {
+
+                        setTimeout(function () {
+
+                            window.location = "index.html";
+                        }, 2000);
+                    });
 
             },
             error: function (xhr, status, error) {
+
                 var err = eval("(" + xhr.responseText + ")");
                 if (xhr.status === 401) {
                     error401Messagebox(err.Message);
