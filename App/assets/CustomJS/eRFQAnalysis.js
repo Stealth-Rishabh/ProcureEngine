@@ -142,7 +142,7 @@ function fetchrfqcomprative() {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         success: function (Data, status, jqXHR) {
-
+            
             let data = Data.rData
 
             var str = '';
@@ -975,7 +975,7 @@ function fetchrfqcomprative() {
                 strQ += "</tr>";
                 strExcelQ += "</tr>";
                 //abheedev bug 349 part2  end
-
+                
                 if ($("#ddlrfqVersion option:selected").val() != 0) {
                     str += "<tr id='reinvitationTRRem'><td colspan=8><b>Re-Invitation Remarks</b></td>";
                     strExcel += "<tr><td colspan=7><b>Re-Invitation Remarks</b></td>";
@@ -983,7 +983,14 @@ function fetchrfqcomprative() {
 
                         if (data[0].vendorNames[k].reInvitedRemarks != "") {
                             var reinvitedRemarks = stringDivider(data[0].vendorNames[k].reInvitedRemarks, 40, "<br/>\n");
-                            str += "<td colspan='4' class='text-center' >" + reinvitedRemarks + "</td>";
+                            var reinvitedattachment = data[0].vendorNames[k].attachment
+                            if (data[0].vendorNames[k].attachment) {
+                                str += "<td colspan='4' class='text-center' >" + reinvitedRemarks + "   " + `<a href='javascript:;' onclick='DownloadAttachFile(this)' id='reinvitedRemarks${i}'>`+ reinvitedattachment + "</a>" + "</td>";
+                            }
+                            else {
+                                str += "<td colspan='4' class='text-center' >" + reinvitedRemarks + "</td>";
+                            }
+                          
                             strExcel += "<td colspan='4' >" + reinvitedRemarks + "</td>";
                         }
                         else {
@@ -1170,7 +1177,7 @@ function fetchrfqcomprativeBoq() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (Data, status, jqXHR) {
-
+           
             let data = Data.rData
 
 
@@ -2092,7 +2099,14 @@ function fetchrfqcomprativeBoq() {
 
                         if (data[0].vendorNames[k].reInvitedRemarks != "") {
                             var reinvitedRemarks = stringDivider(data[0].vendorNames[k].reInvitedRemarks, 40, "<br/>\n");
-                            str += "<td colspan='4' class='text-center' >" + reinvitedRemarks + "</td>";
+                            var reinvitedattachment =data[0].vendorNames[k].attachment
+                            if (data[0].vendorNames[k].attachment) {
+                                str += "<td colspan='4' class='text-center' >" + reinvitedRemarks + "<a>" + reinvitedattachment + "</a>" + "</td>";
+                            }
+                            else {
+                                str += "<td colspan='4' class='text-center' >" + reinvitedRemarks + "</td>";
+                            }
+                          
                             strExcel += "<td colspan='4' >" + reinvitedRemarks + "</td>";
                         }
                         else {
@@ -2378,6 +2392,7 @@ function formvalidate() {
         success: function (label) {
         },
         submitHandler: function (form) {
+           
             Dateandtimevalidate();
             //ReInviteVendorsForRFQ();
         }
