@@ -48,23 +48,21 @@ if (window.location.search) {
     sessionStorage.setItem('CurrentRFQID', _BidID)
     if (FwdBy == 'config') {
         $("#frmdivapprove").hide();
+        $("#divRemarksApp").show();
     }
     else if (FwdBy == 'userview') {
-        // $("#divRemarksApp").hide();
-        //$('#h3Preapprovalhistory').show();
-        //$('#divPreapprovalhistory').show();
+        $("#divPreapprovalhistory").show();
+        $("#divRemarksApp").hide();
+        $('#h3Preapprovalhistory').show(); 
     }
     else {
         //$('#divlastcomment').removeClass('hide')
         $("#frmdivapprove").show();
+        $("#divRemarksApp").show();
     }
-    // if (_BidTypeID == "7") {
+     
     fetchRFQDetails(_BidID);
-    /*  }
-      else if (_BidTypeID == "6") {
-         // fetchScrapSalesBidDetails(_BidID)
-      }*/
-    FetchRFQActionHistory(_BidID);
+         FetchRFQActionHistory(_BidID);
     setTimeout(function () {
         //if (isLastPreApprover == "Y") {
         //    $('#txtbidDate').rules('add', {
@@ -603,22 +601,22 @@ function FetchRFQActionHistory(RFQID) {
         success: function (data) {
             debugger
 
-            $('#tblremarksapprover').empty();
-            $('#tblremarksapprover').append(`<thead></thead><tbody></tbody>`)
-            $('#tblremarksapprover>thead').append('<tr><th>Action</th><th>Remarks</th><th class=hide>Action Type</th><th>Completion DT</th></tr>')
+            $('#tblBidPreapprovalHistory').empty();
+           $('#tblBidPreapprovalHistory').append(`<thead></thead><tbody></tbody>`)
+            $('#tblBidPreapprovalHistory>thead').append('<tr><th>Action</th><th>Remarks</th><th class=hide>Action Type</th><th>Completion DT</th></tr>')
 
 
             if (data.length > 0) {
-
+                $('#h3Preapprovalhistory').show();
                 for (var i = 0; i < data.length; i++) {
-                    $('#tblremarksapprover>tbody').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+                    $('#tblBidPreapprovalHistory>tbody').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
 
                 }
 
 
             }
             else {
-                $('#tblremarksapprover>tbody').append('<tr colspan=3><td>No Record Found.</td></tr>')
+                $('#tblBidPreapprovalHistory>tbody').append('<tr colspan=3><td>No Record Found.</td></tr>')
 
             }
 

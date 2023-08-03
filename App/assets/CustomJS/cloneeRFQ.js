@@ -100,8 +100,7 @@ function formvalidate() {
 
 }
 
-function fetchRFQDetailsForCloning() {
-    debugger;
+function fetchRFQDetailsForCloning() { 
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wai    t...</h5>' });
 
     jQuery.ajax({
@@ -111,8 +110,8 @@ function fetchRFQDetailsForCloning() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            debugger;
-            console.log(data);
+          
+          //  console.log(data);
 ;            $('#tblRFQDetails > tbody').empty();
             if (data.length > 0) {
                 $('#displayTable').show();
@@ -194,7 +193,7 @@ function cloneRFQ(RFQId) {
                 jQuery('#divalerterror').hide();
                 msgForClonedRFQ(parseInt(data), "7");
                 // fileUploader(parseInt(data))
-                fetchRFQDetailsForCloning();
+               // fetchRFQDetailsForCloning();
             } else {
                 jQuery('#divalertsucess').hide();
                 $("#error").html('Transaction Unsuccessfull.');
