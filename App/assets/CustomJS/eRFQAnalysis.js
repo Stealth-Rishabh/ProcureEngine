@@ -1,6 +1,7 @@
 var _rfqBidType = sessionStorage.getItem("RFQBIDType");
 var _openQuotes = sessionStorage.getItem("OpenQuotes");
-
+var AllowCommApprovalYN = "N";
+var AllowCommApprovalmsg = "";
 
 jQuery(document).ready(function () {
 
@@ -62,6 +63,7 @@ if (window.location.search) {
     sessionStorage.setItem("EventType", 'eRFQ');
 
     fetchReguestforQuotationDetails()
+    GetValidCommercialApproval(RFQID);
     fetchRFQApproverStatus(RFQID);
     FetchRFQVersion();
     fetchApproverRemarks('C')
@@ -2624,4 +2626,63 @@ function fnSendActivityToCommercial() {
 function CloseForwardpopup() {
     $('#FwdCommercialApprover').modal('hide')
 }
+
+
+/* Start validae commercial appprover Bijendra Singh */
+
+function GetValidCommercialApproval(RFQID) {
+   
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wai    t...</h5>' });
+
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "eRFQApproval/GetValidCommercialApproval?RFQID=" + RFQID,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (data) { 
+            console.log(data);
+            console.log(data[0].allowCommercialYN)
+
+            console.log(data[0].statusMsg)
+            AllowCommApprovalYN = data[0].allowCommercialYN;
+            AllowCommApprovalmsg = data[0].statusMsg;
+                
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+
+    });
+    jQuery.unblockUI();
+
+}
+
+function fnOpenCommPopupApprover() {
+    var _hdnRFQID = $('#hdnRfqID').val();
+    GetValidCommercialApproval(_hdnRFQID);
+    console.log(AllowCommApprovalmsg);
+    console.log(AllowCommApprovalYN);
+
+    if (AllowCommApprovalYN == 'Y') {
+         
+        $('#FwdCommercialApprover').modal('show')
+
+    }
+    else {
+        alert(AllowCommApprovalmsg);
+        return false;
+    }
+}
+
+/* end validae commercial appprover */
 

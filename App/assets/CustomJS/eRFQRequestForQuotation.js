@@ -4999,3 +4999,10 @@ function fetchRFQdetails() {
     });
     jQuery.unblockUI();
 }
+
+function cloneRFQ() {
+    var encrypdata = fnencrypt("RFQTypeId=7")
+    window.location = 'cloneeRFQ.html?param=' + encrypdata;
+}
+
+//End pre approver Bijendra Singh
