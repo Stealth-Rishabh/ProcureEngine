@@ -60,6 +60,8 @@ if (window.location.search) {
         $("#frmdivapprove").show();
         $("#divRemarksApp").show();
     }
+    sessionStorage.setItem("EventId", _BidID);
+    sessionStorage.setItem("EventType", 'pRFQ');
 
     fetchRFQDetails(_BidID);
     FetchRFQActionHistory(_BidID);
