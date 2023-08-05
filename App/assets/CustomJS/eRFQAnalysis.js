@@ -68,7 +68,7 @@ if (window.location.search) {
     FetchRFQVersion();
     fetchApproverRemarks('C')
     fetchAttachments()
-
+    FetchRFQActionHistory(RFQID);
 }
 function FetchInvitedVendorsForeRFQ() {
     var x = isAuthenticated();
@@ -2682,6 +2682,51 @@ function fnOpenCommPopupApprover() {
         alert(AllowCommApprovalmsg);
         return false;
     }
+}
+
+
+function FetchRFQActionHistory(RFQID) {
+
+    jQuery.ajax({
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/FetchRFQActionHistory/?BIDID=" + RFQID,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data) {
+            console.log(data);
+            _RFQID = RFQID;
+            $('#tblRFQPreapprovalHistory').empty();
+            $('#tblRFQPreapprovalHistory').append(`<thead></thead><tbody></tbody>`)
+             
+            if (data.length > 0) { 
+                $('#tblRFQPreapprovalHistory>thead').append('<tr><th>Action</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
+
+                for (var i = 0; i < data.length; i++) {
+                    $('#tblRFQPreapprovalHistory>tbody').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+
+                } 
+            }
+            else {
+                $('#tblRFQPreapprovalHistory>tbody').append('<tr colspan=3><td>No Record Found.</td></tr>')
+
+            }
+             
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+    });
 }
 
 /* end validae commercial appprover */
