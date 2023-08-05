@@ -1442,7 +1442,7 @@ function closeBidAir() {
 
             if (data == '1') {
 
-                bootbox.alert("Bid time is over. Thanks for Participation.The result of the Reverse Auction is not binding on the company and do not, in any way, create an obligation for issue of Purchase Order in favor of L1/any other participants. The company company reverses the right to announce the successful participants and issue Purchase Orders.", function () {
+                bootbox.alert("Bid time is over. Thanks for Participation.The result of the Reverse Auction is not binding on the company and do not, in any way, create an obligation for issue of Purchase Order in favor of L1/any other participants. The company reserves the right to announce the successful participants and issue Purchase Orders.", function () {
                     if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
 
                         window.location = sessionStorage.getItem('HomePage');
@@ -1539,7 +1539,7 @@ function fetchBidTime() {
                 if (BidForID == 81 || BidForID == 83) {
                     if (data[0].timeLeft <= 0) {
                         clearInterval(mytime);
-                        bootbox.alert("Bid time is over. Thanks for Participation.The result of the Reverse Auction is not binding on the company and do not, in any way, create an obligation for issue of Purchase Order in favor of L1/any other participants. The company company reverses the right to announce the successful participants and issue Purchase Orders.", function () {
+                        bootbox.alert("Bid time is over. Thanks for Participation.The result of the Reverse Auction is not binding on the company and do not, in any way, create an obligation for issue of Purchase Order in favor of L1/any other participants. The company reserves the right to announce the successful participants and issue Purchase Orders.", function () {
                             if (sessionStorage.getItem("ISFromSurrogate") == "Y") {
                                 window.location = sessionStorage.getItem('HomePage');
                                 sessionStorage.clear();
@@ -1572,7 +1572,7 @@ function fetchBidTime() {
 
                         clearInterval(mytime);
 
-                        bootbox.alert("Bid time is over. Thanks for Participation.The result of the Reverse Auction is not binding on the company and do not, in any way, create an obligation for issue of Purchase Order in favor of L1/any other participants. The company company reverses the right to announce the successful participants and issue Purchase Orders.", function () {
+                        bootbox.alert("Bid time is over. Thanks for Participation.The result of the Reverse Auction is not binding on the company and do not, in any way, create an obligation for issue of Purchase Order in favor of L1/any other participants. The company reserves the right to announce the successful participants and issue Purchase Orders.", function () {
 
 
 

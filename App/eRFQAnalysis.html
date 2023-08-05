@@ -77,8 +77,8 @@
     <script src="assets/CustomJS/TypeaHead.js"></script>
     <script src="assets/admin/pages/scripts/ui-alert-dialog-api.js"></script>
     <script src="assets/CustomJS/Common.js"></script>
-     <!--for react-->
-    <script defer="defer" src="assets/build/static/js/main.57ac6aa2.js"></script>
+    <!--for react-->
+    <script defer="defer" src="assets/build/static/js/main.3849410f.js"></script>
 
 </head>
 <body class="page-header-fixed page-quick-sidebar-over-content page-sidebar-closed">
@@ -364,9 +364,14 @@
                                     <li>
                                         <a href="#tab_2" data-toggle="tab">RFQ Attachments </a>
                                     </li>
+                                    <li>
+                                        <a href="#tab_5" data-toggle="tab">RFQ Pre-Approver </a>
+                                    </li>
 
 
-                                    <l1 class="pull-right"><a href="#FwdCommercialApprover" class="btn  blue hide" id="btn_commercial" data-toggle="modal" data-backdrop="static" data-keyboard="false"> Commercial Approval</a></l1>
+                                    <l1 class="pull-right">
+                                        <a class="btn  blue hide" id="btn_commercial" data-toggle="modal" data-backdrop="static" data-keyboard="false" onclick="fnOpenCommPopupApprover()"> Commercial Approval</a>
+                                    </l1>
                                 </ul>
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="tab_0">
@@ -475,6 +480,15 @@
                                         </div>
                                     </div>
 
+                                    <div class="tab-pane" id="tab_5">
+                                        <div class="table-scrollable">
+
+                                            <table class="table table-striped table-bordered table-hover" id="tblRFQPreapprovalHistory">
+                                                <thead></thead>
+                                            </table>
+
+                                        </div>
+                                    </div>
 
                                 </div>
 
@@ -590,10 +604,18 @@
                         </div>
                         <div class="form-group">
                             <label class="control-label col-md-4">
+                                Attachment:
+                            </label>
+                            <div class="col-md-8">
+                                <input type="file" class="default form-control marginleft2px" id="txtReInviteAttachment" name="txtReInviteAttachment" onchange="checkfilesize(this)" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-4">
                                 Remarks:
                             </label>
                             <div class="col-md-8">
-
+                                
                                 <textarea id="txtReInviteRemarks" name="txtReInviteRemarks" class="form-control" rows="4" tabindex='2'></textarea>
                             </div>
                         </div>

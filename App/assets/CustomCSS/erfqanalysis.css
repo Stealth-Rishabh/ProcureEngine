@@ -1146,3 +1146,7 @@ tr.header {
 .chkReinvitation {
     height: 15px !important;
 }
+
+.marginleft2px{
+    margin-left:2px !important;
+}

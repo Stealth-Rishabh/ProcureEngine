@@ -1,6 +1,7 @@
 var _rfqBidType = sessionStorage.getItem("RFQBIDType");
 var _openQuotes = sessionStorage.getItem("OpenQuotes");
-
+var AllowCommApprovalYN = "N";
+var AllowCommApprovalmsg = "";
 
 jQuery(document).ready(function () {
 
@@ -62,11 +63,12 @@ if (window.location.search) {
     sessionStorage.setItem("EventType", 'eRFQ');
 
     fetchReguestforQuotationDetails()
+    GetValidCommercialApproval(RFQID);
     fetchRFQApproverStatus(RFQID);
     FetchRFQVersion();
     fetchApproverRemarks('C')
     fetchAttachments()
-
+    FetchRFQActionHistory(RFQID);
 }
 function FetchInvitedVendorsForeRFQ() {
     var x = isAuthenticated();
@@ -142,7 +144,7 @@ function fetchrfqcomprative() {
         type: "GET",
         contentType: "application/json; charset=utf-8",
         success: function (Data, status, jqXHR) {
-
+            
             let data = Data.rData
 
             var str = '';
@@ -975,7 +977,7 @@ function fetchrfqcomprative() {
                 strQ += "</tr>";
                 strExcelQ += "</tr>";
                 //abheedev bug 349 part2  end
-
+                
                 if ($("#ddlrfqVersion option:selected").val() != 0) {
                     str += "<tr id='reinvitationTRRem'><td colspan=8><b>Re-Invitation Remarks</b></td>";
                     strExcel += "<tr><td colspan=7><b>Re-Invitation Remarks</b></td>";
@@ -983,7 +985,14 @@ function fetchrfqcomprative() {
 
                         if (data[0].vendorNames[k].reInvitedRemarks != "") {
                             var reinvitedRemarks = stringDivider(data[0].vendorNames[k].reInvitedRemarks, 40, "<br/>\n");
-                            str += "<td colspan='4' class='text-center' >" + reinvitedRemarks + "</td>";
+                            var reinvitedattachment = data[0].vendorNames[k].attachment
+                            if (data[0].vendorNames[k].attachment) {
+                                str += "<td colspan='4' class='text-center' >" + reinvitedRemarks + "   " + `<a href='javascript:;' onclick='DownloadAttachFile(this)' id='reinvitedRemarks${i}'>`+ reinvitedattachment + "</a>" + "</td>";
+                            }
+                            else {
+                                str += "<td colspan='4' class='text-center' >" + reinvitedRemarks + "</td>";
+                            }
+                          
                             strExcel += "<td colspan='4' >" + reinvitedRemarks + "</td>";
                         }
                         else {
@@ -1170,7 +1179,7 @@ function fetchrfqcomprativeBoq() {
         async: false,
         contentType: "application/json; charset=utf-8",
         success: function (Data, status, jqXHR) {
-
+           
             let data = Data.rData
 
 
@@ -2092,7 +2101,14 @@ function fetchrfqcomprativeBoq() {
 
                         if (data[0].vendorNames[k].reInvitedRemarks != "") {
                             var reinvitedRemarks = stringDivider(data[0].vendorNames[k].reInvitedRemarks, 40, "<br/>\n");
-                            str += "<td colspan='4' class='text-center' >" + reinvitedRemarks + "</td>";
+                            var reinvitedattachment =data[0].vendorNames[k].attachment
+                            if (data[0].vendorNames[k].attachment) {
+                                str += "<td colspan='4' class='text-center' >" + reinvitedRemarks + "<a>" + reinvitedattachment + "</a>" + "</td>";
+                            }
+                            else {
+                                str += "<td colspan='4' class='text-center' >" + reinvitedRemarks + "</td>";
+                            }
+                          
                             strExcel += "<td colspan='4' >" + reinvitedRemarks + "</td>";
                         }
                         else {
@@ -2378,6 +2394,7 @@ function formvalidate() {
         success: function (label) {
         },
         submitHandler: function (form) {
+           
             Dateandtimevalidate();
             //ReInviteVendorsForRFQ();
         }
@@ -2609,4 +2626,108 @@ function fnSendActivityToCommercial() {
 function CloseForwardpopup() {
     $('#FwdCommercialApprover').modal('hide')
 }
+
+
+/* Start validae commercial appprover Bijendra Singh */
+
+function GetValidCommercialApproval(RFQID) {
+   
+    jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wai    t...</h5>' });
+
+    jQuery.ajax({
+        url: sessionStorage.getItem("APIPath") + "eRFQApproval/GetValidCommercialApproval?RFQID=" + RFQID,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        async: false,
+        contentType: "application/json; charset=utf-8",
+        success: function (data) { 
+            console.log(data);
+            console.log(data[0].allowCommercialYN)
+
+            console.log(data[0].statusMsg)
+            AllowCommApprovalYN = data[0].allowCommercialYN;
+            AllowCommApprovalmsg = data[0].statusMsg;
+                
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+            else {
+                fnErrorMessageText('error', '');
+            }
+            jQuery.unblockUI();
+            return false;
+        }
+
+    });
+    jQuery.unblockUI();
+
+}
+
+function fnOpenCommPopupApprover() {
+    var _hdnRFQID = $('#hdnRfqID').val();
+    GetValidCommercialApproval(_hdnRFQID);
+    console.log(AllowCommApprovalmsg);
+    console.log(AllowCommApprovalYN);
+
+    if (AllowCommApprovalYN == 'Y') {
+         
+        $('#FwdCommercialApprover').modal('show')
+
+    }
+    else {
+        alert(AllowCommApprovalmsg);
+        return false;
+    }
+}
+
+
+function FetchRFQActionHistory(RFQID) {
+
+    jQuery.ajax({
+        contentType: "application/json; charset=utf-8",
+        url: sessionStorage.getItem("APIPath") + "eRequestForQuotation/FetchRFQActionHistory/?BIDID=" + RFQID,
+        beforeSend: function (xhr, settings) { xhr.setRequestHeader('Authorization', 'Bearer ' + sessionStorage.getItem("Token")); },
+        type: "GET",
+        cache: false,
+        crossDomain: true,
+        dataType: "json",
+        success: function (data) {
+            console.log(data);
+            _RFQID = RFQID;
+            $('#tblRFQPreapprovalHistory').empty();
+            $('#tblRFQPreapprovalHistory').append(`<thead></thead><tbody></tbody>`)
+             
+            if (data.length > 0) { 
+                $('#tblRFQPreapprovalHistory>thead').append('<tr><th>Action</th><th>Remarks</th><th>Action Type</th><th>Completion DT</th></tr>')
+
+                for (var i = 0; i < data.length; i++) {
+                    $('#tblRFQPreapprovalHistory>tbody').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + data[i].finalStatus + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+
+                } 
+            }
+            else {
+                $('#tblRFQPreapprovalHistory>tbody').append('<tr colspan=3><td>No Record Found.</td></tr>')
+
+            }
+             
+
+        },
+        error: function (xhr, status, error) {
+
+            var err = xhr.responseText//eval("(" + xhr.responseText + ")");
+            if (xhr.status == 401) {
+                error401Messagebox(err.Message);
+            }
+
+            return false;
+            jQuery.unblockUI();
+        }
+    });
+}
+
+/* end validae commercial appprover */
 

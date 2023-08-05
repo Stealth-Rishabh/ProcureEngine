@@ -258,7 +258,7 @@ function Dateandtimevalidate() {
 }
 
 function ReInviteVendorsForRFQ() {
-
+   
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     str = str.substring(0, str.length - 1);
     $('#SaveExsist').attr('disabled', 'disabled')
@@ -299,6 +299,13 @@ function ReInviteVendorsForRFQ() {
         BT = BT.substring(0, BT.indexOf("GMT"));
         BT = BT + 'GMT' + sessionStorage.getItem('utcoffset');
     }
+   
+    if ($('#txtReInviteAttachment').val() != '') {
+        
+        AttachementFileName = jQuery('#txtReInviteAttachment').val().substring(jQuery('#txtReInviteAttachment').val().lastIndexOf('\\') + 1);
+        AttachementFileName = AttachementFileName.replace(/[&\/\\#,+$~%'":*?<>{}]/g, '_'); 
+    }
+    
     var data = {
         "RFQID": parseInt($("#hdnRfqID").val()),
         "VendorIDs": str,
@@ -308,7 +315,8 @@ function ReInviteVendorsForRFQ() {
         "RFQSubject": $("#RFQSubject").html(),
         "UserID": sessionStorage.getItem("UserID"),
         "ReInviteRemarks": $("#txtReInviteRemarks").val(),
-        "CustomerID": parseInt(sessionStorage.getItem('CustomerID'))
+        "CustomerID": parseInt(sessionStorage.getItem('CustomerID')),
+        "Attachment": AttachementFileName
 
     }
     jQuery.ajax({
@@ -318,6 +326,10 @@ function ReInviteVendorsForRFQ() {
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function (data, status, jqXHR) {
+
+            if ($('#txtReInviteAttachment').val() != '') {
+                fnUploadFilesonAzure('txtReInviteAttachment', AttachementFileName, 'reinvite/' + $("#ddlrfqVersion option:selected").val() + $("#hdnRfqID").val())
+            }
 
             $("#modalreInviteDate").modal("hide");
             bootbox.alert("Re-Invitation For RFQ sent successfully", function () {
@@ -361,6 +373,13 @@ function ReInviteVendorsForRFQ() {
     });
 
 
+}
+
+function DownloadAttachFile(aID) {
+   
+    let preversion = parseInt($("#ddlrfqVersion option:selected").val()) - 1;
+    let hdnid = preversion + $("#hdnRfqID").val()
+    fnDownloadAttachments($("#" + aID.id).html(), 'reinvite/' + hdnid);
 }
 
 
@@ -906,7 +925,7 @@ function RFQFetchTotalPriceForReport(VendorID, Counter) {
         dataType: "json",
         success: function (data) {
 
-
+            
             $("#totBoxwithoutgst" + VendorID).html(thousands_separators((data[0].totalPriceExTax).round(2)) + " &nbsp;<a class='lambdafactor' style='cursor:pointer' onclick=editwithgstlambdafactor(" + data[0].totalPriceExTax + "," + Counter + "," + VendorID + ")><i class='fa fa-pencil'></i></a>");
             $("#totBoxwithoutgstExcel" + VendorID).html(thousands_separators((data[0].totalPriceExTax).round(2)));
             $("#totBoxwithgst" + VendorID).html(thousands_separators((data[0].totalPriceIncTax).round(2)));

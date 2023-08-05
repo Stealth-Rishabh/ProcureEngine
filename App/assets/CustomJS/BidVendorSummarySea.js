@@ -1773,7 +1773,7 @@ function fnrefreshStaggerTimerdataonItemClose() {
 
                             if (_bidClosingType != 'undefined' && _bidClosingType == 'S') {
                                 if (data[i].srNo == 'L1' && data[i].itemStatus != 'Open') {
-                                    
+
                                     $('#low_str' + j).css({
                                         'background-color': '#dff0d8!important',
                                         'font-weight': 'bold',
@@ -1782,7 +1782,7 @@ function fnrefreshStaggerTimerdataonItemClose() {
 
                                 }
                                 if ($('#Sname' + j).text() != "" && data[i].itemStatus == 'Open') {
-                                    
+
                                     $('#low_str' + j).css({
                                         'background-color': '#32C5D2!important',
                                         'color': '#000000!important'
@@ -3462,7 +3462,7 @@ function fetchGraphData(itemId) {
         crossDomain: true,
         dataType: "json",
         success: function (data, status, jqXHR) {
-            
+
             $("#tblForTrendGraphs").empty();
             if (data) {
                 $("#tblForTrendGraphs").append("<tr><th>Submission Time</th><th>Quoted Price</th><th class'showvendor'>Vendor</th></tr>");
@@ -3519,7 +3519,7 @@ function linegraphsforItems(itemId) {
     var colorArray = ['#007ED2', '#f15c80', '#90ED7D', '#FF7F50', '#f15c80', '#FF5733', '#96FF33', '#33FFF0', '#F9FF33', '#581845', '#0B0C01', '#0C0109', '#DAF7A6', '#FFC300', '#08010C'];
     var _bidId = getUrlVarsURL(decryptedstring)["BidID"]
     _bidId = parseInt(_bidId)
-    
+
     var graphDataReqObj = {
         "SeId": itemId,
         "BidId": _bidId,
@@ -3537,7 +3537,7 @@ function linegraphsforItems(itemId) {
         data: JSON.stringify(graphDataReqObj),
         dataType: "json",
         success: function (data, status, jqXHR) {
-            
+
             minprice = parseInt(data[0].minMaxprice[0].minPrice - 5);
             maxprice = parseInt(data[0].minMaxprice[0].maxPrice + 5);
             var _startDateTime = new Date(data[0].bidStartEndTime[0].bidStartTime);

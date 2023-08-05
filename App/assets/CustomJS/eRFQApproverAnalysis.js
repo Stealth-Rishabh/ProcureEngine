@@ -1399,7 +1399,7 @@ function fetchAttachments() {
         crossDomain: true,
         dataType: "json",
         success: function (Data, status, jqXHR) {
-                
+
             let data = Data.rData
             jQuery("#tblAttachments").empty();
 
@@ -1494,23 +1494,23 @@ function fetchReguestforQuotationDetails() {
 
                     for (var i = 0; i < RFQData[0].attachments.length; i++) {
                         var str = "<tr><td style='width:50%!important'>" + RFQData[0].attachments[i].rfqAttachmentDescription + "</td>";
-                       
-                       if(sessionStorage.getItem("RFQBIDType")=='Open'){
-                             str += '<td class=style="width:50%!important"><a id=eRFQFile' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFile(this)"  href="javascript:;" >' + RFQData[0].attachments[i].rfqAttachment + '</a></td>';
 
-                       }
-                       else{
-                           if (Data.showQuotedPrice.showQoutedPrice == 'Y') {
-                            
+                        if (sessionStorage.getItem("RFQBIDType") == 'Open') {
                             str += '<td class=style="width:50%!important"><a id=eRFQFile' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFile(this)"  href="javascript:;" >' + RFQData[0].attachments[i].rfqAttachment + '</a></td>';
 
                         }
                         else {
-                            str += '<td class=style="width:50%!important"></td>';
+                            if (Data.showQuotedPrice.showQoutedPrice == 'Y') {
 
-                        } 
-                       }
-                       
+                                str += '<td class=style="width:50%!important"><a id=eRFQFile' + i + ' style="pointer:cursur;text-decoration:none;" onclick="DownloadFile(this)"  href="javascript:;" >' + RFQData[0].attachments[i].rfqAttachment + '</a></td>';
+
+                            }
+                            else {
+                                str += '<td class=style="width:50%!important"></td>';
+
+                            }
+                        }
+
                         jQuery('#tblAttachments').append(str);
 
                     }
@@ -1781,17 +1781,17 @@ function ApprovalCommercialApp() {
         crossDomain: true,
         dataType: "json",
         success: function () {
-            /* bootbox.alert("Transaction Successful..", function () {
-                 return true;
-                 window.location = "index.html";
-                
-             });*/
-            bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
 
-                window.location = "index.html";
-                return false;
-            }, 2000)
-            );
+
+            bootbox.alert("Transaction Successful..")
+                .on("shown.bs.modal", function (e) {
+
+                    setTimeout(function () {
+
+                        window.location = "index.html";
+                    }, 2000);
+                });
+
         },
         error: function (xhr, status, error) {
 
@@ -1874,6 +1874,7 @@ function deleteitem(rowid) {
     }
 }
 function AwardCommeRFQ() {
+
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var vendors = '';
     var rowCount = jQuery('#tblremarksvendorsawared tr').length;
@@ -1913,7 +1914,9 @@ function AwardCommeRFQ() {
             jQuery.unblockUI();
 
         }
+
         else {
+
             var approvalbyapp = {
                 "ApproverType": "C",
                 "FromUserId": sessionStorage.getItem('UserID'),
@@ -1937,15 +1940,15 @@ function AwardCommeRFQ() {
                 crossDomain: true,
                 dataType: "json",
                 success: function () {
-                    /* bootbox.alert("Transaction Successful..", function () {
-                         window.location = "index.html";
-                         return false;
-                     });*/
-                    bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
-                        window.location = "index.html";
-                        return false;
-                    }, 2000)
-                    );
+
+                    bootbox.alert("Transaction Successful..")
+                        .on("shown.bs.modal", function (e) {
+
+                            setTimeout(function () {
+
+                                window.location = "index.html";
+                            }, 2000);
+                        });
 
                 },
                 error: function (xhr, status, error) {
@@ -1955,7 +1958,7 @@ function AwardCommeRFQ() {
                         error401Messagebox(err.Message);
                     }
                     else {
-                        fnErrorMessageText('error', '');
+                        alertforerror(err);
                     }
                     jQuery.unblockUI();
                     return false;
@@ -1997,16 +2000,15 @@ function fnFWDeRFQ() {
         dataType: "json",
         success: function (data) {
 
-            /*  bootbox.alert("Transaction Successful..", function () {
-                  window.location = "index.html";
-                  return false;
-              });*/
-            bootbox.alert("Transaction Successful..").on("shown.bs.modal", setTimeout(function (e) {
 
-                window.location = "index.html";
-                return false;
-            }, 2000)
-            );
+            bootbox.alert("Transaction Successful..")
+                .on("shown.bs.modal", function (e) {
+
+                    setTimeout(function () {
+
+                        window.location = "index.html";
+                    }, 2000);
+                });
 
 
 
@@ -2064,7 +2066,8 @@ function ApprovalApp() {
 
         };
 
-        //  console.log(JSON.stringify(approvalbyapp));
+        console.log(JSON.stringify(approvalbyapp));
+
         jQuery.ajax({
             contentType: "application/json; charset=utf-8",
             url: sessionStorage.getItem("APIPath") + "eRFQApproval/eRFQAction",

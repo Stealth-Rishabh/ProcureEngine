@@ -736,12 +736,12 @@ function ins_updCustomer() {
 
     // Assuming the date string is in the format "MM/DD/YYYY" (e.g., "08/01/2023")
     var dateStringFrom = $("#from").val();
-    var datePartsFrom = dateStringFrom.split("/");
-    var dtfrom = new Date(datePartsFrom[2], datePartsFrom[0] - 1, datePartsFrom[1]);
+    var datePartsFrom = dateStringFrom.split(/[-T]/);
+    var dtfrom = new Date(datePartsFrom[0], datePartsFrom[1] - 1, datePartsFrom[2]);
 
     var dateStringTo = $("#to").val();
-    var datePartsTo = dateStringTo.split("/");
-    var dtto = new Date(+datePartsTo[0], datePartsTo[1] - 1, +datePartsTo[2]);
+    var datePartsTo = dateStringTo.split(/[-T]/);
+    var dtto = new Date(datePartsTo[0], datePartsTo[1] - 1, datePartsTo[2]);
 
     if ($('#filepthterms').html() != '' && ($('#file1').val() == '')) {
         logo = jQuery('#filepthterms').html();

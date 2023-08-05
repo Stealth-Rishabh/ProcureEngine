@@ -48,22 +48,22 @@ if (window.location.search) {
     sessionStorage.setItem('CurrentRFQID', _BidID)
     if (FwdBy == 'config') {
         $("#frmdivapprove").hide();
+        $("#divRemarksApp").show();
     }
     else if (FwdBy == 'userview') {
-        // $("#divRemarksApp").hide();
-        //$('#h3Preapprovalhistory').show();
-        //$('#divPreapprovalhistory').show();
+        $("#divPreapprovalhistory").show();
+        $("#divRemarksApp").hide();
+        $('#h3Preapprovalhistory').show();
     }
     else {
         //$('#divlastcomment').removeClass('hide')
         $("#frmdivapprove").show();
+        $("#divRemarksApp").show();
     }
-    // if (_BidTypeID == "7") {
+    sessionStorage.setItem("EventId", _BidID);
+    sessionStorage.setItem("EventType", 'pRFQ');
+
     fetchRFQDetails(_BidID);
-    /*  }
-      else if (_BidTypeID == "6") {
-         // fetchScrapSalesBidDetails(_BidID)
-      }*/
     FetchRFQActionHistory(_BidID);
     setTimeout(function () {
         //if (isLastPreApprover == "Y") {
@@ -93,6 +93,7 @@ $('.maxlength').maxlength({
     alwaysShow: true
 });
 var isLastPreApprover = 'N';
+var rowAttach = 0;
 function fetchRFQDetails(RFQID) {
     //  debugger
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
@@ -201,6 +202,96 @@ function fetchRFQDetails(RFQID) {
                          }*/
                     $('#selectedvendorlistsPrev').append('<tr id=SelecetedVendorPrev' + BidData[0].vendors[i].vendorID + '><td class=hide>' + BidData[0].vendors[i].vendorID + '</td><td>' + BidData[0].vendors[i].vendorName + '</td><td id=tblcolweightagePrev' + BidData[0].vendors[i].vendorID + ' class=hide> </td></tr>')
                 }
+
+            }
+
+            //terms and condition
+            jQuery("#tbltermsconditionprev").empty();
+            jQuery("#tbltermsconditionprev").append(`<thead></thead><tbody></tbody>`);
+
+            if (BidData[0].termsCondition.length > 0) {
+                jQuery('#tbltermsconditionprev>thead').append("<tr><th class='bold hide'>Type</th><th class='bold'>Name</th><th>Level</th></tr>");
+                for (var i = 0; i < BidData[0].termsCondition.length; i++) {
+                    var strPrev = "<tr id=trTermsprev" + i + "><td>" + BidData[0].termsCondition[i].name + "</td>";
+                    if (data[i].level == "R") {
+                        strPrev += "<td>RFQ</td></tr>";
+                        $("#levelR" + i).attr("checked", "checked");
+                        $("#levelI" + i).removeAttr("checked");
+                        $("#rem" + i).removeAttr("disabled");
+                    }
+                    else {
+                        strPrev += "<td>Item</td></tr>";
+                        $("#levelR" + i).removeAttr("checked");
+                        $("#levelI" + i).prop("checked", true);
+                        $("#rem" + i).prop("disabled");
+                    }
+
+                    if (BidData[0].termsCondition[i].isChecked == "Y") {
+                        $("#spancheckedTerms" + BidData[0].termsCondition[i].id).addClass("checked");
+                        jQuery('#tbltermsconditionprev>tbody ').append(strPrev);
+                    }
+                    else {
+                        $("#spancheckedTerms" + BidData[0].termsCondition[i].id).removeClass("checked");
+                    }
+                    if (BidData[0].termsCondition[i].isDefault == "Y") {
+
+                        $("#spancheckedTerms" + BidData[0].termsCondition[i].id).addClass("checked");
+                        $("#chkTerms" + BidData[0].termsCondition[i].id).attr("disabled", "disabled");
+                    }
+
+                }
+
+
+            }
+
+            else {
+                jQuery('#tbltermsconditionprev tbody').append('<tr><td>No Terms & Condition</td></tr>')
+
+
+            }
+            //attachment
+            jQuery("#tblAttachmentsPrev").empty();
+            jQuery("#tblAttachmentsPrev").append(`<thead></thead><tbody></tbody>`);
+
+            if (BidData[0].attachments.length > 0) {
+                jQuery('#tblAttachmentsPrev thead').append("<tr><th class='bold'>Attachment Description</th><th class='bold'>Attachment</th></tr>");
+                for (var i = 0; i < BidData[0].attachments.length; i++) {
+                    rowAttach = rowAttach + 1;
+                    attach = BidData[0].attachments[i].rfqAttachment.replace(/\s/g, "%20");
+                    var strprev = '<tr id=trAttachidprev' + rowAttach + '><td style="width:47%!important" >' + BidData[0].attachments[i].rfqAttachmentDescription + '</td>';
+
+                    strprev += '<td class=style="width:47%!important"><a id=aeRFQFilePrev' + rowAttach + '  style="pointer:cursur;text-decoration:none;"  href="javascript:;" onclick="DownloadFile(this)" >' + BidData[0].attachments[i].rfqAttachment + '</a></td>';
+                    jQuery('#tblAttachmentsPrev tbody').append(strprev);
+
+                }
+
+
+            }
+            else {
+                jQuery('#tblAttachmentsPrev tbody').append('<tr><td>No Attachments</td></tr>')
+
+
+            }
+
+            //Questions
+            jQuery("#tblQuestionsPrev").empty();
+            jQuery("#tblQuestionsPrev").append(`<thead></thead><tbody></tbody>`);
+
+            if (BidData[0].questions.length > 0) {
+                jQuery('#tblQuestionsPrev thead').append("<tr><th class='bold' style='width:50%!important'>Questions</th><th class='bold' style='width:50%!important'>Requirement</th></tr>");
+
+                for (var i = 0; i < BidData[0].questions.length; i++) {
+
+                    var strp = '<tr id=trquesidprev' + (i + 1) + '><td>' + BidData[0].questions[i].rfqQuestions + '</td>';
+                    strp += "<td>" + BidData[0].questions[i].rfqQuestionsRequirement + "</td></tr>";
+                    jQuery('#tblQuestionsPrev tbody').append(strp);
+                }
+
+
+            }
+            else {
+                jQuery('#tblQuestionsPrev tbody').append('<tr><td>No Questions</td></tr>')
+
 
             }
 
@@ -360,9 +451,7 @@ function fetchScrapSalesBidDetails(bidid) {
 
 
 }
-function DownloadFile(aID) {
-    fnDownloadAttachments($("#" + aID.id).html(), 'Bid/' + sessionStorage.getItem('CurrentBidID'));
-}
+
 var FormValidation = function () {
 
     var validateAppsubmitData = function () {
@@ -523,7 +612,7 @@ function Dateandtimevalidate(biddate) {
     });
 }
 function ApprovalApp() {
-    debugger
+    //debugger
     jQuery.blockUI({ message: '<h5><img src="assets/admin/layout/img/loading.gif" />  Please Wait...</h5>' });
     var BidDate = new Date($('#txtbidDate').val().replace('-', ''));
     var EndDate = new Date($('#txtEndDate').val().replace('-', ''));
@@ -552,7 +641,7 @@ function ApprovalApp() {
         crossDomain: true,
         dataType: "json",
         success: function () {
-            debugger
+            //debugger
             if (isLastPreApprover == "N") {
                 bootbox.alert("Transaction Successful..", function () {
                     window.location = "index.html";
@@ -589,7 +678,7 @@ function ApprovalApp() {
         }
     });
 }
-
+let _RFQID = '';
 function FetchRFQActionHistory(RFQID) {
 
     jQuery.ajax({
@@ -601,24 +690,24 @@ function FetchRFQActionHistory(RFQID) {
         crossDomain: true,
         dataType: "json",
         success: function (data) {
-            debugger
 
-            $('#tblremarksapprover').empty();
-            $('#tblremarksapprover').append(`<thead></thead><tbody></tbody>`)
-            $('#tblremarksapprover>thead').append('<tr><th>Action</th><th>Remarks</th><th class=hide>Action Type</th><th>Completion DT</th></tr>')
+            _RFQID = RFQID;
+            $('#tblBidPreapprovalHistory').empty();
+            $('#tblBidPreapprovalHistory').append(`<thead></thead><tbody></tbody>`)
+            $('#tblBidPreapprovalHistory>thead').append('<tr><th>Action</th><th>Remarks</th><th class=hide>Action Type</th><th>Completion DT</th></tr>')
 
 
             if (data.length > 0) {
-
+                $('#h3Preapprovalhistory').show();
                 for (var i = 0; i < data.length; i++) {
-                    $('#tblremarksapprover>tbody').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
+                    $('#tblBidPreapprovalHistory>tbody').append('<tr><td>' + data[i].actionTakenBy + '</td><td>' + data[i].remarks + '</td><td>' + fnConverToLocalTime(data[i].receiptDt) + '</td></tr>')
 
                 }
 
 
             }
             else {
-                $('#tblremarksapprover>tbody').append('<tr colspan=3><td>No Record Found.</td></tr>')
+                $('#tblBidPreapprovalHistory>tbody').append('<tr colspan=3><td>No Record Found.</td></tr>')
 
             }
 
@@ -642,4 +731,7 @@ function FetchRFQActionHistory(RFQID) {
 
 }
 
-
+function DownloadFile(aID) {
+    //debugger
+    fnDownloadAttachments($("#" + aID.id).html(), 'eRFQ/' + _RFQID);
+}
