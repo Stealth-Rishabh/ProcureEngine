@@ -95,15 +95,14 @@
                                         <a href="contact-us.html">Support</a>
                                     </li>
                                     <li class="d-xl-none">
-                                        <a class="btn-custom text-white px-3" data-wow-delay="1s"
-                                           href="javascript:void(0)" data-toggle="modal"
+                                        <a class="btn-custom text-white px-3" data-wow-delay="1s" href="javascript:void(0)" data-toggle="modal"
                                            data-target="#requestModal">Request Demo</a>
                                     </li>
                                 </ul>
                             </div>
                             <div class="align-self-center ml-auto header-col-right">
                                 <a class="btn-custom" data-wow-delay="1s" href="javascript:void(0)" data-toggle="modal"
-                                   data-target="#requestModal" onclick="annualSubscription('RDNFA')">Request Demo</a>
+                                   data-target="#requestModal" onclick="annualSubscription('RDSpendana')">Request Demo</a>
                                 <span id="menu-btn"></span>
                             </div>
                             <div class="clearfix"></div>
@@ -119,16 +118,12 @@
 
             <!-- section begin -->
             <section id="subheader" class="solution_bnr"
-                     style="background: url(pro_img/solutions/Note-for-Approval.jpg) center">
+                     style="background: url(pro_img/solutions/Spend-Analytics.jpg) center">
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <h1>Note for Approval - eNFA</h1>
-                            <p>
-                                Note for Approval with auto selection of approvers based on define Delegation/Schedule
-                                <br> of
-                                Authority applicable for various purchase groups…
-                            </p>
+                            <h1>Spend Analytics</h1>
+                            <p>Spend Analytics to slice and dice your purchases - with option to upload historical data - to formulate effective purchase strategies</p>
                         </div>
                     </div>
                 </div>
@@ -138,84 +133,39 @@
             <section class="solution_inr_text" data-bgimage="url(images/background/6.png) center">
                 <div class="container">
                     <div class="row align-items-center">
-
                         <div class="col-md-6 col-lg-4">
-                            <img src="pro_img/icons/approval/DOA-SOACompliant.png" class="img-fluid solutions_icon"
-                                 alt="">
-                            <h4>DOA/SOA Compliant</h4>
+                            <img src="pro_img/services/icons/ResdulAPIs.jpg" class="img-fluid solutions_icon" alt="">
+                            <h4>Savings Analysis</h4>
                             <p>
-                                Map your Delegation or Schedule of Authority for each SBU and different functions for
-                                budgeted, excess or non- budgeted approvals
+                                View your various savings reports with respect to Last Purchase Price, Budget, initial Quotes for selected timelines.
                             </p>
-                            <img src="pro_img/icons/approval/Stage-wisevisibility.png" class="img-fluid solutions_icon"
+                            <img src="pro_img/services/icons/MultipleOptions.jpg" class="img-fluid solutions_icon"
                                  alt="">
-                            <h4>Stage-wise visibility</h4>
-                            <p>Approval status for better traceability</p>
-                            <img src="pro_img/icons/approval/TATReport.png" class="img-fluid solutions_icon" alt="">
-                            <h4>TAT Report</h4>
-                            <p>Analytical report to track approval time taken at various stages.</p>
+                            <h4>Cost Analysis</h4>
+                            <p>Analyze your project/SBU cost in a progressive manner as the execution happens vis-a-vis your budget.</p>
+                            <img src="pro_img/services/icons/BothSides.jpg" class="img-fluid solutions_icon" alt="">
+                            <h4>Category Analysis</h4>
+                            <p>In depth analysis of different product or service categories in different time periods or different buyers.</p>
                         </div>
                         <div class="col-md-6 col-lg-4">
-                            <img src="pro_img/icons/approval/autoForwarding.png" class="img-fluid solutions_icon"
+                            <img src="pro_img/services/icons/OnlyRelevantFields.jpg" class="img-fluid solutions_icon"
                                  alt="">
-                            <h4>Auto Forwarding</h4>
-                            <p>
-                                Approval tasks moves automatically to next approver in accordance to predefined DOA/SOA
-                                with email notification and pending task
-                            </p>
-                            <img src="pro_img/icons/approval/Reminders.png" class="img-fluid solutions_icon" alt="">
-                            <h4>Reminders</h4>
-                            <p>Send reminders to approvers as per your choice</p>
-                            <img src="pro_img/icons/approval/SingleSignOn.png" class="img-fluid solutions_icon" alt="">
-                            <h4>Single Sign On</h4>
-                            <p>
-                                Single Sign-On (Optional) enabling approvers to take action without logging to
-                                procurEngine.
-                            </p>
+                            <h4>Event Analysis</h4>
+                            <p>Detailed Analysis of each event in terms of extent of participation from each supplier, quote reduction trend and approval status.</p>
+                            <img src="pro_img/services/icons/WithCoreorperipheral.jpg" class="img-fluid solutions_icon"
+                                 alt="">
+                            <h4>Performance Analysis</h4>
+                            <p>Analyze SBU, Teams, individual performance through set performance parameters on savings achieved, time saved etc.</p>
+                            <img src="pro_img/services/icons/Quick.jpg" class="img-fluid solutions_icon" alt="">
+                            <h4>Supplier Analysis</h4>
+                            <p>Check your suppliers’ performance in different events, in how many events were they L1 or L2, success ratio, aggression etc.</p>
                         </div>
 
                         <div class="col-md-12 col-lg-4">
-                            <img src="pro_img/solutions/Note-for-Approval-img.jpg" class="img-fluid service_img" alt="">
+                            <img src="pro_img/solutions/simg5.jpg" class="img-fluid service_img"
+                                 alt="">
                         </div>
 
-                    </div>
-                </div>
-            </section>
-
-            <section class="clients_logo pt60 pb40" style="background: #00000012;">
-                <div class="container">
-                    <div class="row text-center">
-                        <div class="col-lg-12 wow fadeInUp" data-wow-delay="0s">
-                            <h2 class="mb-0">Our Clients</h2>
-                            <p class="lead">
-                                Chemical Industry, Speciality Films, Cement Sector, Realty, EPC,
-                                Manufacturing, Renewable Energy, Textiles and so on…
-                            </p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 wow fadeInUp" data-wow-delay="0s">
-                            <div id="owl-logo" class="logo-carousel owl-carousel owl-theme">
-                                <img src="pro_img/clients/Orient_Cement.png" class="img-fluid" alt="" />
-                                <img src="pro_img/clients/Max_Speciality_Films.png" class="img-fluid" alt="" />
-                                <img src="pro_img/clients/praj.png" class="img-fluid" alt="" />
-                                <img src="pro_img/clients/ReNew_Power.png" class="img-fluid" alt="" />
-                                <img src="pro_img/clients/hero-realty.png" class="img-fluid" alt="" />
-                                <img src="pro_img/clients/micromax.png" class="img-fluid" alt="" />
-                                <img src="pro_img/clients/Azure.png" class="img-fluid" alt="" />
-                                <img src="pro_img/clients/arvind.png" class="img-fluid" alt="" />
-                                <img src="pro_img/clients/ashoka.png" class="img-fluid" alt="" />
-                                <img src="pro_img/clients/vector.png" class="img-fluid" alt="" />
-                                <img src="pro_img/clients/dfpcl.png" class="img-fluid" alt="" />
-                                <img src="pro_img/clients/jwil.png" class="img-fluid" alt="" />
-                                <img src="pro_img/clients/apollo.png" class="img-fluid" alt="" />
-                                <img src="pro_img/clients/ramky.png" class="img-fluid" alt="" />
-                                <img src="pro_img/clients/Creaticity.png" class="img-fluid" alt="" />
-                                <img src="pro_img/clients/Smartchem.png" class="img-fluid" alt="" />
-                                <img src="pro_img/clients/gril.png" class="img-fluid" alt="" />
-                                <img src="pro_img/clients/jakson.png" class="img-fluid" alt="" />
-                            </div>
-                        </div>
                     </div>
                 </div>
             </section>
@@ -345,8 +295,7 @@
                             <a href="index.html"><img alt="" class="logo" src="pro_img/logo_w.svg"></a>
                             <div class="spacer-20"></div>
                             <p class="pr-5">
-                                ProcurEngine is one of the most trusted, easy to use, enterprise ready and
-                                fastest
+                                ProcurEngine is one of the most trusted, easy to use, enterprise ready and fastest
                                 growing procurement solution across industry verticals.
                             </p>
                         </div>
@@ -400,12 +349,8 @@
                     </div>
                     <div class="col-md-4 text-md-right text-sm-left">
                         <div class="social-icons">
-                            <a target="_blank" href="https://www.facebook.com/procurengine">
-                                <i class="fa fa-facebook fa-lg"></i>
-                            </a>
-                            <a target="_blank" href="https://twitter.com/procurEngine">
-                                <i class="fa fa-twitter fa-lg"></i>
-                            </a>
+                            <a target="_blank" href="https://www.facebook.com/procurengine"><i class="fa fa-facebook fa-lg"></i></a>
+                            <a target="_blank" href="https://twitter.com/procurEngine"><i class="fa fa-twitter fa-lg"></i></a>
                             <a target="_blank" href="https://www.linkedin.com/showcase/procurengine/">
                                 <i class="fa fa-linkedin fa-lg"></i>
                             </a>
@@ -532,7 +477,6 @@
         </div>
     </div>
 
-
     <!-- Javascript Files
     ================================================== -->
     <script src="js/jquery.min.js"></script>
@@ -553,11 +497,13 @@
     <script src="js/designesia.js"></script>
     <script src="js/index.js"></script>
     <script type="text/javascript">
-        jQuery(document).ready(function () {
+        $(document).ready(function () {
             FormValidate();
-            sessionStorage.setItem('PageFrom', "not-for-approval-eNFA")
+            sessionStorage.setItem('PageFrom', "spend-analytics")
         })
     </script>
+
+
 </body>
 
 </html>
