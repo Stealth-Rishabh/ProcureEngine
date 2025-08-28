@@ -5961,10 +5961,11 @@ a.btn-right {
   font-family: "FontAwesome";
   content: "\f10d";
   display: block;
-  color: rgba(0, 0, 0, 0.1);
+  font-style: "color: #000;";
   z-index: 100;
+  color: #282828;
   font-size: 20px;
-  background: none;
+  background: #282828 !important;
   left: 20px;
 }
 
